@@ -88,13 +88,18 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
     const animate = () => {
       ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
       
-      // Create gradient
+      // Create gradient with resolved CSS custom properties
       const gradient = ctx.createRadialGradient(
         canvas.offsetWidth / 2, canvas.offsetHeight / 2, 0,
         canvas.offsetWidth / 2, canvas.offsetHeight / 2, canvas.offsetWidth / 2
       );
-      gradient.addColorStop(0, 'hsl(var(--primary))');
-      gradient.addColorStop(1, 'hsl(var(--primary-variant))');
+      
+      // Get computed CSS values and convert to proper color format
+      const primaryHsl = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      const accentHsl = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      
+      gradient.addColorStop(0, `hsl(${primaryHsl})`);
+      gradient.addColorStop(1, `hsl(${accentHsl})`);
       
       particles.forEach(particle => {
         // Update particle
