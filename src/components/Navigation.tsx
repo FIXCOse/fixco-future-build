@@ -28,6 +28,9 @@ const Navigation = () => {
             <Link to="/om-oss" className="text-foreground hover:text-primary transition-colors">
               Om oss
             </Link>
+            <Link to="/faq" className="text-foreground hover:text-primary transition-colors">
+              FAQ
+            </Link>
             <Link to="/kontakt" className="text-foreground hover:text-primary transition-colors">
               Kontakt
             </Link>
@@ -83,6 +86,13 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Om oss
+              </Link>
+              <Link 
+                to="/faq" 
+                className="text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                FAQ
               </Link>
               <Link 
                 to="/kontakt" 
