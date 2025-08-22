@@ -216,16 +216,17 @@ const ServiceTeaserGrid = () => {
 
         {/* View All CTA */}
         <div className="text-center">
-          <Link to="/tjanster">
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="font-bold border-primary/30 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
-            >
+          <Button 
+            variant="cta-primary" 
+            size="cta" 
+            className="group" 
+            asChild
+          >
+            <Link to="/tjanster">
               Se alla våra tjänster
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

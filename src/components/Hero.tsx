@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button-premium";
+import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-construction.jpg";
 
 const Hero = () => {
@@ -39,13 +40,17 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="cta" size="xl" className="group">
-                Begär offert
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Button variant="cta-primary" size="cta" className="group" asChild>
+                <Link to="/kontakt">
+                  Begär offert
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </Button>
-              <Button variant="ghost-premium" size="xl" className="group">
-                <Play className="mr-2 h-5 w-5" />
-                Se våra tjänster
+              <Button variant="cta-secondary" size="cta" className="group" asChild>
+                <Link to="/tjanster">
+                  <Play className="h-4 w-4" aria-hidden="true" />
+                  Se våra tjänster
+                </Link>
               </Button>
             </div>
 

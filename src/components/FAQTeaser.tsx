@@ -84,16 +84,17 @@ const FAQTeaser = () => {
 
           {/* CTA to full FAQ */}
           <div className="text-center">
-            <Link to="/faq">
-              <Button
-                size="lg"
-                variant="outline"
-                className="font-bold border-primary/30 hover:bg-primary/10 hover:border-primary/50"
-              >
+            <Button
+              variant="cta-primary"
+              size="cta"
+              className="group"
+              asChild
+            >
+              <Link to="/faq">
                 Se alla frågor & svar
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </Button>
           </div>
 
           {/* Quick Contact */}
@@ -107,22 +108,24 @@ const FAQTeaser = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  size="lg"
-                  className="gradient-primary text-primary-foreground"
+                  variant="cta-primary"
+                  size="cta"
+                  className="group"
                   onClick={() => window.open('tel:08-123-456-78')}
                 >
                   Ring: 08-123 456 78
                 </Button>
-                <Link to="/kontakt">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-primary/30 hover:bg-primary/10"
-                  >
+                <Button
+                  variant="cta-secondary"
+                  size="cta"
+                  className="group"
+                  asChild
+                >
+                  <Link to="/kontakt">
                     Skicka meddelande
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>

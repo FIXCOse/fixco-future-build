@@ -68,12 +68,17 @@ const StickyNavigation = () => {
               <Phone className="h-4 w-4 mr-2" />
               08-123 456 78
             </Button>
-            <Link to="/kontakt">
-              <Button size="sm" className="gradient-primary text-primary-foreground hover:shadow-glow">
+            <Button 
+              variant="cta-primary" 
+              size="cta" 
+              className="group" 
+              asChild
+            >
+              <Link to="/kontakt">
                 Begär offert
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -113,12 +118,17 @@ const StickyNavigation = () => {
                   <Phone className="h-4 w-4 mr-2" />
                   08-123 456 78
                 </Button>
-                <Link to="/kontakt" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button size="sm" className="w-full gradient-primary text-primary-foreground">
+                <Button 
+                  variant="cta-primary" 
+                  size="cta" 
+                  className="group w-full" 
+                  asChild
+                >
+                  <Link to="/kontakt" onClick={() => setIsMobileMenuOpen(false)}>
                     Begär offert
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
               </div>
             </nav>
           </div>
