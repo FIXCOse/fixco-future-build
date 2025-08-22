@@ -95,7 +95,7 @@ const ServiceDetail = () => {
                 <div className="text-sm text-muted-foreground">Olika tjänster</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">24h</div>
+                <div className="text-2xl font-bold text-primary">5 dagar</div>
                 <div className="text-sm text-muted-foreground">Projektstart</div>
               </div>
               <div className="text-center">

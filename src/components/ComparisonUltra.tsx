@@ -104,10 +104,10 @@ const ComparisonUltra = () => {
     {
       icon: Clock,
       title: "Starttid",
-      fixcoValue: "24h",
+      fixcoValue: "5 dagar",
       competitorValue: "5-10 dagar",
       isWin: true,
-      description: "Vi börjar inom 24 timmar vs konkurrenters veckolånga väntetider"
+      description: "Vi börjar inom 5 dagar vs konkurrenters veckolånga väntetider"
     },
     {
       icon: TrendingUp,

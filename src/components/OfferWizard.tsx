@@ -63,7 +63,7 @@ const OfferWizard = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   ];
 
   const timelines = [
-    { id: 'urgent', name: 'Akut (inom 24h)', icon: '🚨' },
+    { id: 'urgent', name: 'Akut (inom 5 dagar)', icon: '🚨' },
     { id: 'week', name: 'Inom en vecka', icon: '⚡' },
     { id: 'month', name: 'Inom en månad', icon: '📅' },
     { id: 'flexible', name: 'Flexibel', icon: '🤝' }

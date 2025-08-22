@@ -8,7 +8,7 @@ const TrustBar = () => {
     },
     {
       icon: Clock,
-      text: "Start inom 24h"
+      text: "Start inom 5 dagar"
     },
     {
       icon: MapPin,
