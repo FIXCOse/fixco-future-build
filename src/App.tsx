@@ -11,7 +11,9 @@ import FAQ from "./pages/FAQ";
 import AboutUs from "./pages/AboutUs";
 import BookVisit from "./pages/BookVisit";
 import ROTInfo from "./pages/ROTInfo";
+import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
+import StickyCtaBar from "./components/StickyCtaBar";
 
 const queryClient = new QueryClient();
 
@@ -33,9 +35,11 @@ const App = () => {
             <Route path="/om-oss" element={<AboutUs />} />
             <Route path="/boka-hembesok" element={<BookVisit />} />
             <Route path="/rot-info" element={<ROTInfo />} />
+            <Route path="/referenser" element={<Referenser />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <StickyCtaBar />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

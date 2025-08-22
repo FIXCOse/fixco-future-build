@@ -31,6 +31,9 @@ const Navigation = () => {
             <Link to="/faq" className="text-foreground hover:text-primary transition-colors">
               FAQ
             </Link>
+            <Link to="/referenser" className="text-foreground hover:text-primary transition-colors">
+              Referenser
+            </Link>
             <Link to="/kontakt" className="text-foreground hover:text-primary transition-colors">
               Kontakt
             </Link>
@@ -93,6 +96,13 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 FAQ
+              </Link>
+              <Link 
+                to="/referenser" 
+                className="text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Referenser
               </Link>
               <Link 
                 to="/kontakt" 
