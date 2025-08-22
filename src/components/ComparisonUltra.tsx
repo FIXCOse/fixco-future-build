@@ -44,9 +44,9 @@ const ComparisonUltra = () => {
   const startTime = useCountUpOnce({
     key: "start_time",
     from: 0,
-    to: 3,
+    to: 5,
     duration: 1500,
-    formatter: (value) => `< ${Math.round(value)} h`
+    formatter: (value) => `< ${Math.round(value)} dagar`
   });
 
   // Attach observers to the main section when it becomes visible
