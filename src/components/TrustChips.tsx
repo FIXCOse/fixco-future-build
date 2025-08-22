@@ -13,6 +13,7 @@ interface TrustChipsProps {
   maxVisible?: number;
   includeRating?: boolean;
   includeLocation?: boolean;
+  showAll?: boolean;
 }
 
 const TrustChips = ({ 
@@ -20,10 +21,11 @@ const TrustChips = ({
   className = "",
   maxVisible = 6,
   includeRating = false,
-  includeLocation = false
+  includeLocation = false,
+  showAll: forceShowAll = false
 }: TrustChipsProps) => {
   console.log("TrustChips component rendering with variant:", variant);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(forceShowAll);
 
   // Select chip set based on variant
   let chips: TrustChip[] = [];
@@ -47,8 +49,8 @@ const TrustChips = ({
   if (includeRating) chips.push(RATING_CHIP);
   if (includeLocation) chips.push(LOCATION_CHIP);
 
-  const visibleChips = showAll ? chips : chips.slice(0, maxVisible);
-  const hasMoreChips = chips.length > maxVisible;
+  const visibleChips = (showAll || forceShowAll) ? chips : chips.slice(0, maxVisible);
+  const hasMoreChips = chips.length > maxVisible && !forceShowAll;
   const remainingCount = chips.length - maxVisible;
 
   const ChipComponent = ({ chip }: { chip: TrustChip }) => {

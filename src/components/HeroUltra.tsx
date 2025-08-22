@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight, Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
+import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 
 interface ParticleSystemProps {
@@ -267,7 +268,7 @@ const HeroUltra = () => {
 
             {/* Trust Indicators Grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}
@@ -295,6 +296,20 @@ const HeroUltra = () => {
                   </motion.div>
                 );
               })}
+            </motion.div>
+
+            {/* Trust Chips - All Visible */}
+            <motion.div
+              className="max-w-4xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+              transition={{ delay: 1.5, duration: 0.6 }}
+            >
+              <TrustChips 
+                variant="home" 
+                showAll={true}
+                className="flex flex-wrap items-center justify-center gap-3 pt-4"
+              />
             </motion.div>
           </motion.div>
         </div>
