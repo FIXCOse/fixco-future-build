@@ -301,7 +301,7 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
 
               <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
-                <span>Start inom 5 dagar</span>
+                <span>Start inom {'< 5 dagar'}</span>
               </div>
             </div>
 

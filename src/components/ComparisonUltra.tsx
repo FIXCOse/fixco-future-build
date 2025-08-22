@@ -1,11 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { CheckCircle, Clock, Star, Shield, MapPin, Timer, Trophy, TrendingUp, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import MagneticButton from "@/components/MagneticButton";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
-import usePersistentCounters from "@/hooks/usePersistentCounters";
+import useCountUpOnce from "@/hooks/useCountUpOnce";
 import useGlobalROT from "@/hooks/useGlobalROT";
 
 interface ComparisonMetric {
@@ -24,78 +23,31 @@ const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const { rotEnabled } = useGlobalROT();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  
-  // Persistent counters
-  const { 
-    animateCounter, 
-    getCounterValue, 
-    hasCounterAnimated,
-    prefersReducedMotion 
-  } = usePersistentCounters("comparison-ultra-v2");
 
-  useEffect(() => {
-    // Create intersection observer with mobile-optimized settings
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          // Start animations for counters only once
-          if (!hasCounterAnimated("customer_satisfaction")) {
-            animateCounter({
-              key: "customer_satisfaction",
-              target: 4.9,
-              duration: 1800,
-              easing: "easeOut"
-            });
-          }
-          
-          if (!hasCounterAnimated("completion_rate")) {
-            setTimeout(() => {
-              animateCounter({
-                key: "completion_rate", 
-                target: 98,
-                duration: 2000,
-                easing: "easeOut"
-              });
-            }, 150);
-          }
-          
-          if (!hasCounterAnimated("response_time")) {
-            setTimeout(() => {
-              animateCounter({
-                key: "response_time",
-                target: 24,
-                duration: 1500,
-                easing: "easeOut"
-              });
-            }, 300);
-          }
+  // Robust once-only counters
+  const customerSatisfaction = useCountUpOnce({
+    key: "customer_satisfaction",
+    from: 0,
+    to: 49,
+    duration: 1800,
+    formatter: (value) => (value / 10).toFixed(1)
+  });
 
-          // Unobserve immediately after triggering
-          if (observerRef.current && sectionRef.current) {
-            observerRef.current.unobserve(sectionRef.current);
-          }
-        }
-      },
-      { 
-        threshold: 0.15,
-        rootMargin: "100px 0px"
-      }
-    );
+  const completionRate = useCountUpOnce({
+    key: "completion_rate", 
+    from: 0,
+    to: 98,
+    duration: 2000,
+    formatter: (value) => Math.round(value).toString()
+  });
 
-    // Start observing
-    if (sectionRef.current && observerRef.current) {
-      observerRef.current.observe(sectionRef.current);
-    }
-
-    // Cleanup on unmount
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [animateCounter, hasCounterAnimated]);
+  const startTime = useCountUpOnce({
+    key: "start_time",
+    from: 0,
+    to: 3,
+    duration: 1500,
+    formatter: (value) => `< ${Math.round(value)} h`
+  });
 
   const isInView = useInView(sectionRef, { once: true });
 
@@ -104,7 +56,7 @@ const ComparisonUltra = () => {
     {
       icon: Clock,
       title: "Starttid",
-      fixcoValue: "5 dagar",
+      fixcoValue: "< 5 dagar",
       competitorValue: "5-10 dagar",
       isWin: true,
       description: "Vi börjar inom 5 dagar vs konkurrenters veckolånga väntetider"
@@ -130,7 +82,7 @@ const ComparisonUltra = () => {
     {
       icon: Star,
       title: "Kundnöjdhet",
-      fixcoValue: getCounterValue("customer_satisfaction") || 4.9,
+      fixcoValue: customerSatisfaction.value,
       fixcoUnit: "/5",
       competitorValue: "3.8",
       competitorUnit: "/5",
@@ -149,7 +101,7 @@ const ComparisonUltra = () => {
     {
       icon: Trophy,
       title: "Projekt klart i tid",
-      fixcoValue: getCounterValue("completion_rate") || 98,
+      fixcoValue: completionRate.value,
       fixcoUnit: "%",
       competitorValue: "70-80",
       competitorUnit: "%",
@@ -203,12 +155,24 @@ const ComparisonUltra = () => {
         {/* Mobile-Optimized Comparison */}
         <div className="max-w-md md:max-w-5xl mx-auto">
           {/* Header Row - Mobile Optimized */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="hidden md:grid grid-cols-3 gap-3 mb-4"
-          >
+        {/* Update "5 dagar" to "< 5 dagar" in Fixco start time contexts */}
+        <motion.div
+          ref={(el) => {
+            if (el && !customerSatisfaction.hasAnimated) {
+              customerSatisfaction.observe(el);
+            }
+            if (el && !completionRate.hasAnimated) {
+              completionRate.observe(el);
+            }
+            if (el && !startTime.hasAnimated) {
+              startTime.observe(el);
+            }
+          }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="hidden md:grid grid-cols-3 gap-3 mb-4"
+        >
             <div className="text-center">
               <h3 className="text-base font-semibold text-muted-foreground">Jämförelse</h3>
             </div>
@@ -265,16 +229,8 @@ const ComparisonUltra = () => {
                     <CheckCircle className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-green-400" />
                     <div className="text-center">
                       <div className="text-sm md:text-xl font-bold gradient-text">
-                        {metric.counterKey === "response_time" && typeof metric.fixcoValue === 'number'
-                          ? `≤${Math.round(getCounterValue(metric.counterKey) || metric.fixcoValue)}h`
-                          : metric.counterKey && typeof metric.fixcoValue === 'number' 
-                            ? (metric.counterKey === "customer_satisfaction" 
-                                ? (getCounterValue(metric.counterKey) || metric.fixcoValue).toFixed(1)
-                                : Math.round(getCounterValue(metric.counterKey) || metric.fixcoValue)
-                              )
-                            : metric.fixcoValue
-                        }
-                        {metric.fixcoUnit && metric.counterKey !== "response_time" && <span className="text-xs md:text-sm">{metric.fixcoUnit}</span>}
+                        {metric.fixcoValue}
+                        {metric.fixcoUnit && <span className="text-xs md:text-sm">{metric.fixcoUnit}</span>}
                       </div>
                     </div>
                   </motion.div>
@@ -351,7 +307,7 @@ const ComparisonUltra = () => {
           >
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">
-                &lt;{Math.round(getCounterValue("response_time") || 24)}h
+                {startTime.value}
               </div>
               <p className="text-xs text-muted-foreground">Starttid</p>
             </div>

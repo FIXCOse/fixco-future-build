@@ -54,7 +54,7 @@ const AboutUs = () => {
               </div>
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mb-4" />
-                <div className="text-3xl font-bold gradient-text mb-2">5 dagar</div>
+                <div className="text-3xl font-bold gradient-text mb-2">{'< 5 dagar'}</div>
                 <div className="text-sm text-muted-foreground">Projektstart</div>
               </div>
               <div className="card-premium p-6">

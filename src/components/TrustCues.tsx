@@ -22,7 +22,7 @@ const TrustCues = ({ variant = 'inline', className = "" }: TrustCuesProps) => {
     },
     {
       icon: Clock,
-      label: "Start inom 5 dagar",
+      label: "Start inom < 5 dagar",
       description: "Oftast inom 5 dagar",
       color: "text-primary"
     },

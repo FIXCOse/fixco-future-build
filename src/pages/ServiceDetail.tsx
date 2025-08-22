@@ -95,7 +95,7 @@ const ServiceDetail = () => {
                 <div className="text-sm text-muted-foreground">Olika tjänster</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">5 dagar</div>
+                <div className="text-2xl font-bold text-primary">{'< 5 dagar'}</div>
                 <div className="text-sm text-muted-foreground">Projektstart</div>
               </div>
               <div className="text-center">
@@ -121,7 +121,7 @@ const ServiceDetail = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>Start inom 5 dagar</span>
+              <span>Start inom {'< 5 dagar'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4 text-primary" />

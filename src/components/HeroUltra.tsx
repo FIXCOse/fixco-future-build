@@ -157,7 +157,7 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: ArrowRight, title: "Start inom 5 dagar", description: "Snabbaste i branschen" },
+    { icon: ArrowRight, title: "Start inom < 5 dagar", description: "Snabbaste i branschen" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
     { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
     { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
@@ -236,7 +236,7 @@ const HeroUltra = () => {
               transition={{ delay: 0.3, duration: 0.6 }}
             >
               Snabbare, billigare och mer professionellt än konkurrenterna. 
-              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
+              <span className="text-primary font-semibold"> Start inom {'< 5 dagar'}, 50% rabatt med ROT.</span>
             </motion.p>
 
             {/* Enhanced CTA Buttons */}

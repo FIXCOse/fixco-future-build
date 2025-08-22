@@ -50,7 +50,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
 
   const timelines = [
     { id: 'acute', name: 'Akut (inom 4h)', icon: '🚨', extra: '+50% akuttillägg' },
-    { id: 'asap', name: 'Inom 5 dagar', icon: '⚡', extra: 'Standardpris' },
+    { id: 'asap', name: 'Inom < 5 dagar', icon: '⚡', extra: 'Standardpris' },
     { id: 'week', name: 'Inom veckan', icon: '📅', extra: '5% rabatt' },
     { id: 'month', name: 'Nästa månad', icon: '🗓️', extra: '10% rabatt' }
   ];
