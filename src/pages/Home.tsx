@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Award, Users, MapPin, Star, ChevronRight } from "lucide-react";
-import StickyNavigation from "@/components/StickyNavigation";
-import ParticleCanvas from "@/components/ParticleCanvas";
-import MagneticButton from "@/components/MagneticButton";
+import Navigation from "@/components/Navigation";
+import HeroUltra from "@/components/HeroUltra";
 import TrustBar from "@/components/TrustBar";
-import AdvancedComparisonV2 from "@/components/AdvancedComparisonV2";
+import ComparisonUltra from "@/components/ComparisonUltra";
 import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ROTCalculator from "@/components/ROTCalculator";
@@ -38,7 +37,6 @@ const Home = () => {
     return () => observer.disconnect();
   }, []);
 
-
   const whyChooseUs = [
     { icon: ArrowRight, title: "Start inom 24h", description: "Vi påbörjar ditt projekt redan nästa dag" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag - ingen kan matcha" },
@@ -46,89 +44,18 @@ const Home = () => {
     { icon: MapPin, title: "Lokalt + Nationellt", description: "Uppsala & Stockholm, nationellt vid större projekt" }
   ];
 
-
   return (
     <div className="min-h-screen">
-      <StickyNavigation />
+      <Navigation />
       
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" data-section="hero">
-        {/* Particle Animation Background */}
-        <ParticleCanvas />
-        
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 hero-background">
-          <div className="absolute inset-0 bg-gradient-primary opacity-5 animate-gradient" />
-        </div>
-
-        {/* Content */}
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className={`animate-fade-in-up transition-all duration-1000 ${isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                <span className="gradient-text">Stora</span> eller{" "}
-                <span className="gradient-text">små</span> projekt –{" "}
-                <br />
-                <span className="text-foreground">Fixco hanterar</span>{" "}
-                <span className="gradient-text animate-float">allt</span>
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Snabbare, billigare och mer professionellt än våra konkurrenter. 
-                <span className="text-primary font-semibold"> Start inom 24h.</span>
-              </p>
-
-              {/* Magnetic CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
-                <Link to="/kontakt">
-                  <MagneticButton
-                    className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
-                  >
-                    Begär offert
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </MagneticButton>
-                </Link>
-                <Link to="/tjanster">
-                  <MagneticButton
-                    variant="outline"
-                    className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"
-                  >
-                    Se våra tjänster
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </MagneticButton>
-                </Link>
-              </div>
-
-              {/* Trust indicators */}
-              <div className="flex flex-col sm:flex-row gap-8 text-sm text-muted-foreground justify-center">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                  <span>ROT-avdrag: <span className="text-primary font-semibold">50% rabatt</span></span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                  <span>Täckning: <span className="text-primary font-semibold">Uppsala & Stockholm</span></span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                  <span>Start: <span className="text-primary font-semibold">Inom 24h</span></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating elements */}
-        <div className="absolute top-20 right-20 w-20 h-20 bg-primary/10 rounded-full animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-32 left-20 w-16 h-16 bg-accent/10 rounded-full animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 right-10 w-12 h-12 bg-primary/5 rounded-full animate-float" style={{ animationDelay: '0.5s' }} />
-      </section>
+      {/* Hero Section - ULTRA Enhanced */}
+      <HeroUltra />
 
       {/* Trust Bar */}
       <TrustBar />
 
-      {/* Advanced Comparison Section */}
-      <AdvancedComparisonV2 />
+      {/* Advanced Comparison Section - ULTRA Enhanced */}
+      <ComparisonUltra />
 
       {/* Service Teaser Grid */}
       <ServiceTeaserGrid />
@@ -186,19 +113,17 @@ const Home = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/kontakt">
-                <MagneticButton
-                  className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl"
-                >
+                <Button className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl">
                   Boka nu - gratis offert <ArrowRight className="ml-2 h-5 w-5" />
-                </MagneticButton>
+                </Button>
               </Link>
-              <MagneticButton
+              <Button
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 font-bold text-lg px-8 py-4"
                 onClick={() => window.open('tel:08-123-456-78')}
               >
                 Ring: 08-123 456 78
-              </MagneticButton>
+              </Button>
             </div>
           </div>
         </div>
