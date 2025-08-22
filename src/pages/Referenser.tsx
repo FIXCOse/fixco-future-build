@@ -173,7 +173,7 @@ const Referenser = () => {
               vi levererar kvalitet som våra kunder är nöjda med.
             </p>
             
-            <TrustChips variant="minimal" maxVisible={4} className="mb-8" />
+            <TrustChips variant="minimal" showAll={true} className="mb-8" />
           </div>
         </div>
       </section>
@@ -349,7 +349,7 @@ const Referenser = () => {
               </Button>
             </div>
 
-            <TrustChips variant="minimal" maxVisible={4} className="mt-8" />
+            <TrustChips variant="minimal" showAll={true} className="mt-8" />
           </div>
         </div>
       </section>

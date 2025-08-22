@@ -27,7 +27,7 @@ const Services = () => {
               <span className="text-primary font-semibold"> Utnyttja ROT-avdraget och spara 50%.</span>
             </p>
             
-            <TrustChips variant="services" maxVisible={6} />
+            <TrustChips variant="services" showAll={true} />
           </div>
         </div>
       </section>

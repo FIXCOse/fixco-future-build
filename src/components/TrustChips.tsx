@@ -50,7 +50,7 @@ const TrustChips = ({
   if (includeLocation) chips.push(LOCATION_CHIP);
 
   const visibleChips = (showAll || forceShowAll) ? chips : chips.slice(0, maxVisible);
-  const hasMoreChips = chips.length > maxVisible && !forceShowAll;
+  const hasMoreChips = chips.length > maxVisible && !forceShowAll && !showAll;
   const remainingCount = chips.length - maxVisible;
 
   const ChipComponent = ({ chip }: { chip: TrustChip }) => {
@@ -103,9 +103,10 @@ const TrustChips = ({
     return chipContent;
   };
 
-  if (variant === 'minimal') {
+  // When showAll is true, use unified layout for all variants
+  if (showAll || forceShowAll || variant === 'minimal') {
     return (
-      <div className={`flex flex-wrap items-center justify-center gap-2 ${className}`}>
+      <div className={`flex flex-wrap items-center justify-center gap-3 ${className}`} style={{ minHeight: '80px' }}>
         {visibleChips.map((chip) => (
           <ChipComponent key={chip.id} chip={chip} />
         ))}
@@ -121,7 +122,7 @@ const TrustChips = ({
           <ChipComponent key={chip.id} chip={chip} />
         ))}
         
-        {hasMoreChips && !showAll && (
+        {hasMoreChips && (
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="flex items-center space-x-1">
@@ -140,24 +141,12 @@ const TrustChips = ({
         )}
       </div>
 
-      {/* Mobile Layout - Horizontal Scroll */}
-      <div className="md:hidden overflow-x-auto scrollbar-hide">
-        <div className="flex items-center space-x-3 pb-2 min-w-max px-4">
-          {chips.map((chip) => (
-            <ChipComponent key={chip.id} chip={chip} />
-          ))}
-        </div>
+      {/* Mobile Layout - Wrapped */}
+      <div className="md:hidden flex flex-wrap items-center justify-start gap-2 px-4">
+        {chips.map((chip) => (
+          <ChipComponent key={chip.id} chip={chip} />
+        ))}
       </div>
-
-      <style>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 };
