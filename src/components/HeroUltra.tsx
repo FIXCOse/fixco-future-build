@@ -236,7 +236,7 @@ const HeroUltra = () => {
               transition={{ delay: 0.3, duration: 0.6 }}
             >
               Snabbare, billigare och mer professionellt än konkurrenterna. 
-              <span className="text-primary font-semibold"> Start inom 24h, 50% rabatt med ROT.</span>
+              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
