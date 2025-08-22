@@ -179,7 +179,7 @@
 
   .card-service {
     @apply card-premium p-6 hover:scale-[1.02] hover:-translate-y-1;
-    @apply hover:border-primary/30 group cursor-pointer;
+    @apply hover:border-primary/30 cursor-pointer;
   }
 
   /* Hero backgrounds */
