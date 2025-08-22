@@ -24,7 +24,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl">
-          <div className="animate-fade-in-up">
+          <div>
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
               <span className="gradient-text">Stora</span> eller{" "}
               <span className="gradient-text">små</span> projekt –{" "}
@@ -40,13 +40,13 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="cta-primary" size="cta" className="group" asChild>
+              <Button variant="cta-primary" size="cta" asChild>
                 <Link to="/kontakt">
                   Begär offert
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
-              <Button variant="cta-secondary" size="cta" className="group" asChild>
+              <Button variant="cta-secondary" size="cta" asChild>
                 <Link to="/tjanster">
                   Se våra tjänster
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
