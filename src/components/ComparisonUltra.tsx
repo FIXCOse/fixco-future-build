@@ -23,7 +23,7 @@ const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const { rotEnabled } = useGlobalROT();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true });
+  const observerRef = useRef<IntersectionObserver | null>(null);
   
   // Persistent counters
   const { 
@@ -31,43 +31,69 @@ const ComparisonUltra = () => {
     getCounterValue, 
     hasCounterAnimated,
     prefersReducedMotion 
-  } = usePersistentCounters("comparison-ultra");
+  } = usePersistentCounters("comparison-ultra-v2");
 
   useEffect(() => {
-    if (isInView) {
-      // Start animations for counters
-      if (!hasCounterAnimated("customer_satisfaction")) {
-        animateCounter({
-          key: "customer_satisfaction",
-          target: 4.9,
-          duration: 2000,
-          easing: "easeOut"
-        });
-      }
-      
-      if (!hasCounterAnimated("completion_rate")) {
-        setTimeout(() => {
-          animateCounter({
-            key: "completion_rate", 
-            target: 97,
-            duration: 2500,
-            easing: "easeOut"
-          });
-        }, 200);
-      }
-      
-      if (!hasCounterAnimated("response_time")) {
-        setTimeout(() => {
-          animateCounter({
-            key: "response_time",
-            target: 60,
-            duration: 1800,
-            easing: "easeOut"
-          });
-        }, 400);
-      }
+    // Create intersection observer with threshold 0.3
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          // Start animations for counters only once
+          if (!hasCounterAnimated("customer_satisfaction")) {
+            animateCounter({
+              key: "customer_satisfaction",
+              target: 4.9,
+              duration: 1800,
+              easing: "easeOut"
+            });
+          }
+          
+          if (!hasCounterAnimated("completion_rate")) {
+            setTimeout(() => {
+              animateCounter({
+                key: "completion_rate", 
+                target: 97,
+                duration: 2000,
+                easing: "easeOut"
+              });
+            }, 150);
+          }
+          
+          if (!hasCounterAnimated("response_time")) {
+            setTimeout(() => {
+              animateCounter({
+                key: "response_time",
+                target: 60,
+                duration: 1500,
+                easing: "easeOut"
+              });
+            }, 300);
+          }
+
+          // Unobserve immediately after triggering
+          if (observerRef.current && sectionRef.current) {
+            observerRef.current.unobserve(sectionRef.current);
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    // Start observing
+    if (sectionRef.current && observerRef.current) {
+      observerRef.current.observe(sectionRef.current);
     }
-  }, [isInView, animateCounter, hasCounterAnimated]);
+
+    // Cleanup on unmount
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [animateCounter, hasCounterAnimated]);
+
+  const isInView = useInView(sectionRef, { once: true });
 
   // Dynamic metrics based on current counter values
   const metrics: ComparisonMetric[] = [
@@ -132,105 +158,97 @@ const ComparisonUltra = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 overflow-hidden"
+      className="relative py-12 overflow-hidden"
     >
       {/* Premium Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 hero-background" />
         
-        {/* ULTRA: Enhanced background effects */}
+        {/* ULTRA: Subtle background effects */}
         {ultraEnabled && capabilities.prefersMotion && (
           <motion.div
             className="absolute inset-0"
             animate={{
               background: [
-                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 70% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 30% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)"
+                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.08) 0%, transparent 40%)",
+                "radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.08) 0%, transparent 40%)",
+                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.08) 0%, transparent 40%)"
               ]
             }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
         )}
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
+      <div className="container mx-auto px-4 relative z-10 max-w-6xl">
+        {/* Compact Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Varför välja{" "}
-            <span className="gradient-text">Fixco</span>?
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+            Varför välja <span className="gradient-text">Fixco</span>?
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            En transparent jämförelse som visar varför tusentals kunder väljer oss framför konkurrenterna
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
+            Transparent jämförelse som visar varför tusentals kunder väljer oss
           </p>
         </motion.div>
 
-        {/* Main Comparison Grid */}
-        <div className="max-w-7xl mx-auto">
+        {/* Compact Side-by-Side Scoreboard */}
+        <div className="max-w-5xl mx-auto">
           {/* Header Row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="grid grid-cols-3 gap-3 mb-4"
           >
-            <div className="hidden md:block" /> {/* Empty space for metric titles */}
-            <div className="card-premium p-6 text-center">
-              <div className="w-16 h-16 mx-auto gradient-primary rounded-xl flex items-center justify-center mb-4">
-                <Trophy className="h-8 w-8 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold gradient-text mb-2">Fixco</h3>
-              <p className="text-muted-foreground">Marknadsledare</p>
+            <div className="text-center">
+              <h3 className="text-base font-semibold text-muted-foreground">Jämförelse</h3>
             </div>
-            <div className="card-premium p-6 text-center border-destructive/20">
-              <div className="w-16 h-16 mx-auto bg-muted rounded-xl flex items-center justify-center mb-4">
-                <Timer className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Konkurrenter</h3>
-              <p className="text-muted-foreground">Branschsnitt</p>
+            <div className="card-premium p-3 text-center border-primary/20">
+              <Trophy className="h-5 w-5 mx-auto mb-1 text-primary" />
+              <h3 className="text-lg font-bold gradient-text">Fixco</h3>
+            </div>
+            <div className="card-premium p-3 text-center border-muted/20">
+              <Timer className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
+              <h3 className="text-lg font-bold text-muted-foreground">Konkurrenter</h3>
             </div>
           </motion.div>
 
-          {/* Metrics Grid */}
-          <div className="space-y-4">
+          {/* Compact Metrics Grid */}
+          <div className="space-y-2">
             {metrics.map((metric, index) => {
               const IconComponent = metric.icon;
               return (
                 <motion.div
                   key={metric.title}
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center"
+                  transition={{ delay: 0.3 + index * 0.12, duration: 0.5 }}
+                  className="grid grid-cols-3 gap-3 items-center"
                 >
-                  {/* Metric Title */}
-                  <div className="flex items-center gap-4 p-4">
-                    <div className="w-12 h-12 gradient-primary-subtle rounded-lg flex items-center justify-center">
-                      <IconComponent className="h-6 w-6 text-primary" />
+                  {/* Metric Title - Compact */}
+                  <div className="flex items-center gap-3 p-3">
+                    <div className="w-8 h-8 gradient-primary-subtle rounded-lg flex items-center justify-center shrink-0">
+                      <IconComponent className="h-4 w-4 text-primary" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-lg">{metric.title}</h4>
-                      <p className="text-sm text-muted-foreground">{metric.description}</p>
+                    <div className="min-w-0">
+                      <h4 className="font-semibold text-sm md:text-base leading-tight">{metric.title}</h4>
                     </div>
                   </div>
 
-                  {/* Fixco Value */}
+                  {/* Fixco Value - Compact */}
                   <motion.div
-                    className="card-premium p-6 border-primary/30 relative overflow-hidden"
-                    whileHover={ultraEnabled ? { scale: 1.02, rotateY: 2 } : { scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
+                    className="card-premium p-3 border-primary/20 relative bg-primary/5"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.15 }}
                   >
-                    <div className="absolute top-2 right-2">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                    </div>
+                    <CheckCircle className="absolute top-1 right-1 h-3 w-3 text-green-400" />
                     <div className="text-center">
-                      <div className="text-3xl font-bold gradient-text mb-1">
+                      <div className="text-lg md:text-xl font-bold gradient-text">
                         {metric.counterKey && typeof metric.fixcoValue === 'number' 
                           ? (metric.counterKey === "customer_satisfaction" 
                               ? (getCounterValue(metric.counterKey) || metric.fixcoValue).toFixed(1)
@@ -238,90 +256,92 @@ const ComparisonUltra = () => {
                             )
                           : metric.fixcoValue
                         }
-                        {metric.fixcoUnit && <span className="text-lg">{metric.fixcoUnit}</span>}
+                        {metric.fixcoUnit && <span className="text-sm">{metric.fixcoUnit}</span>}
                       </div>
                     </div>
                   </motion.div>
 
-                  {/* Competitor Value */}
-                  <motion.div
-                    className="card-premium p-6 border-muted/30 relative"
-                    whileHover={ultraEnabled ? { scale: 1.01 } : {}}
-                    transition={{ duration: 0.2 }}
-                  >
+                  {/* Competitor Value - Compact */}
+                  <div className="card-premium p-3 border-muted/20 bg-muted/10">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-muted-foreground mb-1">
+                      <div className="text-lg md:text-xl font-bold text-muted-foreground">
                         {metric.competitorValue}
-                        {metric.competitorUnit && <span className="text-lg">{metric.competitorUnit}</span>}
+                        {metric.competitorUnit && <span className="text-sm">{metric.competitorUnit}</span>}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
 
-          {/* Winner Summary */}
+          {/* Compact Winner Summary + CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-12 text-center"
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="mt-6"
           >
-            <div className="card-premium p-8 border-primary/30 max-w-2xl mx-auto">
-              <div className="w-20 h-20 mx-auto gradient-primary rounded-full flex items-center justify-center mb-6">
-                <Trophy className="h-10 w-10 text-primary-foreground" />
-              </div>
-              <h3 className="text-3xl font-bold gradient-text mb-4">
-                Fixco vinner {metrics.length}/{metrics.length}
-              </h3>
-              <p className="text-lg text-muted-foreground mb-8">
-                Inom alla viktiga områden är vi marknadsledare. 
-                {rotEnabled && " Med ROT-avdrag sparar du dessutom upp till 50%."}
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/kontakt">
-                  <MagneticButton
-                    className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
-                  >
-                    Begär offert
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </MagneticButton>
-                </Link>
-                <Link to="/tjanster">
-                  <MagneticButton
-                    variant="outline"
-                    className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
-                  >
-                    Se våra tjänster
-                  </MagneticButton>
-                </Link>
+            <div className="card-premium p-6 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                {/* Left: Summary */}
+                <div className="text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <Trophy className="h-6 w-6 text-primary" />
+                    <h3 className="text-xl font-bold gradient-text">
+                      Fixco vinner {metrics.length}/{metrics.length}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Marknadsledare inom alla områden{rotEnabled && " + upp till 50% ROT-besparing"}
+                  </p>
+                </div>
+                
+                {/* Right: CTAs */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end">
+                  <Link to="/kontakt">
+                    <MagneticButton
+                      className="gradient-primary text-primary-foreground px-6 py-2.5 text-sm shadow-premium hover:shadow-glow"
+                      magneticStrength={0.3}
+                    >
+                      Begär offert
+                      <ArrowRight className="ml-1.5 h-4 w-4" />
+                    </MagneticButton>
+                  </Link>
+                  <Link to="/tjanster">
+                    <MagneticButton
+                      variant="outline"
+                      className="px-6 py-2.5 text-sm border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
+                      magneticStrength={0.2}
+                    >
+                      Se tjänster
+                    </MagneticButton>
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Additional Stats Row */}
+          {/* Compact Additional Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 1.5, duration: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="grid grid-cols-3 gap-3 mt-4"
           >
-            <div className="card-premium p-6 text-center">
-              <div className="text-3xl font-bold gradient-text mb-2">
-                &lt;{Math.round(getCounterValue("response_time") || 60)} min
+            <div className="card-premium p-4 text-center">
+              <div className="text-lg md:text-xl font-bold gradient-text mb-1">
+                &lt;{Math.round(getCounterValue("response_time") || 60)}min
               </div>
-              <p className="text-muted-foreground">Genomsnittlig svarstid</p>
+              <p className="text-xs text-muted-foreground">Svarstid</p>
             </div>
-            <div className="card-premium p-6 text-center">
-              <div className="text-3xl font-bold gradient-text mb-2">2000+</div>
-              <p className="text-muted-foreground">Nöjda kunder</p>
+            <div className="card-premium p-4 text-center">
+              <div className="text-lg md:text-xl font-bold gradient-text mb-1">2000+</div>
+              <p className="text-xs text-muted-foreground">Nöjda kunder</p>
             </div>
-            <div className="card-premium p-6 text-center">
-              <div className="text-3xl font-bold gradient-text mb-2">24/7</div>
-              <p className="text-muted-foreground">Kundtjänst tillgänglig</p>
+            <div className="card-premium p-4 text-center">
+              <div className="text-lg md:text-xl font-bold gradient-text mb-1">24/7</div>
+              <p className="text-xs text-muted-foreground">Support</p>
             </div>
           </motion.div>
         </div>

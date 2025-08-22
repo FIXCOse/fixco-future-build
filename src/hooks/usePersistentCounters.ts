@@ -103,21 +103,10 @@ const usePersistentCounters = (sectionId: string) => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easingFunction(progress);
-      const currentValue = Math.floor(startValue + (target - startValue) * easedProgress);
-
-      setCounters(prev => ({
-        ...prev,
-        [key]: {
-          ...prev[key],
-          value: currentValue
-        }
-      }));
-
-      if (progress < 1) {
-        animationRefs.current[key] = requestAnimationFrame(animate);
-      } else {
-        // Animation complete
+      
+      // Clamp progress to never exceed 1
+      if (progress >= 1) {
+        // Animation complete - set exact target value
         setCounters(prev => ({
           ...prev,
           [key]: {
@@ -126,7 +115,13 @@ const usePersistentCounters = (sectionId: string) => {
             hasAnimated: true
           }
         }));
-        delete animationRefs.current[key];
+        
+        // Clean up animation
+        if (animationRefs.current[key]) {
+          cancelAnimationFrame(animationRefs.current[key]);
+          delete animationRefs.current[key];
+        }
+        
         onComplete?.();
         
         // Analytics event
@@ -138,9 +133,36 @@ const usePersistentCounters = (sectionId: string) => {
             duration: duration
           });
         }
+        return;
       }
+
+      // Continue animation
+      const easedProgress = easingFunction(progress);
+      const currentValue = startValue + (target - startValue) * easedProgress;
+      
+      // Handle different value types
+      let displayValue = currentValue;
+      if (key.includes('satisfaction')) {
+        displayValue = Math.min(currentValue, target); // Never exceed target for satisfaction
+      } else if (key.includes('rate') || key.includes('percent')) {
+        displayValue = Math.min(Math.floor(currentValue), target); // Never exceed target for percentages
+      } else {
+        displayValue = Math.floor(currentValue);
+      }
+
+      setCounters(prev => ({
+        ...prev,
+        [key]: {
+          ...prev[key],
+          value: displayValue
+        }
+      }));
+
+      // Schedule next frame
+      animationRefs.current[key] = requestAnimationFrame(animate);
     };
 
+    // Start animation
     animationRefs.current[key] = requestAnimationFrame(animate);
   }, [counters, prefersReducedMotion, sectionId]);
 
