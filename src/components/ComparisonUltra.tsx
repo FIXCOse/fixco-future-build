@@ -1,225 +1,152 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Info, Award, Users2, Clock, DollarSign, Star, MapPin } from "lucide-react";
-import CaseSwitcher from "./CaseSwitcher";
-import InteractiveToggle from "./InteractiveToggle";
+import { useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { CheckCircle, Clock, Star, Shield, MapPin, Timer, Trophy, TrendingUp, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import MagneticButton from "@/components/MagneticButton";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import usePersistentCounters from "@/hooks/usePersistentCounters";
 import useGlobalROT from "@/hooks/useGlobalROT";
 
-type CaseType = 'el' | 'vvs' | 'snickeri';
-type RegionType = 'uppsala' | 'stockholm' | 'both';
-
-interface Metric {
-  id: string;
-  icon: any;
-  label: string;
+interface ComparisonMetric {
+  icon: React.ComponentType<any>;
+  title: string;
+  fixcoValue: string | number;
+  fixcoUnit?: string;
+  competitorValue: string | number;
+  competitorUnit?: string;
+  counterKey?: string;
+  isWin: boolean;
   description: string;
-  unit: string;
-  format: 'number' | 'currency' | 'percentage' | 'time';
 }
 
 const ComparisonUltra = () => {
-  const { ultraEnabled, proEnabled } = useProgressiveEnhancement();
-  const { rotEnabled, toggleROT } = useGlobalROT();
-  const { animateCounters, getCounterValue, hasCounterAnimated } = usePersistentCounters('comparison-ultra');
+  const { ultraEnabled, capabilities } = useProgressiveEnhancement();
+  const { rotEnabled } = useGlobalROT();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true });
+  
+  // Persistent counters
+  const { 
+    animateCounter, 
+    getCounterValue, 
+    hasCounterAnimated,
+    prefersReducedMotion 
+  } = usePersistentCounters("comparison-ultra");
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [selectedCase, setSelectedCase] = useState<CaseType>('el');
-  const [region, setRegion] = useState<RegionType>('both');
-  const [animationTriggered, setAnimationTriggered] = useState(false);
-
-  // Case-specific data
-  const caseData = {
-    el: {
-      startTime: { fixco: 24, competitor: 7 },
-      pricing: { base: 1059, rot: 530, competitor: 1200 },
-      satisfaction: { fixco: 98, competitor: 82 },
-      title: "Elinstallationer"
-    },
-    vvs: {
-      startTime: { fixco: 24, competitor: 8 },
-      pricing: { base: 959, rot: 480, competitor: 1100 },
-      satisfaction: { fixco: 97, competitor: 79 },
-      title: "VVS-tjänster"
-    },
-    snickeri: {
-      startTime: { fixco: 24, competitor: 6 },
-      pricing: { base: 859, rot: 430, competitor: 950 },
-      satisfaction: { fixco: 99, competitor: 81 },
-      title: "Snickeriarbeten"
+  useEffect(() => {
+    if (isInView) {
+      // Start animations for counters
+      if (!hasCounterAnimated("customer_satisfaction")) {
+        animateCounter({
+          key: "customer_satisfaction",
+          target: 4.9,
+          duration: 2000,
+          easing: "easeOut"
+        });
+      }
+      
+      if (!hasCounterAnimated("completion_rate")) {
+        setTimeout(() => {
+          animateCounter({
+            key: "completion_rate", 
+            target: 97,
+            duration: 2500,
+            easing: "easeOut"
+          });
+        }, 200);
+      }
+      
+      if (!hasCounterAnimated("response_time")) {
+        setTimeout(() => {
+          animateCounter({
+            key: "response_time",
+            target: 60,
+            duration: 1800,
+            easing: "easeOut"
+          });
+        }, 400);
+      }
     }
-  };
+  }, [isInView, animateCounter, hasCounterAnimated]);
 
-  const currentCase = caseData[selectedCase];
-
-  const metrics: Metric[] = [
+  // Dynamic metrics based on current counter values
+  const metrics: ComparisonMetric[] = [
     {
-      id: 'startTime',
       icon: Clock,
-      label: 'Projektstart',
-      description: 'Tid från första kontakt till projektstart',
-      unit: selectedCase === 'el' ? 'h' : 'dagar',
-      format: 'time'
+      title: "Starttid",
+      fixcoValue: "24h",
+      competitorValue: "5-10 dagar",
+      isWin: true,
+      description: "Vi börjar inom 24 timmar vs konkurrenters veckolånga väntetider"
     },
     {
-      id: 'pricing',
-      icon: DollarSign,
-      label: rotEnabled ? 'Timpris (efter ROT)' : 'Timpris ordinarie',
-      description: rotEnabled ? 'Pris efter 50% ROT-avdrag' : 'Ordinarie timpris',
-      unit: 'kr/h',
-      format: 'currency'
+      icon: TrendingUp,
+      title: rotEnabled ? "Pris med ROT-avdrag" : "Ordinarie pris",
+      fixcoValue: rotEnabled ? 480 : 959,
+      fixcoUnit: "kr/h",
+      competitorValue: rotEnabled ? "800-1 300" : "800-1 300",
+      competitorUnit: "kr/h",
+      isWin: true,
+      description: rotEnabled ? "Upp till 50% billigare med ROT-avdrag" : "Konkurrenskraftiga priser utan ROT"
     },
     {
-      id: 'satisfaction',
+      icon: MapPin,
+      title: "Täckningsområde",
+      fixcoValue: "Uppsala & Stockholm",
+      competitorValue: "Begränsat",
+      isWin: true,
+      description: "Full täckning i Uppsala & Stockholm, större projekt nationellt"
+    },
+    {
       icon: Star,
-      label: 'Kundnöjdhet',
-      description: 'Genomsnittligt betyg senaste 12 månaderna',
-      unit: '%',
-      format: 'percentage'
+      title: "Kundnöjdhet",
+      fixcoValue: getCounterValue("customer_satisfaction") || 4.9,
+      fixcoUnit: "/5",
+      competitorValue: "3.8",
+      competitorUnit: "/5",
+      counterKey: "customer_satisfaction",
+      isWin: true,
+      description: "Branschens högsta kundnöjdhet baserat på tusentals recensioner"
+    },
+    {
+      icon: Shield,
+      title: "ROT-hantering",
+      fixcoValue: "Vi sköter allt",
+      competitorValue: "Du själv",
+      isWin: true,
+      description: "Komplett ROT-service utan krångel för dig som kund"
+    },
+    {
+      icon: Trophy,
+      title: "Projekt klart i tid",
+      fixcoValue: getCounterValue("completion_rate") || 97,
+      fixcoUnit: "%",
+      competitorValue: "70-80",
+      competitorUnit: "%",
+      counterKey: "completion_rate",
+      isWin: true,
+      description: "Nästan alla projekt levereras enligt överenskommen tidsplan"
     }
   ];
 
-  // Intersection Observer for triggering animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !animationTriggered) {
-          setIsVisible(true);
-          setAnimationTriggered(true);
-          
-          // Start counter animations after a short delay
-          setTimeout(() => {
-            const counterConfigs = metrics.map(metric => {
-              const fixcoKey = `${selectedCase}_${metric.id}_fixco`;
-              const competitorKey = `${selectedCase}_${metric.id}_competitor`;
-              
-              let fixcoValue: number, competitorValue: number;
-              
-              switch (metric.id) {
-                case 'startTime':
-                  fixcoValue = currentCase.startTime.fixco;
-                  competitorValue = currentCase.startTime.competitor;
-                  break;
-                case 'pricing':
-                  fixcoValue = rotEnabled ? currentCase.pricing.rot : currentCase.pricing.base;
-                  competitorValue = currentCase.pricing.competitor;
-                  break;
-                case 'satisfaction':
-                  fixcoValue = currentCase.satisfaction.fixco;
-                  competitorValue = currentCase.satisfaction.competitor;
-                  break;
-                default:
-                  fixcoValue = 0;
-                  competitorValue = 0;
-              }
-              
-              return [
-                { key: fixcoKey, target: fixcoValue, duration: 1500, easing: 'easeOut' as const },
-                { key: competitorKey, target: competitorValue, duration: 1500, easing: 'easeOut' as const }
-              ];
-            }).flat();
-            
-            animateCounters(counterConfigs, 200);
-          }, 1000);
-          
-          observer.unobserve(entries[0].target);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    const element = document.getElementById('comparison-ultra-section');
-    if (element) observer.observe(element);
-
-    return () => observer.disconnect();
-  }, [animationTriggered, selectedCase, rotEnabled, animateCounters, currentCase, metrics]);
-
-  // Handle case change
-  const handleCaseChange = useCallback((newCase: CaseType) => {
-    setSelectedCase(newCase);
-    
-    // If already animated, animate to new values
-    if (hasCounterAnimated(`${selectedCase}_startTime_fixco`)) {
-      const newData = caseData[newCase];
-      const counterConfigs = metrics.map(metric => {
-        const fixcoKey = `${newCase}_${metric.id}_fixco`;
-        const competitorKey = `${newCase}_${metric.id}_competitor`;
-        
-        let fixcoValue: number, competitorValue: number;
-        
-        switch (metric.id) {
-          case 'startTime':
-            fixcoValue = newData.startTime.fixco;
-            competitorValue = newData.startTime.competitor;
-            break;
-          case 'pricing':
-            fixcoValue = rotEnabled ? newData.pricing.rot : newData.pricing.base;
-            competitorValue = newData.pricing.competitor;
-            break;
-          case 'satisfaction':
-            fixcoValue = newData.satisfaction.fixco;
-            competitorValue = newData.satisfaction.competitor;
-            break;
-          default:
-            fixcoValue = 0;
-            competitorValue = 0;
-        }
-        
-        return [
-          { key: fixcoKey, target: fixcoValue, duration: 800, easing: 'easeOut' as const },
-          { key: competitorKey, target: competitorValue, duration: 800, easing: 'easeOut' as const }
-        ];
-      }).flat();
-      
-      animateCounters(counterConfigs, 100);
-    }
-  }, [selectedCase, rotEnabled, hasCounterAnimated, animateCounters, metrics]);
-
-  // Handle ROT change
-  const handleROTChange = useCallback((enabled: boolean) => {
-    toggleROT(enabled);
-    
-    // Update pricing counter if already animated
-    if (hasCounterAnimated(`${selectedCase}_pricing_fixco`)) {
-      const newPrice = enabled ? currentCase.pricing.rot : currentCase.pricing.base;
-      animateCounters([
-        { key: `${selectedCase}_pricing_fixco`, target: newPrice, duration: 600, easing: 'easeOut' }
-      ]);
-    }
-  }, [toggleROT, selectedCase, currentCase.pricing, hasCounterAnimated, animateCounters]);
-
-  const formatValue = (value: number, metric: Metric) => {
-    switch (metric.format) {
-      case 'currency':
-        return value.toLocaleString('sv-SE');
-      case 'percentage':
-        return value;
-      case 'time':
-        return value;
-      default:
-        return value;
-    }
-  };
-
   return (
     <section 
-      id="comparison-ultra-section"
-      className="py-24 relative overflow-hidden"
+      ref={sectionRef}
+      className="relative py-24 overflow-hidden"
     >
-      {/* Enhanced Background */}
+      {/* Premium Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-pink-900/10" />
+        <div className="absolute inset-0 hero-background" />
         
-        {/* PRO: CSS Animation */}
-        {proEnabled && (
+        {/* ULTRA: Enhanced background effects */}
+        {ultraEnabled && capabilities.prefersMotion && (
           <motion.div
-            className="absolute inset-0 opacity-5"
+            className="absolute inset-0"
             animate={{
               background: [
-                "radial-gradient(circle at 25% 25%, hsl(var(--primary)) 0%, transparent 70%)",
-                "radial-gradient(circle at 75% 75%, hsl(var(--primary)) 0%, transparent 70%)",
-                "radial-gradient(circle at 25% 25%, hsl(var(--primary)) 0%, transparent 70%)"
+                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 70% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 30% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.1) 0%, transparent 50%)"
               ]
             }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -229,259 +156,175 @@ const ComparisonUltra = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            Fixco vs <span className="gradient-text">Konkurrenter</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Varför välja{" "}
+            <span className="gradient-text">Fixco</span>?
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Interaktiv jämförelse med verkliga siffror från {currentCase.title.toLowerCase()}
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            En transparent jämförelse som visar varför tusentals kunder väljer oss framför konkurrenterna
           </p>
-          
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.9 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground"
-          >
-            <div className="flex items-center space-x-2">
-              <Users2 className="h-4 w-4 text-primary" />
-              <span>2000+ nöjda kunder</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Award className="h-4 w-4 text-primary" />
-              <span>Branschledande priser</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <TrendingUp className="h-4 w-4 text-primary" />
-              <span>Start inom 24h</span>
-            </div>
-          </motion.div>
         </motion.div>
 
-        {/* Case Switcher */}
-        <AnimatePresence mode="wait">
+        {/* Main Comparison Grid */}
+        <div className="max-w-7xl mx-auto">
+          {/* Header Row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
           >
-            <CaseSwitcher
-              selectedCase={selectedCase}
-              onCaseChange={handleCaseChange}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Interactive Toggles */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.95 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <InteractiveToggle
-              showROT={rotEnabled}
-              onROTChange={handleROTChange}
-              region={region}
-              onRegionChange={setRegion}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Comparison Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="max-w-6xl mx-auto"
-        >
-          {/* Headers */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            <div></div>
-            <div className="card-premium p-6 text-center bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
-              <div className="flex items-center justify-center mb-3">
-                <Award className="h-6 w-6 text-green-400 mr-2" />
-                <span className="text-2xl font-bold gradient-text">FIXCO</span>
-              </div>
-              <p className="text-sm text-green-400">Branschledande</p>
-            </div>
-            <div className="card-premium p-6 text-center bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20">
-              <div className="flex items-center justify-center mb-3">
-                <span className="text-2xl font-bold text-foreground">KONKURRENTER</span>
-              </div>
-              <p className="text-sm text-red-400">Branschgenomsnitt</p>
-            </div>
-          </div>
-
-          {/* Metrics */}
-          {metrics.map((metric, index) => {
-            const IconComponent = metric.icon;
-            const fixcoValue = getCounterValue(`${selectedCase}_${metric.id}_fixco`);
-            const competitorValue = getCounterValue(`${selectedCase}_${metric.id}_competitor`);
-            
-            return (
-              <motion.div
-                key={`${selectedCase}-${metric.id}`}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.0 + index * 0.15, duration: 0.5 }}
-                className="grid grid-cols-3 gap-4 mb-6"
-              >
-                {/* Metric Label */}
-                <div className="flex items-center p-6 card-service">
-                  <div className="w-12 h-12 gradient-primary-subtle rounded-xl flex items-center justify-center mr-4">
-                    <IconComponent className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">{metric.label}</h3>
-                    <p className="text-xs text-muted-foreground">{metric.description}</p>
-                  </div>
-                </div>
-
-                {/* Fixco Value */}
-                <motion.div 
-                  className="card-premium p-6 text-center relative overflow-hidden group"
-                  whileHover={ultraEnabled ? { 
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(34, 197, 94, 0.15)",
-                    rotateY: 5
-                  } : { scale: 1.02 }}
-                  style={ultraEnabled ? { perspective: 1000 } : {}}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  <div className="relative z-10">
-                    <motion.div 
-                      className="text-3xl font-bold text-green-400 mb-2"
-                      animate={ultraEnabled ? { 
-                        textShadow: ["0 0 0px rgba(34, 197, 94, 0)", "0 0 20px rgba(34, 197, 94, 0.3)", "0 0 0px rgba(34, 197, 94, 0)"]
-                      } : {}}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      {formatValue(fixcoValue, metric)}{metric.unit}
-                    </motion.div>
-                    <div className="text-sm font-medium text-green-300">Fixco</div>
-                    
-                    {/* ROT Badge */}
-                    {rotEnabled && metric.id === 'pricing' && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full font-bold shadow-lg"
-                      >
-                        ROT
-                      </motion.div>
-                    )}
-                  </div>
-                </motion.div>
-
-                {/* Competitor Value */}
-                <motion.div 
-                  className="card-premium p-6 text-center relative overflow-hidden"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="text-3xl font-bold text-red-400 mb-2">
-                    {formatValue(competitorValue, metric)}{metric.unit}
-                  </div>
-                  <div className="text-sm font-medium text-red-300">Konkurrenter</div>
-                  <div className="absolute top-2 right-2 w-3 h-3 bg-red-500/50 rounded-full animate-pulse" />
-                </motion.div>
-              </motion.div>
-            );
-          })}
-
-          {/* Coverage Area */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.8, duration: 0.5 }}
-            className="grid grid-cols-3 gap-4 mb-8"
-          >
-            <div className="flex items-center p-6">
-              <MapPin className="h-8 w-8 text-primary mr-4" />
-              <span className="text-lg font-semibold">Täckningsområde</span>
-            </div>
-            
-            <div className="card-premium p-6 text-center hover:scale-105 transition-transform">
-              <div className="text-2xl font-bold text-green-400 mb-2">
-                Uppsala & Stockholm
-              </div>
-              <div className="text-sm text-green-400 mb-2">+ Nationellt vid större projekt</div>
-              <div className="text-xs text-muted-foreground">Fixco</div>
-            </div>
-            
+            <div className="hidden md:block" /> {/* Empty space for metric titles */}
             <div className="card-premium p-6 text-center">
-              <div className="text-2xl font-bold text-red-400 mb-2">
-                Begränsat område
+              <div className="w-16 h-16 mx-auto gradient-primary rounded-xl flex items-center justify-center mb-4">
+                <Trophy className="h-8 w-8 text-primary-foreground" />
               </div>
-              <div className="text-sm text-red-400 mb-2">Lokala företag endast</div>
-              <div className="text-xs text-muted-foreground">Konkurrenter</div>
+              <h3 className="text-2xl font-bold gradient-text mb-2">Fixco</h3>
+              <p className="text-muted-foreground">Marknadsledare</p>
+            </div>
+            <div className="card-premium p-6 text-center border-destructive/20">
+              <div className="w-16 h-16 mx-auto bg-muted rounded-xl flex items-center justify-center mb-4">
+                <Timer className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Konkurrenter</h3>
+              <p className="text-muted-foreground">Branschsnitt</p>
             </div>
           </motion.div>
-        </motion.div>
 
-        {/* ROT Savings Highlight */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
-          transition={{ delay: 2.0, duration: 0.7 }}
-          className="mt-16 max-w-4xl mx-auto"
-        >
-          <div className="card-premium p-8 text-center relative overflow-hidden">
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent"
-              animate={ultraEnabled ? {
-                opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.02, 1]
-              } : {}}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
-            
-            <div className="relative z-10">
-              <TrendingUp className="h-16 w-16 text-primary mx-auto mb-6" />
-              <h3 className="text-3xl font-bold mb-4 gradient-text">
-                Spara {currentCase.pricing.base - currentCase.pricing.rot} kr/h med ROT-avdrag
+          {/* Metrics Grid */}
+          <div className="space-y-4">
+            {metrics.map((metric, index) => {
+              const IconComponent = metric.icon;
+              return (
+                <motion.div
+                  key={metric.title}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center"
+                >
+                  {/* Metric Title */}
+                  <div className="flex items-center gap-4 p-4">
+                    <div className="w-12 h-12 gradient-primary-subtle rounded-lg flex items-center justify-center">
+                      <IconComponent className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-lg">{metric.title}</h4>
+                      <p className="text-sm text-muted-foreground">{metric.description}</p>
+                    </div>
+                  </div>
+
+                  {/* Fixco Value */}
+                  <motion.div
+                    className="card-premium p-6 border-primary/30 relative overflow-hidden"
+                    whileHover={ultraEnabled ? { scale: 1.02, rotateY: 2 } : { scale: 1.01 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="absolute top-2 right-2">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold gradient-text mb-1">
+                        {metric.counterKey && typeof metric.fixcoValue === 'number' 
+                          ? (metric.counterKey === "customer_satisfaction" 
+                              ? (getCounterValue(metric.counterKey) || metric.fixcoValue).toFixed(1)
+                              : Math.round(getCounterValue(metric.counterKey) || metric.fixcoValue)
+                            )
+                          : metric.fixcoValue
+                        }
+                        {metric.fixcoUnit && <span className="text-lg">{metric.fixcoUnit}</span>}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Competitor Value */}
+                  <motion.div
+                    className="card-premium p-6 border-muted/30 relative"
+                    whileHover={ultraEnabled ? { scale: 1.01 } : {}}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-muted-foreground mb-1">
+                        {metric.competitorValue}
+                        {metric.competitorUnit && <span className="text-lg">{metric.competitorUnit}</span>}
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Winner Summary */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-12 text-center"
+          >
+            <div className="card-premium p-8 border-primary/30 max-w-2xl mx-auto">
+              <div className="w-20 h-20 mx-auto gradient-primary rounded-full flex items-center justify-center mb-6">
+                <Trophy className="h-10 w-10 text-primary-foreground" />
+              </div>
+              <h3 className="text-3xl font-bold gradient-text mb-4">
+                Fixco vinner {metrics.length}/{metrics.length}
               </h3>
-              <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Med ROT-avdrag betalar du bara hälften för {currentCase.title.toLowerCase()}. 
-                Fixco hanterar hela processen åt dig.
+              <p className="text-lg text-muted-foreground mb-8">
+                Inom alla viktiga områden är vi marknadsledare. 
+                {rotEnabled && " Med ROT-avdrag sparar du dessutom upp till 50%."}
               </p>
-              
-              <div className="grid md:grid-cols-3 gap-6 text-center">
-                <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border">
-                  <div className="text-sm text-muted-foreground mb-2">Utan ROT</div>
-                  <div className="text-2xl font-bold text-red-400">
-                    {currentCase.pricing.base} kr/h
-                  </div>
-                </div>
-                
-                <div className="bg-primary/10 backdrop-blur-sm rounded-xl p-6 border border-primary/30 relative">
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold">
-                    MED ROT
-                  </div>
-                  <div className="text-sm text-primary mb-2">50% rabatt</div>
-                  <div className="text-3xl font-bold text-green-400">
-                    {currentCase.pricing.rot} kr/h
-                  </div>
-                </div>
-                
-                <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border">
-                  <div className="text-sm text-muted-foreground mb-2">Du sparar</div>
-                  <div className="text-2xl font-bold text-primary">
-                    {currentCase.pricing.base - currentCase.pricing.rot} kr/h
-                  </div>
-                </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/kontakt">
+                  <MagneticButton
+                    className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
+                  >
+                    Begär offert
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </MagneticButton>
+                </Link>
+                <Link to="/tjanster">
+                  <MagneticButton
+                    variant="outline"
+                    className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
+                  >
+                    Se våra tjänster
+                  </MagneticButton>
+                </Link>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          {/* Additional Stats Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 1.5, duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+          >
+            <div className="card-premium p-6 text-center">
+              <div className="text-3xl font-bold gradient-text mb-2">
+                &lt;{Math.round(getCounterValue("response_time") || 60)} min
+              </div>
+              <p className="text-muted-foreground">Genomsnittlig svarstid</p>
+            </div>
+            <div className="card-premium p-6 text-center">
+              <div className="text-3xl font-bold gradient-text mb-2">2000+</div>
+              <p className="text-muted-foreground">Nöjda kunder</p>
+            </div>
+            <div className="card-premium p-6 text-center">
+              <div className="text-3xl font-bold gradient-text mb-2">24/7</div>
+              <p className="text-muted-foreground">Kundtjänst tillgänglig</p>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
