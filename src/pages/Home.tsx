@@ -5,7 +5,7 @@ import StickyNavigation from "@/components/StickyNavigation";
 import ParticleCanvas from "@/components/ParticleCanvas";
 import MagneticButton from "@/components/MagneticButton";
 import TrustBar from "@/components/TrustBar";
-import AdvancedComparison from "@/components/AdvancedComparison";
+import AdvancedComparisonV2 from "@/components/AdvancedComparisonV2";
 import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ROTCalculator from "@/components/ROTCalculator";
@@ -128,7 +128,7 @@ const Home = () => {
       <TrustBar />
 
       {/* Advanced Comparison Section */}
-      <AdvancedComparison />
+      <AdvancedComparisonV2 />
 
       {/* Service Teaser Grid */}
       <ServiceTeaserGrid />
