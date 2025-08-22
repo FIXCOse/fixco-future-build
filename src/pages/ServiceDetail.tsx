@@ -179,12 +179,12 @@ const ServiceDetail = () => {
                     >
                       {subService.rotEligible ? "ROT" : "EJ ROT"}
                     </Badge>
-                    <Badge 
-                      variant="outline"
-                      className="text-xs capitalize"
-                    >
-                      {subService.difficulty}
-                    </Badge>
+                     <Badge 
+                       variant="outline"
+                       className="text-xs capitalize"
+                     >
+                       {subService.location}
+                     </Badge>
                   </div>
                 </div>
                 

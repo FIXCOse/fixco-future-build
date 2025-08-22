@@ -11,7 +11,6 @@ import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ROTCalculator from "@/components/ROTCalculator";
 import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
-import OfferWizardModal from "@/components/OfferWizardModal";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
@@ -19,7 +18,6 @@ const Home = () => {
     hero: false,
     whyChoose: false
   });
-  const [showOfferWizard, setShowOfferWizard] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -82,20 +80,21 @@ const Home = () => {
 
               {/* Magnetic CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
-                <MagneticButton
-                  className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
-                  onClick={() => setShowOfferWizard(true)}
-                >
-                  Begär offert
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </MagneticButton>
+                <Link to="/kontakt">
+                  <MagneticButton
+                    className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
+                  >
+                    Begär offert
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </MagneticButton>
+                </Link>
                 <Link to="/tjanster">
                   <MagneticButton
                     variant="outline"
                     className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"
                   >
-                    <Phone className="mr-2 h-5 w-5" />
-                    08-123 456 78
+                    Se våra tjänster
+                    <ChevronRight className="ml-2 h-5 w-5" />
                   </MagneticButton>
                 </Link>
               </div>
@@ -186,12 +185,13 @@ const Home = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <MagneticButton
-                className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl"
-                onClick={() => setShowOfferWizard(true)}
-              >
-                Boka nu - gratis offert <ArrowRight className="ml-2 h-5 w-5" />
-              </MagneticButton>
+              <Link to="/kontakt">
+                <MagneticButton
+                  className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl"
+                >
+                  Boka nu - gratis offert <ArrowRight className="ml-2 h-5 w-5" />
+                </MagneticButton>
+              </Link>
               <MagneticButton
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 font-bold text-lg px-8 py-4"
@@ -206,12 +206,6 @@ const Home = () => {
 
       {/* Global Sticky CTA */}
       <GlobalStickyCTA />
-
-      {/* Offer Wizard Modal */}
-      <OfferWizardModal
-        isOpen={showOfferWizard}
-        onClose={() => setShowOfferWizard(false)}
-      />
     </div>
   );
 };
