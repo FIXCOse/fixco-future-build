@@ -27,22 +27,26 @@ const TrustChips = ({
   console.log("TrustChips component rendering with variant:", variant);
   const [showAll, setShowAll] = useState(forceShowAll);
 
-  // Select chip set based on variant
+  // Select chip set based on variant - if showAll is true, always use extended set
   let chips: TrustChip[] = [];
   
-  switch (variant) {
-    case 'home':
-      chips = [...TRUST_CHIPS_EXTENDED];
-      break;
-    case 'services':
-    case 'category':
-      chips = [...TRUST_CHIPS_EXTENDED];
-      break;
-    case 'minimal':
-      chips = [...TRUST_CHIPS_BASE];
-      break;
-    default:
-      chips = [...TRUST_CHIPS_BASE];
+  if (showAll || forceShowAll) {
+    chips = [...TRUST_CHIPS_EXTENDED];
+  } else {
+    switch (variant) {
+      case 'home':
+        chips = [...TRUST_CHIPS_EXTENDED];
+        break;
+      case 'services':
+      case 'category':
+        chips = [...TRUST_CHIPS_EXTENDED];
+        break;
+      case 'minimal':
+        chips = [...TRUST_CHIPS_BASE];
+        break;
+      default:
+        chips = [...TRUST_CHIPS_BASE];
+    }
   }
 
   // Add rating and location if requested
