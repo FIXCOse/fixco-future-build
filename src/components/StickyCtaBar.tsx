@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button-premium";
-import { Phone, MessageSquare, Calculator, Calendar } from "lucide-react";
+import { Phone, Calculator, Calendar } from "lucide-react";
 
 const StickyCtaBar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -63,16 +63,6 @@ const StickyCtaBar = () => {
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-2 flex-1 sm:flex-initial">
-              {/* Mobile: WhatsApp button */}
-              <Button 
-                variant="ghost-premium" 
-                size="sm" 
-                className="sm:hidden flex-1"
-                onClick={() => window.open('https://wa.me/46812345678', '_blank')}
-              >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                WhatsApp
-              </Button>
 
               {/* Mobile: Call button */}
               <Button 
@@ -82,19 +72,10 @@ const StickyCtaBar = () => {
                 onClick={() => window.open('tel:+46812345678')}
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Ring
+                Ring oss
               </Button>
 
-              {/* Desktop: All buttons */}
-              <Button 
-                variant="ghost-premium" 
-                size="sm" 
-                className="hidden sm:flex"
-                onClick={() => window.open('https://wa.me/46812345678', '_blank')}
-              >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                WhatsApp
-              </Button>
+              {/* Desktop: Call button */}
 
               <Button 
                 variant="ghost-premium" 

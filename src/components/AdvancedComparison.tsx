@@ -1,23 +1,89 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Check, X, Clock, DollarSign, MapPin, Star, TrendingUp } from "lucide-react";
+
+// Session storage key for tracking animations
+const ANIMATION_KEY = 'fixco-comparison-animated';
 
 const AdvancedComparison = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [animationStep, setAnimationStep] = useState(0);
-  const [counters, setCounters] = useState({
-    fixcoStart: 0,
-    competitorStart: 0,
-    fixcoPrice: 0,
-    competitorPrice: 0,
-    fixcoSatisfaction: 0,
-    competitorSatisfaction: 0
+  const [hasAnimated, setHasAnimated] = useState(false);
+  
+  // Final counter values
+  const finalValues = {
+    fixcoStart: 24,
+    competitorStart: 10,
+    fixcoPrice: 480,
+    competitorPrice: 1200,
+    fixcoSatisfaction: 98,
+    competitorSatisfaction: 80
+  };
+
+  const [counters, setCounters] = useState(() => {
+    // Check if animation already happened in this session
+    const animated = sessionStorage.getItem(ANIMATION_KEY) === 'true';
+    return animated ? finalValues : {
+      fixcoStart: 0,
+      competitorStart: 0,
+      fixcoPrice: 0,
+      competitorPrice: 0,
+      fixcoSatisfaction: 0,
+      competitorSatisfaction: 0
+    };
   });
 
+  // Check for reduced motion preference
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const animateCounter = useCallback((key: keyof typeof counters, target: number) => {
+    if (prefersReducedMotion) {
+      setCounters(prev => ({ ...prev, [key]: target }));
+      return;
+    }
+
+    let startTime: number;
+    let startValue = 0;
+    
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const duration = 1200; // 1.2s animation
+      
+      if (elapsed < duration) {
+        // Smooth ease-out curve
+        const progress = 1 - Math.pow(1 - elapsed / duration, 3);
+        const current = Math.floor(startValue + (target - startValue) * progress);
+        
+        setCounters(prev => ({ ...prev, [key]: current }));
+        requestAnimationFrame(animate);
+      } else {
+        setCounters(prev => ({ ...prev, [key]: target }));
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }, [prefersReducedMotion]);
+
   useEffect(() => {
+    // Check if already animated this session
+    const alreadyAnimated = sessionStorage.getItem(ANIMATION_KEY) === 'true';
+    
+    if (alreadyAnimated) {
+      setHasAnimated(true);
+      setAnimationStep(6);
+      setCounters(finalValues);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !hasAnimated) {
           setIsVisible(true);
+          setHasAnimated(true);
+          
+          // Mark as animated in session storage
+          sessionStorage.setItem(ANIMATION_KEY, 'true');
+          
           // Start animation sequence
           const sequence = [
             () => setAnimationStep(1), // Show headers
@@ -28,9 +94,18 @@ const AdvancedComparison = () => {
             () => setAnimationStep(6)  // Show final highlight
           ];
 
-          sequence.forEach((step, index) => {
-            setTimeout(step, index * 800);
-          });
+          if (prefersReducedMotion) {
+            // Skip animation for reduced motion
+            setAnimationStep(6);
+            setCounters(finalValues);
+          } else {
+            sequence.forEach((step, index) => {
+              setTimeout(step, index * 600);
+            });
+          }
+          
+          // Unobserve after first trigger
+          observer.unobserve(entries[0].target);
         }
       },
       { threshold: 0.3 }
@@ -40,38 +115,18 @@ const AdvancedComparison = () => {
     if (element) observer.observe(element);
 
     return () => observer.disconnect();
-  }, []);
+  }, [hasAnimated, prefersReducedMotion, finalValues]);
 
   useEffect(() => {
-    if (animationStep >= 2) {
-      // Animate counters
-      const targets = {
-        fixcoStart: 24,
-        competitorStart: 10,
-        fixcoPrice: 480,
-        competitorPrice: 1200,
-        fixcoSatisfaction: 98,
-        competitorSatisfaction: 80
-      };
-
-      const animateCounter = (key: keyof typeof counters, target: number) => {
-        let current = 0;
-        const increment = target / 50;
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= target) {
-            current = target;
-            clearInterval(timer);
-          }
-          setCounters(prev => ({ ...prev, [key]: Math.floor(current) }));
-        }, 30);
-      };
-
-      Object.entries(targets).forEach(([key, target]) => {
-        setTimeout(() => animateCounter(key as keyof typeof counters, target), Math.random() * 500);
+    if (animationStep >= 2 && !prefersReducedMotion && !hasAnimated) {
+      // Animate counters with staggered start
+      Object.entries(finalValues).forEach(([key, target], index) => {
+        setTimeout(() => {
+          animateCounter(key as keyof typeof counters, target);
+        }, index * 150);
       });
     }
-  }, [animationStep]);
+  }, [animationStep, animateCounter, prefersReducedMotion, hasAnimated, finalValues]);
 
   const metrics = [
     {

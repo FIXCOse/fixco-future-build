@@ -196,6 +196,9 @@ const serviceData = {
 
 const ServiceDetail = () => {
   const { slug } = useParams();
+  const [showROTPrice, setShowROTPrice] = useState(true);
+  
+  const service = servicesData.find(s => s.slug === slug);
   const service = serviceData[slug as keyof typeof serviceData];
 
   if (!service) {
