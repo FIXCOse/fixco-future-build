@@ -314,21 +314,20 @@ const ComparisonUltra = () => {
                   </p>
                 </div>
                 
-                {/* Right: CTAs - Fixed Alignment */}
+                {/* Right: CTAs - Arrow Removed */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end items-center">
                   <Link to="/kontakt" className="w-full sm:w-auto">
                     <MagneticButton
-                      className="w-full sm:w-auto gradient-primary text-primary-foreground px-6 py-2.5 text-sm shadow-premium hover:shadow-glow inline-flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto gradient-primary text-primary-foreground px-6 py-2.5 text-sm shadow-premium hover:shadow-glow"
                       magneticStrength={0.3}
                     >
-                      <span>Begär offert</span>
-                      <ArrowRight className="h-4 w-4" />
+                      Begär offert
                     </MagneticButton>
                   </Link>
                   <Link to="/tjanster" className="w-full sm:w-auto">
                     <MagneticButton
                       variant="outline"
-                      className="w-full sm:w-auto px-6 py-2.5 text-sm border-primary/30 hover:bg-primary/10 backdrop-blur-sm inline-flex items-center justify-center"
+                      className="w-full sm:w-auto px-6 py-2.5 text-sm border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                       magneticStrength={0.2}
                     >
                       Se tjänster
