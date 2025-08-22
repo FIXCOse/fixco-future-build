@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button-premium";
 import { ArrowRight, CheckCircle, Star, Clock } from "lucide-react";
@@ -9,36 +9,188 @@ const serviceData = {
     description: "Professionell snickeriservice för kök, badrum, inredning och skräddarsydda möbler",
     hero: "Vi är experter på alla typer av träarbeten och snickeriprojekt. Från kompletta köksrenovering till skräddarsydda förvaringslösningar.",
     services: [
-      {
-        name: "Köksrenovering",
-        description: "Komplett köksrenovering med skräddarsydda lösningar",
-        features: ["Design och planering", "Skåpstillverkning", "Bänkskivor", "Installation", "Målning"]
-      },
-      {
-        name: "Badrumsinredning", 
-        description: "Snygga och funktionella badrumslösningar",
-        features: ["Badrumsskap", "Spegelmöbler", "Handdukstorkar", "Hyllsystem", "Målning"]
-      },
-      {
-        name: "Skräddarsydda skåp",
-        description: "Förvaringslösningar anpassade för dina behov",
-        features: ["Garderobsystem", "Loft- och källarförvaring", "Skoförvaring", "Leksaksförvaring", "Kontorsförvaring"]
-      },
-      {
-        name: "Trappor",
-        description: "Nya trappor eller renovering av befintliga",
-        features: ["Räcken och handledare", "Steg och avsatser", "Spiraltrappor", "Ytbehandling", "Säkerhetsglas"]
-      },
-      {
-        name: "Dörrar & fönster",
-        description: "Installation och reparation av dörrar och fönster",
-        features: ["Inre dörrar", "Skjutdörrar", "Fönsterrenovering", "Karmar och lister", "Tätningar"]
-      }
+      { name: "Platsbygga garderober", description: "Skräddarsydda garderobslösningar", price: "Offert", rotPrice: "Offert" },
+      { name: "Bygga altan/trall", description: "Uteplatser och terrasslösningar", price: "Offert", rotPrice: "Offert" },
+      { name: "Bygga innerväggar", description: "Nya väggar för rumsindelning", price: "Offert", rotPrice: "Offert" },
+      { name: "Montera innerdörrar", description: "Installation av dörrar", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera köksluckor & skåp", description: "Köksinredning och installation", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Bygga köksö", description: "Centralt köksöar på mått", price: "Offert", rotPrice: "Offert" },
+      { name: "Reparera dörrkarmar", description: "Åtgärd av dörrkarmar", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera lister, foder & socklar", description: "Finish-arbeten", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Trapprenovering", description: "Renovera befintliga trappor", price: "Offert", rotPrice: "Offert" },
+      { name: "Golvläggning (parkett/laminat)", description: "Professionell golvläggning", price: "Offert", rotPrice: "Offert" },
+      { name: "Väggpanel/spont", description: "Väggbeklädnader i trä", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Hyllsystem, bokhyllor", description: "Förvaringslösningar", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Skjutdörrsgarderob", description: "Moderna garderobslösningar", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Dörrjusteringar", description: "Justera och fixa dörrar", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "959",
+    rotPrice: "480",
+    startTime: "24h",
+    warranty: "5 år garanti"
+  },
+  "vvs": {
+    title: "VVS",
+    description: "Professionell VVS-service för badrum, kök och hela hemmet",
+    hero: "Auktoriserade VVS-installatörer med mångårig erfarenhet av allt från enkla reparationer till kompletta badrumsrenoveringar.",
+    services: [
+      { name: "Byta toalettstol", description: "Komplett byte av toalettstol", price: "3 500 kr", rotPrice: "1 750 kr" },
+      { name: "Byta handfat", description: "Installation av nytt handfat", price: "2 500 kr", rotPrice: "1 250 kr" },
+      { name: "Installera blandare", description: "Montering av nya blandare", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Byta köksblandare", description: "Byte av köksblandare", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera duschkabin", description: "Installation av duschkabin", price: "Offert", rotPrice: "Offert" },
+      { name: "Installera duschvägg", description: "Glasväggar för dusch", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera tvättmaskin/diskmaskin", description: "Vattenanslutning vitvaror", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Täta rörkopplingar", description: "Läckagetätning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Byta vattenlås", description: "Reparation avlopp", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Renovera badrum", description: "Kompletta badrumsprojekt", price: "Offert", rotPrice: "Offert" }
+    ],
+    basePrice: "959",
+    rotPrice: "480",
+    startTime: "24h",
+    warranty: "5 år garanti"
+  },
+  "montering": {
+    title: "Montering",
+    description: "Professionell montering av möbler, vitvaror och teknisk utrustning",
+    hero: "Vi monterar allt från IKEA-möbler till avancerad teknisk utrustning. Snabbt, säkert och professionellt.",
+    services: [
+      { name: "Montering av möbler (IKEA/Jysk/Mio)", description: "Alla typer av möbler", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera TV-väggfäste", description: "Säker TV-montering", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera garderober", description: "Kompletta garderobssystem", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera kontorsmöbler", description: "Skrivbord, stolar, förvaring", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera hyllsystem", description: "Väggmonterade hyllor", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera köksutrustning", description: "Vitvaror och inredning", price: "Offert", rotPrice: "Offert" },
+      { name: "Installera skjutdörrsgarderob", description: "Avancerade garderobssystem", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Montera gardinskenor", description: "Takmontage av skenor", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "959",
+    rotPrice: "480", 
+    startTime: "24h",
+    warranty: "2 år garanti"
+  },
+  "tradgard": {
+    title: "Trädgård",
+    description: "Professionell trädgårdsservice från anläggning till löpande skötsel",
+    hero: "Vi skapar och sköter din trädgård året runt. Från gräsmattor och plantering till beskärning och underhåll.",
+    services: [
+      { name: "Anlägga rullgräs", description: "Snabb gräsmatteanläggning", price: "Offert", rotPrice: "Offert" },
+      { name: "Så gräsmatta", description: "Traditionell gräsmatteläggning", price: "Offert", rotPrice: "Offert" },
+      { name: "Plantera häckar & buskar", description: "Plantering och etablering", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Klippa häckar", description: "Professionell häckklippning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Beskära träd", description: "Trädvård och beskärning", price: "Offert", rotPrice: "Offert" },
+      { name: "Bygga staket", description: "Staketinstallation", price: "Offert", rotPrice: "Offert" },
+      { name: "Bygga altan i trädgård", description: "Uteplatser och altaner", price: "Offert", rotPrice: "Offert" },
+      { name: "Rabatter, kantsten", description: "Trädgårdsdesign och kantning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Ogräsrensning", description: "Rensning av ogräs", price: "959 kr/h", rotPrice: "480 kr/h" }
     ],
     basePrice: "959",
     rotPrice: "480",
     startTime: "24-48h",
+    warranty: "1 år garanti"
+  },
+  "stadning": {
+    title: "Städning",
+    description: "Professionell städservice för hem, kontor och byggen",
+    hero: "Vi erbjuder allt från regelbunden hemstädning till specialstädning efter renoveringar.",
+    services: [
+      { name: "Flyttstäd", description: "Grundlig städning vid flytt", price: "60 kr/kvm", rotPrice: "60 kr/kvm" },
+      { name: "Hemstädning", description: "Regelbunden hemstädning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Byggstädning", description: "Städning efter byggjobb", price: "Offert", rotPrice: "Offert" },
+      { name: "Kontorsstädning", description: "Städning av kontorslokaler", price: "Offert", rotPrice: "Offert" },
+      { name: "Fönsterputs", description: "Fönsterputsning in och utvändigt", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Stor- och veckostäd", description: "Grundlig rengöring", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "959",
+    rotPrice: "480",
+    startTime: "24h",
+    warranty: "Kvalitetsgaranti"
+  },
+  "projektledning": {
+    title: "Projektledning", 
+    description: "Helhetslösningar från idé till färdigt resultat",
+    hero: "Vi tar totalansvar för ditt byggprojekt. Från planering och bygglov till slutbesiktning och garantiservice.",
+    services: [
+      { name: "Byggledning", description: "Professionell byggledning", price: "Offert", rotPrice: "Offert" },
+      { name: "Projektplanering", description: "Detaljplanering av projekt", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Konsultation bygg & mark", description: "Rådgivning och konsulttjänster", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Samordning med underentreprenörer", description: "Koordinering av alla aktörer", price: "Offert", rotPrice: "Offert" },
+      { name: "Kvalitetskontroller", description: "Kontroll av arbeten", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "1159",
+    rotPrice: "580",
+    startTime: "48h",
     warranty: "5 år garanti"
+  },
+  "markarbeten": {
+    title: "Markarbeten",
+    description: "Professionella markarbeten från schakt till färdig anläggning",
+    hero: "Vi utför alla typer av markarbeten med modern utrustning. Från dränering till stora schaktningsprojekt.",
+    services: [
+      { name: "Dränering runt hus", description: "Dränering för fuktskydd", price: "Offert", rotPrice: "Offert" },
+      { name: "Grävarbeten", description: "Schaktning och grävning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Schakt & fyllning", description: "Markarbeten för byggnation", price: "Offert", rotPrice: "Offert" },
+      { name: "Förberedelse för stensättning", description: "Markberedning för stenläggning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Plintar till staket/altan", description: "Betongplintar och fundament", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Grusgångar & infarter", description: "Anläggning av grusytor", price: "Offert", rotPrice: "Offert" },
+      { name: "Bortforsling av massor", description: "Transport av schaktmassor", price: "Offert", rotPrice: "Offert" }
+    ],
+    basePrice: "1259",
+    rotPrice: "630",
+    startTime: "48h",
+    warranty: "3 år garanti"
+  },
+  "tekniska-installationer": {
+    title: "Tekniska installationer",
+    description: "Avancerade tekniska installationer och smarta hemlösningar", 
+    hero: "Vi installerar och konfigurerar modern teknik för ditt hem. Från säkerhetssystem till smart home-automation.",
+    services: [
+      { name: "Montera vitvaror", description: "Installation av vitvaror", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera ventilation (mindre jobb)", description: "Mindre ventilationsarbeten", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera köksfläkt", description: "Montering av köksfläktar", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Större installationer", description: "Komplexa tekniska system", price: "Offert", rotPrice: "Offert" },
+      { name: "Smarta hem-enheter (kameror, lås, belysning)", description: "Smart home-installation", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "1159",
+    rotPrice: "580",
+    startTime: "24-48h",
+    warranty: "3 år garanti"
+  },
+  "el": {
+    title: "El",
+    description: "Auktoriserade elinstallationer och reparationer",
+    hero: "Våra behöriga elektriker utför säkra installationer enligt gällande elsäkerhetsverkets föreskrifter.",
+    services: [
+      { name: "Byta vägguttag", description: "Byte av eluttag", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Byta dimmer", description: "Installation av dimmers", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Byta strömbrytare", description: "Byte av strömbrytare", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera lampor", description: "Montering av belysning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera spotlights", description: "Spotbelysning i tak", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Installera utebelysning", description: "Utomhusbelysning", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Dragning av ny el", description: "Nya elinstallationer", price: "Offert", rotPrice: "Offert" },
+      { name: "El för renovering/nybygge", description: "Kompletta elsystem", price: "Offert", rotPrice: "Offert" }
+    ],
+    basePrice: "1059",
+    rotPrice: "530",
+    startTime: "24h",
+    warranty: "5 år garanti"
+  },
+  "fastighetsskotsel": {
+    title: "Fastighetsskötsel",
+    description: "Löpande fastighetsskötsel och underhållsservice",
+    hero: "Vi sköter din fastighet året runt med förebyggande underhåll och snabb service vid behov.",
+    services: [
+      { name: "Löpande fastighetsskötsel", description: "Regelbundet underhåll", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Snöskottning", description: "Vinterservice", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Mindre reparationer", description: "Akuta reparationer", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Underhåll av trapphus/källare", description: "Gemensamma utrymmen", price: "959 kr/h", rotPrice: "480 kr/h" },
+      { name: "Större underhållsprojekt", description: "Omfattande underhållsarbeten", price: "Offert", rotPrice: "Offert" },
+      { name: "Klottersanering", description: "Borttagning av klotter", price: "959 kr/h", rotPrice: "480 kr/h" }
+    ],
+    basePrice: "959",
+    rotPrice: "480",
+    startTime: "24h", 
+    warranty: "1 år garanti"
   }
 };
 
@@ -117,37 +269,40 @@ const ServiceDetail = () => {
             Våra <span className="gradient-text">{service.title.toLowerCase()}</span> tjänster
           </h2>
           
-          <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {service.services.map((subService, index) => (
               <div 
                 key={subService.name}
-                className="card-premium p-8 animate-fade-in-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="card-premium p-6 animate-fade-in-up hover:shadow-glow transition-all duration-300"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <h3 className="text-2xl font-bold mb-4">{subService.name}</h3>
-                <p className="text-muted-foreground mb-6">{subService.description}</p>
-                
-                <div className="space-y-3 mb-8">
-                  {subService.features.map((feature) => (
-                    <div key={feature} className="flex items-center space-x-3">
-                      <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
-                    </div>
-                  ))}
-                </div>
+                <h3 className="text-xl font-bold mb-3">{subService.name}</h3>
+                <p className="text-muted-foreground mb-4 text-sm">{subService.description}</p>
 
                 {/* Pricing */}
-                <div className="border-t border-border pt-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-muted-foreground">Ordinarie pris:</span>
-                    <span className="font-semibold line-through text-muted-foreground">{service.basePrice} kr/h</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-primary">Med ROT-avdrag:</span>
-                    <span className="text-2xl font-bold gradient-text">{service.rotPrice} kr/h</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">inkl. moms</div>
+                <div className="border-t border-border pt-4 mb-4">
+                  {subService.price === "Offert" ? (
+                    <div className="text-center">
+                      <span className="text-lg font-bold gradient-text">Offert</span>
+                      <div className="text-xs text-muted-foreground mt-1">Pris efter besiktning</div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs text-muted-foreground">Ordinarie:</span>
+                        <span className="font-semibold line-through text-muted-foreground text-sm">{subService.price}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-primary">Med ROT:</span>
+                        <span className="text-lg font-bold gradient-text">{subService.rotPrice}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
+
+                <Button variant="premium" size="sm" className="w-full">
+                  {subService.price === "Offert" ? "Begär offert" : "Boka nu"}
+                </Button>
               </div>
             ))}
           </div>
@@ -174,9 +329,11 @@ const ServiceDetail = () => {
                   Vi kommer hem till dig och gör en noggrann genomgång av ditt projekt. 
                   Offerten är alltid kostnadsfri och utan förpliktelser.
                 </p>
-                <Button variant="cta" className="w-full">
-                  Boka hembesök
-                </Button>
+                <Link to="/boka-hembesok">
+                  <Button variant="cta" className="w-full">
+                    Boka hembesök
+                  </Button>
+                </Link>
               </div>
               
               <div className="card-premium p-8">
@@ -185,9 +342,11 @@ const ServiceDetail = () => {
                   Vi hjälper dig med alla ROT-papper och du betalar direkt det rabatterade priset. 
                   Spara 50% på arbetskostnaden.
                 </p>
-                <Button variant="premium" className="w-full">
-                  Läs mer om ROT
-                </Button>
+                <Link to="/rot-info">
+                  <Button variant="premium" className="w-full">
+                    Läs mer om ROT
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

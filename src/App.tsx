@@ -8,6 +8,9 @@ import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
+import AboutUs from "./pages/AboutUs";
+import BookVisit from "./pages/BookVisit";
+import ROTInfo from "./pages/ROTInfo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +30,9 @@ const App = () => {
             <Route path="/tjanster/:slug" element={<ServiceDetail />} />
             <Route path="/kontakt" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/om-oss" element={<AboutUs />} />
+            <Route path="/boka-hembesok" element={<BookVisit />} />
+            <Route path="/rot-info" element={<ROTInfo />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
