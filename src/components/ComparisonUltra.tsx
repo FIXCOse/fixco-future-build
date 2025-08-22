@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { CheckCircle, Clock, Star, Shield, MapPin, Timer, Trophy, TrendingUp, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -48,6 +48,15 @@ const ComparisonUltra = () => {
     duration: 1500,
     formatter: (value) => `< ${Math.round(value)} h`
   });
+
+  // Attach observers to the main section when it becomes visible
+  useEffect(() => {
+    if (sectionRef.current) {
+      customerSatisfaction.observe(sectionRef.current);
+      completionRate.observe(sectionRef.current);
+      startTime.observe(sectionRef.current);
+    }
+  }, [customerSatisfaction.observe, completionRate.observe, startTime.observe]);
 
   const isInView = useInView(sectionRef, { once: true });
 
@@ -155,24 +164,12 @@ const ComparisonUltra = () => {
         {/* Mobile-Optimized Comparison */}
         <div className="max-w-md md:max-w-5xl mx-auto">
           {/* Header Row - Mobile Optimized */}
-        {/* Update "5 dagar" to "< 5 dagar" in Fixco start time contexts */}
-        <motion.div
-          ref={(el) => {
-            if (el && !customerSatisfaction.hasAnimated) {
-              customerSatisfaction.observe(el);
-            }
-            if (el && !completionRate.hasAnimated) {
-              completionRate.observe(el);
-            }
-            if (el && !startTime.hasAnimated) {
-              startTime.observe(el);
-            }
-          }}
-          initial={{ opacity: 0, y: 15 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="hidden md:grid grid-cols-3 gap-3 mb-4"
-        >
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="hidden md:grid grid-cols-3 gap-3 mb-4"
+          >
             <div className="text-center">
               <h3 className="text-base font-semibold text-muted-foreground">Jämförelse</h3>
             </div>
