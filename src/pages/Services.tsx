@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import AdvancedServiceFinder from "@/components/AdvancedServiceFinder";
+import FastServiceFilter from "@/components/FastServiceFilter";
 import ROTToggle from "@/components/ROTToggle";
 import HeroMotion from "@/components/HeroMotion";
 import TrustCues from "@/components/TrustCues";
@@ -48,17 +48,17 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Advanced Service Finder */}
+      {/* Fast Service Filter */}
       <section className="py-16 bg-muted/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Hitta rätt tjänst</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Använd vår smarta sökfunktion för att hitta exakt den tjänst du behöver. 
-              Filtrera på kategori, pris och svårighetsgrad.
+              Sök, filtrera och jämför våra tjänster snabbt och enkelt. 
+              Allt du behöver är synligt direkt - inga gömda menyer.
             </p>
           </div>
-          <AdvancedServiceFinder />
+          <FastServiceFilter />
         </div>
       </section>
 
