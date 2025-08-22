@@ -69,16 +69,17 @@ const GlobalStickyCTA = () => {
           isVisible ? "translate-y-0" : "translate-y-full"
         )}
       >
-        {/* Mobile CTA Bar */}
+        {/* Mobile CTA Bar - Enhanced */}
         <div className="md:hidden">
-          <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow p-4">
-            <div className="flex items-center space-x-3">
+          <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow safe-area-bottom">
+            <div className="flex items-center space-x-3 p-3">
               {/* Dismiss Button */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsDismissed(true)}
-                className="shrink-0 w-8 h-8"
+                className="shrink-0 min-h-[var(--touch-target)] min-w-[var(--touch-target)] focus-outline"
+                aria-label="Stäng"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -87,15 +88,16 @@ const GlobalStickyCTA = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-primary/30 hover:bg-primary/10"
+                className="shrink-0 border-primary/30 hover:bg-primary/10 min-h-[var(--touch-target)] focus-outline"
                 onClick={() => window.open('tel:08-123-456-78')}
+                aria-label="Ring oss"
               >
                 <Phone className="h-4 w-4" />
               </Button>
 
               {/* Main CTA */}
               <Button
-                className="flex-1 gradient-primary text-primary-foreground font-medium"
+                className="flex-1 gradient-primary text-primary-foreground font-medium min-h-[var(--touch-target)] text-fluid-base focus-outline"
                 onClick={() => setShowOfferWizard(true)}
               >
                 <contextualCta.icon className="h-4 w-4 mr-2" />

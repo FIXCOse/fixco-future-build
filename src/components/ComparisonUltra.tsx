@@ -123,7 +123,7 @@ const ComparisonUltra = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-12 overflow-hidden"
+      className="relative spacing-lg overflow-hidden"
     >
       {/* Premium Background */}
       <div className="absolute inset-0">
@@ -145,7 +145,7 @@ const ComparisonUltra = () => {
         )}
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 max-w-6xl">
+      <div className="container mx-auto container-mobile relative z-10 max-w-6xl">
         {/* Compact Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -153,10 +153,10 @@ const ComparisonUltra = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-6 md:mb-8"
         >
-          <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
+          <h2 className="text-fluid-2xl md:text-fluid-4xl font-bold mb-2 md:mb-3">
             Varför välja <span className="gradient-text">Fixco</span>?
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
+          <p className="text-muted-foreground text-fluid-sm md:text-fluid-base max-w-xl mx-auto">
             Transparent jämförelse som visar varför tusentals kunder väljer oss
           </p>
         </motion.div>
@@ -208,36 +208,36 @@ const ComparisonUltra = () => {
                   className="grid grid-cols-3 gap-2 md:gap-3 items-center"
                 >
                   {/* Metric Title - Mobile Optimized */}
-                  <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 min-h-[44px]">
+                  <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 min-h-[var(--touch-target)]">
                     <div className="w-6 h-6 md:w-8 md:h-8 gradient-primary-subtle rounded-lg flex items-center justify-center shrink-0">
                       <IconComponent className="h-3 w-3 md:h-4 md:w-4 text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-semibold text-xs md:text-base leading-tight">{metric.title}</h4>
+                      <h4 className="font-semibold text-fluid-xs md:text-fluid-base leading-tight">{metric.title}</h4>
                     </div>
                   </div>
 
                   {/* Fixco Value - Mobile Optimized */}
                   <motion.div
-                    className="card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[44px] flex items-center justify-center"
+                    className="card-premium border-primary/20 relative bg-primary/5 min-h-[var(--touch-target)] flex items-center justify-center"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.15 }}
                   >
                     <CheckCircle className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-green-400" />
                     <div className="text-center">
-                      <div className="text-sm md:text-xl font-bold gradient-text">
+                      <div className="text-fluid-sm md:text-fluid-xl font-bold gradient-text">
                         {metric.fixcoValue}
-                        {metric.fixcoUnit && <span className="text-xs md:text-sm">{metric.fixcoUnit}</span>}
+                        {metric.fixcoUnit && <span className="text-fluid-xs md:text-fluid-sm">{metric.fixcoUnit}</span>}
                       </div>
                     </div>
                   </motion.div>
 
                   {/* Competitor Value - Mobile Optimized */}
-                  <div className="card-premium p-2 md:p-3 border-muted/20 bg-muted/10 min-h-[44px] flex items-center justify-center">
+                  <div className="card-premium border-muted/20 bg-muted/10 min-h-[var(--touch-target)] flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm md:text-xl font-bold text-muted-foreground">
+                      <div className="text-fluid-sm md:text-fluid-xl font-bold text-muted-foreground">
                         {metric.competitorValue}
-                        {metric.competitorUnit && <span className="text-xs md:text-sm">{metric.competitorUnit}</span>}
+                        {metric.competitorUnit && <span className="text-fluid-xs md:text-fluid-sm">{metric.competitorUnit}</span>}
                       </div>
                     </div>
                   </div>
