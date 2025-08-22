@@ -40,13 +40,13 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button className="group" asChild>
+              <Button variant="cta-primary" size="cta" className="group" asChild>
                 <Link to="/kontakt">
                   Begär offert
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
-              <Button variant="secondary" className="group" asChild>
+              <Button variant="cta-secondary" size="cta" className="group" asChild>
                 <Link to="/tjanster">
                   Se våra tjänster
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
