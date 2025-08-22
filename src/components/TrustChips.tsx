@@ -22,6 +22,7 @@ const TrustChips = ({
   includeRating = false,
   includeLocation = false
 }: TrustChipsProps) => {
+  console.log("TrustChips component rendering with variant:", variant);
   const [showAll, setShowAll] = useState(false);
 
   // Select chip set based on variant

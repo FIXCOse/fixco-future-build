@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import HeroUltra from "@/components/HeroUltra";
 import TrustBar from "@/components/TrustBar";
-import TrustChips from "@/components/TrustChips";
 import ComparisonUltra from "@/components/ComparisonUltra";
 import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
@@ -14,6 +13,8 @@ import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
+  console.log("Home component rendering...");
+  
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -23,13 +24,6 @@ const Home = () => {
 
       {/* Trust Bar */}
       <TrustBar />
-
-      {/* Enhanced Trust Chips */}
-      <section className="py-8 bg-muted/20">
-        <div className="container mx-auto px-4">
-          <TrustChips variant="home" maxVisible={8} className="max-w-4xl mx-auto" />
-        </div>
-      </section>
 
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <ComparisonUltra />
