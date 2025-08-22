@@ -29,29 +29,29 @@ const StickyNavigation = () => {
   return (
     <header 
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-area-top",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled 
           ? "bg-background/95 backdrop-blur-md border-b border-border shadow-card" 
           : "bg-transparent"
       )}
     >
-      <div className="container mx-auto container-mobile">
-        <div className="flex items-center justify-between min-h-[var(--touch-target)] md:h-20">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group min-h-[var(--touch-target)] focus-outline">
-            <div className="text-fluid-xl md:text-fluid-3xl font-bold gradient-text group-hover:scale-105 transition-transform">
+          <Link to="/" className="flex items-center space-x-2 group">
+            <div className="text-2xl md:text-3xl font-bold gradient-text group-hover:scale-105 transition-transform">
               Fixco
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <nav className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "text-fluid-sm font-medium transition-colors hover:text-primary min-h-[var(--touch-target)] flex items-center focus-outline",
+                  "text-sm font-medium transition-colors hover:text-primary",
                   location.pathname === item.href 
                     ? "text-primary" 
                     : "text-muted-foreground"
@@ -62,28 +62,21 @@ const StickyNavigation = () => {
             ))}
           </nav>
 
-          {/* CTA Buttons - Desktop */}
-          <div className="hidden lg:flex items-center space-x-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-primary hover:bg-primary/10 min-h-[var(--touch-target)] focus-outline"
-              onClick={() => window.open('tel:08-123-456-78')}
-            >
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10">
               <Phone className="h-4 w-4 mr-2" />
-              <span className="hidden xl:inline">08-123 456 78</span>
-              <span className="xl:hidden">Ring</span>
+              08-123 456 78
             </Button>
             <Button 
               variant="cta-primary" 
               size="cta" 
-              className="group min-h-[var(--touch-target)] focus-outline" 
+              className="group" 
               asChild
             >
               <Link to="/kontakt">
-                <span className="hidden xl:inline">Begär offert</span>
-                <span className="xl:hidden">Offert</span>
-                <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />
+                Begär offert
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
           </div>
@@ -91,8 +84,7 @@ const StickyNavigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-accent transition-colors min-h-[var(--touch-target)] min-w-[var(--touch-target)] focus-outline"
-            aria-label={isMobileMenuOpen ? "Stäng meny" : "Öppna meny"}
+            className="md:hidden p-2 rounded-lg hover:bg-accent transition-colors"
           >
             {isMobileMenuOpen ? (
               <X className="h-6 w-6" />
@@ -102,47 +94,39 @@ const StickyNavigation = () => {
           </button>
         </div>
 
-        {/* Mobile Menu - Enhanced */}
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md safe-area-bottom">
-            <nav className="flex flex-col spacing-xs">
+          <div className="md:hidden py-4 border-t border-border bg-background/95 backdrop-blur-md">
+            <nav className="flex flex-col space-y-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "px-4 py-3 text-fluid-base font-medium transition-colors hover:text-primary min-h-[var(--touch-target)] flex items-center focus-outline",
+                    "px-4 py-2 text-sm font-medium transition-colors hover:text-primary",
                     location.pathname === item.href 
-                      ? "text-primary bg-primary/5" 
+                      ? "text-primary" 
                       : "text-muted-foreground"
                   )}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-3 px-4 py-4 border-t border-border">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="justify-start text-primary hover:bg-primary/10 min-h-[var(--touch-target)] focus-outline w-full"
-                  onClick={() => {
-                    window.open('tel:08-123-456-78');
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
+              <div className="flex flex-col space-y-3 px-4 pt-4 border-t border-border">
+                <Button variant="ghost" size="sm" className="justify-start text-primary hover:bg-primary/10">
                   <Phone className="h-4 w-4 mr-2" />
                   08-123 456 78
                 </Button>
                 <Button 
                   variant="cta-primary" 
                   size="cta" 
-                  className="group w-full min-h-[var(--touch-target)] focus-outline" 
+                  className="group w-full" 
                   asChild
                 >
                   <Link to="/kontakt" onClick={() => setIsMobileMenuOpen(false)}>
                     Begär offert
-                    <ArrowRight className="h-4 w-4 ml-2" aria-hidden="true" />
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>
               </div>

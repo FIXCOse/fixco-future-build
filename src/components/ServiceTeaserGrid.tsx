@@ -72,29 +72,28 @@ const ServiceTeaserGrid = () => {
   ];
 
   return (
-    <section className="spacing-xl relative">
-      <div className="container mx-auto container-mobile">
+    <section className="py-24 relative">
+      <div className="container mx-auto px-4">
         {/* Header with ROT Toggle */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-fluid-4xl md:text-fluid-5xl font-bold mb-4 md:mb-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Våra <span className="gradient-text">huvudtjänster</span>
           </h2>
-          <p className="text-fluid-lg text-muted-foreground max-w-3xl mx-auto mb-6 md:mb-8">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Från små reparationer till stora projekt – vi hanterar allt professionellt
           </p>
           
-          {/* ROT Toggle - Mobile optimized */}
-          <div className="flex items-center justify-center space-x-3 md:space-x-4 mb-6 md:mb-8">
-            <span className={cn("text-fluid-sm font-medium", !rotEnabled && "text-primary")}>
+          {/* ROT Toggle */}
+          <div className="flex items-center justify-center space-x-4 mb-8">
+            <span className={cn("text-sm font-medium", !rotEnabled && "text-primary")}>
               Ordinarie pris
             </span>
             <button
               onClick={() => setRotEnabled(!rotEnabled)}
               className={cn(
-                "relative inline-flex h-6 w-11 items-center rounded-full transition-colors min-h-[var(--touch-target)] min-w-[var(--touch-target)] focus-outline",
+                "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
                 rotEnabled ? "bg-primary" : "bg-border"
               )}
-              aria-label="Växla ROT-avdrag"
             >
               <span
                 className={cn(
@@ -103,14 +102,14 @@ const ServiceTeaserGrid = () => {
                 )}
               />
             </button>
-            <span className={cn("text-fluid-sm font-medium", rotEnabled && "text-primary")}>
+            <span className={cn("text-sm font-medium", rotEnabled && "text-primary")}>
               Med ROT-avdrag (50%)
             </span>
           </div>
         </div>
 
-        {/* Service Grid - Mobile optimized */}
-        <div className="responsive-grid-3 mb-8 md:mb-12">
+        {/* Service Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {services.map((service, index) => {
             const IconComponent = service.icon;
             const isHovered = hoveredIndex === index;
@@ -119,15 +118,14 @@ const ServiceTeaserGrid = () => {
               <Link
                 key={service.name}
                 to={`/tjanster/${service.slug}`}
-                className="group block focus-outline"
+                className="group block"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 <div className={cn(
-                  "relative rounded-xl border border-border bg-card",
-                  "transition-all duration-300 ease-out card-service",
+                  "relative p-6 rounded-xl border border-border bg-card",
+                  "transition-all duration-300 ease-out",
                   "hover:border-primary/30 hover:shadow-card hover:-translate-y-1",
-                  "min-h-[200px] sm:min-h-[240px]",
                   isHovered && "scale-[1.02]"
                 )}>
                   {/* Background gradient effect */}
@@ -138,71 +136,69 @@ const ServiceTeaserGrid = () => {
                   )} />
                   
                   {/* Content */}
-                  <div className="relative z-10 h-full flex flex-col justify-between">
+                  <div className="relative z-10">
                     {/* Icon and Arrow */}
-                    <div className="flex items-center justify-between mb-3 md:mb-4">
+                    <div className="flex items-center justify-between mb-4">
                       <div className={cn(
-                        "p-2 md:p-3 rounded-lg transition-all duration-300",
+                        "p-3 rounded-lg transition-all duration-300",
                         "bg-gradient-to-br from-primary/10 to-accent/10",
                         isHovered && "scale-110 rotate-3"
                       )}>
                         <IconComponent className={cn(
-                          "h-6 w-6 md:h-7 md:w-7 transition-colors duration-300",
+                          "h-7 w-7 transition-colors duration-300",
                           service.iconColor,
                           isHovered && "text-primary"
                         )} />
                       </div>
                       <ArrowRight className={cn(
-                        "h-4 w-4 md:h-5 md:w-5 text-muted-foreground transition-all duration-300",
+                        "h-5 w-5 text-muted-foreground transition-all duration-300",
                         isHovered && "text-primary translate-x-1"
                       )} />
                     </div>
 
-                    <div className="flex-1 flex flex-col">
-                      {/* Title */}
-                      <h3 className={cn(
-                        "text-fluid-xl md:text-fluid-2xl font-bold mb-2 md:mb-3 transition-all duration-300",
-                        isHovered && "gradient-text"
-                      )}>
-                        {service.name}
-                      </h3>
+                    {/* Title */}
+                    <h3 className={cn(
+                      "text-2xl font-bold mb-3 transition-all duration-300",
+                      isHovered && "gradient-text"
+                    )}>
+                      {service.name}
+                    </h3>
 
-                      {/* Description */}
-                      <p className="text-muted-foreground mb-3 md:mb-4 text-fluid-sm flex-1">
-                        {service.description}
-                      </p>
+                    {/* Description */}
+                    <p className="text-muted-foreground mb-4 text-sm">
+                      {service.description}
+                    </p>
 
-                      {/* Pricing */}
-                      <div className="space-y-2 mt-auto">
-                        <div className={cn(
-                          "transition-all duration-300",
-                          rotEnabled ? "opacity-100 transform-none" : "opacity-100"
-                        )}>
-                          <div className={cn(
-                            "text-fluid-xl md:text-fluid-2xl font-bold transition-all duration-300",
-                            rotEnabled ? "text-primary" : "text-foreground"
-                          )}>
-                            {rotEnabled ? service.priceRot : service.priceRegular}
-                          </div>
-                          <div className="text-fluid-sm text-muted-foreground">
-                            {rotEnabled ? "Med ROT-avdrag" : "Inkl. moms"}
-                          </div>
-                        </div>
-                        
-                        {rotEnabled && (
-                          <div className="text-fluid-xs text-muted-foreground line-through">
-                            Ord: {service.priceRegular}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* CTA Hint */}
+                    {/* Pricing */}
+                    <div className="space-y-2">
                       <div className={cn(
-                        "mt-3 md:mt-4 text-fluid-sm font-medium transition-all duration-300",
-                        isHovered ? "text-primary opacity-100" : "text-muted-foreground opacity-70"
+                        "transition-all duration-300",
+                        rotEnabled ? "opacity-100 transform-none" : "opacity-100"
                       )}>
-                        Se alla tjänster →
+                        <div className={cn(
+                          "text-2xl font-bold transition-all duration-300",
+                          rotEnabled ? "text-primary" : "text-foreground"
+                        )}>
+                          {rotEnabled ? service.priceRot : service.priceRegular}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {rotEnabled ? "Med ROT-avdrag" : "Inkl. moms"}
+                        </div>
                       </div>
+                      
+                      {rotEnabled && (
+                        <div className="text-xs text-muted-foreground line-through">
+                          Ord: {service.priceRegular}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA Hint */}
+                    <div className={cn(
+                      "mt-4 text-sm font-medium transition-all duration-300",
+                      isHovered ? "text-primary opacity-100" : "text-muted-foreground opacity-70"
+                    )}>
+                      Se alla tjänster →
                     </div>
                   </div>
 

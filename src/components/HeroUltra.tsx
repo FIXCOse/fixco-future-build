@@ -165,7 +165,7 @@ const HeroUltra = () => {
   ];
 
   return (
-    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden safe-area-top">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background System - Progressive Enhancement */}
       <div className="absolute inset-0">
         {/* Base gradient (always visible) */}
@@ -197,7 +197,7 @@ const HeroUltra = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto container-mobile relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -205,7 +205,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-fluid-5xl md:text-fluid-7xl font-bold leading-tight mb-6"
+              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
@@ -216,7 +216,7 @@ const HeroUltra = () => {
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               <span className="gradient-text">Fixco</span> löser{" "}
-              <br className="hidden sm:block" />
+              <br />
               <span className="text-foreground">allt inom</span>{" "}
               <motion.span 
                 className="gradient-text"
@@ -231,7 +231,7 @@ const HeroUltra = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-fluid-lg md:text-fluid-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+              className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
@@ -240,35 +240,35 @@ const HeroUltra = () => {
               <span className="text-primary font-semibold"> Start inom {'< 5 dagar'}, 50% rabatt med ROT.</span>
             </motion.p>
 
-            {/* Enhanced CTA Buttons - Mobile optimized */}
+            {/* Enhanced CTA Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 mb-8 justify-center px-4 sm:px-0"
+              className="flex flex-col sm:flex-row gap-4 mb-12 justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.6, duration: 0.6 }}
             >
-              <Link to="/kontakt" className="w-full sm:w-auto">
+              <Link to="/kontakt">
                 <MagneticButton
-                  className="w-full sm:w-auto gradient-primary text-primary-foreground text-fluid-base px-6 py-3 shadow-premium hover:shadow-glow min-h-[var(--touch-target)] focus-outline"
+                  className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
                 >
                   Begär offert
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
-              <Link to="/tjanster" className="w-full sm:w-auto">
+              <Link to="/tjanster">
                 <MagneticButton
                   variant="outline"
-                  className="w-full sm:w-auto text-fluid-base px-6 py-3 border-primary/30 hover:bg-primary/10 backdrop-blur-sm min-h-[var(--touch-target)] focus-outline"
+                  className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                 >
                   Se våra tjänster
-                  <ChevronRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
             </motion.div>
 
-            {/* Trust Indicators Grid - Mobile optimized */}
+            {/* Trust Indicators Grid */}
             <motion.div
-              className="responsive-grid-4 max-w-4xl mx-auto mb-6 min-h-[120px]"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}
@@ -278,7 +278,7 @@ const HeroUltra = () => {
                 return (
                   <motion.div
                     key={item.title}
-                    className="card-service text-center backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300 min-h-[100px] sm:min-h-[120px]"
+                    className="card-service p-6 text-center backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all duration-300"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 1.2 + index * 0.1, duration: 0.5 }}
@@ -288,19 +288,19 @@ const HeroUltra = () => {
                       boxShadow: "0 20px 40px rgba(139, 69, 19, 0.2)"
                     } : { scale: 1.02 }}
                   >
-                    <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto gradient-primary-subtle rounded-xl flex items-center justify-center mb-2 sm:mb-4">
-                      <IconComponent className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
+                    <div className="w-12 h-12 mx-auto gradient-primary-subtle rounded-xl flex items-center justify-center mb-4">
+                      <IconComponent className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="font-bold text-fluid-xs sm:text-fluid-sm mb-1 sm:mb-2">{item.title}</h3>
-                    <p className="text-fluid-xs text-muted-foreground leading-tight">{item.description}</p>
+                    <h3 className="font-bold text-sm mb-2">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground">{item.description}</p>
                   </motion.div>
                 );
               })}
             </motion.div>
 
-            {/* Trust Chips - All Visible - Mobile optimized */}
+            {/* Trust Chips - All Visible */}
             <motion.div
-              className="max-w-4xl mx-auto min-h-[60px]"
+              className="max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 1.5, duration: 0.6 }}
@@ -308,7 +308,7 @@ const HeroUltra = () => {
               <TrustChips 
                 variant="home" 
                 showAll={true}
-                className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-2 sm:pt-4 px-2"
+                className="flex flex-wrap items-center justify-center gap-3 pt-4"
               />
             </motion.div>
           </motion.div>
