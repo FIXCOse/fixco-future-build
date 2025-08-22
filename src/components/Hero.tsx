@@ -35,7 +35,7 @@ const Hero = () => {
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
               Snabbare, billigare och mer professionellt än våra konkurrenter. 
-              <span className="text-primary font-semibold"> Start inom 24h.</span>
+              <span className="text-primary font-semibold"> Start inom 5 dagar.</span>
             </p>
 
             {/* CTA Buttons */}
@@ -74,7 +74,7 @@ const Hero = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                <span>Snabb start: <span className="text-primary font-semibold">Inom 24h</span></span>
+                <span>Snabb start: <span className="text-primary font-semibold">Inom 5 dagar</span></span>
               </div>
             </div>
           </div>
