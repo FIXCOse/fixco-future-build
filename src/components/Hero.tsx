@@ -40,18 +40,26 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="cta-primary" size="cta" asChild>
-                <Link to="/kontakt">
+              <Link to="/kontakt" className="w-full sm:w-auto">
+                <Button
+                  variant="cta-primary"
+                  size="cta"
+                  className="w-full sm:w-auto"
+                >
                   Begär offert
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button variant="cta-secondary" size="cta" asChild>
-                <Link to="/tjanster">
+                </Button>
+              </Link>
+              <Link to="/tjanster" className="w-full sm:w-auto">
+                <Button
+                  variant="cta-secondary"
+                  size="cta"
+                  className="w-full sm:w-auto"
+                >
                   Se våra tjänster
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
 
             {/* Trust indicators */}
