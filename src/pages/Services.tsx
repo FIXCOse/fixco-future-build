@@ -3,7 +3,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CategoryGrid from "@/components/CategoryGrid";
 import FastServiceFilter from "@/components/FastServiceFilter";
 import HeroMotion from "@/components/HeroMotion";
-import TrustCues from "@/components/TrustCues";
+import TrustChips from "@/components/TrustChips";
 
 const Services = () => {
   return (
@@ -27,7 +27,7 @@ const Services = () => {
               <span className="text-primary font-semibold"> Utnyttja ROT-avdraget och spara 50%.</span>
             </p>
             
-            <TrustCues variant="minimal" />
+            <TrustChips variant="services" maxVisible={6} />
           </div>
         </div>
       </section>

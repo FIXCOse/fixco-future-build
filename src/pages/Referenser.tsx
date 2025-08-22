@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import TrustCues from "@/components/TrustCues";
+import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -173,7 +173,7 @@ const Referenser = () => {
               vi levererar kvalitet som våra kunder är nöjda med.
             </p>
             
-            <TrustCues variant="minimal" className="mb-8" />
+            <TrustChips variant="minimal" maxVisible={4} className="mb-8" />
           </div>
         </div>
       </section>
@@ -349,7 +349,7 @@ const Referenser = () => {
               </Button>
             </div>
 
-            <TrustCues variant="minimal" className="mt-8" />
+            <TrustChips variant="minimal" maxVisible={4} className="mt-8" />
           </div>
         </div>
       </section>
