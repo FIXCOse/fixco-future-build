@@ -7,8 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { servicesData, SubService } from "@/data/servicesData";
+import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
+import { usePriceStore } from "@/stores/priceStore";
+import { calcDisplayPrice } from "@/utils/priceCalculation";
+import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 
 interface FastServiceFilterProps {
   onServiceSelect?: (service: SubService) => void;
@@ -17,6 +20,7 @@ interface FastServiceFilterProps {
 
 const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { mode } = usePriceStore();
   
   // Get initial state from URL and sessionStorage
   const getInitialState = (key: string, defaultValue: string | boolean) => {
@@ -50,7 +54,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
   // Get all sub-services with parent info
   const allSubServices = useMemo(() => {
-    return servicesData.flatMap(service => 
+    return servicesDataNew.flatMap(service => 
       service.subServices.map(subService => ({
         ...subService,
         parentService: service.title,
@@ -61,7 +65,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
   // Get unique categories
   const categories = useMemo(() => {
-    return servicesData.map(service => ({
+    return servicesDataNew.map(service => ({
       name: service.title,
       slug: service.slug
     }));
@@ -71,7 +75,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   const subCategories = useMemo(() => {
     if (selectedCategory === 'alla') return [];
     
-    const service = servicesData.find(s => s.slug === selectedCategory);
+    const service = servicesDataNew.find(s => s.slug === selectedCategory);
     if (!service) return [];
     
     const subCats = new Set(service.subServices.map(s => s.category));
@@ -111,15 +115,15 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     switch (sortBy) {
       case 'pris-låg':
         filtered.sort((a, b) => {
-          const priceA = parseInt(a.basePrice.replace(/[^\\d]/g, '')) || 0;
-          const priceB = parseInt(b.basePrice.replace(/[^\\d]/g, '')) || 0;
+          const priceA = typeof a.basePrice === 'number' ? a.basePrice : parseInt(String(a.basePrice).replace(/[^\d]/g, '')) || 0;
+          const priceB = typeof b.basePrice === 'number' ? b.basePrice : parseInt(String(b.basePrice).replace(/[^\d]/g, '')) || 0;
           return priceA - priceB;
         });
         break;
       case 'pris-hög':
         filtered.sort((a, b) => {
-          const priceA = parseInt(a.basePrice.replace(/[^\\d]/g, '')) || 0;
-          const priceB = parseInt(b.basePrice.replace(/[^\\d]/g, '')) || 0;
+          const priceA = typeof a.basePrice === 'number' ? a.basePrice : parseInt(String(a.basePrice).replace(/[^\d]/g, '')) || 0;
+          const priceB = typeof b.basePrice === 'number' ? b.basePrice : parseInt(String(b.basePrice).replace(/[^\d]/g, '')) || 0;
           return priceB - priceA;
         });
         break;
@@ -205,8 +209,8 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   // Popular recommendations
   const popularChips = useMemo(() => [
     { label: "Populärt i El", filter: () => handleCategoryChange('el') },
-    { label: "Snabbt & billigt", filter: () => { setSelectedPriceType('fast'); updateStateAndURL({ priceType: 'fast' }); } },
-    { label: "ROT-favoriter", filter: () => setShowROTPrice(true) }
+    { label: "Snabbt & billigt", filter: () => { setSelectedPriceType('fixed'); updateStateAndURL({ priceType: 'fixed' }); } },
+    { label: "ROT-favoriter", filter: () => handleCategoryChange('el') }
   ], []);
 
   return (
@@ -230,23 +234,8 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             />
           </div>
 
-          {/* ROT Toggle */}
-          <div className="flex items-center space-x-3 p-3 border border-primary/20 rounded-lg bg-primary/5">
-            <Switch 
-              id="rot-global-toggle"
-              checked={showROTPrice}
-              onCheckedChange={(checked) => {
-                setShowROTPrice(checked);
-                updateStateAndURL({ rot: checked });
-              }}
-            />
-            <Label htmlFor="rot-global-toggle" className="flex items-center space-x-2 cursor-pointer text-sm font-medium">
-              <span>Visa priser med ROT</span>
-              <Badge variant={showROTPrice ? "default" : "secondary"} className="text-xs">
-                {showROTPrice ? '50% RABATT' : 'ORDINARIE'}
-              </Badge>
-            </Label>
-          </div>
+          {/* Global Pricing Toggle */}
+          <GlobalPricingToggle />
 
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
@@ -290,9 +279,9 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="alla">Alla priser</SelectItem>
-              <SelectItem value="timpris">Timpris</SelectItem>
-              <SelectItem value="fast">Fast pris</SelectItem>
-              <SelectItem value="offert">Begär offert</SelectItem>
+              <SelectItem value="hourly">Timpris</SelectItem>
+              <SelectItem value="fixed">Fast pris</SelectItem>
+              <SelectItem value="quote">Begär offert</SelectItem>
             </SelectContent>
           </Select>
 
@@ -447,72 +436,69 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {paginatedServices.map(service => (
-                <div key={service.id} className="card-premium p-4 hover:shadow-glow transition-all duration-300 group">
-                  <div className="space-y-3">
-                    {/* Header */}
-                    <div>
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
-                          {service.title}
-                        </h4>
-                        <Badge 
-                          variant={service.rotEligible ? "default" : "secondary"}
-                          className="text-xs"
-                        >
-                          {service.rotEligible ? "ROT" : "EJ ROT"}
-                        </Badge>
+              {paginatedServices.map(service => {
+                const pricing = calcDisplayPrice(service, mode);
+                
+                return (
+                  <div key={service.id} className="card-premium p-4 hover:shadow-glow transition-all duration-300 group">
+                    <div className="space-y-3">
+                      {/* Header */}
+                      <div>
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
+                            {service.title}
+                          </h4>
+                          <Badge 
+                            variant={pricing.eligible ? "default" : "secondary"}
+                            className="text-xs"
+                          >
+                            {mode === 'rot' && service.eligible.rot ? "ROT" : 
+                             mode === 'rut' && service.eligible.rut ? "RUT" : 
+                             !pricing.eligible ? `Ej ${mode.toUpperCase()}` : 
+                             mode.toUpperCase()}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {service.description}
+                        </p>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">
-                        {service.description}
-                      </p>
-                    </div>
 
-                    {/* Meta Info */}
-                    <div className="text-xs text-muted-foreground">
-                      <div className="flex justify-between">
-                        <span>Kategori:</span>
-                        <span>{service.category}</span>
+                      {/* Meta Info */}
+                      <div className="text-xs text-muted-foreground">
+                        <div className="flex justify-between">
+                          <span>Kategori:</span>
+                          <span>{service.category}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Pricing */}
-                    <div className="border-t border-border pt-3">
-                      {service.rotEligible && showROTPrice ? (
-                        <>
-                          <div className="flex justify-between items-center text-xs mb-1">
-                            <span className="text-muted-foreground">Ordinarie:</span>
-                            <span className="line-through text-muted-foreground">
-                              {service.basePrice}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-primary font-medium text-xs">Med ROT:</span>
-                            <span className="font-bold gradient-text">
-                              {service.rotPrice}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
+                      {/* Pricing */}
+                      <div className="border-t border-border pt-3">
                         <div className="flex justify-between items-center">
                           <span className="text-xs">Pris:</span>
-                          <span className="font-semibold">{service.basePrice}</span>
+                          <span className={`font-semibold ${pricing.savings > 0 ? 'gradient-text' : ''}`}>
+                            {pricing.display}
+                          </span>
                         </div>
-                      )}
-                    </div>
+                        {pricing.savings > 0 && (
+                          <div className="text-xs text-muted-foreground mt-1">
+                            Besparing: {pricing.savings} kr
+                          </div>
+                        )}
+                      </div>
 
-                    {/* CTA */}
-                    <Button 
-                      variant="premium"
-                      size="sm" 
-                      className="w-full"
-                      onClick={() => onServiceSelect?.(service)}
-                    >
-                      {service.priceType === 'offert' ? 'Begär offert' : 'Boka nu'}
-                    </Button>
+                      {/* CTA */}
+                      <Button 
+                        variant="premium"
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => onServiceSelect?.(service)}
+                      >
+                        {service.priceType === 'quote' ? 'Begär offert' : 'Boka nu'}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Pagination */}
