@@ -17,6 +17,15 @@ const CategoryGrid = () => {
               className="card-service p-6 text-center h-full hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
+              {/* F Brand Badge */}
+              <div className="absolute top-2 right-2 w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center opacity-40 group-hover:opacity-60 transition-opacity">
+                <img 
+                  src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                  alt="Fixco" 
+                  className="h-2 w-2 object-contain"
+                />
+              </div>
+
               {/* Icon */}
               <div className="w-12 h-12 mx-auto gradient-primary-subtle rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300">
                 <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />

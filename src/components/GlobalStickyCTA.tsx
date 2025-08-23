@@ -107,15 +107,22 @@ const GlobalStickyCTA = () => {
 
         {/* Desktop CTA Bar */}
         <div className="hidden md:block">
-          <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow">
-            <div className="container mx-auto px-4 py-3">
-              <div className="flex items-center justify-between">
-                {/* Contact Info */}
-                <div className="flex items-center space-x-6 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 text-primary" />
-                    <span className="text-muted-foreground">08-123 456 78</span>
-                  </div>
+            <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow">
+              <div className="container mx-auto px-4 py-3">
+                <div className="flex items-center justify-between">
+                  {/* Contact Info with F Brand */}
+                  <div className="flex items-center space-x-6 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mr-1">
+                        <img 
+                          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                          alt="Fixco" 
+                          className="h-2.5 w-2.5 object-contain opacity-60"
+                        />
+                      </div>
+                      <Phone className="h-4 w-4 text-primary" />
+                      <span className="text-muted-foreground">08-123 456 78</span>
+                    </div>
                   <div className="text-muted-foreground">
                     Uppsala & Stockholm
                   </div>

@@ -115,6 +115,15 @@ const TestimonialCarousel = () => {
                   className="w-full flex-shrink-0 px-4"
                 >
                   <div className="card-premium p-8 md:p-12 text-center relative">
+                    {/* F Brand Badge */}
+                    <div className="absolute top-4 left-4 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-50 hover:opacity-70 transition-opacity">
+                      <img 
+                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        alt="Fixco" 
+                        className="h-3 w-3 object-contain"
+                      />
+                    </div>
+
                     {/* Quote Icon */}
                     <Quote className="h-12 w-12 text-primary/20 mx-auto mb-6" />
                     

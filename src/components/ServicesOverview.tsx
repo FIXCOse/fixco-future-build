@@ -106,6 +106,15 @@ const ServicesOverview = () => {
                   className="card-service h-full animate-fade-in-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
+                  {/* F Brand Badge */}
+                  <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-50 group-hover:opacity-70 transition-opacity">
+                    <img 
+                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      alt="Fixco" 
+                      className="h-2.5 w-2.5 object-contain"
+                    />
+                  </div>
+
                   <div className="flex flex-col items-center text-center h-full">
                     {/* Icon with gradient background */}
                     <div className="w-16 h-16 rounded-xl gradient-primary-subtle flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300">

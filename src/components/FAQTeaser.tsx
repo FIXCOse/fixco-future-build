@@ -49,8 +49,17 @@ const FAQTeaser = () => {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow"
+                className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative"
               >
+                {/* F Brand Badge */}
+                <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                  <img 
+                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    alt="Fixco" 
+                    className="h-2.5 w-2.5 object-contain"
+                  />
+                </div>
+
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full p-6 text-left flex items-center justify-between hover:bg-primary/5 transition-colors"

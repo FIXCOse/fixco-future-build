@@ -166,12 +166,36 @@ const HeroUltra = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background System - Progressive Enhancement */}
-      <div className="absolute inset-0">
-        {/* Base gradient (always visible) */}
-        <div className="absolute inset-0 hero-background" />
-        
-        {/* PRO: Enhanced gradients */}
+        {/* Background System - Progressive Enhancement */}
+        <div className="absolute inset-0">
+          {/* Base gradient (always visible) */}
+          <div className="absolute inset-0 hero-background" />
+          
+          {/* F Watermark Background Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute top-32 left-16 w-32 h-32 object-contain rotate-12 opacity-20"
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute bottom-40 right-20 w-24 h-24 object-contain -rotate-12 opacity-15"
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute top-1/3 right-1/4 w-28 h-28 object-contain rotate-45 opacity-10"
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute bottom-1/4 left-1/3 w-20 h-20 object-contain -rotate-6 opacity-15"
+            />
+          </div>
+          
+          {/* PRO: Enhanced gradients */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"
           animate={{

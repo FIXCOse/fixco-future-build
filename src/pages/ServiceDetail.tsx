@@ -59,14 +59,36 @@ const ServiceDetail = () => {
       <Navigation />
       <Breadcrumbs />
       
-      {/* Hero Section */}
-      <section className="pt-12 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 hero-background opacity-50" />
-        
-        <div className="container mx-auto px-4 relative z-10">
+        {/* Hero Section */}
+        <section className="pt-12 pb-16 relative overflow-hidden">
+          <div className="absolute inset-0 hero-background opacity-50" />
+          
+          {/* F Watermark Background Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute top-20 right-20 w-16 h-16 object-contain rotate-12 opacity-20"
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute bottom-10 left-20 w-12 h-12 object-contain -rotate-12 opacity-15"
+            />
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-6">
-              <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6">
+              <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6 relative">
+                {/* F Brand Badge */}
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
+                  <img 
+                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    alt="Fixco" 
+                    className="h-3 w-3 object-contain"
+                  />
+                </div>
                 <IconComponent className="h-10 w-10 text-primary" />
               </div>
               <div>
@@ -166,9 +188,18 @@ const ServiceDetail = () => {
             {paginatedSubServices.map((subService, index) => (
               <div 
                 key={subService.id}
-                className="card-premium p-5 hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale"
+                className="card-premium p-5 hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale relative"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
+                {/* F Brand Badge */}
+                <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                  <img 
+                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    alt="Fixco" 
+                    className="h-2.5 w-2.5 object-contain"
+                  />
+                </div>
+
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-lg font-bold text-foreground leading-tight">{subService.title}</h3>
@@ -310,7 +341,16 @@ const ServiceDetail = () => {
             {relatedServices.map((relatedService) => {
               const RelatedIcon = relatedService.icon;
               return (
-                <div key={relatedService.slug} className="card-premium p-6 text-center hover-scale">
+                <div key={relatedService.slug} className="card-premium p-6 text-center hover-scale relative">
+                  {/* F Brand Badge */}
+                  <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                    <img 
+                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      alt="Fixco" 
+                      className="h-2.5 w-2.5 object-contain"
+                    />
+                  </div>
+                  
                   <div className="w-16 h-16 gradient-primary-subtle rounded-xl flex items-center justify-center mx-auto mb-4">
                     <RelatedIcon className="h-8 w-8 text-primary" />
                   </div>

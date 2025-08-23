@@ -128,6 +128,15 @@ const ServiceTeaserGrid = () => {
                   "hover:border-primary/30 hover:shadow-card hover:-translate-y-1",
                   isHovered && "scale-[1.02]"
                 )}>
+                  {/* F Brand Badge */}
+                  <div className="absolute top-3 right-3 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-60 hover:opacity-80 transition-opacity">
+                    <img 
+                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      alt="Fixco" 
+                      className="h-3 w-3 object-contain"
+                    />
+                  </div>
+
                   {/* Background gradient effect */}
                   <div className={cn(
                     "absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300",
