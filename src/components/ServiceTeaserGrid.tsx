@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import GlobalPricingToggle from '@/components/GlobalPricingToggle';
 import { usePriceStore } from '@/stores/priceStore';
-import PriceSummary from '@/components/PriceSummary';
+import ServiceCardV3 from "@/components/ServiceCardV3";
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -138,103 +138,28 @@ const ServiceTeaserGrid = () => {
 
         {/* Service Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredServices.map((service, index) => {
-            const IconComponent = service.icon;
-            const isHovered = hoveredIndex === index;
-            
-            return (
-              <Link
-                key={service.id}
-                to={`/tjanster/${service.slug}`}
-                className="group block"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <div className={cn(
-                  "relative p-6 rounded-xl border border-border bg-card",
-                  "transition-all duration-300 ease-out",
-                  "hover:border-primary/30 hover:shadow-card hover:-translate-y-1",
-                  isHovered && "scale-[1.02]"
-                )}>
-                  {/* F Brand Badge - Bottom Right, Larger & More Visible */}
-                  <div className="absolute bottom-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                      alt="Fixco" 
-                      className="h-4 w-4 object-contain opacity-90"
-                    />
-                  </div>
-
-                  {/* Background gradient effect */}
-                  <div className={cn(
-                    "absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300",
-                    `bg-gradient-to-br ${service.gradient}`,
-                    isHovered && "opacity-100"
-                  )} />
-                  
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Icon and Arrow */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={cn(
-                        "p-3 rounded-lg transition-all duration-300",
-                        "bg-gradient-to-br from-primary/10 to-accent/10",
-                        isHovered && "scale-110 rotate-3"
-                      )}>
-                        <IconComponent className={cn(
-                          "h-7 w-7 transition-colors duration-300",
-                          service.iconColor,
-                          isHovered && "text-primary"
-                        )} />
-                      </div>
-                      <ArrowRight className={cn(
-                        "h-5 w-5 text-muted-foreground transition-all duration-300",
-                        isHovered && "text-primary translate-x-1"
-                      )} />
-                    </div>
-
-                    {/* Title */}
-                    <div className="mb-3">
-                      <h3 className={cn(
-                        "text-2xl font-bold transition-all duration-300",
-                        isHovered && "gradient-text"
-                      )}>
-                        {service.title}
-                      </h3>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-muted-foreground mb-4 text-sm">
-                      {service.description}
-                    </p>
-
-                    {/* Pricing */}
-                    <PriceSummary
-                      priceIncl={service.basePrice}
-                      pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
-                      eligible={service.eligible}
-                      size="md"
-                    />
-
-                    {/* CTA Hint */}
-                    <div className={cn(
-                      "mt-4 text-sm font-medium transition-all duration-300",
-                      isHovered ? "text-primary opacity-100" : "text-muted-foreground opacity-70"
-                    )}>
-                      Se alla tjänster →
-                    </div>
-                  </div>
-
-                  {/* Hover Effect Border */}
-                  <div className={cn(
-                    "absolute inset-0 rounded-xl transition-all duration-300 pointer-events-none",
-                    "border-2 border-transparent",
-                    isHovered && "border-primary/20 shadow-glow"
-                  )} />
-                </div>
-              </Link>
-            );
-          })}
+          {filteredServices.map((service, index) => (
+            <Link
+              key={service.id}
+              to={`/tjanster/${service.slug}`}
+              className="group block"
+            >
+              <ServiceCardV3
+                title={service.title}
+                category="Huvudtjänst"
+                description={service.description}
+                pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                priceIncl={service.basePrice}
+                eligible={service.eligible}
+                onBook={() => {
+                  // Handle booking
+                }}
+                onQuote={() => {
+                  // Handle quote request
+                }}
+              />
+            </Link>
+          ))}
         </div>
 
         {/* View All CTA */}

@@ -12,6 +12,8 @@ import { useSearchParams } from "react-router-dom";
 import { usePriceStore } from "@/stores/priceStore";
 import { cn } from "@/lib/utils";
 import GlobalPricingToggle from "@/components/GlobalPricingToggle";
+import ServiceCardV3 from "@/components/ServiceCardV3";
+import { toast } from "sonner";
 
 interface FastServiceFilterProps {
   onServiceSelect?: (service: SubService) => void;
@@ -465,123 +467,35 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {paginatedServices.map(service => {
-                return (
-                  <div key={service.id} className="card-premium p-4 hover:shadow-glow transition-all duration-300 group">
-                    <div className="space-y-3">
-                      {/* Header */}
-                         <div>
-                           <div className="flex items-start justify-between mb-2">
-                             <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
-                               {service.title}
-                             </h4>
-                           </div>
-                        <p className="text-xs text-muted-foreground line-clamp-2">
-                          {service.description}
-                        </p>
-                      </div>
-
-                      {/* Meta Info */}
-                      <div className="text-xs text-muted-foreground">
-                        <div className="flex justify-between">
-                          <span>Kategori:</span>
-                          <span>{service.category}</span>
-                        </div>
-                      </div>
-
-                       {/* Pricing */}
-                       {service.priceType === 'quote' ? (
-                         <div className="space-y-1">
-                           <div className="font-semibold text-base">Begär offert</div>
-                           <div className="text-xs text-muted-foreground">Prisuppgift efter besiktning</div>
-                         </div>
-                       ) : (() => {
-                         const VAT_RATE = 0.25;
-                         const ROT_RATE = 0.50;
-                         const RUT_RATE = 0.50;
-                         
-                         const priceIncl = service.basePrice;
-                         const priceExcl = priceIncl / (1 + VAT_RATE);
-                         const priceRotIncl = service.eligible.rot ? priceIncl * (1 - ROT_RATE) : priceIncl;
-                         const priceRutIncl = service.eligible.rut ? priceIncl * (1 - RUT_RATE) : priceIncl;
-                         const savingsRot = service.eligible.rot ? priceIncl - priceRotIncl : 0;
-                         const savingsRut = service.eligible.rut ? priceIncl - priceRutIncl : 0;
-                         
-                          let primaryPrice = priceIncl;
-                          let isDiscounted = false;
-                          
-                          // Show purple style for ALL services in all modes
-                          if (mode === 'rot' && service.eligible.rot) {
-                            primaryPrice = priceRotIncl;
-                            isDiscounted = true;
-                          } else if (mode === 'rut' && service.eligible.rut) {
-                            primaryPrice = priceRutIncl;
-                            isDiscounted = true;
-                          } else if (mode === 'all') {
-                            // Always show purple style in 'all' mode for ALL services
-                            isDiscounted = true;
-                          }
-                         
-                         const unit = service.priceType === 'hourly' ? ' kr/h' : ' kr';
-                         const formatMoney = (amount: number) => Math.round(amount).toLocaleString('sv-SE');
-                         
-                         return (
-                           <div className="space-y-1">
-                             <div className={`font-semibold text-base ${isDiscounted ? 'text-primary' : ''}`}>
-                               {formatMoney(primaryPrice)}{unit} inkl. moms
-                             </div>
-                             <div className="text-xs text-muted-foreground">
-                               {formatMoney(priceExcl)}{unit} exkl. moms
-                             </div>
-                             <div className="flex flex-wrap gap-1 mt-2">
-                                {mode === 'rot' && service.eligible.rot && savingsRot > 0 && (
-                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                    Sparar {formatMoney(savingsRot)}{unit} med ROT
-                                  </Badge>
-                                )}
-                                {mode === 'rut' && service.eligible.rut && savingsRut > 0 && (
-                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                    Sparar {formatMoney(savingsRut)}{unit} med RUT
-                                  </Badge>
-                                )}
-                                {mode === 'all' && service.eligible.rot && (
-                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                    ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)}${unit}` : ''}
-                                  </Badge>
-                                )}
-                                {mode === 'all' && service.eligible.rut && (
-                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                    RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)}${unit}` : ''}
-                                  </Badge>
-                                )}
-                               {mode === 'rot' && !service.eligible.rot && (
-                                 <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                                   Ej ROT
-                                 </Badge>
-                               )}
-                               {mode === 'rut' && !service.eligible.rut && (
-                                 <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                                   Ej RUT
-                                 </Badge>
-                               )}
-                             </div>
-                           </div>
-                         );
-                       })()}
-
-                      {/* CTA */}
-                      <Button 
-                        variant="premium"
-                        size="sm" 
-                        className="w-full"
-                        onClick={() => onServiceSelect?.(service)}
-                      >
-                        {service.priceType === 'quote' ? 'Begär offert' : 'Boka nu'}
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
+              {paginatedServices.map(service => (
+                <ServiceCardV3
+                  key={service.id}
+                  title={service.title}
+                  category={service.category}
+                  description={service.description}
+                  pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
+                  priceIncl={service.basePrice}
+                  eligible={{
+                    rot: service.eligible?.rot || false,
+                    rut: service.eligible?.rut || false
+                  }}
+                  onBook={() => {
+                    if (onServiceSelect) {
+                      onServiceSelect(service);
+                    } else {
+                      toast.success(`Bokning för ${service.title} påbörjad!`);
+                    }
+                  }}
+                  onQuote={() => {
+                    if (onServiceSelect) {
+                      onServiceSelect(service);
+                    } else {
+                      toast.success(`Offertförfrågan för ${service.title} skickad!`);
+                    }
+                  }}
+                  showFullWidth={true}
+                />
+              ))}
             </div>
 
             {/* Pagination */}

@@ -56,7 +56,8 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
-				}
+				},
+				'good-text': 'hsl(var(--good-text))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

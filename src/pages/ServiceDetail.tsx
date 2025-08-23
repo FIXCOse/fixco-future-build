@@ -8,6 +8,7 @@ import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
 import { Button } from "@/components/ui/button-premium";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import PriceSummary from '@/components/PriceSummary';
+import ServiceCardV3 from '@/components/ServiceCardV3';
 import { Badge } from '@/components/ui/badge';
 import { 
   ArrowRight,
@@ -230,87 +231,22 @@ const ServiceDetail = () => {
               const eligible = isEligibleForMode(serviceForPricing, mode);
 
               return (
-                <div 
+                <ServiceCardV3
                   key={subService.id}
-                  className="card-premium p-5 hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale relative"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {/* F Brand Badge - Bottom Right, Larger & More Visible */}
-                  <div className="absolute bottom-3 right-3 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                      alt="Fixco" 
-                      className="h-3.5 w-3.5 object-contain opacity-90"
-                    />
-                  </div>
-
-                  {/* Header with Tax Benefits */}
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-bold text-foreground leading-tight">{subService.title}</h3>
-                    <div className="flex flex-col space-y-1">
-                      {subService.eligible.rot && (
-                        <Badge variant="default" className="text-xs">
-                          ROT
-                        </Badge>
-                      )}
-                      {subService.eligible.rut && (
-                        <Badge variant="default" className="text-xs bg-green-100 text-green-800">
-                          RUT
-                        </Badge>
-                      )}
-                      <Badge variant="outline" className="text-xs capitalize">
-                        {subService.location}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    {subService.description}
-                  </p>
-
-                  {/* Meta Info */}
-                  <div className="space-y-2 mb-4 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Kategori:</span>
-                      <span className="font-medium">{subService.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Plats:</span>
-                      <span className="font-medium capitalize">{subService.location}</span>
-                    </div>
-                  </div>
-
-                  {/* Pricing with PriceSummary */}
-                  <div className="border-t border-border pt-4 mb-4">
-                    <PriceSummary
-                      priceIncl={subService.basePrice}
-                      pricingType={subService.priceType === 'quote' ? 'quote' : 
-                                   subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
-                      eligible={subService.eligible}
-                      size="sm"
-                    />
-                  </div>
-
-                  {/* CTA */}
-                  <Button 
-                    variant="premium" 
-                    size="sm" 
-                    className="w-full group"
-                  >
-                    {subService.priceType === 'quote' ? (
-                      <>
-                        <Calculator className="h-4 w-4 mr-2" />
-                        Begär offert
-                      </>
-                    ) : (
-                      <>
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Boka nu
-                      </>
-                    )}
-                    <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
+                  title={subService.title}
+                  category={subService.category}
+                  description={subService.description}
+                  pricingType={subService.priceType === 'quote' ? 'quote' : 
+                               subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                  priceIncl={subService.basePrice}
+                  eligible={subService.eligible}
+                  onBook={() => {
+                    // Handle booking
+                  }}
+                  onQuote={() => {
+                    // Handle quote request
+                  }}
+                />
               );
               })}
             </div>
@@ -380,36 +316,21 @@ const ServiceDetail = () => {
               const relatedPricing = calcDisplayPrice(relatedServiceForPricing, mode);
               
               return (
-                <div key={relatedService.slug} className="card-premium p-6 text-center hover-scale relative">
-                  {/* F Brand Badge - Bottom Right, Larger & More Visible */}
-                  <div className="absolute bottom-4 right-4 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                      alt="Fixco" 
-                      className="h-3.5 w-3.5 object-contain opacity-90"
-                    />
-                  </div>
-                  
-                  <div className="w-16 h-16 gradient-primary-subtle rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <RelatedIcon className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{relatedService.title}</h3>
-                  <p className="text-muted-foreground mb-4">{relatedService.description}</p>
-                  <div className="text-sm mb-4">
-                    <PriceSummary
-                      priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
-                      pricingType="hourly"
-                      eligible={relatedService.eligible}
-                      size="sm"
-                      showChips={false}
-                    />
-                  </div>
-                  <Link to={`/tjanster/${relatedService.slug}`}>
-                    <Button variant="ghost-premium" size="sm" className="w-full">
-                      Se tjänster
-                    </Button>
-                  </Link>
-                </div>
+                <ServiceCardV3
+                  key={relatedService.slug}
+                  title={relatedService.title}
+                  category="Relaterad tjänst"
+                  description={relatedService.description}
+                  pricingType="hourly"
+                  priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
+                  eligible={relatedService.eligible}
+                  onBook={() => {
+                    // Handle booking
+                  }}
+                  onQuote={() => {
+                    // Handle quote request
+                  }}
+                />
               );
             })}
           </div>
