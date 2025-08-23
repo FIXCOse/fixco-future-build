@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -16,6 +17,9 @@ import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
 import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
+import StickyCTA from "./components/StickyCTA";
+import AIChat from "./components/AIChat";
+import SecurityWrapper from "./components/SecurityWrapper";
 
 const queryClient = new QueryClient();
 
@@ -23,30 +27,36 @@ const App = () => {
   console.log("App component is loading...");
   
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tjanster" element={<Services />} />
-            <Route path="/tjanster/:slug" element={<ServiceDetail />} />
-            <Route path="/kontakt" element={<Contact />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/om-oss" element={<AboutUs />} />
-            <Route path="/boka-hembesok" element={<BookVisit />} />
-            <Route path="/rot-info" element={<ROTInfo />} />
-            <Route path="/rut" element={<RUT />} />
-            <Route path="/referenser" element={<Referenser />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <StickyCtaBar />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <SecurityWrapper>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/tjanster" element={<Services />} />
+                <Route path="/tjanster/:slug" element={<ServiceDetail />} />
+                <Route path="/kontakt" element={<Contact />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/om-oss" element={<AboutUs />} />
+                <Route path="/boka-hembesok" element={<BookVisit />} />
+                <Route path="/rot-info" element={<ROTInfo />} />
+                <Route path="/rut" element={<RUT />} />
+                <Route path="/referenser" element={<Referenser />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <StickyCtaBar />
+              <StickyCTA />
+              <AIChat />
+            </BrowserRouter>
+          </TooltipProvider>
+        </SecurityWrapper>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
