@@ -5,19 +5,26 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import GlobalPricingToggle from '@/components/GlobalPricingToggle';
 import { usePriceStore } from '@/stores/priceStore';
-import { calcDisplayPrice, ServicePricing } from '@/utils/priceCalculation';
+import { formatPrice, getBadgeClasses } from '@/utils/priceFormatter';
+import { Badge } from '@/components/ui/badge';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const mode = usePriceStore((state) => state.mode);
+  const { mode, shouldShowService } = usePriceStore();
 
-  const services: (ServicePricing & { 
+  const services: Array<{
+    id: string;
+    title: string;
     icon: any; 
     description: string; 
+    basePrice: number;
+    priceUnit: string;
+    eligible: { rot: boolean; rut: boolean };
+    laborShare: number;
     slug: string; 
     gradient: string; 
     iconColor: string;
-  })[] = [
+  }> = [
     {
       id: "el",
       title: "El",
@@ -111,6 +118,9 @@ const ServiceTeaserGrid = () => {
     }
   ];
 
+  // Filter services based on eligibility
+  const filteredServices = services.filter(service => shouldShowService(service.eligible));
+
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-4">
@@ -129,10 +139,17 @@ const ServiceTeaserGrid = () => {
 
         {/* Service Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {services.map((service, index) => {
+          {filteredServices.map((service, index) => {
             const IconComponent = service.icon;
             const isHovered = hoveredIndex === index;
-            const pricing = calcDisplayPrice(service, mode);
+            const pricing = formatPrice(
+              service.basePrice,
+              service.priceUnit,
+              mode,
+              service.eligible,
+              service.laborShare,
+              false
+            );
             
             return (
               <Link
@@ -185,7 +202,7 @@ const ServiceTeaserGrid = () => {
                       )} />
                     </div>
 
-                    {/* Title and Tax Benefits */}
+                    {/* Title and Badge */}
                     <div className="flex items-center justify-between mb-3">
                       <h3 className={cn(
                         "text-2xl font-bold transition-all duration-300",
@@ -194,19 +211,15 @@ const ServiceTeaserGrid = () => {
                         {service.title}
                       </h3>
                       
-                      {/* Tax Benefit Badges */}
-                      <div className="flex gap-1">
-                        {service.eligible.rot && (
-                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                            ROT
-                          </span>
-                        )}
-                        {service.eligible.rut && (
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
-                            RUT
-                          </span>
-                        )}
-                      </div>
+                      {/* Pricing Badge */}
+                      {pricing.badge && (
+                        <Badge 
+                          variant="secondary"
+                          className={cn("text-xs", getBadgeClasses(pricing.badge))}
+                        >
+                          {pricing.badge}
+                        </Badge>
+                      )}
                     </div>
 
                     {/* Description */}
@@ -223,14 +236,11 @@ const ServiceTeaserGrid = () => {
                         )}>
                           {pricing.display}
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {pricing.badge ? `Med ${pricing.badge}-avdrag` : ""}
-                          {!pricing.eligible && mode !== 'ordinary' && (
-                            <span className="text-orange-600 ml-1">
-                              (Ej {mode.toUpperCase()}-berättigad)
-                            </span>
-                          )}
-                        </div>
+                        {pricing.savings && pricing.savings > 0 && (
+                          <div className="text-sm text-green-600 dark:text-green-400">
+                            Besparing: {pricing.savings.toLocaleString('sv-SE')} kr
+                          </div>
+                        )}
                       </div>
                       
                       {pricing.originalDisplay && (

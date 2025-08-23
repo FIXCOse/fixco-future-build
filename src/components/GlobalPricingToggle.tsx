@@ -18,18 +18,18 @@ const GlobalPricingToggle = ({ className = "", size = 'md' }: GlobalPricingToggl
   const options: { value: PriceMode; label: string; description: string }[] = [
     {
       value: 'ordinary',
-      label: 'Ordinarie',
-      description: 'Fullpris inkl. moms'
+      label: 'Alla',
+      description: 'Visa alla tjänster'
     },
     {
       value: 'rot',
       label: 'ROT',
-      description: '50% rabatt på arbetskostnad'
+      description: 'Endast ROT-berättigade tjänster'
     },
     {
       value: 'rut',
       label: 'RUT', 
-      description: '50% rabatt på arbetskostnad'
+      description: 'Endast RUT-berättigade tjänster'
     }
   ];
 

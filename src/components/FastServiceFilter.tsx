@@ -10,7 +10,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
 import { usePriceStore } from "@/stores/priceStore";
-import { calcDisplayPrice } from "@/utils/priceCalculation";
+import { formatPrice, getBadgeClasses } from "@/utils/priceFormatter";
+import { cn } from "@/lib/utils";
 import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 
 interface FastServiceFilterProps {
@@ -20,7 +21,7 @@ interface FastServiceFilterProps {
 
 const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mode } = usePriceStore();
+  const { mode, shouldShowService } = usePriceStore();
   
   // Get initial state from URL and sessionStorage
   const getInitialState = (key: string, defaultValue: string | boolean) => {
@@ -52,19 +53,21 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Get all sub-services with parent info
+  // Get all sub-services with parent info and filter by eligibility
   const allSubServices = useMemo(() => {
     return servicesDataNew.flatMap(service => 
-      service.subServices.map(subService => ({
-        ...subService,
-        parentService: service.title,
-        parentSlug: service.slug,
-        priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
-        location: subService.location as "inomhus" | "utomhus" | "båda",
-        priceType: subService.priceType as "hourly" | "fixed" | "quote"
-      }))
+      service.subServices
+        .filter(subService => shouldShowService(subService.eligible))
+        .map(subService => ({
+          ...subService,
+          parentService: service.title,
+          parentSlug: service.slug,
+          priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
+          location: subService.location as "inomhus" | "utomhus" | "båda",
+          priceType: subService.priceType as "hourly" | "fixed" | "quote"
+        }))
     );
-  }, []);
+  }, [shouldShowService]);
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -440,7 +443,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {paginatedServices.map(service => {
-                const pricing = calcDisplayPrice(service, mode);
+                const pricing = formatPrice(
+                  service.basePrice,
+                  service.priceUnit,
+                  mode,
+                  service.eligible,
+                  service.laborShare || 1.0,
+                  service.priceType === 'quote'
+                );
                 
                 return (
                   <div key={service.id} className="card-premium p-4 hover:shadow-glow transition-all duration-300 group">
@@ -451,15 +461,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                           <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
                             {service.title}
                           </h4>
-                          <Badge 
-                            variant={pricing.eligible ? "default" : "secondary"}
-                            className="text-xs"
-                          >
-                            {mode === 'rot' && service.eligible.rot ? "ROT" : 
-                             mode === 'rut' && service.eligible.rut ? "RUT" : 
-                             !pricing.eligible ? `Ej ${mode.toUpperCase()}` : 
-                             mode === 'ordinary' ? '' : mode.toUpperCase()}
-                          </Badge>
+                          {pricing.badge && (
+                            <Badge 
+                              variant="secondary"
+                              className={cn("text-xs", getBadgeClasses(pricing.badge))}
+                            >
+                              {pricing.badge}
+                            </Badge>
+                          )}
                         </div>
                         <p className="text-xs text-muted-foreground line-clamp-2">
                           {service.description}
@@ -478,13 +487,13 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                       <div className="border-t border-border pt-3">
                         <div className="flex justify-between items-center">
                           <span className="text-xs">Pris:</span>
-                          <span className={`font-semibold ${pricing.savings > 0 ? 'gradient-text' : ''}`}>
+                          <span className={`font-semibold ${pricing.savings && pricing.savings > 0 ? 'gradient-text' : ''}`}>
                             {pricing.display}
                           </span>
                         </div>
-                        {pricing.savings > 0 && (
+                        {pricing.savings && pricing.savings > 0 && (
                           <div className="text-xs text-muted-foreground mt-1">
-                            Besparing: {pricing.savings} kr
+                            Besparing: {pricing.savings.toLocaleString('sv-SE')} kr
                           </div>
                         )}
                       </div>

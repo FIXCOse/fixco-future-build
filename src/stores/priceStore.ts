@@ -2,20 +2,29 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type PriceMode = 'ordinary' | 'rot' | 'rut';
+export type EligibilityFilter = 'all' | 'rot' | 'rut';
 
 interface PriceState {
   mode: PriceMode;
+  eligibilityFilter: EligibilityFilter;
   setMode: (mode: PriceMode) => void;
   initFromUrlOrStorage: () => void;
+  // Helper to check if a service should be shown based on current filter
+  shouldShowService: (eligible: { rot: boolean; rut: boolean }) => boolean;
 }
 
 export const usePriceStore = create<PriceState>()(
   persist(
     (set, get) => ({
       mode: 'rot', // Default to ROT
+      eligibilityFilter: 'rot', // Derived from mode
 
       setMode: (mode: PriceMode) => {
-        set({ mode });
+        // Set both mode and eligibility filter
+        const eligibilityFilter: EligibilityFilter = 
+          mode === 'ordinary' ? 'all' : mode;
+        
+        set({ mode, eligibilityFilter });
         
         // Update URL parameter
         const url = new URL(window.location.href);
@@ -31,17 +40,32 @@ export const usePriceStore = create<PriceState>()(
         }
       },
 
+      shouldShowService: (eligible: { rot: boolean; rut: boolean }) => {
+        const { eligibilityFilter } = get();
+        
+        if (eligibilityFilter === 'all') return true;
+        if (eligibilityFilter === 'rot') return eligible.rot;
+        if (eligibilityFilter === 'rut') return eligible.rut;
+        return true;
+      },
+
       initFromUrlOrStorage: () => {
         // Priority: URL param > localStorage > default (ROT)
         const urlParams = new URLSearchParams(window.location.search);
         const urlMode = urlParams.get('price') as PriceMode;
         
         if (urlMode && ['ordinary', 'rot', 'rut'].includes(urlMode)) {
-          set({ mode: urlMode });
+          const eligibilityFilter: EligibilityFilter = 
+            urlMode === 'ordinary' ? 'all' : urlMode;
+          set({ mode: urlMode, eligibilityFilter });
         } else {
           // If no URL param, keep whatever is in localStorage (handled by persist middleware)
-          // But ensure URL is synced
+          // But ensure URL is synced and eligibility filter is set
           const currentMode = get().mode;
+          const eligibilityFilter: EligibilityFilter = 
+            currentMode === 'ordinary' ? 'all' : currentMode;
+          set({ eligibilityFilter });
+          
           const url = new URL(window.location.href);
           url.searchParams.set('price', currentMode);
           window.history.replaceState({}, '', url.toString());
@@ -50,7 +74,7 @@ export const usePriceStore = create<PriceState>()(
     }),
     {
       name: 'priceMode', // localStorage key
-      partialize: (state) => ({ mode: state.mode })
+      partialize: (state) => ({ mode: state.mode, eligibilityFilter: state.eligibilityFilter })
     }
   )
 );
