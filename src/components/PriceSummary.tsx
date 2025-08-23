@@ -58,11 +58,15 @@ const PriceSummary = ({
   let primaryPrice = priceIncl;
   let isDiscounted = false;
   
+  // Always show purple (discounted style) for all modes when eligible
   if (mode === 'rot' && eligible.rot) {
     primaryPrice = priceRotIncl;
     isDiscounted = true;
   } else if (mode === 'rut' && eligible.rut) {
     primaryPrice = priceRutIncl;
+    isDiscounted = true;
+  } else if (mode === 'all' && (eligible.rot || eligible.rut)) {
+    // Show purple style in 'all' mode when eligible for any discount
     isDiscounted = true;
   }
 
