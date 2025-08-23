@@ -104,7 +104,7 @@ const ROTInfo = () => {
               </p>
               <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6">
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-2">Exempel: Ordinarie pris</div>
+                  <div className="text-sm text-muted-foreground mb-2">Exempel: Pris</div>
                   <div className="text-2xl font-bold line-through text-muted-foreground mb-2">959 kr/h</div>
                   <div className="text-sm text-primary mb-2">Med ROT-avdrag</div>
                   <div className="text-3xl font-bold gradient-text">480 kr/h</div>
@@ -131,7 +131,7 @@ const ROTInfo = () => {
                 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Ordinarie pris:</span>
+                    <span className="text-sm text-muted-foreground">Pris:</span>
                     <span className="font-semibold line-through text-muted-foreground">{example.normalPrice}</span>
                   </div>
                   <div className="flex justify-between">

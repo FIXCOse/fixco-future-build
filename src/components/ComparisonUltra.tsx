@@ -73,7 +73,7 @@ const ComparisonUltra = () => {
     },
     {
       icon: TrendingUp,
-      title: rotEnabled ? "Pris med ROT-avdrag" : "Ordinarie pris",
+      title: "Pris",
       fixcoValue: rotEnabled ? 480 : 959,
       fixcoUnit: "kr/h",
       competitorValue: rotEnabled ? "800-1 300" : "800-1 300",

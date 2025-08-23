@@ -217,7 +217,7 @@ const ROTCalculator = () => {
                       
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Ordinarie pris:</span>
+                          <span className="text-muted-foreground">Pris:</span>
                           <span className="line-through">
                             {example.originalCost.toLocaleString('sv-SE')} kr
                           </span>

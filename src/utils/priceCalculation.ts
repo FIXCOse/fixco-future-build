@@ -3,7 +3,7 @@ import { PriceMode } from '@/stores/priceStore';
 export interface ServicePricing {
   id: string;
   title: string;
-  basePrice: number;      // ordinarie pris (inkl moms)
+  basePrice: number;      // pris (inkl moms)
   priceUnit: 'kr/h' | 'kr' | 'från';
   eligible: { rot: boolean; rut: boolean };
   laborShare?: number;    // default 1.0 om hela priset är arbetstid
@@ -72,7 +72,7 @@ export function calcDisplayPrice(service: ServicePricing, mode: PriceMode) {
     };
   }
 
-  // Not eligible for selected mode - return ordinary price with eligible=false
+  // Not eligible for selected mode - return price with eligible=false
   return {
     amount: base,
     display: `${base.toLocaleString('sv-SE')} ${service.priceUnit}`,

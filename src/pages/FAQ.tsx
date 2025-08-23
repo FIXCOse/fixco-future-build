@@ -56,7 +56,7 @@ const FAQ = () => {
         },
         {
           question: "Arbetar ni på helger och kvällar?",
-          answer: "Våra ordinarie tider är måndag-fredag 07:00-18:00 och lördag 08:00-16:00. För akuta ärenden och större projekt kan vi arbeta kvällar och helger mot extra kostnad. Kontakta oss så diskuterar vi möjligheterna."
+          answer: "Våra tider är måndag-fredag 07:00-18:00 och lördag 08:00-16:00. För akuta ärenden och större projekt kan vi arbeta kvällar och helger mot extra kostnad. Kontakta oss så diskuterar vi möjligheterna."
         }
       ]
     },

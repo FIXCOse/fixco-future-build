@@ -59,7 +59,7 @@ const RUT = () => {
     },
     {
       question: "Gäller material och resor?",
-      answer: "Nej, avdraget gäller endast arbetskostnaden. Material och resor betalas till ordinarie pris."
+      answer: "Nej, avdraget gäller endast arbetskostnaden. Material och resor betalas till normalt pris."
     },
     {
       question: "Hur väljer jag RUT hos er?",

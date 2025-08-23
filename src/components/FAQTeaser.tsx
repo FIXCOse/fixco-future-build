@@ -14,7 +14,7 @@ const FAQTeaser = () => {
     },
     {
       question: "Vad kostar era tjänster med ROT-avdrag?",
-      answer: "Med ROT-avdrag betalar du endast 480 kr/h för el, VVS och snickeri (ordinarie 959 kr/h). Montering kostar 350 kr/h (ordinarie 699 kr/h). ROT-avdraget ger dig 50% rabatt på arbetskostnaden, max 50,000 kr per person och år."
+      answer: "Med ROT-avdrag betalar du endast 480 kr/h för el, VVS och snickeri (normalt 959 kr/h). Montering kostar 350 kr/h (normalt 699 kr/h). ROT-avdraget ger dig 50% rabatt på arbetskostnaden, max 50,000 kr per person och år."
     },
     {
       question: "Vilka områden arbetar ni i?",

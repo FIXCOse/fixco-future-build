@@ -145,7 +145,7 @@ const InteractiveToggle = ({ showROT, onROTChange, region, onRegionChange, disab
       >
         <div className={`w-2 h-2 rounded-full ${showROT ? 'bg-green-400' : 'bg-muted'}`} />
         <span className="text-muted-foreground">
-          {showROT ? 'ROT-priser visas' : 'Ordinarie priser'}
+          {showROT ? 'ROT-priser visas' : 'Standardpriser'}
         </span>
       </motion.div>
     </motion.div>
