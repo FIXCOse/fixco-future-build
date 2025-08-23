@@ -226,10 +226,10 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Main Filter Row */}
+      {/* Main Filter Row - Centered Toggle Layout */}
       <div className="space-y-4">
-        {/* Top Row - Search + ROT Toggle */}
-        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+        {/* Search Row */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -245,12 +245,60 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             />
           </div>
 
-          {/* Global Pricing Toggle */}
-          <SegmentedPriceToggle />
-
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
             <span>Uppsala & Stockholm</span>
+          </div>
+        </div>
+        
+        {/* Centered Toggle Row */}
+        <div className="w-full max-w-[1200px] mx-auto px-2">
+          {/* Desktop: 3-zone grid with centered toggle */}
+          <div className="hidden md:grid grid-cols-3 items-center gap-4 min-h-[48px]">
+            {/* Left zone: Popular recommendations */}
+            <div className="flex flex-wrap items-center gap-2">
+              {popularChips.slice(0, 2).map((chip, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={chip.filter}
+                  className="h-8 text-xs"
+                >
+                  {chip.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Center zone: Toggle perfectly centered */}
+            <div className="flex justify-center">
+              <SegmentedPriceToggle />
+            </div>
+
+            {/* Right zone: Empty for now, can add actions */}
+            <div className="flex items-center justify-end gap-2">
+              {/* Space for future actions */}
+            </div>
+          </div>
+
+          {/* Mobile/Tablet: Stacked with toggle centered at top */}
+          <div className="md:hidden flex flex-col gap-3">
+            <div className="flex justify-center">
+              <SegmentedPriceToggle />
+            </div>
+            <div className="flex flex-wrap items-center gap-2 justify-center">
+              {popularChips.slice(0, 2).map((chip, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={chip.filter}
+                  className="h-8 text-xs"
+                >
+                  {chip.label}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
 
