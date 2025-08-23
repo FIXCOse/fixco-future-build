@@ -22,7 +22,7 @@ interface ComparisonMetric {
 
 const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
-  const { pricingMode } = useGlobalPricing();
+  const { pricingMode, rotEnabled } = useGlobalPricing();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Robust once-only counters
