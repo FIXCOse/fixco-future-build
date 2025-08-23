@@ -466,10 +466,10 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" key={mode}>
               {paginatedServices.map(service => (
                 <ServiceCardV3
-                  key={service.id}
+                  key={`${service.id}-${mode}`}
                   title={service.title}
                   category={service.category}
                   description={service.description}
@@ -493,7 +493,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                       toast.success(`Offertförfrågan för ${service.title} skickad!`);
                     }
                   }}
-                  showFullWidth={true}
                 />
               ))}
             </div>

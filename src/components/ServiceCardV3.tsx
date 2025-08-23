@@ -40,24 +40,24 @@ const ServiceCardV3 = ({
   
   if (pricingType === 'quote') {
     return (
-      <div className={cn(
-        "border border-card-border bg-card-bg rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-card hover:-translate-y-1",
+      <article className={cn(
+        "flex flex-col border border-card-border bg-card-bg rounded-2xl p-4 md:p-5 min-h-[320px] transition-all duration-300 hover:shadow-card hover:-translate-y-1",
         showFullWidth ? "w-full" : "max-w-[420px]",
         className
       )}>
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg md:text-xl font-semibold text-foreground pr-2">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <h3 className="text-base md:text-lg font-semibold text-foreground">
             {title}
           </h3>
           <div className="flex gap-1 flex-shrink-0">
             {eligible.rot && (
-              <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+              <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
                 ROT
               </Badge>
             )}
             {eligible.rut && (
-              <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+              <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
                 RUT
               </Badge>
             )}
@@ -69,14 +69,9 @@ const ServiceCardV3 = ({
           {description}
         </p>
 
-        {/* Meta info */}
-        <div className="text-xs text-muted-foreground mb-6">
-          Kategori: {category}
-        </div>
-
         {/* Price block */}
         <div className="space-y-1 mb-6">
-          <div className="text-lg md:text-xl font-semibold text-primary">
+          <div className="text-lg font-semibold text-primary">
             Begär offert
           </div>
           <div className="text-xs text-muted-foreground">
@@ -85,14 +80,16 @@ const ServiceCardV3 = ({
         </div>
 
         {/* CTA */}
-        <Button 
-          className="w-full rounded-full" 
-          variant="default"
-          onClick={onQuote}
-        >
-          Begär offert
-        </Button>
-      </div>
+        <div className="mt-auto">
+          <Button 
+            className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
+            variant="default"
+            onClick={onQuote}
+          >
+            Begär offert
+          </Button>
+        </div>
+      </article>
     );
   }
 
@@ -102,6 +99,12 @@ const ServiceCardV3 = ({
   const priceRutIncl = eligible.rut ? priceIncl * (1 - RUT_RATE) : priceIncl;
   const savingsRot = eligible.rot ? priceIncl - priceRotIncl : 0;
   const savingsRut = eligible.rut ? priceIncl - priceRutIncl : 0;
+
+  // Helper function for savings text
+  const formatSavingsText = (savings: number, deductionType: 'ROT' | 'RUT') => {
+    const suffix = pricingType === 'hourly' ? '/h' : '';
+    return `Sparar ${formatMoney(savings)} kr${suffix} med ${deductionType}`;
+  };
 
   // Determine primary price and discounted state
   let primaryPrice = priceIncl;
@@ -113,66 +116,66 @@ const ServiceCardV3 = ({
   if (mode === 'rot' && eligible.rot) {
     primaryPrice = priceRotIncl;
     originalPrice = priceIncl;
-    savingsText = `Sparar ${formatMoney(savingsRot)}${pricingType === 'hourly' ? ' kr/h' : ' kr'} med ROT`;
+    savingsText = formatSavingsText(savingsRot, 'ROT');
     isDiscounted = true;
   } else if (mode === 'rut' && eligible.rut) {
     primaryPrice = priceRutIncl;
     originalPrice = priceIncl;
-    savingsText = `Sparar ${formatMoney(savingsRut)}${pricingType === 'hourly' ? ' kr' : ' kr'} med RUT`;
+    savingsText = formatSavingsText(savingsRut, 'RUT');
     isDiscounted = true;
   } else if (mode === 'all') {
     // Always show purple style in 'all' mode for ALL services
     isDiscounted = true;
     if (eligible.rot && eligible.rut) {
       // Show both savings if applicable
-      const rotSavingsText = `ROT: ${formatMoney(savingsRot)}${pricingType === 'hourly' ? ' kr/h' : ' kr'}`;
-      const rutSavingsText = `RUT: ${formatMoney(savingsRut)}${pricingType === 'hourly' ? ' kr/h' : ' kr'}`;
+      const rotSavingsText = formatSavingsText(savingsRot, 'ROT');
+      const rutSavingsText = formatSavingsText(savingsRut, 'RUT');
       savingsText = `${rotSavingsText} • ${rutSavingsText}`;
     } else if (eligible.rot) {
-      savingsText = `ROT: ${formatMoney(savingsRot)}${pricingType === 'hourly' ? ' kr/h' : ' kr'}`;
+      savingsText = formatSavingsText(savingsRot, 'ROT');
     } else if (eligible.rut) {
-      savingsText = `RUT: ${formatMoney(savingsRut)}${pricingType === 'hourly' ? ' kr/h' : ' kr'}`;
+      savingsText = formatSavingsText(savingsRut, 'RUT');
     }
   }
 
-  const unit = pricingType === 'hourly' ? ' kr/h' : ' kr';
-  const primaryDisplay = `${formatMoney(primaryPrice)}${unit} inkl. moms`;
-  const secondaryDisplay = `${formatMoney(priceExcl)}${unit} exkl. moms`;
+  const unit = pricingType === 'hourly' ? '/h' : '';
+  const primaryDisplay = `${formatMoney(primaryPrice)} kr${unit} inkl. moms`;
+  const secondaryDisplay = `${formatMoney(priceExcl)} kr${unit} exkl. moms`;
 
   // Determine CTA type
   const ctaType = pricingType === 'hourly' ? 'book' : 'quote';
 
   return (
-    <div className={cn(
-      "border border-card-border bg-card-bg rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-card hover:-translate-y-1",
+    <article className={cn(
+      "flex flex-col border border-card-border bg-card-bg rounded-2xl p-4 md:p-5 min-h-[320px] transition-all duration-300 hover:shadow-card hover:-translate-y-1",
       showFullWidth ? "w-full" : "max-w-[420px]",
       className
     )}>
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-lg md:text-xl font-semibold text-foreground pr-2">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <h3 className="text-base md:text-lg font-semibold text-foreground">
           {title}
         </h3>
         <div className="flex gap-1 flex-shrink-0">
           {mode === 'rot' && eligible.rot && (
-            <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+            <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
               ROT
             </Badge>
           )}
           {mode === 'rut' && eligible.rut && (
-            <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+            <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
               RUT
             </Badge>
           )}
           {mode === 'all' && (
             <>
               {eligible.rot && (
-                <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+                <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
                   ROT
                 </Badge>
               )}
               {eligible.rut && (
-                <Badge className="text-xs rounded-full bg-primary text-primary-foreground">
+                <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
                   RUT
                 </Badge>
               )}
@@ -186,50 +189,47 @@ const ServiceCardV3 = ({
         {description}
       </p>
 
-      {/* Meta info */}
-      <div className="text-xs text-muted-foreground mb-6">
-        Kategori: {category}
-      </div>
-
       {/* Price block */}
-      <div className="space-y-1 mb-2">
+      <div className="space-y-1 mb-3">
         {/* Original price (strikethrough when discounted) */}
         {originalPrice && (
-          <div className="text-sm text-muted-foreground line-through">
-            Ordinarie: {formatMoney(originalPrice)}{unit}
+          <div className="text-[13px] text-muted-foreground line-through">
+            Ordinarie: {formatMoney(originalPrice)} kr{unit}
           </div>
         )}
         
         {/* Main price */}
         <div className={cn(
-          "text-lg md:text-xl font-semibold",
+          "text-lg font-semibold",
           isDiscounted ? "text-primary" : "text-foreground"
         )}>
           {primaryDisplay}
         </div>
         
         {/* Excl. VAT price */}
-        <div className="text-xs text-muted-foreground">
+        <div className="text-[12px] text-muted-foreground">
           {secondaryDisplay}
         </div>
       </div>
 
       {/* Savings text (text-only, no chip) */}
       {savingsText && (
-        <div className="text-xs text-good-text mb-6">
+        <div className="text-[12px] font-medium text-good-text mb-4">
           {savingsText}
         </div>
       )}
 
       {/* CTA */}
-      <Button 
-        className="w-full rounded-full" 
-        variant="default"
-        onClick={ctaType === 'book' ? onBook : onQuote}
-      >
-        {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
-      </Button>
-    </div>
+      <div className="mt-auto">
+        <Button 
+          className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
+          variant="default"
+          onClick={ctaType === 'book' ? onBook : onQuote}
+        >
+          {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
+        </Button>
+      </div>
+    </article>
   );
 };
 
