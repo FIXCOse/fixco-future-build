@@ -173,13 +173,29 @@ const ServiceTeaserGrid = () => {
                       )} />
                     </div>
 
-                    {/* Title */}
-                    <h3 className={cn(
-                      "text-2xl font-bold mb-3 transition-all duration-300",
-                      isHovered && "gradient-text"
-                    )}>
-                      {service.name}
-                    </h3>
+                     {/* Title and Tax Benefits */}
+                     <div className="flex items-center justify-between mb-3">
+                       <h3 className={cn(
+                         "text-2xl font-bold transition-all duration-300",
+                         isHovered && "gradient-text"
+                       )}>
+                         {service.name}
+                       </h3>
+                       
+                       {/* Tax Benefit Badges */}
+                       <div className="flex gap-1">
+                         {service.rotEligible && (
+                           <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                             ROT
+                           </span>
+                         )}
+                         {service.rutEligible && (
+                           <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
+                             RUT
+                           </span>
+                         )}
+                       </div>
+                     </div>
 
                     {/* Description */}
                     <p className="text-muted-foreground mb-4 text-sm">
@@ -199,24 +215,14 @@ const ServiceTeaserGrid = () => {
                         
                         return (
                           <div className="transition-all duration-300">
-                            <div className={cn(
-                              "text-2xl font-bold transition-all duration-300",
-                              pricing.badge ? "text-primary" : "text-foreground"
-                            )}>
-                              {pricing.display}
-                              {pricing.badge && (
-                                <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                                  {pricing.badge}
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-sm text-muted-foreground flex items-center gap-2">
+                             <div className={cn(
+                               "text-2xl font-bold transition-all duration-300",
+                               pricing.badge ? "text-primary" : "text-foreground"
+                             )}>
+                               {pricing.display}
+                             </div>
+                            <div className="text-sm text-muted-foreground">
                               {pricing.badge ? `Med ${pricing.badge}-avdrag` : "Inkl. moms"}
-                              {isEligible && pricingMode !== 'ordinarie' && (
-                                <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                                  {pricingMode.toUpperCase()}-berättigad
-                                </span>
-                              )}
                             </div>
                           </div>
                         );
