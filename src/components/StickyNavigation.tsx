@@ -39,9 +39,11 @@ const StickyNavigation = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className="text-2xl md:text-3xl font-bold gradient-text group-hover:scale-105 transition-transform">
-              Fixco
-            </div>
+            <img 
+              src="/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png" 
+              alt="Company Logo" 
+              className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Navigation */}

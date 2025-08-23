@@ -11,10 +11,12 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold gradient-text">
-              FIXCO
-            </div>
+          <Link to="/" className="flex items-center space-x-2 group">
+            <img 
+              src="/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png" 
+              alt="Company Logo" 
+              className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Navigation */}
