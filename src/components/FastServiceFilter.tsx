@@ -11,6 +11,7 @@ import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
 import { usePriceStore } from "@/stores/priceStore";
 import { formatPrice, getBadgeClasses } from "@/utils/priceFormatter";
+import PriceSummary from '@/components/PriceSummary';
 import { cn } from "@/lib/utils";
 import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 
@@ -443,33 +444,16 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {paginatedServices.map(service => {
-                const pricing = formatPrice(
-                  service.basePrice,
-                  service.priceUnit,
-                  mode,
-                  service.eligible,
-                  service.laborShare || 1.0,
-                  service.priceType === 'quote'
-                );
-                
                 return (
                   <div key={service.id} className="card-premium p-4 hover:shadow-glow transition-all duration-300 group">
                     <div className="space-y-3">
                       {/* Header */}
-                      <div>
-                        <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
-                            {service.title}
-                          </h4>
-                          {pricing.badge && (
-                            <Badge 
-                              variant="secondary"
-                              className={cn("text-xs", getBadgeClasses(pricing.badge))}
-                            >
-                              {pricing.badge}
-                            </Badge>
-                          )}
-                        </div>
+                         <div>
+                           <div className="flex items-start justify-between mb-2">
+                             <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
+                               {service.title}
+                             </h4>
+                           </div>
                         <p className="text-xs text-muted-foreground line-clamp-2">
                           {service.description}
                         </p>
@@ -483,20 +467,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                         </div>
                       </div>
 
-                      {/* Pricing */}
-                      <div className="border-t border-border pt-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs">Pris:</span>
-                          <span className={`font-semibold ${pricing.savings && pricing.savings > 0 ? 'gradient-text' : ''}`}>
-                            {pricing.display}
-                          </span>
-                        </div>
-                        {pricing.savings && pricing.savings > 0 && (
-                          <div className="text-xs text-muted-foreground mt-1">
-                            Besparing: {pricing.savings.toLocaleString('sv-SE')} kr
-                          </div>
-                        )}
-                      </div>
+                       {/* Pricing */}
+                       <PriceSummary
+                         priceIncl={service.basePrice}
+                         pricingType={service.priceType}
+                         eligible={service.eligible}
+                         size="sm"
+                         showChips={false}
+                       />
 
                       {/* CTA */}
                       <Button 

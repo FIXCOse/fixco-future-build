@@ -37,14 +37,14 @@ export function formatPrice(
     return `${amount.toLocaleString('sv-SE')} ${unit} inkl. moms`;
   };
 
-  // Base formatting for ordinary mode or fixed prices
-  if (mode === 'ordinary' || fixedPrice) {
+  // Base formatting for all mode or fixed prices
+  if (mode === 'all' || fixedPrice) {
     return {
       display: formatDisplay(basePrice, priceUnit),
       amount: basePrice,
       badge: null,
       eligible: true,
-      mode: 'ordinary',
+      mode: 'all',
       savings: 0,
       savingsPercent: 0
     };
@@ -80,7 +80,7 @@ export function formatPrice(
         amount: basePrice,
         badge: 'Ej ROT',
         eligible: false,
-        mode: 'ordinary',
+        mode: 'all',
         savings: 0,
         savingsPercent: 0
       };
@@ -113,7 +113,7 @@ export function formatPrice(
         amount: basePrice,
         badge: 'Ej RUT',
         eligible: false,
-        mode: 'ordinary',
+        mode: 'all',
         savings: 0,
         savingsPercent: 0
       };
@@ -126,7 +126,7 @@ export function formatPrice(
     amount: basePrice,
     badge: null,
     eligible: true,
-    mode: 'ordinary',
+    mode: 'all',
     savings: 0,
     savingsPercent: 0
   };
@@ -139,7 +139,7 @@ export function isServiceEligible(
   eligible: { rot: boolean; rut: boolean },
   mode: PriceMode
 ): boolean {
-  if (mode === 'ordinary') return true;
+  if (mode === 'all') return true;
   if (mode === 'rot') return eligible.rot;
   if (mode === 'rut') return eligible.rut;
   return false;

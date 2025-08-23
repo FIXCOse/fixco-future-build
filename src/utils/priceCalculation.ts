@@ -19,12 +19,12 @@ export function calcDisplayPrice(service: ServicePricing, mode: PriceMode) {
   const laborCost = base * laborShare;
   const materialCost = base - laborCost;
 
-  // Fixed price services or ordinary mode - return base price
-  if (service.fixedPrice || mode === 'ordinary') {
+  // Fixed price services or all mode - return base price
+  if (service.fixedPrice || mode === 'all') {
     return {
       amount: base,
       display: `${base.toLocaleString('sv-SE')} ${service.priceUnit}`,
-      mode: 'ordinary' as const,
+      mode: 'all' as const,
       eligible: true,
       savings: 0,
       savingsPercent: 0,
@@ -76,7 +76,7 @@ export function calcDisplayPrice(service: ServicePricing, mode: PriceMode) {
   return {
     amount: base,
     display: `${base.toLocaleString('sv-SE')} ${service.priceUnit}`,
-    mode: 'ordinary' as const,
+    mode: 'all' as const,
     eligible: false,
     savings: 0,
     savingsPercent: 0,
@@ -85,7 +85,7 @@ export function calcDisplayPrice(service: ServicePricing, mode: PriceMode) {
 }
 
 export function isEligibleForMode(service: ServicePricing, mode: PriceMode): boolean {
-  if (mode === 'ordinary') return true;
+  if (mode === 'all') return true;
   if (mode === 'rot') return service.eligible.rot;
   if (mode === 'rut') return service.eligible.rut;
   return false;

@@ -17,7 +17,7 @@ const GlobalPricingToggle = ({ className = "", size = 'md' }: GlobalPricingToggl
 
   const options: { value: PriceMode; label: string; description: string }[] = [
     {
-      value: 'ordinary',
+      value: 'all',
       label: 'Alla',
       description: 'Visa alla tjänster'
     },
@@ -59,7 +59,7 @@ const GlobalPricingToggle = ({ className = "", size = 'md' }: GlobalPricingToggl
         <p className="text-sm text-muted-foreground">
           {options.find(opt => opt.value === mode)?.description}
         </p>
-        {mode !== 'ordinary' && (
+        {mode !== 'all' && (
           <p className="text-xs text-muted-foreground mt-1">
             Vi sköter administrationen och drar av direkt på fakturan
           </p>

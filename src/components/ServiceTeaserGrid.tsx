@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import GlobalPricingToggle from '@/components/GlobalPricingToggle';
 import { usePriceStore } from '@/stores/priceStore';
-import { formatPrice, getBadgeClasses } from '@/utils/priceFormatter';
-import { Badge } from '@/components/ui/badge';
+import PriceSummary from '@/components/PriceSummary';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -142,14 +141,6 @@ const ServiceTeaserGrid = () => {
           {filteredServices.map((service, index) => {
             const IconComponent = service.icon;
             const isHovered = hoveredIndex === index;
-            const pricing = formatPrice(
-              service.basePrice,
-              service.priceUnit,
-              mode,
-              service.eligible,
-              service.laborShare,
-              false
-            );
             
             return (
               <Link
@@ -202,24 +193,14 @@ const ServiceTeaserGrid = () => {
                       )} />
                     </div>
 
-                    {/* Title and Badge */}
-                    <div className="flex items-center justify-between mb-3">
+                    {/* Title */}
+                    <div className="mb-3">
                       <h3 className={cn(
                         "text-2xl font-bold transition-all duration-300",
                         isHovered && "gradient-text"
                       )}>
                         {service.title}
                       </h3>
-                      
-                      {/* Pricing Badge */}
-                      {pricing.badge && (
-                        <Badge 
-                          variant="secondary"
-                          className={cn("text-xs", getBadgeClasses(pricing.badge))}
-                        >
-                          {pricing.badge}
-                        </Badge>
-                      )}
                     </div>
 
                     {/* Description */}
@@ -228,27 +209,12 @@ const ServiceTeaserGrid = () => {
                     </p>
 
                     {/* Pricing */}
-                    <div className="space-y-2">
-                      <div className="transition-all duration-300">
-                        <div className={cn(
-                          "text-2xl font-bold transition-all duration-300",
-                          pricing.badge ? "text-primary" : "text-foreground"
-                        )}>
-                          {pricing.display}
-                        </div>
-                        {pricing.savings && pricing.savings > 0 && (
-                          <div className="text-sm text-green-600 dark:text-green-400">
-                            Besparing: {pricing.savings.toLocaleString('sv-SE')} kr
-                          </div>
-                        )}
-                      </div>
-                      
-                      {pricing.originalDisplay && (
-                        <div className="text-xs text-muted-foreground line-through">
-                          {pricing.originalDisplay}
-                        </div>
-                      )}
-                    </div>
+                    <PriceSummary
+                      priceIncl={service.basePrice}
+                      pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                      eligible={service.eligible}
+                      size="md"
+                    />
 
                     {/* CTA Hint */}
                     <div className={cn(

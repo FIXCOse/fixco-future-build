@@ -7,7 +7,8 @@ import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
 import { Button } from "@/components/ui/button-premium";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
-import { Badge } from "@/components/ui/badge";
+import PriceSummary from '@/components/PriceSummary';
+import { Badge } from '@/components/ui/badge';
 import { 
   ArrowRight,
   CheckCircle,
@@ -255,49 +256,15 @@ const ServiceDetail = () => {
                     </div>
                   </div>
 
-                  {/* Pricing with Global Pricing System */}
+                  {/* Pricing with PriceSummary */}
                   <div className="border-t border-border pt-4 mb-4">
-                    {subService.priceType === 'quote' ? (
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold">Pris:</span>
-                        <span className="text-lg font-bold">Begär offert</span>
-                      </div>
-                    ) : (
-                      <>
-                        {pricing.originalDisplay && eligible ? (
-                          <>
-                            <div className="flex justify-between items-center mb-2">
-                              <span className="text-xs text-muted-foreground">Ursprungligt pris:</span>
-                              <span className="text-sm font-semibold line-through text-muted-foreground">
-                                {pricing.originalDisplay}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm font-semibold text-primary">Med {pricing.badge}-avdrag:</span>
-                              <span className="text-lg font-bold gradient-text">
-                                {pricing.display}
-                              </span>
-                            </div>
-                            <div className="text-xs text-muted-foreground mt-1">50% rabatt med {pricing.badge}</div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm font-semibold">Pris:</span>
-                              <span className="text-lg font-bold">{pricing.display}</span>
-                            </div>
-                            <div className="text-xs text-muted-foreground mt-1">
-                              {pricing.badge ? `Med ${pricing.badge}-avdrag` : ''}
-                              {mode !== 'ordinary' && (
-                                <span className="text-orange-600 ml-1">
-                                  (Ej {mode.toUpperCase()}-berättigad)
-                                </span>
-                              )}
-                            </div>
-                          </>
-                        )}
-                      </>
-                    )}
+                    <PriceSummary
+                      priceIncl={subService.basePrice}
+                      pricingType={subService.priceType === 'quote' ? 'quote' : 
+                                   subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                      eligible={subService.eligible}
+                      size="sm"
+                    />
                   </div>
 
                   {/* CTA */}
@@ -404,10 +371,13 @@ const ServiceDetail = () => {
                   <h3 className="text-xl font-bold mb-2">{relatedService.title}</h3>
                   <p className="text-muted-foreground mb-4">{relatedService.description}</p>
                   <div className="text-sm mb-4">
-                    <span className="font-semibold text-primary">Från {relatedPricing.display}</span>
-                    {relatedPricing.badge && (
-                      <span className="text-muted-foreground"> med {relatedPricing.badge}</span>
-                    )}
+                    <PriceSummary
+                      priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
+                      pricingType="hourly"
+                      eligible={relatedService.eligible}
+                      size="sm"
+                      showChips={false}
+                    />
                   </div>
                   <Link to={`/tjanster/${relatedService.slug}`}>
                     <Button variant="ghost-premium" size="sm" className="w-full">

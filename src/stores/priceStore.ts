@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type PriceMode = 'ordinary' | 'rot' | 'rut';
+export type PriceMode = 'all' | 'rot' | 'rut';
 export type EligibilityFilter = 'all' | 'rot' | 'rut';
 
 interface PriceState {
@@ -16,13 +16,13 @@ interface PriceState {
 export const usePriceStore = create<PriceState>()(
   persist(
     (set, get) => ({
-      mode: 'rot', // Default to ROT
-      eligibilityFilter: 'rot', // Derived from mode
+      mode: 'all', // Default to show all services
+      eligibilityFilter: 'all', // Derived from mode
 
       setMode: (mode: PriceMode) => {
         // Set both mode and eligibility filter
         const eligibilityFilter: EligibilityFilter = 
-          mode === 'ordinary' ? 'all' : mode;
+          mode === 'all' ? 'all' : mode;
         
         set({ mode, eligibilityFilter });
         
@@ -54,16 +54,16 @@ export const usePriceStore = create<PriceState>()(
         const urlParams = new URLSearchParams(window.location.search);
         const urlMode = urlParams.get('price') as PriceMode;
         
-        if (urlMode && ['ordinary', 'rot', 'rut'].includes(urlMode)) {
+        if (urlMode && ['all', 'rot', 'rut'].includes(urlMode)) {
           const eligibilityFilter: EligibilityFilter = 
-            urlMode === 'ordinary' ? 'all' : urlMode;
+            urlMode === 'all' ? 'all' : urlMode;
           set({ mode: urlMode, eligibilityFilter });
         } else {
           // If no URL param, keep whatever is in localStorage (handled by persist middleware)
           // But ensure URL is synced and eligibility filter is set
           const currentMode = get().mode;
           const eligibilityFilter: EligibilityFilter = 
-            currentMode === 'ordinary' ? 'all' : currentMode;
+            currentMode === 'all' ? 'all' : currentMode;
           set({ eligibilityFilter });
           
           const url = new URL(window.location.href);
