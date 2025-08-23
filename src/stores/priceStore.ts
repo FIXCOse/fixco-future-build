@@ -16,8 +16,8 @@ interface PriceState {
 export const usePriceStore = create<PriceState>()(
   persist(
     (set, get) => ({
-      mode: 'all', // Default to show all services
-      eligibilityFilter: 'all', // Derived from mode
+      mode: 'rot', // Default to show ROT services with discounted prices
+      eligibilityFilter: 'rot', // Derived from mode
 
       setMode: (mode: PriceMode) => {
         // Set both mode and eligibility filter
@@ -54,7 +54,7 @@ export const usePriceStore = create<PriceState>()(
       },
 
       initFromUrlOrStorage: () => {
-        // Priority: URL param > localStorage > default (all)
+        // Priority: URL param > localStorage > default (rot)
         const urlParams = new URLSearchParams(window.location.search);
         const urlMode = urlParams.get('price') as PriceMode;
         
