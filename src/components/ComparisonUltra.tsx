@@ -280,11 +280,11 @@ const ComparisonUltra = () => {
                 {/* Left: Summary */}
                 <div className="text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
                       <img 
                         src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                         alt="Fixco" 
-                        className="h-3 w-3 object-contain opacity-80"
+                        className="h-4 w-4 object-contain opacity-90"
                       />
                     </div>
                     <h3 className="text-lg md:text-xl font-bold gradient-text">

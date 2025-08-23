@@ -73,11 +73,11 @@ const GlobalStickyCTA = () => {
         <div className="md:hidden">
           <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow p-4 relative">
             {/* F Brand Badge */}
-            <div className="absolute top-2 left-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm opacity-60">
+            <div className="absolute top-2 left-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
               <img 
                 src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                 alt="Fixco" 
-                className="h-3 w-3 object-contain opacity-90"
+                className="h-3.5 w-3.5 object-contain opacity-90"
               />
             </div>
 
@@ -122,11 +122,11 @@ const GlobalStickyCTA = () => {
                   {/* Contact Info with F Brand */}
                   <div className="flex items-center space-x-6 text-sm">
                     <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mr-1">
+                      <div className="w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center mr-1 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
                         <img 
                           src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                           alt="Fixco" 
-                          className="h-2.5 w-2.5 object-contain opacity-60"
+                          className="h-3.5 w-3.5 object-contain opacity-90"
                         />
                       </div>
                       <Phone className="h-4 w-4 text-primary" />
