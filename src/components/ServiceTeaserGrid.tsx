@@ -224,7 +224,7 @@ const ServiceTeaserGrid = () => {
                           {pricing.display}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {pricing.badge ? `Med ${pricing.badge}-avdrag` : "Inkl. moms"}
+                          {pricing.badge ? `Med ${pricing.badge}-avdrag` : ""}
                           {!pricing.eligible && mode !== 'ordinary' && (
                             <span className="text-orange-600 ml-1">
                               (Ej {mode.toUpperCase()}-berättigad)

@@ -458,7 +458,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                             {mode === 'rot' && service.eligible.rot ? "ROT" : 
                              mode === 'rut' && service.eligible.rut ? "RUT" : 
                              !pricing.eligible ? `Ej ${mode.toUpperCase()}` : 
-                             mode.toUpperCase()}
+                             mode === 'ordinary' ? '' : mode.toUpperCase()}
                           </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground line-clamp-2">

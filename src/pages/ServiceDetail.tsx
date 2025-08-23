@@ -287,7 +287,7 @@ const ServiceDetail = () => {
                               <span className="text-lg font-bold">{pricing.display}</span>
                             </div>
                             <div className="text-xs text-muted-foreground mt-1">
-                              {pricing.badge ? `Med ${pricing.badge}-avdrag` : 'inkl. moms'}
+                              {pricing.badge ? `Med ${pricing.badge}-avdrag` : ''}
                               {mode !== 'ordinary' && (
                                 <span className="text-orange-600 ml-1">
                                   (Ej {mode.toUpperCase()}-berättigad)
