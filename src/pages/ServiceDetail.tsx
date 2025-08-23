@@ -267,7 +267,7 @@ const ServiceDetail = () => {
                         {pricing.originalDisplay && eligible ? (
                           <>
                             <div className="flex justify-between items-center mb-2">
-                              <span className="text-xs text-muted-foreground">Ordinarie:</span>
+                              <span className="text-xs text-muted-foreground">Ursprungligt pris:</span>
                               <span className="text-sm font-semibold line-through text-muted-foreground">
                                 {pricing.originalDisplay}
                               </span>

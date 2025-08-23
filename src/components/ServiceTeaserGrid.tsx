@@ -235,7 +235,7 @@ const ServiceTeaserGrid = () => {
                       
                       {pricing.originalDisplay && (
                         <div className="text-xs text-muted-foreground line-through">
-                          Ord: {pricing.originalDisplay}
+                          {pricing.originalDisplay}
                         </div>
                       )}
                     </div>
