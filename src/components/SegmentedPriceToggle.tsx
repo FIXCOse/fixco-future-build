@@ -45,41 +45,27 @@ const SegmentedPriceToggle = ({ className = "", size = 'md' }: SegmentedPriceTog
   const config = sizeConfig[size];
 
   return (
-    <div className={cn("space-y-4", className)}>
-      {/* Segmented Toggle */}
-      <div className={cn(
-        "inline-flex items-center rounded-lg bg-muted/50 border border-border select-none",
-        config.wrapper
-      )}>
-        {options.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setMode(option.value)}
-            className={cn(
-              "flex-1 rounded-md font-medium transition-colors duration-200",
-              "border border-transparent box-border leading-tight",
-              config.button,
-              mode === option.value
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-background/50"
-            )}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Description */}
-      <div className="text-center">
-        <p className="text-sm text-muted-foreground">
-          {options.find(opt => opt.value === mode)?.description}
-        </p>
-        {mode !== 'all' && (
-          <p className="text-xs text-muted-foreground mt-1">
-            Vi sköter administrationen och drar av direkt på fakturan
-          </p>
-        )}
-      </div>
+    <div className={cn(
+      "inline-flex items-center rounded-lg bg-muted/50 border border-border select-none",
+      config.wrapper,
+      className
+    )}>
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => setMode(option.value)}
+          className={cn(
+            "flex-1 rounded-md font-medium transition-colors duration-200",
+            "border border-transparent box-border leading-tight",
+            config.button,
+            mode === option.value
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 };

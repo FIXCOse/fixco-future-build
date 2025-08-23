@@ -217,12 +217,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     indoorOutdoor !== "alla"
   ].filter(Boolean).length;
 
-  // Popular recommendations
-  const popularChips = useMemo(() => [
-    { label: "Populärt i El", filter: () => handleCategoryChange('el') },
-    { label: "Snabbt & billigt", filter: () => { setSelectedPriceType('fixed'); updateStateAndURL({ priceType: 'fixed' }); } },
-    { label: "ROT-favoriter", filter: () => handleCategoryChange('el') }
-  ], []);
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -253,52 +247,8 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         
         {/* Centered Toggle Row */}
         <div className="w-full max-w-[1200px] mx-auto px-2">
-          {/* Desktop: 3-zone grid with centered toggle */}
-          <div className="hidden md:grid grid-cols-3 items-center gap-4 min-h-[48px]">
-            {/* Left zone: Popular recommendations */}
-            <div className="flex flex-wrap items-center gap-2">
-              {popularChips.slice(0, 2).map((chip, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  onClick={chip.filter}
-                  className="h-8 text-xs"
-                >
-                  {chip.label}
-                </Button>
-              ))}
-            </div>
-
-            {/* Center zone: Toggle perfectly centered */}
-            <div className="flex justify-center">
-              <SegmentedPriceToggle />
-            </div>
-
-            {/* Right zone: Empty for now, can add actions */}
-            <div className="flex items-center justify-end gap-2">
-              {/* Space for future actions */}
-            </div>
-          </div>
-
-          {/* Mobile/Tablet: Stacked with toggle centered at top */}
-          <div className="md:hidden flex flex-col gap-3">
-            <div className="flex justify-center">
-              <SegmentedPriceToggle />
-            </div>
-            <div className="flex flex-wrap items-center gap-2 justify-center">
-              {popularChips.slice(0, 2).map((chip, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  onClick={chip.filter}
-                  className="h-8 text-xs"
-                >
-                  {chip.label}
-                </Button>
-              ))}
-            </div>
+          <div className="flex justify-center py-2">
+            <SegmentedPriceToggle />
           </div>
         </div>
 
@@ -360,22 +310,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             </SelectContent>
           </Select>
 
-          {/* Sort */}
-          <Select value={sortBy} onValueChange={(value) => {
-            setSortBy(value);
-            updateStateAndURL({ sort: value });
-          }}>
-            <SelectTrigger className="w-36 h-8">
-              <SortAsc className="h-4 w-4 mr-2" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="relevans">Relevans</SelectItem>
-              <SelectItem value="pris-låg">Lägsta pris</SelectItem>
-              <SelectItem value="pris-hög">Högsta pris</SelectItem>
-              <SelectItem value="mest-bokad">Mest bokad</SelectItem>
-            </SelectContent>
-          </Select>
 
           {/* Clear Filters */}
           {activeFiltersCount > 0 && (
@@ -412,23 +346,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           </div>
         )}
 
-        {/* Popular Recommendations */}
-        {activeFiltersCount === 0 && (
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-sm text-muted-foreground">Populära val:</span>
-            {popularChips.map((chip, index) => (
-              <Button
-                key={index}
-                variant="ghost-premium"
-                size="sm"
-                onClick={chip.filter}
-                className="h-7 text-xs"
-              >
-                {chip.label}
-              </Button>
-            ))}
-          </div>
-        )}
 
         {/* Active Filters Display */}
         {(searchDebounced || selectedSubCategories.length > 0) && (
@@ -495,21 +412,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                 <p className="text-muted-foreground mb-4">
                   Inga tjänster matchade dina sökkriterier
                 </p>
-                <div className="space-y-2 mb-4">
-                  <p className="text-sm text-muted-foreground">Förslag:</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {popularChips.map((chip, index) => (
-                      <Button
-                        key={index}
-                        variant="ghost-premium"
-                        size="sm"
-                        onClick={chip.filter}
-                      >
-                        {chip.label}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
                 <Button variant="ghost-premium" onClick={clearFilters}>
                   Rensa filter och försök igen
                 </Button>
