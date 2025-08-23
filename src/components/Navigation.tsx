@@ -11,12 +11,19 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link to="/" className="flex items-center space-x-3 group">
             <img 
               src="/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png" 
               alt="Company Logo" 
               className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform"
             />
+            <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <img 
+                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                alt="Fixco F" 
+                className="h-3 w-3 object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

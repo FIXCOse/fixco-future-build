@@ -292,7 +292,7 @@ const HeroUltra = () => {
                         <img 
                           src={item.src} 
                           alt="Fixco Brand" 
-                          className="h-6 w-6 object-contain opacity-80"
+                          className="h-8 w-8 object-contain opacity-90"
                         />
                       ) : (
                         (() => {
