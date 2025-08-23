@@ -169,15 +169,23 @@ const ServiceCardV3 = ({
           )}
           {mode === 'all' && (
             <>
-              {eligible.rot && (
+              {eligible.rot && eligible.rut ? (
                 <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
-                  ROT
+                  ROT • RUT
                 </Badge>
-              )}
-              {eligible.rut && (
-                <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
-                  RUT
-                </Badge>
+              ) : (
+                <>
+                  {eligible.rot && (
+                    <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+                      ROT
+                    </Badge>
+                  )}
+                  {eligible.rut && (
+                    <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+                      RUT
+                    </Badge>
+                  )}
+                </>
               )}
             </>
           )}
