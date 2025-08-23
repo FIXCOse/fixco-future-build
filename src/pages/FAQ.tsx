@@ -114,9 +114,25 @@ const FAQ = () => {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-background">
-        <div className="container mx-auto px-4">
+        {/* Hero Section */}
+        <section className="pt-32 pb-20 hero-background relative">
+          {/* F Watermark Background Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
+              style={{ animationDuration: '5s' }}
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
+              style={{ animationDuration: '4s', animationDelay: '2s' }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
               Vanliga <span className="gradient-text">frågor</span>
@@ -148,12 +164,20 @@ const FAQ = () => {
             
             return (
               <div key={categoryIndex} className="mb-12">
-                <div className="flex items-center mb-8">
-                  <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle mr-4">
-                    <CategoryIcon className="h-8 w-8 text-primary" />
+                  <div className="flex items-center mb-8">
+                    <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle mr-4 relative">
+                      {/* F Brand Badge on Category Headers */}
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-md z-10">
+                        <img 
+                          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                          alt="Fixco" 
+                          className="h-3 w-3 object-contain opacity-90"
+                        />
+                      </div>
+                      <CategoryIcon className="h-8 w-8 text-primary" />
+                    </div>
+                    <h2 className="text-3xl font-bold">{category.title}</h2>
                   </div>
-                  <h2 className="text-3xl font-bold">{category.title}</h2>
-                </div>
                 
                 <div className="space-y-4">
                   {category.questions.map((faq, faqIndex) => {
@@ -161,7 +185,16 @@ const FAQ = () => {
                     const isOpen = openItems.includes(globalIndex);
                     
                     return (
-                      <div key={faqIndex} className="card-premium overflow-hidden">
+                      <div key={faqIndex} className="card-premium overflow-hidden relative">
+                        {/* F Brand Badge - Bottom Right, Highly Visible */}
+                        <div className="absolute bottom-3 right-3 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                          <img 
+                            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                            alt="Fixco" 
+                            className="h-4 w-4 object-contain opacity-90"
+                          />
+                        </div>
+
                         <button
                           onClick={() => toggleItem(globalIndex)}
                           className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-accent/5 transition-colors"
@@ -191,9 +224,25 @@ const FAQ = () => {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-20 gradient-primary-subtle">
-        <div className="container mx-auto px-4">
+        {/* Contact CTA */}
+        <section className="py-20 gradient-primary-subtle relative">
+          {/* F Watermark Background Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute top-10 left-10 w-20 h-20 object-contain rotate-12 opacity-30 animate-pulse"
+              style={{ animationDuration: '4s' }}
+            />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="" 
+              className="absolute bottom-10 right-10 w-16 h-16 object-contain -rotate-6 opacity-25 animate-pulse"
+              style={{ animationDuration: '5s', animationDelay: '1.5s' }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
               Hittar du inte svar på din <span className="gradient-text">fråga</span>?
@@ -202,18 +251,38 @@ const FAQ = () => {
               Kontakta oss direkt så hjälper vi dig gärna. Vi svarar alltid inom 2 timmar.
             </p>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              <Link to="/kontakt">
-                <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
-                  Skicka meddelande
-                </Button>
-              </Link>
-              <a href="tel:08-123456789">
-                <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
-                  Ring nu: 08-123 456 78
-                </Button>
-              </a>
-            </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Link to="/kontakt">
+                  <div className="relative">
+                    {/* F Brand Badge on CTA Buttons */}
+                    <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                      <img 
+                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        alt="Fixco" 
+                        className="h-3.5 w-3.5 object-contain opacity-90"
+                      />
+                    </div>
+                    <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
+                      Skicka meddelande
+                    </Button>
+                  </div>
+                </Link>
+                <a href="tel:08-123456789">
+                  <div className="relative">
+                    {/* F Brand Badge on CTA Buttons */}
+                    <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                      <img 
+                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        alt="Fixco" 
+                        className="h-3.5 w-3.5 object-contain opacity-90"
+                      />
+                    </div>
+                    <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
+                      Ring nu: 08-123 456 78
+                    </Button>
+                  </div>
+                </a>
+              </div>
           </div>
         </div>
       </section>
