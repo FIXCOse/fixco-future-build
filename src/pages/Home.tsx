@@ -11,9 +11,15 @@ import ROTCalculator from "@/components/ROTCalculator";
 import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
+import { usePriceStore } from "@/stores/priceStore";
 
 const Home = () => {
   console.log("Home component rendering...");
+  
+  // Initialize pricing store from URL/localStorage
+  useEffect(() => {
+    usePriceStore.getState().initFromUrlOrStorage();
+  }, []);
   
   return (
     <div className="min-h-screen">
