@@ -94,14 +94,14 @@ const PriceSummary = ({
           {/* ROT chip */}
           {mode === 'rot' && eligible.rot && savingsRot > 0 && (
             <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Sparar {formatMoney(savingsRot)} kr med ROT
+              Sparar {formatMoney(savingsRot)}{unit} med ROT
             </Badge>
           )}
           
           {/* RUT chip */}
           {mode === 'rut' && eligible.rut && savingsRut > 0 && (
             <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Sparar {formatMoney(savingsRut)} kr med RUT
+              Sparar {formatMoney(savingsRut)}{unit} med RUT
             </Badge>
           )}
           
@@ -110,12 +110,12 @@ const PriceSummary = ({
             <>
               {eligible.rot && (
                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                  ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)} kr` : ''}
+                  ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)}${unit}` : ''}
                 </Badge>
               )}
               {eligible.rut && (
                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                  RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)} kr` : ''}
+                  RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)}${unit}` : ''}
                 </Badge>
               )}
             </>

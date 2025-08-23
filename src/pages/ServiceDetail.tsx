@@ -47,10 +47,15 @@ const ServiceDetail = () => {
 
   const IconComponent = service.icon;
 
-  // Pagination logic
-  const totalPages = Math.ceil(service.subServices.length / itemsPerPage);
+  // Filter and paginate services based on eligibility
+  const { shouldShowService } = usePriceStore();
+  const filteredSubServices = service.subServices.filter(subService => 
+    shouldShowService(subService.eligible)
+  );
+  
+  const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSubServices = service.subServices.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
 
   // Related services (other services user might be interested in)
   const relatedServices = servicesDataNew
@@ -177,7 +182,7 @@ const ServiceDetail = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Alla våra {service.title.toLowerCase()}stjänster</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {service.subServices.length} specialiserade tjänster med transparent prissättning. 
+              {filteredSubServices.length} specialiserade tjänster med transparent prissättning. 
               Alla priser inkluderar moms och kan kombineras med ROT/RUT-avdrag för 50% rabatt.
             </p>
             <div className="flex items-center justify-center mt-4 text-sm text-muted-foreground">
@@ -186,8 +191,27 @@ const ServiceDetail = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginatedSubServices.map((subService, index) => {
+          {/* Empty state */}
+          {filteredSubServices.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="max-w-md mx-auto">
+                <h3 className="text-xl font-semibold mb-4">
+                  Inga tjänster är berättigade till {mode === 'rot' ? 'ROT' : 'RUT'} i denna kategori.
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Visa alla tjänster för att se fler alternativ.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => usePriceStore.getState().setMode('all')}
+                >
+                  Visa alla tjänster
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {paginatedSubServices.map((subService, index) => {
               // Create a ServicePricing object for calculation
               const serviceForPricing = {
                 id: subService.id,
@@ -288,11 +312,12 @@ const ServiceDetail = () => {
                   </Button>
                 </div>
               );
-            })}
-          </div>
+              })}
+            </div>
+          )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
+          {totalPages > 1 && filteredSubServices.length > 0 && (
             <div className="flex justify-center mt-12 space-x-2">
               <Button 
                 variant="outline"

@@ -416,27 +416,51 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         {/* Results Grid */}
         {filteredServices.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">
-              Inga tjänster matchade dina sökkriterier
-            </p>
-            <div className="space-y-2 mb-4">
-              <p className="text-sm text-muted-foreground">Förslag:</p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {popularChips.map((chip, index) => (
-                  <Button
-                    key={index}
-                    variant="ghost-premium"
-                    size="sm"
-                    onClick={chip.filter}
-                  >
-                    {chip.label}
+            {mode !== 'all' ? (
+              // Empty state for ROT/RUT filtering
+              <div className="max-w-md mx-auto">
+                <p className="text-muted-foreground mb-4">
+                  Inga tjänster är berättigade till {mode === 'rot' ? 'ROT' : 'RUT'} med dina nuvarande filter.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => usePriceStore.getState().setMode('all')}
+                  className="mb-4"
+                >
+                  Visa alla tjänster
+                </Button>
+                <div className="mt-4">
+                  <Button variant="ghost-premium" onClick={clearFilters}>
+                    Rensa övriga filter
                   </Button>
-                ))}
+                </div>
               </div>
-            </div>
-            <Button variant="ghost-premium" onClick={clearFilters}>
-              Rensa filter och försök igen
-            </Button>
+            ) : (
+              // General empty state
+              <>
+                <p className="text-muted-foreground mb-4">
+                  Inga tjänster matchade dina sökkriterier
+                </p>
+                <div className="space-y-2 mb-4">
+                  <p className="text-sm text-muted-foreground">Förslag:</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {popularChips.map((chip, index) => (
+                      <Button
+                        key={index}
+                        variant="ghost-premium"
+                        size="sm"
+                        onClick={chip.filter}
+                      >
+                        {chip.label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <Button variant="ghost-premium" onClick={clearFilters}>
+                  Rensa filter och försök igen
+                </Button>
+              </>
+            )}
           </div>
         ) : (
           <>
@@ -506,26 +530,26 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                                {formatMoney(priceExcl)}{unit} exkl. moms
                              </div>
                              <div className="flex flex-wrap gap-1 mt-2">
-                               {mode === 'rot' && service.eligible.rot && savingsRot > 0 && (
-                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                   Sparar {formatMoney(savingsRot)} kr med ROT
-                                 </Badge>
-                               )}
-                               {mode === 'rut' && service.eligible.rut && savingsRut > 0 && (
-                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                   Sparar {formatMoney(savingsRut)} kr med RUT
-                                 </Badge>
-                               )}
-                               {mode === 'all' && service.eligible.rot && (
-                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                   ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)} kr` : ''}
-                                 </Badge>
-                               )}
-                               {mode === 'all' && service.eligible.rut && (
-                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                   RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)} kr` : ''}
-                                 </Badge>
-                               )}
+                                {mode === 'rot' && service.eligible.rot && savingsRot > 0 && (
+                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    Sparar {formatMoney(savingsRot)}{unit} med ROT
+                                  </Badge>
+                                )}
+                                {mode === 'rut' && service.eligible.rut && savingsRut > 0 && (
+                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    Sparar {formatMoney(savingsRut)}{unit} med RUT
+                                  </Badge>
+                                )}
+                                {mode === 'all' && service.eligible.rot && (
+                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)}${unit}` : ''}
+                                  </Badge>
+                                )}
+                                {mode === 'all' && service.eligible.rut && (
+                                  <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)}${unit}` : ''}
+                                  </Badge>
+                                )}
                                {mode === 'rot' && !service.eligible.rot && (
                                  <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                    Ej ROT
