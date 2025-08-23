@@ -158,7 +158,7 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: ArrowRight, title: "Start inom < 5 dagar", description: "Snabbaste i branschen" },
+    { icon: "image", src: "/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
     { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
     { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
@@ -274,7 +274,6 @@ const HeroUltra = () => {
               transition={{ delay: 0.9, duration: 0.6 }}
             >
               {trustIndicators.map((item, index) => {
-                const IconComponent = item.icon;
                 return (
                   <motion.div
                     key={item.title}
@@ -289,7 +288,18 @@ const HeroUltra = () => {
                     } : { scale: 1.02 }}
                   >
                     <div className="w-12 h-12 mx-auto gradient-primary-subtle rounded-xl flex items-center justify-center mb-4">
-                      <IconComponent className="h-6 w-6 text-primary" />
+                      {item.icon === "image" ? (
+                        <img 
+                          src={item.src} 
+                          alt="Fixco Brand" 
+                          className="h-6 w-6 object-contain opacity-80"
+                        />
+                      ) : (
+                        (() => {
+                          const IconComponent = item.icon as any;
+                          return <IconComponent className="h-6 w-6 text-primary" />;
+                        })()
+                      )}
                     </div>
                     <h3 className="font-bold text-sm mb-2">{item.title}</h3>
                     <p className="text-xs text-muted-foreground">{item.description}</p>

@@ -3,8 +3,9 @@ import { Shield, MapPin, Clock, Award, CheckCircle, Users } from 'lucide-react';
 const TrustBar = () => {
   const trustItems = [
     {
-      icon: Shield,
-      text: "ROT-certifierad"
+      icon: "image",
+      src: "/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png",
+      text: "Fixco Kvalitet"
     },
     {
       icon: Clock,
@@ -35,13 +36,23 @@ const TrustBar = () => {
           <div className="overflow-hidden w-full max-w-6xl">
             <div className="flex animate-scroll-left">
               {[...trustItems, ...trustItems].map((item, index) => {
-                const IconComponent = item.icon;
                 return (
                   <div 
                     key={index}
                     className="flex items-center space-x-2 mx-8 whitespace-nowrap"
                   >
-                    <IconComponent className="h-5 w-5 text-primary shrink-0" />
+                    {item.icon === "image" ? (
+                      <img 
+                        src={item.src} 
+                        alt="Fixco Brand" 
+                        className="h-5 w-5 object-contain opacity-80 shrink-0"
+                      />
+                    ) : (
+                      (() => {
+                        const IconComponent = item.icon as any;
+                        return <IconComponent className="h-5 w-5 text-primary shrink-0" />;
+                      })()
+                    )}
                     <span className="text-sm font-medium text-foreground">
                       {item.text}
                     </span>

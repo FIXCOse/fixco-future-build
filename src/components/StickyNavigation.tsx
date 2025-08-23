@@ -44,6 +44,11 @@ const StickyNavigation = () => {
               alt="Company Logo" 
               className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform"
             />
+            <img 
+              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              alt="Fixco F" 
+              className="h-4 w-4 opacity-60 group-hover:opacity-80 transition-opacity"
+            />
           </Link>
 
           {/* Desktop Navigation */}
