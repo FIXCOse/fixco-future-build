@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button-premium";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { servicesData, SubService } from "@/data/servicesData";
+import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
+import GlobalPricingToggle from "@/components/GlobalPricingToggle";
+import { usePriceStore } from "@/stores/priceStore";
+import { calcDisplayPrice, ServicePricing } from "@/utils/priceCalculation";
 
 interface FastServiceFilterProps {
   onServiceSelect?: (service: SubService) => void;
@@ -32,13 +33,15 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   const [selectedCategory, setSelectedCategory] = useState(() => getInitialState('category', 'alla') as string);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
   const [selectedPriceType, setSelectedPriceType] = useState(() => getInitialState('priceType', 'alla') as string);
-  const [showROTPrice, setShowROTPrice] = useState(() => getInitialState('rot', true) as boolean);
   const [indoorOutdoor, setIndoorOutdoor] = useState(() => getInitialState('location', 'alla') as string);
   const [sortBy, setSortBy] = useState(() => getInitialState('sort', 'relevans') as string);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchDebounced, setSearchDebounced] = useState(searchQuery);
 
   const ITEMS_PER_PAGE = 12;
+  
+  // Get global price mode
+  const { mode: priceMode } = usePriceStore();
 
   // Debounce search
   useEffect(() => {
@@ -50,7 +53,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
   // Get all sub-services with parent info
   const allSubServices = useMemo(() => {
-    return servicesData.flatMap(service => 
+    return servicesDataNew.flatMap(service => 
       service.subServices.map(subService => ({
         ...subService,
         parentService: service.title,
@@ -61,7 +64,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
   // Get unique categories
   const categories = useMemo(() => {
-    return servicesData.map(service => ({
+    return servicesDataNew.map(service => ({
       name: service.title,
       slug: service.slug
     }));
@@ -71,7 +74,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   const subCategories = useMemo(() => {
     if (selectedCategory === 'alla') return [];
     
-    const service = servicesData.find(s => s.slug === selectedCategory);
+    const service = servicesDataNew.find(s => s.slug === selectedCategory);
     if (!service) return [];
     
     const subCats = new Set(service.subServices.map(s => s.category));
@@ -111,15 +114,15 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     switch (sortBy) {
       case 'pris-låg':
         filtered.sort((a, b) => {
-          const priceA = parseInt(a.basePrice.replace(/[^\\d]/g, '')) || 0;
-          const priceB = parseInt(b.basePrice.replace(/[^\\d]/g, '')) || 0;
+          const priceA = a.basePrice || 0;
+          const priceB = b.basePrice || 0;
           return priceA - priceB;
         });
         break;
       case 'pris-hög':
         filtered.sort((a, b) => {
-          const priceA = parseInt(a.basePrice.replace(/[^\\d]/g, '')) || 0;
-          const priceB = parseInt(b.basePrice.replace(/[^\\d]/g, '')) || 0;
+          const priceA = a.basePrice || 0;
+          const priceB = b.basePrice || 0;
           return priceB - priceA;
         });
         break;
@@ -167,7 +170,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     setSelectedSubCategories([]);
     setCurrentPage(1);
     updateStateAndURL({ category, search: searchQuery, priceType: selectedPriceType, 
-                      rot: showROTPrice, location: indoorOutdoor, sort: sortBy });
+                      location: indoorOutdoor, sort: sortBy });
   };
 
   const handleSubCategoryToggle = (subCat: string) => {
@@ -206,14 +209,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   const popularChips = useMemo(() => [
     { label: "Populärt i El", filter: () => handleCategoryChange('el') },
     { label: "Snabbt & billigt", filter: () => { setSelectedPriceType('fast'); updateStateAndURL({ priceType: 'fast' }); } },
-    { label: "ROT-favoriter", filter: () => setShowROTPrice(true) }
+    { label: "ROT-favoriter", filter: () => handleCategoryChange('el') }
   ], []);
 
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Main Filter Row */}
       <div className="space-y-4">
-        {/* Top Row - Search + ROT Toggle */}
+        {/* Top Row - Search + Price Toggle */}
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
@@ -230,23 +233,8 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             />
           </div>
 
-          {/* ROT Toggle */}
-          <div className="flex items-center space-x-3 p-3 border border-primary/20 rounded-lg bg-primary/5">
-            <Switch 
-              id="rot-global-toggle"
-              checked={showROTPrice}
-              onCheckedChange={(checked) => {
-                setShowROTPrice(checked);
-                updateStateAndURL({ rot: checked });
-              }}
-            />
-            <Label htmlFor="rot-global-toggle" className="flex items-center space-x-2 cursor-pointer text-sm font-medium">
-              <span>Visa priser med ROT</span>
-              <Badge variant={showROTPrice ? "default" : "secondary"} className="text-xs">
-                {showROTPrice ? '50% RABATT' : 'ORDINARIE'}
-              </Badge>
-            </Label>
-          </div>
+          {/* Price Mode Toggle */}
+          <GlobalPricingToggle size="sm" />
 
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
@@ -347,7 +335,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         {selectedCategory !== 'alla' && subCategories.length > 0 && (
           <div className="flex flex-wrap gap-2 border-t border-border pt-3">
             <span className="text-sm text-muted-foreground mr-2">Specialområden:</span>
-            {subCategories.map(subCat => (
+            {subCategories.map((subCat: string) => (
               <Button
                 key={subCat}
                 variant={selectedSubCategories.includes(subCat) ? "premium" : "outline"}
@@ -456,12 +444,30 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                         <h4 className="font-semibold text-sm group-hover:text-primary transition-colors">
                           {service.title}
                         </h4>
-                        <Badge 
-                          variant={service.rotEligible ? "default" : "secondary"}
-                          className="text-xs"
-                        >
-                          {service.rotEligible ? "ROT" : "EJ ROT"}
-                        </Badge>
+                        {(() => {
+                          const serviceData: ServicePricing = {
+                            id: service.id,
+                            title: service.title,
+                            basePrice: service.basePrice,
+                            priceUnit: service.priceUnit,
+                            eligible: service.eligible
+                          };
+                          const priceResult = calcDisplayPrice(serviceData, priceMode);
+                          
+                          if (!priceResult.eligible) {
+                            return (
+                              <Badge variant="secondary" className="text-xs">
+                                {priceMode === 'rot' ? 'EJ ROT' : priceMode === 'rut' ? 'EJ RUT' : 'ORDINARIE'}
+                              </Badge>
+                            );
+                          }
+                          
+                          return (
+                            <Badge variant="default" className="text-xs">
+                              {priceResult.badge || 'ORDINARIE'}
+                            </Badge>
+                          );
+                        })()}
                       </div>
                       <p className="text-xs text-muted-foreground line-clamp-2">
                         {service.description}
@@ -478,27 +484,44 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
                     {/* Pricing */}
                     <div className="border-t border-border pt-3">
-                      {service.rotEligible && showROTPrice ? (
-                        <>
-                          <div className="flex justify-between items-center text-xs mb-1">
-                            <span className="text-muted-foreground">Ordinarie:</span>
-                            <span className="line-through text-muted-foreground">
-                              {service.basePrice}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-primary font-medium text-xs">Med ROT:</span>
-                            <span className="font-bold gradient-text">
-                              {service.rotPrice}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs">Pris:</span>
-                          <span className="font-semibold">{service.basePrice}</span>
-                        </div>
-                      )}
+                      {(() => {
+                        const serviceData: ServicePricing = {
+                          id: service.id,
+                          title: service.title,
+                          basePrice: service.basePrice,
+                          priceUnit: service.priceUnit,
+                          eligible: service.eligible
+                        };
+                        const priceResult = calcDisplayPrice(serviceData, priceMode);
+                        
+                        if (priceMode !== 'ordinary' && priceResult.eligible && priceResult.originalDisplay) {
+                          return (
+                            <>
+                              <div className="flex justify-between items-center text-xs mb-1">
+                                <span className="text-muted-foreground">Ordinarie:</span>
+                                <span className="line-through text-muted-foreground">
+                                  {priceResult.originalDisplay}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-primary font-medium text-xs">
+                                  Med {priceResult.badge}:
+                                </span>
+                                <span className="font-bold gradient-text">
+                                  {priceResult.display}
+                                </span>
+                              </div>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <div className="flex justify-between items-center">
+                              <span className="text-xs">Pris:</span>
+                              <span className="font-semibold">{priceResult.display}</span>
+                            </div>
+                          );
+                        }
+                      })()}
                     </div>
 
                     {/* CTA */}
