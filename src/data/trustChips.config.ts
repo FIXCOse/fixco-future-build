@@ -76,12 +76,12 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
   },
   {
     id: "rut_avdrag",
-    label: "RUT-avdrag",
-    description: "För hem- och städservice",
+    label: "RUT-avdrag 50%",
+    description: "För hushållsnära tjänster",
     icon: Home,
     color: "text-blue-500",
-    link: "/rot",
-    tooltip: "RUT-avdrag för hemservice och städning"
+    link: "/rut",
+    tooltip: "50% avdrag på arbetskostnaden för hemservice, städning och trädgård"
   },
   {
     id: "transparent_price",

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
 import useGlobalROT from "@/hooks/useGlobalROT";
+import useGlobalPricing from "@/hooks/useGlobalPricing";
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -21,7 +22,7 @@ interface ComparisonMetric {
 
 const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
-  const { rotEnabled } = useGlobalROT();
+  const { pricingMode } = useGlobalPricing();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Robust once-only counters
@@ -101,11 +102,11 @@ const ComparisonUltra = () => {
     },
     {
       icon: Shield,
-      title: "ROT-hantering",
+      title: "RUT-hantering",
       fixcoValue: "Vi sköter allt",
       competitorValue: "Du själv",
       isWin: true,
-      description: "Komplett ROT-service utan krångel för dig som kund"
+      description: "Vi hanterar all RUT-administration för hushållsnära tjänster"
     },
     {
       icon: Trophy,

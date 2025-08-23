@@ -8,7 +8,8 @@ import {
   Mountain, 
   Cpu, 
   Zap, 
-  Building 
+  Building,
+  Truck 
 } from "lucide-react";
 
 export interface SubService {
@@ -17,8 +18,10 @@ export interface SubService {
   description: string;
   basePrice: string;
   rotPrice: string;
+  rutPrice?: string;
   priceType: 'fast' | 'timpris' | 'offert';
   rotEligible: boolean;
+  rutEligible?: boolean;
   category: string;
   room?: string;
   location: 'inomhus' | 'utomhus' | 'båda';
@@ -32,6 +35,8 @@ export interface Service {
   subServices: SubService[];
   basePrice: string;
   rotPrice: string;
+  rutPrice?: string;
+  rutEligible?: boolean;
 }
 
 export const servicesData: Service[] = [
@@ -370,6 +375,8 @@ export const servicesData: Service[] = [
     icon: TreePine,
     basePrice: "659 kr/h",
     rotPrice: "330 kr/h",
+    rutPrice: "330 kr/h",
+    rutEligible: true,
     subServices: [
       {
         id: "tradgard-1",
@@ -377,8 +384,10 @@ export const servicesData: Service[] = [
         description: "Regelbunden gräsklippning och kanttrimning",
         basePrice: "659 kr/h",
         rotPrice: "330 kr/h",
+        rutPrice: "330 kr/h",
         priceType: "timpris",
         rotEligible: true,
+        rutEligible: true,
         category: "Skötsel",
         room: "Trädgård",
         location: "utomhus"
@@ -389,8 +398,10 @@ export const servicesData: Service[] = [
         description: "Beskärning av häckar och buskar",
         basePrice: "659 kr/h",
         rotPrice: "330 kr/h",
+        rutPrice: "330 kr/h",
         priceType: "timpris",
         rotEligible: true,
+        rutEligible: true,
         category: "Skötsel", 
         room: "Trädgård",
         location: "utomhus"
@@ -400,9 +411,11 @@ export const servicesData: Service[] = [
         title: "Ogräsrensning",
         description: "Borttagning av ogräs från rabatter och gångar",
         basePrice: "659 kr/h",
-        rotPrice: "330 kr/h", 
+        rotPrice: "330 kr/h",
+        rutPrice: "330 kr/h", 
         priceType: "timpris",
         rotEligible: true,
+        rutEligible: true,
         category: "Skötsel",
         room: "Trädgård",
         location: "utomhus"
@@ -410,13 +423,41 @@ export const servicesData: Service[] = [
       {
         id: "tradgard-4",
         title: "Plantering och anläggning",
-        description: "Plantering av växter och anläggnig av rabatter",
+        description: "Plantering av växter och anläggning av rabatter",
         basePrice: "Begär offert", 
         rotPrice: "Begär offert",
         priceType: "offert",
         rotEligible: true,
         category: "Anläggning",
         room: "Trädgård", 
+        location: "utomhus"
+      },
+      {
+        id: "tradgard-5",
+        title: "Lövkrattning",
+        description: "Rensning av löv från gräsmatta och rabatter",
+        basePrice: "659 kr/h",
+        rotPrice: "330 kr/h",
+        rutPrice: "330 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Skötsel",
+        room: "Trädgård",
+        location: "utomhus"
+      },
+      {
+        id: "tradgard-6",
+        title: "Snöskottning/sandning",
+        description: "Snöröjning och halkbekämpning vid uppfart och gångar",
+        basePrice: "659 kr/h",
+        rotPrice: "330 kr/h",
+        rutPrice: "330 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Vinterservice",
+        room: "Utomhus",
         location: "utomhus"
       }
     ]
@@ -428,6 +469,8 @@ export const servicesData: Service[] = [
     icon: Sparkles, 
     basePrice: "459 kr/h",
     rotPrice: "230 kr/h",
+    rutPrice: "230 kr/h",
+    rutEligible: true,
     subServices: [
       {
         id: "stadning-1",
@@ -435,8 +478,10 @@ export const servicesData: Service[] = [
         description: "Regelbunden städning av hemmet",
         basePrice: "459 kr/h",
         rotPrice: "230 kr/h",
+        rutPrice: "230 kr/h",
         priceType: "timpris",
         rotEligible: true,
+        rutEligible: true,
         category: "Hemstäd",
         room: "Alla rum",
         location: "inomhus"
@@ -447,8 +492,10 @@ export const servicesData: Service[] = [
         description: "Grundlig städning vid flytt",
         basePrice: "Begär offert", 
         rotPrice: "Begär offert",
+        rutPrice: "Begär offert",
         priceType: "offert",
         rotEligible: true,
+        rutEligible: true,
         category: "Specialstäd",
         room: "Alla rum",
         location: "inomhus"
@@ -471,11 +518,95 @@ export const servicesData: Service[] = [
         description: "Putsning av fönster in- och utvändigt",
         basePrice: "690 kr",
         rotPrice: "345 kr",
+        rutPrice: "345 kr",
         priceType: "fast", 
         rotEligible: true,
+        rutEligible: true,
         category: "Specialstäd",
         room: "Alla rum",
         location: "båda"
+      },
+      {
+        id: "stadning-5",
+        title: "Storstädning",
+        description: "Djupstädning av hela hemmet",
+        basePrice: "Begär offert",
+        rotPrice: "Begär offert",
+        rutPrice: "Begär offert",
+        priceType: "offert",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Specialstäd",
+        room: "Alla rum",
+        location: "inomhus"
+      }
+    ]
+  },
+  {
+    title: "Flytt",
+    slug: "flytt",
+    description: "Bärhjälp, lastning och uppackning",
+    icon: Truck,
+    basePrice: "559 kr/h",
+    rotPrice: "280 kr/h",
+    rutPrice: "280 kr/h",
+    rutEligible: true,
+    subServices: [
+      {
+        id: "flytt-1",
+        title: "Bärhjälp",
+        description: "Hjälp med att bära tunga föremål och möbler",
+        basePrice: "559 kr/h",
+        rotPrice: "280 kr/h",
+        rutPrice: "280 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Bärhjälp",
+        room: "Alla rum",
+        location: "båda"
+      },
+      {
+        id: "flytt-2",
+        title: "Lastning/lossning",
+        description: "Lastning och lossning av flyttbil eller container",
+        basePrice: "559 kr/h",
+        rotPrice: "280 kr/h",
+        rutPrice: "280 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Lastning",
+        room: "Utomhus",
+        location: "utomhus"
+      },
+      {
+        id: "flytt-3",
+        title: "Enklare packning",
+        description: "Hjälp med att packa och uppacka vid flytt",
+        basePrice: "559 kr/h",
+        rotPrice: "280 kr/h",
+        rutPrice: "280 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Packning",
+        room: "Alla rum",
+        location: "inomhus"
+      },
+      {
+        id: "flytt-4",
+        title: "Möbeldemontering/montering",
+        description: "Demontering och återmontering av möbler vid flytt",
+        basePrice: "559 kr/h",
+        rotPrice: "280 kr/h",
+        rutPrice: "280 kr/h",
+        priceType: "timpris",
+        rotEligible: true,
+        rutEligible: true,
+        category: "Montering",
+        room: "Alla rum",
+        location: "inomhus"
       }
     ]
   },

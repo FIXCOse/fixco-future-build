@@ -1,20 +1,24 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles } from 'lucide-react';
+import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import PricingToggle from '@/components/PricingToggle';
+import useGlobalPricing from '@/hooks/useGlobalPricing';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [rotEnabled, setRotEnabled] = useState(false);
+  const { pricingMode, getPricing, isEligibleForCurrentMode } = useGlobalPricing();
 
   const services = [
     {
       name: "El",
       icon: Zap,
       description: "Uttag, belysning, laddbox",
-      priceRegular: "959 kr/h",
-      priceRot: "480 kr/h",
+      priceRegular: 1059,
+      priceROT: 530,
+      rotEligible: true,
+      rutEligible: false,
       slug: "el",
       gradient: "from-yellow-500/20 to-orange-500/20",
       iconColor: "text-yellow-400"
@@ -23,8 +27,10 @@ const ServiceTeaserGrid = () => {
       name: "VVS",
       icon: Droplets,
       description: "WC, handfat, duschvägg",
-      priceRegular: "959 kr/h",
-      priceRot: "480 kr/h",
+      priceRegular: 959,
+      priceROT: 480,
+      rotEligible: true,
+      rutEligible: false,
       slug: "vvs",
       gradient: "from-blue-500/20 to-cyan-500/20",
       iconColor: "text-blue-400"
@@ -33,8 +39,10 @@ const ServiceTeaserGrid = () => {
       name: "Snickeri",
       icon: Hammer,
       description: "Kök, garderober, lister",
-      priceRegular: "959 kr/h",
-      priceRot: "480 kr/h",
+      priceRegular: 859,
+      priceROT: 430,
+      rotEligible: true,
+      rutEligible: false,
       slug: "snickeri",
       gradient: "from-amber-500/20 to-yellow-500/20",
       iconColor: "text-amber-400"
@@ -43,38 +51,59 @@ const ServiceTeaserGrid = () => {
       name: "Montering",
       icon: Wrench,
       description: "IKEA, vitvaror, TV-fästen",
-      priceRegular: "699 kr/h",
-      priceRot: "350 kr/h",
+      priceRegular: 759,
+      priceROT: 380,
+      rotEligible: true,
+      rutEligible: false,
       slug: "montering",
       gradient: "from-gray-500/20 to-zinc-500/20",
       iconColor: "text-gray-400"
     },
     {
-      name: "Markarbeten",
+      name: "Trädgård",
       icon: Shovel,
-      description: "Schakt, altan, staket",
-      priceRegular: "1199 kr/h",
-      priceRot: "600 kr/h",
-      slug: "markarbeten",
+      description: "Gräs, häck, ogräs, snö",
+      priceRegular: 659,
+      priceROT: 330,
+      priceRUT: 330,
+      rotEligible: true,
+      rutEligible: true,
+      slug: "tradgard",
       gradient: "from-green-500/20 to-emerald-500/20",
       iconColor: "text-green-400"
     },
     {
       name: "Städning",
       icon: Sparkles,
-      description: "Hem, bygg, kontor",
-      priceRegular: "89 kr/m²",
-      priceRot: "45 kr/m²",
+      description: "Hem, bygg, kontor, flytt",
+      priceRegular: 459,
+      priceROT: 230,
+      priceRUT: 230,
+      rotEligible: true,
+      rutEligible: true,
       slug: "stadning",
       gradient: "from-purple-500/20 to-pink-500/20",
       iconColor: "text-purple-400"
+    },
+    {
+      name: "Flytt",
+      icon: Truck,
+      description: "Bärhjälp, lastning, packning",
+      priceRegular: 559,
+      priceROT: 280,
+      priceRUT: 280,
+      rotEligible: true,
+      rutEligible: true,
+      slug: "flytt",
+      gradient: "from-indigo-500/20 to-purple-500/20",
+      iconColor: "text-indigo-400"
     }
   ];
 
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-4">
-        {/* Header with ROT Toggle */}
+        {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Våra <span className="gradient-text">huvudtjänster</span>
@@ -83,29 +112,8 @@ const ServiceTeaserGrid = () => {
             Från små reparationer till stora projekt – vi hanterar allt professionellt
           </p>
           
-          {/* ROT Toggle */}
-          <div className="flex items-center justify-center space-x-4 mb-8">
-            <span className={cn("text-sm font-medium", !rotEnabled && "text-primary")}>
-              Ordinarie pris
-            </span>
-            <button
-              onClick={() => setRotEnabled(!rotEnabled)}
-              className={cn(
-                "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-                rotEnabled ? "bg-primary" : "bg-border"
-              )}
-            >
-              <span
-                className={cn(
-                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
-                  rotEnabled ? "translate-x-6" : "translate-x-1"
-                )}
-              />
-            </button>
-            <span className={cn("text-sm font-medium", rotEnabled && "text-primary")}>
-              Med ROT-avdrag (50%)
-            </span>
-          </div>
+          {/* Enhanced Pricing Toggle */}
+          <PricingToggle size="md" />
         </div>
 
         {/* Service Grid */}
@@ -180,26 +188,53 @@ const ServiceTeaserGrid = () => {
 
                     {/* Pricing */}
                     <div className="space-y-2">
-                      <div className={cn(
-                        "transition-all duration-300",
-                        rotEnabled ? "opacity-100 transform-none" : "opacity-100"
-                      )}>
-                        <div className={cn(
-                          "text-2xl font-bold transition-all duration-300",
-                          rotEnabled ? "text-primary" : "text-foreground"
-                        )}>
-                          {rotEnabled ? service.priceRot : service.priceRegular}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {rotEnabled ? "Med ROT-avdrag" : "Inkl. moms"}
-                        </div>
-                      </div>
+                      {(() => {
+                        const pricing = getPricing(
+                          service.priceRegular,
+                          service.rotEligible ? service.priceROT : undefined,
+                          service.rutEligible ? service.priceRUT : undefined
+                        );
+                        
+                        const isEligible = isEligibleForCurrentMode(service.rotEligible, service.rutEligible);
+                        
+                        return (
+                          <div className="transition-all duration-300">
+                            <div className={cn(
+                              "text-2xl font-bold transition-all duration-300",
+                              pricing.badge ? "text-primary" : "text-foreground"
+                            )}>
+                              {pricing.display}
+                              {pricing.badge && (
+                                <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                                  {pricing.badge}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {pricing.badge ? `Med ${pricing.badge}-avdrag` : "Inkl. moms"}
+                              {!isEligible && pricingMode !== 'ordinarie' && (
+                                <span className="text-orange-600 ml-1">
+                                  (ej {pricingMode.toUpperCase()}-berättigad)
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
                       
-                      {rotEnabled && (
-                        <div className="text-xs text-muted-foreground line-through">
-                          Ord: {service.priceRegular}
-                        </div>
-                      )}
+                      {(() => {
+                        const pricing = getPricing(
+                          service.priceRegular,
+                          service.rotEligible ? service.priceROT : undefined,
+                          service.rutEligible ? service.priceRUT : undefined
+                        );
+                        
+                        return pricing.originalDisplay && (
+                          <div className="text-xs text-muted-foreground line-through">
+                            Ord: {pricing.originalDisplay}
+                          </div>
+                        );
+                      })()}
                     </div>
 
                     {/* CTA Hint */}
