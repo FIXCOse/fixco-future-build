@@ -129,22 +129,25 @@ const ComparisonUltra = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 hero-background" />
         
-        {/* F Watermark Background Elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
+        {/* F Watermark Background Elements - More Visible */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-20 left-20 w-24 h-24 object-contain rotate-12 opacity-30"
+            className="absolute top-20 left-20 w-24 h-24 object-contain rotate-12 opacity-40 animate-pulse"
+            style={{ animationDuration: '5s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute bottom-32 right-32 w-16 h-16 object-contain -rotate-12 opacity-20"
+            className="absolute bottom-32 right-32 w-16 h-16 object-contain -rotate-12 opacity-30 animate-pulse"
+            style={{ animationDuration: '4s', animationDelay: '1.5s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-1/2 left-1/4 w-20 h-20 object-contain rotate-45 opacity-15"
+            className="absolute top-1/2 left-1/4 w-20 h-20 object-contain rotate-45 opacity-25 animate-pulse"
+            style={{ animationDuration: '6s', animationDelay: '0.8s' }}
           />
         </div>
         

@@ -31,7 +31,23 @@ const FAQTeaser = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-primary-subtle">
+    <section className="py-24 bg-gradient-primary-subtle relative">
+      {/* F Watermark Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+        <img 
+          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          alt="" 
+          className="absolute top-16 right-16 w-18 h-18 object-contain rotate-12 opacity-30 animate-pulse"
+          style={{ animationDuration: '4s' }}
+        />
+        <img 
+          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          alt="" 
+          className="absolute bottom-16 left-16 w-14 h-14 object-contain -rotate-6 opacity-25 animate-pulse"
+          style={{ animationDuration: '5s', animationDelay: '1.5s' }}
+        />
+      </div>
+
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -51,12 +67,12 @@ const FAQTeaser = () => {
                 key={index}
                 className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative"
               >
-                {/* F Brand Badge */}
-                <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                {/* F Brand Badge - Larger & More Visible */}
+                <div className="absolute bottom-3 right-3 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                   <img 
                     src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                     alt="Fixco" 
-                    className="h-2.5 w-2.5 object-contain"
+                    className="h-3.5 w-3.5 object-contain opacity-90"
                   />
                 </div>
 
@@ -106,10 +122,19 @@ const FAQTeaser = () => {
             </Button>
           </div>
 
-          {/* Quick Contact */}
-          <div className="mt-16 text-center">
-            <div className="card-premium p-8">
-              <h3 className="text-2xl font-bold mb-4">
+            {/* Quick Contact */}
+            <div className="mt-16 text-center">
+              <div className="card-premium p-8 relative">
+                {/* F Brand Badge */}
+                <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                  <img 
+                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    alt="Fixco" 
+                    className="h-4 w-4 object-contain opacity-90"
+                  />
+                </div>
+
+                <h3 className="text-2xl font-bold mb-4">
                 Hittar du inte svar på din fråga?
               </h3>
               <p className="text-muted-foreground mb-6">

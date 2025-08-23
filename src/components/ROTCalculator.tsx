@@ -45,6 +45,28 @@ const ROTCalculator = () => {
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       
+      {/* F Watermark Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+        <img 
+          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          alt="" 
+          className="absolute top-32 left-32 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
+          style={{ animationDuration: '6s' }}
+        />
+        <img 
+          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          alt="" 
+          className="absolute bottom-24 right-24 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
+          style={{ animationDuration: '4.5s', animationDelay: '1s' }}
+        />
+        <img 
+          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          alt="" 
+          className="absolute top-1/2 right-1/3 w-16 h-16 object-contain rotate-45 opacity-20 animate-pulse"
+          style={{ animationDuration: '5.5s', animationDelay: '2.5s' }}
+        />
+      </div>
+      
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -58,7 +80,16 @@ const ROTCalculator = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Calculator */}
-          <div className="card-premium p-8">
+          <div className="card-premium p-8 relative">
+            {/* F Brand Badge */}
+            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+              <img 
+                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                alt="Fixco" 
+                className="h-4 w-4 object-contain opacity-90"
+              />
+            </div>
+
             <div className="flex items-center space-x-3 mb-6">
               <Calculator className="h-8 w-8 text-primary" />
               <h3 className="text-2xl font-bold">Beräkna din ROT-besparing</h3>
@@ -164,7 +195,16 @@ const ROTCalculator = () => {
               const exampleFinalCost = example.originalCost - exampleDeduction;
               
               return (
-                <div key={index} className="card-premium p-6 hover:shadow-glow transition-all duration-300">
+                <div key={index} className="card-premium p-6 hover:shadow-glow transition-all duration-300 relative">
+                  {/* F Brand Badge */}
+                  <div className="absolute top-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
+                    <img 
+                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      alt="Fixco" 
+                      className="h-3 w-3 object-contain opacity-90"
+                    />
+                  </div>
+
                   <div className="flex items-start space-x-4">
                     <div className="text-4xl">
                       {example.beforeImage} → {example.afterImage}
@@ -204,7 +244,16 @@ const ROTCalculator = () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-16">
-          <div className="card-premium p-8 max-w-2xl mx-auto">
+          <div className="card-premium p-8 max-w-2xl mx-auto relative">
+            {/* F Brand Badge */}
+            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+              <img 
+                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                alt="Fixco" 
+                className="h-4 w-4 object-contain opacity-90"
+              />
+            </div>
+
             <h3 className="text-2xl font-bold mb-4">
               Börja ditt <span className="gradient-text">ROT-projekt</span> idag
             </h3>

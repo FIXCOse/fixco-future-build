@@ -71,7 +71,16 @@ const GlobalStickyCTA = () => {
       >
         {/* Mobile CTA Bar */}
         <div className="md:hidden">
-          <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow p-4">
+          <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow p-4 relative">
+            {/* F Brand Badge */}
+            <div className="absolute top-2 left-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm opacity-60">
+              <img 
+                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                alt="Fixco" 
+                className="h-3 w-3 object-contain opacity-90"
+              />
+            </div>
+
             <div className="flex items-center space-x-3">
               {/* Dismiss Button */}
               <Button

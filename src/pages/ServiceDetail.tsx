@@ -63,17 +63,19 @@ const ServiceDetail = () => {
         <section className="pt-12 pb-16 relative overflow-hidden">
           <div className="absolute inset-0 hero-background opacity-50" />
           
-          {/* F Watermark Background Elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-5">
+          {/* F Watermark Background Elements - More Visible */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
             <img 
               src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
               alt="" 
-              className="absolute top-20 right-20 w-16 h-16 object-contain rotate-12 opacity-20"
+              className="absolute top-20 right-20 w-16 h-16 object-contain rotate-12 opacity-35 animate-pulse"
+              style={{ animationDuration: '4s' }}
             />
             <img 
               src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
               alt="" 
-              className="absolute bottom-10 left-20 w-12 h-12 object-contain -rotate-12 opacity-15"
+              className="absolute bottom-10 left-20 w-12 h-12 object-contain -rotate-12 opacity-25 animate-pulse"
+              style={{ animationDuration: '5s', animationDelay: '1s' }}
             />
           </div>
           
@@ -191,12 +193,12 @@ const ServiceDetail = () => {
                 className="card-premium p-5 hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale relative"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                {/* F Brand Badge */}
-                <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                {/* F Brand Badge - Bottom Right, Larger & More Visible */}
+                <div className="absolute bottom-3 right-3 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                   <img 
                     src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                     alt="Fixco" 
-                    className="h-2.5 w-2.5 object-contain"
+                    className="h-3.5 w-3.5 object-contain opacity-90"
                   />
                 </div>
 
@@ -342,12 +344,12 @@ const ServiceDetail = () => {
               const RelatedIcon = relatedService.icon;
               return (
                 <div key={relatedService.slug} className="card-premium p-6 text-center hover-scale relative">
-                  {/* F Brand Badge */}
-                  <div className="absolute top-3 right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity">
+                  {/* F Brand Badge - Bottom Right, Larger & More Visible */}
+                  <div className="absolute bottom-4 right-4 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                     <img 
                       src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                       alt="Fixco" 
-                      className="h-2.5 w-2.5 object-contain"
+                      className="h-3.5 w-3.5 object-contain opacity-90"
                     />
                   </div>
                   
