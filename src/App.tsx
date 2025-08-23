@@ -15,6 +15,7 @@ import RUT from "./pages/RUT";
 import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
 import StickyCtaBar from "./components/StickyCtaBar";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tjanster" element={<Services />} />
