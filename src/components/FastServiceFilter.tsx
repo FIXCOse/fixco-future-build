@@ -507,16 +507,20 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                          const savingsRot = service.eligible.rot ? priceIncl - priceRotIncl : 0;
                          const savingsRut = service.eligible.rut ? priceIncl - priceRutIncl : 0;
                          
-                         let primaryPrice = priceIncl;
-                         let isDiscounted = false;
-                         
-                         if (mode === 'rot' && service.eligible.rot) {
-                           primaryPrice = priceRotIncl;
-                           isDiscounted = true;
-                         } else if (mode === 'rut' && service.eligible.rut) {
-                           primaryPrice = priceRutIncl;
-                           isDiscounted = true;
-                         }
+                          let primaryPrice = priceIncl;
+                          let isDiscounted = false;
+                          
+                          // Show purple style for ALL services in all modes
+                          if (mode === 'rot' && service.eligible.rot) {
+                            primaryPrice = priceRotIncl;
+                            isDiscounted = true;
+                          } else if (mode === 'rut' && service.eligible.rut) {
+                            primaryPrice = priceRutIncl;
+                            isDiscounted = true;
+                          } else if (mode === 'all') {
+                            // Always show purple style in 'all' mode for ALL services
+                            isDiscounted = true;
+                          }
                          
                          const unit = service.priceType === 'hourly' ? ' kr/h' : ' kr';
                          const formatMoney = (amount: number) => Math.round(amount).toLocaleString('sv-SE');
