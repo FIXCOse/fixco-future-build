@@ -67,15 +67,6 @@ const FAQTeaser = () => {
                 key={index}
                 className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative"
               >
-                {/* F Brand Badge - Larger & More Visible */}
-                <div className="absolute bottom-3 right-3 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                  <img 
-                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                    alt="Fixco" 
-                    className="h-3.5 w-3.5 object-contain opacity-90"
-                  />
-                </div>
-
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full p-6 text-left flex items-center justify-between hover:bg-primary/5 transition-colors"
@@ -125,15 +116,6 @@ const FAQTeaser = () => {
             {/* Quick Contact */}
             <div className="mt-16 text-center">
               <div className="card-premium p-8 relative">
-                {/* F Brand Badge */}
-                <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                  <img 
-                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                    alt="Fixco" 
-                    className="h-4 w-4 object-contain opacity-90"
-                  />
-                </div>
-
                 <h3 className="text-2xl font-bold mb-4">
                 Hittar du inte svar på din fråga?
               </h3>
