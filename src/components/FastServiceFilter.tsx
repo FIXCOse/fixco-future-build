@@ -58,7 +58,10 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
       service.subServices.map(subService => ({
         ...subService,
         parentService: service.title,
-        parentSlug: service.slug
+        parentSlug: service.slug,
+        priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
+        location: subService.location as "inomhus" | "utomhus" | "båda",
+        priceType: subService.priceType as "hourly" | "fixed" | "quote"
       }))
     );
   }, []);

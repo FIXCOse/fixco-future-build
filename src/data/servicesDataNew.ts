@@ -14,6 +14,13 @@ import {
 } from "lucide-react";
 import { ServicePricing } from '@/utils/priceCalculation';
 
+// Sub-service interface
+export interface SubService extends ServicePricing {
+  category: string;
+  location: 'inomhus' | 'utomhus' | 'båda';
+  priceType: 'hourly' | 'fixed' | 'quote';
+}
+
 // Main services for the homepage grid
 export const mainServices: ServicePricing[] = [
   {
@@ -102,17 +109,17 @@ export const serviceCategories = [
   },
   {
     id: "montering",
-    title: "Montering", 
-    slug: "montering",
-    description: "IKEA, vitvaror och TV-fästen",
-    icon: Wrench,
+    title: "Montering",
+    slug: "montering", 
+    description: "Möbler, hyllor och apparater",
+    icon: Package,
     eligible: { rot: true, rut: false }
   },
   {
     id: "tradgard",
     title: "Trädgård",
-    slug: "tradgard", 
-    description: "Anläggning, skötsel och underhåll",
+    slug: "tradgard",
+    description: "Gräs, häckar och trädvård",
     icon: TreePine,
     eligible: { rot: false, rut: true }
   },
@@ -120,23 +127,15 @@ export const serviceCategories = [
     id: "stadning",
     title: "Städning",
     slug: "stadning",
-    description: "Byggstäd, flyttstäd och regelbunden städning", 
+    description: "Hem, flytt och byggstäd",
     icon: Sparkles,
-    eligible: { rot: false, rut: true }
-  },
-  {
-    id: "flytt",
-    title: "Flytt",
-    slug: "flytt",
-    description: "Bärhjälp, lastning och uppackning",
-    icon: Truck,
     eligible: { rot: false, rut: true }
   },
   {
     id: "markarbeten",
     title: "Markarbeten",
     slug: "markarbeten",
-    description: "Schaktning, dränering och anläggning",
+    description: "Schakt, dränering och plattläggning",
     icon: Mountain,
     eligible: { rot: true, rut: false }
   },
@@ -144,47 +143,36 @@ export const serviceCategories = [
     id: "tekniska-installationer",
     title: "Tekniska installationer",
     slug: "tekniska-installationer",
-    description: "IT, larm och specialinstallationer",
+    description: "Nätverk, larm och IT-support",
     icon: Cpu,
     eligible: { rot: false, rut: false }
+  },
+  {
+    id: "flytt",
+    title: "Flytt",
+    slug: "flytt",
+    description: "Bärhjälp, packning och transport",
+    icon: Truck,
+    eligible: { rot: false, rut: true }
   }
 ];
 
-// Extended service data for detailed pages
-export interface SubService extends ServicePricing {
-  description: string;
-  category: string;
-  location: 'inomhus' | 'utomhus' | 'båda';
-  priceType: 'hourly' | 'fixed' | 'quote';
-}
-
-export interface Service {
-  title: string;
-  slug: string;
-  description: string;
-  icon: any;
-  subServices: SubService[];
-  basePrice: number;
-  priceUnit: string;
-  eligible: { rot: boolean; rut: boolean };
-}
-
-// This will gradually replace the old servicesData
-export const servicesDataNew: Service[] = [
+// Detailed service categories with sub-services
+export const servicesDataNew = [
   {
-    title: "El",
-    slug: "el", 
+    title: "El", 
+    slug: "el",
     description: "Installation, reparation och underhåll",
     icon: Zap,
     basePrice: 1059,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
-      // Vägguttag variants
+      // Uttag & Strömbrytare  
       {
         id: "el-1",
-        title: "Byta vägguttag (1-3 st)",
-        description: "Byte av befintliga vägguttag till nyare modeller",
+        title: "Byta vägguttag",
+        description: "Byte av vägguttag till nyare modeller. Antal väljs vid bokning",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -195,57 +183,8 @@ export const servicesDataNew: Service[] = [
       },
       {
         id: "el-2",
-        title: "Byta vägguttag (4-8 st)",
-        description: "Byte av flera vägguttag till nyare modeller",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Uttag",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-3",
-        title: "Byta vägguttag (9-15 st)",
-        description: "Byte av många vägguttag till nyare modeller",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Uttag",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Strömbrytare variants
-      {
-        id: "el-4",
-        title: "Byta strömbrytare och dimmer (1-3 st)",
-        description: "Installation av nya strömbrytare och dimrar",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Strömbrytare",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-5",
-        title: "Byta strömbrytare och dimmer (4-8 st)",
-        description: "Installation av flera strömbrytare och dimrar",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Strömbrytare",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-6",
-        title: "Byta strömbrytare och dimmer (9-15 st)",
-        description: "Installation av många strömbrytare och dimrar",
+        title: "Byta strömbrytare och dimmer",
+        description: "Installation av nya strömbrytare och dimrar. Antal väljs vid bokning",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -256,9 +195,9 @@ export const servicesDataNew: Service[] = [
       },
       // Belysning
       {
-        id: "el-7",
-        title: "Installera takarmatur/pendel (1-3 st)",
-        description: "Montering av takarmaturer och pendellampor",
+        id: "el-3",
+        title: "Installera takarmatur/pendel",
+        description: "Montering av takarmaturer och pendellampor. Antal väljs vid bokning",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -268,9 +207,9 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-8",
-        title: "Installera takarmatur/pendel (4-8 st)",
-        description: "Montering av flera takarmaturer och pendellampor",
+        id: "el-4",
+        title: "Installera spotlights",
+        description: "Installation av spotlights i tak. Antal väljs vid bokning (typiskt 0,5-1h per 4-6 st)",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -280,57 +219,9 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-9", 
-        title: "Installera spotlights (4 st)",
-        description: "Installation av 4 spotlights i tak",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Belysning",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-10",
-        title: "Installera spotlights (8 st)",
-        description: "Installation av 8 spotlights i tak",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Belysning",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-11",
-        title: "Installera spotlights (12 st)",
-        description: "Installation av 12 spotlights i tak",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Belysning",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-12",
-        title: "Utebelysning - fasad",
-        description: "Installation av fasadbelysning",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Utebelysning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-13",
-        title: "Utebelysning - trädgård",
-        description: "Installation av trädgårdsbelysning",
+        id: "el-5",
+        title: "Utebelysning",
+        description: "Installation av fasad- och trädgårdsbelysning. Typ väljs vid bokning",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -341,7 +232,7 @@ export const servicesDataNew: Service[] = [
       },
       // Säkerhet & Service
       {
-        id: "el-14",
+        id: "el-6",
         title: "Installera jordfelsbrytare",
         description: "Installation av jordfelsbrytare för säkerhet",
         basePrice: 1059,
@@ -353,9 +244,9 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-15",
-        title: "Felsökning el (1-2 h)",
-        description: "Diagnostik och felsökning av elinstallationer",
+        id: "el-7",
+        title: "Felsökning el",
+        description: "Diagnostik och felsökning av elinstallationer (typiskt 1-2 h)",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -365,9 +256,9 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-16",
-        title: "Dra fram ny elpunkt - kök",
-        description: "Installation av ny elpunkt i köket",
+        id: "el-8",
+        title: "Dra fram ny elpunkt",
+        description: "Installation av ny elpunkt. Rum väljs vid bokning",
         basePrice: 1059,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -377,19 +268,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-17",
-        title: "Dra fram ny elpunkt - badrum",
-        description: "Installation av ny elpunkt i badrummet",
-        basePrice: 1059,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Installationer",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "el-18",
+        id: "el-9",
         title: "Montera TV-väggfäste & kabelkanal",
         description: "Montering av TV-fäste med kabelhantering",
         basePrice: 1059,
@@ -401,7 +280,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-19",
+        id: "el-10",
         title: "Ny el till köksö",
         description: "Elinstallation för köksö med uttag",
         basePrice: 1059,
@@ -413,7 +292,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "el-20",
+        id: "el-11",
         title: "Ny elgrupp",
         description: "Installation av ny elgrupp i centralen",
         basePrice: 1059,
@@ -438,32 +317,8 @@ export const servicesDataNew: Service[] = [
       // Blandare
       {
         id: "vvs-1",
-        title: "Byta blandare - tvättställ",
-        description: "Byte av tvättställsblandare",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Blandare",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "vvs-2",
-        title: "Byta blandare - kök",
-        description: "Byte av köksblandare",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Blandare",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "vvs-3",
-        title: "Byta blandare - badrum",
-        description: "Byte av badrumsblandare",
+        title: "Byta blandare",
+        description: "Byte av blandare. Rum/typ väljs vid bokning",
         basePrice: 959,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -474,7 +329,7 @@ export const servicesDataNew: Service[] = [
       },
       // Sanitetsporsliner
       {
-        id: "vvs-4",
+        id: "vvs-2",
         title: "Byta toalettstol",
         description: "Byte av toalettstol med installation",
         basePrice: 2890,
@@ -486,7 +341,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "vvs-5",
+        id: "vvs-3",
         title: "Byta vattenlås & avloppssats",
         description: "Byte av vattenlås och avloppssats",
         basePrice: 959,
@@ -499,7 +354,7 @@ export const servicesDataNew: Service[] = [
       },
       // Vitvaror
       {
-        id: "vvs-6",
+        id: "vvs-4",
         title: "Montera diskmaskin",
         description: "Installation och anslutning av diskmaskin",
         basePrice: 959,
@@ -511,7 +366,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "vvs-7",
+        id: "vvs-5",
         title: "Montera tvättmaskin",
         description: "Installation och anslutning av tvättmaskin",
         basePrice: 959,
@@ -524,7 +379,7 @@ export const servicesDataNew: Service[] = [
       },
       // Dusch
       {
-        id: "vvs-8",
+        id: "vvs-6",
         title: "Installera duschblandare",
         description: "Installation av ny duschblandare",
         basePrice: 959,
@@ -536,7 +391,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "vvs-9",
+        id: "vvs-7",
         title: "Installera takdusch",
         description: "Installation av takdusch med rör",
         basePrice: 959,
@@ -549,7 +404,7 @@ export const servicesDataNew: Service[] = [
       },
       // Värme
       {
-        id: "vvs-10",
+        id: "vvs-8",
         title: "Byta radiator",
         description: "Byte av radiator med anslutningar",
         basePrice: 959,
@@ -561,7 +416,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "vvs-11",
+        id: "vvs-9",
         title: "Byta termostatventil",
         description: "Byte av termostatventil på radiator",
         basePrice: 959,
@@ -574,7 +429,7 @@ export const servicesDataNew: Service[] = [
       },
       // Service
       {
-        id: "vvs-12",
+        id: "vvs-10",
         title: "Tätta rörkopplingar",
         description: "Täta läckande rörkopplingar",
         basePrice: 959,
@@ -586,7 +441,7 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "vvs-13",
+        id: "vvs-11",
         title: "Åtgärda dropp",
         description: "Reparera droppande kranar",
         basePrice: 959,
@@ -599,28 +454,28 @@ export const servicesDataNew: Service[] = [
       },
       // Större projekt
       {
-        id: "vvs-14",
+        id: "vvs-12",
         title: "Golvbrunnsbyte",
-        description: "Byte av golvbrunn med tätningsmembran",
+        description: "Byte av golvbrunn med anslutningar",
         basePrice: 959,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
-        category: "Avlopp",
+        category: "Större projekt",
         location: "inomhus",
         laborShare: 1.0
       },
       {
-        id: "vvs-15",
+        id: "vvs-13",
         title: "Badrumsrenovering",
-        description: "Komplett badrumsrenovering med VVS",
+        description: "Komplett badrumsrenovering",
         basePrice: 959,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
-        category: "Renovering",
+        category: "Större projekt",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       }
     ]
   },
@@ -633,259 +488,124 @@ export const servicesDataNew: Service[] = [
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
-      // Garderober
+      // Förvaring
       {
         id: "snickeri-1",
-        title: "Platsbyggd garderob - liten",
-        description: "Platsbyggd garderob upp till 150 cm bred",
+        title: "Platsbyggd garderob",
+        description: "Tillverkning av platsbyggd garderob. Storlek väljs vid bokning",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
         category: "Förvaring",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       },
       {
         id: "snickeri-2",
-        title: "Platsbyggd garderob - standard",
-        description: "Platsbyggd garderob 150-250 cm bred",
+        title: "Hyllsystem & förvaring",
+        description: "Installation av hyllsystem och förvaringslösningar",
         basePrice: 859,
         priceUnit: "kr/h",
-        priceType: "quote",
+        priceType: "hourly",
         eligible: { rot: true, rut: false },
         category: "Förvaring",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       },
+      // Dörrar & Foder
       {
         id: "snickeri-3",
-        title: "Platsbyggd garderob - stor",
-        description: "Platsbyggd garderob över 250 cm bred",
+        title: "Montera innerdörrar",
+        description: "Montering av innerdörrar. Antal väljs vid bokning",
         basePrice: 859,
         priceUnit: "kr/h",
-        priceType: "quote",
+        priceType: "hourly",
         eligible: { rot: true, rut: false },
-        category: "Förvaring",
+        category: "Dörrar",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       },
-      // Dörrar
       {
         id: "snickeri-4",
-        title: "Montera innerdörrar (1-2 st)",
-        description: "Montering av 1-2 innerdörrar med foder",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Dörrar",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-5",
-        title: "Montera innerdörrar (3-5 st)",
-        description: "Montering av 3-5 innerdörrar med foder",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Dörrar",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Lister
-      {
-        id: "snickeri-6",
-        title: "Lister & foder - rum",
-        description: "Montering av golv- och taklister i ett rum",
+        title: "Lister & foder",
+        description: "Installation av lister och foder. Rum väljs vid bokning",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
         category: "Lister",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-7",
-        title: "Lister & foder - kök",
-        description: "Montering av lister och foder i kök",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Lister",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-8",
-        title: "Lister & foder - vardagsrum",
-        description: "Montering av lister och foder i vardagsrum",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Lister",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Väggarbeten
-      {
-        id: "snickeri-9",
-        title: "Väggresning & gips (0-25 m²)",
-        description: "Rivning av väggar och gipsning, mindre yta",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Väggarbeten",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-10",
-        title: "Väggresning & gips (26-50 m²)",
-        description: "Rivning av väggar och gipsning, medelstor yta",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Väggarbeten",
         location: "inomhus",
         laborShare: 1.0
       },
       // Kök
       {
-        id: "snickeri-11",
-        title: "Montera köksstommar (10 st)",
-        description: "Montering av köksstommar, mindre kök",
+        id: "snickeri-5",
+        title: "Montera köksstommar",
+        description: "Montering av köksstommar. Antal väljs vid bokning",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
         category: "Kök",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-12",
-        title: "Montera köksstommar (15 st)",
-        description: "Montering av köksstommar, medelstor kök",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Kök",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-13",
-        title: "Montera köksstommar (20 st)",
-        description: "Montering av köksstommar, större kök",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Kök",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Hyllsystem
-      {
-        id: "snickeri-14",
-        title: "Hyllsystem & förvaring (1-2 m)",
-        description: "Hyllsystem och förvaring, mindre installation",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Förvaring",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "snickeri-15",
-        title: "Hyllsystem & förvaring (3-4 m)",
-        description: "Hyllsystem och förvaring, medelstor installation",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Förvaring",
         location: "inomhus",
         laborShare: 1.0
       },
       // Golv
       {
-        id: "snickeri-16",
-        title: "Golvbyte laminat (0-25 m²)",
-        description: "Byte till laminatgolv, mindre yta",
+        id: "snickeri-6",
+        title: "Golvbyte laminat/parkett",
+        description: "Byte av golv. Yta och typ väljs vid bokning",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
         category: "Golv",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       },
+      // Renoveringar
       {
-        id: "snickeri-17",
-        title: "Golvbyte parkett (0-25 m²)",
-        description: "Byte till parkettgolv, mindre yta",
+        id: "snickeri-7",
+        title: "Väggresning & gips",
+        description: "Rivning av väggar och gipsning",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
-        category: "Golv",
+        category: "Renovering",
         location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       },
       {
-        id: "snickeri-18",
-        title: "Golvbyte laminat (26-50 m²)",
-        description: "Byte till laminatgolv, medelstor yta",
+        id: "snickeri-8",
+        title: "Trapp-renovering",
+        description: "Renovering av trappor",
         basePrice: 859,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
-        category: "Golv",
+        category: "Renovering",
         location: "inomhus",
-        laborShare: 0.7
-      },
-      // Trappor
-      {
-        id: "snickeri-19",
-        title: "Trapprenovering",
-        description: "Renovering av trappa med nya steg",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Trappor",
-        location: "inomhus",
-        laborShare: 0.7
+        laborShare: 1.0
       }
     ]
   },
   {
     title: "Montering",
     slug: "montering",
-    description: "IKEA, vitvaror och TV-fästen",
-    icon: Wrench,
+    description: "Möbler, hyllor och apparater",
+    icon: Package,
     basePrice: 759,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
-      // RUT - Möbler
+      // RUT-tjänster (möbler)
       {
         id: "montering-1",
-        title: "Montera säng",
-        description: "Montering av säng med tillbehör",
-        basePrice: 759,
+        title: "Montera möbler",
+        description: "Montering av möbler (säng, soffa, garderob, sideboard). Typ väljs vid bokning",
+        basePrice: 559,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
@@ -893,96 +613,36 @@ export const servicesDataNew: Service[] = [
         location: "inomhus",
         laborShare: 1.0
       },
+      // ROT-tjänster (väggfasta)
       {
         id: "montering-2",
-        title: "Montera soffa",
-        description: "Montering av soffa eller soffgrupp",
+        title: "Väggfasta hyllor & mediamöbler",
+        description: "Montering av väggfasta hyllor och mediamöbler",
         basePrice: 759,
         priceUnit: "kr/h",
         priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Möbler",
+        eligible: { rot: true, rut: false },
+        category: "Väggfästen",
         location: "inomhus",
         laborShare: 1.0
       },
       {
         id: "montering-3",
-        title: "Montera garderob",
-        description: "Montering av garderob eller klädskåp",
+        title: "Montera speglar",
+        description: "Väggmontering av speglar",
         basePrice: 759,
         priceUnit: "kr/h",
         priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Möbler",
+        eligible: { rot: true, rut: false },
+        category: "Väggfästen",
         location: "inomhus",
         laborShare: 1.0
       },
+      // Fönsterbehandling
       {
         id: "montering-4",
-        title: "Montera sideboard",
-        description: "Montering av sideboard eller TV-bänk",
-        basePrice: 759,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Möbler",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // ROT - Väggfasta installationer
-      {
-        id: "montering-5",
-        title: "Väggfasta hyllor",
-        description: "Montering av väggfasta hyllsystem",
-        basePrice: 759,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Väggfästen",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "montering-6",
-        title: "Mediamöbel väggfast",
-        description: "Montering av väggfasta mediamöbler",
-        basePrice: 759,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Väggfästen",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "montering-7",
-        title: "Speglar väggfasta",
-        description: "Montering av stora väggfasta speglar",
-        basePrice: 759,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Väggfästen",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Persienner
-      {
-        id: "montering-8",
-        title: "Montera persienner (1-3 st)",
-        description: "Montering av persienner eller rullgardiner",
-        basePrice: 759,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Fönster",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "montering-9",
-        title: "Montera persienner (4-8 st)",
-        description: "Montering av flera persienner eller rullgardiner",
+        title: "Montera persienner/rullgardiner",
+        description: "Montering av persienner och rullgardiner. Antal väljs vid bokning",
         basePrice: 759,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -993,9 +653,9 @@ export const servicesDataNew: Service[] = [
       },
       // Badrum
       {
-        id: "montering-10",
-        title: "Montera duschvägg",
-        description: "Montering av duschvägg eller kabin",
+        id: "montering-5",
+        title: "Montera duschvägg/kabin",
+        description: "Montering av duschvägg eller duschkabin",
         basePrice: 759,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1005,9 +665,9 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       },
       {
-        id: "montering-11",
+        id: "montering-6",
         title: "Montera köksfläkt",
-        description: "Montering av köksfläkt med installation",
+        description: "Montering av köksfläkt",
         basePrice: 759,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1021,127 +681,55 @@ export const servicesDataNew: Service[] = [
   {
     title: "Trädgård",
     slug: "tradgard",
-    description: "Anläggning, skötsel och underhåll",
+    description: "Gräs, häckar och trädvård",
     icon: TreePine,
     basePrice: 659,
-    priceUnit: "kr/h", 
+    priceUnit: "kr/h",
     eligible: { rot: false, rut: true },
     subServices: [
-      // Gräsklippning variants
+      // Gräsklippning
       {
         id: "tradgard-1",
-        title: "Gräsklippning - liten tomt",
-        description: "Klippning av gräsmatta, liten tomt (upp till 300 m²)",
+        title: "Gräsklippning",
+        description: "Klippning av gräsmatta. Storlek väljs vid bokning",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
-        category: "Skötsel",
+        category: "Gräs",
         location: "utomhus",
         laborShare: 1.0
       },
+      // Häckar
       {
         id: "tradgard-2",
-        title: "Gräsklippning - standard tomt",
-        description: "Klippning av gräsmatta, standard tomt (300-600 m²)",
+        title: "Häckklippning",
+        description: "Klippning av häckar. Längd väljs vid bokning",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
-        category: "Skötsel",
+        category: "Häckar",
         location: "utomhus",
         laborShare: 1.0
       },
+      // Träd
       {
         id: "tradgard-3",
-        title: "Gräsklippning - stor tomt",
-        description: "Klippning av gräsmatta, stor tomt (över 600 m²)",
+        title: "Trädbeskärning",
+        description: "Beskärning av träd. Storlek väljs vid bokning",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
-        category: "Skötsel",
+        category: "Träd",
         location: "utomhus",
         laborShare: 1.0
       },
-      // Häckklippning
+      // Rabatter
       {
         id: "tradgard-4",
-        title: "Häckklippning (0-10 m)",
-        description: "Trimning och formklippning av häckar, korta sträckor",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Skötsel",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "tradgard-5",
-        title: "Häckklippning (10-25 m)",
-        description: "Trimning och formklippning av häckar, medellånga sträckor",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Skötsel",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "tradgard-6",
-        title: "Häckklippning (över 25 m)",
-        description: "Trimning och formklippning av häckar, långa sträckor",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Skötsel",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      // Trädbeskärning
-      {
-        id: "tradgard-7",
-        title: "Trädbeskärning - litet träd",
-        description: "Beskärning av mindre träd och buskar",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Beskärning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "tradgard-8",
-        title: "Trädbeskärning - medelstort träd",
-        description: "Beskärning av medelstora träd",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Beskärning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "tradgard-9",
-        title: "Trädbeskärning - stort träd",
-        description: "Beskärning av stora träd, kräver specialutrustning",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Beskärning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      // Rabattvård
-      {
-        id: "tradgard-10",
-        title: "Ogräsrensning & rabattvård",
+        title: "Ogräsrensning/rabattvård",
         description: "Rensning av ogräs och vård av rabatter",
         basePrice: 659,
         priceUnit: "kr/h",
@@ -1151,46 +739,34 @@ export const servicesDataNew: Service[] = [
         location: "utomhus",
         laborShare: 1.0
       },
-      // Säsongsjobb
+      // Löv & Snö
       {
-        id: "tradgard-11",
-        title: "Lövblåsning & lövupptag",
-        description: "Blåsning och upptag av löv på hösten",
+        id: "tradgard-5",
+        title: "Lövblåsning/lövupptag",
+        description: "Borttagning av löv från gång och uppfart",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
-        category: "Säsong",
+        category: "Löv",
         location: "utomhus",
         laborShare: 1.0
       },
       {
-        id: "tradgard-12",
-        title: "Snöskottning - gång",
-        description: "Snöskottning av gångar och entrér",
+        id: "tradgard-6",
+        title: "Snöskottning",
+        description: "Snöskottning av gång, uppfart och tak (om lämpligt)",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
-        category: "Säsong",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "tradgard-13",
-        title: "Snöskottning - uppfart",
-        description: "Snöskottning av uppfarter och större ytor",
-        basePrice: 659,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Säsong",
+        category: "Snö",
         location: "utomhus",
         laborShare: 1.0
       },
       // Ved
       {
-        id: "tradgard-14",
+        id: "tradgard-7",
         title: "Vedkapning & stapling",
         description: "Kapning och stapling av ved",
         basePrice: 659,
@@ -1201,16 +777,16 @@ export const servicesDataNew: Service[] = [
         location: "utomhus",
         laborShare: 1.0
       },
-      // Altanvård - osäker på ROT/RUT, sätt som ej berättigad
+      // Altanvård (osäker på ROT/RUT - markerad som ej avdrag)
       {
-        id: "tradgard-15",
+        id: "tradgard-8",
         title: "Altantvätt & oljning",
-        description: "Tvätt och behandling av altaner",
+        description: "Tvätt och oljning av altandäck",
         basePrice: 659,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: false },
-        category: "Altanvård",
+        category: "Altan",
         location: "utomhus",
         laborShare: 1.0
       }
@@ -1219,7 +795,7 @@ export const servicesDataNew: Service[] = [
   {
     title: "Städning",
     slug: "stadning",
-    description: "Byggstäd, flyttstäd och regelbunden städning",
+    description: "Hem, flytt och byggstäd",
     icon: Sparkles,
     basePrice: 459,
     priceUnit: "kr/h",
@@ -1227,33 +803,9 @@ export const servicesDataNew: Service[] = [
     subServices: [
       // Hemstäd
       {
-        id: "stadning-1", 
-        title: "Hemstäd - veckovis",
-        description: "Regelbunden städning av hemmet varje vecka",
-        basePrice: 459,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Hemstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-2",
-        title: "Hemstäd - varannan vecka",
-        description: "Regelbunden städning av hemmet varannan vecka",
-        basePrice: 459,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Hemstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-3",
-        title: "Hemstäd - enskild insats",
-        description: "Engångsstädning av hemmet",
+        id: "stadning-1",
+        title: "Hemstäd",
+        description: "Återkommande eller enstaka hemstäd. Frekvens väljs vid bokning",
         basePrice: 459,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1264,34 +816,10 @@ export const servicesDataNew: Service[] = [
       },
       // Flyttstäd
       {
-        id: "stadning-4",
-        title: "Flyttstäd (0-50 m²)",
-        description: "Flyttstädning av mindre bostad",
+        id: "stadning-2",
+        title: "Flyttstäd",
+        description: "Städning vid flytt. Yta väljs vid bokning",
         basePrice: 2890,
-        priceUnit: "kr",
-        priceType: "fixed",
-        eligible: { rot: false, rut: true },
-        category: "Flyttstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-5",
-        title: "Flyttstäd (51-80 m²)",
-        description: "Flyttstädning av medelstor bostad",
-        basePrice: 3890,
-        priceUnit: "kr",
-        priceType: "fixed",
-        eligible: { rot: false, rut: true },
-        category: "Flyttstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-6",
-        title: "Flyttstäd (81-120 m²)",
-        description: "Flyttstädning av större bostad",
-        basePrice: 4890,
         priceUnit: "kr",
         priceType: "fixed",
         eligible: { rot: false, rut: true },
@@ -1301,9 +829,9 @@ export const servicesDataNew: Service[] = [
       },
       // Byggstäd
       {
-        id: "stadning-7",
-        title: "Byggstäd - rum",
-        description: "Byggstädning av enskilt rum",
+        id: "stadning-3",
+        title: "Byggstäd",
+        description: "Städning efter byggarbeten. Omfattning väljs vid bokning",
         basePrice: 459,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1312,48 +840,12 @@ export const servicesDataNew: Service[] = [
         location: "inomhus",
         laborShare: 1.0
       },
+      // Fönster
       {
-        id: "stadning-8",
-        title: "Byggstäd (0-25 m²)",
-        description: "Byggstädning av mindre yta",
-        basePrice: 459,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Byggstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-9",
-        title: "Byggstäd (26-50 m²)",
-        description: "Byggstädning av medelstor yta",
-        basePrice: 459,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Byggstäd",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Fönsterputs
-      {
-        id: "stadning-10",
-        title: "Fönsterputs (1-5 fönster)",
-        description: "Putsning av fönster, mindre antal",
-        basePrice: 890,
-        priceUnit: "kr",
-        priceType: "fixed",
-        eligible: { rot: false, rut: true },
-        category: "Fönster",
-        location: "båda",
-        laborShare: 1.0
-      },
-      {
-        id: "stadning-11",
-        title: "Fönsterputs (6-15 fönster)",
-        description: "Putsning av fönster, större antal",
-        basePrice: 1890,
+        id: "stadning-4",
+        title: "Fönsterputs",
+        description: "Putsning av fönster. Antal väljs vid bokning",
+        basePrice: 125,
         priceUnit: "kr",
         priceType: "fixed",
         eligible: { rot: false, rut: true },
@@ -1363,9 +855,9 @@ export const servicesDataNew: Service[] = [
       },
       // Djuprengöring
       {
-        id: "stadning-12",
-        title: "Djuprengöring kök",
-        description: "Grundlig rengöring av kök med alla ytor",
+        id: "stadning-5",
+        title: "Djuprengöring kök/badrum",
+        description: "Grundlig rengöring av kök eller badrum",
         basePrice: 459,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1374,23 +866,11 @@ export const servicesDataNew: Service[] = [
         location: "inomhus",
         laborShare: 1.0
       },
+      // Kontorsstäd (B2B - ej RUT)
       {
-        id: "stadning-13",
-        title: "Djuprengöring badrum",
-        description: "Grundlig rengöring av badrum med kakel och sanitetsporsliner",
-        basePrice: 459,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Djuprengöring",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Kontorsstäd - ej RUT berättigad
-      {
-        id: "stadning-14",
+        id: "stadning-6",
         title: "Kontorsstäd (B2B)",
-        description: "Städning av kontorslokaler och företag",
+        description: "Städning av kontorslokaler - företagskund",
         basePrice: 459,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1402,45 +882,159 @@ export const servicesDataNew: Service[] = [
     ]
   },
   {
+    title: "Markarbeten",
+    slug: "markarbeten",
+    description: "Schakt, dränering och plattläggning",
+    icon: Mountain,
+    basePrice: 859,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    subServices: [
+      // Schaktning
+      {
+        id: "markarbeten-1",
+        title: "Schaktning för altan/grund",
+        description: "Schaktning för altan eller grund till byggnader",
+        basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Schakt",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      // Dränering
+      {
+        id: "markarbeten-2",
+        title: "Dränering",
+        description: "Installation av dränering. Längd väljs vid bokning",
+        basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Dränering",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      // Plattsättning
+      {
+        id: "markarbeten-3",
+        title: "Plattsättning",
+        description: "Läggning av plattor. Yta väljs vid bokning",
+        basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Plattsättning",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      // Staket
+      {
+        id: "markarbeten-4",
+        title: "Staketstolpar/gjutning",
+        description: "Uppsättning av staketstolpar med gjutning. Antal väljs vid bokning",
+        basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Staket",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      // Grus & Kantsten
+      {
+        id: "markarbeten-5",
+        title: "Grus/kantsten",
+        description: "Läggning av grus och kantsten. Längd väljs vid bokning",
+        basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Grus",
+        location: "utomhus",
+        laborShare: 1.0
+      }
+    ]
+  },
+  {
+    title: "Tekniska installationer",
+    slug: "tekniska-installationer",
+    description: "Nätverk, larm och IT-support",
+    icon: Cpu,
+    basePrice: 959,
+    priceUnit: "kr/h",
+    eligible: { rot: false, rut: false },
+    subServices: [
+      // Nätverk (ej ROT/RUT)
+      {
+        id: "tekniska-1",
+        title: "Nätverksdragning",
+        description: "Dragning av nätverkskablar och installation av uttag",
+        basePrice: 959,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: false, rut: false },
+        category: "Nätverk",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "tekniska-2",
+        title: "Wi-Fi-optimering",
+        description: "Optimering av Wi-Fi-nätverk och accesspunkter",
+        basePrice: 959,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: false, rut: false },
+        category: "Nätverk",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      // Larm (ej ROT/RUT)
+      {
+        id: "tekniska-3",
+        title: "Larm/övervakning",
+        description: "Installation av larm- och övervakningssystem",
+        basePrice: 959,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: false, rut: false },
+        category: "Larm",
+        location: "båda",
+        laborShare: 1.0
+      },
+      // Grön teknik (egen reduktionstyp)
+      {
+        id: "tekniska-4",
+        title: "Laddbox/solcells-förarbete",
+        description: "Förarbete för laddbox och solceller. Badge: Grön teknik (se villkor)",
+        basePrice: 959,
+        priceUnit: "från" as const,
+        priceType: "quote",
+        eligible: { rot: false, rut: false },
+        category: "Grön teknik",
+        location: "båda",
+        laborShare: 1.0
+      }
+    ]
+  },
+  {
     title: "Flytt",
-    slug: "flytt", 
-    description: "Bärhjälp, lastning och uppackning",
+    slug: "flytt",
+    description: "Bärhjälp, packning och transport",
     icon: Truck,
     basePrice: 559,
     priceUnit: "kr/h",
     eligible: { rot: false, rut: true },
     subServices: [
-      // Bärhjälp variants
+      // Bärhjälp
       {
         id: "flytt-1",
-        title: "Bärhjälp (2 personer)",
-        description: "Hjälp med att bära tunga föremål, 2-mans team",
+        title: "Bärhjälp",
+        description: "Bärhjälp vid flytt. Antal personer väljs vid bokning",
         basePrice: 559,
-        priceUnit: "kr/h", 
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Bärhjälp",
-        location: "båda",
-        laborShare: 1.0
-      },
-      {
-        id: "flytt-2",
-        title: "Bärhjälp (3 personer)",
-        description: "Hjälp med att bära tunga föremål, 3-mans team",
-        basePrice: 839,
-        priceUnit: "kr/h", 
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Bärhjälp",
-        location: "båda",
-        laborShare: 1.0
-      },
-      {
-        id: "flytt-3",
-        title: "Bärhjälp (4 personer)",
-        description: "Hjälp med att bära tunga föremål, 4-mans team",
-        basePrice: 1119,
-        priceUnit: "kr/h", 
+        priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
         category: "Bärhjälp",
@@ -1449,33 +1043,9 @@ export const servicesDataNew: Service[] = [
       },
       // Packhjälp
       {
-        id: "flytt-4",
-        title: "Packhjälp - liten flytt",
-        description: "Hjälp med packning och uppackning, mindre mängd",
-        basePrice: 559,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Packning",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "flytt-5",
-        title: "Packhjälp - standard flytt",
-        description: "Hjälp med packning och uppackning, standard mängd",
-        basePrice: 559,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: true },
-        category: "Packning",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "flytt-6",
-        title: "Packhjälp - stor flytt",
-        description: "Hjälp med packning och uppackning, större mängd",
+        id: "flytt-2",
+        title: "Packhjälp",
+        description: "Packning av möbler och föremål. Omfattning väljs vid bokning",
         basePrice: 559,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1486,10 +1056,10 @@ export const servicesDataNew: Service[] = [
       },
       // Flyttbil
       {
-        id: "flytt-7",
+        id: "flytt-3",
         title: "Flyttbil + team",
-        description: "Flytthjälp med bil och personal",
-        basePrice: 559,
+        description: "Flyttbil med team för transport",
+        basePrice: 1159,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: false, rut: true },
@@ -1499,9 +1069,9 @@ export const servicesDataNew: Service[] = [
       },
       // Tömning
       {
-        id: "flytt-8",
+        id: "flytt-4",
         title: "Tömning till återvinning",
-        description: "Hjälp med tömning och transport till återvinning",
+        description: "Tömning och transport till återvinning",
         basePrice: 559,
         priceUnit: "kr/h",
         priceType: "hourly",
@@ -1510,10 +1080,10 @@ export const servicesDataNew: Service[] = [
         location: "båda",
         laborShare: 1.0
       },
-      // Montering i samband med flytt
+      // Montering/demontering
       {
-        id: "flytt-9",
-        title: "Ned/uppmontering av möbler",
+        id: "flytt-5",
+        title: "Ned/upp-montering av möbler",
         description: "Demontering och montering av möbler vid flytt",
         basePrice: 559,
         priceUnit: "kr/h",
@@ -1524,249 +1094,36 @@ export const servicesDataNew: Service[] = [
         laborShare: 1.0
       }
     ]
-  },
-  // Nya kategorier
-  {
-    title: "Markarbeten",
-    slug: "markarbeten",
-    description: "Schaktning, dränering och anläggning",
-    icon: Mountain,
-    basePrice: 859,
-    priceUnit: "kr/h",
-    eligible: { rot: true, rut: false },
-    subServices: [
-      {
-        id: "mark-1",
-        title: "Schaktning för altan",
-        description: "Schaktning och förberedelse för altanbygge",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Schaktning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "mark-2",
-        title: "Schaktning för grund",
-        description: "Schaktning för husgrund eller tillbyggnad",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Schaktning",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "mark-3",
-        title: "Dränering (0-25 m)",
-        description: "Installation av dränering, kortare sträcka",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Dränering",
-        location: "utomhus",
-        laborShare: 0.7
-      },
-      {
-        id: "mark-4",
-        title: "Dränering (26-50 m)",
-        description: "Installation av dränering, medellång sträcka",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Dränering",
-        location: "utomhus",
-        laborShare: 0.7
-      },
-      {
-        id: "mark-5",
-        title: "Plattsättning (0-25 m²)",
-        description: "Läggning av plattor, mindre yta",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Plattsättning",
-        location: "utomhus",
-        laborShare: 0.7
-      },
-      {
-        id: "mark-6",
-        title: "Plattsättning (26-50 m²)",
-        description: "Läggning av plattor, medelstor yta",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Plattsättning",
-        location: "utomhus",
-        laborShare: 0.7
-      },
-      {
-        id: "mark-7",
-        title: "Staketstolpar (1-5 st)",
-        description: "Installation av staketstolpar med gjutning",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Staket",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "mark-8",
-        title: "Staketstolpar (6-15 st)",
-        description: "Installation av flera staketstolpar med gjutning",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: true, rut: false },
-        category: "Staket",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "mark-9",
-        title: "Grus & kantsten (0-25 m)",
-        description: "Läggning av grus och kantsten, kortare sträcka",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Grus",
-        location: "utomhus",
-        laborShare: 0.7
-      },
-      {
-        id: "mark-10",
-        title: "Grus & kantsten (26-50 m)",
-        description: "Läggning av grus och kantsten, längre sträcka",
-        basePrice: 859,
-        priceUnit: "kr/h",
-        priceType: "quote",
-        eligible: { rot: true, rut: false },
-        category: "Grus",
-        location: "utomhus",
-        laborShare: 0.7
-      }
-    ]
-  },
-  {
-    title: "Tekniska installationer",
-    slug: "tekniska-installationer",
-    description: "IT, larm och specialinstallationer",
-    icon: Cpu,
-    basePrice: 959,
-    priceUnit: "kr/h",
-    eligible: { rot: false, rut: false },
-    subServices: [
-      // Nätverk - ej ROT/RUT
-      {
-        id: "teknik-1",
-        title: "Nätverksdragning",
-        description: "Dragning av nätverkskablar i fastighet",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Nätverk",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "teknik-2",
-        title: "Nätverksuttag installation",
-        description: "Installation av nätverksuttag",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Nätverk",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "teknik-3",
-        title: "Patch & konfiguration",
-        description: "Patchning och konfiguration av nätverk",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Nätverk",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "teknik-4",
-        title: "Wi-Fi optimering",
-        description: "Optimering och förstärkning av Wi-Fi",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Trådlöst",
-        location: "inomhus",
-        laborShare: 1.0
-      },
-      // Larm & övervakning - ej ROT/RUT
-      {
-        id: "teknik-5",
-        title: "Larminstallation",
-        description: "Installation av larmsystem",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Säkerhet",
-        location: "båda",
-        laborShare: 1.0
-      },
-      {
-        id: "teknik-6",
-        title: "Övervakningskameror",
-        description: "Installation av övervakningssystem",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Säkerhet",
-        location: "båda",
-        laborShare: 1.0
-      },
-      // Grön teknik - egen kategori
-      {
-        id: "teknik-7",
-        title: "Laddbox förarbete",
-        description: "Förberedelser för installation av laddbox (se villkor för avdrag)",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Grön teknik",
-        location: "utomhus",
-        laborShare: 1.0
-      },
-      {
-        id: "teknik-8",
-        title: "Solcells-förarbete",
-        description: "Förberedande arbeten för solcellsinstallation (se villkor för avdrag)",
-        basePrice: 959,
-        priceUnit: "kr/h",
-        priceType: "hourly",
-        eligible: { rot: false, rut: false },
-        category: "Grön teknik",
-        location: "utomhus",
-        laborShare: 1.0
-      }
-    ]
   }
 ];
 
-export default servicesDataNew;
+// Helper function to get all sub-services
+export const getAllSubServices = () => {
+  return servicesDataNew.flatMap(service => 
+    service.subServices.map(subService => ({
+      ...subService,
+      mainCategory: service.title,
+      mainSlug: service.slug
+    }))
+  );
+};
+
+// Export helper for getting service by slug
+export const getServiceBySlug = (slug: string) => {
+  return servicesDataNew.find(service => service.slug === slug);
+};
+
+// Export helper for getting sub-service by id
+export const getSubServiceById = (id: string) => {
+  for (const service of servicesDataNew) {
+    const subService = service.subServices.find(sub => sub.id === id);
+    if (subService) {
+      return {
+        ...subService,
+        mainCategory: service.title,
+        mainSlug: service.slug
+      };
+    }
+  }
+  return null;
+};

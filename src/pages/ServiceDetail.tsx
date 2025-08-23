@@ -267,7 +267,7 @@ const ServiceDetail = () => {
                         {pricing.originalDisplay && eligible ? (
                           <>
                             <div className="flex justify-between items-center mb-2">
-                              <span className="text-xs text-muted-foreground">Ordinarie pris:</span>
+                              <span className="text-xs text-muted-foreground">Ordinarie:</span>
                               <span className="text-sm font-semibold line-through text-muted-foreground">
                                 {pricing.originalDisplay}
                               </span>
@@ -288,7 +288,7 @@ const ServiceDetail = () => {
                             </div>
                             <div className="text-xs text-muted-foreground mt-1">
                               {pricing.badge ? `Med ${pricing.badge}-avdrag` : 'inkl. moms'}
-                              {!eligible && mode !== 'ordinary' && (
+                              {mode !== 'ordinary' && (
                                 <span className="text-orange-600 ml-1">
                                   (Ej {mode.toUpperCase()}-berättigad)
                                 </span>
