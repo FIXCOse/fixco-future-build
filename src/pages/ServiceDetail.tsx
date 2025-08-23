@@ -6,7 +6,7 @@ import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
 import { Button } from "@/components/ui/button-premium";
-import { servicesData, SubService } from "@/data/servicesData";
+import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { Badge } from "@/components/ui/badge";
 import { 
   ArrowRight,
@@ -26,7 +26,7 @@ const ServiceDetail = () => {
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
 
-  const service = servicesData.find(s => s.slug === slug);
+  const service = servicesDataNew.find(s => s.slug === slug);
 
   if (!service) {
     return (
@@ -52,7 +52,7 @@ const ServiceDetail = () => {
   const paginatedSubServices = service.subServices.slice(startIndex, startIndex + itemsPerPage);
 
   // Related services (other services user might be interested in)
-  const relatedServices = servicesData
+  const relatedServices = servicesDataNew
     .filter(s => s.slug !== slug)
     .slice(0, 3);
 
@@ -191,16 +191,14 @@ const ServiceDetail = () => {
               const serviceForPricing = {
                 id: subService.id,
                 title: subService.title,
-                basePrice: typeof subService.basePrice === 'string' 
-                  ? parseInt(subService.basePrice.replace(/[^\d]/g, '')) || 0
-                  : subService.basePrice,
-                priceUnit: (subService.priceType === 'offert' ? 'kr' : subService.basePrice.toString().includes('kr/h') ? 'kr/h' : 'kr') as 'kr/h' | 'kr' | 'från',
+                basePrice: subService.basePrice,
+                priceUnit: subService.priceUnit as 'kr/h' | 'kr' | 'från',
                 eligible: { 
-                  rot: subService.rotEligible || false, 
-                  rut: subService.rutEligible || false 
+                  rot: subService.eligible.rot, 
+                  rut: subService.eligible.rut 
                 },
                 laborShare: 1.0,
-                fixedPrice: subService.priceType === 'offert'
+                fixedPrice: subService.priceType === 'quote'
               };
 
               const pricing = calcDisplayPrice(serviceForPricing, mode);
@@ -225,12 +223,12 @@ const ServiceDetail = () => {
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-lg font-bold text-foreground leading-tight">{subService.title}</h3>
                     <div className="flex flex-col space-y-1">
-                      {subService.rotEligible && (
+                      {subService.eligible.rot && (
                         <Badge variant="default" className="text-xs">
                           ROT
                         </Badge>
                       )}
-                      {subService.rutEligible && (
+                      {subService.eligible.rut && (
                         <Badge variant="default" className="text-xs bg-green-100 text-green-800">
                           RUT
                         </Badge>
@@ -259,7 +257,7 @@ const ServiceDetail = () => {
 
                   {/* Pricing with Global Pricing System */}
                   <div className="border-t border-border pt-4 mb-4">
-                    {subService.priceType === 'offert' ? (
+                    {subService.priceType === 'quote' ? (
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-semibold">Pris:</span>
                         <span className="text-lg font-bold">Begär offert</span>
@@ -308,7 +306,7 @@ const ServiceDetail = () => {
                     size="sm" 
                     className="w-full group"
                   >
-                    {subService.priceType === 'offert' ? (
+                    {subService.priceType === 'quote' ? (
                       <>
                         <Calculator className="h-4 w-4 mr-2" />
                         Begär offert
@@ -381,8 +379,8 @@ const ServiceDetail = () => {
                 basePrice: parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0,
                 priceUnit: 'kr/h' as 'kr/h' | 'kr' | 'från',
                 eligible: { 
-                  rot: relatedService.rutEligible || false, 
-                  rut: relatedService.rutEligible || false 
+                  rot: relatedService.eligible.rot, 
+                  rut: relatedService.eligible.rut 
                 },
                 laborShare: 1.0
               };

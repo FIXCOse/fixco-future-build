@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { servicesData } from "@/data/servicesData";
+import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 
 const CategoryGrid = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {servicesData.map((service, index) => {
+      {servicesDataNew.map((service, index) => {
         const IconComponent = service.icon as LucideIcon;
         return (
           <Link
