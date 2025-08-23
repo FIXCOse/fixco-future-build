@@ -10,8 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
 import { usePriceStore } from "@/stores/priceStore";
-import { formatPrice, getBadgeClasses } from "@/utils/priceFormatter";
-import PriceSummary from '@/components/PriceSummary';
 import { cn } from "@/lib/utils";
 import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 
@@ -468,13 +466,80 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                       </div>
 
                        {/* Pricing */}
-                       <PriceSummary
-                         priceIncl={service.basePrice}
-                         pricingType={service.priceType}
-                         eligible={service.eligible}
-                         size="sm"
-                         showChips={false}
-                       />
+                       {service.priceType === 'quote' ? (
+                         <div className="space-y-1">
+                           <div className="font-semibold text-base">Begär offert</div>
+                           <div className="text-xs text-muted-foreground">Prisuppgift efter besiktning</div>
+                         </div>
+                       ) : (() => {
+                         const VAT_RATE = 0.25;
+                         const ROT_RATE = 0.50;
+                         const RUT_RATE = 0.50;
+                         
+                         const priceIncl = service.basePrice;
+                         const priceExcl = priceIncl / (1 + VAT_RATE);
+                         const priceRotIncl = service.eligible.rot ? priceIncl * (1 - ROT_RATE) : priceIncl;
+                         const priceRutIncl = service.eligible.rut ? priceIncl * (1 - RUT_RATE) : priceIncl;
+                         const savingsRot = service.eligible.rot ? priceIncl - priceRotIncl : 0;
+                         const savingsRut = service.eligible.rut ? priceIncl - priceRutIncl : 0;
+                         
+                         let primaryPrice = priceIncl;
+                         let isDiscounted = false;
+                         
+                         if (mode === 'rot' && service.eligible.rot) {
+                           primaryPrice = priceRotIncl;
+                           isDiscounted = true;
+                         } else if (mode === 'rut' && service.eligible.rut) {
+                           primaryPrice = priceRutIncl;
+                           isDiscounted = true;
+                         }
+                         
+                         const unit = service.priceType === 'hourly' ? ' kr/h' : ' kr';
+                         const formatMoney = (amount: number) => Math.round(amount).toLocaleString('sv-SE');
+                         
+                         return (
+                           <div className="space-y-1">
+                             <div className={`font-semibold text-base ${isDiscounted ? 'text-primary' : ''}`}>
+                               {formatMoney(primaryPrice)}{unit} inkl. moms
+                             </div>
+                             <div className="text-xs text-muted-foreground">
+                               {formatMoney(priceExcl)}{unit} exkl. moms
+                             </div>
+                             <div className="flex flex-wrap gap-1 mt-2">
+                               {mode === 'rot' && service.eligible.rot && savingsRot > 0 && (
+                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                   Sparar {formatMoney(savingsRot)} kr med ROT
+                                 </Badge>
+                               )}
+                               {mode === 'rut' && service.eligible.rut && savingsRut > 0 && (
+                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                   Sparar {formatMoney(savingsRut)} kr med RUT
+                                 </Badge>
+                               )}
+                               {mode === 'all' && service.eligible.rot && (
+                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                   ROT {savingsRot > 0 ? `-${formatMoney(savingsRot)} kr` : ''}
+                                 </Badge>
+                               )}
+                               {mode === 'all' && service.eligible.rut && (
+                                 <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                   RUT {savingsRut > 0 ? `-${formatMoney(savingsRut)} kr` : ''}
+                                 </Badge>
+                               )}
+                               {mode === 'rot' && !service.eligible.rot && (
+                                 <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                   Ej ROT
+                                 </Badge>
+                               )}
+                               {mode === 'rut' && !service.eligible.rut && (
+                                 <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                   Ej RUT
+                                 </Badge>
+                               )}
+                             </div>
+                           </div>
+                         );
+                       })()}
 
                       {/* CTA */}
                       <Button 
