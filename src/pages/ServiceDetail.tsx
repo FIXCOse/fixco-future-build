@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import GlobalPricingToggle from "@/components/GlobalPricingToggle";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
 import { Button } from "@/components/ui/button-premium";
@@ -48,11 +47,8 @@ const ServiceDetail = () => {
 
   const IconComponent = service.icon;
 
-  // Filter and paginate services based on eligibility
-  const { shouldShowService } = usePriceStore();
-  const filteredSubServices = service.subServices.filter(subService => 
-    shouldShowService(subService.eligible)
-  );
+  // Show all sub-services without filtering on category pages
+  const filteredSubServices = service.subServices;
   
   const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -168,14 +164,6 @@ const ServiceDetail = () => {
         </div>
       </section>
 
-      {/* Pricing Toggle */}
-      <section className="py-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <GlobalPricingToggle size="md" />
-          </div>
-        </div>
-      </section>
 
       {/* Sub-services Grid */}
       <section className="py-20">
@@ -192,65 +180,45 @@ const ServiceDetail = () => {
             </div>
           </div>
           
-          {/* Empty state */}
-          {filteredSubServices.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="max-w-md mx-auto">
-                <h3 className="text-xl font-semibold mb-4">
-                  Inga tjänster är berättigade till {mode === 'rot' ? 'ROT' : 'RUT'} i denna kategori.
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Visa alla tjänster för att se fler alternativ.
-                </p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => usePriceStore.getState().setMode('all')}
-                >
-                  Visa alla tjänster
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {paginatedSubServices.map((subService, index) => {
-              // Create a ServicePricing object for calculation
-              const serviceForPricing = {
-                id: subService.id,
-                title: subService.title,
-                basePrice: subService.basePrice,
-                priceUnit: subService.priceUnit as 'kr/h' | 'kr' | 'från',
-                eligible: { 
-                  rot: subService.eligible.rot, 
-                  rut: subService.eligible.rut 
-                },
-                laborShare: 1.0,
-                fixedPrice: subService.priceType === 'quote'
-              };
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {paginatedSubServices.map((subService, index) => {
+            // Create a ServicePricing object for calculation
+            const serviceForPricing = {
+              id: subService.id,
+              title: subService.title,
+              basePrice: subService.basePrice,
+              priceUnit: subService.priceUnit as 'kr/h' | 'kr' | 'från',
+              eligible: { 
+                rot: subService.eligible.rot, 
+                rut: subService.eligible.rut 
+              },
+              laborShare: 1.0,
+              fixedPrice: subService.priceType === 'quote'
+            };
 
-              const pricing = calcDisplayPrice(serviceForPricing, mode);
-              const eligible = isEligibleForMode(serviceForPricing, mode);
+            const pricing = calcDisplayPrice(serviceForPricing, mode);
+            const eligible = isEligibleForMode(serviceForPricing, mode);
 
-              return (
-                <ServiceCardV3
-                  key={subService.id}
-                  title={subService.title}
-                  category={subService.category}
-                  description={subService.description}
-                  pricingType={subService.priceType === 'quote' ? 'quote' : 
-                               subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
-                  priceIncl={subService.basePrice}
-                  eligible={subService.eligible}
-                  onBook={() => {
-                    // Handle booking
-                  }}
-                  onQuote={() => {
-                    // Handle quote request
-                  }}
-                />
-              );
-              })}
-            </div>
-          )}
+            return (
+              <ServiceCardV3
+                key={subService.id}
+                title={subService.title}
+                category={subService.category}
+                description={subService.description}
+                pricingType={subService.priceType === 'quote' ? 'quote' : 
+                             subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                priceIncl={subService.basePrice}
+                eligible={subService.eligible}
+                onBook={() => {
+                  // Handle booking
+                }}
+                onQuote={() => {
+                  // Handle quote request
+                }}
+              />
+            );
+            })}
+          </div>
 
           {/* Pagination */}
           {totalPages > 1 && filteredSubServices.length > 0 && (
