@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ROTToggle from "@/components/ROTToggle";
+import PricingToggle from "@/components/PricingToggle";
+import useGlobalPricing from "@/hooks/useGlobalPricing";
 import { Button } from "@/components/ui/button-premium";
 import { servicesData, SubService } from "@/data/servicesData";
 import { Badge } from "@/components/ui/badge";
@@ -20,9 +21,9 @@ import {
 
 const ServiceDetail = () => {
   const { slug } = useParams();
-  const [showROTPrice, setShowROTPrice] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const { pricingMode, getPricing, isEligibleForCurrentMode } = useGlobalPricing();
 
   const service = servicesData.find(s => s.slug === slug);
 
@@ -159,14 +160,11 @@ const ServiceDetail = () => {
         </div>
       </section>
 
-      {/* ROT Price Toggle */}
+      {/* Pricing Toggle */}
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <ROTToggle 
-              defaultEnabled={showROTPrice}
-              onChange={setShowROTPrice}
-            />
+            <PricingToggle size="md" />
           </div>
         </div>
       </section>
@@ -202,22 +200,23 @@ const ServiceDetail = () => {
                   />
                 </div>
 
-                {/* Header */}
+                {/* Header with Tax Benefits */}
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-lg font-bold text-foreground leading-tight">{subService.title}</h3>
                   <div className="flex flex-col space-y-1">
-                    <Badge 
-                      variant={subService.rotEligible ? "default" : "secondary"}
-                      className="text-xs"
-                    >
-                      {subService.rotEligible ? "ROT" : "EJ ROT"}
+                    {subService.rotEligible && (
+                      <Badge variant="default" className="text-xs">
+                        ROT
+                      </Badge>
+                    )}
+                    {subService.rutEligible && (
+                      <Badge variant="default" className="text-xs bg-green-100 text-green-800">
+                        RUT
+                      </Badge>
+                    )}
+                    <Badge variant="outline" className="text-xs capitalize">
+                      {subService.location}
                     </Badge>
-                     <Badge 
-                       variant="outline"
-                       className="text-xs capitalize"
-                     >
-                       {subService.location}
-                     </Badge>
                   </div>
                 </div>
                 
@@ -231,45 +230,73 @@ const ServiceDetail = () => {
                     <span className="text-muted-foreground">Kategori:</span>
                     <span className="font-medium">{subService.category}</span>
                   </div>
-                  {subService.room && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Rum:</span>
-                      <span className="font-medium">{subService.room}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Plats:</span>
                     <span className="font-medium capitalize">{subService.location}</span>
                   </div>
                 </div>
 
-                {/* Pricing */}
+                {/* Pricing with Global Pricing System */}
                 <div className="border-t border-border pt-4 mb-4">
-                  {showROTPrice && subService.rotEligible ? (
-                    <>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs text-muted-foreground">Ordinarie pris:</span>
-                        <span className="text-sm font-semibold line-through text-muted-foreground">
-                          {subService.basePrice}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold text-primary">Med ROT-avdrag:</span>
-                        <span className="text-lg font-bold gradient-text">
-                          {subService.rotPrice}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">50% rabatt med ROT</div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-semibold">Pris:</span>
-                        <span className="text-lg font-bold">{subService.basePrice}</span>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">inkl. moms</div>
-                    </>
-                  )}
+                  {(() => {
+                    const pricing = getPricing(
+                      parseInt(subService.basePrice.replace(/[^\d]/g, '')) || 0,
+                      subService.rotEligible && subService.rotPrice !== 'Begär offert' 
+                        ? parseInt(subService.rotPrice.replace(/[^\d]/g, '')) || undefined 
+                        : undefined,
+                      subService.rutEligible && subService.rutPrice !== 'Begär offert' 
+                        ? parseInt(subService.rutPrice.replace(/[^\d]/g, '')) || undefined 
+                        : undefined
+                    );
+                    
+                    const isEligible = isEligibleForCurrentMode(subService.rotEligible, subService.rutEligible);
+                    
+                    if (subService.priceType === 'offert') {
+                      return (
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-semibold">Pris:</span>
+                          <span className="text-lg font-bold">Begär offert</span>
+                        </div>
+                      );
+                    }
+                    
+                    if (pricing.originalDisplay && isEligible) {
+                      return (
+                        <>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs text-muted-foreground">Ordinarie pris:</span>
+                            <span className="text-sm font-semibold line-through text-muted-foreground">
+                              {pricing.originalDisplay}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-semibold text-primary">Med {pricing.badge}-avdrag:</span>
+                            <span className="text-lg font-bold gradient-text">
+                              {pricing.display}
+                            </span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">50% rabatt med {pricing.badge}</div>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-semibold">Pris:</span>
+                            <span className="text-lg font-bold">{pricing.display}</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {pricing.badge ? `Med ${pricing.badge}-avdrag` : 'inkl. moms'}
+                          </div>
+                          {!isEligible && pricingMode !== 'ordinarie' && (
+                            <div className="text-xs text-orange-600 mt-1">
+                              Ej {pricingMode.toUpperCase()}-berättigad
+                            </div>
+                          )}
+                        </>
+                      );
+                    }
+                  })()}
                 </div>
 
                 {/* CTA */}
@@ -359,8 +386,26 @@ const ServiceDetail = () => {
                   <h3 className="text-xl font-bold mb-2">{relatedService.title}</h3>
                   <p className="text-muted-foreground mb-4">{relatedService.description}</p>
                   <div className="text-sm mb-4">
-                    <span className="font-semibold text-primary">Från {relatedService.rotPrice}</span>
-                    <span className="text-muted-foreground"> med ROT</span>
+                    {(() => {
+                      const pricing = getPricing(
+                        parseInt(relatedService.basePrice.replace(/[^\d]/g, '')) || 0,
+                        relatedService.rotPrice !== 'Begär offert' 
+                          ? parseInt(relatedService.rotPrice.replace(/[^\d]/g, '')) || undefined 
+                          : undefined,
+                        relatedService.rutPrice !== 'Begär offert' 
+                          ? parseInt(relatedService.rutPrice.replace(/[^\d]/g, '')) || undefined 
+                          : undefined
+                      );
+                      
+                      return (
+                        <>
+                          <span className="font-semibold text-primary">Från {pricing.display}</span>
+                          {pricing.badge && (
+                            <span className="text-muted-foreground"> med {pricing.badge}</span>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                   <Link to={`/tjanster/${relatedService.slug}`}>
                     <Button variant="ghost-premium" size="sm" className="w-full">
