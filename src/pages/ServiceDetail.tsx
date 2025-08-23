@@ -239,16 +239,22 @@ const ServiceDetail = () => {
                 {/* Pricing with Global Pricing System */}
                 <div className="border-t border-border pt-4 mb-4">
                   {(() => {
-                    const pricing = getPricing(
-                      parseInt(subService.basePrice.replace(/[^\d]/g, '')) || 0,
-                      subService.rotEligible && subService.rotPrice !== 'Begär offert' 
-                        ? parseInt(subService.rotPrice.replace(/[^\d]/g, '')) || undefined 
-                        : undefined,
-                      subService.rutEligible && subService.rutPrice !== 'Begär offert' 
-                        ? parseInt(subService.rutPrice.replace(/[^\d]/g, '')) || undefined 
-                        : undefined
-                    );
+                    // Helper function to safely parse price strings
+                    const parsePrice = (priceStr) => {
+                      if (!priceStr || typeof priceStr !== 'string') return undefined;
+                      const numStr = priceStr.replace(/[^\d]/g, '');
+                      return numStr ? parseInt(numStr) : undefined;
+                    };
                     
+                    const basePrice = parsePrice(subService.basePrice) || 0;
+                    const rotPrice = subService.rotEligible && subService.rotPrice !== 'Begär offert' 
+                      ? parsePrice(subService.rotPrice) 
+                      : undefined;
+                    const rutPrice = subService.rutEligible && subService.rutPrice !== 'Begär offert' 
+                      ? parsePrice(subService.rutPrice) 
+                      : undefined;
+                    
+                    const pricing = getPricing(basePrice, rotPrice, rutPrice);
                     const isEligible = isEligibleForCurrentMode(subService.rotEligible, subService.rutEligible);
                     
                     if (subService.priceType === 'offert') {
@@ -387,15 +393,22 @@ const ServiceDetail = () => {
                   <p className="text-muted-foreground mb-4">{relatedService.description}</p>
                   <div className="text-sm mb-4">
                     {(() => {
-                      const pricing = getPricing(
-                        parseInt(relatedService.basePrice.replace(/[^\d]/g, '')) || 0,
-                        relatedService.rotPrice !== 'Begär offert' 
-                          ? parseInt(relatedService.rotPrice.replace(/[^\d]/g, '')) || undefined 
-                          : undefined,
-                        relatedService.rutPrice !== 'Begär offert' 
-                          ? parseInt(relatedService.rutPrice.replace(/[^\d]/g, '')) || undefined 
-                          : undefined
-                      );
+                      // Helper function to safely parse price strings
+                      const parsePrice = (priceStr) => {
+                        if (!priceStr || typeof priceStr !== 'string') return undefined;
+                        const numStr = priceStr.replace(/[^\d]/g, '');
+                        return numStr ? parseInt(numStr) : undefined;
+                      };
+                      
+                      const basePrice = parsePrice(relatedService.basePrice) || 0;
+                      const rotPrice = relatedService.rotPrice !== 'Begär offert' 
+                        ? parsePrice(relatedService.rotPrice) 
+                        : undefined;
+                      const rutPrice = relatedService.rutPrice !== 'Begär offert' 
+                        ? parsePrice(relatedService.rutPrice) 
+                        : undefined;
+                      
+                      const pricing = getPricing(basePrice, rotPrice, rutPrice);
                       
                       return (
                         <>
