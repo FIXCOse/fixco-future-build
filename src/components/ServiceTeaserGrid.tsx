@@ -77,9 +77,9 @@ const ServiceTeaserGrid = () => {
       icon: Sparkles,
       description: "Hem, bygg, kontor, flytt",
       priceRegular: 459,
-      priceROT: 230,
+      priceROT: 459,
       priceRUT: 230,
-      rotEligible: true,
+      rotEligible: false,
       rutEligible: true,
       slug: "stadning",
       gradient: "from-purple-500/20 to-pink-500/20",
@@ -90,9 +90,9 @@ const ServiceTeaserGrid = () => {
       icon: Truck,
       description: "Bärhjälp, lastning, packning",
       priceRegular: 559,
-      priceROT: 280,
+      priceROT: 559,
       priceRUT: 280,
-      rotEligible: true,
+      rotEligible: false,
       rutEligible: true,
       slug: "flytt",
       gradient: "from-indigo-500/20 to-purple-500/20",
@@ -210,11 +210,11 @@ const ServiceTeaserGrid = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-sm text-muted-foreground">
+                            <div className="text-sm text-muted-foreground flex items-center gap-2">
                               {pricing.badge ? `Med ${pricing.badge}-avdrag` : "Inkl. moms"}
-                              {!isEligible && pricingMode !== 'ordinarie' && (
-                                <span className="text-orange-600 ml-1">
-                                  (ej {pricingMode.toUpperCase()}-berättigad)
+                              {isEligible && pricingMode !== 'ordinarie' && (
+                                <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                                  {pricingMode.toUpperCase()}-berättigad
                                 </span>
                               )}
                             </div>
