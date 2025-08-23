@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -117,8 +117,10 @@ const ServiceTeaserGrid = () => {
     }
   ];
 
-  // Filter services based on eligibility
-  const filteredServices = services.filter(service => shouldShowService(service.eligible));
+  // Filter services based on eligibility - this will update when mode changes
+  const filteredServices = useMemo(() => {
+    return services.filter(service => shouldShowService(service.eligible));
+  }, [services, shouldShowService, mode]); // Include mode to ensure re-filtering
 
   return (
     <section className="py-24 relative">
@@ -136,11 +138,11 @@ const ServiceTeaserGrid = () => {
           <GlobalPricingToggle size="md" />
         </div>
 
-        {/* Service Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" key={mode}>
+        {/* Service Grid - Force re-render when mode changes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" key={`teaser-grid-${mode}`}>
           {filteredServices.map((service, index) => (
             <Link
-              key={service.id}
+              key={`${service.id}-${mode}`}
               to={`/tjanster/${service.slug}`}
               className="group block"
             >

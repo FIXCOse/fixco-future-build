@@ -57,41 +57,26 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   // Get all sub-services with parent info and filter by eligibility
   const allSubServices = useMemo(() => {
     return servicesDataNew.flatMap(service => 
-      service.subServices
-        .filter(subService => shouldShowService(subService.eligible))
-        .map(subService => ({
-          ...subService,
-          parentService: service.title,
-          parentSlug: service.slug,
-          priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
-          location: subService.location as "inomhus" | "utomhus" | "båda",
-          priceType: subService.priceType as "hourly" | "fixed" | "quote"
-        }))
+      service.subServices.map(subService => ({
+        ...subService,
+        parentService: service.title,
+        parentSlug: service.slug,
+        priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
+        location: subService.location as "inomhus" | "utomhus" | "båda",
+        priceType: subService.priceType as "hourly" | "fixed" | "quote"
+      }))
     );
-  }, [shouldShowService]);
-
-  // Get unique categories
-  const categories = useMemo(() => {
-    return servicesDataNew.map(service => ({
-      name: service.title,
-      slug: service.slug
-    }));
   }, []);
 
-  // Get sub-categories for selected category
-  const subCategories = useMemo(() => {
-    if (selectedCategory === 'alla') return [];
-    
-    const service = servicesDataNew.find(s => s.slug === selectedCategory);
-    if (!service) return [];
-    
-    const subCats = new Set(service.subServices.map(s => s.category));
-    return Array.from(subCats).sort();
-  }, [selectedCategory]);
-
-  // Filter and sort services
+  // Filter services based on eligibility and other filters
   const filteredServices = useMemo(() => {
-    let filtered = allSubServices.filter(service => {
+    let filtered = allSubServices;
+
+    // Apply eligibility filter first
+    filtered = filtered.filter(service => shouldShowService(service.eligible));
+
+    // Then apply other filters
+    filtered = filtered.filter(service => {
       // Search filter
       const matchesSearch = searchDebounced === "" || 
         service.title.toLowerCase().includes(searchDebounced.toLowerCase()) ||
@@ -145,7 +130,26 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
 
     return filtered;
   }, [allSubServices, searchDebounced, selectedCategory, selectedSubCategories, 
-      selectedPriceType, indoorOutdoor, sortBy]);
+      selectedPriceType, indoorOutdoor, sortBy, shouldShowService, mode]);
+
+  // Get unique categories for display
+  const categories = useMemo(() => {
+    return servicesDataNew.map(service => ({
+      name: service.title,
+      slug: service.slug
+    }));
+  }, []);
+
+  // Get sub-categories for selected category
+  const subCategories = useMemo(() => {
+    if (selectedCategory === 'alla') return [];
+    
+    const service = servicesDataNew.find(s => s.slug === selectedCategory);
+    if (!service) return [];
+    
+    const subCats = new Set(service.subServices.map(s => s.category));
+    return Array.from(subCats).sort();
+  }, [selectedCategory]);
 
   // Pagination
   const paginatedServices = useMemo(() => {
@@ -466,7 +470,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" key={mode}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" key={`services-grid-${mode}`}>
               {paginatedServices.map(service => (
                 <ServiceCardV3
                   key={`${service.id}-${mode}`}

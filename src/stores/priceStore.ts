@@ -26,9 +26,13 @@ export const usePriceStore = create<PriceState>()(
         
         set({ mode, eligibilityFilter });
         
-        // Update URL parameter
+        // Update URL parameter without reload
         const url = new URL(window.location.href);
-        url.searchParams.set('price', mode);
+        if (mode === 'all') {
+          url.searchParams.delete('price');
+        } else {
+          url.searchParams.set('price', mode);
+        }
         window.history.replaceState({}, '', url.toString());
         
         // Analytics tracking
@@ -50,7 +54,7 @@ export const usePriceStore = create<PriceState>()(
       },
 
       initFromUrlOrStorage: () => {
-        // Priority: URL param > localStorage > default (ROT)
+        // Priority: URL param > localStorage > default (all)
         const urlParams = new URLSearchParams(window.location.search);
         const urlMode = urlParams.get('price') as PriceMode;
         
@@ -60,14 +64,19 @@ export const usePriceStore = create<PriceState>()(
           set({ mode: urlMode, eligibilityFilter });
         } else {
           // If no URL param, keep whatever is in localStorage (handled by persist middleware)
-          // But ensure URL is synced and eligibility filter is set
+          // But ensure eligibility filter is set correctly
           const currentMode = get().mode;
           const eligibilityFilter: EligibilityFilter = 
             currentMode === 'all' ? 'all' : currentMode;
           set({ eligibilityFilter });
           
+          // Sync URL to match current mode
           const url = new URL(window.location.href);
-          url.searchParams.set('price', currentMode);
+          if (currentMode === 'all') {
+            url.searchParams.delete('price');
+          } else {
+            url.searchParams.set('price', currentMode);
+          }
           window.history.replaceState({}, '', url.toString());
         }
       }
