@@ -11,7 +11,7 @@ import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useSearchParams } from "react-router-dom";
 import { usePriceStore } from "@/stores/priceStore";
 import { cn } from "@/lib/utils";
-import GlobalPricingToggle from "@/components/GlobalPricingToggle";
+import SegmentedPriceToggle from "@/components/SegmentedPriceToggle";
 import ServiceCardV3 from "@/components/ServiceCardV3";
 import { toast } from "sonner";
 
@@ -246,7 +246,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           </div>
 
           {/* Global Pricing Toggle */}
-          <GlobalPricingToggle />
+          <SegmentedPriceToggle />
 
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />

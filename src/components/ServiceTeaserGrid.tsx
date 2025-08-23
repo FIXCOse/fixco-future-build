@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import GlobalPricingToggle from '@/components/GlobalPricingToggle';
+import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
 
@@ -135,7 +135,7 @@ const ServiceTeaserGrid = () => {
           </p>
           
           {/* Enhanced Pricing Toggle */}
-          <GlobalPricingToggle size="md" />
+          <SegmentedPriceToggle size="md" />
         </div>
 
         {/* Service Grid - Force re-render when mode changes */}
