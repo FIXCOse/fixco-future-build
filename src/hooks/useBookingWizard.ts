@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from './useAuth';
 
 export type ActionType = 'book' | 'quote';
@@ -50,11 +50,6 @@ export function useBookingWizard() {
     service_name: '',
     price_type: 'hourly'
   });
-
-  // Debug effect to track state changes
-  useEffect(() => {
-    console.log('[useBookingWizard] State changed - isOpen:', isOpen);
-  }, [isOpen]);
 
   const openWizard = (type: ActionType, serviceId: string, serviceName: string) => {
     console.log('[useBookingWizard] openWizard called with:', { type, serviceId, serviceName });
