@@ -275,16 +275,18 @@ const Auth = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
+      {/* Background content to blur */}
+      <div className="fixed inset-0 bg-gradient-to-br from-background via-background/50 to-primary/5">
+        <div className="absolute inset-0 opacity-20">
+          <div className="h-full w-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
+        </div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style={{
-          background: 'rgba(0, 0, 0, 0.6)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)', // Safari support
-        }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md"
         data-modal
         onClick={(e) => {
           if (e.target === e.currentTarget) {
