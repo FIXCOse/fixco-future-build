@@ -260,22 +260,10 @@ const Auth = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden'; // Prevent body scroll
-    
-    // Add blur to main content
-    const mainContent = document.querySelector('#root > *:not([data-modal])');
-    if (mainContent) {
-      (mainContent as HTMLElement).style.filter = 'blur(8px)';
-    }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = ''; // Restore scroll
-      
-      // Remove blur from main content
-      const mainContent = document.querySelector('#root > *:not([data-modal])');
-      if (mainContent) {
-        (mainContent as HTMLElement).style.filter = '';
-      }
     };
   }, []);
 
@@ -291,7 +279,12 @@ const Auth = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style={{
+          background: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)', // Safari support
+        }}
         data-modal
         onClick={(e) => {
           if (e.target === e.currentTarget) {
