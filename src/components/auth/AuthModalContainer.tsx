@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import AuthModal from './AuthModal';
+import { AccountTypeSelector } from './AccountTypeSelector';
 
 interface AuthModalContainerProps {
   isOpen: boolean;
@@ -38,6 +38,23 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Reset relevant fields when account type changes
+  useEffect(() => {
+    if (formData.userType !== 'company') {
+      handleInputChange('companyName', '');
+      handleInputChange('orgNumber', '');
+    }
+    if (formData.userType !== 'brf') {
+      handleInputChange('brfName', '');
+    }
+  }, [formData.userType]);
+
+  const handleAccountTypeChange = (accountType: 'private' | 'company' | 'brf') => {
+    startTransition(() => {
+      handleInputChange('userType', accountType);
+    });
   };
 
   const resetForm = () => {
@@ -165,7 +182,8 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
             first_name: formData.firstName,
             last_name: formData.lastName,
             phone: formData.phone,
-            user_type: formData.userType,
+            account_type: formData.userType,
+            user_type: formData.userType, // Keep both for backward compatibility
             company_name: formData.companyName,
             org_number: formData.orgNumber,
             brf_name: formData.brfName,
@@ -344,22 +362,11 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
 
           <TabsContent value="signup" className="space-y-3 overflow-visible">
             <form onSubmit={handleSignUp} className="space-y-3 overflow-visible">
-              <div className="space-y-2">
-                <Label htmlFor="modal-user-type">Kontotyp</Label>
-                <Select
-                  value={formData.userType}
-                  onValueChange={(value: 'private' | 'company' | 'brf') => handleInputChange('userType', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Välj kontotyp" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="private">Privatkund</SelectItem>
-                    <SelectItem value="company">Företag</SelectItem>
-                    <SelectItem value="brf">BRF</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <AccountTypeSelector
+                value={formData.userType}
+                onChange={handleAccountTypeChange}
+                disabled={isLoading}
+              />
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">

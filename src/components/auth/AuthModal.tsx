@@ -107,7 +107,7 @@ export default function AuthModal({ open, onClose, children }: AuthModalProps) {
         min-h-[100dvh]
       "
       onMouseDown={(e) => {
-        // Click outside to close
+        // Click outside to close - use onMouseDown to prevent bubbling issues
         if (e.target === e.currentTarget) {
           onClose();
         }
@@ -127,6 +127,8 @@ export default function AuthModal({ open, onClose, children }: AuthModalProps) {
           max-h-none overflow-visible
           my-8
           no-scrollbar
+          pointer-events-auto
+          focus:outline-none
         "
       >
         <button
