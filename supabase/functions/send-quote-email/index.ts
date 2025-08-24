@@ -36,7 +36,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Fetch quote details
     const { data: quote, error: quoteError } = await supabase
       .from('quotes')
-      .select('*, profiles!quotes_customer_id_fkey(first_name, last_name, email)')
+      .select('*')
       .eq('id', quoteId)
       .single();
 
@@ -45,24 +45,7 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Kunde inte hämta offerten");
     }
 
-    // Update quote status to 'sent'
-    const { error: updateError } = await supabase
-      .from('quotes')
-      .update({ 
-        status: 'sent',
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', quoteId);
-
-    if (updateError) {
-      console.error("Error updating quote status:", updateError);
-      throw new Error("Kunde inte uppdatera offertstatus");
-    }
-
-    const customer = quote.profiles;
-    const displayName = customerName || 
-                       (customer ? `${customer.first_name || ''} ${customer.last_name || ''}`.trim() : '') || 
-                       'Kund';
+    const displayName = customerName || 'Kund';
 
     // Format line items for email
     const lineItemsHtml = quote.line_items.map((item: any) => `
@@ -167,11 +150,41 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "Fixco <noreply@fixco.se>",
+      from: "Fixco <onboarding@resend.dev>",
       to: [customerEmail],
       subject: `Offert ${quote.quote_number} från Fixco`,
       html: emailHtml,
+      reply_to: ["info@fixco.se"],
     });
+
+    // If Resend returns an error, surface it to the client
+    if (emailResponse.error) {
+      console.error('Resend error:', emailResponse.error);
+      return new Response(JSON.stringify({
+        success: false,
+        error: emailResponse.error.error || 'E-post kunde inte skickas',
+      }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    // Mark quote as sent only after a successful email
+    const { error: updateError } = await supabase
+      .from('quotes')
+      .update({ status: 'sent', updated_at: new Date().toISOString() })
+      .eq('id', quoteId);
+
+    if (updateError) {
+      console.error('Error updating quote status after email:', updateError);
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'E-post skickades men status kunde inte uppdateras'
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
     console.log("Email sent successfully:", emailResponse);
 
