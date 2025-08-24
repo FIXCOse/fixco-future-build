@@ -37,6 +37,7 @@ export default function Navigation() {
       return [
         { href: "/", label: "Hem" },
         { href: "/tjanster", label: "Tjänster" },
+        { href: "/referenser", label: "Referenser" },
         { href: "/om-oss", label: "Om oss" },
         { href: "/kontakt", label: "Kontakt" },
       ];

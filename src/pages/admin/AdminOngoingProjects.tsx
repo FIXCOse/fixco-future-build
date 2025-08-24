@@ -34,8 +34,8 @@ const AdminOngoingProjects = () => {
         .from('quotes')
         .select(`
           *,
-          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
-          property:properties(address, city)
+          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email, phone),
+          property:properties(name, address, city, postal_code)
         `)
         .eq('status', 'accepted')
         .order('created_at', { ascending: false });
@@ -237,14 +237,16 @@ const AdminOngoingProjects = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                     <FileText className="h-6 w-6 text-primary" />
                   </div>
-                  <div className="flex-1 space-y-1">
+                  <div className="flex-1 space-y-2">
                     <div className="flex items-center gap-2">
                       <h3 className="font-medium">{project.title}</h3>
                       <Badge variant={getStatusBadgeVariant(project.project_status || 'pending')}>
                         {getStatusDisplayName(project.project_status || 'pending')}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    
+                    {/* Project Info Row 1 */}
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
                       <div className="flex items-center gap-1">
                         <FileText className="h-3 w-3" />
                         {project.quote_number}
@@ -260,12 +262,6 @@ const AdminOngoingProjects = () => {
                         <Euro className="h-3 w-3" />
                         {project.total_amount?.toLocaleString()} SEK
                       </div>
-                      {project.property && (
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {project.property.city}
-                        </div>
-                      )}
                       {project.project_started_at && (
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
@@ -276,6 +272,38 @@ const AdminOngoingProjects = () => {
                         </div>
                       )}
                     </div>
+
+                    {/* Project Info Row 2 - Address & Contact */}
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                      {project.property && (
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {project.property.address ? 
+                            `${project.property.address}, ${project.property.city}` :
+                            project.property.city
+                          }
+                        </div>
+                      )}
+                      {project.customer?.email && (
+                        <div className="flex items-center gap-1 text-xs">
+                          <span>📧</span>
+                          {project.customer.email}
+                        </div>
+                      )}
+                      {project.customer?.phone && (
+                        <div className="flex items-center gap-1 text-xs">
+                          <span>📱</span>
+                          {project.customer.phone}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Description if available */}
+                    {project.description && (
+                      <div className="text-sm text-muted-foreground bg-muted/30 p-2 rounded text-xs line-clamp-2">
+                        {project.description}
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     {(!project.project_status || project.project_status === 'pending') && (
