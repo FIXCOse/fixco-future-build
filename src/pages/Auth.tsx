@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -245,6 +246,27 @@ const Auth = () => {
     }
   };
 
+  const handleClose = () => {
+    navigate(-1); // Go back to previous page, or home if no history
+  };
+
+  // Handle ESC key and outside click
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden'; // Prevent body scroll
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = ''; // Restore scroll
+    };
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -253,9 +275,33 @@ const Auth = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background/50 to-primary/5 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <Card className="shadow-xl border-border/20">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            handleClose();
+          }
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="relative w-full max-w-md"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Card className="shadow-xl border-border/20 bg-background/95 backdrop-blur">
+            {/* Close button */}
+            <button
+              onClick={handleClose}
+              className="absolute right-3 top-3 z-10 rounded-full p-2 hover:bg-muted/80 transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              aria-label="Stäng"
+            >
+              <X className="h-5 w-5 text-muted-foreground hover:text-foreground" />
+            </button>
             <CardHeader className="text-center space-y-2">
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
                 Välkommen till Fixco
@@ -526,8 +572,8 @@ const Auth = () => {
               </Tabs>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 };
