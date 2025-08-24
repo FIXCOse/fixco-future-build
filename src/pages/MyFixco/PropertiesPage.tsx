@@ -4,14 +4,11 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import DashboardHeader from '@/components/DashboardHeader';
-import { Plus, MapPin, Edit, Trash2, Star, Calendar, Building } from 'lucide-react';
+import { PropertyModal } from '@/components/PropertyModal';
+import { PropertyForm } from '@/components/PropertyForm';
+import { Plus, MapPin, Edit, Trash2, Building } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -35,17 +32,8 @@ const PropertiesPage = () => {
   const { toast } = useToast();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    postal_code: '',
-    city: '',
-    type: 'villa' as Property['type'],
-    description: '',
-    notes: ''
-  });
 
   useEffect(() => {
     if (user?.id) {
@@ -77,53 +65,6 @@ const PropertiesPage = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const propertyData = {
-        ...formData,
-        owner_id: user!.id,
-        organization_id: null
-      };
-
-      let result;
-      if (editingProperty) {
-        result = await supabase
-          .from('properties')
-          .update(propertyData)
-          .eq('id', editingProperty.id)
-          .select()
-          .single();
-      } else {
-        result = await supabase
-          .from('properties')
-          .insert([propertyData])
-          .select()
-          .single();
-      }
-
-      if (result.error) throw result.error;
-
-      toast({
-        title: "Klart!",
-        description: editingProperty ? "Fastighet uppdaterad" : "Fastighet tillagd"
-      });
-
-      setIsAddDialogOpen(false);
-      setEditingProperty(null);
-      resetForm();
-      await loadProperties();
-    } catch (error) {
-      console.error('Error saving property:', error);
-      toast({
-        title: "Fel",
-        description: "Kunde inte spara fastighet",
-        variant: "destructive"
-      });
-    }
-  };
-
   const handleDelete = async (property: Property) => {
     if (!confirm('Är du säker på att du vill ta bort denna fastighet?')) return;
 
@@ -151,30 +92,29 @@ const PropertiesPage = () => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      address: '',
-      postal_code: '',
-      city: '',
-      type: 'villa',
-      description: '',
-      notes: ''
-    });
-  };
-
   const startEdit = (property: Property) => {
     setEditingProperty(property);
-    setFormData({
-      name: property.name,
-      address: property.address,
-      postal_code: property.postal_code,
-      city: property.city,
-      type: property.type,
-      description: property.description || '',
-      notes: property.notes || ''
-    });
-    setIsAddDialogOpen(true);
+    setIsModalOpen(true);
+  };
+
+  const handlePropertySuccess = async (property: any) => {
+    // Update the list optimistically
+    if (editingProperty) {
+      setProperties(prev => prev.map(p => p.id === property.id ? property : p));
+    } else {
+      setProperties(prev => [property, ...prev]);
+    }
+    
+    setIsModalOpen(false);
+    setEditingProperty(null);
+    
+    // Reload to ensure consistency
+    await loadProperties();
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingProperty(null);
   };
 
   const getPropertyTypeLabel = (type: string) => {
@@ -209,112 +149,10 @@ const PropertiesPage = () => {
             <p className="text-muted-foreground">Hantera dina adresser och fastigheter</p>
           </div>
           
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={resetForm}>
-                <Plus className="mr-2 h-4 w-4" />
-                Lägg till fastighet
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingProperty ? 'Redigera fastighet' : 'Lägg till fastighet'}
-                </DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Namn</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="t.ex. Hemma, Sommarstugan"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="address">Adress</Label>
-                  <Input
-                    id="address"
-                    value={formData.address}
-                    onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    placeholder="Gatuadress och nummer"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="postal_code">Postnummer</Label>
-                    <Input
-                      id="postal_code"
-                      value={formData.postal_code}
-                      onChange={(e) => setFormData({...formData, postal_code: e.target.value})}
-                      placeholder="12345"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="city">Ort</Label>
-                    <Input
-                      id="city"
-                      value={formData.city}
-                      onChange={(e) => setFormData({...formData, city: e.target.value})}
-                      placeholder="Stockholm"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="type">Typ av fastighet</Label>
-                  <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value as Property['type']})}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="lägenhet">Lägenhet</SelectItem>
-                      <SelectItem value="kontor">Kontor</SelectItem>
-                      <SelectItem value="lokal">Lokal</SelectItem>
-                      <SelectItem value="fastighet">Fastighet</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Beskrivning (valfritt)</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Beskriv fastigheten..."
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Anteckningar (valfritt)</Label>
-                  <Textarea
-                    id="notes"
-                    value={formData.notes}
-                    onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                    placeholder="Särskilda noteringar..."
-                  />
-                </div>
-
-                <div className="flex justify-end space-x-2 pt-4">
-                  <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                    Avbryt
-                  </Button>
-                  <Button type="submit">
-                    {editingProperty ? 'Uppdatera' : 'Lägg till'}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <Button onClick={() => setIsModalOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Lägg till fastighet
+          </Button>
         </div>
 
         {loading ? (
@@ -339,17 +177,10 @@ const PropertiesPage = () => {
               <p className="text-muted-foreground text-center mb-6">
                 Lägg till dina adresser för att snabbare kunna boka tjänster
               </p>
-              <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={resetForm}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Lägg till första fastigheten
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  {/* Same form content as above */}
-                </DialogContent>
-              </Dialog>
+              <Button onClick={() => setIsModalOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Lägg till första fastigheten
+              </Button>
             </CardContent>
           </Card>
         ) : (
@@ -414,6 +245,19 @@ const PropertiesPage = () => {
           </div>
         )}
       </div>
+
+      {/* Property Modal */}
+      <PropertyModal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        title={editingProperty ? 'Redigera fastighet' : 'Lägg till fastighet'}
+      >
+        <PropertyForm
+          onSuccess={handlePropertySuccess}
+          onCancel={handleModalClose}
+          editingProperty={editingProperty}
+        />
+      </PropertyModal>
     </>
   );
 };
