@@ -32,10 +32,24 @@ export const useAuth = () => {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error loading profile:', error);
+      }
+
+      if (!profileData) {
+        // Self-heal: create minimal profile row if missing
+        const { data: upserted, error: upsertErr } = await supabase
+          .from('profiles')
+          .upsert({ id: userId })
+          .select('*')
+          .single();
+        if (upsertErr) {
+          console.error('Error upserting profile:', upsertErr);
+          return;
+        }
+        setProfile(upserted);
         return;
       }
 

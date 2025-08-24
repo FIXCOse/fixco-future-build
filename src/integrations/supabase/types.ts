@@ -473,6 +473,7 @@ export type Database = {
           owner_welcome_at: string | null
           phone: string | null
           postal_code: string | null
+          role: string | null
           total_spent: number | null
           updated_at: string | null
           user_type: Database["public"]["Enums"]["user_type"]
@@ -497,6 +498,7 @@ export type Database = {
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
+          role?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]
@@ -521,6 +523,7 @@ export type Database = {
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
+          role?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]
@@ -903,7 +906,14 @@ export type Database = {
         | "Sommarstuga"
         | "Övrigt"
       quote_status: "draft" | "sent" | "accepted" | "rejected" | "expired"
-      user_role: "admin" | "member" | "ekonomi" | "beställare" | "tekniker"
+      user_role:
+        | "admin"
+        | "member"
+        | "ekonomi"
+        | "beställare"
+        | "tekniker"
+        | "owner"
+        | "customer"
       user_type: "private" | "company" | "brf"
     }
     CompositeTypes: {
@@ -1059,7 +1069,15 @@ export const Constants = {
         "Övrigt",
       ],
       quote_status: ["draft", "sent", "accepted", "rejected", "expired"],
-      user_role: ["admin", "member", "ekonomi", "beställare", "tekniker"],
+      user_role: [
+        "admin",
+        "member",
+        "ekonomi",
+        "beställare",
+        "tekniker",
+        "owner",
+        "customer",
+      ],
       user_type: ["private", "company", "brf"],
     },
   },

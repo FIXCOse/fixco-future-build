@@ -24,14 +24,12 @@ export function useAdmin() {
           .from('user_roles')
           .select('role')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
-          console.error('Error fetching user role:', error);
-          setRole('customer'); // Default fallback
-        } else {
-          setRole(data.role);
+          console.warn('Role query warning:', error);
         }
+        setRole(data?.role ?? 'customer');
       } catch (error) {
         console.error('Error fetching user role:', error);
         setRole('customer'); // Default fallback
