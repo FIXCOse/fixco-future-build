@@ -72,18 +72,19 @@ export default function BookingWizard() {
       
       const result = await createBooking({
         service_id: slug,
+        service_name: slug || 'Unknown Service',
         customer_id: user.id,
         price_type: priceType,
         hours_estimated: hours ? parseFloat(hours) : undefined,
         hourly_rate: hourlyRate ? parseFloat(hourlyRate) : undefined,
         materials: materials ? parseFloat(materials) : undefined,
         rot_rut_type: rotRut || undefined,
-        name,
-        phone,
-        email,
-        address,
+        contact_name: name,
+        contact_phone: phone,
+        contact_email: email,
+        address: address,
         postal_code: postalCode,
-        city,
+        city: city,
         notes: notes || undefined,
       });
 

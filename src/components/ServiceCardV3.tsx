@@ -44,19 +44,40 @@ const ServiceCardV3 = ({
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleNavigation = (type: 'book' | 'quote') => {
-    const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
-    const path = type === 'book' ? `/boka/${slug}` : `/offert/${slug}`;
-    console.log(`Navigating to: ${path}`);
-    console.log('User authenticated:', !!user);
+  const handleBookingClick = () => {
+    console.log('[ServiceCardV3] Book button clicked for:', { title, serviceSlug });
     
-    if (!user) {
-      console.log('User not authenticated, redirecting to auth first');
-      navigate('/auth', { state: { returnTo: path } });
+    if (!serviceSlug) {
+      console.error('[ServiceCardV3] No serviceSlug provided');
       return;
     }
     
-    navigate(path);
+    if (onBook) {
+      onBook();
+    } else {
+      // Use booking wizard instead of navigation
+      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
+        detail: { type: 'book', serviceId: serviceSlug, serviceName: title }
+      }));
+    }
+  };
+
+  const handleQuoteClick = () => {
+    console.log('[ServiceCardV3] Quote button clicked for:', { title, serviceSlug });
+    
+    if (!serviceSlug) {
+      console.error('[ServiceCardV3] No serviceSlug provided');
+      return;
+    }
+    
+    if (onQuote) {
+      onQuote();
+    } else {
+      // Use booking wizard instead of navigation
+      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
+        detail: { type: 'quote', serviceId: serviceSlug, serviceName: title }
+      }));
+    }
   };
   
   if (pricingType === 'quote') {
@@ -105,7 +126,7 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={() => handleNavigation('quote')}
+          onClick={handleQuoteClick}
         >
             Begär offert
           </Button>
@@ -253,7 +274,7 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={() => handleNavigation(ctaType)}
+          onClick={ctaType === 'book' ? handleBookingClick : handleQuoteClick}
         >
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>

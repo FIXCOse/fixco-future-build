@@ -80,13 +80,21 @@ export async function fetchBookings(params?: {
 
 export async function createBooking(bookingData: {
   service_id: string;
-  customer_id: string;
+  service_name: string;
+  customer_id?: string | null;
   price_type: string;
-  hours_estimated?: number;
-  hourly_rate?: number;
+  hours_estimated?: number | null;
+  hourly_rate?: number | null;
   materials?: number;
-  rot_rut_type?: string;
-  name: string;
+  rot_rut_type?: string | null;
+  // Guest support fields
+  contact_name?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  source?: string;
+  created_by_type?: string;
+  // Legacy fields (for backwards compatibility)
+  name?: string;
   phone?: string;
   email?: string;
   address?: string;
@@ -94,35 +102,56 @@ export async function createBooking(bookingData: {
   city?: string;
   notes?: string;
 }) {
+  console.log('[API] createBooking called with data:', bookingData);
+  
   const user = await supabase.auth.getUser();
   
+  // Prepare insert data with guest/user support
+  const insertData = {
+    customer_id: bookingData.customer_id || user.data.user?.id || null,
+    service_id: bookingData.service_id,
+    service_name: bookingData.service_name || bookingData.service_id,
+    property_id: null,
+    status: 'pending' as const,
+    price_type: bookingData.price_type,
+    hours_estimated: bookingData.hours_estimated,
+    hourly_rate: bookingData.hourly_rate,
+    materials: bookingData.materials || 0,
+    base_price: bookingData.hourly_rate || 500,
+    final_price: (bookingData.hourly_rate || 500) + (bookingData.materials || 0),
+    rot_rut_type: bookingData.rot_rut_type,
+    
+    // Guest support fields
+    contact_name: bookingData.contact_name || bookingData.name,
+    contact_email: bookingData.contact_email || bookingData.email,
+    contact_phone: bookingData.contact_phone || bookingData.phone,
+    source: bookingData.source || (user.data.user ? 'user' : 'guest'),
+    created_by_type: bookingData.created_by_type || (user.data.user ? 'user' : 'guest'),
+    
+    // Legacy fields
+    name: bookingData.contact_name || bookingData.name,
+    phone: bookingData.contact_phone || bookingData.phone,
+    email: bookingData.contact_email || bookingData.email,
+    address: bookingData.address,
+    postal_code: bookingData.postal_code,
+    city: bookingData.city,
+    notes: bookingData.notes,
+    created_by: user.data.user?.id
+  };
+
+  console.log('[API] Inserting booking data:', insertData);
+
   const { data, error } = await supabase
     .from('bookings')
-    .insert({
-      customer_id: bookingData.customer_id,
-      service_id: bookingData.service_id,
-      service_name: bookingData.service_id, // Use service_id as service_name for now
-      property_id: null, // We'll make this optional for direct bookings
-      status: 'pending',
-      price_type: bookingData.price_type,
-      hours_estimated: bookingData.hours_estimated,
-      hourly_rate: bookingData.hourly_rate,
-      materials: bookingData.materials || 0,
-      base_price: bookingData.hourly_rate || 500,
-      final_price: (bookingData.hourly_rate || 500) + (bookingData.materials || 0),
-      rot_rut_type: bookingData.rot_rut_type,
-      name: bookingData.name,
-      phone: bookingData.phone,
-      email: bookingData.email,
-      address: bookingData.address,
-      postal_code: bookingData.postal_code,
-      city: bookingData.city,
-      notes: bookingData.notes,
-      created_by: user.data.user?.id
-    } as any)
+    .insert(insertData)
     .select('id')
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('[API] Booking insert error:', error);
+    throw error;
+  }
+  
+  console.log('[API] Booking created successfully:', data);
   return data;
 }

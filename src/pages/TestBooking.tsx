@@ -20,11 +20,12 @@ export default function TestBooking() {
       console.log('Creating test booking...');
       const result = await createBooking({
         service_id: 'el-test',
+        service_name: 'El Test',
         customer_id: user.id,
         price_type: 'hourly',
         hourly_rate: 1059,
-        name: 'Test Bokning',
-        email: user.email || '',
+        contact_name: 'Test Bokning',
+        contact_email: user.email || '',
       });
       console.log('Booking created:', result);
       toast.success("Testbokning skapad!");

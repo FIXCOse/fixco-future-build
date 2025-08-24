@@ -107,9 +107,13 @@ export type Database = {
           attachments: string[] | null
           base_price: number
           city: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string | null
           created_by: string | null
-          customer_id: string
+          created_by_type: string | null
+          customer_id: string | null
           description: string | null
           discount_percent: number | null
           email: string | null
@@ -135,6 +139,7 @@ export type Database = {
           service_id: string
           service_name: string
           service_variant: string | null
+          source: string | null
           status: Database["public"]["Enums"]["booking_status"] | null
           technician_id: string | null
           updated_at: string | null
@@ -145,9 +150,13 @@ export type Database = {
           attachments?: string[] | null
           base_price: number
           city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string | null
           created_by?: string | null
-          customer_id: string
+          created_by_type?: string | null
+          customer_id?: string | null
           description?: string | null
           discount_percent?: number | null
           email?: string | null
@@ -173,6 +182,7 @@ export type Database = {
           service_id: string
           service_name: string
           service_variant?: string | null
+          source?: string | null
           status?: Database["public"]["Enums"]["booking_status"] | null
           technician_id?: string | null
           updated_at?: string | null
@@ -183,9 +193,13 @@ export type Database = {
           attachments?: string[] | null
           base_price?: number
           city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string | null
           created_by?: string | null
-          customer_id?: string
+          created_by_type?: string | null
+          customer_id?: string | null
           description?: string | null
           discount_percent?: number | null
           email?: string | null
@@ -211,6 +225,7 @@ export type Database = {
           service_id?: string
           service_name?: string
           service_variant?: string | null
+          source?: string | null
           status?: Database["public"]["Enums"]["booking_status"] | null
           technician_id?: string | null
           updated_at?: string | null
@@ -750,9 +765,13 @@ export type Database = {
         Row: {
           address: string | null
           city: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string | null
           created_by: string | null
-          customer_id: string
+          created_by_type: string | null
+          customer_id: string | null
           email: string | null
           id: string
           message: string | null
@@ -761,15 +780,20 @@ export type Database = {
           postal_code: string | null
           rot_rut_type: string | null
           service_id: string
+          source: string | null
           status: string
           updated_at: string | null
         }
         Insert: {
           address?: string | null
           city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string | null
           created_by?: string | null
-          customer_id: string
+          created_by_type?: string | null
+          customer_id?: string | null
           email?: string | null
           id?: string
           message?: string | null
@@ -778,15 +802,20 @@ export type Database = {
           postal_code?: string | null
           rot_rut_type?: string | null
           service_id: string
+          source?: string | null
           status?: string
           updated_at?: string | null
         }
         Update: {
           address?: string | null
           city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string | null
           created_by?: string | null
-          customer_id?: string
+          created_by_type?: string | null
+          customer_id?: string | null
           email?: string | null
           id?: string
           message?: string | null
@@ -795,6 +824,7 @@ export type Database = {
           postal_code?: string | null
           rot_rut_type?: string | null
           service_id?: string
+          source?: string | null
           status?: string
           updated_at?: string | null
         }

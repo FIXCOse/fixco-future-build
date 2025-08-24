@@ -71,28 +71,66 @@ export async function fetchQuoteRequests(params?: {
 
 export async function createQuoteRequest(quoteRequestData: {
   service_id: string;
-  customer_id: string;
+  customer_id?: string | null;
   message?: string;
-  rot_rut_type?: string;
-  name: string;
+  rot_rut_type?: string | null;
+  // Guest support fields
+  contact_name?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  source?: string;
+  created_by_type?: string;
+  // Legacy fields (for backwards compatibility)
+  name?: string;
   phone?: string;
   email?: string;
   address?: string;
   postal_code?: string;
   city?: string;
 }) {
+  console.log('[API] createQuoteRequest called with data:', quoteRequestData);
+  
   const user = await supabase.auth.getUser();
   
+  // Prepare insert data with guest/user support
+  const insertData = {
+    service_id: quoteRequestData.service_id,
+    customer_id: quoteRequestData.customer_id || user.data.user?.id || null,
+    message: quoteRequestData.message,
+    rot_rut_type: quoteRequestData.rot_rut_type,
+    
+    // Guest support fields
+    contact_name: quoteRequestData.contact_name || quoteRequestData.name,
+    contact_email: quoteRequestData.contact_email || quoteRequestData.email,
+    contact_phone: quoteRequestData.contact_phone || quoteRequestData.phone,
+    source: quoteRequestData.source || (user.data.user ? 'user' : 'guest'),
+    created_by_type: quoteRequestData.created_by_type || (user.data.user ? 'user' : 'guest'),
+    
+    // Legacy fields  
+    name: quoteRequestData.contact_name || quoteRequestData.name,
+    phone: quoteRequestData.contact_phone || quoteRequestData.phone,
+    email: quoteRequestData.contact_email || quoteRequestData.email,
+    address: quoteRequestData.address,
+    postal_code: quoteRequestData.postal_code,
+    city: quoteRequestData.city,
+    
+    created_by: user.data.user?.id,
+    status: 'new'
+  };
+
+  console.log('[API] Inserting quote request data:', insertData);
+
   const { data, error } = await supabase
     .from('quote_requests')
-    .insert({
-      ...quoteRequestData,
-      created_by: user.data.user?.id,
-      status: 'new'
-    })
+    .insert(insertData)
     .select('id')
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('[API] Quote request insert error:', error);
+    throw error;
+  }
+  
+  console.log('[API] Quote request created successfully:', data);
   return data;
 }
