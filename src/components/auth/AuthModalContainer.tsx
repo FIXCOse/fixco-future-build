@@ -11,6 +11,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import AuthModal from './AuthModal';
 import { AccountTypeSelector } from './AccountTypeSelector';
 import { formatOrgNo, isValidSwedishOrgNo } from '@/helpers/orgno';
+import { RegistrationWizardModal } from './RegistrationWizardModal';
 
 interface AuthModalContainerProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
   
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -298,292 +300,112 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
   };
 
   return (
-    <AuthModal open={isOpen} onClose={handleClose}>
-      <div className="space-y-4">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            Välkommen till Fixco
-          </h2>
-          <p className="text-muted-foreground">
-            Hantera dina fastigheter och bokningar
-          </p>
-        </div>
+    <>
+      <AuthModal open={isOpen} onClose={handleClose}>
+        <div className="space-y-4">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              Välkommen till Fixco
+            </h2>
+            <p className="text-muted-foreground">
+              Hantera dina fastigheter och bokningar
+            </p>
+          </div>
 
-        <Tabs defaultValue="signin" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Logga in</TabsTrigger>
-            <TabsTrigger value="signup">Skapa konto</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="signin" className="space-y-4">
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="modal-signin-email">E-post</Label>
-                <Input
-                  id="modal-signin-email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="din@email.se"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="modal-signin-password">Lösenord</Label>
-                <div className="relative">
-                  <Input
-                    id="modal-signin-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Ditt lösenord"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
+          <Tabs defaultValue="signin" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="signin">Logga in</TabsTrigger>
+              <TabsTrigger 
+                value="signup" 
+                onClick={() => setShowWizard(true)}
               >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Logga in
-              </Button>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Eller</span>
-                </div>
-              </div>
-
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
-              >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Fortsätt med Google
-              </Button>
-            </form>
-          </TabsContent>
-
-          <TabsContent value="signup" className="space-y-3 overflow-visible">
-            <form onSubmit={handleSignUp} className="space-y-3 overflow-visible">
-              <AccountTypeSelector
-                value={formData.userType}
-                onChange={handleAccountTypeChange}
-                disabled={isLoading}
-              />
-
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-2">
-                  <Label htmlFor="modal-first-name">Förnamn *</Label>
-                  <Input
-                    id="modal-first-name"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
-                    placeholder="Förnamn"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="modal-last-name">Efternamn *</Label>
-                  <Input
-                    id="modal-last-name"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    placeholder="Efternamn"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="modal-signup-email">E-post *</Label>
-                <Input
-                  id="modal-signup-email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="din@email.se"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="modal-phone">Telefon</Label>
-                <Input
-                  id="modal-phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  placeholder="070-123 45 67"
-                />
-              </div>
-
-              {formData.userType === 'company' && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="modal-company-name">Företagsnamn *</Label>
-                    <Input
-                      id="modal-company-name"
-                      value={formData.companyName}
-                      onChange={(e) => handleInputChange('companyName', e.target.value)}
-                      placeholder="Företagets namn"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="modal-company-org-no">Org.nr (företag) *</Label>
-                    <Input
-                      id="modal-company-org-no"
-                      inputMode="numeric"
-                      autoComplete="organization"
-                      value={formData.companyOrgNo}
-                      onChange={(e) => handleInputChange('companyOrgNo', formatOrgNo(e.target.value))}
-                      placeholder="556016-0680"
-                      required
-                    />
-                    <p className="text-muted-foreground text-xs mt-1">
-                      10 siffror, t.ex. 556016-0680. Vi formaterar automatiskt.
-                    </p>
-                  </div>
-                </>
-              )}
-
-              {formData.userType === 'brf' && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="modal-brf-name">BRF-namn *</Label>
-                    <Input
-                      id="modal-brf-name"
-                      value={formData.brfName}
-                      onChange={(e) => handleInputChange('brfName', e.target.value)}
-                      placeholder="BRF:ens namn"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="modal-brf-org-no">Org.nr (BRF) *</Label>
-                    <Input
-                      id="modal-brf-org-no"
-                      inputMode="numeric"
-                      autoComplete="organization"
-                      value={formData.brfOrgNo}
-                      onChange={(e) => handleInputChange('brfOrgNo', formatOrgNo(e.target.value))}
-                      placeholder="7696XX-XXXX"
-                      required
-                    />
-                    <p className="text-muted-foreground text-xs mt-1">
-                      10 siffror, t.ex. 7696XX-XXXX. Vi formaterar automatiskt.
-                    </p>
-                  </div>
-                </>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="modal-signup-password">Lösenord *</Label>
-                <div className="relative">
-                  <Input
-                    id="modal-signup-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Minst 8 tecken"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="modal-accept-terms"
-                    checked={formData.acceptTerms}
-                    onCheckedChange={(checked) => handleInputChange('acceptTerms', checked)}
-                    required
-                  />
-                  <Label htmlFor="modal-accept-terms" className="text-xs leading-snug break-words">
-                    Jag accepterar{' '}
-                    <a href="/terms" className="text-primary hover:underline" target="_blank">
-                      användarvillkoren
-                    </a>{' '}
-                    och{' '}
-                    <a href="/privacy" className="text-primary hover:underline" target="_blank">
-                      integritetspolicyn
-                    </a>
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="modal-marketing-consent"
-                    checked={formData.marketingConsent}
-                    onCheckedChange={(checked) => handleInputChange('marketingConsent', checked)}
-                  />
-                  <Label htmlFor="modal-marketing-consent" className="text-xs leading-snug break-words">
-                    Jag vill ta emot erbjudanden och nyheter via e-post
-                  </Label>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Skapa konto
-              </Button>
+              </TabsTrigger>
+            </TabsList>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
+            <TabsContent value="signin" className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="modal-signin-email">E-post</Label>
+                  <Input
+                    id="modal-signin-email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    placeholder="din@email.se"
+                    required
+                  />
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Eller</span>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="modal-signin-password">Lösenord</Label>
+                  <div className="relative">
+                    <Input
+                      id="modal-signin-password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      placeholder="Ditt lösenord"
+                      required
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
                 </div>
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isLoading}
+                >
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Logga in
+                </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-border" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">Eller</span>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleGoogleSignIn}
+                  disabled={isLoading}
+                >
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Fortsätt med Google
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="signup" className="space-y-3 overflow-visible">
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">
+                  Klicka på "Skapa konto" för att öppna registreringsguiden
+                </p>
               </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </AuthModal>
 
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
-              >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Fortsätt med Google
-              </Button>
-            </form>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </AuthModal>
+      <RegistrationWizardModal
+        open={showWizard}
+        onClose={() => setShowWizard(false)}
+      />
+    </>
   );
 }

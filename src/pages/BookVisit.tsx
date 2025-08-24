@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button-premium";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle, Clock, Phone, Mail, MapPin, Star } from "lucide-react";
+import { CheckCircle, Clock, Phone, Mail, MapPin, Star, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { BookingAutofill } from "@/components/BookingAutofill";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 
 const BookVisit = () => {
   const { toast } = useToast();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,8 +24,24 @@ const BookVisit = () => {
     timePreference: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Check if user is logged in
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     toast({
       title: "Tack för din bokning!",
       description: "Vi kontaktar dig inom 2 timmar för att bekräfta tiden.",
@@ -30,6 +50,22 @@ const BookVisit = () => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handlePropertySelect = (property: any) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      address: `${property.address}, ${property.postal_code} ${property.city}`
+    }));
+  };
+
+  const handleContactInfo = (info: { name: string; email: string; phone: string }) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      name: info.name,
+      email: info.email,
+      phone: info.phone
+    }));
   };
 
   return (
@@ -78,6 +114,29 @@ const BookVisit = () => {
               <h2 className="text-3xl font-bold mb-6">
                 Fyll i dina <span className="gradient-text">uppgifter</span>
               </h2>
+              
+              {/* User autofill section */}
+              {user && (
+                <div className="mb-6">
+                  <BookingAutofill 
+                    user={user}
+                    onPropertySelect={handlePropertySelect}
+                    onContactInfo={handleContactInfo}
+                  />
+                </div>
+              )}
+
+              {!user && (
+                <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-dashed">
+                  <div className="flex items-center gap-2 mb-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <p className="text-sm font-medium">Inte inloggad?</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Logga in för att spara dina adresser och förenkla framtida bokningar.
+                  </p>
+                </div>
+              )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
