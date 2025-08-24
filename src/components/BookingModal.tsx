@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -6,34 +6,32 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { CheckCircle, Loader2 } from 'lucide-react';
-import { useWizardStore } from '../stores/wizardStore';
 import { createBooking } from '../lib/api/bookings';
 import { createQuoteRequest } from '../lib/api/quote-requests';
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../hooks/use-toast';
 
-interface FormData {
-  contact_name: string;
-  contact_email: string;
-  contact_phone: string;
-  address: string;
-  postal_code: string;
-  city: string;
-  message: string;
+interface BookingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  actionType: 'book' | 'quote';
+  serviceId: string;
+  serviceName: string;
 }
 
-export function SimpleBookingWizard() {
-  const wizardState = useWizardStore();
-  const { isOpen, actionType, serviceId, serviceName, closeWizard } = wizardState;
+export function BookingModal({
+  isOpen,
+  onClose,
+  actionType,
+  serviceId,
+  serviceName
+}: BookingModalProps) {
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  console.log('[SimpleBookingWizard] Render:', { isOpen, actionType, serviceId, serviceName });
-  console.log('[SimpleBookingWizard] Full wizard state:', wizardState);
   
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     contact_name: profile?.first_name && profile?.last_name 
       ? `${profile.first_name} ${profile.last_name}`
       : profile?.first_name || '',
@@ -44,11 +42,6 @@ export function SimpleBookingWizard() {
     city: profile?.city || '',
     message: ''
   });
-
-  // Force re-render when store changes
-  useEffect(() => {
-    console.log('[SimpleBookingWizard] Effect - isOpen changed to:', isOpen);
-  }, [isOpen, actionType, serviceId, serviceName]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,7 +100,7 @@ export function SimpleBookingWizard() {
 
       setSuccess(true);
       setTimeout(() => {
-        closeWizard();
+        onClose();
         setSuccess(false);
       }, 2000);
 
@@ -123,12 +116,9 @@ export function SimpleBookingWizard() {
     }
   };
 
-  // Always render the dialog, but control visibility with open prop
-  console.log('[SimpleBookingWizard] Rendering dialog with isOpen:', isOpen);
-
   if (success) {
     return (
-      <Dialog open={true} onOpenChange={closeWizard}>
+      <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-md">
           <div className="text-center py-8">
             <CheckCircle className="mx-auto h-16 w-16 text-success mb-4" />
@@ -146,7 +136,7 @@ export function SimpleBookingWizard() {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={closeWizard}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
@@ -255,7 +245,7 @@ export function SimpleBookingWizard() {
           </Card>
 
           <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={closeWizard}>
+            <Button type="button" variant="outline" onClick={onClose}>
               Avbryt
             </Button>
             <Button type="submit" disabled={loading}>

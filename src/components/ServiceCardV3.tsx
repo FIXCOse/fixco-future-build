@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { useWizardStore } from "@/stores/wizardStore";
+import { BookingModal } from "./BookingModal";
+import { useState } from "react";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -44,28 +45,25 @@ const ServiceCardV3 = ({
   const { mode } = usePriceStore();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { openWizard } = useWizardStore();
+  
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'book' | 'quote'>('book');
 
   const handleBookingClick = () => {
-    console.log('[ServiceCardV3] Book button clicked for:', { title, serviceSlug });
-    
     if (onBook) {
       onBook();
     } else {
-      const id = serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-      console.log('[ServiceCardV3] Calling openWizard with:', { type: 'book', id, title });
-      openWizard('book', id, title);
+      setModalType('book');
+      setModalOpen(true);
     }
   };
 
   const handleQuoteClick = () => {
-    console.log('[ServiceCardV3] Quote button clicked for:', { title, serviceSlug });
-    
     if (onQuote) {
       onQuote();
     } else {
-      const id = serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-      openWizard('quote', id, title);
+      setModalType('quote');
+      setModalOpen(true);
     }
   };
   
@@ -120,6 +118,14 @@ const ServiceCardV3 = ({
             Begär offert
           </Button>
         </div>
+
+        <BookingModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          actionType={modalType}
+          serviceId={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
+          serviceName={title}
+        />
       </article>
     );
   }
@@ -268,6 +274,14 @@ const ServiceCardV3 = ({
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>
       </div>
+
+      <BookingModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        actionType={modalType}
+        serviceId={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
+        serviceName={title}
+      />
     </article>
   );
 };

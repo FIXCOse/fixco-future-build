@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { SimpleBookingWizard } from "./components/SimpleBookingWizard";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -127,7 +126,6 @@ const App = () => {
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
-                <SimpleBookingWizard />
               </BrowserRouter>
             </TooltipProvider>
         </SecurityWrapper>
