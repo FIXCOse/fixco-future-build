@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,6 +66,7 @@ const mockBookings: Booking[] = [
 
 const QuoteWizard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const [bookings] = useState<Booking[]>(mockBookings);
@@ -85,6 +86,31 @@ const QuoteWizard = () => {
     showPricesIncVat: true,
     notes: ''
   });
+
+  // Handle booking data from navigation state
+  useEffect(() => {
+    const stateBooking = location.state?.fromBooking;
+    if (stateBooking) {
+      const booking: Booking = {
+        id: stateBooking.id,
+        status: stateBooking.status || 'pending',
+        service_name: stateBooking.service_name || stateBooking.service_id,
+        base_price: stateBooking.base_price || stateBooking.hourly_rate || 0,
+        customer: {
+          id: stateBooking.customer_id,
+          first_name: stateBooking.name?.split(' ')[0] || stateBooking.customer?.first_name || 'Okänd',
+          last_name: stateBooking.name?.split(' ')[1] || stateBooking.customer?.last_name || '',
+          email: stateBooking.email || stateBooking.customer?.email || ''
+        },
+        property: {
+          address: stateBooking.address || '',
+          city: stateBooking.city || ''
+        }
+      };
+      setSelectedBooking(booking);
+      setStep(2);
+    }
+  }, [location.state]);
 
   const calculateTotals = () => {
     const laborCost = quoteData.hours * quoteData.hourlyRate;

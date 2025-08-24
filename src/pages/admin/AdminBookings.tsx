@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
@@ -108,6 +109,23 @@ export default function AdminBookings() {
     });
   };
 
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .update({ status: newStatus as any })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast.success('Status uppdaterad');
+      loadBookings();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Kunde inte uppdatera status');
+    }
+  };
+
   const filteredBookings = bookings.filter(booking => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
@@ -195,7 +213,7 @@ export default function AdminBookings() {
                 <Card key={booking.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <div>
+                      <div className="flex-1">
                         <CardTitle className="text-lg">
                           {booking.service_name || booking.service_id}
                         </CardTitle>
@@ -203,9 +221,20 @@ export default function AdminBookings() {
                           Kund: {booking.name} ({booking.email})
                         </CardDescription>
                       </div>
-                      <Badge variant={getStatusBadgeVariant(booking.status)}>
-                        {getStatusDisplayName(booking.status)}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Select value={booking.status} onValueChange={(value) => handleStatusChange(booking.id, value)}>
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">Väntande</SelectItem>
+                            <SelectItem value="confirmed">Bekräftad</SelectItem>
+                            <SelectItem value="in_progress">Pågående</SelectItem>
+                            <SelectItem value="completed">Slutförd</SelectItem>
+                            <SelectItem value="cancelled">Avbokad</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
@@ -114,6 +115,23 @@ export default function AdminQuoteRequests() {
     }
   };
 
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('quote_requests')
+        .update({ status: newStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast.success('Status uppdaterad');
+      loadQuoteRequests();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Kunde inte uppdatera status');
+    }
+  };
+
   const filteredQuoteRequests = quoteRequests.filter(request => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
@@ -202,17 +220,27 @@ export default function AdminQuoteRequests() {
                 <Card key={request.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <div>
+                      <div className="flex-1">
                         <CardTitle className="text-lg">
                           {request.service_name || request.service_id}
                         </CardTitle>
                         <CardDescription>
-                          Kund: {request.name || `${request.customer?.first_name} ${request.customer?.last_name}`} ({request.email})
+                          Kund: {request.name} ({request.email})
                         </CardDescription>
                       </div>
-                      <Badge variant={getStatusBadgeVariiant(request.status)}>
-                        {getStatusDisplayName(request.status)}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Select value={request.status} onValueChange={(value) => handleStatusChange(request.id, value)}>
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="new">Ny</SelectItem>
+                            <SelectItem value="in_progress">Pågående</SelectItem>
+                            <SelectItem value="completed">Slutförd</SelectItem>
+                            <SelectItem value="cancelled">Avbruten</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
