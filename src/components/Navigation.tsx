@@ -42,13 +42,20 @@ export default function Navigation() {
       ];
     }
 
-    return [
+    const baseItems = [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
     ];
+
+    // Add admin link for admin/owner users
+    if (isAdmin) {
+      baseItems.splice(3, 0, { href: "/admin", label: "Administration" });
+    }
+
+    return baseItems;
   };
 
   const navItems = getNavItems();

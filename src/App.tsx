@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -40,6 +40,12 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLayoutNew from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import QuoteWizard from "./pages/admin/QuoteWizard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminDatabase from "./pages/admin/AdminDatabase";
+import AdminReports from "./pages/admin/AdminReports";
+import AdminSettings from "./pages/admin/AdminSettings";
+import AdminSecurity from "./pages/admin/AdminSecurity";
+import AdminStaff from "./pages/admin/AdminStaff";
 
 const queryClient = new QueryClient();
 
@@ -76,10 +82,13 @@ const App = () => {
                 <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="quotes/new" element={<QuoteWizard />} />
-                  <Route path="invoices" element={<div>Fakturor (Coming Soon)</div>} />
-                  <Route path="bookings" element={<div>Bokningar (Coming Soon)</div>} />
-                  <Route path="customers" element={<div>Kunder (Coming Soon)</div>} />
-                  <Route path="analytics/detailed" element={<div>Detaljerad Analys (Coming Soon)</div>} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="database" element={<AdminDatabase />} />
+                  <Route path="reports" element={<AdminReports />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                  <Route path="security" element={<AdminSecurity />} />
+                  <Route path="staff" element={<AdminStaff />} />
+                  <Route path="analytics/detailed" element={<AdminReports />} />
                 </Route>
                 
                 <Route path="/tjanster" element={<Services />} />

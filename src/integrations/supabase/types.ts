@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_log: {
+        Row: {
+          actor_user: string | null
+          created_at: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          occurred_at: string | null
+          organization_id: string | null
+          subject_id: string | null
+          subject_type: string | null
+          summary: string
+        }
+        Insert: {
+          actor_user?: string | null
+          created_at?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string | null
+          organization_id?: string | null
+          subject_id?: string | null
+          subject_type?: string | null
+          summary: string
+        }
+        Update: {
+          actor_user?: string | null
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string | null
+          organization_id?: string | null
+          subject_id?: string | null
+          subject_type?: string | null
+          summary?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string
@@ -1056,6 +1095,16 @@ export type Database = {
       kpi_today: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      log_activity: {
+        Args: {
+          p_event_type: string
+          p_metadata?: Json
+          p_subject_id?: string
+          p_subject_type?: string
+          p_summary: string
+        }
+        Returns: undefined
       }
       log_admin_action: {
         Args: { p_action: string; p_meta?: Json; p_target?: string }
