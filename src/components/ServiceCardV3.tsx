@@ -2,6 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -39,6 +41,23 @@ const ServiceCardV3 = ({
   showFullWidth = false
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleNavigation = (type: 'book' | 'quote') => {
+    const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
+    const path = type === 'book' ? `/boka/${slug}` : `/offert/${slug}`;
+    console.log(`Navigating to: ${path}`);
+    console.log('User authenticated:', !!user);
+    
+    if (!user) {
+      console.log('User not authenticated, redirecting to auth first');
+      navigate('/auth', { state: { returnTo: path } });
+      return;
+    }
+    
+    navigate(path);
+  };
   
   if (pricingType === 'quote') {
     return (
@@ -86,11 +105,7 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={() => {
-            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
-            console.log('Quote button clicked, navigating to:', `/offert/${slug}`);
-            window.open(`/offert/${slug}`, '_self');
-          }}
+          onClick={() => handleNavigation('quote')}
         >
             Begär offert
           </Button>
@@ -238,16 +253,7 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={() => {
-            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
-            if (ctaType === 'book') {
-              console.log('Navigating to booking:', `/boka/${slug}`);
-              window.open(`/boka/${slug}`, '_self');
-            } else {
-              console.log('Navigating to quote:', `/offert/${slug}`);
-              window.open(`/offert/${slug}`, '_self');
-            }
-          }}
+          onClick={() => handleNavigation(ctaType)}
         >
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>
