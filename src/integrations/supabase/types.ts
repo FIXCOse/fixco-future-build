@@ -883,7 +883,22 @@ export type Database = {
         | "cancelled"
       invoice_status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
       loyalty_tier: "bronze" | "silver" | "gold" | "platinum"
-      property_type: "villa" | "lägenhet" | "kontor" | "lokal" | "fastighet"
+      property_type:
+        | "villa"
+        | "lägenhet"
+        | "kontor"
+        | "lokal"
+        | "fastighet"
+        | "Villa"
+        | "Lägenhet"
+        | "Radhus"
+        | "BRF"
+        | "Företagslokal"
+        | "Butik"
+        | "Kontor"
+        | "Lager"
+        | "Sommarstuga"
+        | "Övrigt"
       quote_status: "draft" | "sent" | "accepted" | "rejected" | "expired"
       user_role: "admin" | "member" | "ekonomi" | "beställare" | "tekniker"
       user_type: "private" | "company" | "brf"
@@ -1023,7 +1038,23 @@ export const Constants = {
       ],
       invoice_status: ["draft", "sent", "paid", "overdue", "cancelled"],
       loyalty_tier: ["bronze", "silver", "gold", "platinum"],
-      property_type: ["villa", "lägenhet", "kontor", "lokal", "fastighet"],
+      property_type: [
+        "villa",
+        "lägenhet",
+        "kontor",
+        "lokal",
+        "fastighet",
+        "Villa",
+        "Lägenhet",
+        "Radhus",
+        "BRF",
+        "Företagslokal",
+        "Butik",
+        "Kontor",
+        "Lager",
+        "Sommarstuga",
+        "Övrigt",
+      ],
       quote_status: ["draft", "sent", "accepted", "rejected", "expired"],
       user_role: ["admin", "member", "ekonomi", "beställare", "tekniker"],
       user_type: ["private", "company", "brf"],

@@ -4,14 +4,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import DashboardHeader from '@/components/DashboardHeader';
 import { PropertyModal } from '@/components/PropertyModal';
 import { PropertyForm } from '@/components/PropertyForm';
-import { Plus, MapPin, Edit, Trash2, Building } from 'lucide-react';
+import { Plus, MapPin, Edit, Trash2, Building, Star } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { PROPERTY_TYPES } from '@/schemas/propertySchema';
 
 interface Property {
   id: string;
@@ -19,10 +20,11 @@ interface Property {
   address: string;
   postal_code: string;
   city: string;
-  type: 'villa' | 'lägenhet' | 'kontor' | 'lokal' | 'fastighet';
+  type: string; // Accept any string type to handle mixed old/new types
   description?: string;
   notes?: string;
   tags?: string[];
+  is_primary: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -49,6 +51,7 @@ const PropertiesPage = () => {
         .from('properties')
         .select('*')
         .eq('owner_id', user!.id)
+        .order('is_primary', { ascending: false })
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
@@ -92,6 +95,30 @@ const PropertiesPage = () => {
     }
   };
 
+  const handleMakePrimary = async (property: Property) => {
+    try {
+      const { error } = await supabase.rpc('make_property_primary', {
+        p_property_id: property.id
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Klart!",
+        description: `"${property.name}" är nu huvudadress`
+      });
+
+      await loadProperties();
+    } catch (error) {
+      console.error('Error making property primary:', error);
+      toast({
+        title: "Fel",
+        description: "Kunde inte sätta huvudadress",
+        variant: "destructive"
+      });
+    }
+  };
+
   const startEdit = (property: Property) => {
     setEditingProperty(property);
     setIsModalOpen(true);
@@ -119,14 +146,17 @@ const PropertiesPage = () => {
   };
 
   const getPropertyTypeLabel = (type: string) => {
-    const labels = {
+    // Map old types to new types for display
+    const typeMapping: { [key: string]: string } = {
       'villa': 'Villa',
       'lägenhet': 'Lägenhet', 
       'kontor': 'Kontor',
-      'lokal': 'Lokal',
-      'fastighet': 'Fastighet'
+      'lokal': 'Företagslokal',
+      'fastighet': 'Övrigt'
     };
-    return labels[type as keyof typeof labels] || type;
+    
+    // Return mapped type or original type if already in correct format
+    return typeMapping[type] || type;
   };
 
   if (!profile) {
@@ -193,12 +223,28 @@ const PropertiesPage = () => {
                     <div className="flex-1">
                       <CardTitle className="flex items-center space-x-2">
                         <span>{property.name}</span>
+                        {property.is_primary && (
+                          <Badge variant="default" className="bg-primary">
+                            <Star className="h-3 w-3 mr-1" />
+                            Huvudadress
+                          </Badge>
+                        )}
                       </CardTitle>
                       <Badge variant="secondary" className="mt-1">
                         {getPropertyTypeLabel(property.type)}
                       </Badge>
                     </div>
                     <div className="flex space-x-1">
+                      {!property.is_primary && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleMakePrimary(property)}
+                          title="Gör till huvudadress"
+                        >
+                          <Star className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"

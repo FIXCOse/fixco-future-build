@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { propertySchema, type PropertyFormData } from '@/schemas/propertySchema';
+import { Checkbox } from '@/components/ui/checkbox';
+import { propertySchema, PROPERTY_TYPES, type PropertyFormData } from '@/schemas/propertySchema';
 import { useToast } from '@/components/ui/use-toast';
 
 interface PropertyFormProps {
@@ -35,13 +36,15 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
       address: editingProperty?.address || '',
       postal_code: editingProperty?.postal_code || '',
       city: editingProperty?.city || '',
-      type: editingProperty?.type || 'villa',
+      type: editingProperty?.type || 'Villa',
       description: editingProperty?.description || '',
-      notes: editingProperty?.notes || ''
+      notes: editingProperty?.notes || '',
+      is_primary: editingProperty?.is_primary || false,
     }
   });
 
   const selectedType = watch('type');
+  const isPrimary = watch('is_primary');
 
   useEffect(() => {
     // Focus first field when modal opens
@@ -71,6 +74,7 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
         type: data.type,
         description: data.description || null,
         notes: data.notes || null,
+        is_primary: data.is_primary || false,
         owner_id: user.id,
         organization_id: null
       };
@@ -177,11 +181,11 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="villa">Villa</SelectItem>
-            <SelectItem value="lägenhet">Lägenhet</SelectItem>
-            <SelectItem value="kontor">Kontor</SelectItem>
-            <SelectItem value="lokal">Lokal</SelectItem>
-            <SelectItem value="fastighet">Fastighet</SelectItem>
+            {PROPERTY_TYPES.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         {errors.type && (
@@ -217,6 +221,18 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
         {errors.notes && (
           <p className="text-sm text-destructive">{errors.notes.message}</p>
         )}
+      </div>
+
+      {/* Primary Address */}
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="is_primary"
+          checked={isPrimary}
+          onCheckedChange={(checked) => setValue('is_primary', checked as boolean)}
+        />
+        <Label htmlFor="is_primary" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Sätt som huvudadress
+        </Label>
       </div>
 
       {/* Actions */}
