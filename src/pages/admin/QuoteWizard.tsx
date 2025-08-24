@@ -161,8 +161,8 @@ const QuoteWizard = () => {
       const totals = calculateTotals();
       
       await createQuote({
-        booking_id: selectedBooking.id,
         customer_id: selectedBooking.customer.id,
+        property_id: null, // Will be set if property exists
         title: `Offert för ${selectedBooking.service_name}`,
         description: quoteData.notes || `Offert baserad på bokning ${selectedBooking.id}`,
         subtotal: totals.subtotalExVat,

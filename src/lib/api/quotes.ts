@@ -11,8 +11,7 @@ export type QuoteRow = {
   accepted_at?: string | null;
   valid_until?: string | null;
   customer_id: string;
-  property_id?: string | null;
-  booking_id?: string | null;
+  property_id: string;
   organization_id?: string | null;
   subtotal: number;
   vat_amount: number;
@@ -32,9 +31,6 @@ export type QuoteRow = {
     address?: string;
     city?: string;
   } | null;
-  booking?: {
-    service_name?: string;
-  } | null;
 };
 
 export async function fetchQuotes(params?: {
@@ -50,8 +46,7 @@ export async function fetchQuotes(params?: {
     .select(`
       *,
       customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
-      property:properties(address, city),
-      booking:bookings(service_name)
+      property:properties(address, city)
     `, { count: 'exact' })
     .order('created_at', { ascending: false });
 
@@ -89,9 +84,8 @@ export async function fetchQuotes(params?: {
 }
 
 export async function createQuote(quoteData: {
-  booking_id?: string;
   customer_id: string;
-  property_id?: string;
+  property_id?: string | null;
   title: string;
   description?: string;
   subtotal: number;
