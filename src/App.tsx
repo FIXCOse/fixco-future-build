@@ -48,6 +48,9 @@ import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminStaff from "./pages/admin/AdminStaff";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminBookings from "./pages/admin/AdminBookings";
+import BookingWizard from "./pages/BookingWizard";
+import QuoteRequestWizard from "./pages/QuoteRequestWizard";
+import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 
@@ -86,6 +89,7 @@ const App = () => {
                 <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="quotes" element={<AdminQuotes />} />
+                  <Route path="quote-requests" element={<AdminQuoteRequests />} />
                   <Route path="quotes/new" element={<QuoteWizard />} />
                   <Route path="invoices" element={<AdminInvoices />} />
                   <Route path="bookings" element={<AdminBookings />} />
@@ -98,6 +102,10 @@ const App = () => {
                   <Route path="staff" element={<AdminStaff />} />
                   <Route path="analytics/detailed" element={<AdminReports />} />
                 </Route>
+
+                {/* Booking and Quote Request Routes */}
+                <Route path="/boka/:slug" element={<BookingWizard />} />
+                <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
                 
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />

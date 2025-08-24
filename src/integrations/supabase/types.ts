@@ -103,20 +103,31 @@ export type Database = {
       }
       bookings: {
         Row: {
+          address: string | null
           attachments: string[] | null
           base_price: number
+          city: string | null
           created_at: string | null
+          created_by: string | null
           customer_id: string
           description: string | null
           discount_percent: number | null
+          email: string | null
           final_price: number
+          hourly_rate: number | null
+          hours_estimated: number | null
           id: string
           internal_notes: string | null
           labor_share: number | null
+          materials: number | null
+          name: string | null
           organization_id: string | null
+          phone: string | null
           photos: string[] | null
+          price_type: string | null
           property_id: string
           rot_eligible: boolean | null
+          rot_rut_type: string | null
           rut_eligible: boolean | null
           scheduled_date: string | null
           scheduled_time_end: string | null
@@ -127,22 +138,34 @@ export type Database = {
           status: Database["public"]["Enums"]["booking_status"] | null
           technician_id: string | null
           updated_at: string | null
+          vat_percent: number | null
         }
         Insert: {
+          address?: string | null
           attachments?: string[] | null
           base_price: number
+          city?: string | null
           created_at?: string | null
+          created_by?: string | null
           customer_id: string
           description?: string | null
           discount_percent?: number | null
+          email?: string | null
           final_price: number
+          hourly_rate?: number | null
+          hours_estimated?: number | null
           id?: string
           internal_notes?: string | null
           labor_share?: number | null
+          materials?: number | null
+          name?: string | null
           organization_id?: string | null
+          phone?: string | null
           photos?: string[] | null
+          price_type?: string | null
           property_id: string
           rot_eligible?: boolean | null
+          rot_rut_type?: string | null
           rut_eligible?: boolean | null
           scheduled_date?: string | null
           scheduled_time_end?: string | null
@@ -153,22 +176,34 @@ export type Database = {
           status?: Database["public"]["Enums"]["booking_status"] | null
           technician_id?: string | null
           updated_at?: string | null
+          vat_percent?: number | null
         }
         Update: {
+          address?: string | null
           attachments?: string[] | null
           base_price?: number
+          city?: string | null
           created_at?: string | null
+          created_by?: string | null
           customer_id?: string
           description?: string | null
           discount_percent?: number | null
+          email?: string | null
           final_price?: number
+          hourly_rate?: number | null
+          hours_estimated?: number | null
           id?: string
           internal_notes?: string | null
           labor_share?: number | null
+          materials?: number | null
+          name?: string | null
           organization_id?: string | null
+          phone?: string | null
           photos?: string[] | null
+          price_type?: string | null
           property_id?: string
           rot_eligible?: boolean | null
+          rot_rut_type?: string | null
           rut_eligible?: boolean | null
           scheduled_date?: string | null
           scheduled_time_end?: string | null
@@ -179,6 +214,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["booking_status"] | null
           technician_id?: string | null
           updated_at?: string | null
+          vat_percent?: number | null
         }
         Relationships: [
           {
@@ -709,6 +745,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quote_requests: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string | null
+          created_by: string | null
+          customer_id: string
+          email: string | null
+          id: string
+          message: string | null
+          name: string | null
+          phone: string | null
+          postal_code: string | null
+          rot_rut_type: string | null
+          service_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          customer_id: string
+          email?: string | null
+          id?: string
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          rot_rut_type?: string | null
+          service_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          customer_id?: string
+          email?: string | null
+          id?: string
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          rot_rut_type?: string | null
+          service_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       quotes: {
         Row: {

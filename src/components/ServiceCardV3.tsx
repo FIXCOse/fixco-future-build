@@ -16,6 +16,7 @@ interface ServiceCardV3Props {
   eligible: { rot: boolean; rut: boolean };
   onBook?: () => void;
   onQuote?: () => void;
+  serviceSlug?: string;
   className?: string;
   showFullWidth?: boolean;
 }
@@ -33,6 +34,7 @@ const ServiceCardV3 = ({
   eligible,
   onBook,
   onQuote,
+  serviceSlug,
   className = "",
   showFullWidth = false
 }: ServiceCardV3Props) => {
@@ -232,7 +234,13 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={ctaType === 'book' ? onBook : onQuote}
+          onClick={ctaType === 'book' ? () => {
+            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
+            window.location.href = `/boka/${slug}`;
+          } : () => {
+            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
+            window.location.href = `/offert/${slug}`;
+          }}
         >
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>
