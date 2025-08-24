@@ -103,6 +103,8 @@ export default function AuthModal({ open, onClose, children }: AuthModalProps) {
         p-4
         bg-black/50 
         backdrop-blur-sm md:backdrop-blur
+        overflow-y-auto
+        min-h-[100dvh]
       "
       onMouseDown={(e) => {
         // Click outside to close
@@ -122,8 +124,9 @@ export default function AuthModal({ open, onClose, children }: AuthModalProps) {
           relative w-full max-w-[420px] 
           rounded-2xl bg-background/95 backdrop-blur
           border border-border/20 shadow-2xl outline-none
-          max-h-[85vh] overflow-auto
-          pt-[env(safe-area-inset-top)]
+          max-h-none overflow-visible
+          my-8
+          no-scrollbar
         "
       >
         <button

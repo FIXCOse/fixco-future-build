@@ -342,8 +342,8 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
             </form>
           </TabsContent>
 
-          <TabsContent value="signup" className="space-y-4 max-h-[60vh] overflow-y-auto">
-            <form onSubmit={handleSignUp} className="space-y-4">
+          <TabsContent value="signup" className="space-y-3 overflow-visible">
+            <form onSubmit={handleSignUp} className="space-y-3 overflow-visible">
               <div className="space-y-2">
                 <Label htmlFor="modal-user-type">Kontotyp</Label>
                 <Select
@@ -475,7 +475,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
                     onCheckedChange={(checked) => handleInputChange('acceptTerms', checked)}
                     required
                   />
-                  <Label htmlFor="modal-accept-terms" className="text-sm leading-relaxed">
+                  <Label htmlFor="modal-accept-terms" className="text-xs leading-snug break-words">
                     Jag accepterar{' '}
                     <a href="/terms" className="text-primary hover:underline" target="_blank">
                       användarvillkoren
@@ -493,7 +493,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
                     checked={formData.marketingConsent}
                     onCheckedChange={(checked) => handleInputChange('marketingConsent', checked)}
                   />
-                  <Label htmlFor="modal-marketing-consent" className="text-sm">
+                  <Label htmlFor="modal-marketing-consent" className="text-xs leading-snug break-words">
                     Jag vill ta emot erbjudanden och nyheter via e-post
                   </Label>
                 </div>
