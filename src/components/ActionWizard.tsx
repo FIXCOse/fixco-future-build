@@ -77,8 +77,14 @@ function ActionWizardInner({
   const onChange = (k: string, v: any) => setForm((s) => ({ ...s, [k]: v }));
 
   async function submit() {
+    console.log("[WIZARD] Submit started", { mode, form, user });
     setLoading(true);
+    
     try {
+      // Get current session info
+      const { data: session } = await supabase.auth.getSession();
+      console.log("[WIZARD] Session:", session);
+
       const base = {
         service_id: payload?.serviceId ?? null,
         service_name: payload?.serviceName ?? null,
@@ -97,24 +103,48 @@ function ActionWizardInner({
         customer_id: user?.id ?? null,
         created_by_type: user ? "user" : "guest",
         source: user ? "user" : "guest",
+        // Required fields for anonymous insert
+        name: form.contact_name?.trim() || null,
+        email: form.contact_email?.trim() || null,  
+        phone: form.contact_phone?.trim() || null,
       };
 
+      console.log("[WIZARD] Prepared payload:", base);
+
       if (mode === "book") {
-        const { error } = await supabase.from("bookings").insert({
+        console.log("[WIZARD] Inserting booking...");
+        const { data, error } = await supabase.from("bookings").insert({
           ...base,
           base_price: form.hourly_rate || 0,
           final_price: form.hourly_rate || 0,
-        });
+        }).select("id").single();
+        
+        console.log("[BOOKING] Result:", { data, error });
         if (error) throw error;
+        
+        console.log("[BOOKING] Success! ID:", data?.id);
+        alert(`Bokning skickad! ID: ${data?.id?.slice(0, 8)}`);
       } else {
-        const { error } = await supabase.from("quote_requests").insert(base);
+        console.log("[WIZARD] Inserting quote request...");
+        const { data, error } = await supabase.from("quote_requests").insert(base).select("id").single();
+        
+        console.log("[QUOTE] Result:", { data, error });
         if (error) throw error;
+        
+        console.log("[QUOTE] Success! ID:", data?.id);
+        alert(`Offertförfrågan skickad! ID: ${data?.id?.slice(0, 8)}`);
       }
 
       onClose();
-    } catch (err) {
-      console.error(err);
-      alert("Kunde inte skicka. Försök igen.");
+    } catch (err: any) {
+      console.error("[WIZARD] Submit error:", err);
+      console.log("[WIZARD] Error details:", {
+        message: err.message,
+        code: err.code,
+        details: err.details,
+        hint: err.hint
+      });
+      alert(`Fel: ${err.message || "Kunde inte skicka. Försök igen."}`);
     } finally {
       setLoading(false);
     }
