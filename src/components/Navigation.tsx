@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,6 +48,9 @@ export default function Navigation() {
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
+      { href: "/smart-hem", label: "Smart Hem" },
+      { href: "/naromrade", label: "Närområde" },
+      { href: "/topplista", label: "Topplista" },
       { href: "/referenser", label: "Referenser" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
@@ -107,6 +111,8 @@ export default function Navigation() {
                 <span>Hela Sverige</span>
               </div>
             </div>
+            
+            <LanguageSelector />
             
             {user ? (
               <div className="flex items-center space-x-3">
