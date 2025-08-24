@@ -1,10 +1,9 @@
 import React from 'react';
 import { useAdmin } from '@/hooks/useAdmin';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Users, Settings, BarChart3, Shield, Database, UserCheck } from 'lucide-react';
+import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const AdminPage = () => {
@@ -52,114 +51,132 @@ const AdminPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* User Management */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Användarhantering
-            </CardTitle>
-            <CardDescription>
-              Hantera kunder, personal och roller
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline">
-              Visa användare
-            </Button>
-          </CardContent>
-        </Card>
+        <Link to="/admin/users" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Användarhantering
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Hantera kunder, personal och roller
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* System Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5" />
-              Systeminställningar
-            </CardTitle>
-            <CardDescription>
-              Konfigurera systemparametrar och inställningar
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline">
-              Öppna inställningar
-            </Button>
-          </CardContent>
-        </Card>
+        <Link to="/admin/settings" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Systeminställningar
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Konfigurera systemparametrar och inställningar
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* Analytics */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              Rapporter & Analys
-            </CardTitle>
-            <CardDescription>
-              Översikt av verksamheten och KPI:er
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline">
-              Visa rapporter
-            </Button>
-          </CardContent>
-        </Card>
+        <Link to="/admin/reports" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Rapporter & Analys
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Översikt av verksamheten och KPI:er
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* Security */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
-              Säkerhet & Behörigheter
-            </CardTitle>
-            <CardDescription>
-              Hantera åtkomst och säkerhetsinställningar
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline">
-              Säkerhetsinställningar
-            </Button>
-          </CardContent>
-        </Card>
+        <Link to="/admin/security" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  Säkerhet & Behörigheter
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Hantera åtkomst och säkerhetsinställningar
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* Database Management */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Database className="h-5 w-5" />
-              Databashantering
-            </CardTitle>
-            <CardDescription>
-              Backup, underhåll och datahantering
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" variant="outline">
-              Databasverktyg
-            </Button>
-          </CardContent>
-        </Card>
+        <Link to="/admin/database" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  Databashantering
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Backup, underhåll och datahantering
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* Staff Management - Only for Owner */}
         {isOwner && (
-          <Card>
+          <Link to="/admin/staff" className="block group">
+            <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <UserCheck className="h-5 w-5" />
+                    Personalhantering
+                  </div>
+                  <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </CardTitle>
+                <CardDescription>
+                  Hantera anställda och deras behörigheter
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        )}
+
+        {/* System Status */}
+        <Link to="/admin/status" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserCheck className="h-5 w-5" />
-                Personalhantering
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  Systemstatus
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </CardTitle>
               <CardDescription>
-                Hantera anställda och deras behörigheter
+                Övervaka systemets olika komponenter
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Button className="w-full" variant="outline">
-                Hantera personal
-              </Button>
-            </CardContent>
           </Card>
-        )}
+        </Link>
       </div>
 
       {/* System Status */}

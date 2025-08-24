@@ -35,6 +35,15 @@ import RotRutPage from "./pages/MyFixco/RotRutPage";
 import ActivityPage from "./pages/MyFixco/ActivityPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
 import AdminPage from "./pages/MyFixco/AdminPage";
+import AdminGate from "./components/AdminGate";
+import AdminLayout from "./components/AdminLayout";
+import AdminUsers from "./pages/MyFixco/AdminUsers";
+import AdminSettings from "./pages/MyFixco/AdminSettings";
+import AdminReports from "./pages/MyFixco/AdminReports";
+import AdminSecurity from "./pages/MyFixco/AdminSecurity";
+import AdminDatabase from "./pages/MyFixco/AdminDatabase";
+import AdminStaff from "./pages/MyFixco/AdminStaff";
+import AdminStatus from "./pages/MyFixco/AdminStatus";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +74,20 @@ const App = () => {
                   <Route path="activity" element={<ActivityPage />} />
                   <Route path="history" element={<HistoryPage />} />
                   <Route path="admin" element={<AdminPage />} />
+                </Route>
+                
+                {/* Admin routes with access control */}
+                <Route path="/admin" element={<AdminGate />}>
+                  <Route element={<AdminLayout />}>
+                    <Route index element={<AdminPage />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                    <Route path="reports" element={<AdminReports />} />
+                    <Route path="security" element={<AdminSecurity />} />
+                    <Route path="database" element={<AdminDatabase />} />
+                    <Route path="staff" element={<AdminStaff />} />
+                    <Route path="status" element={<AdminStatus />} />
+                  </Route>
                 </Route>
                 
                 <Route path="/tjanster" element={<Services />} />
