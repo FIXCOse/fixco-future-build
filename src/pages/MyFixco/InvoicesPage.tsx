@@ -30,7 +30,7 @@ interface Invoice {
   rut_amount?: number;
   discount_amount?: number;
   pdf_url?: string;
-  line_items: any[];
+  line_items: any; // Changed from any[] to any to match Supabase Json type
   booking_id?: string;
   quote_id?: string;
   paid_at?: string;
@@ -127,7 +127,7 @@ const InvoicesPage = () => {
 
   const filteredInvoices = invoices.filter(invoice => {
     const matchesSearch = invoice.invoice_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         invoice.line_items.some((item: any) => 
+                         invoice.line_items && Array.isArray(invoice.line_items) && invoice.line_items.some((item: any) => 
                            item.description?.toLowerCase().includes(searchTerm.toLowerCase())
                          );
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
@@ -277,26 +277,28 @@ const InvoicesPage = () => {
                                   </div>
                                 </div>
 
-                                <div>
-                                  <Label className="text-sm font-medium">Fakturarader</Label>
-                                  <div className="border rounded-md p-3 max-h-48 overflow-y-auto">
-                                    {selectedInvoice.line_items.map((item: any, index: number) => (
-                                      <div key={index} className="flex justify-between py-2 border-b last:border-b-0">
-                                        <div>
-                                          <p className="text-sm font-medium">{item.description}</p>
-                                          {item.quantity && item.unit_price && (
-                                            <p className="text-xs text-muted-foreground">
-                                              {item.quantity} × {item.unit_price.toLocaleString('sv-SE')} kr
-                                            </p>
-                                          )}
+                                  <div>
+                                    <Label className="text-sm font-medium">Fakturarader</Label>
+                                    <div className="border rounded-md p-3 max-h-48 overflow-y-auto">
+                                      {Array.isArray(selectedInvoice.line_items) ? selectedInvoice.line_items.map((item: any, index: number) => (
+                                        <div key={index} className="flex justify-between py-2 border-b last:border-b-0">
+                                          <div>
+                                            <p className="text-sm font-medium">{item.description}</p>
+                                            {item.quantity && item.unit_price && (
+                                              <p className="text-xs text-muted-foreground">
+                                                {item.quantity} × {item.unit_price.toLocaleString('sv-SE')} kr
+                                              </p>
+                                            )}
+                                          </div>
+                                          <p className="text-sm font-medium">
+                                            {item.total_amount?.toLocaleString('sv-SE')} kr
+                                          </p>
                                         </div>
-                                        <p className="text-sm font-medium">
-                                          {item.total_amount?.toLocaleString('sv-SE')} kr
-                                        </p>
-                                      </div>
-                                    ))}
+                                      )) : (
+                                        <p className="text-sm text-muted-foreground">Inga fakturarader tillgängliga</p>
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
 
                                 <div className="space-y-2 border-t pt-4">
                                   <div className="flex justify-between text-sm">

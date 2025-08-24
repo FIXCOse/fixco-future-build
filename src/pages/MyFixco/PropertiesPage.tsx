@@ -22,7 +22,7 @@ interface Property {
   address: string;
   postal_code: string;
   city: string;
-  type: 'apartment' | 'house' | 'office' | 'warehouse' | 'other';
+  type: 'villa' | 'lägenhet' | 'kontor' | 'lokal' | 'fastighet';
   description?: string;
   notes?: string;
   tags?: string[];
@@ -42,7 +42,7 @@ const PropertiesPage = () => {
     address: '',
     postal_code: '',
     city: '',
-    type: 'apartment' as Property['type'],
+    type: 'villa' as Property['type'],
     description: '',
     notes: ''
   });
@@ -157,7 +157,7 @@ const PropertiesPage = () => {
       address: '',
       postal_code: '',
       city: '',
-      type: 'apartment',
+      type: 'villa',
       description: '',
       notes: ''
     });
@@ -179,11 +179,11 @@ const PropertiesPage = () => {
 
   const getPropertyTypeLabel = (type: string) => {
     const labels = {
-      'apartment': 'Lägenhet',
-      'house': 'Hus',
-      'office': 'Kontor',
-      'warehouse': 'Lager',
-      'other': 'Övrigt'
+      'villa': 'Villa',
+      'lägenhet': 'Lägenhet', 
+      'kontor': 'Kontor',
+      'lokal': 'Lokal',
+      'fastighet': 'Fastighet'
     };
     return labels[type as keyof typeof labels] || type;
   };
@@ -275,11 +275,11 @@ const PropertiesPage = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="apartment">Lägenhet</SelectItem>
-                      <SelectItem value="house">Hus</SelectItem>
-                      <SelectItem value="office">Kontor</SelectItem>
-                      <SelectItem value="warehouse">Lager</SelectItem>
-                      <SelectItem value="other">Övrigt</SelectItem>
+                      <SelectItem value="villa">Villa</SelectItem>
+                      <SelectItem value="lägenhet">Lägenhet</SelectItem>
+                      <SelectItem value="kontor">Kontor</SelectItem>
+                      <SelectItem value="lokal">Lokal</SelectItem>
+                      <SelectItem value="fastighet">Fastighet</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
