@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, ArrowRight, Search, User, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
@@ -17,144 +15,93 @@ interface Booking {
   status: string;
   service_name: string;
   base_price: number;
-  rot_eligible: boolean;
-  rut_eligible: boolean;
   customer: {
     id: string;
     first_name: string;
     last_name: string;
     email: string;
-    phone?: string;
   };
   property: {
     address: string;
     city: string;
-    postal_code: string;
   };
 }
 
-interface QuoteData {
-  bookingId?: string;
-  customerId: string;
-  priceMode: 'hourly' | 'fixed';
-  hours: number;
-  hourlyRate: number;
-  subtotal: number;
-  vatAmount: number;
-  totalAmount: number;
-  rotRutType?: 'rot' | 'rut';
-  rotRutAmount: number;
-  totalAfterDeduction: number;
-  notes: string;
-  sendToEmail: boolean;
-  sendToAccount: boolean;
-}
+// Mock data until database is properly set up
+const mockBookings: Booking[] = [
+  {
+    id: '1',
+    status: 'pending',
+    service_name: 'Badrumsrenovering',
+    base_price: 25000,
+    customer: {
+      id: 'cust1',
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john@example.com'
+    },
+    property: {
+      address: 'Testgatan 123',
+      city: 'Stockholm'
+    }
+  },
+  {
+    id: '2',
+    status: 'confirmed',
+    service_name: 'Köksrenovering',
+    base_price: 45000,
+    customer: {
+      id: 'cust2',
+      first_name: 'Jane',
+      last_name: 'Smith',
+      email: 'jane@example.com'
+    },
+    property: {
+      address: 'Exempelvägen 456',
+      city: 'Göteborg'
+    }
+  }
+];
 
 const QuoteWizard = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings] = useState<Booking[]>(mockBookings);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const [quoteData, setQuoteData] = useState<QuoteData>({
-    customerId: '',
-    priceMode: 'hourly',
-    hours: 1,
+  const [quoteData, setQuoteData] = useState({
+    hours: 8,
     hourlyRate: 650,
-    subtotal: 0,
-    vatAmount: 0,
-    totalAmount: 0,
-    rotRutAmount: 0,
-    totalAfterDeduction: 0,
-    notes: '',
-    sendToEmail: true,
-    sendToAccount: true
+    notes: ''
   });
-
-  useEffect(() => {
-    loadBookings();
-  }, []);
-
-  useEffect(() => {
-    calculateTotals();
-  }, [quoteData.hours, quoteData.hourlyRate, quoteData.rotRutType]);
-
-  const loadBookings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-          id, status, service_name, base_price, rot_eligible, rut_eligible,
-          customer:profiles!bookings_customer_id_fkey(id, first_name, last_name, email, phone),
-          property:properties(address, city, postal_code)
-        `)
-        .in('status', ['pending', 'confirmed', 'in_progress', 'completed'])
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setBookings(data || []);
-    } catch (error) {
-      console.error('Error loading bookings:', error);
-      toast.error('Kunde inte ladda bokningar');
-    }
-  };
 
   const calculateTotals = () => {
     const subtotal = quoteData.hours * quoteData.hourlyRate;
     const vatAmount = subtotal * 0.25;
     const totalAmount = subtotal + vatAmount;
     
-    let rotRutAmount = 0;
-    if (quoteData.rotRutType === 'rot') {
-      rotRutAmount = Math.min(subtotal * 0.3, 75000); // 30% up to 75k SEK
-    } else if (quoteData.rotRutType === 'rut') {
-      rotRutAmount = Math.min(subtotal * 0.5, 75000); // 50% up to 75k SEK
-    }
-    
-    const totalAfterDeduction = totalAmount - rotRutAmount;
-    
-    setQuoteData(prev => ({
-      ...prev,
+    return {
       subtotal,
       vatAmount,
-      totalAmount,
-      rotRutAmount,
-      totalAfterDeduction
-    }));
+      totalAmount
+    };
   };
 
   const selectBooking = (booking: Booking) => {
     setSelectedBooking(booking);
-    setQuoteData(prev => ({
-      ...prev,
-      bookingId: booking.id,
-      customerId: booking.customer.id
-    }));
     setStep(2);
   };
 
   const createQuote = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('quotes')
-        .insert({
-          customer_id: quoteData.customerId,
-          subtotal: quoteData.subtotal,
-          vat_amount: quoteData.vatAmount,
-          total_amount: quoteData.totalAmount,
-          status: 'draft'
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      toast.success('Offert skapad!');
-      navigate('/admin/quotes');
+      // Simulate quote creation
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast.success('Offert skapad! (Demo-version)');
+      navigate('/admin');
     } catch (error) {
       console.error('Error creating quote:', error);
       toast.error('Kunde inte skapa offert');
@@ -169,6 +116,8 @@ const QuoteWizard = () => {
     booking.customer.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const totals = calculateTotals();
+
   if (step === 1) {
     return (
       <div className="space-y-6">
@@ -177,7 +126,7 @@ const QuoteWizard = () => {
             <h1 className="text-2xl font-bold">Skapa offert</h1>
             <p className="text-muted-foreground">Steg 1: Välj kund eller bokning</p>
           </div>
-          <Button variant="outline" onClick={() => navigate('/admin/quotes')}>
+          <Button variant="outline" onClick={() => navigate('/admin')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Tillbaka
           </Button>
@@ -223,7 +172,7 @@ const QuoteWizard = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">{booking.base_price} SEK</div>
+                        <div className="font-medium">{booking.base_price.toLocaleString()} SEK</div>
                       </div>
                     </div>
                   </CardContent>
@@ -242,7 +191,7 @@ const QuoteWizard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Skapa offert</h1>
-            <p className="text-muted-foreground">Steg 2: Pris & ROT/RUT</p>
+            <p className="text-muted-foreground">Steg 2: Pris & detaljer</p>
           </div>
           <Button variant="outline" onClick={() => setStep(1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -300,26 +249,6 @@ const QuoteWizard = () => {
               </div>
 
               <div>
-                <Label htmlFor="rotRutType">ROT/RUT-avdrag</Label>
-                <Select 
-                  value={quoteData.rotRutType || 'none'} 
-                  onValueChange={(value) => setQuoteData(prev => ({ 
-                    ...prev, 
-                    rotRutType: value === 'none' ? undefined : value as 'rot' | 'rut'
-                  }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Välj typ av avdrag" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Inget avdrag</SelectItem>
-                    <SelectItem value="rot">ROT-avdrag (30%)</SelectItem>
-                    <SelectItem value="rut">RUT-avdrag (50%)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
                 <Label htmlFor="notes">Anteckningar</Label>
                 <Textarea
                   id="notes"
@@ -347,59 +276,26 @@ const QuoteWizard = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>{quoteData.subtotal.toFixed(2)} SEK</span>
+                  <span>{totals.subtotal.toFixed(2)} SEK</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Moms (25%):</span>
-                  <span>{quoteData.vatAmount.toFixed(2)} SEK</span>
+                  <span>{totals.vatAmount.toFixed(2)} SEK</span>
                 </div>
-                <div className="flex justify-between font-medium">
+                <div className="flex justify-between font-medium text-lg">
                   <span>Total:</span>
-                  <span>{quoteData.totalAmount.toFixed(2)} SEK</span>
+                  <span>{totals.totalAmount.toFixed(2)} SEK</span>
                 </div>
-                
-                {quoteData.rotRutType && (
-                  <>
-                    <hr className="my-2" />
-                    <div className="flex justify-between text-green-600">
-                      <span>{quoteData.rotRutType.toUpperCase()}-avdrag:</span>
-                      <span>-{quoteData.rotRutAmount.toFixed(2)} SEK</span>
-                    </div>
-                    <div className="flex justify-between font-bold text-lg">
-                      <span>Att betala:</span>
-                      <span>{quoteData.totalAfterDeduction.toFixed(2)} SEK</span>
-                    </div>
-                  </>
-                )}
               </div>
 
               <hr />
-
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="sendEmail"
-                    checked={quoteData.sendToEmail}
-                    onCheckedChange={(checked) => setQuoteData(prev => ({ ...prev, sendToEmail: !!checked }))}
-                  />
-                  <Label htmlFor="sendEmail">Skicka till kundens e-post</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="sendAccount"
-                    checked={quoteData.sendToAccount}
-                    onCheckedChange={(checked) => setQuoteData(prev => ({ ...prev, sendToAccount: !!checked }))}
-                  />
-                  <Label htmlFor="sendAccount">Skicka till kundens FIXCO-konto</Label>
-                </div>
-              </div>
 
               <Button 
                 className="w-full" 
                 onClick={createQuote} 
                 disabled={loading}
               >
-                {loading ? 'Skapar offert...' : 'Skapa & skicka offert'}
+                {loading ? 'Skapar offert...' : 'Skapa offert'}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </CardContent>
