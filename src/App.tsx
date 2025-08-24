@@ -46,6 +46,10 @@ import AdminReports from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminStaff from "./pages/admin/AdminStaff";
+import AdminInvoices from "./pages/admin/AdminInvoices";
+import AdminBookings from "./pages/admin/AdminBookings";
+import AdminCustomers from "./pages/admin/AdminCustomers";
+import AdminQuotes from "./pages/admin/AdminQuotes";
 
 const queryClient = new QueryClient();
 
@@ -81,7 +85,11 @@ const App = () => {
                 {/* New Admin Routes */}
                 <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
                   <Route index element={<AdminDashboard />} />
+                  <Route path="quotes" element={<AdminQuotes />} />
                   <Route path="quotes/new" element={<QuoteWizard />} />
+                  <Route path="invoices" element={<AdminInvoices />} />
+                  <Route path="bookings" element={<AdminBookings />} />
+                  <Route path="customers" element={<AdminCustomers />} />
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="database" element={<AdminDatabase />} />
                   <Route path="reports" element={<AdminReports />} />

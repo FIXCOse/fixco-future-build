@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database
+  Plus, Calendar, Settings, Database, Shield
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -45,6 +45,13 @@ const AdminDashboard = () => {
 
   const adminSections = [
     {
+      title: 'Offerter',
+      description: 'Se alla skapade offerter',
+      href: '/admin/quotes',
+      icon: FileText,
+      color: 'bg-yellow-500/10 text-yellow-600'
+    },
+    {
       title: 'Användare',
       description: 'Hantera användarkonton och roller',
       href: '/admin/users',
@@ -66,11 +73,18 @@ const AdminDashboard = () => {
       color: 'bg-purple-500/10 text-purple-600'
     },
     {
+      title: 'Säkerhet',
+      description: 'Säkerhetsövervakning',
+      href: '/admin/security',
+      icon: Shield,
+      color: 'bg-red-500/10 text-red-600'
+    },
+    {
       title: 'Databas',
       description: 'Databashantering',
       href: '/admin/database',
       icon: Database,
-      color: 'bg-red-500/10 text-red-600'
+      color: 'bg-indigo-500/10 text-indigo-600'
     }
   ];
 
@@ -132,7 +146,7 @@ const AdminDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {adminSections.map((section) => (
                   <Link key={section.href} to={section.href}>
                     <Card className="hover:shadow-md transition-shadow cursor-pointer">
