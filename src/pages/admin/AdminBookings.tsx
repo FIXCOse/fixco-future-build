@@ -98,13 +98,10 @@ export default function AdminBookings() {
   const handleCreateQuote = (booking: BookingRow) => {
     navigate('/admin/quotes/new', { 
       state: { 
-        fromBooking: booking,
-        customer_id: booking.customer_id,
-        service_name: booking.service_name || booking.service_id,
-        description: booking.description,
-        address: booking.address,
-        postal_code: booking.postal_code,
-        city: booking.city
+        fromBooking: {
+          ...booking,
+          type: 'booking'
+        }
       }
     });
   };

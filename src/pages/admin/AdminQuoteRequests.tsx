@@ -93,15 +93,12 @@ export default function AdminQuoteRequests() {
   };
 
   const handleCreateQuote = (request: QuoteRequestRow) => {
-    navigate('/admin/quotes/new', { 
-      state: { 
-        fromQuoteRequest: request,
-        customer_id: request.customer_id,
-        service_name: request.service_name || request.service_id,
-        description: request.description || request.message,
-        address: request.address,
-        postal_code: request.postal_code,
-        city: request.city
+    navigate('/admin/quotes/new', {
+      state: {
+        fromBooking: {
+          ...request,
+          type: 'quote_request'
+        }
       }
     });
   };

@@ -10,69 +10,41 @@ import { ArrowLeft, ArrowRight, Search, User, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { createQuote } from '@/lib/api/quotes';
 import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
-interface Booking {
+interface BookingOrRequest {
   id: string;
   status: string;
   service_name: string;
-  base_price: number;
-  customer: {
+  service_id?: string;
+  base_price?: number;
+  hourly_rate?: number;
+  total_amount?: number;
+  type: 'booking' | 'quote_request';
+  customer_id?: string;
+  name?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  postal_code?: string;
+  description?: string;
+  customer?: {
     id: string;
     first_name: string;
     last_name: string;
     email: string;
   };
-  property: {
-    address: string;
-    city: string;
-  };
 }
-
-// Mock data until database is properly set up
-const mockBookings: Booking[] = [
-  {
-    id: '1',
-    status: 'pending',
-    service_name: 'Badrumsrenovering',
-    base_price: 25000,
-    customer: {
-      id: 'cust1',
-      first_name: 'John',
-      last_name: 'Doe',
-      email: 'john@example.com'
-    },
-    property: {
-      address: 'Testgatan 123',
-      city: 'Stockholm'
-    }
-  },
-  {
-    id: '2',
-    status: 'confirmed',
-    service_name: 'Köksrenovering',
-    base_price: 45000,
-    customer: {
-      id: 'cust2',
-      first_name: 'Jane',
-      last_name: 'Smith',
-      email: 'jane@example.com'
-    },
-    property: {
-      address: 'Exempelvägen 456',
-      city: 'Göteborg'
-    }
-  }
-];
 
 const QuoteWizard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
-  const [bookings] = useState<Booking[]>(mockBookings);
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [bookingsAndRequests, setBookingsAndRequests] = useState<BookingOrRequest[]>([]);
+  const [selectedItem, setSelectedItem] = useState<BookingOrRequest | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   const [quoteData, setQuoteData] = useState({
     hours: 8,
@@ -87,27 +59,108 @@ const QuoteWizard = () => {
     notes: ''
   });
 
-  // Handle booking data from navigation state
+  // Load both bookings and quote requests
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Fetch bookings
+        const { data: bookings, error: bookingsError } = await supabase
+          .from('bookings')
+          .select(`
+            *,
+            customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
+          `)
+          .order('created_at', { ascending: false });
+
+        if (bookingsError) throw bookingsError;
+
+        // Fetch quote requests
+        const { data: quoteRequests, error: requestsError } = await supabase
+          .from('quote_requests')
+          .select(`
+            *,
+            customer:profiles!quote_requests_customer_id_fkey(first_name, last_name, email)
+          `)
+          .order('created_at', { ascending: false });
+
+        if (requestsError) throw requestsError;
+
+        // Combine and format data
+        const combinedData: BookingOrRequest[] = [
+          ...(bookings || []).map((booking: any) => ({
+            id: booking.id,
+            status: booking.status,
+            service_name: booking.service_name || booking.service_id,
+            service_id: booking.service_id,
+            base_price: booking.base_price || booking.hourly_rate,
+            hourly_rate: booking.hourly_rate,
+            type: 'booking' as const,
+            customer_id: booking.customer_id,
+            name: booking.name,
+            email: booking.email,
+            address: booking.address,
+            city: booking.city,
+            postal_code: booking.postal_code,
+            description: booking.description,
+            customer: booking.customer
+          })),
+          ...(quoteRequests || []).map((request: any) => ({
+            id: request.id,
+            status: request.status,
+            service_name: request.service_name || request.service_id,
+            service_id: request.service_id,
+            hourly_rate: request.hourly_rate,
+            type: 'quote_request' as const,
+            customer_id: request.customer_id,
+            name: request.name,
+            email: request.email,
+            address: request.address,
+            city: request.city,
+            postal_code: request.postal_code,
+            description: request.description,
+            customer: request.customer
+          }))
+        ];
+
+        setBookingsAndRequests(combinedData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        toast.error('Kunde inte ladda data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // Handle data from navigation state
   useEffect(() => {
     const stateBooking = location.state?.fromBooking;
     if (stateBooking) {
-      const booking: Booking = {
+      const item: BookingOrRequest = {
         id: stateBooking.id,
         status: stateBooking.status || 'pending',
         service_name: stateBooking.service_name || stateBooking.service_id,
+        service_id: stateBooking.service_id,
         base_price: stateBooking.base_price || stateBooking.hourly_rate || 0,
-        customer: {
+        hourly_rate: stateBooking.hourly_rate,
+        type: stateBooking.type || 'booking',
+        customer_id: stateBooking.customer_id,
+        name: stateBooking.name,
+        email: stateBooking.email,
+        address: stateBooking.address,
+        city: stateBooking.city,
+        postal_code: stateBooking.postal_code,
+        description: stateBooking.description,
+        customer: stateBooking.customer ? stateBooking.customer : {
           id: stateBooking.customer_id,
-          first_name: stateBooking.name?.split(' ')[0] || stateBooking.customer?.first_name || 'Okänd',
-          last_name: stateBooking.name?.split(' ')[1] || stateBooking.customer?.last_name || '',
-          email: stateBooking.email || stateBooking.customer?.email || ''
-        },
-        property: {
-          address: stateBooking.address || '',
-          city: stateBooking.city || ''
+          first_name: stateBooking.name?.split(' ')[0] || 'Okänd',
+          last_name: stateBooking.name?.split(' ')[1] || '',
+          email: stateBooking.email || ''
         }
       };
-      setSelectedBooking(booking);
+      setSelectedItem(item);
       setStep(2);
     }
   }, [location.state]);
@@ -148,23 +201,23 @@ const QuoteWizard = () => {
     };
   };
 
-  const selectBooking = (booking: Booking) => {
-    setSelectedBooking(booking);
+  const selectItem = (item: BookingOrRequest) => {
+    setSelectedItem(item);
     setStep(2);
   };
 
   const createQuoteFromData = async () => {
-    if (!selectedBooking) return;
+    if (!selectedItem) return;
     
     setLoading(true);
     try {
       const totals = calculateTotals();
       
       await createQuote({
-        customer_id: selectedBooking.customer.id,
-        property_id: null, // Will be set if property exists
-        title: `Offert för ${selectedBooking.service_name}`,
-        description: quoteData.notes || `Offert baserad på bokning ${selectedBooking.id}`,
+        customer_id: selectedItem.customer_id || selectedItem.customer?.id || '',
+        property_id: null,
+        title: `Offert för ${selectedItem.service_name}`,
+        description: quoteData.notes || selectedItem.description || `Offert baserad på ${selectedItem.type === 'booking' ? 'bokning' : 'offertförfrågan'} ${selectedItem.id}`,
         subtotal: totals.subtotalExVat,
         vat_amount: totals.vatAmount,
         total_amount: quoteData.showPricesIncVat ? totals.totalIncVat : totals.totalExVat,
@@ -174,7 +227,7 @@ const QuoteWizard = () => {
         discount_percent: quoteData.discountPercent,
         line_items: [
           {
-            description: `${selectedBooking.service_name} - Arbete`,
+            description: `${selectedItem.service_name} - Arbete`,
             quantity: quoteData.hours,
             unit_price: quoteData.hourlyRate,
             amount: totals.laborCost
@@ -199,11 +252,18 @@ const QuoteWizard = () => {
     }
   };
 
-  const filteredBookings = bookings.filter(booking =>
-    booking.service_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    `${booking.customer.first_name} ${booking.customer.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    booking.customer.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredItems = bookingsAndRequests.filter(item => {
+    if (!searchTerm) return true;
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      item.service_name?.toLowerCase().includes(searchLower) ||
+      item.customer?.first_name?.toLowerCase().includes(searchLower) ||
+      item.customer?.last_name?.toLowerCase().includes(searchLower) ||
+      item.customer?.email?.toLowerCase().includes(searchLower) ||
+      item.name?.toLowerCase().includes(searchLower) ||
+      item.email?.toLowerCase().includes(searchLower)
+    );
+  });
 
   const totals = calculateTotals();
 
@@ -213,7 +273,7 @@ const QuoteWizard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Skapa offert</h1>
-            <p className="text-muted-foreground">Steg 1: Välj kund eller bokning</p>
+            <p className="text-muted-foreground">Steg 1: Välj kund eller förfrågan</p>
           </div>
           <Button variant="outline" onClick={() => navigate('/admin')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -223,7 +283,7 @@ const QuoteWizard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Sök bokningar</CardTitle>
+            <CardTitle>Sök kunder och förfrågningar</CardTitle>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
@@ -235,39 +295,77 @@ const QuoteWizard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {filteredBookings.map((booking) => (
-                <Card 
-                  key={booking.id} 
-                  className="cursor-pointer hover:shadow-md transition-shadow"
-                  onClick={() => selectBooking(booking)}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline">{booking.status}</Badge>
-                          <h3 className="font-medium">{booking.service_name}</h3>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <User className="h-4 w-4" />
-                            {booking.customer.first_name} {booking.customer.last_name}
+            {loading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-16 bg-muted rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filteredItems.map((item) => (
+                  <Card 
+                    key={`${item.type}-${item.id}`}
+                    className="cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => selectItem(item)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Badge variant={item.type === 'booking' ? 'default' : 'secondary'}>
+                              {item.type === 'booking' ? 'Bokning' : 'Offertförfrågan'}
+                            </Badge>
+                            <Badge variant="outline">{item.status}</Badge>
+                            <h3 className="font-medium">{item.service_name}</h3>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {booking.property.address}, {booking.property.city}
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <User className="h-4 w-4" />
+                              {item.customer ? 
+                                `${item.customer.first_name} ${item.customer.last_name}` : 
+                                item.name || 'Okänd kund'
+                              }
+                            </div>
+                            {(item.address || item.city) && (
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-4 w-4" />
+                                {item.address ? `${item.address}, ${item.city}` : item.city}
+                              </div>
+                            )}
+                          </div>
+                          {item.description && (
+                            <p className="text-sm text-muted-foreground mt-2">
+                              {item.description.length > 100 
+                                ? `${item.description.substring(0, 100)}...`
+                                : item.description
+                              }
+                            </p>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <div className="font-medium">
+                            {item.base_price || item.hourly_rate 
+                              ? `${(item.base_price || item.hourly_rate)?.toLocaleString()} SEK`
+                              : 'Pris ej angivet'
+                            }
                           </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-medium">{booking.base_price.toLocaleString()} SEK</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {filteredItems.length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground">
+                      {searchTerm ? 'Inga förfrågningar hittades' : 'Inga förfrågningar att visa'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -288,22 +386,41 @@ const QuoteWizard = () => {
           </Button>
         </div>
 
-        {selectedBooking && (
+        {selectedItem && (
           <Card>
             <CardHeader>
-              <CardTitle>Vald bokning</CardTitle>
+              <CardTitle>Vald {selectedItem.type === 'booking' ? 'bokning' : 'offertförfrågan'}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <Label className="text-xs text-muted-foreground">Kund</Label>
-                  <p>{selectedBooking.customer.first_name} {selectedBooking.customer.last_name}</p>
+                  <p>
+                    {selectedItem.customer 
+                      ? `${selectedItem.customer.first_name} ${selectedItem.customer.last_name}`
+                      : selectedItem.name || 'Okänd kund'
+                    }
+                  </p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">Tjänst</Label>
-                  <p>{selectedBooking.service_name}</p>
+                  <p>{selectedItem.service_name}</p>
+                </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">E-post</Label>
+                  <p>{selectedItem.customer?.email || selectedItem.email || 'Ej angiven'}</p>
+                </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">Typ</Label>
+                  <p>{selectedItem.type === 'booking' ? 'Bokning' : 'Offertförfrågan'}</p>
                 </div>
               </div>
+              {selectedItem.description && (
+                <div className="mt-4">
+                  <Label className="text-xs text-muted-foreground">Beskrivning</Label>
+                  <p className="text-sm">{selectedItem.description}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
