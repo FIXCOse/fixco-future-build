@@ -251,6 +251,19 @@ const QuoteWizard = () => {
         ]
       });
 
+      // Update status of the original booking or quote request
+      if (selectedItem.type === 'booking') {
+        await supabase
+          .from('bookings')
+          .update({ status: 'completed' })
+          .eq('id', selectedItem.id);
+      } else if (selectedItem.type === 'quote_request') {
+        await supabase
+          .from('quote_requests')
+          .update({ status: 'quoted' })
+          .eq('id', selectedItem.id);
+      }
+
       toast.success('Offert skapad framgångsrikt!');
       queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
       navigate('/admin/quotes');
