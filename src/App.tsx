@@ -19,6 +19,8 @@ import Auth from "./pages/Auth";
 import AuthCallback from "./pages/AuthCallback";
 import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
 import StickyCTA from "./components/StickyCTA";
@@ -54,6 +56,8 @@ const App = () => {
                 <Route path="/rot-info" element={<ROTInfo />} />
                 <Route path="/rut" element={<RUT />} />
                 <Route path="/referenser" element={<Referenser />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

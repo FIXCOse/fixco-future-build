@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -473,13 +473,13 @@ const Auth = () => {
                         />
                         <Label htmlFor="accept-terms" className="text-sm leading-relaxed">
                           Jag accepterar{' '}
-                          <a href="/terms" className="text-primary hover:underline">
+                          <Link to="/terms" className="text-primary hover:underline">
                             användarvillkoren
-                          </a>{' '}
+                          </Link>{' '}
                           och{' '}
-                          <a href="/privacy" className="text-primary hover:underline">
+                          <Link to="/privacy" className="text-primary hover:underline">
                             integritetspolicyn
-                          </a>
+                          </Link>
                         </Label>
                       </div>
 

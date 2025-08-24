@@ -4,6 +4,7 @@ import CategoryGrid from "@/components/CategoryGrid";
 import FastServiceFilter from "@/components/FastServiceFilter";
 import HeroMotion from "@/components/HeroMotion";
 import TrustChips from "@/components/TrustChips";
+import { Link } from "react-router-dom";
 
 const Services = () => {
   return (
@@ -85,11 +86,11 @@ const Services = () => {
               </div>
             </div>
             
-            <a href="/kontakt">
+            <Link to="/kontakt">
               <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
                 Begär offert med ROT-avdrag
               </button>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

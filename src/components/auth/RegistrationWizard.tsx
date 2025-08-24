@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -375,7 +376,7 @@ function Step1Content({ form }: { form: any }) {
             className="mt-0.5"
           />
           <span className="text-sm">
-            Jag accepterar <a href="/terms" className="text-primary hover:underline">användarvillkoren</a> *
+            Jag accepterar <Link to="/terms" className="text-primary hover:underline">användarvillkoren</Link> *
           </span>
         </label>
         {errors.termsAccepted && <p className="text-destructive text-xs">{errors.termsAccepted.message as string}</p>}
@@ -387,7 +388,7 @@ function Step1Content({ form }: { form: any }) {
             className="mt-0.5"
           />
           <span className="text-sm">
-            Jag accepterar <a href="/privacy" className="text-primary hover:underline">personuppgiftspolicyn</a> *
+            Jag accepterar <Link to="/privacy" className="text-primary hover:underline">personuppgiftspolicyn</Link> *
           </span>
         </label>
         {errors.privacyAccepted && <p className="text-destructive text-xs">{errors.privacyAccepted.message as string}</p>}
