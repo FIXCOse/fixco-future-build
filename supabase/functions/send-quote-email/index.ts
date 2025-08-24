@@ -14,6 +14,8 @@ interface SendQuoteEmailRequest {
   quoteId: string;
   customerEmail: string;
   customerName?: string;
+  logoUrl?: string;
+  siteUrl?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -23,9 +25,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { quoteId, customerEmail, customerName }: SendQuoteEmailRequest = await req.json();
+    const { quoteId, customerEmail, customerName, logoUrl, siteUrl }: SendQuoteEmailRequest = await req.json();
 
-    console.log("Sending quote email for:", { quoteId, customerEmail, customerName });
+    console.log("Sending quote email for:", { quoteId, customerEmail, customerName, logoUrl, siteUrl });
 
     // Initialize Supabase client
     const supabase = createClient(
@@ -63,37 +65,48 @@ const handler = async (req: Request): Promise<Response> => {
       <head>
         <meta charset="utf-8">
         <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
-          .content { padding: 20px; background: #f9f9f9; }
-          .quote-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-          .quote-table th { background: #f3f4f6; padding: 10px; text-align: left; border-bottom: 2px solid #ddd; }
-          .total-row { background: #f3f4f6; font-weight: bold; }
-          .footer { padding: 20px; text-align: center; color: #666; font-size: 14px; }
+          body { margin:0; background: #f3f4f6; font-family: Arial, sans-serif; line-height: 1.6; color: #111827; }
+          .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
+          .preheader { display:none!important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; overflow:hidden; }
+          .brand-header { background: linear-gradient(135deg, #111827 0%, #4f46e5 100%); padding: 32px 24px; text-align: center; border-radius: 0 0 16px 16px; box-shadow: 0 10px 30px rgba(79,70,229,0.25); }
+          .brand-logo { max-width: 160px; height: auto; display: inline-block; margin-bottom: 8px; }
+          .brand-title { color: #ffffff; font-size: 22px; font-weight: 700; margin: 8px 0 0; letter-spacing: 0.3px; }
+          .card { background:#ffffff; border-radius: 12px; padding: 24px; margin-top: -16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+          .h1 { font-size: 20px; margin: 0 0 12px; color:#111827; }
+          .muted { color:#6b7280; margin: 0 0 16px; }
+          .divider { height:1px; background:#e5e7eb; margin:16px 0; }
+          .section-title { font-size:16px; font-weight:700; margin:16px 0 8px; color:#111827; }
+          .quote-table { width: 100%; border-collapse: collapse; margin: 12px 0 4px; }
+          .quote-table th { background: #f9fafb; padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; color:#374151; font-size:13px; }
+          .quote-table td { padding: 10px; border-bottom: 1px solid #f3f4f6; font-size:13px; color:#111827; }
+          .total-row { background: #f9fafb; font-weight: bold; }
+          .cta { display:inline-block; background:#4f46e5; color:#ffffff; text-decoration:none; padding: 12px 18px; border-radius:8px; font-weight:700; margin-top: 16px; }
+          .footer { text-align: center; color: #6b7280; font-size: 12px; margin-top: 16px; }
         </style>
       </head>
       <body>
+        <span class="preheader">Din offert ${quote.quote_number} från Fixco</span>
         <div class="container">
-          <div class="header">
-            <h1>Offert från Fixco</h1>
-            <p>Offertnummer: ${quote.quote_number}</p>
+          <div class="brand-header">
+            ${logoUrl ? `<img src="${logoUrl}" alt="FIXCO logotyp" class="brand-logo" />` : ''}
+            <div class="brand-title">Offert från Fixco</div>
+            <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">Offertnummer: ${quote.quote_number}</div>
           </div>
           
-          <div class="content">
-            <h2>Hej ${displayName}!</h2>
-            <p>Tack för ditt intresse för våra tjänster. Vi har förberett en offert för dig:</p>
+          <div class="card">
+            <h2 class="h1">Hej ${displayName}!</h2>
+            <p class="muted">Tack för ditt intresse för våra tjänster. Här är en lockande offert speciellt framtagen för dig.</p>
             
-            <h3>${quote.title}</h3>
-            ${quote.description ? `<p><strong>Beskrivning:</strong> ${quote.description}</p>` : ''}
+            <div class="section-title">${quote.title}</div>
+            ${quote.description ? `<p class="muted"><strong style="color:#111827">Beskrivning:</strong> ${quote.description}</p>` : ''}
             
-            <table class="quote-table">
+            <table class="quote-table" role="table" aria-label="Offertdetaljer">
               <thead>
                 <tr>
                   <th>Beskrivning</th>
                   <th>Antal</th>
                   <th>Pris/enhet</th>
-                  <th>Totalt</th>
+                  <th style="text-align:right;">Totalt</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,19 +143,24 @@ const handler = async (req: Request): Promise<Response> => {
                 </tr>
               </tbody>
             </table>
-            
-            ${quote.valid_until ? `<p><strong>Offerten gäller till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
-            
-            <p>För att acceptera denna offert eller om du har frågor, kontakta oss gärna:</p>
-            <ul>
-              <li><strong>E-post:</strong> info@fixco.se</li>
-              <li><strong>Telefon:</strong> 08-123 45 67</li>
+
+            ${quote.valid_until ? `<p class="muted" style="margin: 8px 0 0;"><strong style="color:#111827">Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
+
+            <div style="margin-top:16px;">
+              <a class="cta" href="${siteUrl ? `${siteUrl}/admin/quotes/${quote.id}` : '#'}" target="_blank" rel="noopener">Visa offerten online</a>
+            </div>
+
+            <div class="divider"></div>
+            <p class="muted" style="margin:0 0 4px;"><strong style="color:#111827">Kontakt</strong></p>
+            <ul style="margin:0; padding-left:18px; color:#374151;">
+              <li>E-post: info@fixco.se</li>
+              <li>Telefon: 08-123 45 67</li>
             </ul>
           </div>
           
           <div class="footer">
-            <p>Med vänliga hälsningar,<br>Fixco Team</p>
-            <p><em>Detta är ett automatiskt genererat e-postmeddelande.</em></p>
+            <p>Med varma hälsningar,<br><strong>Fixco Team</strong></p>
+            <p><em>Detta e‑postmeddelande genererades automatiskt.</em></p>
           </div>
         </div>
       </body>

@@ -147,19 +147,24 @@ export default function AdminQuotes() {
     try {
       const customerEmail = quote.customer?.email;
       const customerName = `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim();
-      
+
       if (!customerEmail) {
         toast.error('Ingen e-postadress finns för kunden');
         return;
       }
 
       toast.info('Skickar e-post...');
-      
+
+      const logoPath = '/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png';
+      const siteUrl = window.location.origin;
+
       const { data, error } = await supabase.functions.invoke('send-quote-email', {
         body: {
           quoteId: quote.id,
-          customerEmail: customerEmail,
-          customerName: customerName || undefined
+          customerEmail,
+          customerName: customerName || undefined,
+          logoUrl: `${siteUrl}${logoPath}`,
+          siteUrl
         }
       });
 
@@ -175,7 +180,7 @@ export default function AdminQuotes() {
       if (data && data.previewHtml) {
         const win = window.open('', '_blank');
         if (win) {
-          win.document.write(data.previewHtml as string);
+          win.document.write(String(data.previewHtml));
           win.document.close();
         }
         toast.warning('Domän ej verifierad – förhandsvisning öppnad. Verifiera domän för riktiga utskick.');
