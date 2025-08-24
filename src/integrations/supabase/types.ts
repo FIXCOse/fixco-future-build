@@ -806,6 +806,21 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_user_organizations: {
+        Args: { user_uuid: string }
+        Returns: {
+          organization_id: string
+          role: Database["public"]["Enums"]["user_role"]
+        }[]
+      }
+      get_user_role: {
+        Args: { user_uuid: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      is_organization_member: {
+        Args: { org_uuid: string; user_uuid: string }
+        Returns: boolean
+      }
     }
     Enums: {
       booking_status:
