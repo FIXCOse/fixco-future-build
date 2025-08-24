@@ -14,7 +14,7 @@ import AdminBack from '@/components/admin/AdminBack';
 const AdminSecurity = () => {
   const [auditLog, setAuditLog] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [actionFilter, setActionFilter] = useState('');
+  const [actionFilter, setActionFilter] = useState('all');
   const [force2FA, setForce2FA] = useState(false);
   const { toast } = useToast();
 
@@ -25,7 +25,7 @@ const AdminSecurity = () => {
   const loadData = async () => {
     try {
       const [auditData, settings] = await Promise.all([
-        getAuditLog({ action: actionFilter || undefined, limit: 50 }),
+        getAuditLog({ action: actionFilter === 'all' ? undefined : actionFilter, limit: 50 }),
         getSettings(['force_2fa'])
       ]);
       
@@ -138,7 +138,7 @@ const AdminSecurity = () => {
                 <SelectValue placeholder="Alla åtgärder" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Alla åtgärder</SelectItem>
+                <SelectItem value="all">Alla åtgärder</SelectItem>
                 <SelectItem value="update_user_role">Rolländringar</SelectItem>
                 <SelectItem value="update_setting">Inställningar</SelectItem>
                 <SelectItem value="create_staff">Skapa personal</SelectItem>
