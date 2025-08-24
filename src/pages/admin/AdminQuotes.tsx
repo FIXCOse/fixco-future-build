@@ -15,7 +15,7 @@ import { sv } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Trash2, Eye, Edit, Download, Send, Plus } from "lucide-react";
+import { Trash2, Eye, Edit, Download, Send, Plus, Receipt } from "lucide-react";
 import type { QuoteRow } from "@/lib/api/quotes";
 
 export default function AdminQuotes() {
@@ -140,6 +140,28 @@ export default function AdminQuotes() {
     } catch (error) {
       console.error('Error downloading PDF:', error);
       toast.error('Kunde inte ladda ner PDF');
+    }
+  };
+
+  const handleCreateInvoice = async (quote: QuoteRow) => {
+    try {
+      toast.info('Skapar faktura...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
+        body: { quoteId: quote.id }
+      });
+
+      if (error) throw error;
+      
+      if (data?.success) {
+        toast.success('Faktura skapad framgångsrikt!');
+        navigate('/admin/invoices');
+      } else {
+        throw new Error(data?.error || 'Kunde inte skapa faktura');
+      }
+    } catch (error: any) {
+      console.error('Error creating invoice:', error);
+      toast.error(error.message || 'Kunde inte skapa faktura');
     }
   };
 
@@ -361,6 +383,12 @@ export default function AdminQuotes() {
                         <Button size="sm" onClick={() => handleSendQuote(quote)}>
                           <Send className="h-4 w-4 mr-1" />
                           Skicka offert
+                        </Button>
+                      )}
+                      {quote.status === 'accepted' && (
+                        <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => handleCreateInvoice(quote)}>
+                          <Receipt className="h-4 w-4 mr-1" />
+                          Skapa faktura
                         </Button>
                       )}
                       <AlertDialog>

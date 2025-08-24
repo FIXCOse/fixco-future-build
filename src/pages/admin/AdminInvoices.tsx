@@ -6,14 +6,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Receipt, Plus, Eye, Download, Send } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Search, Receipt, Plus, Eye, Download, Send, FileText, CheckCircle } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { toast } from 'sonner';
 
 const AdminInvoices = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+  const [creatingInvoice, setCreatingInvoice] = useState(false);
 
   const { data: invoices, isLoading } = useQuery({
     queryKey: ['admin-invoices', searchTerm, statusFilter],
@@ -23,7 +27,8 @@ const AdminInvoices = () => {
         .select(`
           *,
           customer:profiles!invoices_customer_id_fkey(first_name, last_name, email),
-          booking:bookings(service_name)
+          booking:bookings(service_name),
+          quote:quotes(quote_number, title)
         `)
         .order('created_at', { ascending: false });
 
@@ -40,6 +45,50 @@ const AdminInvoices = () => {
       return data || [];
     },
   });
+
+  // Hämta accepterade offerter som inte har fakturor än
+  const { data: availableQuotes, isLoading: quotesLoading } = useQuery({
+    queryKey: ['available-quotes-for-invoice'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('quotes')
+        .select(`
+          *,
+          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email)
+        `)
+        .eq('status', 'accepted')
+        .is('quote_id', null) // Ingen faktura skapad än
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const createInvoiceFromQuote = async (quote: any) => {
+    setCreatingInvoice(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
+        body: { quoteId: quote.id }
+      });
+
+      if (error) throw error;
+      
+      if (data?.success) {
+        toast.success('Faktura skapad framgångsrikt!');
+        setShowQuoteDialog(false);
+        // Refresh invoices list
+        window.location.reload();
+      } else {
+        throw new Error(data?.error || 'Kunde inte skapa faktura');
+      }
+    } catch (error: any) {
+      console.error('Error creating invoice:', error);
+      toast.error(error.message || 'Kunde inte skapa faktura');
+    } finally {
+      setCreatingInvoice(false);
+    }
+  };
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -75,11 +124,105 @@ const AdminInvoices = () => {
           <h1 className="text-2xl font-bold">Fakturor</h1>
           <p className="text-muted-foreground">Hantera alla fakturor i systemet</p>
         </div>
-        <Button className="flex items-center gap-2">
+        <Button 
+          className="flex items-center gap-2"
+          onClick={() => setShowQuoteDialog(true)}
+        >
           <Plus className="h-4 w-4" />
           Ny faktura
         </Button>
       </div>
+
+      {/* Dialog för att välja offert */}
+      <Dialog open={showQuoteDialog} onOpenChange={setShowQuoteDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Skapa faktura från offert</DialogTitle>
+            <DialogDescription>
+              Välj en accepterad offert att skapa faktura från. Endast offerter som inte redan har fakturor visas.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {quotesLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-20 bg-muted rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            ) : availableQuotes && availableQuotes.length > 0 ? (
+              <div className="space-y-3">
+                {availableQuotes.map((quote) => (
+                  <Card 
+                    key={quote.id} 
+                    className="cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => createInvoiceFromQuote(quote)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="default" className="bg-green-100 text-green-800">
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Accepterad
+                            </Badge>
+                            <h3 className="font-medium">{quote.title}</h3>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <FileText className="h-4 w-4" />
+                              {quote.quote_number}
+                            </div>
+                            <div>
+                              Kund: {quote.customer ? 
+                                `${quote.customer.first_name} ${quote.customer.last_name}` : 
+                                'Okänd kund'
+                              }
+                            </div>
+                            <div>
+                              {quote.total_amount?.toLocaleString()} SEK
+                            </div>
+                          </div>
+                          {quote.description && (
+                            <p className="text-sm text-muted-foreground mt-2">
+                              {quote.description.length > 100 
+                                ? `${quote.description.substring(0, 100)}...`
+                                : quote.description
+                              }
+                            </p>
+                          )}
+                        </div>
+                        <Button 
+                          variant="default" 
+                          disabled={creatingInvoice}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            createInvoiceFromQuote(quote);
+                          }}
+                        >
+                          {creatingInvoice ? 'Skapar...' : 'Skapa faktura'}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">
+                  Inga accepterade offerter tillgängliga för fakturering
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Acceptera offerter först för att kunna skapa fakturor från dem
+                </p>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>
         <TabsList>
@@ -136,21 +279,27 @@ const AdminInvoices = () => {
                             {getStatusDisplayName(invoice.status)}
                           </Badge>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>
-                            {invoice.customer?.first_name && invoice.customer?.last_name
-                              ? `${invoice.customer.first_name} ${invoice.customer.last_name}`
-                              : invoice.customer?.email || 'Okänd kund'
-                            }
-                          </span>
-                          <span>{invoice.total_amount?.toLocaleString()} SEK</span>
-                          <span>
-                            {formatDistanceToNow(new Date(invoice.created_at), { 
-                              addSuffix: true, 
-                              locale: sv 
-                            })}
-                          </span>
-                        </div>
+                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                           <span>
+                             {invoice.customer?.first_name && invoice.customer?.last_name
+                               ? `${invoice.customer.first_name} ${invoice.customer.last_name}`
+                               : invoice.customer?.email || 'Okänd kund'
+                             }
+                           </span>
+                           <span>{invoice.total_amount?.toLocaleString()} SEK</span>
+                           {invoice.quote && (
+                             <span className="flex items-center gap-1">
+                               <FileText className="h-3 w-3" />
+                               Från offert {invoice.quote.quote_number}
+                             </span>
+                           )}
+                           <span>
+                             {formatDistanceToNow(new Date(invoice.created_at), { 
+                               addSuffix: true, 
+                               locale: sv 
+                             })}
+                           </span>
+                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="ghost" size="sm">
