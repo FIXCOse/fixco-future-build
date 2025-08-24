@@ -74,18 +74,49 @@ const QuoteWizard = () => {
   const [quoteData, setQuoteData] = useState({
     hours: 8,
     hourlyRate: 650,
+    materialCost: 0,
+    discountPercent: 0,
+    discountAmount: 0,
+    rotRutType: '',
+    rotRutPercent: 50,
+    vatPercent: 25,
+    showPricesIncVat: true,
     notes: ''
   });
 
   const calculateTotals = () => {
-    const subtotal = quoteData.hours * quoteData.hourlyRate;
-    const vatAmount = subtotal * 0.25;
-    const totalAmount = subtotal + vatAmount;
+    const laborCost = quoteData.hours * quoteData.hourlyRate;
+    const subtotalExVat = laborCost + quoteData.materialCost;
+    
+    // Apply discount
+    const discountAmount = quoteData.discountPercent > 0 
+      ? subtotalExVat * (quoteData.discountPercent / 100)
+      : quoteData.discountAmount;
+    
+    const afterDiscount = subtotalExVat - discountAmount;
+    
+    // Calculate ROT/RUT deduction
+    let rotRutAmount = 0;
+    if (quoteData.rotRutType && ['ROT', 'RUT'].includes(quoteData.rotRutType)) {
+      const eligibleAmount = laborCost * (quoteData.rotRutPercent / 100);
+      rotRutAmount = eligibleAmount * 0.5; // 50% deduction
+    }
+    
+    const afterRotRut = Math.max(afterDiscount - rotRutAmount, 0);
+    const vatAmount = afterRotRut * (quoteData.vatPercent / 100);
+    const totalIncVat = afterRotRut + vatAmount;
     
     return {
-      subtotal,
+      laborCost,
+      materialCost: quoteData.materialCost,
+      subtotalExVat,
+      discountAmount,
+      afterDiscount,
+      rotRutAmount,
+      afterRotRut,
       vatAmount,
-      totalAmount
+      totalIncVat,
+      totalExVat: afterRotRut
     };
   };
 
@@ -224,28 +255,140 @@ const QuoteWizard = () => {
             <CardHeader>
               <CardTitle>Prissättning</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="hours">Antal timmar</Label>
-                <Input
-                  id="hours"
-                  type="number"
-                  min="0.5"
-                  step="0.5"
-                  value={quoteData.hours}
-                  onChange={(e) => setQuoteData(prev => ({ ...prev, hours: parseFloat(e.target.value) || 0 }))}
-                />
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="hours">Antal timmar</Label>
+                  <Input
+                    id="hours"
+                    type="number"
+                    min="0.5"
+                    step="0.5"
+                    value={quoteData.hours}
+                    onChange={(e) => setQuoteData(prev => ({ ...prev, hours: parseFloat(e.target.value) || 0 }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="hourlyRate">Timpris (SEK)</Label>
+                  <Input
+                    id="hourlyRate"
+                    type="number"
+                    min="0"
+                    value={quoteData.hourlyRate}
+                    onChange={(e) => setQuoteData(prev => ({ ...prev, hourlyRate: parseFloat(e.target.value) || 0 }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="materialCost">Materialkostnad (SEK)</Label>
+                  <Input
+                    id="materialCost"
+                    type="number"
+                    min="0"
+                    value={quoteData.materialCost}
+                    onChange={(e) => setQuoteData(prev => ({ ...prev, materialCost: parseFloat(e.target.value) || 0 }))}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="vatPercent">Moms (%)</Label>
+                  <Input
+                    id="vatPercent"
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={quoteData.vatPercent}
+                    onChange={(e) => setQuoteData(prev => ({ ...prev, vatPercent: parseFloat(e.target.value) || 0 }))}
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="hourlyRate">Timpris (SEK)</Label>
-                <Input
-                  id="hourlyRate"
-                  type="number"
-                  min="0"
-                  value={quoteData.hourlyRate}
-                  onChange={(e) => setQuoteData(prev => ({ ...prev, hourlyRate: parseFloat(e.target.value) || 0 }))}
-                />
+              <div className="space-y-4 border-t pt-4">
+                <h4 className="font-medium">Rabatt</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="discountPercent">Rabatt (%)</Label>
+                    <Input
+                      id="discountPercent"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={quoteData.discountPercent}
+                      onChange={(e) => {
+                        const percent = parseFloat(e.target.value) || 0;
+                        setQuoteData(prev => ({ 
+                          ...prev, 
+                          discountPercent: percent,
+                          discountAmount: 0 // Reset amount when using percent
+                        }));
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="discountAmount">Rabattbelopp (SEK)</Label>
+                    <Input
+                      id="discountAmount"
+                      type="number"
+                      min="0"
+                      value={quoteData.discountAmount}
+                      onChange={(e) => {
+                        const amount = parseFloat(e.target.value) || 0;
+                        setQuoteData(prev => ({ 
+                          ...prev, 
+                          discountAmount: amount,
+                          discountPercent: 0 // Reset percent when using amount
+                        }));
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4 border-t pt-4">
+                <h4 className="font-medium">ROT/RUT-avdrag</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="rotRutType">Typ av avdrag</Label>
+                    <select
+                      id="rotRutType"
+                      className="w-full p-2 border rounded-md"
+                      value={quoteData.rotRutType}
+                      onChange={(e) => setQuoteData(prev => ({ ...prev, rotRutType: e.target.value }))}
+                    >
+                      <option value="">Inget avdrag</option>
+                      <option value="ROT">ROT-avdrag</option>
+                      <option value="RUT">RUT-avdrag</option>
+                    </select>
+                  </div>
+
+                  {quoteData.rotRutType && (
+                    <div>
+                      <Label htmlFor="rotRutPercent">Andel arbetskostnad för avdrag (%)</Label>
+                      <Input
+                        id="rotRutPercent"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={quoteData.rotRutPercent}
+                        onChange={(e) => setQuoteData(prev => ({ ...prev, rotRutPercent: parseFloat(e.target.value) || 0 }))}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t pt-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="showPricesIncVat"
+                    checked={quoteData.showPricesIncVat}
+                    onChange={(e) => setQuoteData(prev => ({ ...prev, showPricesIncVat: e.target.checked }))}
+                  />
+                  <Label htmlFor="showPricesIncVat">Visa priser inklusive moms</Label>
+                </div>
               </div>
 
               <div>
@@ -267,25 +410,62 @@ const QuoteWizard = () => {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span>Timpris:</span>
-                  <span>{quoteData.hourlyRate} SEK</span>
+                  <span>Arbetskostnad ({quoteData.hours}h × {quoteData.hourlyRate} SEK):</span>
+                  <span>{totals.laborCost.toFixed(2)} SEK</span>
+                </div>
+                {totals.materialCost > 0 && (
+                  <div className="flex justify-between">
+                    <span>Material:</span>
+                    <span>{totals.materialCost.toFixed(2)} SEK</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Subtotal (exkl. moms):</span>
+                  <span>{totals.subtotalExVat.toFixed(2)} SEK</span>
+                </div>
+                {totals.discountAmount > 0 && (
+                  <div className="flex justify-between text-red-600">
+                    <span>Rabatt:</span>
+                    <span>-{totals.discountAmount.toFixed(2)} SEK</span>
+                  </div>
+                )}
+                {totals.rotRutAmount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>{quoteData.rotRutType}-avdrag:</span>
+                    <span>-{totals.rotRutAmount.toFixed(2)} SEK</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Efter avdrag (exkl. moms):</span>
+                  <span>{totals.afterRotRut.toFixed(2)} SEK</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Timmar:</span>
-                  <span>{quoteData.hours}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>{totals.subtotal.toFixed(2)} SEK</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Moms (25%):</span>
+                  <span>Moms ({quoteData.vatPercent}%):</span>
                   <span>{totals.vatAmount.toFixed(2)} SEK</span>
                 </div>
+                <hr />
                 <div className="flex justify-between font-medium text-lg">
-                  <span>Total:</span>
-                  <span>{totals.totalAmount.toFixed(2)} SEK</span>
+                  <span>
+                    {quoteData.showPricesIncVat ? 'Total (inkl. moms):' : 'Total (exkl. moms):'}
+                  </span>
+                  <span>
+                    {quoteData.showPricesIncVat 
+                      ? totals.totalIncVat.toFixed(2) 
+                      : totals.totalExVat.toFixed(2)} SEK
+                  </span>
                 </div>
+                {quoteData.showPricesIncVat && (
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Exkl. moms:</span>
+                    <span>{totals.totalExVat.toFixed(2)} SEK</span>
+                  </div>
+                )}
+                {!quoteData.showPricesIncVat && (
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Inkl. moms:</span>
+                    <span>{totals.totalIncVat.toFixed(2)} SEK</span>
+                  </div>
+                )}
               </div>
 
               <hr />

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,30 @@ import { Link } from 'react-router-dom';
 const AdminQuotes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const queryClient = useQueryClient();
+
+  // Real-time subscription for quote updates
+  useEffect(() => {
+    const channel = supabase
+      .channel('quotes_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'quotes'
+        },
+        () => {
+          // Invalidate and refetch quotes when any quote changes
+          queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const { data: quotes, isLoading } = useQuery({
     queryKey: ['admin-quotes', searchTerm, statusFilter],
