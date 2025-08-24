@@ -74,16 +74,16 @@ const QuoteWizard = () => {
 
         if (bookingsError) throw bookingsError;
 
-        // Fetch quote requests
+        // Fetch quote requests without join - handle manually
         const { data: quoteRequests, error: requestsError } = await supabase
           .from('quote_requests')
-          .select(`
-            *,
-            customer:profiles!quote_requests_customer_id_fkey(first_name, last_name, email)
-          `)
-          .order('created_at', { ascending: false });
+          .select('*')
+          .order('created_at', { ascending: false});
 
         if (requestsError) throw requestsError;
+
+        console.log('Loaded bookings:', bookings?.length, 'bookings');
+        console.log('Loaded quote requests:', quoteRequests?.length, 'requests');
 
         // Combine and format data
         const combinedData: BookingOrRequest[] = [
@@ -112,13 +112,13 @@ const QuoteWizard = () => {
             hourly_rate: request.hourly_rate,
             type: 'quote_request' as const,
             customer_id: request.customer_id,
-            name: request.name,
-            email: request.email,
+            name: request.contact_name || request.name,
+            email: request.contact_email || request.email,
             address: request.address,
             city: request.city,
             postal_code: request.postal_code,
             description: request.description,
-            customer: request.customer
+            customer: null // Will be handled separately if needed
           }))
         ];
 

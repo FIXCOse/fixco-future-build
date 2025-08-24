@@ -104,8 +104,8 @@ export async function createQuote(quoteData: {
     .from('quotes')
     .insert({
       ...quoteData,
-      created_by: user.data.user?.id,
-      quote_number: '' // Will be overridden by trigger
+      created_by: user.data.user?.id
+      // Let trigger handle quote_number generation
     } as any)
     .select('id')
     .single();
