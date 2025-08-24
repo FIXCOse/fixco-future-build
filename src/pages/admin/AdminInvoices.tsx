@@ -54,10 +54,10 @@ const AdminInvoices = () => {
         .from('quotes')
         .select(`
           *,
-          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email)
+          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
+          invoices:invoices!invoices_quote_id_fkey(id)
         `)
         .eq('status', 'accepted')
-        .is('quote_id', null) // Ingen faktura skapad än
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -115,6 +115,8 @@ const AdminInvoices = () => {
     return acc;
   }, {} as Record<string, number>) || {};
 
+  const availableQuotesFiltered = ((availableQuotes as any[]) || []).filter((q: any) => !q.invoices || q.invoices.length === 0);
+
   return (
     <div className="space-y-6">
       <AdminBack />
@@ -152,9 +154,9 @@ const AdminInvoices = () => {
                   </div>
                 ))}
               </div>
-            ) : availableQuotes && availableQuotes.length > 0 ? (
+            ) : availableQuotesFiltered.length > 0 ? (
               <div className="space-y-3">
-                {availableQuotes.map((quote) => (
+                {availableQuotesFiltered.map((quote) => (
                   <Card 
                     key={quote.id} 
                     className="cursor-pointer hover:shadow-md transition-shadow"
