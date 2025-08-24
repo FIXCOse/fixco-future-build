@@ -1,4 +1,4 @@
-import { Outlet, useLocation, Navigate } from 'react-router-dom';
+import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { OwnerCongrats } from '@/components/OwnerCongrats';
 import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
 import { useAuthProfile } from '@/hooks/useAuthProfile';
-import { useRole } from '@/hooks/useRole';
+import { useRoleGate } from '@/hooks/useRoleGate';
 import AdminDashboardContent from '@/components/AdminDashboardContent';
 import SalesOverview from '@/components/SalesOverview';
 
@@ -45,8 +45,9 @@ const MyFixcoLayout = () => {
   const [loading, setLoading] = useState(true);
   const { show, acknowledge } = useOwnerCongrats();
   const { role, loading: authLoading } = useAuthProfile();
-  const { isAdmin } = useRole();
+  const { shouldUseAdminLayout } = useRoleGate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -78,6 +79,13 @@ const MyFixcoLayout = () => {
     return () => { mounted = false; };
   }, []);
 
+  useEffect(() => {
+    // Redirect admin/owner users to admin interface if they're on the main route
+    if (profile && shouldUseAdminLayout && location.pathname === '/mitt-fixco') {
+      navigate('/admin', { replace: true });
+    }
+  }, [profile, shouldUseAdminLayout, location.pathname, navigate]);
+
   if (loading || authLoading) {
     return <PageSkeleton />;
   }
@@ -86,8 +94,12 @@ const MyFixcoLayout = () => {
     return <LoginRequired />;
   }
 
-  // Admin/Owner layout with tabs - only on the main dashboard
-  if (isAdmin && location.pathname === '/mitt-fixco') {
+  // Check if user is admin/owner and on main mitt-fixco route
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
+  const isMainRoute = location.pathname === '/mitt-fixco';
+  
+  // If admin/owner and on main route, show tabbed interface (legacy support)
+  if (isAdmin && isMainRoute) {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />

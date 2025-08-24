@@ -36,6 +36,10 @@ import ActivityPage from "./pages/MyFixco/ActivityPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
 import AccountSettings from "./pages/MyFixco/AccountSettings";
 import StaffManagement from "./pages/MyFixco/StaffManagement";
+import AdminRoute from "./components/AdminRoute";
+import AdminLayoutNew from "./components/admin/AdminLayout";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import QuoteWizard from "./pages/admin/QuoteWizard";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +70,16 @@ const App = () => {
                   <Route path="rot-rut" element={<RotRutPage />} />
                   <Route path="settings" element={<AccountSettings />} />
                   <Route path="staff" element={<StaffManagement />} />
+                </Route>
+
+                {/* New Admin Routes */}
+                <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="quotes/new" element={<QuoteWizard />} />
+                  <Route path="invoices" element={<div>Fakturor (Coming Soon)</div>} />
+                  <Route path="bookings" element={<div>Bokningar (Coming Soon)</div>} />
+                  <Route path="customers" element={<div>Kunder (Coming Soon)</div>} />
+                  <Route path="analytics/detailed" element={<div>Detaljerad Analys (Coming Soon)</div>} />
                 </Route>
                 
                 <Route path="/tjanster" element={<Services />} />
