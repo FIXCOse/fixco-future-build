@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import AuthModal from './AuthModal';
 import { AccountTypeSelector } from './AccountTypeSelector';
+import { formatOrgNo, isValidSwedishOrgNo } from '@/helpers/orgno';
 
 interface AuthModalContainerProps {
   isOpen: boolean;
@@ -30,8 +31,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
     phone: '',
     userType: 'private' as 'private' | 'company' | 'brf',
     companyName: '',
-    orgNumber: '',
+    companyOrgNo: '',
     brfName: '',
+    brfOrgNo: '',
     acceptTerms: false,
     marketingConsent: false
   });
@@ -44,10 +46,11 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
   useEffect(() => {
     if (formData.userType !== 'company') {
       handleInputChange('companyName', '');
-      handleInputChange('orgNumber', '');
+      handleInputChange('companyOrgNo', '');
     }
     if (formData.userType !== 'brf') {
       handleInputChange('brfName', '');
+      handleInputChange('brfOrgNo', '');
     }
   }, [formData.userType]);
 
@@ -66,8 +69,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
       phone: '',
       userType: 'private',
       companyName: '',
-      orgNumber: '',
+      companyOrgNo: '',
       brfName: '',
+      brfOrgNo: '',
       acceptTerms: false,
       marketingConsent: false
     });
@@ -151,19 +155,37 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
       return;
     }
 
-    if (formData.userType === 'company' && !formData.companyName) {
+    if (formData.userType === 'company' && (!formData.companyName || !formData.companyOrgNo)) {
       toast({
         title: "Fel",
-        description: "Företagsnamn är obligatoriskt för företagskonton",
+        description: "Företagsnamn och organisationsnummer är obligatoriskt för företagskonton",
         variant: "destructive"
       });
       return;
     }
 
-    if (formData.userType === 'brf' && !formData.brfName) {
+    if (formData.userType === 'company' && !isValidSwedishOrgNo(formData.companyOrgNo)) {
+      toast({
+        title: "Fel", 
+        description: "Ogiltigt organisationsnummer för företag",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.userType === 'brf' && (!formData.brfName || !formData.brfOrgNo)) {
       toast({
         title: "Fel",
-        description: "BRF-namn är obligatoriskt för BRF-konton",
+        description: "BRF-namn och organisationsnummer är obligatoriskt för BRF-konton",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.userType === 'brf' && !isValidSwedishOrgNo(formData.brfOrgNo)) {
+      toast({
+        title: "Fel",
+        description: "Ogiltigt organisationsnummer för BRF",
         variant: "destructive"
       });
       return;
@@ -185,8 +207,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
             account_type: formData.userType,
             user_type: formData.userType, // Keep both for backward compatibility
             company_name: formData.companyName,
-            org_number: formData.orgNumber,
+            company_org_no: formData.companyOrgNo,
             brf_name: formData.brfName,
+            brf_org_no: formData.brfOrgNo,
             marketing_consent: formData.marketingConsent
           }
         }
@@ -427,28 +450,51 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="modal-org-number">Organisationsnummer</Label>
+                    <Label htmlFor="modal-company-org-no">Org.nr (företag) *</Label>
                     <Input
-                      id="modal-org-number"
-                      value={formData.orgNumber}
-                      onChange={(e) => handleInputChange('orgNumber', e.target.value)}
-                      placeholder="556123-4567"
+                      id="modal-company-org-no"
+                      inputMode="numeric"
+                      autoComplete="organization"
+                      value={formData.companyOrgNo}
+                      onChange={(e) => handleInputChange('companyOrgNo', formatOrgNo(e.target.value))}
+                      placeholder="556016-0680"
+                      required
                     />
+                    <p className="text-muted-foreground text-xs mt-1">
+                      10 siffror, t.ex. 556016-0680. Vi formaterar automatiskt.
+                    </p>
                   </div>
                 </>
               )}
 
               {formData.userType === 'brf' && (
-                <div className="space-y-2">
-                  <Label htmlFor="modal-brf-name">BRF-namn *</Label>
-                  <Input
-                    id="modal-brf-name"
-                    value={formData.brfName}
-                    onChange={(e) => handleInputChange('brfName', e.target.value)}
-                    placeholder="BRF:ens namn"
-                    required
-                  />
-                </div>
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="modal-brf-name">BRF-namn *</Label>
+                    <Input
+                      id="modal-brf-name"
+                      value={formData.brfName}
+                      onChange={(e) => handleInputChange('brfName', e.target.value)}
+                      placeholder="BRF:ens namn"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="modal-brf-org-no">Org.nr (BRF) *</Label>
+                    <Input
+                      id="modal-brf-org-no"
+                      inputMode="numeric"
+                      autoComplete="organization"
+                      value={formData.brfOrgNo}
+                      onChange={(e) => handleInputChange('brfOrgNo', formatOrgNo(e.target.value))}
+                      placeholder="7696XX-XXXX"
+                      required
+                    />
+                    <p className="text-muted-foreground text-xs mt-1">
+                      10 siffror, t.ex. 7696XX-XXXX. Vi formaterar automatiskt.
+                    </p>
+                  </div>
+                </>
               )}
 
               <div className="space-y-2">

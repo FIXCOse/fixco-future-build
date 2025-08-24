@@ -412,6 +412,7 @@ export type Database = {
           created_at: string | null
           id: string
           name: string
+          org_no: string | null
           org_number: string | null
           postal_code: string | null
           type: Database["public"]["Enums"]["user_type"]
@@ -427,6 +428,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           name: string
+          org_no?: string | null
           org_number?: string | null
           postal_code?: string | null
           type: Database["public"]["Enums"]["user_type"]
@@ -442,6 +444,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           name?: string
+          org_no?: string | null
           org_number?: string | null
           postal_code?: string | null
           type?: Database["public"]["Enums"]["user_type"]
