@@ -11,19 +11,21 @@ interface WizardState {
   closeWizard: () => void;
 }
 
-export const useWizardStore = create<WizardState>((set) => ({
+export const useWizardStore = create<WizardState>((set, get) => ({
   isOpen: false,
   actionType: 'book',
   serviceId: '',
   serviceName: '',
   openWizard: (type, serviceId, serviceName) => {
     console.log('[WizardStore] Opening wizard:', { type, serviceId, serviceName });
+    console.log('[WizardStore] Current state before:', get());
     set({
       isOpen: true,
       actionType: type,
       serviceId,
       serviceName
     });
+    console.log('[WizardStore] New state after:', get());
   },
   closeWizard: () => {
     console.log('[WizardStore] Closing wizard');

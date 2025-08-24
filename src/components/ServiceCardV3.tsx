@@ -48,12 +48,12 @@ const ServiceCardV3 = ({
 
   const handleBookingClick = () => {
     console.log('[ServiceCardV3] Book button clicked for:', { title, serviceSlug });
-    alert('Button clicked! Opening wizard...');
     
     if (onBook) {
       onBook();
     } else {
       const id = serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      console.log('[ServiceCardV3] Calling openWizard with:', { type: 'book', id, title });
       openWizard('book', id, title);
     }
   };
