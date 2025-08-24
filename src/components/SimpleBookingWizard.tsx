@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -23,14 +23,15 @@ interface FormData {
 }
 
 export function SimpleBookingWizard() {
-  const { isOpen, actionType, serviceId, serviceName, closeWizard } = useWizardStore();
+  const wizardState = useWizardStore();
+  const { isOpen, actionType, serviceId, serviceName, closeWizard } = wizardState;
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   console.log('[SimpleBookingWizard] Render:', { isOpen, actionType, serviceId, serviceName });
-  console.log('[SimpleBookingWizard] Component state:', { loading, success });
+  console.log('[SimpleBookingWizard] Full wizard state:', wizardState);
   
   const [formData, setFormData] = useState<FormData>({
     contact_name: profile?.first_name && profile?.last_name 
@@ -44,13 +45,10 @@ export function SimpleBookingWizard() {
     message: ''
   });
 
-  console.log('[SimpleBookingWizard] Render:', { isOpen, actionType, serviceId, serviceName });
-  console.log('[SimpleBookingWizard] Component state:', { loading, success });
-
-  if (!isOpen && !success) {
-    console.log('[SimpleBookingWizard] Not rendering - wizard not open');
-    return null;
-  }
+  // Force re-render when store changes
+  useEffect(() => {
+    console.log('[SimpleBookingWizard] Effect - isOpen changed to:', isOpen);
+  }, [isOpen, actionType, serviceId, serviceName]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,9 +123,12 @@ export function SimpleBookingWizard() {
     }
   };
 
+  // Always render the dialog, but control visibility with open prop
+  console.log('[SimpleBookingWizard] Rendering dialog with isOpen:', isOpen);
+
   if (success) {
     return (
-      <Dialog open={isOpen} onOpenChange={closeWizard}>
+      <Dialog open={true} onOpenChange={closeWizard}>
         <DialogContent className="sm:max-w-md">
           <div className="text-center py-8">
             <CheckCircle className="mx-auto h-16 w-16 text-success mb-4" />
