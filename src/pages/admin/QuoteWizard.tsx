@@ -255,7 +255,7 @@ const QuoteWizard = () => {
       const totals = calculateTotals();
       
       await createQuote({
-        customer_id: selectedItem.customer_id || selectedItem.customer?.id || '',
+        customer_id: selectedItem.customer_id || selectedItem.customer?.id || null,
         property_id: null,
         title: `Offert för ${selectedItem.service_name}`,
         description: quoteData.notes || selectedItem.description || `Offert baserad på ${selectedItem.type === 'booking' ? 'bokning' : 'offertförfrågan'} ${selectedItem.id}`,
