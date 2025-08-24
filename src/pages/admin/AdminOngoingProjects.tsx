@@ -255,7 +255,7 @@ const AdminOngoingProjects = () => {
                         <User className="h-3 w-3" />
                         {project.customer ? 
                           `${project.customer.first_name} ${project.customer.last_name}` : 
-                          'Okänd kund'
+                          project.customer_name || 'Okänd kund'
                         }
                       </div>
                       <div className="flex items-center gap-1">
@@ -275,25 +275,26 @@ const AdminOngoingProjects = () => {
 
                     {/* Project Info Row 2 - Address & Contact */}
                     <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                      {project.property && (
+                      {(project.property || project.customer_address) && (
                         <div className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
-                          {project.property.address ? 
+                          {project.property?.address ? 
                             `${project.property.address}, ${project.property.city}` :
-                            project.property.city
+                            project.property?.city ||
+                            `${project.customer_address || ''}, ${project.customer_postal_code || ''} ${project.customer_city || ''}`.trim()
                           }
                         </div>
                       )}
-                      {project.customer?.email && (
+                      {(project.customer?.email || project.customer_email) && (
                         <div className="flex items-center gap-1 text-xs">
                           <span>📧</span>
-                          {project.customer.email}
+                          {project.customer?.email || project.customer_email}
                         </div>
                       )}
-                      {project.customer?.phone && (
+                      {(project.customer?.phone || project.customer_phone) && (
                         <div className="flex items-center gap-1 text-xs">
                           <span>📱</span>
-                          {project.customer.phone}
+                          {project.customer?.phone || project.customer_phone}
                         </div>
                       )}
                     </div>
@@ -358,15 +359,46 @@ const AdminOngoingProjects = () => {
                               <div className="font-medium">
                                 {project.customer ? 
                                   `${project.customer.first_name} ${project.customer.last_name}` : 
-                                  'Okänd kund'
+                                  project.customer_name || 'Okänd kund'
                                 }
                               </div>
+                              {(project.customer?.email || project.customer_email) && (
+                                <div className="text-xs text-muted-foreground">
+                                  📧 {project.customer?.email || project.customer_email}
+                                </div>
+                              )}
+                              {(project.customer?.phone || project.customer_phone) && (
+                                <div className="text-xs text-muted-foreground">
+                                  📱 {project.customer?.phone || project.customer_phone}
+                                </div>
+                              )}
                             </div>
                             <div>
                               <span className="text-muted-foreground">Värde:</span>
                               <div className="font-medium">{project.total_amount?.toLocaleString()} SEK</div>
                             </div>
                           </div>
+
+                          {/* Customer Address */}
+                          {(project.property || project.customer_address) && (
+                            <div className="bg-muted/30 p-3 rounded-lg">
+                              <div className="text-sm text-muted-foreground mb-1">Adress:</div>
+                              <div className="font-medium">
+                                {project.property ? (
+                                  <>
+                                    <div>{project.property.name}</div>
+                                    <div>{project.property.address}</div>
+                                    <div>{project.property.postal_code} {project.property.city}</div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {project.customer_address && <div>{project.customer_address}</div>}
+                                    <div>{project.customer_postal_code} {project.customer_city}</div>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          )}
 
                           {/* Description */}
                           {project.description && (

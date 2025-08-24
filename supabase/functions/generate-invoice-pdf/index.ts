@@ -192,12 +192,12 @@ const generateInvoiceHTML = (invoice: any, customer: any, property: any, company
                 
                 <div class="customer-info">
                     <div class="section-title">Till</div>
-                    <div class="info-line"><strong>${customer.first_name} ${customer.last_name}</strong></div>
+                    <div class="info-line"><strong>${customer.first_name ? `${customer.first_name} ${customer.last_name}` : quote.customer_name || 'Okänd kund'}</strong></div>
                      ${customer.company_name ? `<div class="info-line">${customer.company_name}</div>` : ''}
                      ${customer.org_number ? `<div class="info-line">Org.nr: ${customer.org_number}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.address}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : ''}
-                     <div class="info-line">${customer.email}</div>
+                     ${property ? `<div class="info-line">${property.address}</div>` : quote.customer_address ? `<div class="info-line">${quote.customer_address}</div>` : ''}
+                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : (quote.customer_postal_code && quote.customer_city) ? `<div class="info-line">${quote.customer_postal_code} ${quote.customer_city}</div>` : ''}
+                     <div class="info-line">${customer.email || quote.customer_email || ''}</div>
                 </div>
             </div>
             
