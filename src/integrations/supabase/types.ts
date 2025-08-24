@@ -539,6 +539,7 @@ export type Database = {
           loyalty_tier: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent: boolean | null
           org_number: string | null
+          owner_onboarded: boolean | null
           owner_welcome_at: string | null
           phone: string | null
           postal_code: string | null
@@ -564,6 +565,7 @@ export type Database = {
           loyalty_tier?: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent?: boolean | null
           org_number?: string | null
+          owner_onboarded?: boolean | null
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
@@ -589,6 +591,7 @@ export type Database = {
           loyalty_tier?: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent?: boolean | null
           org_number?: string | null
+          owner_onboarded?: boolean | null
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
@@ -786,6 +789,30 @@ export type Database = {
           role?: string
           skills?: string[] | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      system_settings: {
+        Row: {
+          description: string | null
+          key: string
+          updated_at: string | null
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value: Json
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: Json
         }
         Relationships: []
       }
@@ -1010,12 +1037,20 @@ export type Database = {
         Args: { user_uuid?: string }
         Returns: boolean
       }
+      is_admin_or_owner: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
       is_organization_admin: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
       }
       is_organization_member: {
         Args: { org_uuid: string; user_uuid: string }
+        Returns: boolean
+      }
+      is_owner: {
+        Args: { user_uuid?: string }
         Returns: boolean
       }
       kpi_today: {
