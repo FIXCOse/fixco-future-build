@@ -46,6 +46,8 @@ const QuoteWizard = () => {
   const [selectedItem, setSelectedItem] = useState<BookingOrRequest | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
   
   const [quoteData, setQuoteData] = useState({
     hours: 8,
@@ -64,30 +66,21 @@ const QuoteWizard = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Fetch existing quotes to filter out already processed requests
-        const { data: existingQuotes, error: quotesError } = await supabase
-          .from('quotes')
-          .select('id');
-
-        if (quotesError) throw quotesError;
-
-        // Fetch bookings that haven't been turned into quotes yet
+        // Fetch all bookings
         const { data: bookings, error: bookingsError } = await supabase
           .from('bookings')
           .select(`
             *,
             customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
           `)
-          .in('status', ['pending', 'confirmed', 'in_progress']) // Only non-completed bookings
           .order('created_at', { ascending: false });
 
         if (bookingsError) throw bookingsError;
 
-        // Fetch quote requests that are still new or in progress
+        // Fetch all quote requests
         const { data: quoteRequests, error: requestsError } = await supabase
           .from('quote_requests')
           .select('*')
-          .in('status', ['new', 'processing']) // Only non-quoted requests
           .order('created_at', { ascending: false});
 
         if (requestsError) throw requestsError;
@@ -251,19 +244,6 @@ const QuoteWizard = () => {
         ]
       });
 
-      // Update status of the original booking or quote request
-      if (selectedItem.type === 'booking') {
-        await supabase
-          .from('bookings')
-          .update({ status: 'completed' })
-          .eq('id', selectedItem.id);
-      } else if (selectedItem.type === 'quote_request') {
-        await supabase
-          .from('quote_requests')
-          .update({ status: 'quoted' })
-          .eq('id', selectedItem.id);
-      }
-
       toast.success('Offert skapad framgångsrikt!');
       queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
       navigate('/admin/quotes');
@@ -276,16 +256,37 @@ const QuoteWizard = () => {
   };
 
   const filteredItems = bookingsAndRequests.filter(item => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      item.service_name?.toLowerCase().includes(searchLower) ||
-      item.customer?.first_name?.toLowerCase().includes(searchLower) ||
-      item.customer?.last_name?.toLowerCase().includes(searchLower) ||
-      item.customer?.email?.toLowerCase().includes(searchLower) ||
-      item.name?.toLowerCase().includes(searchLower) ||
-      item.email?.toLowerCase().includes(searchLower)
-    );
+    // Text search filter
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = (
+        item.service_name?.toLowerCase().includes(searchLower) ||
+        item.customer?.first_name?.toLowerCase().includes(searchLower) ||
+        item.customer?.last_name?.toLowerCase().includes(searchLower) ||
+        item.customer?.email?.toLowerCase().includes(searchLower) ||
+        item.name?.toLowerCase().includes(searchLower) ||
+        item.email?.toLowerCase().includes(searchLower)
+      );
+      if (!matchesSearch) return false;
+    }
+
+    // Type filter
+    if (typeFilter !== 'all' && item.type !== typeFilter) {
+      return false;
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      if (statusFilter === 'new') {
+        return (item.type === 'booking' && ['pending', 'confirmed', 'in_progress'].includes(item.status)) ||
+               (item.type === 'quote_request' && ['new', 'processing'].includes(item.status));
+      } else if (statusFilter === 'quoted') {
+        return (item.type === 'booking' && item.status === 'completed') ||
+               (item.type === 'quote_request' && item.status === 'quoted');
+      }
+    }
+
+    return true;
   });
 
   const totals = calculateTotals();
@@ -307,14 +308,64 @@ const QuoteWizard = () => {
         <Card>
           <CardHeader>
             <CardTitle>Sök kunder och förfrågningar</CardTitle>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Sök på tjänst, kund eller e-post..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+            <div className="space-y-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Sök på tjänst, kund eller e-post..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex gap-4">
+                <div className="flex gap-2">
+                  <Button
+                    variant={typeFilter === 'all' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTypeFilter('all')}
+                  >
+                    Alla
+                  </Button>
+                  <Button
+                    variant={typeFilter === 'booking' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTypeFilter('booking')}
+                  >
+                    Bokningar
+                  </Button>
+                  <Button
+                    variant={typeFilter === 'quote_request' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTypeFilter('quote_request')}
+                  >
+                    Offertförfrågningar
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant={statusFilter === 'all' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter('all')}
+                  >
+                    Alla status
+                  </Button>
+                  <Button
+                    variant={statusFilter === 'new' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter('new')}
+                  >
+                    Nya
+                  </Button>
+                  <Button
+                    variant={statusFilter === 'quoted' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter('quoted')}
+                  >
+                    Skapade
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
