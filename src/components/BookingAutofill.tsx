@@ -20,10 +20,14 @@ interface Property {
 
 interface Profile {
   id: string;
+  full_name?: string;
   first_name?: string;
   last_name?: string;
   phone?: string;
   email?: string;
+  address_line?: string;
+  postal_code?: string;
+  city?: string;
 }
 
 interface BookingAutofillProps {
@@ -64,8 +68,11 @@ export function BookingAutofill({ user, onPropertySelect, onContactInfo }: Booki
 
       if (profileData) {
         setProfile(profileData);
+        const displayName = profileData.full_name || 
+          `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim();
+        
         onContactInfo({
-          name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim(),
+          name: displayName,
           email: user.email || '',
           phone: profileData.phone || ''
         });
@@ -173,7 +180,12 @@ export function BookingAutofill({ user, onPropertySelect, onContactInfo }: Booki
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
             <Label className="text-muted-foreground">Namn</Label>
-            <p>{profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Ej angivet' : 'Laddar...'}</p>
+            <p>
+              {profile 
+                ? (profile.full_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Ej angivet')
+                : 'Laddar...'
+              }
+            </p>
           </div>
           <div>
             <Label className="text-muted-foreground">E-post</Label>

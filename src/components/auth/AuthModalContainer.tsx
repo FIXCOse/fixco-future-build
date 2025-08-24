@@ -315,12 +315,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           <Tabs defaultValue="signin" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Logga in</TabsTrigger>
-              <TabsTrigger 
-                value="signup" 
-                onClick={() => setShowWizard(true)}
-              >
-                Skapa konto
-              </TabsTrigger>
+              <TabsTrigger value="signup">Skapa konto</TabsTrigger>
             </TabsList>
 
             <TabsContent value="signin" className="space-y-4">
@@ -393,9 +388,16 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
 
             <TabsContent value="signup" className="space-y-3 overflow-visible">
               <div className="text-center py-8">
-                <p className="text-muted-foreground">
-                  Klicka på "Skapa konto" för att öppna registreringsguiden
-                </p>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    setShowWizard(true);
+                  }}
+                  className="w-full"
+                  size="lg"
+                >
+                  Skapa konto
+                </Button>
               </div>
             </TabsContent>
           </Tabs>

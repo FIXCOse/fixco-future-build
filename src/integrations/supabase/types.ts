@@ -454,12 +454,15 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address_line: string | null
           avatar_url: string | null
           brf_name: string | null
+          city: string | null
           company_name: string | null
           created_at: string | null
           email: string | null
           first_name: string | null
+          full_name: string | null
           id: string
           language: string | null
           last_name: string | null
@@ -468,17 +471,21 @@ export type Database = {
           marketing_consent: boolean | null
           org_number: string | null
           phone: string | null
+          postal_code: string | null
           total_spent: number | null
           updated_at: string | null
           user_type: Database["public"]["Enums"]["user_type"]
         }
         Insert: {
+          address_line?: string | null
           avatar_url?: string | null
           brf_name?: string | null
+          city?: string | null
           company_name?: string | null
           created_at?: string | null
           email?: string | null
           first_name?: string | null
+          full_name?: string | null
           id: string
           language?: string | null
           last_name?: string | null
@@ -487,17 +494,21 @@ export type Database = {
           marketing_consent?: boolean | null
           org_number?: string | null
           phone?: string | null
+          postal_code?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]
         }
         Update: {
+          address_line?: string | null
           avatar_url?: string | null
           brf_name?: string | null
+          city?: string | null
           company_name?: string | null
           created_at?: string | null
           email?: string | null
           first_name?: string | null
+          full_name?: string | null
           id?: string
           language?: string | null
           last_name?: string | null
@@ -506,6 +517,7 @@ export type Database = {
           marketing_consent?: boolean | null
           org_number?: string | null
           phone?: string | null
+          postal_code?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]

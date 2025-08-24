@@ -120,7 +120,26 @@ export function RegistrationWizard({ onClose, onSuccess }: RegistrationWizardPro
       if (authError) throw authError;
       if (!authData.user) throw new Error('No user returned from signup');
 
-      // Step 2: Create organization if needed
+      // Step 2: Update profile with address data
+      await supabase
+        .from('profiles')
+        .upsert({
+          id: authData.user.id,
+          email: data.email,
+          user_type: data.accountType,
+          full_name: data.accountType === 'private' ? `${data.firstName} ${data.lastName}` : data.contactPerson,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          phone: data.phone,
+          address_line: data.street,
+          postal_code: normalizePostcode(data.postcode),
+          city: data.city,
+          company_name: data.companyName,
+          org_number: data.accountType === 'company' ? normalizeOrgNo(data.companyOrgNo || '') : data.accountType === 'brf' ? normalizeOrgNo(data.brfOrgNo || '') : null,
+          brf_name: data.brfName,
+        }, { onConflict: 'id' });
+
+      // Step 3: Create organization if needed
       let organizationId = null;
       if (data.accountType !== 'private') {
         const orgData = {
@@ -150,7 +169,7 @@ export function RegistrationWizard({ onClose, onSuccess }: RegistrationWizardPro
           });
       }
 
-      // Step 3: Create property
+      // Step 4: Create property
       const propertyData = {
         name: `${data.accountType === 'private' ? 'Hem' : (data.accountType === 'company' ? 'Företag' : 'BRF')} - ${data.street}`,
         address: data.street,
@@ -191,54 +210,58 @@ export function RegistrationWizard({ onClose, onSuccess }: RegistrationWizardPro
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full">
       {/* Progress Steps */}
-      <div className="flex items-center justify-between mb-8">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          const isActive = currentStep === step.number;
-          const isCompleted = currentStep > step.number;
-          
-          return (
-            <div key={step.number} className="flex items-center">
-              <div className={`
-                flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors
-                ${isActive ? 'bg-primary border-primary text-primary-foreground' : 
-                  isCompleted ? 'bg-primary/10 border-primary text-primary' : 
-                  'bg-muted border-muted-foreground/20 text-muted-foreground'}
-              `}>
-                {isCompleted ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+      <div className="px-6 pt-6 pb-4">
+        <div className="flex items-center justify-between">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            const isActive = currentStep === step.number;
+            const isCompleted = currentStep > step.number;
+            
+            return (
+              <div key={step.number} className="flex items-center">
+                <div className={`
+                  flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors text-xs
+                  ${isActive ? 'bg-primary border-primary text-primary-foreground' : 
+                    isCompleted ? 'bg-primary/10 border-primary text-primary' : 
+                    'bg-muted border-muted-foreground/20 text-muted-foreground'}
+                `}>
+                  {isCompleted ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
+                </div>
+                <span className={`ml-2 text-xs font-medium hidden sm:inline ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  {step.title}
+                </span>
+                {index < steps.length - 1 && (
+                  <div className={`mx-2 sm:mx-4 h-0.5 w-4 sm:w-8 ${isCompleted ? 'bg-primary' : 'bg-muted'}`} />
+                )}
               </div>
-              <span className={`ml-2 text-sm font-medium ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {step.title}
-              </span>
-              {index < steps.length - 1 && (
-                <div className={`mx-4 h-0.5 w-8 ${isCompleted ? 'bg-primary' : 'bg-muted'}`} />
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       {/* Step Content */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
-          >
-            {currentStep === 1 && <Step1Content form={form} />}
-            {currentStep === 2 && <Step2Content form={form} />}
-            {currentStep === 3 && <Step3Content form={form} />}
-            {currentStep === 4 && <Step4Content watchedValues={watchedValues} />}
-          </motion.div>
-        </AnimatePresence>
+        <div className="px-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+            >
+              {currentStep === 1 && <Step1Content form={form} />}
+              {currentStep === 2 && <Step2Content form={form} />}
+              {currentStep === 3 && <Step3Content form={form} />}
+              {currentStep === 4 && <Step4Content watchedValues={watchedValues} />}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between p-6 border-t bg-background/50">
           <Button
             type="button"
             variant="outline"
