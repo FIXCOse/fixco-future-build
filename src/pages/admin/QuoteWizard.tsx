@@ -253,9 +253,30 @@ const QuoteWizard = () => {
     setLoading(true);
     try {
       const totals = calculateTotals();
+
+      // Ensure we have a valid customer_id (quotes.customer_id is NOT NULL)
+      let customerId = selectedItem.customer_id || selectedItem.customer?.id || null;
+      if (!customerId) {
+        const emailToMatch = selectedItem.customer?.email || selectedItem.email || '';
+        if (emailToMatch) {
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('email', emailToMatch)
+            .maybeSingle();
+          if (profileError) throw profileError;
+          customerId = profile?.id || null;
+        }
+      }
+
+      if (!customerId) {
+        toast.error('Ingen kund kopplad till förfrågan. Välj en bokning/förfrågan med kund eller skapa/länka kund först.');
+        setLoading(false);
+        return;
+      }
       
       await createQuote({
-        customer_id: selectedItem.customer_id || selectedItem.customer?.id || null,
+        customer_id: customerId,
         property_id: null,
         title: `Offert för ${selectedItem.service_name}`,
         description: quoteData.notes || selectedItem.description || `Offert baserad på ${selectedItem.type === 'booking' ? 'bokning' : 'offertförfrågan'} ${selectedItem.id}`,
