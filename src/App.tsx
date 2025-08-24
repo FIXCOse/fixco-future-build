@@ -34,16 +34,8 @@ import InvoicesPage from "./pages/MyFixco/InvoicesPage";
 import RotRutPage from "./pages/MyFixco/RotRutPage";
 import ActivityPage from "./pages/MyFixco/ActivityPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
-import AdminPage from "./pages/MyFixco/AdminPage";
-import AdminGate from "./components/AdminGate";
-import AdminLayout from "./components/AdminLayout";
-import AdminUsers from "./pages/MyFixco/AdminUsers";
-import AdminSettings from "./pages/MyFixco/AdminSettings";
-import AdminReports from "./pages/MyFixco/AdminReports";
-import AdminSecurity from "./pages/MyFixco/AdminSecurity";
-import AdminDatabase from "./pages/MyFixco/AdminDatabase";
-import AdminStaff from "./pages/MyFixco/AdminStaff";
-import AdminStatus from "./pages/MyFixco/AdminStatus";
+import AccountSettings from "./pages/MyFixco/AccountSettings";
+import StaffManagement from "./pages/MyFixco/StaffManagement";
 
 const queryClient = new QueryClient();
 
@@ -65,17 +57,16 @@ const App = () => {
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/auth/error" element={<AuthError />} />
                 
-        {/* MyFixco authenticated user routes */}
-        <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
-          <Route index element={<DashboardOverview />} />
-          <Route path="properties" element={<PropertiesPage />} />
-          <Route path="invoices" element={<InvoicesPage />} />
-          <Route path="history" element={<HistoryPage />} />
-          <Route path="activity" element={<ActivityPage />} />
-          <Route path="rot-rut" element={<RotRutPage />} />
-          <Route path="settings" element={<AccountSettings />} />
-          <Route path="staff" element={<StaffManagement />} />
-        </Route>
+                <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
+                  <Route index element={<DashboardOverview />} />
+                  <Route path="properties" element={<PropertiesPage />} />
+                  <Route path="invoices" element={<InvoicesPage />} />
+                  <Route path="history" element={<HistoryPage />} />
+                  <Route path="activity" element={<ActivityPage />} />
+                  <Route path="rot-rut" element={<RotRutPage />} />
+                  <Route path="settings" element={<AccountSettings />} />
+                  <Route path="staff" element={<StaffManagement />} />
+                </Route>
                 
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />

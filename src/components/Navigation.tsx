@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
-import { Menu, X, User, LogOut, MapPin, Phone, Mail, Clock, FileText, Settings } from "lucide-react";
+import { useState } from "react";
+import { Menu, X, User, LogOut, MapPin, Phone, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
-import { cn } from "@/lib/utils";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const queryClient = useQueryClient();
   const { isAdmin } = useRole();
 
-  const { data: user, isLoading } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -46,16 +42,16 @@ export default function Navigation() {
       ];
     }
 
-    const baseItems = [
+    return [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
     ];
-
-    return baseItems;
   };
+
+  const navItems = getNavItems();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -79,24 +75,15 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
-              Hem
-            </Link>
-            <Link to="/tjanster" className="text-foreground hover:text-primary transition-colors">
-              Tjänster
-            </Link>
-            <Link to="/om-oss" className="text-foreground hover:text-primary transition-colors">
-              Om oss
-            </Link>
-            <Link to="/faq" className="text-foreground hover:text-primary transition-colors">
-              FAQ
-            </Link>
-            <Link to="/referenser" className="text-foreground hover:text-primary transition-colors">
-              Referenser
-            </Link>
-            <Link to="/kontakt" className="text-foreground hover:text-primary transition-colors">
-              Kontakt
-            </Link>
+            {navItems.map((item) => (
+              <Link 
+                key={item.href}
+                to={item.href} 
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Contact Info & CTA */}
@@ -120,23 +107,23 @@ export default function Navigation() {
                     <span>Mitt Fixco</span>
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={handleSignOut} className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm" onClick={handleLogout} className="flex items-center space-x-2">
                   <LogOut className="h-4 w-4" />
                   <span>Logga ut</span>
                 </Button>
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setIsAuthModalOpen(true)}
-                >
-                  Logga in
-                </Button>
-                <Button variant="hero" size="sm">
-                  Begär offert
-                </Button>
+                <Link to="/auth">
+                  <Button variant="outline" size="sm">
+                    Logga in
+                  </Button>
+                </Link>
+                <Link to="/boka-hembesok">
+                  <Button variant="cta-primary" size="sm">
+                    Begär offert
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
@@ -154,48 +141,17 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Hem
-              </Link>
-              <Link 
-                to="/tjanster" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Tjänster
-              </Link>
-              <Link 
-                to="/om-oss" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Om oss
-              </Link>
-              <Link 
-                to="/faq" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                FAQ
-              </Link>
-              <Link 
-                to="/referenser" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Referenser
-              </Link>
-              <Link 
-                to="/kontakt" 
-                className="text-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Kontakt
-              </Link>
+              {navItems.map((item) => (
+                <Link 
+                  key={item.href}
+                  to={item.href} 
+                  className="text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              
               <div className="pt-4 space-y-2">
                 <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                   <Phone className="h-4 w-4" />
@@ -210,27 +166,29 @@ export default function Navigation() {
                         <span>Mitt Fixco</span>
                       </Button>
                     </Link>
-                    <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => { handleSignOut(); setIsMenuOpen(false); }}>
+                    <Link to="/mitt-fixco/settings">
+                      <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
+                        <Settings className="h-4 w-4" />
+                        <span>Inställningar</span>
+                      </Button>
+                    </Link>
+                    <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => { handleLogout(); setIsMenuOpen(false); }}>
                       <LogOut className="h-4 w-4" />
                       <span>Logga ut</span>
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full" 
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsAuthModalOpen(true);
-                      }}
-                    >
-                      Logga in
-                    </Button>
-                    <Button variant="hero" size="sm" className="w-full">
-                      Begär offert
-                    </Button>
+                    <Link to="/auth">
+                      <Button variant="outline" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                        Logga in
+                      </Button>
+                    </Link>
+                    <Link to="/boka-hembesok">
+                      <Button variant="cta-primary" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                        Begär offert
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -238,14 +196,6 @@ export default function Navigation() {
           </div>
         )}
       </div>
-
-      {/* Auth Modal */}
-      <AuthModalContainer
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
     </header>
   );
 };
-
-export default Navigation;
