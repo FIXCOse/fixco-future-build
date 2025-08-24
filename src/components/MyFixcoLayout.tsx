@@ -1,16 +1,17 @@
-import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
-import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
-import { OwnerCongrats } from '@/components/OwnerCongrats';
+import { supabase } from '@/integrations/supabase/client';
 import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
+import { useState, useEffect } from 'react';
+import { OwnerCongrats } from '@/components/OwnerCongrats';
+import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
 import { useAuthProfile } from '@/hooks/useAuthProfile';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useRole } from '@/hooks/useRole';
 import AdminDashboardContent from '@/components/AdminDashboardContent';
+import SalesOverview from '@/components/SalesOverview';
 
 const PageSkeleton = () => (
   <div className="min-h-screen bg-background">
@@ -39,92 +40,91 @@ const PageSkeleton = () => (
 const LoginRequired = () => <Navigate to="/auth" replace />;
 
 const MyFixcoLayout = () => {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const { show, acknowledge } = useOwnerCongrats();
   const { role, loading: authLoading } = useAuthProfile();
+  const { isAdmin } = useRole();
+  const location = useLocation();
 
   useEffect(() => {
     let mounted = true;
-    // Timeout fail-safe - never load forever
-    const timer = setTimeout(() => mounted && setLoading(false), 6000);
-
-    (async () => {
+    
+    const fetchData = async () => {
       try {
-        // Get session
-        const { data: sessionRes } = await supabase.auth.getSession();
-        const currentUser = sessionRes?.session?.user;
-        
+        const { data: { session } } = await supabase.auth.getSession();
         if (!mounted) return;
-        setUser(currentUser);
-
-        if (!currentUser) {
-          setLoading(false);
-          return;
+        
+        if (session?.user) {
+          setUser(session.user);
+          const userProfile = await getOrCreateProfile();
+          if (mounted) {
+            setProfile(userProfile);
+          }
         }
-
-        // Get or create profile with fail-safe
-        const profileData = await getOrCreateProfile();
-        if (!mounted) return;
-        
-        setProfile(profileData);
       } catch (error) {
-        console.error("MyFixcoLayout error:", error);
-        // Still allow rendering with partial data
+        console.error('Error fetching user data:', error);
       } finally {
-        if (mounted) setLoading(false);
-        clearTimeout(timer);
+        if (mounted) {
+          // Add a small delay to prevent flashing
+          setTimeout(() => setLoading(false), 500);
+        }
       }
-    })();
-
-    return () => { 
-      mounted = false; 
-      clearTimeout(timer);
     };
+
+    fetchData();
+
+    return () => { mounted = false; };
   }, []);
 
-  if (loading || authLoading) return <PageSkeleton />;
-  if (!user) return <LoginRequired />;
+  if (loading || authLoading) {
+    return <PageSkeleton />;
+  }
 
-  // For admin/owner users, show tabs with administration option
-  if (['owner', 'admin'].includes(role)) {
+  if (!user) {
+    return <LoginRequired />;
+  }
+
+  // Admin/Owner layout with tabs - only on the main dashboard
+  if (isAdmin && location.pathname === '/mitt-fixco') {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
         <div className="pt-16">
           <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList>
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="overview">Översikt</TabsTrigger>
                 <TabsTrigger value="administration">Administration</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="overview">
-                <Outlet />
+              <TabsContent value="overview" className="mt-6">
+                <SalesOverview />
               </TabsContent>
               
-              <TabsContent value="administration">
+              <TabsContent value="administration" className="mt-6">
                 <AdminDashboardContent />
               </TabsContent>
             </Tabs>
+            
+            {show && <OwnerCongrats open={show} onClose={acknowledge} />}
           </div>
         </div>
-        <OwnerCongrats open={show} onClose={acknowledge} />
       </div>
     );
   }
 
-  // For regular users, show exactly the same layout as before - NO CHANGES
+  // Regular layout for all other pages
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       <div className="pt-16">
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <Outlet />
+          {show && <OwnerCongrats open={show} onClose={acknowledge} />}
         </div>
       </div>
-      <OwnerCongrats open={show} onClose={acknowledge} />
     </div>
   );
 };

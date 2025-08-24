@@ -1,48 +1,60 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button-premium";
-import { Menu, X, Phone, MapPin, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, MapPin, Phone, Mail, Clock, FileText, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { User as SupabaseUser } from "@supabase/supabase-js";
-import { useToast } from "@/components/ui/use-toast";
-import AuthModalContainer from "./auth/AuthModalContainer";
+import { toast } from "sonner";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRole } from "@/hooks/useRole";
+import { cn } from "@/lib/utils";
 
-const Navigation = () => {
+export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [user, setUser] = useState<SupabaseUser | null>(null);
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const location = useLocation();
+  const queryClient = useQueryClient();
+  const { isAdmin } = useRole();
 
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      return user;
+    },
+  });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Fel",
-        description: "Kunde inte logga ut",
-        variant: "destructive"
-      });
-    } else {
-      toast({
-        title: "Utloggad",
-        description: "Du har loggats ut"
-      });
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      queryClient.clear();
       navigate('/');
+      toast.success('Du har loggats ut');
+    } catch (error) {
+      toast.error('Kunde inte logga ut');
     }
+  };
+
+  const getNavItems = () => {
+    if (!user) {
+      return [
+        { href: "/", label: "Hem" },
+        { href: "/tjanster", label: "Tjänster" },
+        { href: "/om-oss", label: "Om oss" },
+        { href: "/kontakt", label: "Kontakt" },
+      ];
+    }
+
+    const baseItems = [
+      { href: "/", label: "Hem" },
+      { href: "/tjanster", label: "Tjänster" },
+      { href: "/mitt-fixco", label: "Mitt Fixco" },
+      { href: "/om-oss", label: "Om oss" },
+      { href: "/kontakt", label: "Kontakt" },
+    ];
+
+    return baseItems;
   };
 
   return (

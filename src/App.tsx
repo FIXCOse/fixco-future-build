@@ -65,28 +65,17 @@ const App = () => {
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/auth/error" element={<AuthError />} />
                 
-                <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
-                  <Route index element={<DashboardOverview />} />
-                  <Route path="properties" element={<PropertiesPage />} />
-                  <Route path="invoices" element={<InvoicesPage />} />
-                  <Route path="rot-rut" element={<RotRutPage />} />
-                  <Route path="activity" element={<ActivityPage />} />
-                  <Route path="history" element={<HistoryPage />} />
-                </Route>
-                
-                {/* Admin routes with access control */}
-                <Route path="/admin" element={<AdminGate />}>
-                  <Route element={<AdminLayout />}>
-                    <Route index element={<AdminPage />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="settings" element={<AdminSettings />} />
-                    <Route path="reports" element={<AdminReports />} />
-                    <Route path="security" element={<AdminSecurity />} />
-                    <Route path="database" element={<AdminDatabase />} />
-                    <Route path="staff" element={<AdminStaff />} />
-                    <Route path="status" element={<AdminStatus />} />
-                  </Route>
-                </Route>
+        {/* MyFixco authenticated user routes */}
+        <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
+          <Route index element={<DashboardOverview />} />
+          <Route path="properties" element={<PropertiesPage />} />
+          <Route path="invoices" element={<InvoicesPage />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="activity" element={<ActivityPage />} />
+          <Route path="rot-rut" element={<RotRutPage />} />
+          <Route path="settings" element={<AccountSettings />} />
+          <Route path="staff" element={<StaffManagement />} />
+        </Route>
                 
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />
