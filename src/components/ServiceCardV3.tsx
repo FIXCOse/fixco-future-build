@@ -42,7 +42,11 @@ const ServiceCardV3 = ({
   const { mode } = usePriceStore();
   const open = useActionWizard((s) => s.open);
 
-  const handleBookingClick = () => {
+  const handleBookingClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("[ServiceCard] handleBookingClick called");
+    
     if (onBook) {
       onBook();
     } else {
@@ -55,7 +59,11 @@ const ServiceCardV3 = ({
     }
   };
 
-  const handleQuoteClick = () => {
+  const handleQuoteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("[ServiceCard] handleQuoteClick called");
+    
     if (onQuote) {
       onQuote();
     } else {
@@ -116,6 +124,9 @@ const ServiceCardV3 = ({
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
           onClick={handleQuoteClick}
+          data-wizard="quote"
+          data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
+          data-service-name={title}
         >
             Begär offert
           </Button>
@@ -265,6 +276,9 @@ const ServiceCardV3 = ({
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
           onClick={ctaType === 'book' ? handleBookingClick : handleQuoteClick}
+          data-wizard={ctaType}
+          data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
+          data-service-name={title}
         >
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>

@@ -12,13 +12,20 @@ import { X } from "lucide-react";
 
 export function ModalHost() {
   const { isOpen, mode, payload, close } = useActionWizard();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    console.log("[ModalHost] mounted");
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    console.log("[ModalHost] state changed:", { isOpen, mode });
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!ready || !isOpen) return null;
 
   return createPortal(
     <div

@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,6 +28,7 @@ import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
+import { DebugWizard } from "./components/DebugWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
@@ -60,6 +61,32 @@ const queryClient = new QueryClient();
 
 const App = () => {
   console.log("App component is loading...");
+  
+  // Global event delegation for wizard buttons as fallback
+  useEffect(() => {
+    const handleWizardClick = (e: any) => {
+      const el = (e.target as HTMLElement).closest("[data-wizard]");
+      if (!el) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const mode = el.getAttribute("data-wizard") as "book" | "quote";
+      const serviceId = el.getAttribute("data-service-id") || undefined;
+      const serviceName = el.getAttribute("data-service-name") || undefined;
+      
+      console.log("[Event Delegation] Opening wizard via delegation:", { mode, serviceId, serviceName });
+      
+      // @ts-ignore
+      if (window.__WIZ) {
+        // @ts-ignore
+        window.__WIZ.getState().open({ mode, serviceId, serviceName });
+      }
+    };
+    
+    document.addEventListener("click", handleWizardClick, true); // capture phase
+    return () => document.removeEventListener("click", handleWizardClick, true);
+  }, []);
   
   return (
     <HelmetProvider>
@@ -128,6 +155,7 @@ const App = () => {
                 <StickyCTA />
                 <AIChat />
                 <ModalHost />
+                <DebugWizard />
               </BrowserRouter>
             </TooltipProvider>
         </SecurityWrapper>
