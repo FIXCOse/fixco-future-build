@@ -43,6 +43,14 @@ export function BookingWizardModal({
   const { toast } = useToast();
   const [success, setSuccess] = useState(false);
 
+  console.log('[BookingWizardModal] Render with props:', { 
+    isOpen, 
+    actionType, 
+    currentStep, 
+    serviceId: wizardData.service_id,
+    serviceName: wizardData.service_name
+  });
+
   const validateStep1 = () => {
     if (!wizardData.contact_name.trim()) {
       toast({ title: "Fel", description: "Namn krävs", variant: "destructive" });

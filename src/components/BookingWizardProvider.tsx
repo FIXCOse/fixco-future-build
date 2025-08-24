@@ -8,14 +8,17 @@ export function BookingWizardProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     const handleOpenWizard = (event: CustomEvent) => {
       const { type, serviceId, serviceName } = event.detail;
-      console.log('[BookingWizardProvider] Opening wizard:', { type, serviceId, serviceName });
+      console.log('[BookingWizardProvider] Received wizard event:', { type, serviceId, serviceName });
+      console.log('[BookingWizardProvider] Current wizard state:', { isOpen: wizard.isOpen });
       wizard.openWizard(type, serviceId, serviceName);
     };
 
+    console.log('[BookingWizardProvider] Setting up event listener');
     // Listen for global booking wizard events
     window.addEventListener('open-booking-wizard', handleOpenWizard as EventListener);
 
     return () => {
+      console.log('[BookingWizardProvider] Cleaning up event listener');
       window.removeEventListener('open-booking-wizard', handleOpenWizard as EventListener);
     };
   }, [wizard]);

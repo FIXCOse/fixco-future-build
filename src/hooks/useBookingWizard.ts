@@ -52,7 +52,8 @@ export function useBookingWizard() {
   });
 
   const openWizard = (type: ActionType, serviceId: string, serviceName: string) => {
-    console.log('[BookingWizard] Opening wizard:', { type, serviceId, serviceName });
+    console.log('[useBookingWizard] openWizard called with:', { type, serviceId, serviceName });
+    console.log('[useBookingWizard] Current state before opening:', { isOpen, actionType, currentStep });
     
     // Reset wizard state
     setCurrentStep(1);
@@ -74,6 +75,7 @@ export function useBookingWizard() {
 
     // Pre-fill with user data if logged in
     if (user && profile) {
+      console.log('[useBookingWizard] Pre-filling with user data:', { user: !!user, profile: !!profile });
       baseData.contact_name = profile.first_name && profile.last_name 
         ? `${profile.first_name} ${profile.last_name}`
         : profile.first_name || '';
@@ -84,8 +86,10 @@ export function useBookingWizard() {
       baseData.city = profile.city || '';
     }
     
+    console.log('[useBookingWizard] Setting wizard data:', baseData);
     setWizardData(baseData);
     setIsOpen(true);
+    console.log('[useBookingWizard] Wizard should now be open');
   };
 
   const closeWizard = () => {

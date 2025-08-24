@@ -49,6 +49,11 @@ const ServiceCardV3 = ({
     
     if (!serviceSlug) {
       console.error('[ServiceCardV3] No serviceSlug provided');
+      // Use title as fallback serviceSlug  
+      const fallbackSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
+        detail: { type: 'book', serviceId: fallbackSlug, serviceName: title }
+      }));
       return;
     }
     
@@ -56,6 +61,7 @@ const ServiceCardV3 = ({
       onBook();
     } else {
       // Use booking wizard instead of navigation
+      console.log('[ServiceCardV3] Dispatching booking wizard event');
       window.dispatchEvent(new CustomEvent('open-booking-wizard', {
         detail: { type: 'book', serviceId: serviceSlug, serviceName: title }
       }));
@@ -67,6 +73,11 @@ const ServiceCardV3 = ({
     
     if (!serviceSlug) {
       console.error('[ServiceCardV3] No serviceSlug provided');
+      // Use title as fallback serviceSlug
+      const fallbackSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
+        detail: { type: 'quote', serviceId: fallbackSlug, serviceName: title }
+      }));
       return;
     }
     
@@ -74,6 +85,7 @@ const ServiceCardV3 = ({
       onQuote();
     } else {
       // Use booking wizard instead of navigation
+      console.log('[ServiceCardV3] Dispatching quote wizard event');
       window.dispatchEvent(new CustomEvent('open-booking-wizard', {
         detail: { type: 'quote', serviceId: serviceSlug, serviceName: title }
       }));
