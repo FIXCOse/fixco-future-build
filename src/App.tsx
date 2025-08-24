@@ -15,6 +15,8 @@ import ROTInfo from "./pages/ROTInfo";
 import RUT from "./pages/RUT";
 import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
 import StickyCTA from "./components/StickyCTA";
@@ -37,6 +39,8 @@ const App = () => {
               <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/mitt-fixco" element={<Dashboard />} />
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />
                 <Route path="/kontakt" element={<Contact />} />
