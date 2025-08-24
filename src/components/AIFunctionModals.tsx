@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { 
   Dialog, 
@@ -32,7 +32,13 @@ import {
   Zap,
   Download,
   Share,
-  BookOpen
+  BookOpen,
+  Brain,
+  Target,
+  Lightbulb,
+  Star,
+  AlertCircle,
+  Loader2
 } from "lucide-react";
 import { AIProjectAssistant } from "@/components/AIProjectAssistant";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
@@ -40,6 +46,7 @@ import { Project3DVisualizer } from "@/components/Project3DVisualizer";
 import ROTCalculator from "@/components/ROTCalculator";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AIFunctionModalsProps {
   activeModal: string | null;
@@ -50,49 +57,71 @@ interface AIFunctionModalsProps {
 export function AIFunctionModals({ activeModal, onClose, onRequestQuote }: AIFunctionModalsProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [analysisData, setAnalysisData] = useState<any>(null);
+  const [formData, setFormData] = useState<any>({});
+  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const navigate = useNavigate();
 
-  const handleAnalysis = async (type: string, formData: any) => {
+  const callAIAnalysis = useCallback(async (type: string, input: any) => {
     setIsLoading(true);
     
-    // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const mockResults = {
-      homeAnalysis: {
-        efficiency: 85,
-        security: 92,
-        comfort: 78,
-        valueIncrease: 15,
-        recommendations: [
-          "Byt till energieffektiva fönster",
-          "Installera smart ventilation", 
-          "Uppgradera isolering",
-          "Lägg till solpaneler"
-        ],
-        potentialSavings: 45000,
-        roiPeriod: "3-5 år"
-      },
-      costPrediction: {
-        accuracy: 97.2,
-        currentPrice: formData.estimatedBudget || 50000,
-        priceRange: { min: 45000, max: 65000 },
-        seasonalVariation: "+12% vinter, -8% sommar",
-        regionalAdjustment: "+5% för Stockholm",
-        materialCosts: 35000,
-        laborCosts: 25000
-      },
-      visualization: {
-        beforeImage: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
-        afterImage: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400",
-        renderingTime: "2.3 sekunder",
-        accuracy: "98.5%"
+    try {
+      console.log('Calling AI analysis with:', { type, input });
+      
+      const { data: userData } = await supabase.auth.getUser();
+      
+      const response = await supabase.functions.invoke('ai-smart-analysis', {
+        body: {
+          type,
+          userInput: input,
+          sessionId,
+          userId: userData.user?.id
+        }
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'AI analysis failed');
       }
-    };
+
+      console.log('AI analysis response:', response.data);
+      
+      if (response.data?.success) {
+        setAnalysisData(response.data.data);
+        toast.success(`AI-analys slutförd! Träffsäkerhet: ${response.data.data.confidence}%`);
+      } else {
+        throw new Error('AI analysis returned no data');
+      }
+      
+    } catch (error) {
+      console.error('AI analysis error:', error);
+      toast.error(`AI-analys misslyckades: ${error.message}`);
+      
+      // Show fallback data
+      setAnalysisData({
+        analysis: { message: "Kunde inte ansluta till AI-tjänsten. Visar grundläggande analys." },
+        recommendations: [
+          { title: "Grundläggande renovering", description: "Baserat på vanliga svenska standarder", estimatedCost: 100000 },
+          { title: "Energieffektivisering", description: "Förbättra isolering och ventilation", estimatedCost: 75000 }
+        ],
+        insights: ["Kontakta oss för en detaljerad analys"],
+        confidence: 50,
+        nextSteps: ["Boka konsultation", "Begär offert"]
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [sessionId]);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAnalysis = async (type: string) => {
+    if (Object.keys(formData).length === 0) {
+      toast.error("Vänligen fyll i minst ett fält innan du startar analysen");
+      return;
+    }
     
-    setAnalysisData(mockResults);
-    setIsLoading(false);
-    toast.success("AI-analys slutförd!");
+    await callAIAnalysis(type, formData);
   };
 
   const handleRequestQuote = (projectData: any) => {
@@ -128,127 +157,182 @@ export function AIFunctionModals({ activeModal, onClose, onRequestQuote }: AIFun
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="homeType">Bostadstyp</Label>
-                  <Select>
+                  <Select onValueChange={(value) => handleInputChange('homeType', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Välj bostadstyp" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="villa">Villa</SelectItem>
-                      <SelectItem value="apartment">Lägenhet</SelectItem>
-                      <SelectItem value="townhouse">Radhus</SelectItem>
+                      <SelectItem value="lägenhet">Lägenhet</SelectItem>
+                      <SelectItem value="radhus">Radhus</SelectItem>
+                      <SelectItem value="bostadsrätt">Bostadsrätt</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div>
                   <Label htmlFor="homeSize">Storlek (kvm)</Label>
-                  <Input type="number" placeholder="120" />
+                  <Input 
+                    type="number" 
+                    placeholder="120" 
+                    onChange={(e) => handleInputChange('homeSize', e.target.value)}
+                  />
                 </div>
                 
                 <div>
                   <Label htmlFor="buildYear">Byggår</Label>
-                  <Input type="number" placeholder="1985" />
+                  <Input 
+                    type="number" 
+                    placeholder="1985" 
+                    onChange={(e) => handleInputChange('buildYear', e.target.value)}
+                  />
                 </div>
                 
                 <div>
                   <Label htmlFor="budget">Budget (kr)</Label>
-                  <Input type="number" placeholder="100000" />
+                  <Input 
+                    type="number" 
+                    placeholder="100000" 
+                    onChange={(e) => handleInputChange('budget', e.target.value)}
+                  />
                 </div>
               </div>
               
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="priorities">Prioriteringar</Label>
-                  <Textarea placeholder="Beskriv vad som är viktigast för dig: energibesparing, komfort, säkerhet, värdeökning..." />
+                  <Textarea 
+                    placeholder="Beskriv vad som är viktigast för dig: energibesparing, komfort, säkerhet, värdeökning..." 
+                    onChange={(e) => handleInputChange('priorities', e.target.value)}
+                  />
                 </div>
                 
                 <div>
                   <Label htmlFor="currentIssues">Nuvarande problem</Label>
-                  <Textarea placeholder="Finns det några specifika problem du vill lösa? (drag, fukt, ljud, etc.)" />
+                  <Textarea 
+                    placeholder="Finns det några specifika problem du vill lösa? (drag, fukt, ljud, etc.)" 
+                    onChange={(e) => handleInputChange('currentIssues', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Ytterligare önskemål</Label>
+                  <Textarea 
+                    placeholder="Berätta mer om dina specifika önskemål och mål..." 
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                  />
                 </div>
               </div>
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">{analysisData.homeAnalysis.efficiency}%</div>
-                      <div className="text-sm text-muted-foreground">Energieffektivitet</div>
-                      <Progress value={analysisData.homeAnalysis.efficiency} className="mt-2" />
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-600">{analysisData.homeAnalysis.security}%</div>
-                      <div className="text-sm text-muted-foreground">Säkerhet</div>
-                      <Progress value={analysisData.homeAnalysis.security} className="mt-2" />
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-blue-600">{analysisData.homeAnalysis.comfort}%</div>
-                      <div className="text-sm text-muted-foreground">Komfort</div>
-                      <Progress value={analysisData.homeAnalysis.comfort} className="mt-2" />
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-purple-600">+{analysisData.homeAnalysis.valueIncrease}%</div>
-                      <div className="text-sm text-muted-foreground">Värdeökning</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              
-              <Card>
+              {/* AI Analysis Results */}
+              <Card className="border-primary/20">
                 <CardContent className="pt-6">
-                  <h3 className="font-semibold mb-4">AI Rekommendationer</h3>
-                  <div className="space-y-3">
-                    {analysisData.homeAnalysis.recommendations.map((rec: string, index: number) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        <span>{rec}</span>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleRequestQuote({ 
-                            title: rec, 
-                            description: "AI-rekommenderad förbättring",
-                            cost: 25000 + (index * 15000)
-                          })}
-                        >
-                          Begär offert
-                        </Button>
-                      </div>
-                    ))}
+                  <div className="flex items-center gap-2 mb-4">
+                    <Brain className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold">AI-Analys Resultat</h3>
+                    <Badge variant="secondary">
+                      Träffsäkerhet: {analysisData.confidence}%
+                    </Badge>
+                  </div>
+                  
+                  <div className="prose prose-sm max-w-none">
+                    <p className="text-muted-foreground mb-4">
+                      {analysisData.analysis?.message || JSON.stringify(analysisData.analysis)}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Recommendations */}
+              {analysisData.recommendations && analysisData.recommendations.length > 0 && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <h3 className="font-semibold mb-4 flex items-center gap-2">
+                      <Lightbulb className="h-5 w-5 text-yellow-500" />
+                      Personliga Rekommendationer
+                    </h3>
+                    <div className="space-y-3">
+                      {analysisData.recommendations.map((rec: any, index: number) => (
+                        <div key={index} className="border rounded-lg p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-medium">{rec.title}</h4>
+                            {rec.estimatedCost && (
+                              <Badge variant="outline">
+                                {rec.estimatedCost.toLocaleString()} kr
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">{rec.description}</p>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleRequestQuote({ 
+                              title: rec.title, 
+                              description: rec.description,
+                              cost: rec.estimatedCost
+                            })}
+                          >
+                            <Target className="h-4 w-4 mr-2" />
+                            Begär offert
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Insights */}
+              {analysisData.insights && analysisData.insights.length > 0 && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <h3 className="font-semibold mb-3">AI Insikter</h3>
+                    <ul className="space-y-2">
+                      {analysisData.insights.map((insight: string, index: number) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <Star className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                          {insight}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Next Steps */}
+              {analysisData.nextSteps && analysisData.nextSteps.length > 0 && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <h3 className="font-semibold mb-3">Nästa Steg</h3>
+                    <div className="space-y-2">
+                      {analysisData.nextSteps.map((step: string, index: number) => (
+                        <div key={index} className="flex items-center gap-2 text-sm">
+                          <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">
+                            {index + 1}
+                          </div>
+                          {step}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           )}
           
           <div className="flex gap-3">
             {!analysisData && (
               <Button 
-                onClick={() => handleAnalysis('homeAnalysis', {})} 
+                onClick={() => handleAnalysis('home_analysis')} 
                 disabled={isLoading}
                 className="flex-1"
               >
                 {isLoading ? (
                   <>
-                    <Sparkles className="h-4 w-4 mr-2 animate-spin" />
-                    Analyserar...
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    AI analyserar...
                   </>
                 ) : (
                   <>
@@ -261,15 +345,14 @@ export function AIFunctionModals({ activeModal, onClose, onRequestQuote }: AIFun
             
             {analysisData && (
               <Button 
-                onClick={() => handleRequestQuote({ 
-                  title: "Komplett hemförbättring", 
-                  description: "Baserat på AI-analys",
-                  cost: analysisData.homeAnalysis.potentialSavings
-                })}
+                onClick={() => {
+                  setAnalysisData(null);
+                  setFormData({});
+                }}
+                variant="outline"
                 className="flex-1"
               >
-                <ArrowRight className="h-4 w-4 mr-2" />
-                Begär offert för alla förbättringar
+                Ny Analys
               </Button>
             )}
           </div>

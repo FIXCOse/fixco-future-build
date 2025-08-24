@@ -53,6 +53,75 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_conversations: {
+        Row: {
+          ai_response: Json
+          conversation_type: string
+          created_at: string | null
+          id: string
+          session_id: string
+          updated_at: string | null
+          user_feedback: Json | null
+          user_id: string | null
+          user_input: Json
+        }
+        Insert: {
+          ai_response?: Json
+          conversation_type: string
+          created_at?: string | null
+          id?: string
+          session_id: string
+          updated_at?: string | null
+          user_feedback?: Json | null
+          user_id?: string | null
+          user_input?: Json
+        }
+        Update: {
+          ai_response?: Json
+          conversation_type?: string
+          created_at?: string | null
+          id?: string
+          session_id?: string
+          updated_at?: string | null
+          user_feedback?: Json | null
+          user_id?: string | null
+          user_input?: Json
+        }
+        Relationships: []
+      }
+      ai_learning_patterns: {
+        Row: {
+          created_at: string | null
+          id: string
+          input_pattern: Json
+          pattern_type: string
+          success_rate: number | null
+          successful_outputs: Json
+          updated_at: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          input_pattern: Json
+          pattern_type: string
+          success_rate?: number | null
+          successful_outputs?: Json
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          input_pattern?: Json
+          pattern_type?: string
+          success_rate?: number | null
+          successful_outputs?: Json
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string
