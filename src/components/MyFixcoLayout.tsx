@@ -79,7 +79,15 @@ const MyFixcoLayout = () => {
     return () => { mounted = false; };
   }, []);
 
-  // Removed automatic redirect to new admin interface
+  // Check if user is admin/owner 
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
+
+  // Redirect admin/owner users to the admin dashboard 
+  useEffect(() => {
+    if (profile && isAdmin && location.pathname === '/mitt-fixco') {
+      navigate('/admin', { replace: true });
+    }
+  }, [profile, isAdmin, location.pathname, navigate]);
 
   if (loading || authLoading) {
     return <PageSkeleton />;
@@ -87,39 +95,6 @@ const MyFixcoLayout = () => {
 
   if (!user) {
     return <LoginRequired />;
-  }
-
-  // Check if user is admin/owner and on main mitt-fixco route
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
-  const isMainRoute = location.pathname === '/mitt-fixco';
-  
-  // If admin/owner and on main route, show tabbed interface (legacy support)
-  if (isAdmin && isMainRoute) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="pt-16">
-          <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="overview">Översikt</TabsTrigger>
-                <TabsTrigger value="administration">Administration</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="overview" className="mt-6">
-                <SalesOverview />
-              </TabsContent>
-              
-              <TabsContent value="administration" className="mt-6">
-                <AdminDashboardContent />
-              </TabsContent>
-            </Tabs>
-            
-            {show && <OwnerCongrats open={show} onClose={acknowledge} />}
-          </div>
-        </div>
-      </div>
-    );
   }
 
   // Regular layout for all other pages
