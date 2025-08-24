@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, ArrowRight, Search, User, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { createQuote } from '@/lib/api/quotes';
@@ -63,21 +64,30 @@ const QuoteWizard = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Fetch bookings
+        // Fetch existing quotes to filter out already processed requests
+        const { data: existingQuotes, error: quotesError } = await supabase
+          .from('quotes')
+          .select('id');
+
+        if (quotesError) throw quotesError;
+
+        // Fetch bookings that haven't been turned into quotes yet
         const { data: bookings, error: bookingsError } = await supabase
           .from('bookings')
           .select(`
             *,
             customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
           `)
+          .in('status', ['pending', 'confirmed', 'in_progress']) // Only non-completed bookings
           .order('created_at', { ascending: false });
 
         if (bookingsError) throw bookingsError;
 
-        // Fetch quote requests without join - handle manually
+        // Fetch quote requests that are still new or in progress
         const { data: quoteRequests, error: requestsError } = await supabase
           .from('quote_requests')
           .select('*')
+          .in('status', ['new', 'processing']) // Only non-quoted requests
           .order('created_at', { ascending: false});
 
         if (requestsError) throw requestsError;
@@ -526,16 +536,19 @@ const QuoteWizard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="rotRutType">Typ av avdrag</Label>
-                    <select
-                      id="rotRutType"
-                      className="w-full p-2 border rounded-md"
+                    <Select
                       value={quoteData.rotRutType}
-                      onChange={(e) => setQuoteData(prev => ({ ...prev, rotRutType: e.target.value }))}
+                      onValueChange={(value) => setQuoteData(prev => ({ ...prev, rotRutType: value }))}
                     >
-                      <option value="">Inget avdrag</option>
-                      <option value="ROT">ROT-avdrag</option>
-                      <option value="RUT">RUT-avdrag</option>
-                    </select>
+                      <SelectTrigger className="w-full bg-background">
+                        <SelectValue placeholder="Välj avdragstyp" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border z-50">
+                        <SelectItem value="">Inget avdrag</SelectItem>
+                        <SelectItem value="ROT">ROT-avdrag</SelectItem>
+                        <SelectItem value="RUT">RUT-avdrag</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   {quoteData.rotRutType && (
