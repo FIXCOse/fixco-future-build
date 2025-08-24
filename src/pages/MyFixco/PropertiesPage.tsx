@@ -113,6 +113,7 @@ const PropertiesPage = () => {
   };
 
   const handleModalClose = () => {
+    console.log('Closing modal'); // Force refresh
     setIsModalOpen(false);
     setEditingProperty(null);
   };
