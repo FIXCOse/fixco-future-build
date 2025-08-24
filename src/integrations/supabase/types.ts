@@ -788,6 +788,7 @@ export type Database = {
           price_type: string | null
           rot_rut_type: string | null
           service_id: string
+          service_name: string | null
           source: string | null
           status: string
           updated_at: string | null
@@ -815,6 +816,7 @@ export type Database = {
           price_type?: string | null
           rot_rut_type?: string | null
           service_id: string
+          service_name?: string | null
           source?: string | null
           status?: string
           updated_at?: string | null
@@ -842,6 +844,7 @@ export type Database = {
           price_type?: string | null
           rot_rut_type?: string | null
           service_id?: string
+          service_name?: string | null
           source?: string | null
           status?: string
           updated_at?: string | null
