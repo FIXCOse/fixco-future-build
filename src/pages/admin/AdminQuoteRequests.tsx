@@ -28,6 +28,7 @@ export default function AdminQuoteRequests() {
         params.q = searchTerm;
       }
       const { data } = await fetchQuoteRequests(params);
+      console.log('Loaded quote requests:', data?.length || 0, 'requests');
       setQuoteRequests(data as any);
     } catch (error) {
       console.error("Error loading quote requests:", error);

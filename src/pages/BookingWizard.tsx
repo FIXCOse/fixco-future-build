@@ -31,13 +31,18 @@ export default function BookingWizard() {
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
+    console.log('BookingWizard mounted, user:', user);
+    console.log('URL params - slug:', slug);
+    
     if (!user) {
+      console.log('No user found, redirecting to auth');
       navigate('/auth', { state: { returnTo: `/boka/${slug}` } });
       return;
     }
 
     // Pre-fill with user profile data if available
     if (user) {
+      console.log('Setting user email:', user.email);
       setEmail(user.email || "");
     }
   }, [user, slug, navigate]);
@@ -45,12 +50,27 @@ export default function BookingWizard() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user || !slug) return;
+    console.log('Form submitted');
+    console.log('User ID:', user?.id);
+    console.log('Service slug:', slug);
+    
+    if (!user || !slug) {
+      console.error('Missing user or slug:', { user: !!user, slug });
+      return;
+    }
     
     setLoading(true);
     
     try {
-      await createBooking({
+      console.log('Creating booking with data:', {
+        service_id: slug,
+        customer_id: user.id,
+        price_type: priceType,
+        name,
+        email
+      });
+      
+      const result = await createBooking({
         service_id: slug,
         customer_id: user.id,
         price_type: priceType,
@@ -67,11 +87,12 @@ export default function BookingWizard() {
         notes: notes || undefined,
       });
 
+      console.log('Booking created successfully:', result);
       toast.success("Bokning skickad!");
       navigate("/dashboard");
     } catch (error) {
       console.error('Error creating booking:', error);
-      toast.error("Kunde inte skapa bokning");
+      toast.error("Kunde inte skapa bokning: " + (error as Error).message);
     } finally {
       setLoading(false);
     }

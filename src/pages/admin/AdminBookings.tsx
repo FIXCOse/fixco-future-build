@@ -28,6 +28,7 @@ export default function AdminBookings() {
         params.q = searchTerm;
       }
       const { data } = await fetchBookings(params);
+      console.log('Loaded bookings:', data?.length || 0, 'bookings');
       setBookings(data as any);
     } catch (error) {
       console.error("Error loading bookings:", error);

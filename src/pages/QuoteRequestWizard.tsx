@@ -27,13 +27,18 @@ export default function QuoteRequestWizard() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    console.log('QuoteRequestWizard mounted, user:', user);
+    console.log('URL params - slug:', slug);
+    
     if (!user) {
+      console.log('No user found, redirecting to auth');
       navigate('/auth', { state: { returnTo: `/offert/${slug}` } });
       return;
     }
 
     // Pre-fill with user profile data if available
     if (user) {
+      console.log('Setting user email:', user.email);
       setEmail(user.email || "");
     }
   }, [user, slug, navigate]);
@@ -41,12 +46,26 @@ export default function QuoteRequestWizard() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user || !slug) return;
+    console.log('Quote request form submitted');
+    console.log('User ID:', user?.id);
+    console.log('Service slug:', slug);
+    
+    if (!user || !slug) {
+      console.error('Missing user or slug:', { user: !!user, slug });
+      return;
+    }
     
     setLoading(true);
     
     try {
-      await createQuoteRequest({
+      console.log('Creating quote request with data:', {
+        service_id: slug,
+        customer_id: user.id,
+        name,
+        message: message || undefined
+      });
+      
+      const result = await createQuoteRequest({
         service_id: slug,
         customer_id: user.id,
         message: message || undefined,
@@ -59,11 +78,12 @@ export default function QuoteRequestWizard() {
         city,
       });
 
+      console.log('Quote request created successfully:', result);
       toast.success("Offertförfrågan skickad!");
       navigate("/dashboard");
     } catch (error) {
       console.error('Error creating quote request:', error);
-      toast.error("Kunde inte skapa offertförfrågan");
+      toast.error("Kunde inte skapa offertförfrågan: " + (error as Error).message);
     } finally {
       setLoading(false);
     }

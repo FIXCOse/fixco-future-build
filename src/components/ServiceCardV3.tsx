@@ -83,11 +83,15 @@ const ServiceCardV3 = ({
 
         {/* CTA */}
         <div className="mt-auto">
-          <Button 
-            className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
-            variant="default"
-            onClick={onQuote}
-          >
+        <Button 
+          className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
+          variant="default"
+          onClick={() => {
+            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
+            console.log('Quote button clicked, navigating to:', `/offert/${slug}`);
+            window.open(`/offert/${slug}`, '_self');
+          }}
+        >
             Begär offert
           </Button>
         </div>
@@ -234,12 +238,15 @@ const ServiceCardV3 = ({
         <Button 
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
-          onClick={ctaType === 'book' ? () => {
+          onClick={() => {
             const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
-            window.location.href = `/boka/${slug}`;
-          } : () => {
-            const slug = serviceSlug || title.toLowerCase().replace(/\s+/g, '-');
-            window.location.href = `/offert/${slug}`;
+            if (ctaType === 'book') {
+              console.log('Navigating to booking:', `/boka/${slug}`);
+              window.open(`/boka/${slug}`, '_self');
+            } else {
+              console.log('Navigating to quote:', `/offert/${slug}`);
+              window.open(`/offert/${slug}`, '_self');
+            }
           }}
         >
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}

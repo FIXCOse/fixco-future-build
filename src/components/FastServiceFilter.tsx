@@ -433,6 +433,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     rot: service.eligible?.rot || false,
                     rut: service.eligible?.rut || false
                   }}
+                  serviceSlug={service.id}
                   onBook={() => {
                     if (onServiceSelect) {
                       onServiceSelect(service);

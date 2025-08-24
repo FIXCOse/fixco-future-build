@@ -209,6 +209,7 @@ const ServiceDetail = () => {
                              subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
                 priceIncl={subService.basePrice}
                 eligible={subService.eligible}
+                serviceSlug={subService.id}
                 onBook={() => {
                   // Handle booking
                 }}
@@ -292,6 +293,7 @@ const ServiceDetail = () => {
                   pricingType="hourly"
                   priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
                   eligible={relatedService.eligible}
+                  serviceSlug={relatedService.slug}
                   onBook={() => {
                     // Handle booking
                   }}

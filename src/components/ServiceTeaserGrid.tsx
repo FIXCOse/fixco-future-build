@@ -153,6 +153,7 @@ const ServiceTeaserGrid = () => {
                 pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
                 priceIncl={service.basePrice}
                 eligible={service.eligible}
+                serviceSlug={service.slug}
                 onBook={() => {
                   // Handle booking
                 }}
