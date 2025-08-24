@@ -55,6 +55,7 @@ import QuoteRequestWizard from "./pages/QuoteRequestWizard";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminQuotes from "./pages/admin/AdminQuotes";
+import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import TestBooking from "./pages/TestBooking";
 
 const queryClient = new QueryClient();
@@ -118,6 +119,7 @@ const App = () => {
                   <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="quotes" element={<AdminQuotes />} />
+                    <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quote-requests" element={<AdminQuoteRequests />} />
                     <Route path="quotes/new" element={<QuoteWizard />} />
                     <Route path="invoices" element={<AdminInvoices />} />
