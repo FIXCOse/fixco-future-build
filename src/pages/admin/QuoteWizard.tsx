@@ -544,14 +544,14 @@ const QuoteWizard = () => {
                         <SelectValue placeholder="Välj avdragstyp" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border z-50">
-                        <SelectItem value="">Inget avdrag</SelectItem>
+                        <SelectItem value="none">Inget avdrag</SelectItem>
                         <SelectItem value="ROT">ROT-avdrag</SelectItem>
                         <SelectItem value="RUT">RUT-avdrag</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  {quoteData.rotRutType && (
+                  {quoteData.rotRutType && quoteData.rotRutType !== 'none' && (
                     <div>
                       <Label htmlFor="rotRutPercent">Andel arbetskostnad för avdrag (%)</Label>
                       <Input
