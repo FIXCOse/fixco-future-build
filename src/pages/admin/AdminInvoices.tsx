@@ -90,6 +90,101 @@ const AdminInvoices = () => {
     }
   };
 
+  // Åtgärder för fakturor
+  const previewInvoice = async (invoice: any) => {
+    try {
+      if (invoice.pdf_url) {
+        const { data, error } = await supabase.storage
+          .from('invoices')
+          .createSignedUrl(invoice.pdf_url, 60 * 60);
+        if (error) throw error;
+        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+        return;
+      }
+      // Fallback: rendera enkel HTML-klientvy
+      const win = window.open('', '_blank');
+      if (win) {
+        const items = (invoice.line_items || []).map((item: any) => {
+          const qty = Number(item.quantity ?? 1);
+          const unit = Number(item.unit_price ?? (item.amount != null ? Number(item.amount) / qty : 0));
+          const total = Number(item.total_price ?? item.amount ?? unit * qty);
+          return `<tr><td>${item.description || 'Arbete'}</td><td>${qty}</td><td style="text-align:right">${unit.toLocaleString('sv-SE')} kr</td><td style="text-align:right">${total.toLocaleString('sv-SE')} kr</td></tr>`;
+        }).join('');
+        win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${invoice.invoice_number}</title></head><body><h2>Faktura ${invoice.invoice_number}</h2><table style="width:100%;border-collapse:collapse" border="1"><thead><tr><th>Beskrivning</th><th>Antal</th><th>Enhetspris</th><th>Total</th></tr></thead><tbody>${items}</tbody></table><h3 style="text-align:right">Att betala: ${(Number(invoice.total_amount)||0).toLocaleString('sv-SE')} kr</h3></body></html>`);
+        win.document.close();
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error('Kunde inte förhandsvisa fakturan');
+    }
+  };
+
+  const downloadInvoice = async (invoice: any) => {
+    try {
+      if (invoice.pdf_url) {
+        const { data, error } = await supabase.storage
+          .from('invoices')
+          .createSignedUrl(invoice.pdf_url, 60 * 60);
+        if (error) throw error;
+        if (data?.signedUrl) {
+          const a = document.createElement('a');
+          a.href = data.signedUrl;
+          a.download = `${invoice.invoice_number}.html`;
+          a.click();
+        }
+        return;
+      }
+      // Fallback: ladda ner genererad HTML
+      const blob = new Blob([JSON.stringify(invoice, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${invoice.invoice_number}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      toast.error('Kunde inte ladda ner faktura');
+    }
+  };
+
+  const sendInvoice = async (invoice: any) => {
+    try {
+      toast.info('Skickar faktura...');
+      const { data, error } = await supabase.functions.invoke('send-invoice-email', {
+        body: { invoiceId: invoice.id }
+      });
+      if (error) throw error;
+      if (data?.success) {
+        toast.success('Faktura skickad via e-post!');
+      } else if (data?.previewHtml) {
+        const win = window.open('', '_blank');
+        if (win) { win.document.write(String(data.previewHtml)); win.document.close(); }
+        toast.warning('Förhandsvisning öppnad (e-post ej skickad).');
+      } else {
+        toast.error(data?.error || 'Kunde inte skicka faktura');
+      }
+    } catch (e: any) {
+      console.error(e);
+      toast.error(e?.message || 'Kunde inte skicka faktura');
+    }
+  };
+
+  const markAsPaid = async (invoice: any) => {
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .update({ status: 'paid' as any, paid_at: new Date().toISOString() })
+        .eq('id', invoice.id);
+      if (error) throw error;
+      toast.success('Fakturan markerad som betald');
+      window.location.reload();
+    } catch (e) {
+      console.error(e);
+      toast.error('Kunde inte markera som betald');
+    }
+  };
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'paid': return 'default' as const;
@@ -166,7 +261,7 @@ const AdminInvoices = () => {
                       <div className="flex items-center justify-between">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <Badge variant="default" className="bg-green-100 text-green-800">
+                           <Badge variant="default">
                               <CheckCircle className="h-3 w-3 mr-1" />
                               Accepterad
                             </Badge>
@@ -304,16 +399,21 @@ const AdminInvoices = () => {
                          </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => previewInvoice(invoice)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => downloadInvoice(invoice)}>
                           <Download className="h-4 w-4" />
                         </Button>
                         {invoice.status !== 'paid' && (
-                          <Button variant="outline" size="sm">
-                            <Send className="h-4 w-4" />
-                          </Button>
+                          <>
+                            <Button variant="outline" size="sm" onClick={() => sendInvoice(invoice)}>
+                              <Send className="h-4 w-4" />
+                            </Button>
+                            <Button size="sm" onClick={() => markAsPaid(invoice)}>
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                          </>
                         )}
                       </div>
                     </div>
