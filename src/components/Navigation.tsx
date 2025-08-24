@@ -34,18 +34,8 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    if (!user) {
-      return [
-        { href: "/", label: "Hem" },
-        { href: "/tjanster", label: "Tjänster" },
-        { href: "/ai-assistent", label: "AI Assistent" },
-        { href: "/referenser", label: "Referenser" },
-        { href: "/om-oss", label: "Om oss" },
-        { href: "/kontakt", label: "Kontakt" },
-      ];
-    }
-
-    const baseItems = [
+    // All pages visible to everyone
+    const allItems = [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/ai-assistent", label: "AI Assistent" },
@@ -60,10 +50,10 @@ export default function Navigation() {
 
     // Add admin link for admin/owner users
     if (isAdmin) {
-      baseItems.splice(3, 0, { href: "/admin", label: "Administration" });
+      allItems.splice(4, 0, { href: "/admin", label: "Administration" });
     }
 
-    return baseItems;
+    return allItems;
   };
 
   const navItems = getNavItems();
