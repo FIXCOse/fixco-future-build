@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Search, Receipt, Plus, Eye, Download, Send, FileText, CheckCircle } from 'lucide-react';
+import { Search, Receipt, Plus, Eye, Download, Send, FileText, CheckCircle, Trash2, TrendingUp, Clock, AlertTriangle, CreditCard } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -46,7 +46,17 @@ const AdminInvoices = () => {
     },
   });
 
-  // Hämta accepterade offerter som inte har fakturor än
+  // Hämta statistik för fakturor
+  const { data: invoiceStats } = useQuery({
+    queryKey: ['invoice-statistics'],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_invoice_statistics');
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // Hämta slutförda offerter som inte har fakturor än
   const { data: availableQuotes, isLoading: quotesLoading } = useQuery({
     queryKey: ['available-quotes-for-invoice'],
     queryFn: async () => {
@@ -58,6 +68,7 @@ const AdminInvoices = () => {
           invoices:invoices!invoices_quote_id_fkey(id)
         `)
         .eq('status', 'accepted')
+        .eq('project_status', 'completed')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -185,6 +196,25 @@ const AdminInvoices = () => {
     }
   };
 
+  const deleteInvoice = async (invoice: any) => {
+    if (!confirm(`Är du säker på att du vill radera faktura ${invoice.invoice_number}?`)) {
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .delete()
+        .eq('id', invoice.id);
+      if (error) throw error;
+      toast.success('Faktura raderad');
+      window.location.reload();
+    } catch (e) {
+      console.error(e);
+      toast.error('Kunde inte radera faktura');
+    }
+  };
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'paid': return 'default' as const;
@@ -230,13 +260,55 @@ const AdminInvoices = () => {
         </Button>
       </div>
 
+      {/* Statistics Overview */}
+      {invoiceStats && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card className="p-4">
+            <div className="flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              <div>
+                <p className="text-sm text-muted-foreground">Totalt värde</p>
+                <p className="text-lg font-bold">{parseInt((invoiceStats as any).paid_amount).toLocaleString()} SEK</p>
+              </div>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div className="flex items-center space-x-2">
+              <Clock className="h-5 w-5 text-blue-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Väntande betalning</p>
+                <p className="text-lg font-bold">{parseInt((invoiceStats as any).pending_amount).toLocaleString()} SEK</p>
+              </div>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Förfallna</p>
+                <p className="text-lg font-bold">{parseInt((invoiceStats as any).overdue_amount).toLocaleString()} SEK</p>
+              </div>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div className="flex items-center space-x-2">
+              <CreditCard className="h-5 w-5 text-green-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Betalda</p>
+                <p className="text-lg font-bold">{parseInt((invoiceStats as any).paid_count)} st</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+
       {/* Dialog för att välja offert */}
       <Dialog open={showQuoteDialog} onOpenChange={setShowQuoteDialog}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Skapa faktura från offert</DialogTitle>
             <DialogDescription>
-              Välj en accepterad offert att skapa faktura från. Endast offerter som inte redan har fakturor visas.
+              Välj en slutförd offert att skapa faktura från. Endast slutförda projekt som inte redan har fakturor visas.
             </DialogDescription>
           </DialogHeader>
           
@@ -310,10 +382,10 @@ const AdminInvoices = () => {
               <div className="text-center py-8">
                 <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">
-                  Inga accepterade offerter tillgängliga för fakturering
+                  Inga slutförda projekt tillgängliga för fakturering
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Acceptera offerter först för att kunna skapa fakturor från dem
+                  Slutför projekt först för att kunna skapa fakturor från dem
                 </p>
               </div>
             )}
@@ -415,6 +487,9 @@ const AdminInvoices = () => {
                             </Button>
                           </>
                         )}
+                        <Button variant="destructive" size="sm" onClick={() => deleteInvoice(invoice)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}

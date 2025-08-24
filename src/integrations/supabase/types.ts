@@ -863,8 +863,15 @@ export type Database = {
           id: string
           line_items: Json
           organization_id: string | null
+          project_completed_at: string | null
+          project_images: Json | null
+          project_notes: string | null
+          project_started_at: string | null
+          project_status: string | null
           property_id: string | null
+          publish_as_reference: boolean | null
           quote_number: string
+          reference_data: Json | null
           rot_amount: number | null
           rut_amount: number | null
           status: Database["public"]["Enums"]["quote_status"] | null
@@ -886,8 +893,15 @@ export type Database = {
           id?: string
           line_items?: Json
           organization_id?: string | null
+          project_completed_at?: string | null
+          project_images?: Json | null
+          project_notes?: string | null
+          project_started_at?: string | null
+          project_status?: string | null
           property_id?: string | null
+          publish_as_reference?: boolean | null
           quote_number: string
+          reference_data?: Json | null
           rot_amount?: number | null
           rut_amount?: number | null
           status?: Database["public"]["Enums"]["quote_status"] | null
@@ -909,8 +923,15 @@ export type Database = {
           id?: string
           line_items?: Json
           organization_id?: string | null
+          project_completed_at?: string | null
+          project_images?: Json | null
+          project_notes?: string | null
+          project_started_at?: string | null
+          project_status?: string | null
           property_id?: string | null
+          publish_as_reference?: boolean | null
           quote_number?: string
+          reference_data?: Json | null
           rot_amount?: number | null
           rut_amount?: number | null
           status?: Database["public"]["Enums"]["quote_status"] | null
@@ -1212,6 +1233,10 @@ export type Database = {
       generate_quote_number: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_invoice_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_user_organizations: {
         Args: { user_uuid: string }

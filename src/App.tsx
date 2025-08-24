@@ -50,6 +50,7 @@ import AdminStaff from "./pages/admin/AdminStaff";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminBookingDetail from "./pages/admin/AdminBookingDetail";
+import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
 import BookingWizard from "./pages/BookingWizard";
 import QuoteRequestWizard from "./pages/QuoteRequestWizard";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
@@ -123,6 +124,7 @@ const App = () => {
                     <Route path="quote-requests" element={<AdminQuoteRequests />} />
                     <Route path="quotes/new" element={<QuoteWizard />} />
                     <Route path="invoices" element={<AdminInvoices />} />
+                    <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />
                     <Route path="bookings/:id" element={<AdminBookingDetail />} />
                     <Route path="customers" element={<AdminCustomers />} />

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database, Shield
+  Plus, Calendar, Settings, Database, Shield, Clock
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,13 @@ const AdminDashboard = () => {
       href: '/admin/quotes/new',
       icon: Plus,
       variant: 'cta-primary' as const
+    },
+    {
+      title: 'Pågående uppdrag',
+      description: 'Hantera accepterade projekt',
+      href: '/admin/ongoing-projects',
+      icon: Clock,
+      variant: 'outline' as const
     },
     {
       title: 'Fakturor',
