@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { propertySchema, PROPERTY_TYPES, type PropertyFormData } from '@/schemas/propertySchema';
 import { useToast } from '@/components/ui/use-toast';
@@ -42,6 +43,7 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
     }
   });
 
+  const selectedType = watch('type');
   const isPrimary = watch('is_primary');
 
   useEffect(() => {
@@ -174,18 +176,18 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
       {/* Typ av fastighet */}
       <div className="space-y-2">
         <Label htmlFor="type">Typ av fastighet *</Label>
-        <select
-          id="type"
-          {...register('type', { required: 'Välj typ av fastighet' })}
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <option value="">Välj typ...</option>
-          {PROPERTY_TYPES.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        <Select value={selectedType} onValueChange={(value) => setValue('type', value as PropertyFormData['type'])}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Välj typ av fastighet..." />
+          </SelectTrigger>
+          <SelectContent className="max-h-[200px] overflow-y-auto">
+            {PROPERTY_TYPES.map((type) => (
+              <SelectItem key={type} value={type} className="cursor-pointer">
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {errors.type && (
           <p className="text-sm text-destructive">{errors.type.message}</p>
         )}
