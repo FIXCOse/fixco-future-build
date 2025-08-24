@@ -470,6 +470,7 @@ export type Database = {
           loyalty_tier: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent: boolean | null
           org_number: string | null
+          owner_welcome_at: string | null
           phone: string | null
           postal_code: string | null
           total_spent: number | null
@@ -493,6 +494,7 @@ export type Database = {
           loyalty_tier?: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent?: boolean | null
           org_number?: string | null
+          owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
           total_spent?: number | null
@@ -516,6 +518,7 @@ export type Database = {
           loyalty_tier?: Database["public"]["Enums"]["loyalty_tier"] | null
           marketing_consent?: boolean | null
           org_number?: string | null
+          owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
           total_spent?: number | null

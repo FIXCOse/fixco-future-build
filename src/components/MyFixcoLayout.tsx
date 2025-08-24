@@ -3,6 +3,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navigation from '@/components/Navigation';
 import { Card, CardContent } from '@/components/ui/card';
+import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
+import { OwnerCongrats } from '@/components/OwnerCongrats';
 
 const PageSkeleton = () => (
   <div className="min-h-screen bg-background">
@@ -32,6 +34,7 @@ const LoginRequired = () => <Navigate to="/auth" replace />;
 
 const MyFixcoLayout = () => {
   const { user, profile, loading } = useAuth();
+  const { show, acknowledge } = useOwnerCongrats();
 
   if (loading) return <PageSkeleton />;
   if (!user) return <LoginRequired />;
@@ -44,6 +47,7 @@ const MyFixcoLayout = () => {
           <Outlet />
         </div>
       </div>
+      <OwnerCongrats open={show} onClose={acknowledge} />
     </div>
   );
 };
