@@ -90,7 +90,7 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
       } else {
         result = await supabase
           .from('properties')
-          .insert([propertyData])
+          .insert(propertyData)
           .select()
           .single();
       }
