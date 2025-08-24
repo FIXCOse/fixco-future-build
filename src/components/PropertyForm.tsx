@@ -182,7 +182,7 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
             <SelectValue placeholder="Välj typ av fastighet..." />
           </SelectTrigger>
           <SelectContent 
-            className="max-h-[200px] overflow-y-auto z-[9999]"
+            className="z-[9999] bg-background border shadow-lg"
             position="popper"
             sideOffset={4}
           >
