@@ -22,6 +22,7 @@ import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import AIAssistant from "./pages/AIAssistant";
 import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
 import StickyCTA from "./components/StickyCTA";
@@ -147,6 +148,7 @@ const App = () => {
                   
                   <Route path="/tjanster" element={<Services />} />
                   <Route path="/tjanster/:slug" element={<ServiceDetail />} />
+                  <Route path="/ai-assistent" element={<AIAssistant />} />
                   <Route path="/kontakt" element={<Contact />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/om-oss" element={<AboutUs />} />
