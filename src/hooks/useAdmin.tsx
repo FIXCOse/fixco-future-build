@@ -1,45 +1,36 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './useAuth';
+import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
 
 export interface UserRole {
   role: 'owner' | 'admin' | 'staff' | 'customer';
 }
 
 export function useAdmin() {
-  const { user } = useAuth();
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setRole(null);
-      setLoading(false);
-      return;
-    }
+    let mounted = true;
 
     const fetchRole = async () => {
       try {
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (error) {
-          console.warn('Role query warning:', error);
-        }
-        setRole(data?.role ?? 'customer');
+        const profile = await getOrCreateProfile();
+        if (!mounted) return;
+        
+        setRole(profile.role || 'customer');
       } catch (error) {
         console.error('Error fetching user role:', error);
-        setRole('customer'); // Default fallback
+        if (mounted) setRole('customer'); // Default fallback
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
     fetchRole();
-  }, [user]);
+
+    return () => { mounted = false; };
+  }, []);
 
   const isAdmin = role === 'admin' || role === 'owner';
   const isOwner = role === 'owner';

@@ -1,10 +1,12 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import Navigation from '@/components/Navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
 import { OwnerCongrats } from '@/components/OwnerCongrats';
+import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
 
 const PageSkeleton = () => (
   <div className="min-h-screen bg-background">
@@ -33,8 +35,49 @@ const PageSkeleton = () => (
 const LoginRequired = () => <Navigate to="/auth" replace />;
 
 const MyFixcoLayout = () => {
-  const { user, profile, loading } = useAuth();
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const { show, acknowledge } = useOwnerCongrats();
+
+  useEffect(() => {
+    let mounted = true;
+    // Timeout fail-safe - never load forever
+    const timer = setTimeout(() => mounted && setLoading(false), 6000);
+
+    (async () => {
+      try {
+        // Get session
+        const { data: sessionRes } = await supabase.auth.getSession();
+        const currentUser = sessionRes?.session?.user;
+        
+        if (!mounted) return;
+        setUser(currentUser);
+
+        if (!currentUser) {
+          setLoading(false);
+          return;
+        }
+
+        // Get or create profile with fail-safe
+        const profileData = await getOrCreateProfile();
+        if (!mounted) return;
+        
+        setProfile(profileData);
+      } catch (error) {
+        console.error("MyFixcoLayout error:", error);
+        // Still allow rendering with partial data
+      } finally {
+        if (mounted) setLoading(false);
+        clearTimeout(timer);
+      }
+    })();
+
+    return () => { 
+      mounted = false; 
+      clearTimeout(timer);
+    };
+  }, []);
 
   if (loading) return <PageSkeleton />;
   if (!user) return <LoginRequired />;

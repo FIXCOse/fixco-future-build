@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Calendar, FileText, CreditCard, TrendingUp, Plus, ChevronRight, Buildin
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
+import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
 
 interface DashboardStats {
   upcomingBookings: number;
@@ -20,7 +20,7 @@ interface DashboardStats {
 }
 
 const DashboardOverview = () => {
-  const { user, profile } = useAuth();
+  const [profile, setProfile] = useState<any>(null);
   const [stats, setStats] = useState<DashboardStats>({
     upcomingBookings: 0,
     pendingQuotes: 0,
@@ -32,34 +32,55 @@ const DashboardOverview = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.id) {
-      loadDashboardStats(user.id);
-    }
-  }, [user?.id]);
+    let mounted = true;
+    const timer = setTimeout(() => mounted && setLoading(false), 4000); // Fail-safe timeout
+
+    const loadData = async () => {
+      try {
+        // Always load profile first
+        const profileData = await getOrCreateProfile();
+        if (!mounted) return;
+        setProfile(profileData);
+
+        // Load stats in background - non-blocking
+        loadDashboardStats(profileData.id);
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+      } finally {
+        if (mounted) setLoading(false);
+        clearTimeout(timer);
+      }
+    };
+
+    loadData();
+
+    return () => { 
+      mounted = false; 
+      clearTimeout(timer);
+    };
+  }, []);
 
   const loadDashboardStats = async (userId: string) => {
     try {
-      setLoading(true);
-
       // Load upcoming bookings
-      const { data: upcomingBookings } = await supabase
+      const { count: upcomingCount } = await supabase
         .from('bookings')
-        .select('id')
+        .select('*', { count: 'exact', head: true })
         .eq('customer_id', userId)
         .gte('scheduled_date', new Date().toISOString().split('T')[0])
         .eq('status', 'confirmed');
 
       // Load pending quotes
-      const { data: pendingQuotes } = await supabase
+      const { count: pendingCount } = await supabase
         .from('quotes')
-        .select('id')
+        .select('*', { count: 'exact', head: true })
         .eq('customer_id', userId)
         .eq('status', 'sent');
 
       // Load unpaid invoices
-      const { data: unpaidInvoices } = await supabase
+      const { count: unpaidCount } = await supabase
         .from('invoices')
-        .select('id')
+        .select('*', { count: 'exact', head: true })
         .eq('customer_id', userId)
         .in('status', ['sent', 'overdue']);
 
@@ -75,23 +96,48 @@ const DashboardOverview = () => {
       const rotRutSavings = rotRutData?.reduce((sum, invoice) => 
         sum + (invoice.rot_amount || 0) + (invoice.rut_amount || 0), 0) || 0;
 
-      setStats({
-        upcomingBookings: upcomingBookings?.length || 0,
-        pendingQuotes: pendingQuotes?.length || 0,
-        unpaidInvoices: unpaidInvoices?.length || 0,
-        totalSavings: profile?.total_spent || 0,
-        currentYearSpent: profile?.total_spent || 0,
+      setStats(prev => ({
+        ...prev,
+        upcomingBookings: upcomingCount || 0,
+        pendingQuotes: pendingCount || 0,
+        unpaidInvoices: unpaidCount || 0,
         rotRutSavings
-      });
+      }));
     } catch (error) {
-      console.error('Error loading dashboard stats:', error);
-    } finally {
-      setLoading(false);
+      console.warn('Stats loading failed:', error);
+      // Keep showing zeros - non-blocking
     }
   };
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-64" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i}>
+              <CardHeader className="pb-2">
+                <Skeleton className="h-4 w-3/4" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-8 w-1/2" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (!profile) {
-    return <div>Laddar profil...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="text-muted-foreground mb-4">Kunde inte ladda profil</p>
+          <Button onClick={() => window.location.reload()}>Försök igen</Button>
+        </div>
+      </div>
+    );
   }
 
   return (
