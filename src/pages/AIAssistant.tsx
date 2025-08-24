@@ -63,7 +63,8 @@ export default function AIAssistant() {
         icon: Home,
         features: ["Energieffektivitet", "Säkerhet", "Komfort", "Värdeökning"],
         savings: "15-30%",
-        color: "from-blue-500 to-purple-600"
+        color: "from-blue-500 to-purple-600",
+        modal: 'homeAnalysis'
       },
       {
         title: "Kostnadsprediktering",
@@ -71,7 +72,8 @@ export default function AIAssistant() {
         icon: Calculator,
         features: ["Live prisuppdateringar", "Säsongsvariationer", "Regional prissättning"],
         accuracy: "97%",
-        color: "from-green-500 to-blue-500"
+        color: "from-green-500 to-blue-500",
+        modal: 'costPrediction'
       },
       {
         title: "Trendanalys",
@@ -79,7 +81,8 @@ export default function AIAssistant() {
         icon: TrendingUp,
         features: ["Designtrender", "Tekniska innovationer", "Marknadsförändringar"],
         growth: "+45%",
-        color: "from-purple-500 to-pink-500"
+        color: "from-purple-500 to-pink-500",
+        modal: 'projectAssistant'
       },
       {
         title: "Miljöpåverkan Scanner",
@@ -87,7 +90,8 @@ export default function AIAssistant() {
         icon: Leaf,
         features: ["Carbon footprint", "Återvinningsgrad", "Energibesparing"],
         impact: "2.3 ton CO2",
-        color: "from-green-400 to-emerald-500"
+        color: "from-green-400 to-emerald-500",
+        modal: 'projectAssistant'
       }
     ],
     visualisering: [
@@ -97,7 +101,8 @@ export default function AIAssistant() {
         icon: Eye,
         features: ["AR-integration", "Fotorealistisk rendering", "Interaktiv design"],
         demos: "10K+",
-        color: "from-orange-500 to-red-500"
+        color: "from-orange-500 to-red-500",
+        modal: 'visualization'
       },
       {
         title: "Före/Efter Generator",
@@ -105,7 +110,8 @@ export default function AIAssistant() {
         icon: Camera,
         features: ["Maskinlärning", "Stilöverföring", "Högkvalitetsbilder"],
         quality: "4K Ultra",
-        color: "from-pink-500 to-rose-500"
+        color: "from-pink-500 to-rose-500",
+        modal: 'visualization'
       },
       {
         title: "Färgharmoni AI",
@@ -113,7 +119,8 @@ export default function AIAssistant() {
         icon: Palette,
         features: ["Psykologi-baserat", "Ljusanalys", "Personliga profiler"],
         combinations: "1M+",
-        color: "from-violet-500 to-purple-500"
+        color: "from-violet-500 to-purple-500",
+        modal: 'visualization'
       },
       {
         title: "Material Matcher",
@@ -121,7 +128,8 @@ export default function AIAssistant() {
         icon: Wrench,
         features: ["Hållbarhetsindex", "Prisoptimering", "Kvalitetsbedömning"],
         matches: "99.2%",
-        color: "from-indigo-500 to-blue-500"
+        color: "from-indigo-500 to-blue-500",
+        modal: 'projectAssistant'
       }
     ],
     optimering: [
@@ -131,7 +139,8 @@ export default function AIAssistant() {
         icon: PiggyBank,
         features: ["Automatisk beräkning", "Juridisk compliance", "Max avdrag"],
         savings: "50%",
-        color: "from-amber-500 to-orange-500"
+        color: "from-amber-500 to-orange-500",
+        modal: 'costPrediction'
       },
       {
         title: "Tidschema AI",
@@ -139,7 +148,8 @@ export default function AIAssistant() {
         icon: Clock,
         features: ["Väderprediktion", "Leverantörskoordinering", "Resursoptimering"],
         efficiency: "+35%",
-        color: "from-cyan-500 to-blue-500"
+        color: "from-cyan-500 to-blue-500",
+        modal: 'projectAssistant'
       },
       {
         title: "Kvalitetsprediktor",
@@ -147,7 +157,8 @@ export default function AIAssistant() {
         icon: Shield,
         features: ["Riskanalys", "Materialkompatibilitet", "Säkerhetsbedömning"],
         accuracy: "94%",
-        color: "from-red-500 to-pink-500"
+        color: "from-red-500 to-pink-500",
+        modal: 'projectAssistant'
       },
       {
         title: "Budget Optimizer",
@@ -155,7 +166,8 @@ export default function AIAssistant() {
         icon: Target,
         features: ["Kostnadsjämförelse", "Alternativa lösningar", "Värdeanalys"],
         savings: "20-40%",
-        color: "from-emerald-500 to-green-500"
+        color: "from-emerald-500 to-green-500",
+        modal: 'costPrediction'
       }
     ],
     prediktioner: [
@@ -165,7 +177,8 @@ export default function AIAssistant() {
         icon: Building,
         features: ["Marknadsanalys", "Jämförbara objekt", "ROI-beräkning"],
         increase: "+12%",
-        color: "from-teal-500 to-cyan-500"
+        color: "from-teal-500 to-cyan-500",
+        modal: 'projectAssistant'
       },
       {
         title: "Underhåll Prediktor",
@@ -173,7 +186,8 @@ export default function AIAssistant() {
         icon: Gauge,
         features: ["Slitageanalys", "Materiallivslängd", "Kostnadsplanering"],
         accuracy: "91%",
-        color: "from-blue-600 to-indigo-600"
+        color: "from-blue-600 to-indigo-600",
+        modal: 'projectAssistant'
       },
       {
         title: "Säsong Optimizer",
@@ -181,7 +195,8 @@ export default function AIAssistant() {
         icon: Calendar,
         features: ["Vädermönster", "Prisfluktuationer", "Tillgänglighet"],
         optimization: "85%",
-        color: "from-purple-600 to-violet-600"
+        color: "from-purple-600 to-violet-600",
+        modal: 'projectAssistant'
       },
       {
         title: "Trend Forecaster",
@@ -189,7 +204,8 @@ export default function AIAssistant() {
         icon: Rocket,
         features: ["Data från globala marknader", "Konsumentbeteende", "Innovation tracking"],
         predictions: "2-5 år",
-        color: "from-orange-600 to-red-600"
+        color: "from-orange-600 to-red-600",
+        modal: 'projectAssistant'
       }
     ]
   };
@@ -380,7 +396,7 @@ export default function AIAssistant() {
                                 size="sm" 
                                 variant="ghost" 
                                 className="group-hover:bg-primary/10"
-                                onClick={() => setActiveModal(category + '_' + index)}
+                                onClick={() => setActiveModal((feature as any).modal)}
                               >
                                 Testa nu
                                 <ArrowRight className="h-4 w-4 ml-2" />
