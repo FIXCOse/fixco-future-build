@@ -58,6 +58,9 @@ import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import TestBooking from "./pages/TestBooking";
+import { SmartHome } from "./pages/SmartHome";
+import { Neighborhood } from "./pages/Neighborhood"; 
+import { Leaderboard } from "./pages/Leaderboard";
 
 const queryClient = new QueryClient();
 
@@ -151,6 +154,9 @@ const App = () => {
                   <Route path="/rot-info" element={<ROTInfo />} />
                   <Route path="/rut" element={<RUT />} />
                   <Route path="/referenser" element={<Referenser />} />
+                  <Route path="/smart-hem" element={<SmartHome />} />
+                  <Route path="/naromrade" element={<Neighborhood />} />
+                  <Route path="/topplista" element={<Leaderboard />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

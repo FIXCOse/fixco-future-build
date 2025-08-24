@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
 import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
+import { RewardSystem } from '@/components/RewardSystem';
 
 interface DashboardStats {
   upcomingBookings: number;
@@ -279,6 +280,11 @@ const DashboardOverview = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* Reward System */}
+        <div className="mt-8">
+          <RewardSystem />
         </div>
       </div>
     </>

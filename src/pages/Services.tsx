@@ -4,9 +4,15 @@ import CategoryGrid from "@/components/CategoryGrid";
 import FastServiceFilter from "@/components/FastServiceFilter";
 import HeroMotion from "@/components/HeroMotion";
 import TrustChips from "@/components/TrustChips";
+import { Project3DVisualizer } from "@/components/Project3DVisualizer";
+import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
+import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
+import { AIProjectAssistant } from "@/components/AIProjectAssistant";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Services = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -57,6 +63,59 @@ const Services = () => {
             </p>
           </div>
           <FastServiceFilter />
+        </div>
+      </section>
+
+      {/* Interactive Project Visualization */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Visualisera ditt projekt</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Se hur ditt hem kan se ut efter renovering med våra avancerade verktyg.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
+            <Project3DVisualizer projectType="bathroom" />
+            <BeforeAfterSlider projectType="kitchen" />
+            <div className="space-y-6">
+              <div className="p-6 border rounded-lg">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <span className="text-2xl">🌱</span>
+                  {t('services.ecoScore')}
+                </h3>
+                <EcoScoreDisplay score={85} showDetails={true} />
+                <p className="text-sm text-muted-foreground mt-3">
+                  Detta projekt har hög miljöprestanda tack vare energieffektiva material och metoder.
+                </p>
+              </div>
+              
+              <div className="p-4 bg-primary/5 rounded-lg">
+                <h4 className="font-medium mb-2">Smarta funktioner</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• 3D-förhandsvisning</li>
+                  <li>• AI-genererade resultat</li>
+                  <li>• Miljöpåverkan analys</li>
+                  <li>• ROT/RUT optimering</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Project Assistant */}
+      <section className="py-16 bg-muted/5">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">AI Projektassistent</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Få personliga rekommendationer för att optimera ditt hem med AI-analys, 
+              ROT-avdrag och miljötänk.
+            </p>
+          </div>
+          <AIProjectAssistant />
         </div>
       </section>
 

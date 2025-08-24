@@ -17,6 +17,7 @@ import {
   Home,
   Smartphone
 } from 'lucide-react';
+import { SmartIntegrations } from '@/components/SmartIntegrations';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -236,6 +237,11 @@ export const SmartHome = () => {
             </Button>
           </div>
         </Card>
+
+        {/* Smart Integrations */}
+        <div className="mt-6">
+          <SmartIntegrations />
+        </div>
 
         {/* Integration CTA */}
         <Card className="mt-6 p-6 bg-gradient-to-r from-primary/10 to-primary/5">
