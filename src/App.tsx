@@ -16,6 +16,8 @@ import RUT from "./pages/RUT";
 import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
+import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
 import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
@@ -40,6 +42,8 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="/auth/error" element={<AuthError />} />
                 <Route path="/mitt-fixco" element={<Dashboard />} />
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />

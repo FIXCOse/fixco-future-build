@@ -145,9 +145,9 @@ const Auth = () => {
 
     setIsLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -172,6 +172,12 @@ const Auth = () => {
             description: "Ett konto med denna e-post finns redan. Försök logga in istället.",
             variant: "destructive"
           });
+        } else if (error.message.includes('Signup not allowed')) {
+          toast({
+            title: "Registrering blockerad",
+            description: "Kontakta support för att aktivera ditt konto",
+            variant: "destructive"
+          });
         } else {
           toast({
             title: "Registrering misslyckades",
@@ -180,15 +186,24 @@ const Auth = () => {
           });
         }
       } else {
-        toast({
-          title: "Konto skapat!",
-          description: "Kontrollera din e-post för att bekräfta ditt konto"
-        });
+        // Check if email confirmation is required
+        if (data.user && !data.session) {
+          toast({
+            title: "Kontrollera din e-post! 📧",
+            description: "Klicka på verifieringslänken i e-posten för att aktivera ditt konto"
+          });
+        } else if (data.session) {
+          toast({
+            title: "Välkommen till Fixco! 🎉",
+            description: "Ditt konto är nu aktivt"
+          });
+        }
       }
     } catch (error) {
+      console.error('Signup error:', error);
       toast({
-        title: "Ett fel uppstod",
-        description: "Försök igen senare",
+        title: "Ett oväntat fel uppstod",
+        description: "Försök igen senare eller kontakta support",
         variant: "destructive"
       });
     } finally {
@@ -198,10 +213,15 @@ const Auth = () => {
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            prompt: 'consent'
+          }
         }
       });
 
@@ -211,13 +231,17 @@ const Auth = () => {
           description: error.message,
           variant: "destructive"
         });
+        setIsLoading(false);
       }
+      // Note: Don't set loading to false here since user will be redirected
     } catch (error) {
+      console.error('Google auth error:', error);
       toast({
-        title: "Ett fel uppstod",
-        description: "Försök igen senare",
+        title: "Ett oväntat fel uppstod",
+        description: "Försök igen senare eller kontakta support",
         variant: "destructive"
       });
+      setIsLoading(false);
     }
   };
 
