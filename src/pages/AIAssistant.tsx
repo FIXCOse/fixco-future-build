@@ -40,10 +40,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AIFunctionModals } from "@/components/AIFunctionModals";
 import SEOSchema from "@/components/SEOSchema";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function AIAssistant() {
   const [selectedCategory, setSelectedCategory] = useState("analys");
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleQuoteRequest = (data: any) => {
+    toast.success("Navigerar till offertformulär...");
+    // Data will be passed to quote form
+  };
   
   const aiFeatures = {
     analys: [
@@ -236,11 +246,11 @@ export default function AIAssistant() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90">
+              <Button size="lg" className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" onClick={() => setActiveModal('projectAssistant')}>
                 <Brain className="h-5 w-5 mr-2" />
                 Starta AI Analys
               </Button>
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" onClick={() => setActiveModal('visualization')}>
                 <Eye className="h-5 w-5 mr-2" />
                 Se Demo
               </Button>
@@ -366,7 +376,12 @@ export default function AIAssistant() {
                                    feature.predictions ? "Prognos" : "Prestanda"}
                                 </div>
                               </div>
-                              <Button size="sm" variant="ghost" className="group-hover:bg-primary/10">
+                              <Button 
+                                size="sm" 
+                                variant="ghost" 
+                                className="group-hover:bg-primary/10"
+                                onClick={() => setActiveModal(category + '_' + index)}
+                              >
                                 Testa nu
                                 <ArrowRight className="h-4 w-4 ml-2" />
                               </Button>
@@ -461,11 +476,11 @@ export default function AIAssistant() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-100">
+              <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-100" onClick={() => setActiveModal('homeAnalysis')}>
                 <Cpu className="h-5 w-5 mr-2" />
                 Starta AI-Analys Nu
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" onClick={() => navigate('/boka-hembesok')}>
                 <MessageSquare className="h-5 w-5 mr-2" />
                 Boka Konsultation
               </Button>
@@ -488,6 +503,13 @@ export default function AIAssistant() {
           </motion.div>
         </div>
       </section>
+
+      {/* AI Function Modals */}
+      <AIFunctionModals 
+        activeModal={activeModal}
+        onClose={() => setActiveModal(null)}
+        onRequestQuote={handleQuoteRequest}
+      />
     </div>
   );
 }
