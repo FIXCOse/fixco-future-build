@@ -82,6 +82,11 @@ const MyFixcoLayout = () => {
   if (loading) return <PageSkeleton />;
   if (!user) return <LoginRequired />;
 
+  // Redirect OWNER users to admin panel
+  if (profile?.role === 'owner') {
+    return <Navigate to="/admin" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />

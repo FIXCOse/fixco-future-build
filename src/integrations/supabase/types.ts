@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string | null
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      audit_log: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string | null
+          id: number
+          meta: Json | null
+          target: string | null
+        }
+        Insert: {
+          action: string
+          actor: string
+          created_at?: string | null
+          id?: number
+          meta?: Json | null
+          target?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string | null
+          id?: number
+          meta?: Json | null
+          target?: string | null
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           attachments: string[] | null
@@ -211,6 +259,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feature_flags: {
+        Row: {
+          enabled: boolean
+          key: string
+          meta: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          key: string
+          meta?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          key?: string
+          meta?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       invoices: {
         Row: {
@@ -690,6 +759,36 @@ export type Database = {
           },
         ]
       }
+      staff: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          id: string
+          name: string
+          role: string
+          skills: string[] | null
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          name: string
+          role: string
+          skills?: string[] | null
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          role?: string
+          skills?: string[] | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -835,6 +934,54 @@ export type Database = {
           },
         ]
       }
+      work_orders: {
+        Row: {
+          booking_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          staff_id: string | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          booking_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          staff_id?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          booking_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          staff_id?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_orders_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -870,6 +1017,10 @@ export type Database = {
       is_organization_member: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
+      }
+      log_admin_action: {
+        Args: { p_action: string; p_meta?: Json; p_target?: string }
+        Returns: undefined
       }
       make_property_primary: {
         Args: { p_property_id: string }
