@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useWizardStore } from "@/stores/wizardStore";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -43,52 +44,27 @@ const ServiceCardV3 = ({
   const { mode } = usePriceStore();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { openWizard } = useWizardStore();
 
   const handleBookingClick = () => {
     console.log('[ServiceCardV3] Book button clicked for:', { title, serviceSlug });
     
-    if (!serviceSlug) {
-      console.error('[ServiceCardV3] No serviceSlug provided');
-      // Use title as fallback serviceSlug  
-      const fallbackSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
-        detail: { type: 'book', serviceId: fallbackSlug, serviceName: title }
-      }));
-      return;
-    }
-    
     if (onBook) {
       onBook();
     } else {
-      // Use booking wizard instead of navigation
-      console.log('[ServiceCardV3] Dispatching booking wizard event');
-      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
-        detail: { type: 'book', serviceId: serviceSlug, serviceName: title }
-      }));
+      const id = serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      openWizard('book', id, title);
     }
   };
 
   const handleQuoteClick = () => {
     console.log('[ServiceCardV3] Quote button clicked for:', { title, serviceSlug });
     
-    if (!serviceSlug) {
-      console.error('[ServiceCardV3] No serviceSlug provided');
-      // Use title as fallback serviceSlug
-      const fallbackSlug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
-        detail: { type: 'quote', serviceId: fallbackSlug, serviceName: title }
-      }));
-      return;
-    }
-    
     if (onQuote) {
       onQuote();
     } else {
-      // Use booking wizard instead of navigation
-      console.log('[ServiceCardV3] Dispatching quote wizard event');
-      window.dispatchEvent(new CustomEvent('open-booking-wizard', {
-        detail: { type: 'quote', serviceId: serviceSlug, serviceName: title }
-      }));
+      const id = serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+      openWizard('quote', id, title);
     }
   };
   
