@@ -28,7 +28,7 @@ import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import MyFixcoLayout from "./components/MyFixcoLayout";
-import AccountOverview from "./pages/MyFixco/AccountOverview";
+import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
 import RotRutPage from "./pages/MyFixco/RotRutPage";
@@ -66,7 +66,7 @@ const App = () => {
                 <Route path="/auth/error" element={<AuthError />} />
                 
                 <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
-                  <Route index element={<AccountOverview />} />
+                  <Route index element={<DashboardOverview />} />
                   <Route path="properties" element={<PropertiesPage />} />
                   <Route path="invoices" element={<InvoicesPage />} />
                   <Route path="rot-rut" element={<RotRutPage />} />
