@@ -47,44 +47,14 @@ interface DashboardStats {
 }
 
 const Dashboard = () => {
+  // Redirect to new dashboard structure
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [stats, setStats] = useState<DashboardStats>({
-    upcomingBookings: 0,
-    pendingQuotes: 0,
-    unpaidInvoices: 0,
-    totalSavings: 0,
-    currentYearSpent: 0,
-    rotRutSavings: 0
-  });
-  const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate('/auth');
-        return;
-      }
-      setUser(session.user);
-      await loadUserData(session.user.id);
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        navigate('/auth');
-      } else {
-        setUser(session.user);
-        loadUserData(session.user.id);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    navigate('/mitt-fixco', { replace: true });
   }, [navigate]);
+
+  return null;
 
   const loadUserData = async (userId: string) => {
     try {

@@ -26,6 +26,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
+import MyFixcoLayout from "./components/MyFixcoLayout";
+import DashboardOverview from "./pages/MyFixco/DashboardOverview";
+import PropertiesPage from "./pages/MyFixco/PropertiesPage";
+import InvoicesPage from "./pages/MyFixco/InvoicesPage";
+import RotRutPage from "./pages/MyFixco/RotRutPage";
+import ActivityPage from "./pages/MyFixco/ActivityPage";
+import HistoryPage from "./pages/MyFixco/HistoryPage";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +53,17 @@ const App = () => {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/auth/error" element={<AuthError />} />
-                <Route path="/mitt-fixco" element={<Dashboard />} />
+                
+                {/* MyFixco Dashboard with nested routes */}
+                <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
+                  <Route index element={<DashboardOverview />} />
+                  <Route path="properties" element={<PropertiesPage />} />
+                  <Route path="invoices" element={<InvoicesPage />} />
+                  <Route path="rot-rut" element={<RotRutPage />} />
+                  <Route path="activity" element={<ActivityPage />} />
+                  <Route path="history" element={<HistoryPage />} />
+                </Route>
+                
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />
                 <Route path="/kontakt" element={<Contact />} />
