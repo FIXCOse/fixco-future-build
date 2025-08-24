@@ -46,7 +46,7 @@ const QuoteWizard = () => {
   const [selectedItem, setSelectedItem] = useState<BookingOrRequest | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('new');
   const [typeFilter, setTypeFilter] = useState('all');
   
   const [quoteData, setQuoteData] = useState({
