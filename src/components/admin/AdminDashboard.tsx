@@ -40,6 +40,13 @@ const AdminDashboard = () => {
       href: '/admin/customers',
       icon: Users,
       variant: 'outline' as const
+    },
+    {
+      title: 'Offertförfrågningar',
+      description: 'Se alla offertförfrågningar', 
+      href: '/admin/quote-requests',
+      icon: FileText,
+      variant: 'outline' as const
     }
   ];
 

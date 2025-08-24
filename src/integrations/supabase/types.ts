@@ -125,7 +125,7 @@ export type Database = {
           phone: string | null
           photos: string[] | null
           price_type: string | null
-          property_id: string
+          property_id: string | null
           rot_eligible: boolean | null
           rot_rut_type: string | null
           rut_eligible: boolean | null
@@ -163,7 +163,7 @@ export type Database = {
           phone?: string | null
           photos?: string[] | null
           price_type?: string | null
-          property_id: string
+          property_id?: string | null
           rot_eligible?: boolean | null
           rot_rut_type?: string | null
           rut_eligible?: boolean | null
@@ -201,7 +201,7 @@ export type Database = {
           phone?: string | null
           photos?: string[] | null
           price_type?: string | null
-          property_id?: string
+          property_id?: string | null
           rot_eligible?: boolean | null
           rot_rut_type?: string | null
           rut_eligible?: boolean | null

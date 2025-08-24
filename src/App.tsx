@@ -53,6 +53,7 @@ import QuoteRequestWizard from "./pages/QuoteRequestWizard";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminQuotes from "./pages/admin/AdminQuotes";
+import TestBooking from "./pages/TestBooking";
 
 const queryClient = new QueryClient();
 
@@ -106,6 +107,7 @@ const App = () => {
                 {/* Booking and Quote Request Routes */}
                 <Route path="/boka/:slug" element={<BookingWizard />} />
                 <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
+                <Route path="/test-booking" element={<TestBooking />} />
                 
                 <Route path="/tjanster" element={<Services />} />
                 <Route path="/tjanster/:slug" element={<ServiceDetail />} />
