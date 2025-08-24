@@ -767,6 +767,7 @@ export type Database = {
       quote_requests: {
         Row: {
           address: string | null
+          attachments: Json | null
           city: string | null
           contact_email: string | null
           contact_name: string | null
@@ -775,12 +776,16 @@ export type Database = {
           created_by: string | null
           created_by_type: string | null
           customer_id: string | null
+          description: string | null
           email: string | null
+          estimated_hours: number | null
+          hourly_rate: number | null
           id: string
           message: string | null
           name: string | null
           phone: string | null
           postal_code: string | null
+          price_type: string | null
           rot_rut_type: string | null
           service_id: string
           source: string | null
@@ -789,6 +794,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          attachments?: Json | null
           city?: string | null
           contact_email?: string | null
           contact_name?: string | null
@@ -797,12 +803,16 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          description?: string | null
           email?: string | null
+          estimated_hours?: number | null
+          hourly_rate?: number | null
           id?: string
           message?: string | null
           name?: string | null
           phone?: string | null
           postal_code?: string | null
+          price_type?: string | null
           rot_rut_type?: string | null
           service_id: string
           source?: string | null
@@ -811,6 +821,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          attachments?: Json | null
           city?: string | null
           contact_email?: string | null
           contact_name?: string | null
@@ -819,12 +830,16 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          description?: string | null
           email?: string | null
+          estimated_hours?: number | null
+          hourly_rate?: number | null
           id?: string
           message?: string | null
           name?: string | null
           phone?: string | null
           postal_code?: string | null
+          price_type?: string | null
           rot_rut_type?: string | null
           service_id?: string
           source?: string | null
@@ -1179,6 +1194,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_booking_secure: {
+        Args: { p: Json }
+        Returns: string
+      }
+      create_quote_request_secure: {
+        Args: { p: Json }
+        Returns: string
+      }
       generate_invoice_number: {
         Args: Record<PropertyKey, never>
         Returns: string

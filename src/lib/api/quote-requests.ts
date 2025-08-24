@@ -118,19 +118,15 @@ export async function createQuoteRequest(quoteRequestData: {
     status: 'new'
   };
 
-  console.log('[API] Inserting quote request data:', insertData);
+  console.log('[API] Inserting quote request via RPC with data:', insertData);
 
-  const { data, error } = await supabase
-    .from('quote_requests')
-    .insert(insertData)
-    .select('id')
-    .single();
+  const { data, error } = await supabase.rpc('create_quote_request_secure', { p: insertData });
 
   if (error) {
-    console.error('[API] Quote request insert error:', error);
+    console.error('[API] Quote request RPC error:', error);
     throw error;
   }
   
-  console.log('[API] Quote request created successfully:', data);
-  return data;
+  console.log('[API] Quote request created successfully. ID:', data);
+  return { id: data as string };
 }

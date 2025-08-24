@@ -112,27 +112,19 @@ function ActionWizardInner({
       console.log("[WIZARD] Prepared payload:", base);
 
       if (mode === "book") {
-        console.log("[WIZARD] Inserting booking...");
-        const { data, error } = await supabase.from("bookings").insert({
-          ...base,
-          base_price: form.hourly_rate || 0,
-          final_price: form.hourly_rate || 0,
-        }).select("id").single();
-        
-        console.log("[BOOKING] Result:", { data, error });
+        console.log("[WIZARD] RPC create_booking_secure...");
+        const { data, error } = await supabase.rpc('create_booking_secure', { p: base });
+        console.log("[BOOKING][RPC] Result:", { data, error });
         if (error) throw error;
-        
-        console.log("[BOOKING] Success! ID:", data?.id);
-        alert(`Bokning skickad! ID: ${data?.id?.slice(0, 8)}`);
+        console.log("[BOOKING] Success! ID:", data);
+        alert(`Bokning skickad! ID: ${String(data).slice(0, 8)}`);
       } else {
-        console.log("[WIZARD] Inserting quote request...");
-        const { data, error } = await supabase.from("quote_requests").insert(base).select("id").single();
-        
-        console.log("[QUOTE] Result:", { data, error });
+        console.log("[WIZARD] RPC create_quote_request_secure...");
+        const { data, error } = await supabase.rpc('create_quote_request_secure', { p: base });
+        console.log("[QUOTE][RPC] Result:", { data, error });
         if (error) throw error;
-        
-        console.log("[QUOTE] Success! ID:", data?.id);
-        alert(`Offertförfrågan skickad! ID: ${data?.id?.slice(0, 8)}`);
+        console.log("[QUOTE] Success! ID:", data);
+        alert(`Offertförfrågan skickad! ID: ${String(data).slice(0, 8)}`);
       }
 
       onClose();

@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 export function useQuoteRequestsRealtime(onChange: () => void) {
   useEffect(() => {
     const channel = supabase
-      .channel('quote-requests-realtime')
+      .channel('rt-quotes')
       .on(
         'postgres_changes',
         { 
