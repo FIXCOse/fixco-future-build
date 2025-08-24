@@ -5,9 +5,11 @@ import { Menu, X, Phone, MapPin, User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { useToast } from "@/components/ui/use-toast";
+import AuthModalContainer from "./auth/AuthModalContainer";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -113,11 +115,13 @@ const Navigation = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link to="/auth">
-                  <Button variant="outline" size="sm">
-                    Logga in
-                  </Button>
-                </Link>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setIsAuthModalOpen(true)}
+                >
+                  Logga in
+                </Button>
                 <Button variant="hero" size="sm">
                   Begär offert
                 </Button>
@@ -201,11 +205,17 @@ const Navigation = () => {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <Link to="/auth">
-                      <Button variant="outline" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
-                        Logga in
-                      </Button>
-                    </Link>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full" 
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setIsAuthModalOpen(true);
+                      }}
+                    >
+                      Logga in
+                    </Button>
                     <Button variant="hero" size="sm" className="w-full">
                       Begär offert
                     </Button>
@@ -216,6 +226,12 @@ const Navigation = () => {
           </div>
         )}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModalContainer
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </header>
   );
 };
