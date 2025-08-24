@@ -832,8 +832,16 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      is_organization_admin: {
+        Args: { org_uuid: string; user_uuid: string }
+        Returns: boolean
+      }
       is_organization_member: {
         Args: { org_uuid: string; user_uuid: string }
+        Returns: boolean
+      }
+      organization_has_members: {
+        Args: { org_uuid: string }
         Returns: boolean
       }
     }
