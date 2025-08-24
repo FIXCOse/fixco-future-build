@@ -50,11 +50,11 @@ export function PropertyModal({ open, onClose, children, title = "Lägg till fas
       
       {/* Dialog */}
       <div
-        className="relative z-[110] w-full max-w-lg rounded-lg bg-background border shadow-2xl pointer-events-auto max-h-[85vh] overflow-y-auto"
+        className="relative z-[110] w-full max-w-lg rounded-lg bg-background border shadow-2xl pointer-events-auto max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
           <h2 id="modal-title" className="text-lg font-semibold">
             {title}
           </h2>
@@ -67,8 +67,8 @@ export function PropertyModal({ open, onClose, children, title = "Lägg till fas
           </button>
         </div>
         
-        {/* Body */}
-        <div className="p-4">
+        {/* Body - Allow content to overflow for dropdowns */}
+        <div className="p-4 overflow-visible flex-1 min-h-0">
           {children}
         </div>
       </div>

@@ -114,7 +114,8 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="overflow-visible">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 overflow-visible">
       {/* Namn */}
       <div className="space-y-2">
         <Label htmlFor="name">Namn *</Label>
@@ -176,11 +177,15 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
       {/* Typ av fastighet */}
       <div className="space-y-2">
         <Label htmlFor="type">Typ av fastighet *</Label>
-        <Select value={selectedType} onValueChange={(value) => setValue('type', value as PropertyFormData['type'])}>
+        <Select value={selectedType || ""} onValueChange={(value) => setValue('type', value as PropertyFormData['type'])}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Välj typ av fastighet..." />
           </SelectTrigger>
-          <SelectContent className="max-h-[200px] overflow-y-auto">
+          <SelectContent 
+            className="max-h-[200px] overflow-y-auto z-[9999]"
+            position="popper"
+            sideOffset={4}
+          >
             {PROPERTY_TYPES.map((type) => (
               <SelectItem key={type} value={type} className="cursor-pointer">
                 {type}
@@ -244,6 +249,7 @@ export function PropertyForm({ onSuccess, onCancel, editingProperty }: PropertyF
           {isSubmitting ? 'Sparar...' : (editingProperty ? 'Uppdatera' : 'Lägg till')}
         </Button>
       </div>
-    </form>
+      </form>
+    </div>
   );
 }
