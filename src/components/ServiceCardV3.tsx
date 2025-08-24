@@ -48,6 +48,7 @@ const ServiceCardV3 = ({
 
   const handleBookingClick = () => {
     console.log('[ServiceCardV3] Book button clicked for:', { title, serviceSlug });
+    alert('Button clicked! Opening wizard...');
     
     if (onBook) {
       onBook();
