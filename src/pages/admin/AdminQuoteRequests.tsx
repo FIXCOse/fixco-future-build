@@ -6,10 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Trash2, FileText, Mail } from "lucide-react";
 import type { QuoteRequestRow } from "@/lib/api/quote-requests";
 
 export default function AdminQuoteRequests() {
@@ -17,6 +22,7 @@ export default function AdminQuoteRequests() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const navigate = useNavigate();
 
   const loadQuoteRequests = useCallback(async () => {
     try {
@@ -68,14 +74,56 @@ export default function AdminQuoteRequests() {
     return statusMap[status] || status;
   };
 
+  const handleDeleteQuoteRequest = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('quote_requests')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast.success('Offertförfrågning borttagen');
+      loadQuoteRequests();
+    } catch (error) {
+      console.error('Error deleting quote request:', error);
+      toast.error('Kunde inte ta bort offertförfrågning');
+    }
+  };
+
+  const handleCreateQuote = (request: QuoteRequestRow) => {
+    navigate('/admin/quotes/new', { 
+      state: { 
+        fromQuoteRequest: request,
+        customer_id: request.customer_id,
+        service_name: request.service_name || request.service_id,
+        description: request.description || request.message,
+        address: request.address,
+        postal_code: request.postal_code,
+        city: request.city
+      }
+    });
+  };
+
+  const handleContactCustomer = (request: QuoteRequestRow) => {
+    const email = request.email || request.customer?.email;
+    if (email) {
+      const subject = `Angående din offertförfrågning - ${request.service_name || request.service_id}`;
+      const body = `Hej ${request.name || request.customer?.first_name},\n\nTack för din offertförfrågning. Vi återkommer snart med mer information.\n\nMed vänliga hälsningar,\nFixco`;
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+  };
+
   const filteredQuoteRequests = quoteRequests.filter(request => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
     return (
       request.service_id?.toLowerCase().includes(searchLower) ||
+      request.service_name?.toLowerCase().includes(searchLower) ||
       request.name?.toLowerCase().includes(searchLower) ||
       request.email?.toLowerCase().includes(searchLower) ||
       request.message?.toLowerCase().includes(searchLower) ||
+      request.description?.toLowerCase().includes(searchLower) ||
       request.customer?.first_name?.toLowerCase().includes(searchLower) ||
       request.customer?.last_name?.toLowerCase().includes(searchLower)
     );
@@ -156,10 +204,10 @@ export default function AdminQuoteRequests() {
                     <div className="flex items-start justify-between">
                       <div>
                         <CardTitle className="text-lg">
-                          {request.service_id}
+                          {request.service_name || request.service_id}
                         </CardTitle>
                         <CardDescription>
-                          Kund: {request.customer?.first_name} {request.customer?.last_name} ({request.email})
+                          Kund: {request.name || `${request.customer?.first_name} ${request.customer?.last_name}`} ({request.email})
                         </CardDescription>
                       </div>
                       <Badge variant={getStatusBadgeVariiant(request.status)}>
@@ -189,16 +237,44 @@ export default function AdminQuoteRequests() {
                       </div>
                     </div>
                     
-                    {request.message && (
+                    {(request.description || request.message) && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
                         <p className="font-medium text-sm">Projektbeskrivning:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{request.message}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{request.description || request.message}</p>
                       </div>
                     )}
 
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm">Skapa offert</Button>
-                      <Button size="sm" variant="outline">Kontakta kund</Button>
+                      <Button size="sm" onClick={() => handleCreateQuote(request)}>
+                        <FileText className="h-4 w-4 mr-1" />
+                        Skapa offert
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => handleContactCustomer(request)}>
+                        <Mail className="h-4 w-4 mr-1" />
+                        Kontakta kund
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button size="sm" variant="destructive">
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Ta bort
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Är du säker?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Detta kommer att ta bort offertförfrågningen permanent. Denna åtgärd kan inte ångras.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteQuoteRequest(request.id)}>
+                              Ta bort
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </CardContent>
                 </Card>

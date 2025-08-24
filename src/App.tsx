@@ -28,7 +28,6 @@ import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
-import { DebugWizard } from "./components/DebugWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
@@ -50,6 +49,7 @@ import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminStaff from "./pages/admin/AdminStaff";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminBookings from "./pages/admin/AdminBookings";
+import AdminBookingDetail from "./pages/admin/AdminBookingDetail";
 import BookingWizard from "./pages/BookingWizard";
 import QuoteRequestWizard from "./pages/QuoteRequestWizard";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
@@ -122,6 +122,7 @@ const App = () => {
                     <Route path="quotes/new" element={<QuoteWizard />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="bookings" element={<AdminBookings />} />
+                    <Route path="bookings/:id" element={<AdminBookingDetail />} />
                     <Route path="customers" element={<AdminCustomers />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="database" element={<AdminDatabase />} />
@@ -154,8 +155,7 @@ const App = () => {
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
-                <ModalHost />
-                <DebugWizard />
+      <ModalHost />
               </BrowserRouter>
             </TooltipProvider>
         </SecurityWrapper>

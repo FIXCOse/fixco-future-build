@@ -4,6 +4,7 @@ export type BookingRow = {
   id: string;
   customer_id: string;
   service_id: string;
+  service_name?: string | null;
   status: string;
   price_type: string;
   hours_estimated?: number | null;
@@ -12,6 +13,8 @@ export type BookingRow = {
   discount_percent?: number | null;
   vat_percent?: number | null;
   rot_rut_type?: string | null;
+  description?: string | null;
+  internal_notes?: string | null;
   name?: string | null;
   phone?: string | null;
   email?: string | null;

@@ -6,10 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Trash2, Eye, FileText } from "lucide-react";
 import type { BookingRow } from "@/lib/api/bookings";
 
 export default function AdminBookings() {
@@ -17,6 +22,7 @@ export default function AdminBookings() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const navigate = useNavigate();
 
   const loadBookings = useCallback(async () => {
     try {
@@ -71,11 +77,44 @@ export default function AdminBookings() {
     return statusMap[status] || status;
   };
 
+  const handleDeleteBooking = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast.success('Bokning borttagen');
+      loadBookings();
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+      toast.error('Kunde inte ta bort bokning');
+    }
+  };
+
+  const handleCreateQuote = (booking: BookingRow) => {
+    navigate('/admin/quotes/new', { 
+      state: { 
+        fromBooking: booking,
+        customer_id: booking.customer_id,
+        service_name: booking.service_name || booking.service_id,
+        description: booking.description,
+        address: booking.address,
+        postal_code: booking.postal_code,
+        city: booking.city
+      }
+    });
+  };
+
   const filteredBookings = bookings.filter(booking => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
     return (
       booking.service_id?.toLowerCase().includes(searchLower) ||
+      booking.service_name?.toLowerCase().includes(searchLower) ||
+      booking.description?.toLowerCase().includes(searchLower) ||
       booking.name?.toLowerCase().includes(searchLower) ||
       booking.email?.toLowerCase().includes(searchLower) ||
       booking.customer?.first_name?.toLowerCase().includes(searchLower) ||
@@ -158,7 +197,7 @@ export default function AdminBookings() {
                     <div className="flex items-start justify-between">
                       <div>
                         <CardTitle className="text-lg">
-                          {booking.service_id}
+                          {booking.service_name || booking.service_id}
                         </CardTitle>
                         <CardDescription>
                           Kund: {booking.name} ({booking.email})
@@ -197,16 +236,51 @@ export default function AdminBookings() {
                       </div>
                     </div>
                     
-                    {booking.notes && (
+                    {booking.description && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="font-medium text-sm">Anteckningar:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{booking.notes}</p>
+                        <p className="font-medium text-sm">Beskrivning av tjänst:</p>
+                        <p className="text-sm text-muted-foreground mt-1">{booking.description}</p>
+                      </div>
+                    )}
+
+                    {booking.internal_notes && (
+                      <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                        <p className="font-medium text-sm">Interna anteckningar:</p>
+                        <p className="text-sm text-muted-foreground mt-1">{booking.internal_notes}</p>
                       </div>
                     )}
 
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm">Visa detaljer</Button>
-                      <Button size="sm" variant="outline">Skapa offert</Button>
+                      <Button size="sm" onClick={() => navigate(`/admin/bookings/${booking.id}`)}>
+                        <Eye className="h-4 w-4 mr-1" />
+                        Visa detaljer
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => handleCreateQuote(booking)}>
+                        <FileText className="h-4 w-4 mr-1" />
+                        Skapa offert
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button size="sm" variant="destructive">
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Ta bort
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Är du säker?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Detta kommer att ta bort bokningen permanent. Denna åtgärd kan inte ångras.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteBooking(booking.id)}>
+                              Ta bort
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </CardContent>
                 </Card>

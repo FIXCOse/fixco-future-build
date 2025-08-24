@@ -4,7 +4,9 @@ export type QuoteRequestRow = {
   id: string;
   customer_id: string;
   service_id: string;
+  service_name?: string | null;
   status: string;
+  description?: string | null;
   message?: string | null;
   rot_rut_type?: string | null;
   name?: string | null;
