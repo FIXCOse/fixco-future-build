@@ -193,11 +193,11 @@ const generateInvoiceHTML = (invoice: any, customer: any, property: any, company
                 <div class="customer-info">
                     <div class="section-title">Till</div>
                     <div class="info-line"><strong>${customer.first_name} ${customer.last_name}</strong></div>
-                    ${customer.company_name ? `<div class="info-line">${customer.company_name}</div>` : ''}
-                    ${customer.org_number ? `<div class="info-line">Org.nr: ${customer.org_number}</div>` : ''}
-                    <div class="info-line">${property.address}</div>
-                    <div class="info-line">${property.postal_code} ${property.city}</div>
-                    <div class="info-line">${customer.email}</div>
+                     ${customer.company_name ? `<div class="info-line">${customer.company_name}</div>` : ''}
+                     ${customer.org_number ? `<div class="info-line">Org.nr: ${customer.org_number}</div>` : ''}
+                     ${property ? `<div class="info-line">${property.address}</div>` : ''}
+                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : ''}
+                     <div class="info-line">${customer.email}</div>
                 </div>
             </div>
             
@@ -322,7 +322,9 @@ serve(async (req) => {
 
     if (requestData.quoteId) {
       // Generate invoice from quote
-      const { data: quote, error: quoteError } = await supabaseClient
+      console.log("Looking for quote with ID:", requestData.quoteId);
+      
+      const { data: quote, error: quoteError } = await supabaseServiceClient
         .from('quotes')
         .select(`
           *,
@@ -332,9 +334,12 @@ serve(async (req) => {
         .eq('id', requestData.quoteId)
         .single();
 
+      console.log("Quote query result:", { quote: !!quote, error: quoteError });
+
       if (quoteError || !quote) {
+        console.error("Quote not found:", quoteError);
         return new Response(
-          JSON.stringify({ error: "Quote not found or access denied" }),
+          JSON.stringify({ error: "Quote not found or access denied", details: quoteError?.message }),
           { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
@@ -372,7 +377,7 @@ serve(async (req) => {
 
     } else if (requestData.bookingId) {
       // Generate invoice from booking
-      const { data: booking, error: bookingError } = await supabaseClient
+      const { data: booking, error: bookingError } = await supabaseServiceClient
         .from('bookings')
         .select(`
           *,
