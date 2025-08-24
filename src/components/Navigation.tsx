@@ -46,6 +46,7 @@ export default function Navigation() {
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
+      { href: "/referenser", label: "Referenser" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
     ];
