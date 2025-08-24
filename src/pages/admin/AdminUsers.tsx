@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,62 +8,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, User, Mail, Phone, Shield, Building, Users as UsersIcon, Filter } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
+import { fetchAllUsers, type UserProfile } from '@/lib/api/users';
+import { useUsersRealtime } from '@/hooks/useUsersRealtime';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [userTypeFilter, setUserTypeFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
-  const queryClient = useQueryClient();
 
-  // Real-time subscription for user updates
-  useEffect(() => {
-    const channel = supabase
-      .channel('profiles_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'profiles'
-        },
-        () => {
-          // Invalidate and refetch users when any profile changes
-          queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
-
-  const { data: users, isLoading } = useQuery({
+  const { data: usersData, isLoading, refetch } = useQuery({
     queryKey: ['admin-users', searchTerm, userTypeFilter, roleFilter],
     queryFn: async () => {
-      let query = supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (searchTerm) {
-        query = query.or(`first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,phone.ilike.%${searchTerm}%,company_name.ilike.%${searchTerm}%,org_number.ilike.%${searchTerm}%`);
-      }
-
-      if (userTypeFilter !== 'all') {
-        query = query.eq('user_type', userTypeFilter as any);
-      }
-
-      if (roleFilter !== 'all') {
-        query = query.eq('role', roleFilter as any);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
+      return fetchAllUsers({
+        q: searchTerm || undefined,
+        userType: userTypeFilter !== 'all' ? userTypeFilter : undefined,
+        role: roleFilter !== 'all' ? roleFilter : undefined,
+        limit: 200
+      });
     },
-    refetchInterval: 30000, // Also refetch every 30 seconds as backup
   });
+
+  const users = usersData?.data || [];
+
+  // Real-time updates
+  const handleUsersChange = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  useUsersRealtime(handleUsersChange);
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {

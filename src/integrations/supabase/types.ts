@@ -714,6 +714,7 @@ export type Database = {
         Row: {
           accepted_at: string | null
           created_at: string | null
+          created_by: string | null
           customer_id: string
           description: string | null
           discount_amount: number | null
@@ -736,6 +737,7 @@ export type Database = {
         Insert: {
           accepted_at?: string | null
           created_at?: string | null
+          created_by?: string | null
           customer_id: string
           description?: string | null
           discount_amount?: number | null
@@ -758,6 +760,7 @@ export type Database = {
         Update: {
           accepted_at?: string | null
           created_at?: string | null
+          created_by?: string | null
           customer_id?: string
           description?: string | null
           discount_amount?: number | null

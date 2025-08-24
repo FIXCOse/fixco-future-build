@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,61 +10,37 @@ import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
+import { fetchQuotes, type QuoteRow } from '@/lib/api/quotes';
+import { useQuotesRealtime } from '@/hooks/useQuotesRealtime';
 
 const AdminQuotes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const queryClient = useQueryClient();
 
-  // Real-time subscription for quote updates
-  useEffect(() => {
-    const channel = supabase
-      .channel('quotes_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'quotes'
-        },
-        () => {
-          // Invalidate and refetch quotes when any quote changes
-          queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
-
-  const { data: quotes, isLoading } = useQuery({
+  const { data: quotesData, isLoading, refetch } = useQuery({
     queryKey: ['admin-quotes', searchTerm, statusFilter],
     queryFn: async () => {
-      let query = supabase
-        .from('quotes')
-        .select(`
-          *,
-          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
-          property:properties(address, city),
-          booking:bookings(service_name)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (searchTerm) {
-        query = query.or(`quote_number.ilike.%${searchTerm}%,title.ilike.%${searchTerm}%`);
-      }
-
-      if (statusFilter !== 'all') {
-        query = query.eq('status', statusFilter as any);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
+      const statusArray = statusFilter === 'all' 
+        ? ['draft', 'sent', 'accepted', 'rejected']
+        : [statusFilter];
+      
+      return fetchQuotes({
+        status: statusArray,
+        q: searchTerm || undefined,
+        limit: 100
+      });
     },
   });
+
+  const quotes = quotesData?.data || [];
+
+  // Real-time updates
+  const handleQuotesChange = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  useQuotesRealtime(handleQuotesChange);
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {

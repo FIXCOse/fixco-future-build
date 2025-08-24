@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, ArrowRight, Search, User, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
+import { createQuote } from '@/lib/api/quotes';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Booking {
   id: string;
@@ -65,6 +66,7 @@ const mockBookings: Booking[] = [
 
 const QuoteWizard = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const [bookings] = useState<Booking[]>(mockBookings);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
@@ -125,17 +127,47 @@ const QuoteWizard = () => {
     setStep(2);
   };
 
-  const createQuote = async () => {
+  const createQuoteFromData = async () => {
+    if (!selectedBooking) return;
+    
     setLoading(true);
     try {
-      // Simulate quote creation
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const totals = calculateTotals();
       
-      toast.success('Offert skapad! (Demo-version)');
-      navigate('/admin');
-    } catch (error) {
+      await createQuote({
+        booking_id: selectedBooking.id,
+        customer_id: selectedBooking.customer.id,
+        title: `Offert för ${selectedBooking.service_name}`,
+        description: quoteData.notes || `Offert baserad på bokning ${selectedBooking.id}`,
+        subtotal: totals.subtotalExVat,
+        vat_amount: totals.vatAmount,
+        total_amount: quoteData.showPricesIncVat ? totals.totalIncVat : totals.totalExVat,
+        rot_amount: quoteData.rotRutType === 'ROT' ? totals.rotRutAmount : 0,
+        rut_amount: quoteData.rotRutType === 'RUT' ? totals.rotRutAmount : 0,
+        discount_amount: totals.discountAmount,
+        discount_percent: quoteData.discountPercent,
+        line_items: [
+          {
+            description: `${selectedBooking.service_name} - Arbete`,
+            quantity: quoteData.hours,
+            unit_price: quoteData.hourlyRate,
+            amount: totals.laborCost
+          },
+          ...(totals.materialCost > 0 ? [{
+            description: 'Material',
+            quantity: 1,
+            unit_price: totals.materialCost,
+            amount: totals.materialCost
+          }] : [])
+        ]
+      });
+
+      toast.success('Offert skapad framgångsrikt!');
+      queryClient.invalidateQueries({ queryKey: ['admin-quotes'] });
+      navigate('/admin/quotes');
+    } catch (error: any) {
       console.error('Error creating quote:', error);
-      toast.error('Kunde inte skapa offert');
+      toast.error(error.message || 'Kunde inte skapa offert');
     } finally {
       setLoading(false);
     }
@@ -472,7 +504,7 @@ const QuoteWizard = () => {
 
               <Button 
                 className="w-full" 
-                onClick={createQuote} 
+                onClick={createQuoteFromData} 
                 disabled={loading}
               >
                 {loading ? 'Skapar offert...' : 'Skapa offert'}
