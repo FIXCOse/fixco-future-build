@@ -79,12 +79,7 @@ const MyFixcoLayout = () => {
     return () => { mounted = false; };
   }, []);
 
-  useEffect(() => {
-    // Redirect admin/owner users to admin interface if they're on the main route
-    if (profile && shouldUseAdminLayout && location.pathname === '/mitt-fixco') {
-      navigate('/admin', { replace: true });
-    }
-  }, [profile, shouldUseAdminLayout, location.pathname, navigate]);
+  // Removed automatic redirect to new admin interface
 
   if (loading || authLoading) {
     return <PageSkeleton />;
