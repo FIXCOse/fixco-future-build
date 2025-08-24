@@ -531,6 +531,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          is_primary: boolean
           name: string
           notes: string | null
           organization_id: string | null
@@ -547,6 +548,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          is_primary?: boolean
           name: string
           notes?: string | null
           organization_id?: string | null
@@ -563,6 +565,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          is_primary?: boolean
           name?: string
           notes?: string | null
           organization_id?: string | null
@@ -680,6 +683,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       voucher_usage: {
         Row: {
@@ -832,6 +853,10 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      is_admin: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
       is_organization_admin: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
@@ -839,6 +864,10 @@ export type Database = {
       is_organization_member: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
+      }
+      make_property_primary: {
+        Args: { p_property_id: string }
+        Returns: undefined
       }
       organization_has_members: {
         Args: { org_uuid: string }
