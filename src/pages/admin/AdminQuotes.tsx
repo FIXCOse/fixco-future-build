@@ -164,12 +164,23 @@ export default function AdminQuotes() {
       });
 
       if (error) throw error;
-      
+
       if (data?.success) {
         toast.success('Offert skickad via e-post!');
         loadQuotes();
+        return;
+      }
+
+      // Preview fallback if email couldn't be sent (e.g., domain not verified yet)
+      if (data && data.previewHtml) {
+        const win = window.open('', '_blank');
+        if (win) {
+          win.document.write(data.previewHtml as string);
+          win.document.close();
+        }
+        toast.warning('Domän ej verifierad – förhandsvisning öppnad. Verifiera domän för riktiga utskick.');
       } else {
-        throw new Error(data?.error || 'Okänt fel vid skickning av e-post');
+        toast.error(data?.error || 'Kunde inte skicka offert');
       }
     } catch (error: any) {
       console.error('Error sending quote:', error);

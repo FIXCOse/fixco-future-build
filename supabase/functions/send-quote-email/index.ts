@@ -157,16 +157,20 @@ const handler = async (req: Request): Promise<Response> => {
       reply_to: ["info@fixco.se"],
     });
 
-    // If Resend returns an error, surface it to the client
+    // If Resend returns an error, return preview so admins can test without domain verification
     if (emailResponse.error) {
       console.error('Resend error:', emailResponse.error);
-      return new Response(JSON.stringify({
-        success: false,
-        error: emailResponse.error.error || 'E-post kunde inte skickas',
-      }), {
-        status: 400,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: emailResponse.error.error || 'E-post kunde inte skickas',
+          previewHtml: emailHtml,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
     // Mark quote as sent only after a successful email
@@ -181,7 +185,7 @@ const handler = async (req: Request): Promise<Response> => {
         success: false,
         error: 'E-post skickades men status kunde inte uppdateras'
       }), {
-        status: 500,
+        status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
