@@ -279,7 +279,8 @@ const Auth = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl backdrop-saturate-150"
+        style={{ backdropFilter: 'blur(20px) saturate(1.5)' }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
             handleClose();
