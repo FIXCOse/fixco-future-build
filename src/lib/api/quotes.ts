@@ -11,7 +11,7 @@ export type QuoteRow = {
   accepted_at?: string | null;
   valid_until?: string | null;
   customer_id: string;
-  property_id: string;
+  property_id: string | null;
   organization_id?: string | null;
   subtotal: number;
   vat_amount: number;
@@ -22,6 +22,15 @@ export type QuoteRow = {
   discount_percent?: number | null;
   line_items: any;
   created_by?: string | null;
+  // Optional denormalized customer/contact fields copied from source booking/request
+  customer_name?: string | null;
+  customer_email?: string | null;
+  customer_phone?: string | null;
+  customer_address?: string | null;
+  customer_postal_code?: string | null;
+  customer_city?: string | null;
+  source_booking_id?: string | null;
+  source_quote_request_id?: string | null;
   customer?: {
     first_name?: string;
     last_name?: string;
@@ -30,6 +39,7 @@ export type QuoteRow = {
   property?: {
     address?: string;
     city?: string;
+    postal_code?: string;
   } | null;
 };
 
@@ -97,6 +107,15 @@ export async function createQuote(quoteData: {
   discount_percent?: number;
   line_items: any[];
   organization_id?: string;
+  // denormalized contact fields
+  customer_name?: string | null;
+  customer_email?: string | null;
+  customer_phone?: string | null;
+  customer_address?: string | null;
+  customer_postal_code?: string | null;
+  customer_city?: string | null;
+  source_booking_id?: string | null;
+  source_quote_request_id?: string | null;
 }) {
   const user = await supabase.auth.getUser();
   

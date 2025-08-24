@@ -372,8 +372,20 @@ serve(async (req) => {
       }
 
       invoice = newInvoice;
-      customer = quote.customer;
-      property = quote.property;
+      // Prefer joined profile/property, but fall back to denormalized fields on the quote
+      customer = quote.customer || {
+        first_name: (quote.customer_name || '').split(' ')[0] || 'Kund',
+        last_name: (quote.customer_name || '').split(' ').slice(1).join(' ') || '',
+        email: quote.customer_email || 'info@example.com',
+        company_name: null,
+        org_number: null,
+      };
+      property = quote.property || (quote.customer_address || quote.customer_city ? {
+        address: quote.customer_address || '',
+        postal_code: quote.customer_postal_code || '',
+        city: quote.customer_city || '',
+      } : null);
+
 
     } else if (requestData.bookingId) {
       // Generate invoice from booking

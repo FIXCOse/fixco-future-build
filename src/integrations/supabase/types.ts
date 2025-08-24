@@ -856,7 +856,13 @@ export type Database = {
           accepted_at: string | null
           created_at: string | null
           created_by: string | null
+          customer_address: string | null
+          customer_city: string | null
+          customer_email: string | null
           customer_id: string
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
           description: string | null
           discount_amount: number | null
           discount_percent: number | null
@@ -874,6 +880,8 @@ export type Database = {
           reference_data: Json | null
           rot_amount: number | null
           rut_amount: number | null
+          source_booking_id: string | null
+          source_quote_request_id: string | null
           status: Database["public"]["Enums"]["quote_status"] | null
           subtotal: number
           title: string
@@ -886,7 +894,13 @@ export type Database = {
           accepted_at?: string | null
           created_at?: string | null
           created_by?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_email?: string | null
           customer_id: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percent?: number | null
@@ -904,6 +918,8 @@ export type Database = {
           reference_data?: Json | null
           rot_amount?: number | null
           rut_amount?: number | null
+          source_booking_id?: string | null
+          source_quote_request_id?: string | null
           status?: Database["public"]["Enums"]["quote_status"] | null
           subtotal: number
           title: string
@@ -916,7 +932,13 @@ export type Database = {
           accepted_at?: string | null
           created_at?: string | null
           created_by?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_email?: string | null
           customer_id?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percent?: number | null
@@ -934,6 +956,8 @@ export type Database = {
           reference_data?: Json | null
           rot_amount?: number | null
           rut_amount?: number | null
+          source_booking_id?: string | null
+          source_quote_request_id?: string | null
           status?: Database["public"]["Enums"]["quote_status"] | null
           subtotal?: number
           title?: string
@@ -943,6 +967,20 @@ export type Database = {
           vat_amount?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_quotes_source_booking"
+            columns: ["source_booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_quotes_source_quote_request"
+            columns: ["source_quote_request_id"]
+            isOneToOne: false
+            referencedRelation: "quote_requests"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "quotes_customer_id_fkey"
             columns: ["customer_id"]

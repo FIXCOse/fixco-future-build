@@ -300,7 +300,16 @@ const QuoteWizard = () => {
             unit_price: totals.materialCost,
             amount: totals.materialCost
           }] : [])
-        ]
+        ],
+        // denormalized copies from source to ensure visibility through all stages
+        customer_name: selectedItem.customer ? `${selectedItem.customer.first_name} ${selectedItem.customer.last_name}` : (selectedItem.name || null),
+        customer_email: selectedItem.customer?.email || selectedItem.email || null,
+        customer_phone: (selectedItem as any).phone || null,
+        customer_address: selectedItem.address || null,
+        customer_postal_code: selectedItem.postal_code || null,
+        customer_city: selectedItem.city || null,
+        source_booking_id: selectedItem.type === 'booking' ? selectedItem.id : null,
+        source_quote_request_id: selectedItem.type === 'quote_request' ? selectedItem.id : null,
       });
 
       // Update status of the original booking or quote request

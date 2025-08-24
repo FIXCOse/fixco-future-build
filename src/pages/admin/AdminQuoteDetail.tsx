@@ -211,25 +211,25 @@ export default function AdminQuoteDetail() {
             <div>
               <p className="font-medium">Namn</p>
               <p className="text-muted-foreground">
-                {quote.customer ? `${quote.customer.first_name} ${quote.customer.last_name}` : 'Ej angivet'}
+                {quote.customer ? `${quote.customer.first_name} ${quote.customer.last_name}` : (quote as any).customer_name || 'Ej angivet'}
               </p>
             </div>
 
             <div>
               <p className="font-medium">E-post</p>
-              <p className="text-muted-foreground">{quote.customer?.email || 'Ej angiven'}</p>
+              <p className="text-muted-foreground">{quote.customer?.email || (quote as any).customer_email || 'Ej angiven'}</p>
             </div>
 
-            {quote.property && (
-              <div>
-                <p className="font-medium">Adress</p>
-                <p className="text-muted-foreground">
-                  {quote.property.address ? 
-                    `${quote.property.address}, ${quote.property.city}` : 
-                    'Ej angiven'}
-                </p>
-              </div>
-            )}
+            <div>
+              <p className="font-medium">Adress</p>
+              <p className="text-muted-foreground">
+                {quote.property?.address
+                  ? `${quote.property.address}, ${quote.property.city}`
+                  : ((quote as any).customer_address || (quote as any).customer_city
+                      ? `${(quote as any).customer_address || ''}${(quote as any).customer_address && (quote as any).customer_city ? ', ' : ''}${(quote as any).customer_postal_code || ''} ${(quote as any).customer_city || ''}`.trim()
+                      : 'Ej angiven')}
+              </p>
+            </div>
           </CardContent>
         </Card>
 
