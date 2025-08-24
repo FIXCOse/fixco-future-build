@@ -145,16 +145,35 @@ export default function AdminQuotes() {
 
   const handleSendQuote = async (quote: QuoteRow) => {
     try {
-      await supabase
-        .from('quotes')
-        .update({ status: 'sent' })
-        .eq('id', quote.id);
+      const customerEmail = quote.customer?.email;
+      const customerName = `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim();
+      
+      if (!customerEmail) {
+        toast.error('Ingen e-postadress finns för kunden');
+        return;
+      }
 
-      toast.success('Offert skickad till kund');
-      loadQuotes();
-    } catch (error) {
+      toast.info('Skickar e-post...');
+      
+      const { data, error } = await supabase.functions.invoke('send-quote-email', {
+        body: {
+          quoteId: quote.id,
+          customerEmail: customerEmail,
+          customerName: customerName || undefined
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.success) {
+        toast.success('Offert skickad via e-post!');
+        loadQuotes();
+      } else {
+        throw new Error(data?.error || 'Okänt fel vid skickning av e-post');
+      }
+    } catch (error: any) {
       console.error('Error sending quote:', error);
-      toast.error('Kunde inte skicka offert');
+      toast.error(error.message || 'Kunde inte skicka offert');
     }
   };
 

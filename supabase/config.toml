@@ -64,3 +64,6 @@ template = {}
 
 [functions.admin-list-users]
 verify_jwt = true
+
+[functions.send-quote-email]
+verify_jwt = true
