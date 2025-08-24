@@ -199,12 +199,12 @@ function ActionWizardInner({
 
           <div>
             <Label>ROT/RUT-avdrag</Label>
-            <Select value={form.rot_rut_type || ""} onValueChange={(v) => onChange("rot_rut_type", v || null)}>
+            <Select value={form.rot_rut_type || "none"} onValueChange={(v) => onChange("rot_rut_type", v === "none" ? null : v)}>
               <SelectTrigger>
                 <SelectValue placeholder="Välj avdrag" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Inget avdrag</SelectItem>
+                <SelectItem value="none">Inget avdrag</SelectItem>
                 <SelectItem value="ROT">ROT-avdrag</SelectItem>
                 <SelectItem value="RUT">RUT-avdrag</SelectItem>
               </SelectContent>
