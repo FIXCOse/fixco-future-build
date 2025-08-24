@@ -1,10 +1,47 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button-premium";
-import { Menu, X, Phone, MapPin } from "lucide-react";
+import { Menu, X, Phone, MapPin, User, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useToast } from "@/components/ui/use-toast";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Fel",
+        description: "Kunde inte logga ut",
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Utloggad",
+        description: "Du har loggats ut"
+      });
+      navigate('/');
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -60,9 +97,32 @@ const Navigation = () => {
                 <span>Hela Sverige</span>
               </div>
             </div>
-            <Button variant="hero" size="sm">
-              Begär offert
-            </Button>
+            
+            {user ? (
+              <div className="flex items-center space-x-3">
+                <Link to="/mitt-fixco">
+                  <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                    <User className="h-4 w-4" />
+                    <span>Mitt Fixco</span>
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="flex items-center space-x-2">
+                  <LogOut className="h-4 w-4" />
+                  <span>Logga ut</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link to="/auth">
+                  <Button variant="outline" size="sm">
+                    Logga in
+                  </Button>
+                </Link>
+                <Button variant="hero" size="sm">
+                  Begär offert
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -125,9 +185,32 @@ const Navigation = () => {
                   <Phone className="h-4 w-4" />
                   <span>08-123 456 78</span>
                 </div>
-                <Button variant="hero" size="sm" className="w-full">
-                  Begär offert
-                </Button>
+                
+                {user ? (
+                  <div className="space-y-2">
+                    <Link to="/mitt-fixco">
+                      <Button variant="outline" size="sm" className="w-full flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
+                        <User className="h-4 w-4" />
+                        <span>Mitt Fixco</span>
+                      </Button>
+                    </Link>
+                    <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => { handleSignOut(); setIsMenuOpen(false); }}>
+                      <LogOut className="h-4 w-4" />
+                      <span>Logga ut</span>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Link to="/auth">
+                      <Button variant="outline" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                        Logga in
+                      </Button>
+                    </Link>
+                    <Button variant="hero" size="sm" className="w-full">
+                      Begär offert
+                    </Button>
+                  </div>
+                )}
               </div>
             </nav>
           </div>

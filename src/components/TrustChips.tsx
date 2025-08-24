@@ -24,7 +24,6 @@ const TrustChips = ({
   includeLocation = false,
   showAll: forceShowAll = false
 }: TrustChipsProps) => {
-  console.log("TrustChips component rendering with variant:", variant);
   const [showAll, setShowAll] = useState(forceShowAll);
 
   // Select chip set based on variant - if showAll is true, always use extended set
