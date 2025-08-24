@@ -128,6 +128,7 @@ export type Database = {
           organization_id: string | null
           phone: string | null
           photos: string[] | null
+          postal_code: string | null
           price_type: string | null
           property_id: string | null
           rot_eligible: boolean | null
@@ -171,6 +172,7 @@ export type Database = {
           organization_id?: string | null
           phone?: string | null
           photos?: string[] | null
+          postal_code?: string | null
           price_type?: string | null
           property_id?: string | null
           rot_eligible?: boolean | null
@@ -214,6 +216,7 @@ export type Database = {
           organization_id?: string | null
           phone?: string | null
           photos?: string[] | null
+          postal_code?: string | null
           price_type?: string | null
           property_id?: string | null
           rot_eligible?: boolean | null
