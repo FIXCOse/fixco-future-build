@@ -27,6 +27,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
+import { ModalHost } from "./components/ActionWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
@@ -126,6 +127,7 @@ const App = () => {
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
+                <ModalHost />
               </BrowserRouter>
             </TooltipProvider>
         </SecurityWrapper>

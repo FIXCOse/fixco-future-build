@@ -2,10 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { BookingModal } from "./BookingModal";
-import { useState } from "react";
+import { useActionWizard } from "@/stores/actionWizardStore";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -43,18 +40,18 @@ const ServiceCardV3 = ({
   showFullWidth = false
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'book' | 'quote'>('book');
+  const open = useActionWizard((s) => s.open);
 
   const handleBookingClick = () => {
     if (onBook) {
       onBook();
     } else {
-      setModalType('book');
-      setModalOpen(true);
+      open({
+        mode: "book",
+        serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        serviceName: title,
+        defaults: { priceType: "hourly", hourlyRate: priceIncl }
+      });
     }
   };
 
@@ -62,8 +59,12 @@ const ServiceCardV3 = ({
     if (onQuote) {
       onQuote();
     } else {
-      setModalType('quote');
-      setModalOpen(true);
+      open({
+        mode: "quote",
+        serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        serviceName: title,
+        defaults: { priceType: "quote" }
+      });
     }
   };
   
@@ -111,6 +112,7 @@ const ServiceCardV3 = ({
         {/* CTA */}
         <div className="mt-auto">
         <Button 
+          type="button"
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
           onClick={handleQuoteClick}
@@ -118,14 +120,6 @@ const ServiceCardV3 = ({
             Begär offert
           </Button>
         </div>
-
-        <BookingModal
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          actionType={modalType}
-          serviceId={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
-          serviceName={title}
-        />
       </article>
     );
   }
@@ -267,6 +261,7 @@ const ServiceCardV3 = ({
       {/* CTA */}
       <div className="mt-auto">
         <Button 
+          type="button"
           className="w-full rounded-full py-2.5 font-medium hover:opacity-90" 
           variant="default"
           onClick={ctaType === 'book' ? handleBookingClick : handleQuoteClick}
@@ -274,14 +269,6 @@ const ServiceCardV3 = ({
           {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
         </Button>
       </div>
-
-      <BookingModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        actionType={modalType}
-        serviceId={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
-        serviceName={title}
-      />
     </article>
   );
 };
