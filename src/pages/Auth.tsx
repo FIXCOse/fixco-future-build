@@ -261,9 +261,23 @@ const Auth = () => {
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden'; // Prevent body scroll
 
+    // Add blur to background when modal opens
+    const bgElement = document.getElementById('auth-background');
+    if (bgElement) {
+      bgElement.style.filter = 'blur(8px)';
+      bgElement.style.transform = 'scale(1.02)'; // Slight scale to hide blur edges
+    }
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = ''; // Restore scroll
+      
+      // Remove blur from background when modal closes
+      const bgElement = document.getElementById('auth-background');
+      if (bgElement) {
+        bgElement.style.filter = '';
+        bgElement.style.transform = '';
+      }
     };
   }, []);
 
@@ -276,9 +290,16 @@ const Auth = () => {
       </Helmet>
 
       {/* Background content to blur */}
-      <div className="fixed inset-0 bg-gradient-to-br from-background via-background/50 to-primary/5">
-        <div className="absolute inset-0 opacity-20">
-          <div className="h-full w-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
+      <div 
+        id="auth-background"
+        className="fixed inset-0 transition-all duration-300"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-background/50"></div>
+          {/* Add some visual content to make blur more obvious */}
+          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-primary/20 animate-pulse"></div>
+          <div className="absolute bottom-32 right-32 w-24 h-24 rounded-full bg-accent/30 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl font-bold text-primary/10">FIXCO</div>
         </div>
       </div>
 
@@ -286,7 +307,7 @@ const Auth = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
         data-modal
         onClick={(e) => {
           if (e.target === e.currentTarget) {
