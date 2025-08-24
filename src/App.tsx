@@ -28,7 +28,7 @@ import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import MyFixcoLayout from "./components/MyFixcoLayout";
-import DashboardOverview from "./pages/MyFixco/DashboardOverview";
+import AccountOverview from "./pages/MyFixco/AccountOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
 import RotRutPage from "./pages/MyFixco/RotRutPage";
@@ -65,15 +65,13 @@ const App = () => {
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/auth/error" element={<AuthError />} />
                 
-                {/* MyFixco Dashboard with nested routes */}
                 <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
-                  <Route index element={<DashboardOverview />} />
+                  <Route index element={<AccountOverview />} />
                   <Route path="properties" element={<PropertiesPage />} />
                   <Route path="invoices" element={<InvoicesPage />} />
                   <Route path="rot-rut" element={<RotRutPage />} />
                   <Route path="activity" element={<ActivityPage />} />
                   <Route path="history" element={<HistoryPage />} />
-                  <Route path="admin" element={<AdminPage />} />
                 </Route>
                 
                 {/* Admin routes with access control */}

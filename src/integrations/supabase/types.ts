@@ -1018,6 +1018,10 @@ export type Database = {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
       }
+      kpi_today: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       log_admin_action: {
         Args: { p_action: string; p_meta?: Json; p_target?: string }
         Returns: undefined

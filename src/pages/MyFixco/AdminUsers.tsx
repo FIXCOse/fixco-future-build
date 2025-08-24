@@ -4,41 +4,69 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Users, Search, Download, Edit } from 'lucide-react';
-import { listUsers, updateUserRole } from '@/lib/admin';
+import { Users, Search, Download, Edit, RefreshCw, Mail, Shield } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import AdminBack from '@/components/admin/AdminBack';
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    loadUsers();
-  }, [searchQuery]);
-
-  const loadUsers = async () => {
-    try {
-      const data = await listUsers(searchQuery);
-      setUsers(data || []);
-    } catch (error) {
-      console.error('Error loading users:', error);
-      toast({
-        title: 'Fel',
-        description: 'Kunde inte ladda användare',
-        variant: 'destructive'
+  // Fetch users using the edge function
+  const { data: usersData, isLoading, error, refetch } = useQuery({
+    queryKey: ['admin-users', searchQuery, roleFilter],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke('admin-list-users', {
+        body: { 
+          q: searchQuery,
+          role: roleFilter === 'all' ? '' : roleFilter,
+          page: 1,
+          pageSize: 100
+        }
       });
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      if (error) throw error;
+      return data;
+    },
+    refetchInterval: 30000, // Refetch every 30 seconds
+    staleTime: 10000 // Consider data stale after 10 seconds
+  });
+
+  const users = usersData?.users || [];
+
+  // Set up realtime sync
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-users-realtime')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'profiles' }, 
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     try {
-      await updateUserRole(userId, newRole as any);
-      await loadUsers();
+      const { error } = await supabase
+        .from('profiles')
+        .update({ role: newRole })
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      
       toast({
         title: 'Uppdaterat',
         description: 'Användarroll har ändrats'
@@ -53,18 +81,43 @@ const AdminUsers = () => {
     }
   };
 
+  const handlePasswordReset = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Skickat',
+        description: 'Återställningslänk har skickats till användaren'
+      });
+    } catch (error) {
+      console.error('Error sending password reset:', error);
+      toast({
+        title: 'Fel',
+        description: 'Kunde inte skicka återställningslänk',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const exportUsers = () => {
     const csv = [
-      'Email,Förnamn,Efternamn,Roll,Skapad',
-      ...users.map(u => `${u.email},${u.first_name || ''},${u.last_name || ''},${u.role},${u.created_at}`)
+      'Email,Förnamn,Efternamn,Roll,Skapad,Senaste inloggning,Användartyp',
+      ...users.map(u => 
+        `${u.email || ''},${u.first_name || ''},${u.last_name || ''},${u.role || ''},${u.created_at || ''},${u.last_sign_in_at || ''},${u.user_type || ''}`
+      )
     ].join('\n');
     
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'users.csv';
+    a.download = `users-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
+    URL.revokeObjectURL(url);
   };
 
   const getRoleBadgeVariant = (role: string) => {
@@ -108,15 +161,30 @@ const AdminUsers = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Sök användare..."
+                placeholder="Sök användare efter namn eller email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
+            <Select value={roleFilter} onValueChange={setRoleFilter}>
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alla roller</SelectItem>
+                <SelectItem value="customer">Customer</SelectItem>
+                <SelectItem value="staff">Staff</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="owner">Owner</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button onClick={() => refetch()} variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
           </div>
 
-          {loading ? (
+          {isLoading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
             </div>
@@ -125,14 +193,25 @@ const AdminUsers = () => {
               {users.map((user) => (
                 <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex-1">
-                    <div className="font-medium">{user.first_name} {user.last_name}</div>
+                    <div className="font-medium">
+                      {user.full_name || `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Namnlös'}
+                    </div>
                     <div className="text-sm text-muted-foreground">{user.email}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Medlem sedan {new Date(user.created_at).toLocaleDateString('sv-SE')}
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <div>Medlem sedan {new Date(user.created_at).toLocaleDateString('sv-SE')}</div>
+                      {user.last_sign_in_at && (
+                        <div>Senaste inloggning: {new Date(user.last_sign_in_at).toLocaleDateString('sv-SE')}</div>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <span>Typ: {user.user_type}</span>
+                        {!user.email_confirmed_at && (
+                          <Badge variant="outline" className="text-xs">Obekräftad email</Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <Badge variant={getRoleBadgeVariant(user.role)}>
                       {user.role}
                     </Badge>
@@ -148,6 +227,15 @@ const AdminUsers = () => {
                         <SelectItem value="owner">Owner</SelectItem>
                       </SelectContent>
                     </Select>
+
+                    <Button
+                      onClick={() => handlePasswordReset(user.email)}
+                      variant="outline"
+                      size="sm"
+                      title="Skicka återställningslänk"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ))}
