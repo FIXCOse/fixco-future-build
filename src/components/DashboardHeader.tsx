@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Award, TrendingUp, Calendar, FileText } from 'lucide-react';
+import { Award, TrendingUp, Calendar, FileText, Shield } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useAdmin } from '@/hooks/useAdmin';
 
 interface UserProfile {
   id: string;
@@ -30,6 +31,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ profile, stats }: DashboardHeaderProps) => {
   const location = useLocation();
+  const { isAdmin } = useAdmin();
   
   const navigation = [
     { name: 'Översikt', href: '/mitt-fixco', icon: TrendingUp },
@@ -37,7 +39,8 @@ const DashboardHeader = ({ profile, stats }: DashboardHeaderProps) => {
     { name: 'Fakturor', href: '/mitt-fixco/invoices', icon: FileText },
     { name: 'ROT/RUT', href: '/mitt-fixco/rot-rut', icon: Award },
     { name: 'Aktivitet', href: '/mitt-fixco/activity', icon: Calendar },
-    { name: 'Historik', href: '/mitt-fixco/history', icon: FileText }
+    { name: 'Historik', href: '/mitt-fixco/history', icon: FileText },
+    ...(isAdmin ? [{ name: 'Administration', href: '/mitt-fixco/admin', icon: Shield }] : [])
   ];
 
   const getLoyaltyProgress = (tier: string, points: number) => {

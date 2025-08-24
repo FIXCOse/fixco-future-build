@@ -34,6 +34,7 @@ import InvoicesPage from "./pages/MyFixco/InvoicesPage";
 import RotRutPage from "./pages/MyFixco/RotRutPage";
 import ActivityPage from "./pages/MyFixco/ActivityPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
+import AdminPage from "./pages/MyFixco/AdminPage";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const App = () => {
                   <Route path="rot-rut" element={<RotRutPage />} />
                   <Route path="activity" element={<ActivityPage />} />
                   <Route path="history" element={<HistoryPage />} />
+                  <Route path="admin" element={<AdminPage />} />
                 </Route>
                 
                 <Route path="/tjanster" element={<Services />} />
