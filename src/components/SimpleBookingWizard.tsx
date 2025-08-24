@@ -28,6 +28,9 @@ export function SimpleBookingWizard() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  console.log('[SimpleBookingWizard] Render:', { isOpen, actionType, serviceId, serviceName });
+  console.log('[SimpleBookingWizard] Component state:', { loading, success });
   
   const [formData, setFormData] = useState<FormData>({
     contact_name: profile?.first_name && profile?.last_name 
@@ -42,6 +45,12 @@ export function SimpleBookingWizard() {
   });
 
   console.log('[SimpleBookingWizard] Render:', { isOpen, actionType, serviceId, serviceName });
+  console.log('[SimpleBookingWizard] Component state:', { loading, success });
+
+  if (!isOpen && !success) {
+    console.log('[SimpleBookingWizard] Not rendering - wizard not open');
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
