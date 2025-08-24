@@ -863,7 +863,7 @@ export type Database = {
           id: string
           line_items: Json
           organization_id: string | null
-          property_id: string
+          property_id: string | null
           quote_number: string
           rot_amount: number | null
           rut_amount: number | null
@@ -886,7 +886,7 @@ export type Database = {
           id?: string
           line_items?: Json
           organization_id?: string | null
-          property_id: string
+          property_id?: string | null
           quote_number: string
           rot_amount?: number | null
           rut_amount?: number | null
@@ -909,7 +909,7 @@ export type Database = {
           id?: string
           line_items?: Json
           organization_id?: string | null
-          property_id?: string
+          property_id?: string | null
           quote_number?: string
           rot_amount?: number | null
           rut_amount?: number | null
