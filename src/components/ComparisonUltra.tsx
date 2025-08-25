@@ -236,7 +236,7 @@ const ComparisonUltra = () => {
                       <IconComponent className="h-3 w-3 md:h-4 md:w-4 text-primary" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-xs md:text-base leading-tight break-words">{metric.title}</h4>
+                      <h4 className="font-semibold text-xs md:text-base leading-tight">{metric.title}</h4>
                     </div>
                   </div>
 
@@ -248,7 +248,7 @@ const ComparisonUltra = () => {
                   >
                     <CheckCircle className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-green-400" />
                     <div className="text-center px-1">
-                      <div className="text-xs sm:text-sm md:text-xl font-bold gradient-text break-words">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold gradient-text">
                         {metric.fixcoValue}
                         {metric.fixcoUnit && <span className="text-xs md:text-sm">{metric.fixcoUnit}</span>}
                       </div>
@@ -258,7 +258,7 @@ const ComparisonUltra = () => {
                    {/* Competitor Value - Mobile Optimized */}
                   <div className="card-premium p-2 md:p-3 border-muted/20 bg-muted/10 min-h-[60px] md:min-h-[44px] flex items-center justify-center">
                     <div className="text-center px-1">
-                      <div className="text-xs sm:text-sm md:text-xl font-bold text-muted-foreground break-words">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold text-muted-foreground">
                         {metric.competitorValue}
                         {metric.competitorUnit && <span className="text-xs md:text-sm">{metric.competitorUnit}</span>}
                       </div>

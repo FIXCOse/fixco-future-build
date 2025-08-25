@@ -233,7 +233,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-3xl sm:text-4xl md:text-7xl font-bold leading-relaxed md:leading-tight mb-8 px-2"
+              className="text-2xl sm:text-3xl md:text-7xl font-bold leading-tight mb-6 px-4"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
@@ -243,9 +243,7 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">Fixco</span> löser{" "}
-              <br className="block sm:hidden" />
-              <span className="text-foreground">allt inom</span>{" "}
+              <span className="gradient-text">Fixco</span> löser allt inom{" "}
               <br />
               <motion.span 
                 className="gradient-text"
