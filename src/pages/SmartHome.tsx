@@ -360,29 +360,29 @@ export const SmartHome = () => {
     : smartProducts.filter(product => product.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
       <Navigation />
       
       <div className="container mx-auto px-4 pt-20 pb-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-2xl">
             Smart Hem - Verkliga Produkter
           </h1>
-          <p className="text-2xl text-gray-700 mb-8 max-w-4xl mx-auto">
+          <p className="text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium">
             Vi installerar endast beprövade, marknadsledande smart hem-produkter från världens största tillverkare. 
             Alla produkter kommer med fullständig garanti och professionell installation.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 border-0">
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-lg">
               <CheckCircle className="h-5 w-5 mr-2" />
               Marknadsledande Märken
             </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100 border-0">
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 shadow-lg">
               <Shield className="h-5 w-5 mr-2" />
               Fullständig Garanti
             </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100 border-0">
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg">
               <Settings className="h-5 w-5 mr-2" />
               Professionell Installation
             </Badge>
@@ -391,25 +391,27 @@ export const SmartHome = () => {
 
         {/* Category Filter */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Välj Produktkategori</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">Välj Produktkategori</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
               <Card 
                 key={category.id}
-                className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 ${
+                className={`p-0 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-110 border-0 bg-gradient-to-br from-gray-800 to-gray-900 ${
                   selectedCategory === category.id 
-                    ? 'ring-2 ring-blue-500 shadow-xl transform scale-105' 
-                    : 'hover:shadow-lg'
+                    ? 'ring-4 ring-cyan-400 shadow-2xl transform scale-110 shadow-cyan-400/50' 
+                    : 'hover:shadow-xl'
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
               >
-                <div className={`${category.color} text-white p-4 rounded-xl mb-3 text-center shadow-lg`}>
-                  <category.icon className="h-8 w-8 mx-auto mb-2" />
-                  <h3 className="font-bold text-sm">{category.name}</h3>
+                <div className={`${category.color} text-white p-6 rounded-t-lg mb-0 text-center shadow-2xl`}>
+                  <category.icon className="h-10 w-10 mx-auto mb-3 drop-shadow-lg" />
+                  <h3 className="font-bold text-sm drop-shadow-lg">{category.name}</h3>
                 </div>
-                <p className="text-xs text-gray-600 text-center font-medium">
-                  {category.description}
-                </p>
+                <div className="p-3 bg-gradient-to-br from-gray-800 to-gray-900 rounded-b-lg">
+                  <p className="text-xs text-gray-300 text-center font-medium">
+                    {category.description}
+                  </p>
+                </div>
               </Card>
             ))}
           </div>
@@ -417,7 +419,7 @@ export const SmartHome = () => {
 
         {/* Products Grid */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">
             {selectedCategory === 'all' ? 'Alla Smart Hem-Produkter' : `${categories.find(c => c.id === selectedCategory)?.name}`}
           </h2>
           
@@ -425,25 +427,25 @@ export const SmartHome = () => {
             {filteredProducts.map((product) => (
               <Card 
                 key={product.id} 
-                className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50"
+                className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer border-0 bg-gradient-to-br from-slate-800 via-gray-800 to-slate-900 text-white"
                 onClick={() => setSelectedProduct(product.id)}
               >
                 {/* Product Header */}
-                <div className="bg-gradient-to-r from-gray-800 to-gray-900 text-white p-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
+                <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-4">
-                      <product.icon className="h-12 w-12 text-cyan-400" />
-                      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0">
+                      <product.icon className="h-12 w-12 text-white drop-shadow-lg" />
+                      <Badge className="bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 border-0 font-bold shadow-lg">
                         {product.brand}
                       </Badge>
                     </div>
-                    <h3 className="text-xl font-bold mb-1">{product.name}</h3>
-                    <p className="text-gray-300 text-sm mb-3">{product.model}</p>
-                    <div className="text-2xl font-bold text-cyan-400">
+                    <h3 className="text-2xl font-bold mb-2 drop-shadow-lg">{product.name}</h3>
+                    <p className="text-white/90 text-sm mb-4 font-medium">{product.model}</p>
+                    <div className="text-3xl font-bold text-yellow-300 drop-shadow-lg">
                       {product.pricing.total.toLocaleString()} kr
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-white/80 font-medium">
                       Inkl. installation & setup
                     </div>
                   </div>
@@ -453,69 +455,69 @@ export const SmartHome = () => {
                 <div className="p-6">
                   {/* Real Features */}
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-3 text-gray-800 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    <h4 className="font-semibold mb-3 text-gray-100 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-400" />
                       Huvudfunktioner:
                     </h4>
                     <ul className="space-y-2">
                       {product.realFeatures.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <span className="text-gray-700">{feature}</span>
+                          <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="text-gray-200">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   {/* AI Features */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
-                    <h4 className="font-semibold mb-3 text-purple-800 flex items-center gap-2">
+                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl border border-purple-400/30 backdrop-blur-sm">
+                    <h4 className="font-semibold mb-3 text-purple-300 flex items-center gap-2">
                       <Brain className="h-4 w-4" />
                       Smarta Funktioner:
                     </h4>
                     <ul className="space-y-2">
                       {product.realAIFeatures.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
-                          <Target className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-purple-700">{feature}</span>
+                          <Target className="h-3 w-3 text-purple-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-purple-200">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   {/* Installation Info */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
-                    <h4 className="font-semibold mb-2 text-green-800 flex items-center gap-2">
+                  <div className="mb-4 p-4 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-xl border border-green-400/30 backdrop-blur-sm">
+                    <h4 className="font-semibold mb-2 text-green-300 flex items-center gap-2">
                       <Settings className="h-4 w-4" />
                       Installation:
                     </h4>
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div>
-                        <span className="text-green-600 font-medium">Tid:</span>
-                        <div className="text-green-700">{product.installation.time}</div>
+                        <span className="text-green-400 font-medium">Tid:</span>
+                        <div className="text-green-200">{product.installation.time}</div>
                       </div>
                       <div>
-                        <span className="text-green-600 font-medium">Garanti:</span>
-                        <div className="text-green-700">{product.warranty}</div>
+                        <span className="text-green-400 font-medium">Garanti:</span>
+                        <div className="text-green-200">{product.warranty}</div>
                       </div>
                     </div>
                   </div>
 
                   {/* Pricing Breakdown */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-100">
-                    <h4 className="font-semibold mb-2 text-orange-800">Priser:</h4>
+                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-600/20 to-orange-600/20 rounded-xl border border-yellow-400/30 backdrop-blur-sm">
+                    <h4 className="font-semibold mb-2 text-yellow-300">Priser:</h4>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-orange-700">Produkt:</span>
-                        <span className="font-medium">{product.pricing.product.toLocaleString()} kr</span>
+                        <span className="text-yellow-200">Produkt:</span>
+                        <span className="font-medium text-white">{product.pricing.product.toLocaleString()} kr</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-orange-700">Installation:</span>
-                        <span className="font-medium">{product.pricing.installation.toLocaleString()} kr</span>
+                        <span className="text-yellow-200">Installation:</span>
+                        <span className="font-medium text-white">{product.pricing.installation.toLocaleString()} kr</span>
                       </div>
-                      <div className="flex justify-between border-t border-orange-200 pt-1 font-bold">
-                        <span className="text-orange-800">Totalt:</span>
-                        <span className="text-orange-800">{product.pricing.total.toLocaleString()} kr</span>
+                      <div className="flex justify-between border-t border-yellow-400/30 pt-1 font-bold">
+                        <span className="text-yellow-300">Totalt:</span>
+                        <span className="text-yellow-300">{product.pricing.total.toLocaleString()} kr</span>
                       </div>
                     </div>
                   </div>
@@ -523,8 +525,8 @@ export const SmartHome = () => {
 
                 {/* CTA Button */}
                 <div className="p-6 pt-0">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg">
-                    Boka Installation
+                  <Button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 text-white border-0 shadow-xl font-bold py-3 text-lg">
+                    🚀 Boka Installation
                   </Button>
                 </div>
               </Card>
@@ -533,51 +535,51 @@ export const SmartHome = () => {
         </div>
 
         {/* Why These Brands */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-0 shadow-lg">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+        <Card className="mb-12 p-8 bg-gradient-to-r from-slate-800 via-gray-800 to-slate-900 border-0 shadow-2xl">
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">
             Varför Vi Valt Dessa Märken
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="h-8 w-8" />
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                <Star className="h-8 w-8 drop-shadow-lg" />
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">Marknadsledare</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="text-lg font-bold mb-2 text-gray-100">Marknadsledare</h3>
+              <p className="text-sm text-gray-300">
                 Alla märken är #1 eller #2 i sina kategorier globalt. 
                 Beprövad teknik med miljontals installationer.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-8 w-8" />
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                <Shield className="h-8 w-8 drop-shadow-lg" />
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">Säker Integration</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="text-lg font-bold mb-2 text-gray-100">Säker Integration</h3>
+              <p className="text-sm text-gray-300">
                 Alla produkter fungerar tillsammans och har säkra 
                 protokoll som Zigbee 3.0 och WiFi 6.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Settings className="h-8 w-8" />
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                <Settings className="h-8 w-8 drop-shadow-lg" />
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">Enkel Support</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="text-lg font-bold mb-2 text-gray-100">Enkel Support</h3>
+              <p className="text-sm text-gray-300">
                 Vi är certifierade installatörer för alla märken. 
                 En kontakt för alla dina smart hem-behov.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-8 w-8" />
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                <TrendingUp className="h-8 w-8 drop-shadow-lg" />
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">Framtidssäkert</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="text-lg font-bold mb-2 text-gray-100">Framtidssäkert</h3>
+              <p className="text-sm text-gray-300">
                 Alla produkter får regelbundna uppdateringar med 
                 nya funktioner. Din investering växer över tid.
               </p>
