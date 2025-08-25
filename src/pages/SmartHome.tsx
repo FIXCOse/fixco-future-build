@@ -126,6 +126,13 @@ export const SmartHome = () => {
       icon: Leaf,
       color: 'bg-gradient-to-r from-green-400 to-lime-500',
       description: 'Smart trädgårdsskötsel'
+    },
+    {
+      id: 'entertainment',
+      name: 'Underhållning',
+      icon: Speaker,
+      color: 'bg-gradient-to-r from-indigo-500 to-purple-500',
+      description: 'Högtalare & Hemmabio'
     }
   ];
 
@@ -159,6 +166,36 @@ export const SmartHome = () => {
         product: 4990,
         installation: 1500,
         total: 6490
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'verisure-alarm',
+      name: 'Verisure Säkerhetssystem',
+      brand: 'Verisure',
+      model: 'Smart Alarm',
+      category: 'security',
+      icon: Shield,
+      realFeatures: [
+        'Svenskt larmsystem',
+        '24/7 bevakning',
+        'Mobilapp med live-video',
+        'Rök- och vattendetektorer'
+      ],
+      realAIFeatures: [
+        'Smart detektering av riktiga hot',
+        'Automatisk kontakt med väktare',
+        'Lär sig hemrutiner för mindre falsklarm'
+      ],
+      installation: {
+        time: '3-4 timmar',
+        difficulty: 'Medium',
+        included: ['Sensorer', 'Kameror', 'Centrallarm', 'Utbildning']
+      },
+      pricing: {
+        product: 8990,
+        installation: 2000,
+        total: 10990
       },
       warranty: '2 år'
     },
@@ -254,6 +291,36 @@ export const SmartHome = () => {
       },
       warranty: '2 år'
     },
+    {
+      id: 'ikea-tradfri',
+      name: 'IKEA TRÅDFRI System',
+      brand: 'IKEA',
+      model: 'TRÅDFRI Smart Belysning',
+      category: 'lighting',
+      icon: Lightbulb,
+      realFeatures: [
+        'Svenskdesignad smart belysning',
+        'Kompatibel med Philips Hue',
+        'Dimbar vit & färgad',
+        'Röststyrning (Alexa, Google)'
+      ],
+      realAIFeatures: [
+        'Automatisk schemaläggning',
+        'Anpassar efter dagsljus',
+        'Integreras med andra IKEA smarta produkter'
+      ],
+      installation: {
+        time: '1-2 timmar',
+        difficulty: 'Lätt',
+        included: ['TRÅDFRI Gateway', 'Lampinstallation', 'App-setup']
+      },
+      pricing: {
+        product: 3990,
+        installation: 800,
+        total: 4790
+      },
+      warranty: '1 år'
+    },
 
     // KLIMAT
     {
@@ -285,6 +352,36 @@ export const SmartHome = () => {
         total: 4690
       },
       warranty: '2 år'
+    },
+    {
+      id: 'danfoss-eco',
+      name: 'Danfoss Eco Termostater',
+      brand: 'Danfoss',
+      model: 'Eco Bluetooth Termostater',
+      category: 'climate',
+      icon: Thermometer,
+      realFeatures: [
+        'Danska kvalitetstermostater',
+        'Bluetooth-styrning',
+        'Rumsvis temperaturkontroll',
+        '30% energibesparing'
+      ],
+      realAIFeatures: [
+        'Lär sig rumtemperatur-preferenser',
+        'Automatisk närvaroanpassning',
+        'Förutsäger värmebehov'
+      ],
+      installation: {
+        time: '2-3 timmar för 5 element',
+        difficulty: 'Medium',
+        included: ['Montering på element', 'Bluetooth-koppling', 'App-setup']
+      },
+      pricing: {
+        product: 4990, // 5-pack
+        installation: 1500,
+        total: 6490
+      },
+      warranty: '5 år'
     },
 
     // ROBOTAR/RENGÖRING  
@@ -318,6 +415,36 @@ export const SmartHome = () => {
       },
       warranty: '1 år'
     },
+    {
+      id: 'roborock-s8-pro-ultra',
+      name: 'Roborock S8 Pro Ultra',
+      brand: 'Roborock',
+      model: 'S8 Pro Ultra',
+      category: 'cleaning',
+      icon: Bot,
+      realFeatures: [
+        'Dammsugning + våtmoppning',
+        'Självtvätt av mopp',
+        'LiDAR + 3D-kartläggning',
+        '6000Pa sugkraft'
+      ],
+      realAIFeatures: [
+        'ReactiveAI 2.0 hinderigenkänning',
+        'Smart moppförslagställning',
+        'Lär sig optimal rengöringsrutt'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['Station-setup', 'Kartläggning', 'App-konfiguration']
+      },
+      pricing: {
+        product: 15990,
+        installation: 500,
+        total: 16490
+      },
+      warranty: '2 år'
+    },
 
     // TRÄDGÅRD
     {
@@ -349,6 +476,158 @@ export const SmartHome = () => {
         total: 33490
       },
       warranty: '2 år'
+    },
+    {
+      id: 'gardena-sileno-city',
+      name: 'Gardena SILENO City',
+      brand: 'Gardena',
+      model: 'SILENO City 300',
+      category: 'garden',
+      icon: Scissors,
+      realFeatures: [
+        'Tysk kvalitet från Gardena',
+        'Upp till 300m² gräsyta',
+        'Ultra-tyst drift (57dB)',
+        'IPX4 vattentålig'
+      ],
+      realAIFeatures: [
+        'SensorControl - anpassar efter grästillväxt',
+        'Automatisk regndetektering',
+        'Smart scheduling via väderdata'
+      ],
+      installation: {
+        time: '3-4 timmar',
+        difficulty: 'Medium',
+        included: ['Gränstråd', 'Laddstation', 'Programmering']
+      },
+      pricing: {
+        product: 8990,
+        installation: 2500,
+        total: 11490
+      },
+      warranty: '2 år'
+    },
+
+    // ENTERTAINMENT/HÖGTALARE
+    {
+      id: 'sonos-arc-system',
+      name: 'Sonos Arc Surround System',
+      brand: 'Sonos',
+      model: 'Arc + Sub + One SL',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Dolby Atmos soundbar',
+        'Trådlös subwoofer',
+        'Surroundhögtalare',
+        'AirPlay 2 & Spotify Connect'
+      ],
+      realAIFeatures: [
+        'Trueplay rumsanpassning',
+        'Automatisk EQ-justering',
+        'Speech Enhancement AI'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['TV-anslutning', 'Surroundpositionering', 'Trueplay-kalibrering']
+      },
+      pricing: {
+        product: 22990, // Arc + Sub + 2x One SL
+        installation: 2000,
+        total: 24990
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'bang-olufsen-beolab',
+      name: 'Bang & Olufsen BeoLab 28',
+      brand: 'Bang & Olufsen',
+      model: 'BeoLab 28',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Dansk designklassiker',
+        'Aktiva golv-högtalare',
+        'Kraftfulla 1100W per högtalare',
+        'Wireless PowerLink'
+      ],
+      realAIFeatures: [
+        'Automatisk rumskorrigering',
+        'Adaptive Bass Control',
+        'Smart standby-läge'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Positionering', 'Trådlös setup', 'Akustisk kalibrering']
+      },
+      pricing: {
+        product: 45990, // Per par
+        installation: 2500,
+        total: 48490
+      },
+      warranty: '3 år'
+    },
+    {
+      id: 'ikea-symfonisk',
+      name: 'IKEA SYMFONISK System',
+      brand: 'IKEA + Sonos',
+      model: 'SYMFONISK WiFi-högtalare',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Sonos-teknik i IKEA-design',
+        'Multiroom-ljud',
+        'Fungerar som bokhylla',
+        'AirPlay 2 & Spotify'
+      ],
+      realAIFeatures: [
+        'Integreras med Sonos AI-funktioner',
+        'Auto-gruppering av högtalare',
+        'Smart volymbalansering'
+      ],
+      installation: {
+        time: '1-2 timmar',
+        difficulty: 'Lätt',
+        included: ['WiFi-setup', 'Sonos-app konfiguration', 'Multiroom-setup']
+      },
+      pricing: {
+        product: 3990, // 3-pack olika rum
+        installation: 800,
+        total: 4790
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'apple-tv-4k',
+      name: 'Apple TV 4K Hemmabio',
+      brand: 'Apple',
+      model: 'Apple TV 4K (128GB)',
+      category: 'entertainment',
+      icon: Tv,
+      realFeatures: [
+        'A15 Bionic-chip',
+        'Dolby Vision & Atmos',
+        'AirPlay från alla Apple-enheter',
+        'HomeKit Smart Home Hub'
+      ],
+      realAIFeatures: [
+        'Siri Remote med röststyrning',
+        'Automatisk färgbalansering för TV',
+        'Personliga rekommendationer'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['TV-anslutning', 'WiFi-setup', 'Apple ID-konfiguration']
+      },
+      pricing: {
+        product: 1790,
+        installation: 500,
+        total: 2290
+      },
+      warranty: '1 år'
     }
   ];
 
