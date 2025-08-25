@@ -7,6 +7,7 @@ interface UserProfile {
   email: string;
   first_name: string;
   last_name: string;
+  phone: string | null;
   role: string;
   user_type: 'private' | 'company' | 'brf';
   created_at: string;
@@ -23,7 +24,7 @@ export const useAuthProfile = () => {
 
       const { data: profileData } = await supabase
         .from('profiles')
-        .select('id, email, first_name, last_name, role, user_type, created_at, loyalty_points, total_spent')
+        .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
         .eq('id', user.id)
         .single();
 
