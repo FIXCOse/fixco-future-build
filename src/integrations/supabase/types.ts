@@ -999,6 +999,41 @@ export type Database = {
         }
         Relationships: []
       }
+      product_interactions: {
+        Row: {
+          created_at: string | null
+          id: string
+          interaction_type: string
+          product_id: string
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          interaction_type: string
+          product_id: string
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          interaction_type?: string
+          product_id?: string
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_interactions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "smart_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           address_line: string | null
@@ -1448,6 +1483,90 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_products: {
+        Row: {
+          ai_features: Json | null
+          average_rating: number | null
+          brand: string
+          category: string
+          created_at: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          image_url: string | null
+          installation_difficulty: string | null
+          installation_included: Json | null
+          installation_price: number
+          installation_time: string | null
+          is_active: boolean | null
+          model: string
+          name: string
+          popularity_score: number | null
+          product_price: number
+          purchase_count: number | null
+          total_price: number | null
+          total_reviews: number | null
+          updated_at: string | null
+          value_rating: number | null
+          view_count: number | null
+          warranty_years: number | null
+        }
+        Insert: {
+          ai_features?: Json | null
+          average_rating?: number | null
+          brand: string
+          category: string
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          image_url?: string | null
+          installation_difficulty?: string | null
+          installation_included?: Json | null
+          installation_price?: number
+          installation_time?: string | null
+          is_active?: boolean | null
+          model: string
+          name: string
+          popularity_score?: number | null
+          product_price: number
+          purchase_count?: number | null
+          total_price?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          value_rating?: number | null
+          view_count?: number | null
+          warranty_years?: number | null
+        }
+        Update: {
+          ai_features?: Json | null
+          average_rating?: number | null
+          brand?: string
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          image_url?: string | null
+          installation_difficulty?: string | null
+          installation_included?: Json | null
+          installation_price?: number
+          installation_time?: string | null
+          is_active?: boolean | null
+          model?: string
+          name?: string
+          popularity_score?: number | null
+          product_price?: number
+          purchase_count?: number | null
+          total_price?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          value_rating?: number | null
+          view_count?: number | null
+          warranty_years?: number | null
+        }
+        Relationships: []
+      }
       staff: {
         Row: {
           active: boolean | null
@@ -1469,6 +1588,7 @@ export type Database = {
           role: string
           skills: string[] | null
           staff_id: number
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
@@ -1491,6 +1611,7 @@ export type Database = {
           role: string
           skills?: string[] | null
           staff_id?: number
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
@@ -1513,6 +1634,7 @@ export type Database = {
           role?: string
           skills?: string[] | null
           staff_id?: number
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -2013,6 +2135,10 @@ export type Database = {
       prepare_invoice_from_job: {
         Args: { p_job_id: string }
         Returns: Json
+      }
+      track_product_view: {
+        Args: { p_product_id: string }
+        Returns: undefined
       }
       update_job_status: {
         Args: { p_job_id: string; p_status: string }
