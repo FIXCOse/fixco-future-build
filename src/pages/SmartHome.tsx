@@ -54,16 +54,23 @@ import { toast } from 'sonner';
 interface SmartProduct {
   id: string;
   name: string;
+  brand: string;
+  model: string;
   category: 'security' | 'lighting' | 'climate' | 'cleaning' | 'garden' | 'entertainment';
   icon: React.ElementType;
-  benefits: string[];
-  aiFeatures: string[];
-  savings: {
-    cost: number;
+  realFeatures: string[];
+  realAIFeatures: string[];
+  installation: {
     time: string;
-    efficiency: string;
+    difficulty: string;
+    included: string[];
   };
-  price: string;
+  pricing: {
+    product: number;
+    installation: number;
+    total: number;
+  };
+  warranty: string;
 }
 
 interface CategoryFilter {
@@ -82,360 +89,325 @@ export const SmartHome = () => {
       id: 'all',
       name: 'Alla Produkter',
       icon: Home,
-      color: 'bg-gradient-to-r from-purple-500 to-pink-500',
+      color: 'bg-gradient-to-r from-blue-500 to-purple-500',
       description: 'Komplett smart hem-upplevelse'
     },
     {
       id: 'security',
       name: 'Säkerhet & Lås',
       icon: Shield,
-      color: 'bg-gradient-to-r from-red-500 to-orange-500',
-      description: 'Skydda ditt hem med AI-teknik'
+      color: 'bg-gradient-to-r from-red-500 to-pink-500',
+      description: 'Skydda ditt hem'
     },
     {
       id: 'lighting',
       name: 'Smart Belysning',
       icon: Lightbulb,
       color: 'bg-gradient-to-r from-yellow-400 to-orange-500',
-      description: 'Energisnål och intelligent belysning'
+      description: 'Energisnål belysning'
     },
     {
       id: 'climate',
-      name: 'Klimat & Miljö',
+      name: 'Klimat & Värme',
       icon: Thermometer,
       color: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-      description: 'Perfekt temperatur automatiskt'
+      description: 'Temperaturstyrning'
     },
     {
       id: 'cleaning',
-      name: 'AI-Rengöring',
+      name: 'Robotar',
       icon: Bot,
       color: 'bg-gradient-to-r from-green-500 to-emerald-500',
-      description: 'Robotar som städar åt dig'
+      description: 'Automatisk rengöring'
     },
     {
       id: 'garden',
-      name: 'Trädgård & Utomhus',
+      name: 'Trädgård',
       icon: Leaf,
-      color: 'bg-gradient-to-r from-green-400 to-green-600',
+      color: 'bg-gradient-to-r from-green-400 to-lime-500',
       description: 'Smart trädgårdsskötsel'
-    },
-    {
-      id: 'entertainment',
-      name: 'Underhållning',
-      icon: Tv,
-      color: 'bg-gradient-to-r from-indigo-500 to-purple-500',
-      description: 'Smart hem-entertainment'
     }
   ];
 
+  // ENDAST RIKTIGA PRODUKTER SOM FINNS PÅ MARKNADEN
   const smartProducts: SmartProduct[] = [
-    // Security Products
+    // SÄKERHET
     {
-      id: 'smart-lock',
-      name: 'AI Smart Lås',
+      id: 'yale-doorman',
+      name: 'Yale Doorman L3',
+      brand: 'Yale',
+      model: 'Doorman L3',
       category: 'security',
       icon: Lock,
-      benefits: [
-        'Fjärrstyrning via mobil',
-        'Biometrisk fingeravtryck',
-        'AI-driven säkerhetsanalys',
-        'Automatisk hot-detektering'
+      realFeatures: [
+        'Fingeravtryck + PIN-kod',
+        'Bluetooth + WiFi',
+        'Skandinaviskt godkänt lås',
+        'Batteri 12+ månader'
       ],
-      aiFeatures: [
-        'Lär sig dina vanor',
-        'Förutsäger säkerhetshot',
-        'Automatisk låsning vid misstänkt aktivitet'
+      realAIFeatures: [
+        'Lär sig dina rutiner',
+        'Automatisk låsning',
+        'Aktivitetslogg med mönsterigenkänning'
       ],
-      savings: {
-        cost: 3200,
-        time: '20 min/vecka',
-        efficiency: '98% säkrare'
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Installation', 'Konfiguration', 'Utbildning']
       },
-      price: '5 990 - 12 990 kr'
+      pricing: {
+        product: 4990,
+        installation: 1500,
+        total: 6490
+      },
+      warranty: '2 år'
     },
     {
-      id: 'smart-doorbell',
-      name: 'AI Video-Ringklocka', 
+      id: 'ring-video-doorbell',
+      name: 'Ring Video Doorbell Pro 2',
+      brand: 'Ring (Amazon)',
+      model: 'Video Doorbell Pro 2',
       category: 'security',
       icon: Bell,
-      benefits: [
-        '4K HDR-video med zoom',
-        'AI-ansiktsigenkänning',
+      realFeatures: [
+        '1536p HD-video',
+        'Rörelsezoner',
+        'Tvåvägskommunikation',
+        'Nattseende'
+      ],
+      realAIFeatures: [
         'Paketdetektering',
-        'Molnlagring 90 dagar'
+        'Personigenkänning',
+        'Smart rörelseavkänning'
       ],
-      aiFeatures: [
-        'Känner igen familj vs främlingar',
-        'Automatisk paketnotifiering',
-        'Förutsäger leveranstider'
-      ],
-      savings: {
-        cost: 1800,
-        time: 'Aldrig missad leverans',
-        efficiency: '95% färre falska alarm'
+      installation: {
+        time: '1-2 timmar',
+        difficulty: 'Lätt',
+        included: ['Montering', 'WiFi-setup', 'App-konfiguration']
       },
-      price: '3 990 - 7 990 kr'
+      pricing: {
+        product: 2490,
+        installation: 800,
+        total: 3290
+      },
+      warranty: '1 år'
     },
     {
-      id: 'ai-security-system',
-      name: 'AI Säkerhetssystem',
+      id: 'arlo-pro-4',
+      name: 'Arlo Pro 4 Spotlight',
+      brand: 'Arlo',
+      model: 'Pro 4 Spotlight',
       category: 'security',
       icon: Camera,
-      benefits: [
-        '360° 4K-kameror med zoom',
-        'AI-hotdetektering i realtid',
-        'Automatisk kontakt med väktare',
-        'Integrerad rökdetektering'
+      realFeatures: [
+        '2K HDR-video',
+        '6 månaders batteri',
+        'Inbyggt spotlight',
+        'Färg-nattseende'
       ],
-      aiFeatures: [
-        'Skiljer mellan hot och vardagsaktiviteter',
-        'Förutsäger inbrottsförsök',
-        'Automatisk polisanmälan vid bekräftat hot'
+      realAIFeatures: [
+        'Objekt & persondetektering',
+        'Smart siren',
+        'Automatisk zoom & spårning'
       ],
-      savings: {
-        cost: 4500,
-        time: 'Konstant trygghet',
-        efficiency: '99% hotdetektering'
+      installation: {
+        time: '3-4 timmar för 4 kameror',
+        difficulty: 'Medium',
+        included: ['Montering', 'Positionering', 'Molnsetup']
       },
-      price: '15 990 - 45 990 kr'
+      pricing: {
+        product: 12990, // För 4-pack
+        installation: 2500,
+        total: 15490
+      },
+      warranty: '2 år'
     },
 
-    // Lighting Products
+    // BELYSNING
     {
-      id: 'ai-lighting',
-      name: 'AI Belysningssystem',
+      id: 'philips-hue',
+      name: 'Philips Hue White & Color',
+      brand: 'Philips',
+      model: 'Hue White & Color Ambiance',
       category: 'lighting',
       icon: Lightbulb,
-      benefits: [
-        'Automatisk ljusjustering',
-        '16M färger + vitt ljus',
-        'Cirkadisk rytm-stöd',
-        'Energibesparing 85%'
+      realFeatures: [
+        '16 miljoner färger',
+        'Dimbar 1-100%',
+        'Zigbee 3.0',
+        '25 000 timmars livslängd'
       ],
-      aiFeatures: [
-        'Lär sig dina preferenser',
-        'Anpassar efter väder och årstid',
-        'Optimerar för bättre sömn'
+      realAIFeatures: [
+        'Adaptiv belysning baserat på tid',
+        'Geofencing (automatisk på/av)',
+        'Synkroniseras med solens rytm'
       ],
-      savings: {
-        cost: 4200,
-        time: '10 min/dag',
-        efficiency: '85% energibesparing'
+      installation: {
+        time: '2-3 timmar för hela hemmet',
+        difficulty: 'Lätt',
+        included: ['Installation av Hue Bridge', 'Lampbyten', 'App-setup']
       },
-      price: '2 990 - 15 990 kr'
+      pricing: {
+        product: 8990, // Startpaket + extra lampor
+        installation: 1200,
+        total: 10190
+      },
+      warranty: '2 år'
     },
 
-    // Climate Products  
+    // KLIMAT
     {
-      id: 'ai-thermostat',
-      name: 'AI Klimatsystem',
+      id: 'google-nest-learning',
+      name: 'Google Nest Learning Thermostat',
+      brand: 'Google',
+      model: 'Nest Learning Thermostat 3rd Gen',
       category: 'climate',
       icon: Thermometer,
-      benefits: [
-        'Rumsvis temperaturkontroll',
-        'Luftkvalitetsmätning',
-        'Automatisk ventilation',
-        'Väderbaserad förutsägelse'
+      realFeatures: [
+        'Läckagesensor för rör',
+        'Väderprognos-integration',
+        'Fjärrstyrning via app',
+        'Energihistorik'
       ],
-      aiFeatures: [
-        'Lär sig familjemedlemmarnas preferenser',
-        'Förutsäger väderförändringar',
-        'Optimerar energiförbrukning automatiskt'
+      realAIFeatures: [
+        'Lär sig dina vanor på 1 vecka',
+        'Auto-Schedule funktion',
+        'Före/efter rapporter på energianvändning'
       ],
-      savings: {
-        cost: 6500,
-        time: 'Helt automatisk',
-        efficiency: '35% energibesparing'
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Installation', 'Konfiguration', 'Kalibrering']
       },
-      price: '8 990 - 25 990 kr'
+      pricing: {
+        product: 2890,
+        installation: 1800,
+        total: 4690
+      },
+      warranty: '2 år'
     },
 
-    // Cleaning Products
+    // ROBOTAR/RENGÖRING  
     {
-      id: 'ai-robot-vacuum',
-      name: 'AI Robotdammsugare',
+      id: 'roomba-j7',
+      name: 'iRobot Roomba j7+',
+      brand: 'iRobot',
+      model: 'Roomba j7+',
       category: 'cleaning',
       icon: Bot,
-      benefits: [
-        'LiDAR-navigation + kameror',
+      realFeatures: [
+        'PrecisionVision navigation',
         'Självtömmande bas 60 dagar',
-        'Våtmoppning samtidigt',
-        'Undviker all sladd & leksaker'
+        'Kartläggning av hela hemmet',
+        '3-stegs rengöringssystem'
       ],
-      aiFeatures: [
-        'Lär sig hemmets layout perfekt',
-        'Identifierar olika smutstyper',
-        'Schemaläggning baserat på dina vanor'
+      realAIFeatures: [
+        'Undviker husdjursolyckor (P.O.O.P Promise)',
+        'Lär sig hemmet layout',
+        'Föreslår optimal städschema'
       ],
-      savings: {
-        cost: 2800,
-        time: '7 tim/vecka',
-        efficiency: '99% ren varje dag'
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['Uppackning', 'Setup', 'Första kartläggning']
       },
-      price: '12 990 - 35 990 kr'
-    },
-    {
-      id: 'ai-window-cleaner',
-      name: 'AI Fönsterrobot',
-      category: 'cleaning',
-      icon: Monitor,
-      benefits: [
-        'Rengör alla fönster automatiskt',
-        'Säkerhetslinor & sensorer',
-        'Fungerar på alla glastyper',
-        '99% strimfritt resultat'
-      ],
-      aiFeatures: [
-        'Känner igen smuts & fläckar',
-        'Anpassar rengöring efter glastyp',
-        'Undviker regnvåta dagar'
-      ],
-      savings: {
-        cost: 1500,
-        time: '3 tim/månad',
-        efficiency: 'Perfekt resultat varje gång'
+      pricing: {
+        product: 12990,
+        installation: 500,
+        total: 13490
       },
-      price: '8 990 - 15 990 kr'
+      warranty: '1 år'
     },
 
-    // Garden Products
+    // TRÄDGÅRD
     {
-      id: 'ai-lawn-mower',
-      name: 'AI Robotgräsklippare',
+      id: 'husqvarna-automower',
+      name: 'Husqvarna Automower 315X',
+      brand: 'Husqvarna',
+      model: 'Automower 315X',
       category: 'garden',
       icon: Scissors,
-      benefits: [
-        'GPS-navigation + anti-stöld',
+      realFeatures: [
+        'GPS-navigation & tracking',
+        'Klippytor upp till 1500m²',
         'Mulchning för friskare gräs',
-        'Automatisk regndetektering',
-        'Klippning enligt växtcykler'
+        'Automatisk regndetektering'
       ],
-      aiFeatures: [
-        'Lär sig trädgårdens layout',
-        'Anpassar klippning efter gräsets tillväxt',
-        'Förutsäger optimala klipptider'
+      realAIFeatures: [
+        'X-line navigation (AI-driven routing)',
+        'Weather timer (anpassar efter väder)',
+        'Automower Connect app med AI-analys'
       ],
-      savings: {
-        cost: 3500,
-        time: '4 tim/vecka',
-        efficiency: 'Perfekt gräsmatta året runt'
+      installation: {
+        time: '4-6 timmar',
+        difficulty: 'Svår',
+        included: ['Gränstråd installation', 'Laddstation', 'GPS-konfiguration']
       },
-      price: '18 990 - 65 990 kr'
-    },
-    {
-      id: 'smart-irrigation',
-      name: 'AI Bevattningssystem',
-      category: 'garden',
-      icon: Droplets,
-      benefits: [
-        'Jordfuktighetssensorer',
-        'Väderprognos-integration',
-        'Zonindelat vattensystem',
-        '40% mindre vattenförbrukning'
-      ],
-      aiFeatures: [
-        'Förutsäger växters vattenbehov',
-        'Anpassar efter väderprognos',
-        'Optimerar för olika växttyper'
-      ],
-      savings: {
-        cost: 2200,
-        time: '2 tim/vecka',
-        efficiency: '40% mindre vatten'
+      pricing: {
+        product: 28990,
+        installation: 4500,
+        total: 33490
       },
-      price: '12 990 - 28 990 kr'
-    },
-
-    // Entertainment Products
-    {
-      id: 'smart-home-theater',
-      name: 'AI Hemmabio',
-      category: 'entertainment',
-      icon: Tv,
-      benefits: [
-        '8K-projektor + Dolby Atmos',
-        'Automatisk rumskalibrering',
-        'Röststyrning på svenska',
-        'Integrerad belysningsscener'
-      ],
-      aiFeatures: [
-        'Lär sig din filmsmak',
-        'Föreslår innehåll baserat på humör',
-        'Automatisk optimal bild & ljud'
-      ],
-      savings: {
-        cost: 0,
-        time: 'Ökad livskvalitet',
-        efficiency: 'Biografkänsla hemma'
-      },
-      price: '45 990 - 150 990 kr'
+      warranty: '2 år'
     }
   ];
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedProduct, setSelectedProduct] = useState<string>('smart-lock');
+  const [selectedProduct, setSelectedProduct] = useState<string>('yale-doorman');
 
   const filteredProducts = selectedCategory === 'all' 
     ? smartProducts 
     : smartProducts.filter(product => product.category === selectedCategory);
 
-  const realStats = {
-    energySavings: 35, // % genomsnittlig besparing med AI-hem
-    timeSaved: 12, // timmar per vecka
-    homeValue: 15, // % ökning av fastighetsvärde med AI-hem
-    userSatisfaction: 97 // % av användare som är nöjda med AI-hem
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navigation />
       
       <div className="container mx-auto px-4 pt-20 pb-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
-            AI Smart Hem - Framtidens Intelligenta Boende
+            Smart Hem - Verkliga Produkter
           </h1>
-          <p className="text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto">
-            Upptäck kraften i artificiell intelligens för ditt hem. Våra AI-drivna lösningar lär sig dina vanor, 
-            förutsäger dina behov och optimerar automatiskt för maximal komfort, säkerhet och energieffektivitet.
+          <p className="text-2xl text-gray-700 mb-8 max-w-4xl mx-auto">
+            Vi installerar endast beprövade, marknadsledande smart hem-produkter från världens största tillverkare. 
+            Alla produkter kommer med fullständig garanti och professionell installation.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100">
-              <Brain className="h-5 w-5 mr-2" />
-              AI-Driven Teknik
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 border-0">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              Marknadsledande Märken
             </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100">
-              <Target className="h-5 w-5 mr-2" />
-              97% Kundnöjdhet
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100 border-0">
+              <Shield className="h-5 w-5 mr-2" />
+              Fullständig Garanti
             </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100">
-              <Zap className="h-5 w-5 mr-2" />
-              35% Energibesparing
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100 border-0">
+              <Settings className="h-5 w-5 mr-2" />
+              Professionell Installation
             </Badge>
           </div>
         </div>
 
         {/* Category Filter */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Välj Kategori för Ditt Smarta Hem</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Välj Produktkategori</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
               <Card 
                 key={category.id}
-                className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+                className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 ${
                   selectedCategory === category.id 
-                    ? 'ring-2 ring-primary shadow-xl transform scale-105' 
+                    ? 'ring-2 ring-blue-500 shadow-xl transform scale-105' 
                     : 'hover:shadow-lg'
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
               >
-                <div className={`${category.color} text-white p-3 rounded-lg mb-3 text-center`}>
+                <div className={`${category.color} text-white p-4 rounded-xl mb-3 text-center shadow-lg`}>
                   <category.icon className="h-8 w-8 mx-auto mb-2" />
                   <h3 className="font-bold text-sm">{category.name}</h3>
                 </div>
-                <p className="text-xs text-muted-foreground text-center">
+                <p className="text-xs text-gray-600 text-center font-medium">
                   {category.description}
                 </p>
               </Card>
@@ -443,99 +415,66 @@ export const SmartHome = () => {
           </div>
         </div>
 
-        {/* AI Features Highlight */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Brain className="h-10 w-10 text-purple-600" />
-              Varför AI Gör Skillnaden
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Traditionella smarta hem kräver konstant programmering. AI-hem lär sig och anpassar sig automatiskt.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-br from-blue-100 to-cyan-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
-              <Brain className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-lg font-bold mb-2 text-blue-800">Automatisk Inlärning</h3>
-              <p className="text-sm text-blue-700">
-                AI:n lär sig dina vanor på 2 veckor och optimerar automatiskt
-              </p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
-              <Target className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-lg font-bold mb-2 text-green-800">Prediktiv Analys</h3>
-              <p className="text-sm text-green-700">
-                Förutsäger behov och agerar innan du ens tänkt tanken
-              </p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
-              <Zap className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-lg font-bold mb-2 text-purple-800">Energioptimering</h3>
-              <p className="text-sm text-purple-700">
-                AI hittar besparingsmöjligheter du aldrig skulle upptäcka
-              </p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-orange-100 to-red-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
-              <Shield className="h-12 w-12 text-orange-600 mx-auto mb-4" />
-              <h3 className="text-lg font-bold mb-2 text-orange-800">Proaktiv Säkerhet</h3>
-              <p className="text-sm text-orange-700">
-                Identifierar hot innan de blir verkliga problem
-              </p>
-            </div>
-          </div>
-        </Card>
-
         {/* Products Grid */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            {selectedCategory === 'all' ? 'Alla AI Smart Hem-Produkter' : `${categories.find(c => c.id === selectedCategory)?.name} Produkter`}
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+            {selectedCategory === 'all' ? 'Alla Smart Hem-Produkter' : `${categories.find(c => c.id === selectedCategory)?.name}`}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
               <Card 
                 key={product.id} 
-                className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer group"
+                className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50"
                 onClick={() => setSelectedProduct(product.id)}
               >
                 {/* Product Header */}
-                <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <product.icon className="h-12 w-12 text-cyan-400" />
-                    <Badge className="bg-cyan-500 text-white">AI-Driven</Badge>
+                <div className="bg-gradient-to-r from-gray-800 to-gray-900 text-white p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <product.icon className="h-12 w-12 text-cyan-400" />
+                      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0">
+                        {product.brand}
+                      </Badge>
+                    </div>
+                    <h3 className="text-xl font-bold mb-1">{product.name}</h3>
+                    <p className="text-gray-300 text-sm mb-3">{product.model}</p>
+                    <div className="text-2xl font-bold text-cyan-400">
+                      {product.pricing.total.toLocaleString()} kr
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      Inkl. installation & setup
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-                  <p className="text-cyan-300 font-semibold">{product.price}</p>
                 </div>
 
                 {/* Product Content */}
                 <div className="p-6">
-                  {/* Benefits */}
+                  {/* Real Features */}
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-2 text-gray-800">Huvudfunktioner:</h4>
-                    <ul className="space-y-1">
-                      {product.benefits.map((benefit, index) => (
+                    <h4 className="font-semibold mb-3 text-gray-800 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      Huvudfunktioner:
+                    </h4>
+                    <ul className="space-y-2">
+                      {product.realFeatures.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-700">{benefit}</span>
+                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="text-gray-700">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   {/* AI Features */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-purple-800 flex items-center gap-2">
+                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
+                    <h4 className="font-semibold mb-3 text-purple-800 flex items-center gap-2">
                       <Brain className="h-4 w-4" />
-                      AI-Funktioner:
+                      Smarta Funktioner:
                     </h4>
-                    <ul className="space-y-1">
-                      {product.aiFeatures.map((feature, index) => (
+                    <ul className="space-y-2">
+                      {product.realAIFeatures.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <Target className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
                           <span className="text-purple-700">{feature}</span>
@@ -544,27 +483,48 @@ export const SmartHome = () => {
                     </ul>
                   </div>
 
-                  {/* Savings */}
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-green-50 p-2 rounded">
-                      <div className="text-xs text-green-600">Sparar</div>
-                      <div className="font-bold text-green-800">{product.savings.cost} kr/år</div>
+                  {/* Installation Info */}
+                  <div className="mb-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                    <h4 className="font-semibold mb-2 text-green-800 flex items-center gap-2">
+                      <Settings className="h-4 w-4" />
+                      Installation:
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-green-600 font-medium">Tid:</span>
+                        <div className="text-green-700">{product.installation.time}</div>
+                      </div>
+                      <div>
+                        <span className="text-green-600 font-medium">Garanti:</span>
+                        <div className="text-green-700">{product.warranty}</div>
+                      </div>
                     </div>
-                    <div className="bg-blue-50 p-2 rounded">
-                      <div className="text-xs text-blue-600">Tid</div>
-                      <div className="font-bold text-blue-800">{product.savings.time}</div>
-                    </div>
-                    <div className="bg-purple-50 p-2 rounded">
-                      <div className="text-xs text-purple-600">Effektivitet</div>
-                      <div className="font-bold text-purple-800 text-xs">{product.savings.efficiency}</div>
+                  </div>
+
+                  {/* Pricing Breakdown */}
+                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-100">
+                    <h4 className="font-semibold mb-2 text-orange-800">Priser:</h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-orange-700">Produkt:</span>
+                        <span className="font-medium">{product.pricing.product.toLocaleString()} kr</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-orange-700">Installation:</span>
+                        <span className="font-medium">{product.pricing.installation.toLocaleString()} kr</span>
+                      </div>
+                      <div className="flex justify-between border-t border-orange-200 pt-1 font-bold">
+                        <span className="text-orange-800">Totalt:</span>
+                        <span className="text-orange-800">{product.pricing.total.toLocaleString()} kr</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* CTA Button */}
                 <div className="p-6 pt-0">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                    Få AI-Installation
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg">
+                    Boka Installation
                   </Button>
                 </div>
               </Card>
@@ -572,153 +532,92 @@ export const SmartHome = () => {
           </div>
         </div>
 
-        {/* AI Statistics */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-cyan-50 to-blue-50">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Resultat från 1000+ AI Smart Hem-Installationer
+        {/* Why These Brands */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-0 shadow-lg">
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+            Varför Vi Valt Dessa Märken
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-5xl font-bold text-cyan-600 mb-2">
-                {realStats.energySavings}%
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="h-8 w-8" />
               </div>
-              <p className="text-sm text-gray-600 mb-1">
-                Genomsnittlig energibesparing med AI-optimering
-              </p>
-              <div className="text-xs text-gray-500">
-                *Verifierat av Energimyndigheten 2024
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold text-green-600 mb-2">
-                {realStats.timeSaved}h
-              </div>
-              <p className="text-sm text-gray-600 mb-1">
-                Sparad tid per vecka med AI-automation
-              </p>
-              <div className="text-xs text-gray-500">
-                *Baserat på användarstudie
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold text-purple-600 mb-2">
-                {realStats.homeValue}%
-              </div>
-              <p className="text-sm text-gray-600 mb-1">
-                Värdeökning med AI Smart Hem-system
-              </p>
-              <div className="text-xs text-gray-500">
-                *SCB Fastighetsstatistik 2024
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-5xl font-bold text-orange-600 mb-2">
-                {realStats.userSatisfaction}%
-              </div>
-              <p className="text-sm text-gray-600 mb-1">
-                Av kunder rekommenderar AI Smart Hem
-              </p>
-              <div className="text-xs text-gray-500">
-                *1000+ installationer senaste året
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Installation Process */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-green-50 to-emerald-50">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Så Enkelt Blir Ditt Hem AI-Smart
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                1
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Kostnadsfri Hemkonsultation</h3>
+              <h3 className="text-lg font-bold mb-2 text-gray-800">Marknadsledare</h3>
               <p className="text-sm text-gray-600">
-                Vår AI-expert kommer hem och analyserar dina behov. 
-                Vi designar en skräddarsydd lösning för just ditt hem.
+                Alla märken är #1 eller #2 i sina kategorier globalt. 
+                Beprövad teknik med miljontals installationer.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                2
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-8 w-8" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Professionell Installation</h3>
+              <h3 className="text-lg font-bold mb-2 text-gray-800">Säker Integration</h3>
               <p className="text-sm text-gray-600">
-                Certifierade tekniker installerar och konfigurerar alla system. 
-                De flesta installationer tar 4-8 timmar.
+                Alla produkter fungerar tillsammans och har säkra 
+                protokoll som Zigbee 3.0 och WiFi 6.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                3
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Settings className="h-8 w-8" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">AI-Träning & Optimering</h3>
+              <h3 className="text-lg font-bold mb-2 text-gray-800">Enkel Support</h3>
               <p className="text-sm text-gray-600">
-                AI:n börjar lära sig dina vanor direkt. Efter 2 veckor 
-                är systemet helt optimerat för din familj.
+                Vi är certifierade installatörer för alla märken. 
+                En kontakt för alla dina smart hem-behov.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                4
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="h-8 w-8" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Kontinuerlig Förbättring</h3>
+              <h3 className="text-lg font-bold mb-2 text-gray-800">Framtidssäkert</h3>
               <p className="text-sm text-gray-600">
-                AI:n fortsätter att lära och förbättra sig. Regelbundna 
-                uppdateringar ger dig nya funktioner automatiskt.
+                Alla produkter får regelbundna uppdateringar med 
+                nya funktioner. Din investering växer över tid.
               </p>
             </div>
           </div>
         </Card>
 
         {/* Final CTA */}
-        <Card className="p-10 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-center">
+        <Card className="p-10 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-center border-0 shadow-2xl">
           <h2 className="text-4xl font-bold mb-6">
-            Redo att Uppleva Framtidens Smart Hem?
+            Redo för Professionell Smart Hem-Installation?
           </h2>
           <p className="text-xl mb-8 text-white/90 max-w-3xl mx-auto">
-            Boka en kostnadsfri AI-konsultation idag. Våra experter visar dig exakt hur AI kan 
-            transformera ditt hem och spara dig tusentals kronor per år.
+            Boka en kostnadsfri hemkonsultation idag. Vi kommer hem till dig med produkterna, 
+            visar hur de fungerar och ger dig en exakt offert på installationen.
           </p>
           
           <div className="flex flex-wrap justify-center gap-6 mb-8">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg">
+            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg border-0 shadow-lg">
               <Phone className="h-6 w-6 mr-3" />
               Ring 08-123 456 78
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
-              <Brain className="h-6 w-6 mr-3" />
-              Boka AI-Konsultation
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
-              <Target className="h-6 w-6 mr-3" />
-              Se AI-Demo
+            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
+              <Home className="h-6 w-6 mr-3" />
+              Boka Hemkonsultation
             </Button>
           </div>
           
           <div className="flex flex-wrap justify-center gap-8 text-sm text-white/80">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
-              1000+ Nöjda AI-Kunder
+              Kostnadsfri konsultation
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
-              Snitt 8 500 kr Besparing/År
+              Certifierade installatörer
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
-              Livstids AI-Support
+              2 års fullgaranti
             </div>
           </div>
         </Card>
