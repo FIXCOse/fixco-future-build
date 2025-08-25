@@ -62,10 +62,10 @@ const TrustChips = ({
     const chipContent = (
         <Badge 
           variant="secondary" 
-          className={`flex items-center justify-center space-x-2 px-4 py-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white w-full ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
+          className={`flex items-center justify-center space-x-2 px-3 py-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white w-full h-12 min-h-[48px] ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
         >
-        <IconComponent className="h-4 w-4 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
-        <span className="font-medium text-sm drop-shadow-sm">{chip.label}</span>
+        <IconComponent className="h-4 w-4 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200 flex-shrink-0" aria-hidden="true" />
+        <span className="font-medium text-xs drop-shadow-sm text-center leading-tight truncate">{chip.label}</span>
       </Badge>
     );
 
@@ -161,10 +161,12 @@ const TrustChips = ({
         )}
       </div>
 
-      {/* Mobile Layout - Wrapped */}
-      <div className="md:hidden flex flex-wrap items-center justify-center gap-3 px-4 py-2">
+      {/* Mobile Layout - 2 column grid */}
+      <div className="md:hidden grid grid-cols-2 gap-3 px-4">
         {chips.map((chip) => (
-          <ChipComponent key={chip.id} chip={chip} />
+          <div key={chip.id} className="w-full">
+            <ChipComponent chip={chip} />
+          </div>
         ))}
       </div>
     </div>
