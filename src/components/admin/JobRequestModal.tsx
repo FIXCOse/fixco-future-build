@@ -94,17 +94,78 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('job_requests')
-        .insert([{
-          job_id: job.id,
-          staff_id: selectedStaff,
-          requested_by: (await supabase.auth.getUser()).data.user?.id,
-          message: message.trim(),
-          status: 'pending'
-        }]);
+      // Handle quote-type jobs - we need to create a real job first
+      if (job.status === 'accepted-quote' && job.source_type === 'quote') {
+        // Create a real job from the quote first
+        const { data: newJobResult, error: jobError } = await supabase.rpc('create_job_from_quote', {
+          p_quote_id: job.source_id
+        });
 
-      if (error) throw error;
+        if (jobError) {
+          throw new Error(`Kunde inte skapa jobb från offert: ${jobError.message}`);
+        }
+
+        // Handle the result - it might be just an ID string or an object
+        const newJobId = typeof newJobResult === 'string' ? newJobResult : (newJobResult as any)?.id;
+        
+        if (!newJobId) {
+          throw new Error('Kunde inte få jobb-ID från skapade jobbet');
+        }
+
+        // Now create the job request with the real job ID
+        const { error: requestError } = await supabase
+          .from('job_requests')
+          .insert([{
+            job_id: newJobId,
+            staff_id: selectedStaff,
+            requested_by: (await supabase.auth.getUser()).data.user?.id,
+            message: message.trim(),
+            status: 'pending'
+          }]);
+
+        if (requestError) {
+          throw new Error(`Kunde inte skicka förfrågan: ${requestError.message}`);
+        }
+      } else {
+        // Handle regular jobs
+        let jobId = job.id;
+        
+        // If it's a fake ID (starts with "quote-"), extract the real source_id
+        if (typeof jobId === 'string' && jobId.startsWith('quote-')) {
+          jobId = job.source_id;
+        }
+
+        const { error } = await supabase
+          .from('job_requests')
+          .insert([{
+            job_id: jobId,
+            staff_id: selectedStaff,
+            requested_by: (await supabase.auth.getUser()).data.user?.id,
+            message: message.trim(),
+            status: 'pending'
+          }]);
+
+        if (error) {
+          // Provide specific error messages based on error code
+          let errorMessage = "Kunde inte skicka förfrågan";
+          
+          if (error.code === '23503') {
+            if (error.message.includes('job_id')) {
+              errorMessage = "Jobbet kunde inte hittas i systemet";
+            } else if (error.message.includes('staff_id')) {
+              errorMessage = "Den valda personalen kunde inte hittas";
+            } else {
+              errorMessage = "Referensfel - kontrollera att jobbet och personalen finns";
+            }
+          } else if (error.code === '22P02') {
+            errorMessage = "Ogiltigt jobb-ID format";
+          } else if (error.code === '23505') {
+            errorMessage = "En förfrågan har redan skickats till denna personal för detta jobb";
+          }
+          
+          throw new Error(`${errorMessage}: ${error.message}`);
+        }
+      }
 
       toast({
         title: "Förfrågan skickad",
@@ -112,15 +173,16 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
       });
 
       queryClient.invalidateQueries({ queryKey: ['job-requests'] });
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
       onOpenChange(false);
       setSelectedStaff('');
       setMessage('');
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending job request:', error);
       toast({
         title: "Fel",
-        description: "Kunde inte skicka förfrågan",
+        description: error.message || "Kunde inte skicka förfrågan",
         variant: "destructive"
       });
     } finally {
