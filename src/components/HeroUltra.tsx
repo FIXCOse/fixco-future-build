@@ -165,7 +165,7 @@ const HeroUltra = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-20 md:pt-0">
         {/* Background System - Progressive Enhancement */}
         <div className="absolute inset-0">
           {/* Base gradient (always visible) */}
@@ -225,7 +225,7 @@ const HeroUltra = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 w-full">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -233,7 +233,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6 px-4"
+              className="text-3xl sm:text-4xl md:text-7xl font-bold leading-tight mb-6 px-2"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
