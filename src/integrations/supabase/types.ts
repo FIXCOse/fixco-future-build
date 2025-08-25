@@ -1696,11 +1696,43 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assign_job_to_worker: {
+        Args: { p_job_id: string; p_worker_id: string }
+        Returns: boolean
+      }
+      claim_job: {
+        Args: { p_job_id: string }
+        Returns: boolean
+      }
+      complete_job: {
+        Args: { p_job_id: string }
+        Returns: boolean
+      }
       create_booking_secure: {
         Args: { p: Json }
         Returns: string
       }
+      create_expense_entry: {
+        Args: { p: Json }
+        Returns: string
+      }
+      create_job_from_booking: {
+        Args: { p_booking_id: string }
+        Returns: string
+      }
+      create_job_from_quote: {
+        Args: { p_quote_id: string }
+        Returns: string
+      }
+      create_material_entry: {
+        Args: { p: Json }
+        Returns: string
+      }
       create_quote_request_secure: {
+        Args: { p: Json }
+        Returns: string
+      }
+      create_time_entry: {
         Args: { p: Json }
         Returns: string
       }
@@ -1775,6 +1807,14 @@ export type Database = {
       }
       organization_has_members: {
         Args: { org_uuid: string }
+        Returns: boolean
+      }
+      prepare_invoice_from_job: {
+        Args: { p_job_id: string }
+        Returns: Json
+      }
+      update_job_status: {
+        Args: { p_job_id: string; p_status: string }
         Returns: boolean
       }
     }
