@@ -470,7 +470,7 @@ export const SmartHome = () => {
                   </div>
 
                   {/* AI Features */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl border border-purple-400/30 backdrop-blur-sm">
+                  <div className="mb-6 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl border border-purple-400/30 backdrop-blur-sm">
                     <h4 className="font-semibold mb-3 text-purple-300 flex items-center gap-2">
                       <Brain className="h-4 w-4" />
                       Smarta Funktioner:
@@ -484,49 +484,12 @@ export const SmartHome = () => {
                       ))}
                     </ul>
                   </div>
-
-                  {/* Installation Info */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-xl border border-green-400/30 backdrop-blur-sm">
-                    <h4 className="font-semibold mb-2 text-green-300 flex items-center gap-2">
-                      <Settings className="h-4 w-4" />
-                      Installation:
-                    </h4>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div>
-                        <span className="text-green-400 font-medium">Tid:</span>
-                        <div className="text-green-200">{product.installation.time}</div>
-                      </div>
-                      <div>
-                        <span className="text-green-400 font-medium">Garanti:</span>
-                        <div className="text-green-200">{product.warranty}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Pricing Breakdown */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-600/20 to-orange-600/20 rounded-xl border border-yellow-400/30 backdrop-blur-sm">
-                    <h4 className="font-semibold mb-2 text-yellow-300">Priser:</h4>
-                    <div className="space-y-1 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-yellow-200">Produkt:</span>
-                        <span className="font-medium text-white">{product.pricing.product.toLocaleString()} kr</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-yellow-200">Installation:</span>
-                        <span className="font-medium text-white">{product.pricing.installation.toLocaleString()} kr</span>
-                      </div>
-                      <div className="flex justify-between border-t border-yellow-400/30 pt-1 font-bold">
-                        <span className="text-yellow-300">Totalt:</span>
-                        <span className="text-yellow-300">{product.pricing.total.toLocaleString()} kr</span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 {/* CTA Button */}
                 <div className="p-6 pt-0">
                   <Button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 text-white border-0 shadow-xl font-bold py-3 text-lg">
-                    🚀 Boka Installation
+                    Boka Installation
                   </Button>
                 </div>
               </Card>
