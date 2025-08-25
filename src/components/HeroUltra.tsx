@@ -233,7 +233,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
+              className="text-3xl sm:text-4xl md:text-7xl font-bold leading-relaxed md:leading-tight mb-8 px-2"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
@@ -244,8 +244,9 @@ const HeroUltra = () => {
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               <span className="gradient-text">Fixco</span> löser{" "}
-              <br />
+              <br className="block sm:hidden" />
               <span className="text-foreground">allt inom</span>{" "}
+              <br />
               <motion.span 
                 className="gradient-text"
                 animate={ultraEnabled ? { 
@@ -259,7 +260,7 @@ const HeroUltra = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+              className="text-lg md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
@@ -296,7 +297,7 @@ const HeroUltra = () => {
 
             {/* Trust Indicators Grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-8 px-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}

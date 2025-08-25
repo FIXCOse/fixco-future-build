@@ -145,7 +145,7 @@ const TrustChips = ({
       </div>
 
       {/* Mobile Layout - Wrapped */}
-      <div className="md:hidden flex flex-wrap items-center justify-start gap-2 px-4">
+      <div className="md:hidden flex flex-wrap items-center justify-center gap-3 px-4 py-2">
         {chips.map((chip) => (
           <ChipComponent key={chip.id} chip={chip} />
         ))}
