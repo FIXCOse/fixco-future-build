@@ -41,6 +41,12 @@ import StaffManagement from "./pages/MyFixco/StaffManagement";
 import AdminRoute from "./components/AdminRoute";
 import AdminLayoutNew from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import WorkerLayout from "./components/worker/WorkerLayout";
+import WorkerDashboard from "./pages/worker/WorkerDashboard";
+import JobPool from "./pages/worker/JobPool";
+import MyJobs from "./pages/worker/MyJobs";
+import JobDetail from "./pages/worker/JobDetail";
+import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
 import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDatabase from "./pages/admin/AdminDatabase";
@@ -139,6 +145,15 @@ const App = () => {
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
+                  </Route>
+
+                  {/* Worker Routes */}
+                  <Route path="/worker" element={<WorkerLayout />}>
+                    <Route index element={<WorkerDashboard />} />
+                    <Route path="pool" element={<JobPool />} />
+                    <Route path="jobs" element={<MyJobs />} />
+                    <Route path="jobs/:jobId" element={<JobDetail />} />
+                    <Route path="timesheet" element={<WorkerTimesheet />} />
                   </Route>
 
                   {/* Booking and Quote Request Routes */}

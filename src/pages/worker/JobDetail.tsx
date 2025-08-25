@@ -212,18 +212,18 @@ const JobDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" onClick={() => navigate('/worker/jobs')}>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+        <div className="flex items-start space-x-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/worker/jobs')} className="mt-0.5">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Tillbaka
+            <span className="hidden sm:inline">Tillbaka</span>
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold">{job.title}</h1>
-            <div className="flex items-center space-x-4 text-muted-foreground">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl md:text-2xl font-bold truncate">{job.title}</h1>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-muted-foreground text-sm mt-1">
               <span className="flex items-center">
-                <MapPin className="w-4 h-4 mr-1" />
-                {job.address}, {job.city}
+                <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                <span className="truncate">{job.address}, {job.city}</span>
               </span>
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-2 ${getStatusColor(job.status)}`} />
@@ -235,30 +235,31 @@ const JobDetail = () => {
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        {/* Action buttons - Mobile optimized */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           {job.status === 'assigned' && (
-            <Button onClick={handleStartTimer}>
-              <Play className="w-4 h-4 mr-2" />
+            <Button onClick={handleStartTimer} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
+              <Play className="w-5 h-5 mr-2" />
               Starta jobb
             </Button>
           )}
           
           {job.status === 'in_progress' && (
             <>
-              <Button variant="outline" onClick={handlePauseJob}>
-                <Pause className="w-4 h-4 mr-2" />
+              <Button variant="outline" onClick={handlePauseJob} className="w-full sm:w-auto" size="lg">
+                <Pause className="w-5 h-5 mr-2" />
                 Pausa
               </Button>
-              <Button onClick={handleCompleteJob}>
-                <CheckCircle className="w-4 h-4 mr-2" />
+              <Button onClick={handleCompleteJob} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" size="lg">
+                <CheckCircle className="w-5 h-5 mr-2" />
                 Markera färdig
               </Button>
             </>
           )}
           
           {job.status === 'paused' && (
-            <Button onClick={handleStartTimer}>
-              <Play className="w-4 h-4 mr-2" />
+            <Button onClick={handleStartTimer} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
+              <Play className="w-5 h-5 mr-2" />
               Fortsätt
             </Button>
           )}
@@ -267,17 +268,20 @@ const JobDetail = () => {
 
       {/* Active Timer Display */}
       {activeTimer && (
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-green-200 bg-gradient-to-r from-green-50 to-green-100 shadow-lg">
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Timer className="w-5 h-5 text-green-600" />
-                <span className="font-medium">Timer aktiv</span>
-                <span className="text-sm text-muted-foreground">
-                  Startad: {format(activeTimer.startedAt, 'HH:mm')}
-                </span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                <div>
+                  <span className="font-medium text-green-800">Timer aktiv</span>
+                  <div className="text-sm text-green-600">
+                    Startad: {format(activeTimer.startedAt, 'HH:mm')}
+                  </div>
+                </div>
               </div>
-              <Button size="sm" onClick={handleStopTimer}>
+              <Button size="sm" onClick={handleStopTimer} variant="outline" className="w-full sm:w-auto">
+                <Timer className="w-4 h-4 mr-2" />
                 Stoppa timer
               </Button>
             </div>
@@ -285,22 +289,22 @@ const JobDetail = () => {
         </Card>
       )}
 
-      {/* Job Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Job Info Cards - Mobile optimized */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <CardHeader>
-            <CardTitle>Jobbinfo</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Jobbinfo</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-3 text-sm">
             <div>
-              <Label className="text-sm font-medium">Beskrivning</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Beskrivning</Label>
+              <p className="mt-1 text-foreground">
                 {job.description || 'Ingen beskrivning'}
               </p>
             </div>
             <div>
-              <Label className="text-sm font-medium">Prissättning</Label>
-              <p className="text-sm">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Prissättning</Label>
+              <p className="mt-1 text-lg font-bold text-primary">
                 {job.pricing_mode === 'hourly' 
                   ? `${job.hourly_rate} kr/h`
                   : `${job.fixed_price} kr (fast)`
@@ -309,8 +313,8 @@ const JobDetail = () => {
             </div>
             {job.start_scheduled_at && (
               <div>
-                <Label className="text-sm font-medium">Planerad start</Label>
-                <p className="text-sm">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Planerad start</Label>
+                <p className="mt-1">
                   {format(new Date(job.start_scheduled_at), 'dd MMM yyyy HH:mm', { locale: sv })}
                 </p>
               </div>
@@ -319,17 +323,17 @@ const JobDetail = () => {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Tidssammanfattning</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Tid & Timmar</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-3">
             <div>
-              <Label className="text-sm font-medium">Totala timmar</Label>
-              <p className="text-2xl font-bold">{totalHours.toFixed(1)}h</p>
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totala timmar</Label>
+              <p className="text-2xl font-bold text-blue-600 mt-1">{totalHours.toFixed(1)}h</p>
             </div>
             <div>
-              <Label className="text-sm font-medium">Uppskattad kostnad</Label>
-              <p className="text-lg">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Uppskattad kostnad</Label>
+              <p className="text-lg font-semibold text-green-600 mt-1">
                 {job.pricing_mode === 'hourly' 
                   ? `${(totalHours * (job.hourly_rate || 0)).toFixed(0)} kr`
                   : `${job.fixed_price} kr`
@@ -340,21 +344,21 @@ const JobDetail = () => {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Kostnader</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Kostnader</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <Label className="text-sm font-medium">Material</Label>
-              <p className="text-lg">{totalMaterialCost.toFixed(0)} kr</p>
+          <CardContent className="space-y-3">
+            <div className="flex justify-between">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Material</Label>
+              <p className="font-semibold">{totalMaterialCost.toFixed(0)} kr</p>
             </div>
-            <div>
-              <Label className="text-sm font-medium">Utlägg</Label>
-              <p className="text-lg">{totalExpenses.toFixed(0)} kr</p>
+            <div className="flex justify-between">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Utlägg</Label>
+              <p className="font-semibold">{totalExpenses.toFixed(0)} kr</p>
             </div>
-            <div>
-              <Label className="text-sm font-medium">Totalt extra</Label>
-              <p className="text-xl font-bold">
+            <div className="flex justify-between pt-2 border-t">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totalt extra</Label>
+              <p className="text-lg font-bold text-orange-600">
                 {(totalMaterialCost + totalExpenses).toFixed(0)} kr
               </p>
             </div>
@@ -362,16 +366,19 @@ const JobDetail = () => {
         </Card>
       </div>
 
-      {/* Tabs for Time, Materials, Expenses */}
-      <Tabs defaultValue="time">
-        <TabsList>
-          <TabsTrigger value="time">
+      {/* Tabs for Time, Materials, Expenses - Mobile optimized */}
+      <Tabs defaultValue="time" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 h-12">
+          <TabsTrigger value="time" className="text-xs sm:text-sm">
+            <Clock className="w-4 h-4 mr-1" />
             Tid ({timeLogs?.length || 0})
           </TabsTrigger>
-          <TabsTrigger value="materials">
+          <TabsTrigger value="materials" className="text-xs sm:text-sm">
+            <Package className="w-4 h-4 mr-1" />
             Material ({materialLogs?.length || 0})
           </TabsTrigger>
-          <TabsTrigger value="expenses">
+          <TabsTrigger value="expenses" className="text-xs sm:text-sm">
+            <Receipt className="w-4 h-4 mr-1" />
             Utlägg ({expenseLogs?.length || 0})
           </TabsTrigger>
         </TabsList>
@@ -404,7 +411,7 @@ const JobDetail = () => {
   );
 };
 
-// Time Logs Tab Component
+// Time Logs Tab Component - Mobile optimized
 const TimeLogsTab = ({ jobId, timeLogs, onAddTime }: any) => {
   const [isAddingTime, setIsAddingTime] = useState(false);
   const [timeForm, setTimeForm] = useState({
@@ -424,40 +431,45 @@ const TimeLogsTab = ({ jobId, timeLogs, onAddTime }: any) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Tidslogg</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-lg">Tidslogg</CardTitle>
         <Dialog open={isAddingTime} onOpenChange={setIsAddingTime}>
           <DialogTrigger asChild>
-            <Button size="sm">
+            <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
               <Plus className="w-4 h-4 mr-2" />
-              Lägg till tid
+              <span className="hidden sm:inline">Lägg till tid</span>
+              <span className="sm:hidden">Tid</span>
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Lägg till tid</DialogTitle>
+              <DialogTitle>Lägg till arbetstid</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label>Timmar</Label>
+                <Label className="text-sm font-medium">Antal timmar</Label>
                 <Input
                   type="number"
                   step="0.25"
                   value={timeForm.manual_hours}
                   onChange={(e) => setTimeForm({ ...timeForm, manual_hours: e.target.value })}
                   placeholder="t.ex. 2.5"
+                  className="text-lg h-12 mt-2"
                 />
+                <p className="text-xs text-muted-foreground mt-1">Använd 0.25 för 15 min, 0.5 för 30 min</p>
               </div>
               <div>
-                <Label>Anteckning</Label>
+                <Label className="text-sm font-medium">Vad gjorde du?</Label>
                 <Textarea
                   value={timeForm.note}
                   onChange={(e) => setTimeForm({ ...timeForm, note: e.target.value })}
-                  placeholder="Vad gjorde du?"
+                  placeholder="Beskriv vad du arbetade med..."
+                  className="mt-2 min-h-[80px]"
                 />
               </div>
-              <Button onClick={handleAddTime} className="w-full">
-                Lägg till
+              <Button onClick={handleAddTime} className="w-full h-12" disabled={!timeForm.manual_hours}>
+                <Plus className="w-4 h-4 mr-2" />
+                Lägg till tid
               </Button>
             </div>
           </DialogContent>
@@ -465,19 +477,27 @@ const TimeLogsTab = ({ jobId, timeLogs, onAddTime }: any) => {
       </CardHeader>
       <CardContent>
         {timeLogs.length === 0 ? (
-          <p className="text-center text-muted-foreground py-4">
-            Ingen tid registrerad än
-          </p>
+          <div className="text-center py-8 text-muted-foreground">
+            <Clock className="w-12 h-12 mx-auto mb-3 opacity-50" />
+            <p>Ingen tid registrerad än</p>
+            <p className="text-sm mt-1">Tryck på knappen ovan för att lägga till arbetstid</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {timeLogs.map((log: any) => (
-              <div key={log.id} className="flex justify-between items-center p-3 border rounded">
-                <div>
-                  <div className="font-medium">
-                    {log.hours ? `${log.hours.toFixed(1)}h` : `${log.manual_hours}h (manuell)`}
+              <div key={log.id} className="flex justify-between items-start p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-white">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <Clock className="w-4 h-4 text-purple-600" />
+                    <span className="font-bold text-lg text-purple-900">
+                      {log.hours ? `${log.hours.toFixed(1)}h` : `${log.manual_hours}h`}
+                    </span>
+                    {!log.hours && (
+                      <Badge variant="secondary" className="text-xs">Manuell</Badge>
+                    )}
                   </div>
                   {log.note && (
-                    <div className="text-sm text-muted-foreground">{log.note}</div>
+                    <p className="text-sm text-muted-foreground mb-2 leading-relaxed">{log.note}</p>
                   )}
                   <div className="text-xs text-muted-foreground">
                     {format(new Date(log.created_at), 'dd MMM HH:mm', { locale: sv })}
@@ -492,7 +512,7 @@ const TimeLogsTab = ({ jobId, timeLogs, onAddTime }: any) => {
   );
 };
 
-// Material Logs Tab Component
+// Material Logs Tab Component - Mobile optimized
 const MaterialLogsTab = ({ jobId, materialLogs, onAddMaterial }: any) => {
   const [isAddingMaterial, setIsAddingMaterial] = useState(false);
   const [materialForm, setMaterialForm] = useState({
@@ -518,57 +538,69 @@ const MaterialLogsTab = ({ jobId, materialLogs, onAddMaterial }: any) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Material</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-lg">Material & Delar</CardTitle>
         <Dialog open={isAddingMaterial} onOpenChange={setIsAddingMaterial}>
           <DialogTrigger asChild>
-            <Button size="sm">
+            <Button size="sm" className="bg-green-600 hover:bg-green-700">
               <Plus className="w-4 h-4 mr-2" />
-              Lägg till material
+              <span className="hidden sm:inline">Lägg till</span>
+              <span className="sm:hidden">+</span>
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Lägg till material</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label>Artikel/Namn</Label>
+                <Label className="text-sm font-medium">Artikel/Namn *</Label>
                 <Input
                   value={materialForm.name}
                   onChange={(e) => setMaterialForm({ ...materialForm, name: e.target.value })}
-                  placeholder="t.ex. Skruv M6x40"
+                  placeholder="t.ex. Skruv M6x40, Rör 22mm"
+                  className="mt-2 h-12"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label>Antal</Label>
+                  <Label className="text-sm font-medium">Antal *</Label>
                   <Input
                     type="number"
                     value={materialForm.qty}
                     onChange={(e) => setMaterialForm({ ...materialForm, qty: e.target.value })}
+                    placeholder="1"
+                    className="mt-2 h-12"
                   />
                 </div>
                 <div>
-                  <Label>Pris per st (kr)</Label>
+                  <Label className="text-sm font-medium">Pris/st (kr)</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={materialForm.unit_price}
                     onChange={(e) => setMaterialForm({ ...materialForm, unit_price: e.target.value })}
+                    placeholder="12.50"
+                    className="mt-2 h-12"
                   />
                 </div>
               </div>
               <div>
-                <Label>Leverantör</Label>
+                <Label className="text-sm font-medium">Leverantör</Label>
                 <Input
                   value={materialForm.supplier}
                   onChange={(e) => setMaterialForm({ ...materialForm, supplier: e.target.value })}
-                  placeholder="t.ex. Beijer Byggmaterial"
+                  placeholder="t.ex. Beijer, XL-BYGG"
+                  className="mt-2 h-12"
                 />
               </div>
-              <Button onClick={handleAddMaterial} className="w-full">
-                Lägg till
+              <Button 
+                onClick={handleAddMaterial} 
+                className="w-full h-12" 
+                disabled={!materialForm.name || !materialForm.qty}
+              >
+                <Package className="w-4 h-4 mr-2" />
+                Lägg till material
               </Button>
             </div>
           </DialogContent>
@@ -576,26 +608,33 @@ const MaterialLogsTab = ({ jobId, materialLogs, onAddMaterial }: any) => {
       </CardHeader>
       <CardContent>
         {materialLogs.length === 0 ? (
-          <p className="text-center text-muted-foreground py-4">
-            Inget material registrerat än
-          </p>
+          <div className="text-center py-8 text-muted-foreground">
+            <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
+            <p>Inget material registrerat än</p>
+            <p className="text-sm mt-1">Registrera material och delar du använder</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {materialLogs.map((log: any) => (
-              <div key={log.id} className="flex justify-between items-center p-3 border rounded">
-                <div>
-                  <div className="font-medium">{log.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {log.qty} st × {log.unit_price ? `${log.unit_price} kr` : 'okänt pris'}
-                    {log.supplier && ` (${log.supplier})`}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {format(new Date(log.created_at), 'dd MMM HH:mm', { locale: sv })}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-medium">
-                    {log.unit_price ? `${(log.qty * log.unit_price).toFixed(0)} kr` : '-'}
+              <div key={log.id} className="flex justify-between items-start p-4 border rounded-lg bg-gradient-to-r from-green-50 to-white">
+                <div className="flex-1">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-medium text-green-900">{log.name}</h4>
+                      <div className="text-sm text-green-700 mt-1">
+                        <span className="font-medium">{log.qty} st</span>
+                        {log.unit_price && <span> × {log.unit_price} kr</span>}
+                        {log.supplier && <span className="text-muted-foreground"> ({log.supplier})</span>}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-2">
+                        {format(new Date(log.created_at), 'dd MMM HH:mm', { locale: sv })}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-lg text-green-800">
+                        {log.unit_price ? `${(log.qty * log.unit_price).toFixed(0)} kr` : '-'}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -607,7 +646,7 @@ const MaterialLogsTab = ({ jobId, materialLogs, onAddMaterial }: any) => {
   );
 };
 
-// Expense Logs Tab Component
+// Expense Logs Tab Component - Mobile optimized
 const ExpenseLogsTab = ({ jobId, expenseLogs, onAddExpense }: any) => {
   const [isAddingExpense, setIsAddingExpense] = useState(false);
   const [expenseForm, setExpenseForm] = useState({
@@ -615,6 +654,8 @@ const ExpenseLogsTab = ({ jobId, expenseLogs, onAddExpense }: any) => {
     amount: '',
     note: ''
   });
+
+  const categories = ['Resa', 'Parkering', 'Verktyg', 'Konsumtion', 'Övrigt'];
 
   const handleAddExpense = () => {
     onAddExpense({
@@ -629,47 +670,57 @@ const ExpenseLogsTab = ({ jobId, expenseLogs, onAddExpense }: any) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Utlägg</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-lg">Utlägg & Kostnader</CardTitle>
         <Dialog open={isAddingExpense} onOpenChange={setIsAddingExpense}>
           <DialogTrigger asChild>
-            <Button size="sm">
+            <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
               <Plus className="w-4 h-4 mr-2" />
-              Lägg till utlägg
+              <span className="hidden sm:inline">Lägg till</span>
+              <span className="sm:hidden">+</span>
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Lägg till utlägg</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label>Kategori</Label>
-                <Input
+                <Label className="text-sm font-medium">Kategori</Label>
+                <select
                   value={expenseForm.category}
                   onChange={(e) => setExpenseForm({ ...expenseForm, category: e.target.value })}
-                  placeholder="t.ex. Resa, Verktyg, Övrigt"
-                />
+                  className="w-full mt-2 h-12 px-3 border border-input bg-background rounded-md"
+                >
+                  <option value="">Välj kategori</option>
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
               </div>
               <div>
-                <Label>Belopp (kr)</Label>
+                <Label className="text-sm font-medium">Belopp (kr) *</Label>
                 <Input
                   type="number"
                   step="0.01"
                   value={expenseForm.amount}
                   onChange={(e) => setExpenseForm({ ...expenseForm, amount: e.target.value })}
+                  placeholder="125.50"
+                  className="mt-2 h-12 text-lg"
                 />
               </div>
               <div>
-                <Label>Beskrivning</Label>
+                <Label className="text-sm font-medium">Beskrivning</Label>
                 <Textarea
                   value={expenseForm.note}
                   onChange={(e) => setExpenseForm({ ...expenseForm, note: e.target.value })}
                   placeholder="Vad var utlägget för?"
+                  className="mt-2 min-h-[80px]"
                 />
               </div>
-              <Button onClick={handleAddExpense} className="w-full">
-                Lägg till
+              <Button onClick={handleAddExpense} className="w-full h-12" disabled={!expenseForm.amount}>
+                <Receipt className="w-4 h-4 mr-2" />
+                Lägg till utlägg
               </Button>
             </div>
           </DialogContent>
@@ -677,24 +728,33 @@ const ExpenseLogsTab = ({ jobId, expenseLogs, onAddExpense }: any) => {
       </CardHeader>
       <CardContent>
         {expenseLogs.length === 0 ? (
-          <p className="text-center text-muted-foreground py-4">
-            Inga utlägg registrerade än
-          </p>
+          <div className="text-center py-8 text-muted-foreground">
+            <Receipt className="w-12 h-12 mx-auto mb-3 opacity-50" />
+            <p>Inga utlägg registrerade än</p>
+            <p className="text-sm mt-1">Registrera resor, verktyg och andra kostnader</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {expenseLogs.map((log: any) => (
-              <div key={log.id} className="flex justify-between items-center p-3 border rounded">
-                <div>
-                  <div className="font-medium">{log.category || 'Övrigt'}</div>
-                  {log.note && (
-                    <div className="text-sm text-muted-foreground">{log.note}</div>
-                  )}
-                  <div className="text-xs text-muted-foreground">
-                    {format(new Date(log.created_at), 'dd MMM HH:mm', { locale: sv })}
+              <div key={log.id} className="flex justify-between items-start p-4 border rounded-lg bg-gradient-to-r from-orange-50 to-white">
+                <div className="flex-1">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <Receipt className="w-4 h-4 text-orange-600" />
+                        <h4 className="font-medium text-orange-900">{log.category || 'Övrigt'}</h4>
+                      </div>
+                      {log.note && (
+                        <p className="text-sm text-orange-700 mb-2">{log.note}</p>
+                      )}
+                      <div className="text-xs text-muted-foreground">
+                        {format(new Date(log.created_at), 'dd MMM HH:mm', { locale: sv })}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-lg text-orange-800">{log.amount} kr</div>
+                    </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-medium">{log.amount} kr</div>
                 </div>
               </div>
             ))}
