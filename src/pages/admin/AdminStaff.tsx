@@ -6,21 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Users, Plus, User, Phone, Mail, Send, Edit2, UserX, UserCheck, Briefcase } from 'lucide-react';
+import { Search, Users, Plus, User, Phone, Mail, Send, Edit2, UserX, UserCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AdminBack from '@/components/admin/AdminBack';
 import { StaffRegistrationModal } from '@/components/admin/StaffRegistrationModal';
 import { SkillsManagement } from '@/components/admin/SkillsManagement';
-import { JobRequestModal } from '@/components/admin/JobRequestModal';
+
 
 const AdminStaff = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
-  const [isJobRequestModalOpen, setIsJobRequestModalOpen] = useState(false);
+  
   const [editingStaff, setEditingStaff] = useState<any>(null);
-  const [selectedJob, setSelectedJob] = useState<any>(null);
+  
 
   // Fetch staff with their skills
   const { data: staff, isLoading } = useQuery({
@@ -48,21 +48,6 @@ const AdminStaff = () => {
     },
   });
 
-  // Fetch available jobs for manual assignment
-  const { data: availableJobs = [] } = useQuery({
-    queryKey: ['available-jobs'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('jobs')
-        .select('*')
-        .in('status', ['pool', 'assigned'])
-        .order('created_at', { ascending: false })
-        .limit(20);
-      
-      if (error) throw error;
-      return data || [];
-    }
-  });
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
@@ -140,10 +125,6 @@ const AdminStaff = () => {
     }
   };
 
-  const handleJobAssignment = (job: any) => {
-    setSelectedJob(job);
-    setIsJobRequestModalOpen(true);
-  };
 
   return (
     <div className="space-y-6">
@@ -167,10 +148,9 @@ const AdminStaff = () => {
       </div>
 
       <Tabs defaultValue="staff" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="staff">Personal</TabsTrigger>
           <TabsTrigger value="skills">Kompetenser</TabsTrigger>
-          <TabsTrigger value="jobs">Jobbförfrågningar</TabsTrigger>
         </TabsList>
 
         <TabsContent value="staff" className="space-y-6">
@@ -370,50 +350,6 @@ const AdminStaff = () => {
         <TabsContent value="skills">
           <SkillsManagement />
         </TabsContent>
-
-        <TabsContent value="jobs" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5" />
-                Tillgängliga Jobb för Manuell Tilldelning
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {availableJobs.length > 0 ? (
-                <div className="space-y-4">
-                  {availableJobs.map((job) => (
-                    <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-1">
-                        <h3 className="font-medium">{job.title}</h3>
-                        <p className="text-sm text-muted-foreground">{job.description}</p>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>{job.address}, {job.city}</span>
-                          <Badge variant={job.status === 'pool' ? 'default' : 'secondary'}>
-                            {job.status === 'pool' ? 'I pool' : 'Tilldelat'}
-                          </Badge>
-                        </div>
-                      </div>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleJobAssignment(job)}
-                        className="flex items-center gap-2"
-                      >
-                        <Send className="h-4 w-4" />
-                        Skicka Förfrågan
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Inga tillgängliga jobb för tillddelning</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Modals */}
@@ -426,14 +362,6 @@ const AdminStaff = () => {
         editingStaff={editingStaff}
       />
 
-      <JobRequestModal
-        open={isJobRequestModalOpen}
-        onOpenChange={(open) => {
-          setIsJobRequestModalOpen(open);
-          if (!open) setSelectedJob(null);
-        }}
-        job={selectedJob}
-      />
     </div>
   );
 };

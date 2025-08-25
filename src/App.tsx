@@ -70,7 +70,7 @@ import { SmartHome } from "./pages/SmartHome";
 import { Neighborhood } from "./pages/Neighborhood"; 
 import { Leaderboard } from "./pages/Leaderboard";
 import AdminJobs from "./pages/admin/AdminJobs";
-import AdminWorkers from "./pages/admin/AdminWorkers";
+import AdminJobRequests from "./pages/admin/AdminJobRequests";
 
 const queryClient = new QueryClient();
 
@@ -147,8 +147,8 @@ const App = () => {
                     <Route path="settings" element={<AdminSettings />} />
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
+                    <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="jobs" element={<AdminJobs />} />
-                    <Route path="workers" element={<AdminWorkers />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                   </Route>
 
