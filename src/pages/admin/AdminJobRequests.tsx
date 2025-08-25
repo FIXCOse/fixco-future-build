@@ -23,11 +23,12 @@ const AdminJobRequests = () => {
   const [isJobRequestModalOpen, setIsJobRequestModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
-  // Fetch all jobs for manual assignment
+  // Fetch all jobs and accepted quotes for manual assignment
   const { data: allJobs, isLoading: jobsLoading } = useQuery({
     queryKey: ['all-jobs-for-requests', searchTerm],
     queryFn: async () => {
-      let query = supabase
+      // Fetch existing jobs
+      let jobsQuery = supabase
         .from('jobs')
         .select(`
           *,
@@ -46,13 +47,69 @@ const AdminJobRequests = () => {
         `)
         .order('created_at', { ascending: false });
 
+      // Fetch accepted quotes that aren't jobs yet
+      let quotesQuery = supabase
+        .from('quotes')
+        .select(`
+          *,
+          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email, phone),
+          property:properties(name, address, city, postal_code)
+        `)
+        .eq('status', 'accepted')
+        .order('created_at', { ascending: false });
+
       if (searchTerm) {
-        query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+        jobsQuery = jobsQuery.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`);
+        quotesQuery = quotesQuery.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
       }
 
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
+      const [jobsResult, quotesResult] = await Promise.all([
+        jobsQuery,
+        quotesQuery
+      ]);
+
+      if (jobsResult.error) throw jobsResult.error;
+      if (quotesResult.error) throw quotesResult.error;
+
+      const jobs = jobsResult.data || [];
+      const quotes = quotesResult.data || [];
+
+      // Convert quotes to job-like format and filter out quotes that already have jobs
+      const existingJobQuoteIds = jobs
+        .filter(job => job.source_type === 'quote')
+        .map(job => job.source_id);
+
+      const quotesAsJobs = quotes
+        .filter(quote => !existingJobQuoteIds.includes(quote.id))
+        .map(quote => ({
+          id: `quote-${quote.id}`,
+          title: quote.title,
+          description: quote.description,
+          address: quote.property?.address || quote.customer_address,
+          city: quote.property?.city || quote.customer_city,
+          postal_code: quote.property?.postal_code || quote.customer_postal_code,
+          status: 'accepted-quote',
+          pricing_mode: 'fixed',
+          fixed_price: quote.total_amount,
+          created_at: quote.created_at,
+          source_type: 'quote',
+          source_id: quote.id,
+          // Add quote-specific data
+          quoteData: quote,
+          assigned_worker_id: null,
+          hourly_rate: null,
+          bookings: [],
+          quotes: [{
+            title: quote.title,
+            customer_name: quote.customer?.first_name && quote.customer?.last_name 
+              ? `${quote.customer.first_name} ${quote.customer.last_name}`
+              : quote.customer_name,
+            customer_email: quote.customer?.email || quote.customer_email,
+            customer_phone: quote.customer?.phone || quote.customer_phone
+          }]
+        }));
+
+      return [...jobs, ...quotesAsJobs];
     }
   });
 
@@ -127,6 +184,30 @@ const AdminJobRequests = () => {
     setIsJobRequestModalOpen(true);
   };
 
+  const handleCreateJobFromQuote = async (job: any) => {
+    try {
+      const { data, error } = await supabase.rpc('create_job_from_quote', {
+        p_quote_id: job.source_id
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Jobb skapat",
+        description: "Ett nytt jobb har skapats från offerten",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['all-jobs-for-requests'] });
+    } catch (error: any) {
+      console.error('Error creating job from quote:', error);
+      toast({
+        title: "Fel",
+        description: error.message || "Kunde inte skapa jobb från offert",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
@@ -152,6 +233,8 @@ const AdminJobRequests = () => {
         return <Badge className="bg-blue-50 text-blue-700 border-blue-200">Pågående</Badge>;
       case 'completed':
         return <Badge className="bg-green-50 text-green-700 border-green-200">Slutfört</Badge>;
+      case 'accepted-quote':
+        return <Badge className="bg-purple-50 text-purple-700 border-purple-200">Godkänd Offert</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -364,7 +447,7 @@ const AdminJobRequests = () => {
                             {job.pricing_mode === 'fixed' && job.fixed_price && (
                               <div className="flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
-                                {job.fixed_price} SEK fast pris
+                                {job.fixed_price?.toLocaleString()} SEK fast pris
                               </div>
                             )}
                           </div>
@@ -378,14 +461,35 @@ const AdminJobRequests = () => {
                           )}
                         </div>
                         
-                        <Button
-                          variant="outline"
-                          onClick={() => handleJobAssignment(job)}
-                          className="flex items-center gap-2"
-                        >
-                          <Send className="h-4 w-4" />
-                          Skicka Förfrågan
-                        </Button>
+                        {job.status === 'accepted-quote' ? (
+                          <div className="flex gap-2">
+                            <Button
+                              variant="default"
+                              onClick={() => handleCreateJobFromQuote(job)}
+                              className="flex items-center gap-2"
+                            >
+                              <Briefcase className="h-4 w-4" />
+                              Skapa Jobb
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => handleJobAssignment(job)}
+                              className="flex items-center gap-2"
+                            >
+                              <Send className="h-4 w-4" />
+                              Skicka Förfrågan
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            onClick={() => handleJobAssignment(job)}
+                            className="flex items-center gap-2"
+                          >
+                            <Send className="h-4 w-4" />
+                            Skicka Förfrågan
+                          </Button>
+                        )}
                       </div>
                     );
                   })}
