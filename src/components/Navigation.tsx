@@ -38,6 +38,7 @@ export default function Navigation() {
     const allItems = [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
+      { href: "/ai-assistent", label: "AI Assistent" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
       { href: "/smart-hem", label: "Smart Hem" },
       { href: "/naromrade", label: "Närområde" },

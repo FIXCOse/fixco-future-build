@@ -305,7 +305,7 @@ const AIChat = () => {
                       <Bot className="h-3 w-3 text-primary-foreground" />
                     </div>
                     <div className="bg-muted rounded-lg p-2 text-sm">
-                      Hej! Jag kan hjälpa dig med ditt hemprojekt. Vad kan jag hjälpa dig med?
+                      Hej! Jag är din AI-assistent. Vad kan jag hjälpa dig med?
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">

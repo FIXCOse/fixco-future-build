@@ -23,7 +23,6 @@ export interface TrustChip {
   description?: string;
   icon: any;
   color: string;
-  backgroundGradient?: string;
   link?: string;
   tooltip?: string;
 }
@@ -35,7 +34,6 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     description: "Godkänd för ROT & RUT",
     icon: Stamp,
     color: "text-green-500",
-    backgroundGradient: "bg-gradient-to-r from-green-600 to-emerald-600",
     tooltip: "Registrerad för F-skatt - du kan använda ROT och RUT-avdrag"
   },
   {
@@ -44,7 +42,6 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     description: "Ansvarsförsäkring 10M kr",
     icon: Shield,
     color: "text-blue-500",
-    backgroundGradient: "bg-gradient-to-r from-blue-600 to-indigo-600",
     tooltip: "Fullständig ansvarsförsäkring på 10 miljoner kronor"
   },
   {
@@ -53,7 +50,6 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     description: "Oftast inom 5 dagar",
     icon: Clock,
     color: "text-primary",
-    backgroundGradient: "bg-gradient-to-r from-cyan-500 to-blue-500",
     tooltip: "Vi kan oftast börja ditt projekt inom 5 dagar"
   },
   {
@@ -62,7 +58,6 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     description: "Där det är möjligt",
     icon: Tag,
     color: "text-primary",
-    backgroundGradient: "bg-gradient-to-r from-purple-500 to-indigo-500",
     link: "/tjanster?filter=fast-pris",
     tooltip: "Fast pris på många av våra tjänster"
   }
@@ -76,7 +71,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Spara hälften på arbetskostnaden",
     icon: Calculator,
     color: "text-green-500",
-    backgroundGradient: "bg-gradient-to-r from-green-500 to-emerald-500",
     link: "/rot",
     tooltip: "Få 50% av arbetskostnaden tillbaka via ROT-avdrag"
   },
@@ -86,7 +80,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "För hushållsnära tjänster",
     icon: Home,
     color: "text-blue-500",
-    backgroundGradient: "bg-gradient-to-r from-blue-500 to-cyan-500",
     link: "/rut",
     tooltip: "50% avdrag på arbetskostnaden för hemservice, städning och trädgård"
   },
@@ -96,7 +89,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Inga dolda kostnader",
     icon: Eye,
     color: "text-primary",
-    backgroundGradient: "bg-gradient-to-r from-teal-500 to-cyan-500",
     tooltip: "Alltid öppna och tydliga priser utan överraskningar"
   },
   {
@@ -105,7 +97,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Utan förpliktelse",
     icon: FileText,
     color: "text-green-500",
-    backgroundGradient: "bg-gradient-to-r from-lime-500 to-green-500",
     tooltip: "Vi ger alltid kostnadsfria offerter utan förpliktelse"
   },
   {
@@ -114,7 +105,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Allt administrativt",
     icon: HandHeart,
     color: "text-primary",
-    backgroundGradient: "bg-gradient-to-r from-pink-500 to-rose-500",
     tooltip: "Vi hanterar all ROT-administration åt dig"
   },
   {
@@ -123,7 +113,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Över 500 recensioner",
     icon: Users,
     color: "text-yellow-500",
-    backgroundGradient: "bg-gradient-to-r from-yellow-500 to-orange-500",
     tooltip: "Över 2000 nöjda kunder och 500+ positiva recensioner"
   },
   {
@@ -132,7 +121,6 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     description: "Svar inom 2 timmar",
     icon: Headphones,
     color: "text-blue-500",
-    backgroundGradient: "bg-gradient-to-r from-indigo-500 to-purple-500",
     tooltip: "Vårt supportteam svarar inom 2 timmar under kontorstid"
   }
 ];
@@ -144,7 +132,6 @@ export const RATING_CHIP: TrustChip = {
   description: "Över 500 recensioner",
   icon: Star,
   color: "text-yellow-500",
-  backgroundGradient: "bg-gradient-to-r from-yellow-400 to-amber-500",
   tooltip: "Genomsnittligt betyg 4.9 av 5 baserat på över 500 recensioner"
 };
 
@@ -155,6 +142,5 @@ export const LOCATION_CHIP: TrustChip = {
   description: "Lokalt & nationellt",
   icon: MapPin,
   color: "text-primary",
-  backgroundGradient: "bg-gradient-to-r from-slate-500 to-gray-600",
   tooltip: "Vi verkar i Uppsala och Stockholmsområdet"
 };
