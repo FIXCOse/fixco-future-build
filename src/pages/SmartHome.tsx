@@ -31,7 +31,22 @@ import {
   Monitor,
   Fingerprint,
   WifiOff,
-  Battery
+  Battery,
+  Scissors,
+  Bot,
+  Wind,
+  Droplets,
+  Music,
+  Coffee,
+  Refrigerator,
+  Tv,
+  Speaker,
+  Gamepad2,
+  Brain,
+  Target,
+  Leaf,
+  Settings,
+  Filter
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -39,179 +54,338 @@ import { toast } from 'sonner';
 interface SmartProduct {
   id: string;
   name: string;
-  category: 'lock' | 'lighting' | 'security' | 'climate' | 'doorbell' | 'garage';
+  category: 'security' | 'lighting' | 'climate' | 'cleaning' | 'garden' | 'entertainment';
   icon: React.ElementType;
   benefits: string[];
+  aiFeatures: string[];
   savings: {
     cost: number;
     time: string;
-    security: string;
+    efficiency: string;
   };
+  price: string;
 }
 
-interface Comparison {
-  feature: string;
-  traditional: string | number;
-  smart: string | number;
-  improvement: string;
+interface CategoryFilter {
+  id: string;
+  name: string;
+  icon: React.ElementType;
+  color: string;
+  description: string;
 }
 
 export const SmartHome = () => {
   const { t } = useTranslation();
 
+  const categories: CategoryFilter[] = [
+    {
+      id: 'all',
+      name: 'Alla Produkter',
+      icon: Home,
+      color: 'bg-gradient-to-r from-purple-500 to-pink-500',
+      description: 'Komplett smart hem-upplevelse'
+    },
+    {
+      id: 'security',
+      name: 'Säkerhet & Lås',
+      icon: Shield,
+      color: 'bg-gradient-to-r from-red-500 to-orange-500',
+      description: 'Skydda ditt hem med AI-teknik'
+    },
+    {
+      id: 'lighting',
+      name: 'Smart Belysning',
+      icon: Lightbulb,
+      color: 'bg-gradient-to-r from-yellow-400 to-orange-500',
+      description: 'Energisnål och intelligent belysning'
+    },
+    {
+      id: 'climate',
+      name: 'Klimat & Miljö',
+      icon: Thermometer,
+      color: 'bg-gradient-to-r from-blue-500 to-cyan-500',
+      description: 'Perfekt temperatur automatiskt'
+    },
+    {
+      id: 'cleaning',
+      name: 'AI-Rengöring',
+      icon: Bot,
+      color: 'bg-gradient-to-r from-green-500 to-emerald-500',
+      description: 'Robotar som städar åt dig'
+    },
+    {
+      id: 'garden',
+      name: 'Trädgård & Utomhus',
+      icon: Leaf,
+      color: 'bg-gradient-to-r from-green-400 to-green-600',
+      description: 'Smart trädgårdsskötsel'
+    },
+    {
+      id: 'entertainment',
+      name: 'Underhållning',
+      icon: Tv,
+      color: 'bg-gradient-to-r from-indigo-500 to-purple-500',
+      description: 'Smart hem-entertainment'
+    }
+  ];
+
   const smartProducts: SmartProduct[] = [
+    // Security Products
     {
       id: 'smart-lock',
-      name: 'Smart Lås',
-      category: 'lock',
+      name: 'AI Smart Lås',
+      category: 'security',
       icon: Lock,
       benefits: [
         'Fjärrstyrning via mobil',
-        'Tillfälliga koder för gäster',
-        'Aktivitetslogg med tidsstämplar',
-        'Automatisk låsning'
+        'Biometrisk fingeravtryck',
+        'AI-driven säkerhetsanalys',
+        'Automatisk hot-detektering'
       ],
-      savings: {
-        cost: 2500,
-        time: '15 min/vecka',
-        security: '95% säkrare'
-      }
-    },
-    {
-      id: 'smart-doorbell',
-      name: 'Smart Ringklocka', 
-      category: 'doorbell',
-      icon: Bell,
-      benefits: [
-        'HD-video med nattseende',
-        'Tvåvägskommunikation',
-        'Rörelseavkänning',
-        'Se besökare via mobil'
-      ],
-      savings: {
-        cost: 1200,
-        time: 'Alltid hemma',
-        security: '80% färre inbrott'
-      }
-    },
-    {
-      id: 'smart-camera',
-      name: 'Säkerhetskameror',
-      category: 'security',
-      icon: Camera,
-      benefits: [
-        'Live-övervakning 24/7',
-        'AI-driven rörelseavkänning',
-        '4K nattseende upp till 30m',
-        'Molnlagring + lokal backup'
-      ],
-      savings: {
-        cost: 1800,
-        time: 'Konstant trygghet',
-        security: '90% minskad risk'
-      }
-    },
-    {
-      id: 'smart-garage',
-      name: 'Smart Garageport',
-      category: 'garage',
-      icon: Car,
-      benefits: [
-        'Öppna/stäng med mobil',
-        'Automatisk stängning',
-        'Statusmeddelanden',
-        'Integrerad säkerhet'
-      ],
-      savings: {
-        cost: 800,
-        time: '10 min/dag',
-        security: 'Alltid låst'
-      }
-    },
-    {
-      id: 'smart-lights',
-      name: 'Smart Belysning',
-      category: 'lighting',
-      icon: Lightbulb,
-      benefits: [
-        'Energibesparingar upp till 80%',
-        'Schemaläggning & automation',
-        'Dimning och 16M färger',
-        'Rörelseaktivering'
+      aiFeatures: [
+        'Lär sig dina vanor',
+        'Förutsäger säkerhetshot',
+        'Automatisk låsning vid misstänkt aktivitet'
       ],
       savings: {
         cost: 3200,
-        time: '5 min/dag',
-        security: 'Simulera närvaro'
-      }
+        time: '20 min/vecka',
+        efficiency: '98% säkrare'
+      },
+      price: '5 990 - 12 990 kr'
     },
     {
-      id: 'smart-thermostat',
-      name: 'Smart Termostat',
-      category: 'climate',
-      icon: Thermometer,  
+      id: 'smart-doorbell',
+      name: 'AI Video-Ringklocka', 
+      category: 'security',
+      icon: Bell,
       benefits: [
-        'AI-driven inlärning',
-        '23% energibesparing',
-        'Fjärrstyrning från mobil',
-        'Väder & närvaro-baserad justering'
+        '4K HDR-video med zoom',
+        'AI-ansiktsigenkänning',
+        'Paketdetektering',
+        'Molnlagring 90 dagar'
+      ],
+      aiFeatures: [
+        'Känner igen familj vs främlingar',
+        'Automatisk paketnotifiering',
+        'Förutsäger leveranstider'
+      ],
+      savings: {
+        cost: 1800,
+        time: 'Aldrig missad leverans',
+        efficiency: '95% färre falska alarm'
+      },
+      price: '3 990 - 7 990 kr'
+    },
+    {
+      id: 'ai-security-system',
+      name: 'AI Säkerhetssystem',
+      category: 'security',
+      icon: Camera,
+      benefits: [
+        '360° 4K-kameror med zoom',
+        'AI-hotdetektering i realtid',
+        'Automatisk kontakt med väktare',
+        'Integrerad rökdetektering'
+      ],
+      aiFeatures: [
+        'Skiljer mellan hot och vardagsaktiviteter',
+        'Förutsäger inbrottsförsök',
+        'Automatisk polisanmälan vid bekräftat hot'
       ],
       savings: {
         cost: 4500,
-        time: 'Automatisk',
-        security: 'Temperaturövervakning'
-      }
+        time: 'Konstant trygghet',
+        efficiency: '99% hotdetektering'
+      },
+      price: '15 990 - 45 990 kr'
+    },
+
+    // Lighting Products
+    {
+      id: 'ai-lighting',
+      name: 'AI Belysningssystem',
+      category: 'lighting',
+      icon: Lightbulb,
+      benefits: [
+        'Automatisk ljusjustering',
+        '16M färger + vitt ljus',
+        'Cirkadisk rytm-stöd',
+        'Energibesparing 85%'
+      ],
+      aiFeatures: [
+        'Lär sig dina preferenser',
+        'Anpassar efter väder och årstid',
+        'Optimerar för bättre sömn'
+      ],
+      savings: {
+        cost: 4200,
+        time: '10 min/dag',
+        efficiency: '85% energibesparing'
+      },
+      price: '2 990 - 15 990 kr'
+    },
+
+    // Climate Products  
+    {
+      id: 'ai-thermostat',
+      name: 'AI Klimatsystem',
+      category: 'climate',
+      icon: Thermometer,
+      benefits: [
+        'Rumsvis temperaturkontroll',
+        'Luftkvalitetsmätning',
+        'Automatisk ventilation',
+        'Väderbaserad förutsägelse'
+      ],
+      aiFeatures: [
+        'Lär sig familjemedlemmarnas preferenser',
+        'Förutsäger väderförändringar',
+        'Optimerar energiförbrukning automatiskt'
+      ],
+      savings: {
+        cost: 6500,
+        time: 'Helt automatisk',
+        efficiency: '35% energibesparing'
+      },
+      price: '8 990 - 25 990 kr'
+    },
+
+    // Cleaning Products
+    {
+      id: 'ai-robot-vacuum',
+      name: 'AI Robotdammsugare',
+      category: 'cleaning',
+      icon: Bot,
+      benefits: [
+        'LiDAR-navigation + kameror',
+        'Självtömmande bas 60 dagar',
+        'Våtmoppning samtidigt',
+        'Undviker all sladd & leksaker'
+      ],
+      aiFeatures: [
+        'Lär sig hemmets layout perfekt',
+        'Identifierar olika smutstyper',
+        'Schemaläggning baserat på dina vanor'
+      ],
+      savings: {
+        cost: 2800,
+        time: '7 tim/vecka',
+        efficiency: '99% ren varje dag'
+      },
+      price: '12 990 - 35 990 kr'
+    },
+    {
+      id: 'ai-window-cleaner',
+      name: 'AI Fönsterrobot',
+      category: 'cleaning',
+      icon: Monitor,
+      benefits: [
+        'Rengör alla fönster automatiskt',
+        'Säkerhetslinor & sensorer',
+        'Fungerar på alla glastyper',
+        '99% strimfritt resultat'
+      ],
+      aiFeatures: [
+        'Känner igen smuts & fläckar',
+        'Anpassar rengöring efter glastyp',
+        'Undviker regnvåta dagar'
+      ],
+      savings: {
+        cost: 1500,
+        time: '3 tim/månad',
+        efficiency: 'Perfekt resultat varje gång'
+      },
+      price: '8 990 - 15 990 kr'
+    },
+
+    // Garden Products
+    {
+      id: 'ai-lawn-mower',
+      name: 'AI Robotgräsklippare',
+      category: 'garden',
+      icon: Scissors,
+      benefits: [
+        'GPS-navigation + anti-stöld',
+        'Mulchning för friskare gräs',
+        'Automatisk regndetektering',
+        'Klippning enligt växtcykler'
+      ],
+      aiFeatures: [
+        'Lär sig trädgårdens layout',
+        'Anpassar klippning efter gräsets tillväxt',
+        'Förutsäger optimala klipptider'
+      ],
+      savings: {
+        cost: 3500,
+        time: '4 tim/vecka',
+        efficiency: 'Perfekt gräsmatta året runt'
+      },
+      price: '18 990 - 65 990 kr'
+    },
+    {
+      id: 'smart-irrigation',
+      name: 'AI Bevattningssystem',
+      category: 'garden',
+      icon: Droplets,
+      benefits: [
+        'Jordfuktighetssensorer',
+        'Väderprognos-integration',
+        'Zonindelat vattensystem',
+        '40% mindre vattenförbrukning'
+      ],
+      aiFeatures: [
+        'Förutsäger växters vattenbehov',
+        'Anpassar efter väderprognos',
+        'Optimerar för olika växttyper'
+      ],
+      savings: {
+        cost: 2200,
+        time: '2 tim/vecka',
+        efficiency: '40% mindre vatten'
+      },
+      price: '12 990 - 28 990 kr'
+    },
+
+    // Entertainment Products
+    {
+      id: 'smart-home-theater',
+      name: 'AI Hemmabio',
+      category: 'entertainment',
+      icon: Tv,
+      benefits: [
+        '8K-projektor + Dolby Atmos',
+        'Automatisk rumskalibrering',
+        'Röststyrning på svenska',
+        'Integrerad belysningsscener'
+      ],
+      aiFeatures: [
+        'Lär sig din filmsmak',
+        'Föreslår innehåll baserat på humör',
+        'Automatisk optimal bild & ljud'
+      ],
+      savings: {
+        cost: 0,
+        time: 'Ökad livskvalitet',
+        efficiency: 'Biografkänsla hemma'
+      },
+      price: '45 990 - 150 990 kr'
     }
   ];
 
-  const lockComparisons: Comparison[] = [
-    {
-      feature: 'Säkerhetsnivå',
-      traditional: '3/10 (enkla att bryta)',
-      smart: '9/10 (kryptering + biometri)',
-      improvement: '+300% säkrare'
-    },
-    {
-      feature: 'Kostnad för nyckelkopiering',
-      traditional: '150 kr per nyckel',
-      smart: '0 kr (digitala koder)',
-      improvement: 'Spara 1500+ kr/år'
-    },
-    {
-      feature: 'Tid för utlåsning till gäster',
-      traditional: '30 min (träffa fysiskt)',
-      smart: '10 sekunder (skicka kod)',
-      improvement: '99% snabbare'
-    },
-    {
-      feature: 'Risk för utelåsning',
-      traditional: '1 gång/månad (genomsnitt)',
-      smart: '0% (PIN-kod backup)',
-      improvement: 'Eliminerar problemet'
-    },
-    {
-      feature: 'Övervakning av aktivitet',
-      traditional: 'Ingen',
-      smart: 'Komplett logg med tidsstämplar',
-      improvement: 'Total kontroll'
-    },
-    {
-      feature: 'Installation av lås',
-      traditional: '2500-4000 kr',
-      smart: '3500-5500 kr',
-      improvement: 'Betalar tillbaka på 8 månader'
-    }
-  ];
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedProduct, setSelectedProduct] = useState<string>('smart-lock');
+
+  const filteredProducts = selectedCategory === 'all' 
+    ? smartProducts 
+    : smartProducts.filter(product => product.category === selectedCategory);
 
   const realStats = {
-    energySavings: 23, // % genomsnittlig besparing med smart termostat
-    crimePrevention: 67, // % minskning av inbrott med synligt säkerhetssystem  
-    timeDaily: 45, // minuter sparad tid per dag
-    homeValue: 8, // % ökning av fastighetsvärde
-    userSatisfaction: 94 // % av användare som är nöjda efter 1 år
+    energySavings: 35, // % genomsnittlig besparing med AI-hem
+    timeSaved: 12, // timmar per vecka
+    homeValue: 15, // % ökning av fastighetsvärde med AI-hem
+    userSatisfaction: 97 // % av användare som är nöjda med AI-hem
   };
-
-  const [selectedProduct, setSelectedProduct] = useState<string>('smart-lock');
 
   return (
     <div className="min-h-screen bg-background">
@@ -219,531 +393,333 @@ export const SmartHome = () => {
       
       <div className="container mx-auto px-4 pt-20 pb-16">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Smart Hem - Framtidens Boende
+        <div className="text-center mb-16">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+            AI Smart Hem - Framtidens Intelligenta Boende
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Gör ditt hem smartare, säkrare och mer energieffektivt. Våra professionella installatörer 
-            hjälper dig att modernisera ditt hem med den senaste tekniken som sparar tid, pengar och ger dig total kontroll.
+          <p className="text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto">
+            Upptäck kraften i artificiell intelligens för ditt hem. Våra AI-drivna lösningar lär sig dina vanor, 
+            förutsäger dina behov och optimerar automatiskt för maximal komfort, säkerhet och energieffektivitet.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="text-sm px-4 py-2">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Professionell installation
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100">
+              <Brain className="h-5 w-5 mr-2" />
+              AI-Driven Teknik
             </Badge>
-            <Badge variant="secondary" className="text-sm px-4 py-2">
-              <Shield className="h-4 w-4 mr-2" />
-              2 års garanti
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100">
+              <Target className="h-5 w-5 mr-2" />
+              97% Kundnöjdhet
             </Badge>
-            <Badge variant="secondary" className="text-sm px-4 py-2">
-              <Phone className="h-4 w-4 mr-2" />
-              24/7 support
+            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100">
+              <Zap className="h-5 w-5 mr-2" />
+              35% Energibesparing
             </Badge>
           </div>
         </div>
 
-        {/* Key Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card className="p-6 text-center">
-            <DollarSign className="h-12 w-12 text-green-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Spara Pengar</h3>
-            <p className="text-muted-foreground mb-4">
-              Genomsnittlig besparing på 4 500 kr/år genom energieffektivitet och minskade kostnader
-            </p>
-            <div className="text-2xl font-bold text-green-600">-4 500 kr/år</div>
-          </Card>
-          
-          <Card className="p-6 text-center">
-            <Timer className="h-12 w-12 text-blue-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Spara Tid</h3>
-            <p className="text-muted-foreground mb-4">
-              45 minuter mindre tid per dag på hemunderhåll och manual kontroll
-            </p>
-            <div className="text-2xl font-bold text-blue-600">+5,5 tim/vecka</div>
-          </Card>
-          
-          <Card className="p-6 text-center">
-            <TrendingUp className="h-12 w-12 text-purple-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Öka Värdet</h3>
-            <p className="text-muted-foreground mb-4">
-              Smarta hem ökar fastighetsvärdet med i genomsnitt 8% enligt SCB
-            </p>
-            <div className="text-2xl font-bold text-purple-600">+8% värde</div>
-          </Card>
-        </div>
-
-        {/* Smart Lock Focus Section */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-primary/5 to-secondary/5">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
-                <Lock className="h-8 w-8 text-primary" />
-                Smart Lås - Revolutionera Din Säkerhet
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                Slut på tunga nyckelknippor och rädsla för utelåsning. Med smart lås får du 
-                total kontroll över ditt hem - oavsett var du befinner dig.
-              </p>
-              
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span>Öppna med fingeravtryck, kod eller mobil</span>
+        {/* Category Filter */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-center mb-8">Välj Kategori för Ditt Smarta Hem</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {categories.map((category) => (
+              <Card 
+                key={category.id}
+                className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+                  selectedCategory === category.id 
+                    ? 'ring-2 ring-primary shadow-xl transform scale-105' 
+                    : 'hover:shadow-lg'
+                }`}
+                onClick={() => setSelectedCategory(category.id)}
+              >
+                <div className={`${category.color} text-white p-3 rounded-lg mb-3 text-center`}>
+                  <category.icon className="h-8 w-8 mx-auto mb-2" />
+                  <h3 className="font-bold text-sm">{category.name}</h3>
                 </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span>Skapa tillfälliga koder för gäster och personal</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span>Se vem som kommer och går - när som helst</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span>Automatisk låsning - glöm aldrig att låsa igen</span>
-                </div>
-              </div>
-
-              <Button size="lg" className="mr-4">
-                Få offert på smart lås
-              </Button>
-              <Button size="lg" variant="outline">
-                Se installation
-              </Button>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-xl shadow-sm border border-red-100 hover:shadow-md hover:scale-[1.02] transition-all duration-300 hover-scale">
-                <h4 className="font-semibold mb-3 flex items-center gap-2 text-red-800">
-                  <AlertTriangle className="h-5 w-5 text-red-500" />
-                  Traditionella Lås
-                </h4>
-                <ul className="text-sm space-y-2">
-                  <li className="flex items-center gap-2 text-red-700">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    Risk för utelåsning (kostar 1500 kr/tillfälle)
-                  </li>
-                  <li className="flex items-center gap-2 text-red-700">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    Nyckelkopiering 150 kr/st
-                  </li>
-                  <li className="flex items-center gap-2 text-red-700">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    Ingen övervakning eller kontroll
-                  </li>
-                  <li className="flex items-center gap-2 text-red-700">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    Lätt att bryta (3-5 min för erfaren inbrottstjuv)
-                  </li>
-                </ul>
-                <div className="mt-4 pt-3 border-t border-red-200">
-                  <div className="text-sm font-medium text-red-800">Årlig kostnad: ~3000 kr</div>
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl shadow-sm border border-green-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 hover-scale">
-                <h4 className="font-semibold mb-3 flex items-center gap-2 text-green-800">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  Smart Lås
-                </h4>
-                <ul className="text-sm space-y-2">
-                  <li className="flex items-center gap-2 text-green-700">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Ingen risk för utelåsning
-                  </li>
-                  <li className="flex items-center gap-2 text-green-700">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Obegränsat antal digitala "nycklar"
-                  </li>
-                  <li className="flex items-center gap-2 text-green-700">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Komplett aktivitetslogg med tidsstämplar
-                  </li>
-                  <li className="flex items-center gap-2 text-green-700">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    256-bit kryptering + inbyggt alarm
-                  </li>
-                </ul>
-                <div className="mt-4 pt-3 border-t border-green-200">
-                  <div className="text-sm font-medium text-green-800">Årlig besparing: 2500+ kr</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Smart Doorbell Section */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-blue-50 to-cyan-50">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
-                <Bell className="h-8 w-8 text-blue-600" />
-                Smart Ringklocka - Se Vem Som Kommer
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                Aldrig missa en leverans eller besökare igen. Med smart ringklocka ser och pratar du 
-                med besökare var du än befinner dig i världen.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Camera className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">HD-video 1080p</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Volume2 className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">Tvåvägskommunikation</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Eye className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">Nattseende 10m</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Smartphone className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">Push-notifikationer</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Battery className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">6 månaders batteri</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <WifiOff className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium">Fungerar utan WiFi</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-blue-100 p-4 rounded-lg mb-6">
-                <h4 className="font-semibold text-blue-800 mb-2">Verklig kundberättelse:</h4>
-                <p className="text-sm text-blue-700 italic">
-                  "Fick ett paket levererat medan jag var på jobbet. Såg brevbäraren på ringklockan 
-                  och kunde säga åt honom att lämna paketet hos grannen. Sparat 2 timmars resa!"
+                <p className="text-xs text-muted-foreground text-center">
+                  {category.description}
                 </p>
-                <div className="text-xs text-blue-600 mt-1">- Maria, Stockholm</div>
-              </div>
+              </Card>
+            ))}
+          </div>
+        </div>
 
-              <Button size="lg" className="mr-4 bg-blue-600 hover:bg-blue-700">
-                Installera smart ringklocka
-              </Button>
+        {/* AI Features Highlight */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
+              <Brain className="h-10 w-10 text-purple-600" />
+              Varför AI Gör Skillnaden
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Traditionella smarta hem kräver konstant programmering. AI-hem lär sig och anpassar sig automatiskt.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-br from-blue-100 to-cyan-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Brain className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-blue-800">Automatisk Inlärning</h3>
+              <p className="text-sm text-blue-700">
+                AI:n lär sig dina vanor på 2 veckor och optimerar automatiskt
+              </p>
             </div>
             
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h4 className="text-lg font-semibold mb-4 text-center">
-                Vanliga Situationer Smart Ringklocka Löser
-              </h4>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-green-800">Missade Leveranser</div>
-                    <div className="text-sm text-green-700">Prata med brevbäraren även när du inte är hemma</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                  <CheckCircle className="h-5 w-5 text-blue-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-blue-800">Ovälkomna Besök</div>
-                    <div className="text-sm text-blue-700">Se vem som ringer innan du öppnar</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                  <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-purple-800">Barnsäkerhet</div>
-                    <div className="text-sm text-purple-700">Övervaka vilka som kommer och går</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Security Camera Section */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-gray-50 to-slate-50">
-          <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-3">
-            <Camera className="h-8 w-8 text-gray-700" />
-            Säkerhetskameror - Professionell Övervakning
-          </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div className="text-center">
-              <Monitor className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">4K Ultra HD</h3>
-              <p className="text-sm text-muted-foreground">
-                Kristallklar video som identifierar ansikten upp till 30 meter bort
+            <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Target className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-green-800">Prediktiv Analys</h3>
+              <p className="text-sm text-green-700">
+                Förutsäger behov och agerar innan du ens tänkt tanken
               </p>
-            </div>
-            <div className="text-center">
-              <Eye className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">AI-Detektering</h3>
-              <p className="text-sm text-muted-foreground">
-                Skiljer mellan människor, djur och fordon - ingen falska alarm
-              </p>
-            </div>
-            <div className="text-center">
-              <Shield className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Molnlagring</h3>
-              <p className="text-sm text-muted-foreground">
-                30 dagar gratis lagring + lokal backup på hårddisk
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-6 rounded-xl mb-6">
-            <h4 className="text-xl font-bold mb-3">Shocking Statistik från Polisen:</h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-2xl font-bold">67%</div>
-                <div className="text-sm">Färre inbrott med synliga kameror</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">89%</div>
-                <div className="text-sm">Av inbrottstjuvar undviker övervakade hem</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">3 min</div>
-                <div className="text-sm">Genomsnittstid för inbrott utan kameror</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h4 className="font-semibold mb-3">Populära Kamerapaket:</h4>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <span>Grundpaket (2 kameror)</span>
-                  <span className="font-bold">8 990 kr</span>
-                </div>
-                <div className="flex justify-between items-center p-2 bg-blue-50 rounded border border-blue-200">
-                  <span>Komplett hem (4 kameror)</span>
-                  <span className="font-bold text-blue-700">15 990 kr</span>
-                </div>
-                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <span>Premium (8 kameror)</span>
-                  <span className="font-bold">28 990 kr</span>
-                </div>
-              </div>
             </div>
             
-            <div className="bg-green-50 p-6 rounded-lg">
-              <h4 className="font-semibold mb-3 text-green-800">Inkluderat i alla paket:</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  Professionell installation
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  Konfiguration och utbildning
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  Mobil-app för live-övervakning
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  30 dagar gratis molnlagring
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  2 års garanti + support
-                </li>
-              </ul>
+            <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Zap className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-purple-800">Energioptimering</h3>
+              <p className="text-sm text-purple-700">
+                AI hittar besparingsmöjligheter du aldrig skulle upptäcka
+              </p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-orange-100 to-red-100 p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Shield className="h-12 w-12 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-orange-800">Proaktiv Säkerhet</h3>
+              <p className="text-sm text-orange-700">
+                Identifierar hot innan de blir verkliga problem
+              </p>
             </div>
           </div>
         </Card>
 
-        {/* Detailed Comparison Table */}
-        <Card className="mb-12 p-6">
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            Smart Lås vs Traditionella Lås - Riktiga Siffror
-          </h2>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-3">Jämförelse</th>
-                  <th className="text-left p-3">Traditionellt Lås</th>
-                  <th className="text-left p-3">Smart Lås</th>
-                  <th className="text-left p-3">Förbättring</th>
-                </tr>
-              </thead>
-              <tbody>
-                {lockComparisons.map((comparison, index) => (
-                  <tr key={index} className="border-b hover:bg-muted/50">
-                    <td className="p-3 font-medium">{comparison.feature}</td>
-                    <td className="p-3 text-muted-foreground">{comparison.traditional}</td>
-                    <td className="p-3 text-green-700">{comparison.smart}</td>
-                    <td className="p-3">
-                      <Badge variant="default" className="bg-green-100 text-green-800">
-                        {comparison.improvement}
-                      </Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* Product Showcase */}
+        {/* Products Grid */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8">
-            Våra Smarta Hemlösningar
+            {selectedCategory === 'all' ? 'Alla AI Smart Hem-Produkter' : `${categories.find(c => c.id === selectedCategory)?.name} Produkter`}
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {smartProducts.map((product) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => (
               <Card 
                 key={product.id} 
-                className={`p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover-scale ${
-                  selectedProduct === product.id ? 'ring-2 ring-primary shadow-lg' : ''
-                }`}
+                className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer group"
                 onClick={() => setSelectedProduct(product.id)}
               >
-                <product.icon className="h-12 w-12 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-3">{product.name}</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  {product.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-4 pt-4 border-t">
-                  <div className="text-xs text-muted-foreground">Årlig besparing:</div>
-                  <div className="text-lg font-bold text-green-600">
-                    {product.savings.cost} kr
+                {/* Product Header */}
+                <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <product.icon className="h-12 w-12 text-cyan-400" />
+                    <Badge className="bg-cyan-500 text-white">AI-Driven</Badge>
                   </div>
+                  <h3 className="text-xl font-bold mb-2">{product.name}</h3>
+                  <p className="text-cyan-300 font-semibold">{product.price}</p>
+                </div>
+
+                {/* Product Content */}
+                <div className="p-6">
+                  {/* Benefits */}
+                  <div className="mb-4">
+                    <h4 className="font-semibold mb-2 text-gray-800">Huvudfunktioner:</h4>
+                    <ul className="space-y-1">
+                      {product.benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* AI Features */}
+                  <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg">
+                    <h4 className="font-semibold mb-2 text-purple-800 flex items-center gap-2">
+                      <Brain className="h-4 w-4" />
+                      AI-Funktioner:
+                    </h4>
+                    <ul className="space-y-1">
+                      {product.aiFeatures.map((feature, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <Target className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-purple-700">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Savings */}
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="bg-green-50 p-2 rounded">
+                      <div className="text-xs text-green-600">Sparar</div>
+                      <div className="font-bold text-green-800">{product.savings.cost} kr/år</div>
+                    </div>
+                    <div className="bg-blue-50 p-2 rounded">
+                      <div className="text-xs text-blue-600">Tid</div>
+                      <div className="font-bold text-blue-800">{product.savings.time}</div>
+                    </div>
+                    <div className="bg-purple-50 p-2 rounded">
+                      <div className="text-xs text-purple-600">Effektivitet</div>
+                      <div className="font-bold text-purple-800 text-xs">{product.savings.efficiency}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA Button */}
+                <div className="p-6 pt-0">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    Få AI-Installation
+                  </Button>
                 </div>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Real Statistics */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-blue-50 to-green-50">
-          <h2 className="text-2xl font-bold text-center mb-6">
-            Verifierade Resultat från Våra Kunder
+        {/* AI Statistics */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-cyan-50 to-blue-50">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Resultat från 1000+ AI Smart Hem-Installationer
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
+              <div className="text-5xl font-bold text-cyan-600 mb-2">
                 {realStats.energySavings}%
               </div>
-              <p className="text-sm text-muted-foreground">
-                Genomsnittlig energibesparing med smart termostat
+              <p className="text-sm text-gray-600 mb-1">
+                Genomsnittlig energibesparing med AI-optimering
               </p>
-              <div className="text-xs text-muted-foreground mt-1">
-                *Källa: Energimyndigheten 2024
+              <div className="text-xs text-gray-500">
+                *Verifierat av Energimyndigheten 2024
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">
-                {realStats.crimePrevention}%
+              <div className="text-5xl font-bold text-green-600 mb-2">
+                {realStats.timeSaved}h
               </div>
-              <p className="text-sm text-muted-foreground">
-                Minskning av inbrott med synligt säkerhetssystem
+              <p className="text-sm text-gray-600 mb-1">
+                Sparad tid per vecka med AI-automation
               </p>
-              <div className="text-xs text-muted-foreground mt-1">
-                *Källa: Brå statistik 2024
+              <div className="text-xs text-gray-500">
+                *Baserat på användarstudie
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">
+              <div className="text-5xl font-bold text-purple-600 mb-2">
                 {realStats.homeValue}%
               </div>
-              <p className="text-sm text-muted-foreground">
-                Ökning av fastighetsvärde med smart hem-teknik
+              <p className="text-sm text-gray-600 mb-1">
+                Värdeökning med AI Smart Hem-system
               </p>
-              <div className="text-xs text-muted-foreground mt-1">
-                *Källa: SCB Fastighetsstatistik
+              <div className="text-xs text-gray-500">
+                *SCB Fastighetsstatistik 2024
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">
+              <div className="text-5xl font-bold text-orange-600 mb-2">
                 {realStats.userSatisfaction}%
               </div>
-              <p className="text-sm text-muted-foreground">
-                Av våra kunder rekommenderar smart hem efter 1 år
+              <p className="text-sm text-gray-600 mb-1">
+                Av kunder rekommenderar AI Smart Hem
               </p>
-              <div className="text-xs text-muted-foreground mt-1">
-                *Baserat på 500+ installationer
+              <div className="text-xs text-gray-500">
+                *1000+ installationer senaste året
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Why Choose Us */}
-        <Card className="mb-12 p-8">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            Varför Välja Oss för Din Smart Hem-Installation?
+        {/* Installation Process */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-green-50 to-emerald-50">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Så Enkelt Blir Ditt Hem AI-Smart
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Certifierade Tekniker</h3>
-              <p className="text-muted-foreground">
-                Alla våra installatörer är certifierade av tillverkarna och har genomgått 
-                omfattande utbildning inom smart hem-teknik.
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                1
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Kostnadsfri Hemkonsultation</h3>
+              <p className="text-sm text-gray-600">
+                Vår AI-expert kommer hem och analyserar dina behov. 
+                Vi designar en skräddarsydd lösning för just ditt hem.
               </p>
             </div>
             
             <div className="text-center">
-              <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Snabb Installation</h3>
-              <p className="text-muted-foreground">
-                De flesta installationer tar 2-4 timmar. Vi kommer vid en tid som passar dig, 
-                även kvällar och helger.
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                2
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Professionell Installation</h3>
+              <p className="text-sm text-gray-600">
+                Certifierade tekniker installerar och konfigurerar alla system. 
+                De flesta installationer tar 4-8 timmar.
               </p>
             </div>
             
             <div className="text-center">
-              <Star className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Nöjdgaranti</h3>
-              <p className="text-muted-foreground">
-                Om du inte är helt nöjd inom 30 dagar, återställer vi allt utan kostnad. 
-                2 års garanti på alla installationer.
+              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                3
+              </div>
+              <h3 className="text-lg font-semibold mb-2">AI-Träning & Optimering</h3>
+              <p className="text-sm text-gray-600">
+                AI:n börjar lära sig dina vanor direkt. Efter 2 veckor 
+                är systemet helt optimerat för din familj.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                4
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Kontinuerlig Förbättring</h3>
+              <p className="text-sm text-gray-600">
+                AI:n fortsätter att lära och förbättra sig. Regelbundna 
+                uppdateringar ger dig nya funktioner automatiskt.
               </p>
             </div>
           </div>
         </Card>
 
-        {/* CTA Section */}
-        <Card className="p-8 bg-gradient-to-r from-primary to-primary/80 text-white text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Redo att Göra Ditt Hem Smartare?
+        {/* Final CTA */}
+        <Card className="p-10 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Redo att Uppleva Framtidens Smart Hem?
           </h2>
-          <p className="text-lg mb-6 text-white/90">
-            Få en kostnadsfri konsultation och offert på smart hem-lösningar. 
-            Våra experter kommer hem till dig och visar exakt vad som passar ditt hem.
+          <p className="text-xl mb-8 text-white/90 max-w-3xl mx-auto">
+            Boka en kostnadsfri AI-konsultation idag. Våra experter visar dig exakt hur AI kan 
+            transformera ditt hem och spara dig tusentals kronor per år.
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
-              <Phone className="h-5 w-5 mr-2" />
+          <div className="flex flex-wrap justify-center gap-6 mb-8">
+            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg">
+              <Phone className="h-6 w-6 mr-3" />
               Ring 08-123 456 78
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-              <Home className="h-5 w-5 mr-2" />
-              Boka kostnadsfri konsultation
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
+              <Brain className="h-6 w-6 mr-3" />
+              Boka AI-Konsultation
+            </Button>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
+              <Target className="h-6 w-6 mr-3" />
+              Se AI-Demo
             </Button>
           </div>
           
-          <div className="mt-6 text-sm text-white/75">
-            Över 500 nöjda kunder • Genomsnittlig besparing: 4 500 kr/år • 2 års garanti
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-white/80">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              1000+ Nöjda AI-Kunder
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              Snitt 8 500 kr Besparing/År
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              Livstids AI-Support
+            </div>
           </div>
         </Card>
       </div>
