@@ -8,8 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText } from 'lucide-react';
-import { useJobsRealtime } from '@/hooks/useJobsRealtime';
-import { useUsersRealtime } from '@/hooks/useUsersRealtime';
+import { useJobsData } from '@/hooks/useJobsData';
+import { useUsersData } from '@/hooks/useUsersData';
 import { createJobFromBooking, createJobFromQuote, assignJobToWorker, updateJobStatus, prepareInvoiceFromJob } from '@/lib/api/jobs';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
@@ -36,8 +36,8 @@ const AdminJobs = () => {
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState('');
   const [invoiceData, setInvoiceData] = useState<any>(null);
-  const { jobs, loading } = useJobsRealtime();
-  const { users } = useUsersRealtime();
+  const { jobs, loading } = useJobsData();
+  const { users } = useUsersData();
   const { toast } = useToast();
 
   // Filter workers from users

@@ -367,21 +367,29 @@ const JobDetail = () => {
       </div>
 
       {/* Tabs for Time, Materials, Expenses - Mobile optimized */}
-      <Tabs defaultValue="time" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 h-12">
-          <TabsTrigger value="time" className="text-xs sm:text-sm">
-            <Clock className="w-4 h-4 mr-1" />
-            Tid ({timeLogs?.length || 0})
-          </TabsTrigger>
-          <TabsTrigger value="materials" className="text-xs sm:text-sm">
-            <Package className="w-4 h-4 mr-1" />
-            Material ({materialLogs?.length || 0})
-          </TabsTrigger>
-          <TabsTrigger value="expenses" className="text-xs sm:text-sm">
-            <Receipt className="w-4 h-4 mr-1" />
-            Utlägg ({expenseLogs?.length || 0})
-          </TabsTrigger>
-        </TabsList>
+          <Tabs defaultValue="time" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 h-12">
+              <TabsTrigger value="time" className="text-xs sm:text-sm">
+                <Clock className="w-4 h-4 mr-1" />
+                Tid ({timeLogs?.length || 0})
+              </TabsTrigger>
+              <TabsTrigger value="materials" className="text-xs sm:text-sm">
+                <Package className="w-4 h-4 mr-1" />
+                Material ({materialLogs?.length || 0})
+              </TabsTrigger>
+              <TabsTrigger value="expenses" className="text-xs sm:text-sm">
+                <Receipt className="w-4 h-4 mr-1" />
+                Utlägg ({expenseLogs?.length || 0})
+              </TabsTrigger>
+              <TabsTrigger value="photos" className="text-xs sm:text-sm">
+                <Camera className="w-4 h-4 mr-1" />
+                Foton
+              </TabsTrigger>
+              <TabsTrigger value="signatures" className="text-xs sm:text-sm">
+                <FileSignature className="w-4 h-4 mr-1" />
+                Signatur
+              </TabsTrigger>
+            </TabsList>
 
         <TabsContent value="time">
           <TimeLogsTab 
@@ -405,6 +413,18 @@ const JobDetail = () => {
             expenseLogs={expenseLogs || []}
             onAddExpense={expenseEntryMutation.mutate}
           />
+        </TabsContent>
+
+        <TabsContent value="photos">
+          <div className="space-y-6">
+            <p className="text-sm text-muted-foreground">Funktionen för foton kommer snart...</p>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="signatures">
+          <div className="space-y-6">
+            <p className="text-sm text-muted-foreground">Funktionen för signaturer kommer snart...</p>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

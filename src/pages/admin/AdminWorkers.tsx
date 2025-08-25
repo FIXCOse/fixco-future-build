@@ -7,8 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Plus, User, Phone, Mail, MapPin, Clock, Award } from 'lucide-react';
-import { useUsersRealtime } from '@/hooks/useUsersRealtime';
-import { useJobsRealtime } from '@/hooks/useJobsRealtime';
+import { useUsersData } from '@/hooks/useUsersData';
+import { useJobsData } from '@/hooks/useJobsData';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -27,8 +27,8 @@ const AdminWorkers = () => {
   const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [workerStats, setWorkerStats] = useState<any>({});
-  const { users, loading } = useUsersRealtime();
-  const { jobs } = useJobsRealtime();
+  const { users, loading } = useUsersData();
+  const { jobs } = useJobsData();
   const { toast } = useToast();
 
   // Filter workers from users

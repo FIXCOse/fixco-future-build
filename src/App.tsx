@@ -47,6 +47,7 @@ import JobPool from "./pages/worker/JobPool";
 import MyJobs from "./pages/worker/MyJobs";
 import JobDetail from "./pages/worker/JobDetail";
 import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
+import WorkerSettings from "./pages/worker/WorkerSettings";
 import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDatabase from "./pages/admin/AdminDatabase";
@@ -68,6 +69,8 @@ import TestBooking from "./pages/TestBooking";
 import { SmartHome } from "./pages/SmartHome";
 import { Neighborhood } from "./pages/Neighborhood"; 
 import { Leaderboard } from "./pages/Leaderboard";
+import AdminJobs from "./pages/admin/AdminJobs";
+import AdminWorkers from "./pages/admin/AdminWorkers";
 
 const queryClient = new QueryClient();
 
@@ -144,6 +147,8 @@ const App = () => {
                     <Route path="settings" element={<AdminSettings />} />
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
+                    <Route path="jobs" element={<AdminJobs />} />
+                    <Route path="workers" element={<AdminWorkers />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                   </Route>
 
@@ -154,6 +159,7 @@ const App = () => {
                     <Route path="jobs" element={<MyJobs />} />
                     <Route path="jobs/:jobId" element={<JobDetail />} />
                     <Route path="timesheet" element={<WorkerTimesheet />} />
+                    <Route path="settings" element={<WorkerSettings />} />
                   </Route>
 
                   {/* Booking and Quote Request Routes */}

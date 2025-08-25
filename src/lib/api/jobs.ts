@@ -219,3 +219,28 @@ export async function prepareInvoiceFromJob(jobId: string) {
   if (error) throw error;
   return data;
 }
+
+export const createJobFromBooking = async (bookingId: string) => {
+  const { data, error } = await supabase.rpc('create_job_from_booking', {
+    p_booking_id: bookingId
+  });
+  if (error) throw error;
+  return data;
+};
+
+export const createJobFromQuote = async (quoteId: string) => {
+  const { data, error } = await supabase.rpc('create_job_from_quote', {
+    p_quote_id: quoteId
+  });
+  if (error) throw error;
+  return data;
+};
+
+export const assignJobToWorker = async (jobId: string, workerId: string) => {
+  const { data, error } = await supabase.rpc('assign_job_to_worker', {
+    p_job_id: jobId,
+    p_worker_id: workerId
+  });
+  if (error) throw error;
+  return data;
+};
