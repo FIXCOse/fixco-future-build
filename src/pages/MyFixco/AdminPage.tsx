@@ -140,8 +140,8 @@ const AdminPage = () => {
           </Card>
         </Link>
 
-        {/* Staff Management - Only for Owner */}
-        {isOwner && (
+        {/* Staff Management - For Admin and Owner */}
+        {isAdmin && (
           <Link to="/admin/staff" className="block group">
             <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
               <CardHeader>

@@ -652,6 +652,60 @@ export type Database = {
           },
         ]
       }
+      job_requests: {
+        Row: {
+          expires_at: string | null
+          id: string
+          job_id: string
+          message: string | null
+          requested_at: string
+          requested_by: string
+          responded_at: string | null
+          response_message: string | null
+          staff_id: string
+          status: string
+        }
+        Insert: {
+          expires_at?: string | null
+          id?: string
+          job_id: string
+          message?: string | null
+          requested_at?: string
+          requested_by: string
+          responded_at?: string | null
+          response_message?: string | null
+          staff_id: string
+          status?: string
+        }
+        Update: {
+          expires_at?: string | null
+          id?: string
+          job_id?: string
+          message?: string | null
+          requested_at?: string
+          requested_by?: string
+          responded_at?: string | null
+          response_message?: string | null
+          staff_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_requests_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_requests_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_signatures: {
         Row: {
           file_path: string
@@ -1335,35 +1389,178 @@ export type Database = {
           },
         ]
       }
+      service_skills: {
+        Row: {
+          created_at: string
+          id: string
+          required: boolean
+          service_id: string
+          skill_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          required?: boolean
+          service_id: string
+          skill_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          required?: boolean
+          service_id?: string
+          skill_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      skills: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       staff: {
         Row: {
           active: boolean | null
+          address: string | null
+          city: string | null
           created_at: string | null
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          hourly_rate: number | null
           id: string
+          invitation_accepted_at: string | null
+          invitation_sent_at: string | null
+          invited_by: string | null
           name: string
+          phone: string | null
+          postal_code: string | null
           role: string
           skills: string[] | null
+          staff_id: number
           user_id: string | null
         }
         Insert: {
           active?: boolean | null
+          address?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          hourly_rate?: number | null
           id?: string
+          invitation_accepted_at?: string | null
+          invitation_sent_at?: string | null
+          invited_by?: string | null
           name: string
+          phone?: string | null
+          postal_code?: string | null
           role: string
           skills?: string[] | null
+          staff_id?: number
           user_id?: string | null
         }
         Update: {
           active?: boolean | null
+          address?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          hourly_rate?: number | null
           id?: string
+          invitation_accepted_at?: string | null
+          invitation_sent_at?: string | null
+          invited_by?: string | null
           name?: string
+          phone?: string | null
+          postal_code?: string | null
           role?: string
           skills?: string[] | null
+          staff_id?: number
           user_id?: string | null
         }
         Relationships: []
+      }
+      staff_skills: {
+        Row: {
+          certified_at: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          level: number | null
+          skill_id: string
+          staff_id: string
+        }
+        Insert: {
+          certified_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: number | null
+          skill_id: string
+          staff_id: string
+        }
+        Update: {
+          certified_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: number | null
+          skill_id?: string
+          staff_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "staff_skills_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_settings: {
         Row: {
@@ -1747,6 +1944,10 @@ export type Database = {
       get_invoice_statistics: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      get_next_staff_id: {
+        Args: Record<PropertyKey, never>
+        Returns: number
       }
       get_user_organizations: {
         Args: { user_uuid: string }
