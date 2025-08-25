@@ -1,5 +1,4 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useAuthProfile } from '@/hooks/useAuthProfile';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -15,35 +14,24 @@ import {
   Phone
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const WorkerLayout = () => {
-  const { profile, loading } = useAuthProfile();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Mock profile for demo
+  const mockProfile = {
+    first_name: 'Demo',
+    last_name: 'Worker',
+    role: 'worker'
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/');
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="text-center">
-          <Timer className="w-8 h-8 animate-spin mx-auto mb-2" />
-          <p>Laddar...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (profile?.role !== 'worker') {
-    navigate('/');
-    return null;
-  }
 
   const navItems = [
     { to: '/worker', icon: Home, label: 'Hem', color: 'text-blue-600' },
@@ -75,8 +63,13 @@ const WorkerLayout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
+      {/* Demo banner */}
+      <div className="bg-yellow-500 text-yellow-900 text-center py-2 text-sm font-medium z-50">
+        🚧 DEMO MODE - No authentication required
+      </div>
+
       {/* Mobile Header */}
-      <nav className="bg-card/95 backdrop-blur-sm border-b border-border/50 sticky top-0 z-50">
+      <nav className="bg-card/95 backdrop-blur-sm border-b border-border/50 sticky top-8 z-50">
         <div className="px-4">
           <div className="flex justify-between items-center h-14">
             {/* Logo and current page */}
@@ -104,7 +97,7 @@ const WorkerLayout = () => {
               
               {/* Profile badge */}
               <Badge variant="outline" className="hidden sm:flex">
-                {profile?.first_name?.[0]}{profile?.last_name?.[0]}
+                {mockProfile?.first_name?.[0]}{mockProfile?.last_name?.[0]}
               </Badge>
               
               {/* Mobile menu trigger */}
@@ -120,10 +113,10 @@ const WorkerLayout = () => {
                     <div className="text-center pb-4 border-b">
                       <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
                         <span className="text-primary-foreground font-bold text-xl">
-                          {profile?.first_name?.[0]}{profile?.last_name?.[0]}
+                          {mockProfile?.first_name?.[0]}{mockProfile?.last_name?.[0]}
                         </span>
                       </div>
-                      <h3 className="font-medium">{profile?.first_name} {profile?.last_name}</h3>
+                      <h3 className="font-medium">{mockProfile?.first_name} {mockProfile?.last_name}</h3>
                       <Badge variant="secondary" className="mt-1">Arbetare</Badge>
                     </div>
                     
