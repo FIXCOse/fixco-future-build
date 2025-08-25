@@ -109,9 +109,14 @@ const TrustChips = ({
   // When showAll is true, use unified layout for all variants
   if (showAll || forceShowAll || variant === 'minimal') {
     return (
-      <div className={`flex flex-wrap items-center justify-center gap-3 ${className}`} style={{ minHeight: '80px' }}>
+      <div className={`flex overflow-x-auto items-center justify-start md:justify-center gap-3 pb-2 ${className}`} style={{ minHeight: '80px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .flex::-webkit-scrollbar { display: none; }
+        `}} />
         {visibleChips.map((chip) => (
-          <ChipComponent key={chip.id} chip={chip} />
+          <div key={chip.id} className="flex-shrink-0">
+            <ChipComponent chip={chip} />
+          </div>
         ))}
       </div>
     );

@@ -176,25 +176,25 @@ const HeroUltra = () => {
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-32 left-16 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
+            className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
             style={{ animationDuration: '4s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute bottom-40 right-20 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
+            className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '5s', animationDelay: '1s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-1/3 right-1/4 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
+            className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '2s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute bottom-1/4 left-1/3 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
+            className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
             style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
           />
         </div>
