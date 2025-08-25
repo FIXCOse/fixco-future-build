@@ -295,7 +295,7 @@ const HeroUltra = () => {
 
             {/* Trust Indicators Grid */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-12 md:mb-16 px-4"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-8 px-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}
@@ -337,7 +337,7 @@ const HeroUltra = () => {
 
             {/* Trust Chips - All Visible */}
             <motion.div
-              className="max-w-4xl mx-auto mt-8 md:mt-12"
+              className="max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 1.5, duration: 0.6 }}
@@ -345,7 +345,7 @@ const HeroUltra = () => {
               <TrustChips 
                 variant="home" 
                 showAll={true}
-                className="flex flex-wrap items-center justify-center gap-4 pt-4"
+                className="flex flex-wrap items-center justify-center gap-3 pt-4"
               />
             </motion.div>
           </motion.div>
