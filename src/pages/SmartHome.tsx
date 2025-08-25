@@ -259,6 +259,127 @@ export const SmartHome = () => {
       },
       warranty: '2 år'
     },
+    // BUDGET SÄKERHET
+    {
+      id: 'xiaomi-doorbell',
+      name: 'Xiaomi Smart Doorbell 3',
+      brand: 'Xiaomi',
+      model: 'Smart Video Doorbell 3',
+      category: 'security',
+      icon: Bell,
+      realFeatures: [
+        '2K HD-video',
+        'PIR-sensor',
+        'Tvåvägskommunikation',
+        'MicroSD-kort lagring'
+      ],
+      realAIFeatures: [
+        'Persondetektering',
+        'Automatisk upptag vid rörelse',
+        'Paketdetektering'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['Montering', 'WiFi-setup', 'App-konfiguration']
+      },
+      pricing: {
+        product: 599,
+        installation: 500,
+        total: 1099
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'tp-link-tapo-c200',
+      name: 'TP-Link Tapo C200',
+      brand: 'TP-Link',
+      model: 'Tapo C200 Pan/Tilt',
+      category: 'security',
+      icon: Camera,
+      realFeatures: [
+        '1080p Full HD',
+        '360° horisontell rotation',
+        'Nattsyn upp till 9m',
+        'Rörelse- och ljuddetektering'
+      ],
+      realAIFeatures: [
+        'Smart rörelsespårning',
+        'Babygråt-detektering',
+        'Automatisk personföljning'
+      ],
+      installation: {
+        time: '30 minuter',
+        difficulty: 'Lätt',
+        included: ['WiFi-setup', 'App-installation', 'Grundkonfiguration']
+      },
+      pricing: {
+        product: 299,
+        installation: 300,
+        total: 599
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'eufy-security-2k',
+      name: 'Eufy Security 2K Indoor Cam',
+      brand: 'Eufy',
+      model: 'Security 2K Indoor Cam',
+      category: 'security',
+      icon: Camera,
+      realFeatures: [
+        '2K 2304x1296 upplösning',
+        'Lokal lagring (ingen molnkostnad)',
+        'HomeKit Secure Video',
+        'Tvåvägskommunikation'
+      ],
+      realAIFeatures: [
+        'Avancerad AI-persondetektering',
+        'Husdjursdetektering',
+        'Gråt-detektering för barn'
+      ],
+      installation: {
+        time: '30 minuter',
+        difficulty: 'Lätt',
+        included: ['WiFi-setup', 'HomeKit-koppling', 'App-konfiguration']
+      },
+      pricing: {
+        product: 799,
+        installation: 300,
+        total: 1099
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'ajax-systems-hub',
+      name: 'Ajax Systems Starter Kit',
+      brand: 'Ajax',
+      model: 'SecuritySystem Starter Kit',
+      category: 'security',
+      icon: Shield,
+      realFeatures: [
+        'Trådlösa sensorer',
+        'Upp till 2km räckvidd',
+        'Smartphone-app',
+        '5 års batteritid'
+      ],
+      realAIFeatures: [
+        'Falskarms-filtrering',
+        'Smart hemlarm/bortalarm',
+        'Automatisk larm vid onormal aktivitet'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Hub-installation', 'Sensor-montering', 'App-setup']
+      },
+      pricing: {
+        product: 3990,
+        installation: 1200,
+        total: 5190
+      },
+      warranty: '2 år'
+    },
 
     // BELYSNING
     {
@@ -318,6 +439,525 @@ export const SmartHome = () => {
         product: 3990,
         installation: 800,
         total: 4790
+      },
+      warranty: '1 år'
+    },
+    // BUDGET BELYSNING
+    {
+      id: 'tp-link-tapo-l530e',
+      name: 'TP-Link Tapo L530E 4-pack',
+      brand: 'TP-Link',
+      model: 'Tapo L530E WiFi Smart Bulb',
+      category: 'lighting',
+      icon: Lightbulb,
+      realFeatures: [
+        '16 miljoner färger',
+        'WiFi-anslutning (ingen hub)',
+        'Dimbar 1-100%',
+        'Röststyrning Alexa/Google'
+      ],
+      realAIFeatures: [
+        'Automatiska scheman',
+        'Solnedgång/soluppgång-anpassning',
+        'Närvarobaserad belysning'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['4 lampor', 'WiFi-setup', 'App-konfiguration']
+      },
+      pricing: {
+        product: 599, // 4-pack
+        installation: 400,
+        total: 999
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'xiaomi-yeelight',
+      name: 'Xiaomi Yeelight Color Bulb',
+      brand: 'Xiaomi',
+      model: 'Yeelight LED Smart Bulb 1S',
+      category: 'lighting',
+      icon: Lightbulb,
+      realFeatures: [
+        '16 miljoner färger + 2700K-6500K',
+        'WiFi 2.4GHz',
+        'Mi Home app',
+        '800 lumen, 10W'
+      ],
+      realAIFeatures: [
+        'Musiksynkronisering',
+        'Circadian rhythm',
+        'Automatisk färganpassning'
+      ],
+      installation: {
+        time: '30 minuter för 3 lampor',
+        difficulty: 'Lätt',
+        included: ['3 lampor', 'WiFi-setup', 'Mi Home app']
+      },
+      pricing: {
+        product: 399, // 3-pack
+        installation: 300,
+        total: 699
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'govee-immersion-tv',
+      name: 'Govee Immersion TV LED Strip',
+      brand: 'Govee',
+      model: 'Immersion TV Light Strip',
+      category: 'lighting',
+      icon: Lightbulb,
+      realFeatures: [
+        'TV-ljussynkronisering',
+        '55-75 tum TV-stöd',
+        'Kamera för färgdetektering',
+        'DIY-scenes & timer'
+      ],
+      realAIFeatures: [
+        'Realtids-färgsynkronisering',
+        'AI-driven ljuseffekter',
+        'Automatisk scendetektering'
+      ],
+      installation: {
+        time: '1-2 timmar',
+        difficulty: 'Medium',
+        included: ['LED-strip', 'Kamera-montering', 'App-setup']
+      },
+      pricing: {
+        product: 1299,
+        installation: 600,
+        total: 1899
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'nanoleaf-shapes',
+      name: 'Nanoleaf Shapes Hexagon Starter Kit',
+      brand: 'Nanoleaf',
+      model: 'Shapes Hexagon 9-pack',
+      category: 'lighting',
+      icon: Lightbulb,
+      realFeatures: [
+        '9 hexagon-paneler',
+        '16 miljoner färger',
+        'Thread border router',
+        'Touch-reaktiv'
+      ],
+      realAIFeatures: [
+        'Musikvisualisering',
+        'Automatiska färgövergångar',
+        'Scen-lärande AI'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Väggmontering', 'Thread-setup', 'HomeKit-koppling']
+      },
+      pricing: {
+        product: 2990,
+        installation: 800,
+        total: 3790
+      },
+      warranty: '2 år'
+    },
+
+    // BUDGET KLIMAT
+    {
+      id: 'xiaomi-mi-temperature',
+      name: 'Xiaomi Mi Temperature & Humidity Monitor 2',
+      brand: 'Xiaomi',
+      model: 'LYWSD03MMC',
+      category: 'climate',
+      icon: Thermometer,
+      realFeatures: [
+        'E-ink display',
+        'Bluetooth 5.0',
+        'CR2032 batteri 1+ år',
+        'Temperatur och luftfuktighet'
+      ],
+      realAIFeatures: [
+        'Smart aviseringar',
+        'Historikspårning',
+        'Komfortindex-beräkning'
+      ],
+      installation: {
+        time: '30 minuter för 5 st',
+        difficulty: 'Lätt',
+        included: ['5 sensorer', 'Mi Home app', 'Batterier']
+      },
+      pricing: {
+        product: 499, // 5-pack
+        installation: 200,
+        total: 699
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'honeywell-t6',
+      name: 'Honeywell T6 Smart Thermostat',
+      brand: 'Honeywell',
+      model: 'T6 WiFi Thermostat',
+      category: 'climate',
+      icon: Thermometer,
+      realFeatures: [
+        'WiFi-ansluten',
+        'Geofencing',
+        '7-dagars programmering',
+        'Energirapporter'
+      ],
+      realAIFeatures: [
+        'Adaptive recovery',
+        'Smart Response teknologi',
+        'Förberäkning av värmetid'
+      ],
+      installation: {
+        time: '2 timmar',
+        difficulty: 'Medium',
+        included: ['Installation', 'WiFi-setup', 'Kalibrering']
+      },
+      pricing: {
+        product: 1799,
+        installation: 1200,
+        total: 2999
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'tado-smart-thermostat',
+      name: 'Tado° Smart Thermostat V3+',
+      brand: 'Tado°',
+      model: 'Smart Thermostat V3+',
+      category: 'climate',
+      icon: Thermometer,
+      realFeatures: [
+        'Geofencing & geolocation',
+        'Väder-anpassning',
+        'Multi-room control',
+        'Energi IQ rapporter'
+      ],
+      realAIFeatures: [
+        'Förutsäger värmetid',
+        'Auto-assist för optimal temperatur',
+        'AI-driven schemaoptimering'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Termostat', 'Internet bridge', 'App-setup']
+      },
+      pricing: {
+        product: 2299,
+        installation: 1500,
+        total: 3799
+      },
+      warranty: '2 år'
+    },
+
+    // BUDGET ROBOTAR
+    {
+      id: 'xiaomi-mi-robot-vacuum',
+      name: 'Xiaomi Mi Robot Vacuum-Mop 2 Pro',
+      brand: 'Xiaomi',
+      model: 'Mi Robot Vacuum-Mop 2 Pro',
+      category: 'cleaning',
+      icon: Bot,
+      realFeatures: [
+        'LDS lasernavigation',
+        'Dammsugning + våtmoppning',
+        '3000Pa sugkraft',
+        '3 timmars batteritid'
+      ],
+      realAIFeatures: [
+        'Automatisk kartläggning',
+        'Rumsigenkänning',
+        'Optimal rengöringsrutt'
+      ],
+      installation: {
+        time: '30 minuter',
+        difficulty: 'Lätt',
+        included: ['Uppackning', 'Första kartläggning', 'Mi Home app']
+      },
+      pricing: {
+        product: 2990,
+        installation: 300,
+        total: 3290
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'eufy-robovac-11s',
+      name: 'Eufy RoboVac 11S',
+      brand: 'Eufy',
+      model: 'RoboVac 11S',
+      category: 'cleaning',
+      icon: Bot,
+      realFeatures: [
+        'Supertyst (55dB)',
+        '1300Pa sugkraft',
+        '100 minuters batteritid',
+        'Automatisk återladdning'
+      ],
+      realAIFeatures: [
+        'Smart rengöringsmönster',
+        'Automatisk kantdammsugning',
+        'Hinderundvikande'
+      ],
+      installation: {
+        time: '15 minuter',
+        difficulty: 'Lätt',
+        included: ['Uppackning', 'Laddstation', 'Fjärrkontroll']
+      },
+      pricing: {
+        product: 1990,
+        installation: 200,
+        total: 2190
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'dreame-l10s-ultra',
+      name: 'Dreame L10s Ultra',
+      brand: 'Dreame',
+      model: 'L10s Ultra Complete',
+      category: 'cleaning',
+      icon: Bot,
+      realFeatures: [
+        'Självtömmande + självtvätt',
+        'LiDAR navigation',
+        '5300Pa sugkraft',
+        'AI-action kamera'
+      ],
+      realAIFeatures: [
+        '3D hinderigenkänning',
+        'Pet waste avoidance',
+        'Auto-mop lifting'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Lätt',
+        included: ['Allround-station setup', 'Kartläggning', 'App-konfiguration']
+      },
+      pricing: {
+        product: 8990,
+        installation: 500,
+        total: 9490
+      },
+      warranty: '2 år'
+    },
+
+    // BUDGET TRÄDGÅRD
+    {
+      id: 'worx-landroid-m500',
+      name: 'Worx Landroid M500 WR141E',
+      brand: 'Worx',
+      model: 'Landroid M500',
+      category: 'garden',
+      icon: Scissors,
+      realFeatures: [
+        'Upp till 500m² gräsyta',
+        'Cut to Edge teknologi',
+        'Regndetektering',
+        'Anti-stöld alarm'
+      ],
+      realAIFeatures: [
+        'AIA algoritm (Artificial Intelligence Algorithm)',
+        'Weather-adaptive cutting',
+        'Auto-scheduling baserat på gräsmätning'
+      ],
+      installation: {
+        time: '2-3 timmar',
+        difficulty: 'Medium',
+        included: ['Gränstråd 130m', 'Laddstation', 'Första setup']
+      },
+      pricing: {
+        product: 6990,
+        installation: 1800,
+        total: 8790
+      },
+      warranty: '2 år'
+    },
+    {
+      id: 'robomow-rc308u',
+      name: 'Robomow RC308u',
+      brand: 'Robomow',
+      model: 'RC308u',
+      category: 'garden',
+      icon: Scissors,
+      realFeatures: [
+        'Upp till 800m² yta',
+        'Mulching-system',
+        'Säkerhetssensorer',
+        'App-styrning'
+      ],
+      realAIFeatures: [
+        'Smart mowing patterns',
+        'Väder-anpassad klippning',
+        'Gräsanalys för optimal klipphöjd'
+      ],
+      installation: {
+        time: '3-4 timmar',
+        difficulty: 'Medium',
+        included: ['Perimeter wire', 'Base station', 'App-setup']
+      },
+      pricing: {
+        product: 12990,
+        installation: 2800,
+        total: 15790
+      },
+      warranty: '2 år'
+    },
+
+    // BUDGET ENTERTAINMENT
+    {
+      id: 'amazon-echo-dot-5',
+      name: 'Amazon Echo Dot (5:e gen) 3-pack',
+      brand: 'Amazon',
+      model: 'Echo Dot 5th Generation',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Alexa inbyggt',
+        'Smart Home Hub',
+        'Bluetooth & WiFi',
+        'Droppar in överallt'
+      ],
+      realAIFeatures: [
+        'Adaptiv volym',
+        'Alexa Conversations',
+        'Multi-room musik'
+      ],
+      installation: {
+        time: '1 timme för 3 st',
+        difficulty: 'Lätt',
+        included: ['3 Echo Dots', 'WiFi-setup', 'Alexa-konfiguration']
+      },
+      pricing: {
+        product: 1497, // 3-pack
+        installation: 400,
+        total: 1897
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'google-nest-audio',
+      name: 'Google Nest Audio 2-pack',
+      brand: 'Google',
+      model: 'Nest Audio',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Google Assistant',
+        '75mm woofer + 19mm tweeter',
+        'Multiroom-ljud',
+        'Touch controls'
+      ],
+      realAIFeatures: [
+        'Media EQ (automatisk ljudjustering)',
+        'Ambient IQ (volym efter rumsbrus)',
+        'Smart grupplydsystem'
+      ],
+      installation: {
+        time: '45 minuter',
+        difficulty: 'Lätt',
+        included: ['2 högtalare', 'Google Home app', 'Rum-setup']
+      },
+      pricing: {
+        product: 1998, // 2-pack
+        installation: 400,
+        total: 2398
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'jbl-link-portable',
+      name: 'JBL Link Portable',
+      brand: 'JBL',
+      model: 'Link Portable Google Assistant',
+      category: 'entertainment',
+      icon: Speaker,
+      realFeatures: [
+        'Bärbar med batteri',
+        'IPX4 vattenskyddad',
+        'Google Assistant',
+        '8 timmars batteritid'
+      ],
+      realAIFeatures: [
+        'Context-aware responses',
+        'Smart hem-kontroll överallt',
+        'Automatisk WiFi/Bluetooth-växling'
+      ],
+      installation: {
+        time: '30 minuter',
+        difficulty: 'Lätt',
+        included: ['JBL Link', 'Google Assistant setup', 'WiFi-konfiguration']
+      },
+      pricing: {
+        product: 1490,
+        installation: 300,
+        total: 1790
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'chromecast-google-tv',
+      name: 'Chromecast med Google TV (4K)',
+      brand: 'Google',
+      model: 'Chromecast with Google TV 4K',
+      category: 'entertainment',
+      icon: Tv,
+      realFeatures: [
+        '4K HDR10+ support',
+        'Dolby Vision',
+        'Google TV interface',
+        'Röststyrning med fjärr'
+      ],
+      realAIFeatures: [
+        'Personliga rekommendationer',
+        'Content discovery AI',
+        'Smart användarprofiler'
+      ],
+      installation: {
+        time: '30 minuter',
+        difficulty: 'Lätt',
+        included: ['Chromecast enhet', 'HDMI-anslutning', 'Google TV setup']
+      },
+      pricing: {
+        product: 699,
+        installation: 300,
+        total: 999
+      },
+      warranty: '1 år'
+    },
+    {
+      id: 'nvidia-shield-tv-pro',
+      name: 'NVIDIA Shield TV Pro',
+      brand: 'NVIDIA',
+      model: 'Shield TV Pro (2019)',
+      category: 'entertainment',
+      icon: Tv,
+      realFeatures: [
+        'Tegra X1+ processor',
+        '3GB RAM + 16GB storage',
+        '4K HDR gaming',
+        'Plex Media Server'
+      ],
+      realAIFeatures: [
+        'AI-upscaling till 4K',
+        'GeForce NOW cloud gaming',
+        'Smart rekommendationsmotor'
+      ],
+      installation: {
+        time: '1 timme',
+        difficulty: 'Medium',
+        included: ['Shield TV Pro', 'Gaming controller', 'Plex setup']
+      },
+      pricing: {
+        product: 2290,
+        installation: 600,
+        total: 2890
       },
       warranty: '1 år'
     },
