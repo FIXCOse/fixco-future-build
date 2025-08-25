@@ -62,10 +62,10 @@ const TrustChips = ({
     const chipContent = (
         <Badge 
           variant="secondary" 
-          className={`flex items-center justify-center space-x-2 px-4 py-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
+          className={`inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white text-xs sm:text-sm ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
         >
-        <IconComponent className="h-4 w-4 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
-        <span className="font-medium text-sm drop-shadow-sm whitespace-nowrap">{chip.label}</span>
+        <IconComponent className="h-4 w-4 shrink-0 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
+        <span className="font-medium drop-shadow-sm">{chip.label}</span>
       </Badge>
     );
 
@@ -109,35 +109,18 @@ const TrustChips = ({
   // When showAll is true, use unified layout for all variants
   if (showAll || forceShowAll || variant === 'minimal') {
     return (
-      <div className={`${className}`} style={{ minHeight: '80px' }}>
-        {/* Mobile Layout - 2 column grid */}
-        <div className="grid grid-cols-2 gap-3 md:hidden">
-          {visibleChips.map((chip) => (
-            <div key={chip.id} className="w-full">
-              <ChipComponent chip={chip} />
-            </div>
-          ))}
-        </div>
-        
-        {/* Desktop Layout - horizontal scroll */}
-        <div className="hidden md:flex overflow-x-auto items-center justify-center gap-3 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          <style dangerouslySetInnerHTML={{__html: `
-            .flex::-webkit-scrollbar { display: none; }
-          `}} />
-          {visibleChips.map((chip) => (
-            <div key={chip.id} className="flex-shrink-0">
-              <ChipComponent chip={chip} />
-            </div>
-          ))}
-        </div>
+      <div className={`flex flex-wrap items-center justify-center gap-2 px-4 sm:gap-3 sm:px-0 ${className}`}>
+        {visibleChips.map((chip) => (
+          <ChipComponent key={chip.id} chip={chip} />
+        ))}
       </div>
     );
   }
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {/* Desktop Layout */}
-      <div className="hidden md:flex flex-wrap items-center justify-center gap-3">
+    <div className={`${className}`}>
+      {/* Unified cloud layout for all screens */}
+      <div className="flex flex-wrap items-center justify-center gap-2 px-4 sm:gap-3 sm:px-0">
         {visibleChips.map((chip) => (
           <ChipComponent key={chip.id} chip={chip} />
         ))}
@@ -145,13 +128,13 @@ const TrustChips = ({
         {hasMoreChips && (
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center space-x-1">
+              <Button variant="outline" size="sm" className="inline-flex items-center gap-1 whitespace-nowrap">
                 <Plus className="h-4 w-4" />
                 <span>+{remainingCount} fler</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80 p-4" align="center">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 {chips.slice(maxVisible).map((chip) => (
                   <ChipComponent key={chip.id} chip={chip} />
                 ))}
@@ -159,13 +142,6 @@ const TrustChips = ({
             </PopoverContent>
           </Popover>
         )}
-      </div>
-
-      {/* Mobile Layout - Flexible wrapping */}
-      <div className="md:hidden flex flex-wrap items-center justify-center gap-3 px-4 py-2">
-        {chips.map((chip) => (
-          <ChipComponent key={chip.id} chip={chip} />
-        ))}
       </div>
     </div>
   );
