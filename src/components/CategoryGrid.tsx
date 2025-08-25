@@ -2,6 +2,24 @@ import { Link } from "react-router-dom";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 
+// Smart hem-inspirerade färger för olika tjänstekategorier
+const getGradientForService = (slug: string): string => {
+  const gradients: Record<string, string> = {
+    'bygg-renovering': 'bg-gradient-to-r from-cyan-400 to-blue-500',
+    'grovstadning': 'bg-gradient-to-r from-purple-400 to-indigo-500',
+    'tradgard': 'bg-gradient-to-r from-green-400 to-lime-500',
+    'el-installationer': 'bg-gradient-to-r from-yellow-400 to-orange-500',
+    'ror-vvs': 'bg-gradient-to-r from-blue-400 to-indigo-500',
+    'hemservice': 'bg-gradient-to-r from-pink-400 to-rose-500',
+    'smajobbsstadning': 'bg-gradient-to-r from-indigo-500 to-purple-500',
+    'malning-lack': 'bg-gradient-to-r from-red-400 to-pink-500',
+    'golv-kakel': 'bg-gradient-to-r from-orange-400 to-amber-500',
+    'fonsterputs': 'bg-gradient-to-r from-teal-400 to-cyan-500'
+  };
+  
+  return gradients[slug] || 'bg-gradient-to-r from-gray-400 to-gray-500';
+};
+
 const CategoryGrid = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -27,8 +45,8 @@ const CategoryGrid = () => {
               </div>
 
               {/* Icon */}
-              <div className="w-12 h-12 mx-auto gradient-primary-subtle rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300">
-                <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+              <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
+                <IconComponent className="h-6 w-6 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
               </div>
               
               {/* Title */}
