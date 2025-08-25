@@ -233,7 +233,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-2xl sm:text-3xl md:text-7xl font-bold leading-tight mb-6 px-4"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6 px-4"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
