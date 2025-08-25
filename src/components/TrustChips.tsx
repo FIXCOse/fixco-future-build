@@ -62,10 +62,10 @@ const TrustChips = ({
     const chipContent = (
       <Badge 
         variant="secondary" 
-        className="flex items-center space-x-2 px-3 py-2 bg-background/80 backdrop-blur border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
+        className={`flex items-center space-x-2 px-4 py-3 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
       >
-        <IconComponent className={`h-4 w-4 ${chip.color} group-hover:scale-110 transition-transform duration-200`} aria-hidden="true" />
-        <span className="font-medium text-sm">{chip.label}</span>
+        <IconComponent className="h-4 w-4 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
+        <span className="font-medium text-sm drop-shadow-sm">{chip.label}</span>
       </Badge>
     );
 
