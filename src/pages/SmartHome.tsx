@@ -23,7 +23,15 @@ import {
   Zap,
   TrendingUp,
   Star,
-  Phone
+  Phone,
+  Bell,
+  Car,
+  Volume2,
+  Eye,
+  Monitor,
+  Fingerprint,
+  WifiOff,
+  Battery
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -31,7 +39,7 @@ import { toast } from 'sonner';
 interface SmartProduct {
   id: string;
   name: string;
-  category: 'lock' | 'lighting' | 'security' | 'climate';
+  category: 'lock' | 'lighting' | 'security' | 'climate' | 'doorbell' | 'garage';
   icon: React.ElementType;
   benefits: string[];
   savings: {
@@ -60,7 +68,7 @@ export const SmartHome = () => {
       benefits: [
         'Fjärrstyrning via mobil',
         'Tillfälliga koder för gäster',
-        'Aktivitetslogg',
+        'Aktivitetslogg med tidsstämplar',
         'Automatisk låsning'
       ],
       savings: {
@@ -70,14 +78,65 @@ export const SmartHome = () => {
       }
     },
     {
+      id: 'smart-doorbell',
+      name: 'Smart Ringklocka', 
+      category: 'doorbell',
+      icon: Bell,
+      benefits: [
+        'HD-video med nattseende',
+        'Tvåvägskommunikation',
+        'Rörelseavkänning',
+        'Se besökare via mobil'
+      ],
+      savings: {
+        cost: 1200,
+        time: 'Alltid hemma',
+        security: '80% färre inbrott'
+      }
+    },
+    {
+      id: 'smart-camera',
+      name: 'Säkerhetskameror',
+      category: 'security',
+      icon: Camera,
+      benefits: [
+        'Live-övervakning 24/7',
+        'AI-driven rörelseavkänning',
+        '4K nattseende upp till 30m',
+        'Molnlagring + lokal backup'
+      ],
+      savings: {
+        cost: 1800,
+        time: 'Konstant trygghet',
+        security: '90% minskad risk'
+      }
+    },
+    {
+      id: 'smart-garage',
+      name: 'Smart Garageport',
+      category: 'garage',
+      icon: Car,
+      benefits: [
+        'Öppna/stäng med mobil',
+        'Automatisk stängning',
+        'Statusmeddelanden',
+        'Integrerad säkerhet'
+      ],
+      savings: {
+        cost: 800,
+        time: '10 min/dag',
+        security: 'Alltid låst'
+      }
+    },
+    {
       id: 'smart-lights',
       name: 'Smart Belysning',
       category: 'lighting',
       icon: Lightbulb,
       benefits: [
         'Energibesparingar upp till 80%',
-        'Schemaläggning',
-        'Dimning och färgändringar',
+        'Schemaläggning & automation',
+        'Dimning och 16M färger',
         'Rörelseaktivering'
       ],
       savings: {
@@ -87,37 +146,20 @@ export const SmartHome = () => {
       }
     },
     {
-      id: 'smart-camera',
-      name: 'Säkerhetskameror',
-      category: 'security',
-      icon: Camera,
-      benefits: [
-        'Live-övervakning',
-        'Rörelseavkänning',
-        'Nattseende',
-        'Molnlagring'
-      ],
-      savings: {
-        cost: 1800,
-        time: 'Konstant trygghet',
-        security: '90% minskad risk'
-      }
-    },
-    {
       id: 'smart-thermostat',
       name: 'Smart Termostat',
       category: 'climate',
-      icon: Thermometer,
+      icon: Thermometer,  
       benefits: [
-        'Lär sig dina vanor',
+        'AI-driven inlärning',
         '23% energibesparing',
-        'Fjärrstyrning',
-        'Väderbaserad justering'
+        'Fjärrstyrning från mobil',
+        'Väder & närvaro-baserad justering'
       ],
       savings: {
         cost: 4500,
         time: 'Automatisk',
-        security: 'Övervakning'
+        security: 'Temperaturövervakning'
       }
     }
   ];
@@ -272,31 +314,246 @@ export const SmartHome = () => {
             </div>
             
             <div className="space-y-4">
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-xl shadow-sm border border-red-100 hover:shadow-md hover:scale-[1.02] transition-all duration-300 hover-scale">
+                <h4 className="font-semibold mb-3 flex items-center gap-2 text-red-800">
+                  <AlertTriangle className="h-5 w-5 text-red-500" />
                   Traditionella Lås
                 </h4>
-                <ul className="text-sm space-y-1 text-muted-foreground">
-                  <li>• Risk för utelåsning (kostar 1500 kr/tillfälle)</li>
-                  <li>• Nyckelkopiering 150 kr/st</li>
-                  <li>• Ingen övervakning eller kontroll</li>
-                  <li>• Lätt att bryta (3-5 minuter för erfaren inbrottstjuv)</li>
+                <ul className="text-sm space-y-2">
+                  <li className="flex items-center gap-2 text-red-700">
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                    Risk för utelåsning (kostar 1500 kr/tillfälle)
+                  </li>
+                  <li className="flex items-center gap-2 text-red-700">
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                    Nyckelkopiering 150 kr/st
+                  </li>
+                  <li className="flex items-center gap-2 text-red-700">
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                    Ingen övervakning eller kontroll
+                  </li>
+                  <li className="flex items-center gap-2 text-red-700">
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                    Lätt att bryta (3-5 min för erfaren inbrottstjuv)
+                  </li>
                 </ul>
+                <div className="mt-4 pt-3 border-t border-red-200">
+                  <div className="text-sm font-medium text-red-800">Årlig kostnad: ~3000 kr</div>
+                </div>
               </div>
               
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl shadow-sm border border-green-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 hover-scale">
+                <h4 className="font-semibold mb-3 flex items-center gap-2 text-green-800">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
                   Smart Lås
                 </h4>
-                <ul className="text-sm space-y-1 text-green-700">
-                  <li>• Ingen risk för utelåsning</li>
-                  <li>• Obegränsat antal digitala "nycklar"</li>
-                  <li>• Komplett aktivitetslogg</li>
-                  <li>• 256-bit kryptering + alarm</li>
+                <ul className="text-sm space-y-2">
+                  <li className="flex items-center gap-2 text-green-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Ingen risk för utelåsning
+                  </li>
+                  <li className="flex items-center gap-2 text-green-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Obegränsat antal digitala "nycklar"
+                  </li>
+                  <li className="flex items-center gap-2 text-green-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Komplett aktivitetslogg med tidsstämplar
+                  </li>
+                  <li className="flex items-center gap-2 text-green-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    256-bit kryptering + inbyggt alarm
+                  </li>
                 </ul>
+                <div className="mt-4 pt-3 border-t border-green-200">
+                  <div className="text-sm font-medium text-green-800">Årlig besparing: 2500+ kr</div>
+                </div>
               </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Smart Doorbell Section */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-blue-50 to-cyan-50">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
+                <Bell className="h-8 w-8 text-blue-600" />
+                Smart Ringklocka - Se Vem Som Kommer
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                Aldrig missa en leverans eller besökare igen. Med smart ringklocka ser och pratar du 
+                med besökare var du än befinner dig i världen.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Camera className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">HD-video 1080p</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">Tvåvägskommunikation</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Eye className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">Nattseende 10m</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Smartphone className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">Push-notifikationer</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Battery className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">6 månaders batteri</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <WifiOff className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">Fungerar utan WiFi</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-100 p-4 rounded-lg mb-6">
+                <h4 className="font-semibold text-blue-800 mb-2">Verklig kundberättelse:</h4>
+                <p className="text-sm text-blue-700 italic">
+                  "Fick ett paket levererat medan jag var på jobbet. Såg brevbäraren på ringklockan 
+                  och kunde säga åt honom att lämna paketet hos grannen. Sparat 2 timmars resa!"
+                </p>
+                <div className="text-xs text-blue-600 mt-1">- Maria, Stockholm</div>
+              </div>
+
+              <Button size="lg" className="mr-4 bg-blue-600 hover:bg-blue-700">
+                Installera smart ringklocka
+              </Button>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="text-lg font-semibold mb-4 text-center">
+                Vanliga Situationer Smart Ringklocka Löser
+              </h4>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <div className="font-medium text-green-800">Missade Leveranser</div>
+                    <div className="text-sm text-green-700">Prata med brevbäraren även när du inte är hemma</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                  <CheckCircle className="h-5 w-5 text-blue-500 mt-0.5" />
+                  <div>
+                    <div className="font-medium text-blue-800">Ovälkomna Besök</div>
+                    <div className="text-sm text-blue-700">Se vem som ringer innan du öppnar</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                  <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5" />
+                  <div>
+                    <div className="font-medium text-purple-800">Barnsäkerhet</div>
+                    <div className="text-sm text-purple-700">Övervaka vilka som kommer och går</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Security Camera Section */}
+        <Card className="mb-12 p-8 bg-gradient-to-r from-gray-50 to-slate-50">
+          <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-3">
+            <Camera className="h-8 w-8 text-gray-700" />
+            Säkerhetskameror - Professionell Övervakning
+          </h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div className="text-center">
+              <Monitor className="h-12 w-12 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">4K Ultra HD</h3>
+              <p className="text-sm text-muted-foreground">
+                Kristallklar video som identifierar ansikten upp till 30 meter bort
+              </p>
+            </div>
+            <div className="text-center">
+              <Eye className="h-12 w-12 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">AI-Detektering</h3>
+              <p className="text-sm text-muted-foreground">
+                Skiljer mellan människor, djur och fordon - ingen falska alarm
+              </p>
+            </div>
+            <div className="text-center">
+              <Shield className="h-12 w-12 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Molnlagring</h3>
+              <p className="text-sm text-muted-foreground">
+                30 dagar gratis lagring + lokal backup på hårddisk
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-6 rounded-xl mb-6">
+            <h4 className="text-xl font-bold mb-3">Shocking Statistik från Polisen:</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold">67%</div>
+                <div className="text-sm">Färre inbrott med synliga kameror</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold">89%</div>
+                <div className="text-sm">Av inbrottstjuvar undviker övervakade hem</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold">3 min</div>
+                <div className="text-sm">Genomsnittstid för inbrott utan kameror</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h4 className="font-semibold mb-3">Populära Kamerapaket:</h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <span>Grundpaket (2 kameror)</span>
+                  <span className="font-bold">8 990 kr</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-blue-50 rounded border border-blue-200">
+                  <span>Komplett hem (4 kameror)</span>
+                  <span className="font-bold text-blue-700">15 990 kr</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <span>Premium (8 kameror)</span>
+                  <span className="font-bold">28 990 kr</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-green-50 p-6 rounded-lg">
+              <h4 className="font-semibold mb-3 text-green-800">Inkluderat i alla paket:</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  Professionell installation
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  Konfiguration och utbildning
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  Mobil-app för live-övervakning
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  30 dagar gratis molnlagring
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  2 års garanti + support
+                </li>
+              </ul>
             </div>
           </div>
         </Card>
@@ -341,12 +598,12 @@ export const SmartHome = () => {
             Våra Smarta Hemlösningar
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {smartProducts.map((product) => (
               <Card 
                 key={product.id} 
-                className={`p-6 cursor-pointer transition-all ${
-                  selectedProduct === product.id ? 'ring-2 ring-primary' : ''
+                className={`p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover-scale ${
+                  selectedProduct === product.id ? 'ring-2 ring-primary shadow-lg' : ''
                 }`}
                 onClick={() => setSelectedProduct(product.id)}
               >
