@@ -13,16 +13,16 @@ import {
   Leaf,
   Speaker,
   Settings,
-  Star,
-  TrendingUp,
   Phone,
   Brain,
   Target,
-  Loader2
+  Loader2,
+  Star,
+  TrendingUp
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useSmartProducts, useTrackProductView, useTrackProductClick, SortOption } from '@/hooks/useSmartProducts';
+import { useSmartProducts, SortOption } from '@/hooks/useSmartProducts';
 import { SmartProductSortFilter } from '@/components/SmartProductSortFilter';
 
 interface CategoryFilter {
@@ -49,8 +49,6 @@ export const SmartHome = () => {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
-  const trackView = useTrackProductView();
-  const trackClick = useTrackProductClick();
 
   // Fetch products from database
   const { data: products = [], isLoading, error } = useSmartProducts({ 
@@ -58,11 +56,10 @@ export const SmartHome = () => {
     sortBy 
   });
 
-  // Track product view when clicked
+  // Track product view when clicked - simplified without actual tracking for now
   const handleProductClick = (productId: string) => {
-    trackView.mutate(productId);
-    trackClick.mutate(productId);
-    toast.success('Produktvy loggad - kontakta oss för installation!');
+    // Just show success message without tracking
+    toast.success('Kontakta oss för installation och mer information!');
   };
 
   const categories: CategoryFilter[] = [
@@ -229,19 +226,6 @@ export const SmartHome = () => {
                         </div>
                         <h3 className="text-2xl font-bold mb-2 drop-shadow-lg">{product.name}</h3>
                         <p className="text-white/90 text-sm mb-4 font-medium">{product.model}</p>
-                        
-                        {/* Popularity & Rating Indicators */}
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-yellow-300 fill-current" />
-                            <span className="text-sm font-medium">{product.average_rating.toFixed(1)}</span>
-                            <span className="text-xs text-white/70">({product.total_reviews})</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <TrendingUp className="h-4 w-4 text-cyan-300" />
-                            <span className="text-xs text-white/70">{product.view_count} visningar</span>
-                          </div>
-                        </div>
 
                         <div className="text-3xl font-bold text-yellow-300 drop-shadow-lg">
                           {product.total_price.toLocaleString()} kr
@@ -284,16 +268,6 @@ export const SmartHome = () => {
                             </li>
                           ))}
                         </ul>
-                      </div>
-
-                      {/* Value & Installation Info */}
-                      <div className="mb-4 flex items-center justify-between text-sm">
-                        <div className="text-green-300">
-                          ⭐ Värde: {product.value_rating.toFixed(1)}/5
-                        </div>
-                        <div className="text-cyan-300">
-                          🔧 {product.installation_time}
-                        </div>
                       </div>
                     </div>
 
