@@ -293,9 +293,9 @@ const HeroUltra = () => {
               </Link>
             </motion.div>
 
-            {/* Trust Indicators Grid */}
+            {/* Trust Indicators - Horizontal Layout */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-8 px-4"
+              className="flex flex-wrap items-center justify-center gap-6 md:gap-8 lg:gap-12 max-w-6xl mx-auto mb-8 px-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}
