@@ -422,6 +422,47 @@ export type Database = {
           },
         ]
       }
+      expense_logs: {
+        Row: {
+          amount: number
+          category: string | null
+          created_at: string
+          id: string
+          job_id: string
+          note: string | null
+          receipt_url: string | null
+          worker_id: string
+        }
+        Insert: {
+          amount: number
+          category?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          note?: string | null
+          receipt_url?: string | null
+          worker_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          note?: string | null
+          receipt_url?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expense_logs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feature_flags: {
         Row: {
           enabled: boolean
@@ -541,6 +582,183 @@ export type Database = {
           },
         ]
       }
+      job_events: {
+        Row: {
+          actor: string | null
+          created_at: string
+          event: string
+          id: string
+          job_id: string
+          meta: Json
+        }
+        Insert: {
+          actor?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          job_id: string
+          meta?: Json
+        }
+        Update: {
+          actor?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          job_id?: string
+          meta?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_events_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          file_path: string
+          id: string
+          job_id: string
+          worker_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          file_path: string
+          id?: string
+          job_id: string
+          worker_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          file_path?: string
+          id?: string
+          job_id?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_photos_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_signatures: {
+        Row: {
+          file_path: string
+          id: string
+          job_id: string
+          role: string
+          signed_at: string
+          signed_by_name: string
+        }
+        Insert: {
+          file_path: string
+          id?: string
+          job_id: string
+          role: string
+          signed_at?: string
+          signed_by_name: string
+        }
+        Update: {
+          file_path?: string
+          id?: string
+          job_id?: string
+          role?: string
+          signed_at?: string
+          signed_by_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_signatures_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          address: string | null
+          assigned_at: string | null
+          assigned_worker_id: string | null
+          city: string | null
+          created_at: string
+          customer_id: string | null
+          description: string | null
+          due_date: string | null
+          fixed_price: number | null
+          hourly_rate: number | null
+          id: string
+          pool_enabled: boolean
+          postal_code: string | null
+          pricing_mode: string
+          property_id: string | null
+          rot_rut: Json
+          source_id: string
+          source_type: string
+          start_scheduled_at: string | null
+          status: string
+          title: string | null
+        }
+        Insert: {
+          address?: string | null
+          assigned_at?: string | null
+          assigned_worker_id?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          due_date?: string | null
+          fixed_price?: number | null
+          hourly_rate?: number | null
+          id?: string
+          pool_enabled?: boolean
+          postal_code?: string | null
+          pricing_mode: string
+          property_id?: string | null
+          rot_rut?: Json
+          source_id: string
+          source_type: string
+          start_scheduled_at?: string | null
+          status?: string
+          title?: string | null
+        }
+        Update: {
+          address?: string | null
+          assigned_at?: string | null
+          assigned_worker_id?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          due_date?: string | null
+          fixed_price?: number | null
+          hourly_rate?: number | null
+          id?: string
+          pool_enabled?: boolean
+          postal_code?: string | null
+          pricing_mode?: string
+          property_id?: string | null
+          rot_rut?: Json
+          source_id?: string
+          source_type?: string
+          start_scheduled_at?: string | null
+          status?: string
+          title?: string | null
+        }
+        Relationships: []
+      }
       loyalty_transactions: {
         Row: {
           booking_id: string | null
@@ -589,6 +807,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      material_logs: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string
+          name: string
+          qty: number
+          sku: string | null
+          supplier: string | null
+          unit_price: number | null
+          worker_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id: string
+          name: string
+          qty?: number
+          sku?: string | null
+          supplier?: string | null
+          unit_price?: number | null
+          worker_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string
+          name?: string
+          qty?: number
+          sku?: string | null
+          supplier?: string | null
+          unit_price?: number | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_logs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
         ]
@@ -1127,6 +1389,53 @@ export type Database = {
         }
         Relationships: []
       }
+      time_logs: {
+        Row: {
+          break_min: number
+          created_at: string
+          ended_at: string | null
+          hours: number | null
+          id: string
+          job_id: string
+          manual_hours: number | null
+          note: string | null
+          started_at: string | null
+          worker_id: string
+        }
+        Insert: {
+          break_min?: number
+          created_at?: string
+          ended_at?: string | null
+          hours?: number | null
+          id?: string
+          job_id: string
+          manual_hours?: number | null
+          note?: string | null
+          started_at?: string | null
+          worker_id: string
+        }
+        Update: {
+          break_min?: number
+          created_at?: string
+          ended_at?: string | null
+          hours?: number | null
+          id?: string
+          job_id?: string
+          manual_hours?: number | null
+          note?: string | null
+          started_at?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_logs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -1320,6 +1629,68 @@ export type Database = {
           },
         ]
       }
+      worker_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          job_id: string
+          worker_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          job_id: string
+          worker_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          job_id?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worker_assignments_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      worker_profiles: {
+        Row: {
+          active: boolean
+          created_at: string
+          name: string
+          phone: string | null
+          regions: string[] | null
+          skills: string[] | null
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          name: string
+          phone?: string | null
+          regions?: string[] | null
+          skills?: string[] | null
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          name?: string
+          phone?: string | null
+          regions?: string[] | null
+          skills?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -1374,6 +1745,10 @@ export type Database = {
       }
       is_owner: {
         Args: { user_uuid?: string }
+        Returns: boolean
+      }
+      is_worker: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       kpi_today: {
