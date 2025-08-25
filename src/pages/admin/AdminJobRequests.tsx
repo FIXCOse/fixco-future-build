@@ -31,19 +31,7 @@ const AdminJobRequests = () => {
       let jobsQuery = supabase
         .from('jobs')
         .select(`
-          *,
-          bookings!jobs_source_id_fkey (
-            service_name,
-            contact_name,
-            contact_email,
-            contact_phone
-          ),
-          quotes!jobs_source_id_fkey (
-            title,
-            customer_name,
-            customer_email,
-            customer_phone
-          )
+          *
         `)
         .order('created_at', { ascending: false });
 
@@ -74,8 +62,38 @@ const AdminJobRequests = () => {
       const jobs = jobsResult.data || [];
       const quotes = quotesResult.data || [];
 
+      // Get additional data for jobs by manually fetching bookings and quotes
+      const jobsWithDetails = await Promise.all(
+        jobs.map(async (job) => {
+          let bookings: any[] = [];
+          let quotes: any[] = [];
+          
+          if (job.source_type === 'booking') {
+            const { data: booking } = await supabase
+              .from('bookings')
+              .select('service_name, contact_name, contact_email, contact_phone')
+              .eq('id', job.source_id)
+              .single();
+            if (booking) bookings = [booking];
+          } else if (job.source_type === 'quote') {
+            const { data: quote } = await supabase
+              .from('quotes')
+              .select('title, customer_name, customer_email, customer_phone')
+              .eq('id', job.source_id)
+              .single();
+            if (quote) quotes = [quote];
+          }
+          
+          return { 
+            ...job, 
+            bookings,
+            quotes
+          };
+        })
+      );
+
       // Convert quotes to job-like format and filter out quotes that already have jobs
-      const existingJobQuoteIds = jobs
+      const existingJobQuoteIds = jobsWithDetails
         .filter(job => job.source_type === 'quote')
         .map(job => job.source_id);
 
@@ -109,7 +127,7 @@ const AdminJobRequests = () => {
           }]
         }));
 
-      return [...jobs, ...quotesAsJobs];
+      return [...jobsWithDetails, ...quotesAsJobs];
     }
   });
 
