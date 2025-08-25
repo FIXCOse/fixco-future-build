@@ -179,13 +179,13 @@ const ComparisonUltra = () => {
           <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
             Varför välja <span className="gradient-text">Fixco</span>?
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto mb-8 md:mb-12">
             Transparent jämförelse som visar varför tusentals kunder väljer oss
           </p>
         </motion.div>
 
         {/* Mobile-Optimized Comparison */}
-        <div className="max-w-md md:max-w-5xl mx-auto">
+        <div className="max-w-md md:max-w-5xl mx-auto mt-6 md:mt-8">
           {/* Header Row - Mobile Optimized */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
