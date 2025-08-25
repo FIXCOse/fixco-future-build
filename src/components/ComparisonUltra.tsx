@@ -230,35 +230,35 @@ const ComparisonUltra = () => {
                   transition={{ delay: 0.3 + index * 0.12, duration: 0.5 }}
                   className="grid grid-cols-3 gap-2 md:gap-3 items-center"
                 >
-                  {/* Metric Title - Mobile Optimized */}
-                  <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 min-h-[44px]">
+                   {/* Metric Title - Mobile Optimized */}
+                  <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 min-h-[60px] md:min-h-[44px]">
                     <div className="w-6 h-6 md:w-8 md:h-8 gradient-primary-subtle rounded-lg flex items-center justify-center shrink-0">
                       <IconComponent className="h-3 w-3 md:h-4 md:w-4 text-primary" />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-xs md:text-base leading-tight">{metric.title}</h4>
                     </div>
                   </div>
 
-                  {/* Fixco Value - Mobile Optimized */}
+                   {/* Fixco Value - Mobile Optimized */}
                   <motion.div
-                    className="card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[44px] flex items-center justify-center"
+                    className="card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[60px] md:min-h-[44px] flex items-center justify-center"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.15 }}
                   >
                     <CheckCircle className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-green-400" />
-                    <div className="text-center">
-                      <div className="text-sm md:text-xl font-bold gradient-text">
+                    <div className="text-center px-1">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold gradient-text">
                         {metric.fixcoValue}
                         {metric.fixcoUnit && <span className="text-xs md:text-sm">{metric.fixcoUnit}</span>}
                       </div>
                     </div>
                   </motion.div>
 
-                  {/* Competitor Value - Mobile Optimized */}
-                  <div className="card-premium p-2 md:p-3 border-muted/20 bg-muted/10 min-h-[44px] flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm md:text-xl font-bold text-muted-foreground">
+                   {/* Competitor Value - Mobile Optimized */}
+                  <div className="card-premium p-2 md:p-3 border-muted/20 bg-muted/10 min-h-[60px] md:min-h-[44px] flex items-center justify-center">
+                    <div className="text-center px-1">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold text-muted-foreground">
                         {metric.competitorValue}
                         {metric.competitorUnit && <span className="text-xs md:text-sm">{metric.competitorUnit}</span>}
                       </div>

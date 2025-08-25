@@ -165,7 +165,7 @@ const HeroUltra = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-20 md:pt-0">
         {/* Background System - Progressive Enhancement */}
         <div className="absolute inset-0">
           {/* Base gradient (always visible) */}
@@ -176,25 +176,25 @@ const HeroUltra = () => {
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-32 left-16 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
+            className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
             style={{ animationDuration: '4s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute bottom-40 right-20 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
+            className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '5s', animationDelay: '1s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute top-1/3 right-1/4 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
+            className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '2s' }}
           />
           <img 
             src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
             alt="" 
-            className="absolute bottom-1/4 left-1/3 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
+            className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
             style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
           />
         </div>
@@ -225,7 +225,7 @@ const HeroUltra = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 w-full">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -233,7 +233,7 @@ const HeroUltra = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
+              className="text-3xl sm:text-4xl md:text-7xl font-bold leading-tight mb-6 px-2"
               animate={ultraEnabled && capabilities.prefersMotion ? {
                 textShadow: [
                   "0 0 0px hsl(var(--primary))",
@@ -243,9 +243,8 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">Fixco</span> löser{" "}
+              <span className="gradient-text">Fixco</span> löser allt inom{" "}
               <br />
-              <span className="text-foreground">allt inom</span>{" "}
               <motion.span 
                 className="gradient-text"
                 animate={ultraEnabled ? { 
@@ -259,7 +258,7 @@ const HeroUltra = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+              className="text-lg md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
@@ -294,9 +293,9 @@ const HeroUltra = () => {
               </Link>
             </motion.div>
 
-            {/* Trust Indicators Grid */}
+            {/* Trust Indicators - Horizontal Layout */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8"
+              className="flex flex-wrap items-center justify-center gap-6 md:gap-8 lg:gap-12 max-w-6xl mx-auto mb-8 px-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
               transition={{ delay: 0.9, duration: 0.6 }}
