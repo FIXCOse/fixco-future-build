@@ -166,6 +166,7 @@ const App = () => {
                   <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
                   <Route path="/test-booking" element={<TestBooking />} />
                   
+                  {/* Main Routes */}
                   <Route path="/tjanster" element={<Services />} />
                   <Route path="/tjanster/:slug" element={<ServiceDetail />} />
                   <Route path="/kontakt" element={<Contact />} />
