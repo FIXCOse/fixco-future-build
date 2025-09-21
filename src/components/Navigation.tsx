@@ -70,23 +70,24 @@ export default function Navigation() {
             className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group"
           >
             <img 
-              src="/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png" 
-              alt="Company Logo" 
+              src="/assets/fixco-logo-black.png" 
+              alt="FIXCO - Din Helhetslösning" 
               className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
             />
-            <div className="ml-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <img 
-                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
-                alt="Fixco F" 
-                className="h-3 w-3 object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-              />
-            </div>
           </Link>
 
           {/* Center: Primary Navigation - No Wrap, XL+ Only */}
           <ul className="hidden xl:flex items-center flex-nowrap justify-center gap-x-[clamp(12px,1.2vw,22px)] min-w-0">
-            {navItems.map((item) => (
-              <li key={item.href}>
+            {navItems.map((item, index) => (
+              <li key={item.href} className="flex items-center">
+                {/* Add F icon before "Hem" */}
+                {index === 0 && (
+                  <img 
+                    src="/assets/fixco-f-icon-black.png" 
+                    alt="F" 
+                    className="h-5 w-5 mr-2 opacity-70"
+                  />
+                )}
                 <Link
                   to={item.href}
                   className={cn(
@@ -185,7 +186,7 @@ export default function Navigation() {
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">
-                {navItems.map((item) => (
+                {navItems.map((item, index) => (
                   <Link
                     key={item.href}
                     to={item.href}
@@ -195,6 +196,14 @@ export default function Navigation() {
                     )}
                     onClick={() => setIsMenuOpen(false)}
                   >
+                    {/* Add F icon before "Hem" in mobile menu too */}
+                    {index === 0 && (
+                      <img 
+                        src="/assets/fixco-f-icon-black.png" 
+                        alt="F" 
+                        className="h-4 w-4 mr-2 opacity-70"
+                      />
+                    )}
                     {item.label}
                   </Link>
                 ))}
