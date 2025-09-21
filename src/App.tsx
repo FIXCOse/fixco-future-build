@@ -68,6 +68,13 @@ import TestBooking from "./pages/TestBooking";
 import { SmartHome } from "./pages/SmartHome";
 import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
+import EnglishLayout from "./components/layouts/EnglishLayout";
+import HomeEn from "./pages/en/HomeEn";
+import ServicesEn from "./pages/en/ServicesEn";
+import ContactEn from "./pages/en/ContactEn";
+import AboutEn from "./pages/en/AboutEn";
+import ReferencesEn from "./pages/en/ReferencesEn";
+import SmartHomeEn from "./pages/en/SmartHomeEn";
 
 const queryClient = new QueryClient();
 
@@ -147,6 +154,7 @@ const App = () => {
                     <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="jobs" element={<AdminJobs />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
+                    <Route path="translations" element={lazy(() => import('./pages/admin/AdminTranslations'))} />
                   </Route>
 
                   {/* Worker Routes */}
@@ -177,6 +185,17 @@ const App = () => {
                   <Route path="/smart-hem" element={<SmartHome />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
+                  
+                  {/* English Routes */}
+                  <Route path="/en" element={<EnglishLayout />}>
+                    <Route index element={<HomeEn />} />
+                    <Route path="services" element={<ServicesEn />} />
+                    <Route path="contact" element={<ContactEn />} />
+                    <Route path="about" element={<AboutEn />} />
+                    <Route path="references" element={<ReferencesEn />} />
+                    <Route path="smart-home" element={<SmartHomeEn />} />
+                  </Route>
+                  
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

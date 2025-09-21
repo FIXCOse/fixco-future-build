@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
-import LanguageSwitcher from "./LanguageSwitcher";
+import LanguageSwitcher from "../LanguageSwitcher";
 
-export default function Navigation() {
+export default function EnglishNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -28,21 +28,21 @@ export default function Navigation() {
     try {
       await supabase.auth.signOut();
       queryClient.clear();
-      navigate('/');
-      toast.success('Du har loggats ut');
+      navigate('/en');
+      toast.success('You have been logged out');
     } catch (error) {
-      toast.error('Kunde inte logga ut');
+      toast.error('Could not log out');
     }
   };
 
   const getNavItems = () => {
     const allItems = [
-      { href: "/", label: "Hem" },
-      { href: "/tjanster", label: "Tjänster" },
-      { href: "/smart-hem", label: "Smart Hem" },
-      { href: "/referenser", label: "Referenser" },
-      { href: "/om-oss", label: "Om oss" },
-      { href: "/kontakt", label: "Kontakt" },
+      { href: "/en", label: "Home" },
+      { href: "/en/services", label: "Services" },
+      { href: "/en/smart-home", label: "Smart Home" },
+      { href: "/en/references", label: "References" },
+      { href: "/en/about", label: "About" },
+      { href: "/en/contact", label: "Contact" },
     ];
 
     if (isAdmin) {
@@ -55,7 +55,7 @@ export default function Navigation() {
   const navItems = getNavItems();
 
   const isActive = (href: string) => {
-    if (href === "/") return location.pathname === "/";
+    if (href === "/en") return location.pathname === "/en";
     return location.pathname.startsWith(href);
   };
 
@@ -67,12 +67,12 @@ export default function Navigation() {
           {/* Left: Logo with Proper Spacing */}
           <div className="flex items-center">
             <Link 
-              to="/" 
+              to="/en" 
               className="inline-flex items-center py-2 group flex-shrink-0"
             >
               <img 
                 src="/assets/fixco-logo-black.png" 
-                alt="FIXCO - Din Helhetslösning" 
+                alt="FIXCO - Your Complete Solution" 
                 className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
                 style={{ minWidth: '80px', maxWidth: '140px' }}
               />
@@ -124,7 +124,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">Mitt Fixco</span>
+                        <span className="hidden xl:inline">My Fixco</span>
                       </Button>
                     </Link>
                     <Button 
@@ -134,7 +134,7 @@ export default function Navigation() {
                       className="h-9 px-3 inline-flex items-center space-x-2"
                     >
                       <LogOut className="h-4 w-4" />
-                      <span className="hidden xl:inline">Logga ut</span>
+                      <span className="hidden xl:inline">Log out</span>
                     </Button>
               </div>
             ) : (
@@ -145,18 +145,16 @@ export default function Navigation() {
                         size="sm"
                         className="h-9 px-3"
                       >
-                        <span className="hidden xl:inline">Logga in</span>
-                        <span className="xl:hidden">Login</span>
+                        Log in
                       </Button>
                     </Link>
-                    <Link to="/boka-hembesok">
+                    <Link to="/en/book-visit">
                       <Button 
                         variant="default" 
                         size="sm"
                         className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
                       >
-                        <span className="hidden xl:inline">Begär offert</span>
-                        <span className="xl:hidden">Offert</span>
+                        Get Quote
                       </Button>
                     </Link>
               </div>
@@ -166,7 +164,7 @@ export default function Navigation() {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
-              aria-label="Öppna meny"
+              aria-label="Open menu"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -213,7 +211,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>Mitt Fixco</span>
+                        <span>My Fixco</span>
                       </Button>
                     </Link>
                     <Button 
@@ -223,23 +221,23 @@ export default function Navigation() {
                       onClick={() => { handleLogout(); setIsMenuOpen(false); }}
                     >
                       <LogOut className="h-4 w-4" />
-                      <span>Logga ut</span>
+                      <span>Log out</span>
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-2 px-4">
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <Button variant="outline" size="sm" className="w-full">
-                        Logga in
+                        Log in
                       </Button>
                     </Link>
-                    <Link to="/boka-hembesok" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/en/book-visit" onClick={() => setIsMenuOpen(false)}>
                       <Button 
                         variant="default" 
                         size="sm" 
                         className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                       >
-                        Begär offert
+                        Get Quote
                       </Button>
                     </Link>
                   </div>
