@@ -3,8 +3,10 @@ import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const FAQTeaser = () => {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const faqs = [
@@ -53,10 +55,10 @@ const FAQTeaser = () => {
           {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Vanliga <span className="gradient-text">frågor</span>
+              {t('faqTeaser.title')}
             </h2>
             <p className="text-xl text-muted-foreground">
-              Svar på de vanligaste frågorna om våra tjänster
+              {t('faqTeaser.subtitle')}
             </p>
           </div>
 
@@ -107,7 +109,7 @@ const FAQTeaser = () => {
               asChild
             >
               <Link to="/faq">
-                Se alla frågor & svar
+                {t('faqTeaser.seeAllFAQ')}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
@@ -117,10 +119,10 @@ const FAQTeaser = () => {
             <div className="mt-16 text-center">
               <div className="card-premium p-8 relative">
                 <h3 className="text-2xl font-bold mb-4">
-                Hittar du inte svar på din fråga?
+                {t('faqTeaser.noAnswerTitle')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Kontakta oss direkt så svarar vi inom 30 minuter
+                {t('faqTeaser.noAnswerSubtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -129,7 +131,7 @@ const FAQTeaser = () => {
                   className="group"
                   onClick={() => window.open('tel:08-123-456-78')}
                 >
-                  Ring: 08-123 456 78
+                  {t('common.callUs')}: {t('common.phone')}
                 </Button>
                 <Button
                   variant="cta-secondary"
@@ -138,7 +140,7 @@ const FAQTeaser = () => {
                   asChild
                 >
                   <Link to="/kontakt">
-                    Skicka meddelande
+                    {t('contact.formTitle')}
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>
