@@ -69,6 +69,11 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-premium: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 
+    /* Header variables */
+    --header-h-mobile: 48px;
+    --header-h-tablet: 56px;
+    --header-h-desktop: 64px;
+
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;

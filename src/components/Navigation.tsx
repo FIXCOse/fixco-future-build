@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { Menu, X, User, LogOut, MapPin, Phone, Settings } from "lucide-react";
+import { Menu, X, User, LogOut, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { cn } from "@/lib/utils";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
   const { isAdmin } = useRole();
 
   const { data: user } = useQuery({
@@ -34,20 +36,17 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    // All pages visible to everyone
     const allItems = [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
-      { href: "/mitt-fixco", label: "Mitt Fixco" },
       { href: "/smart-hem", label: "Smart Hem" },
       { href: "/referenser", label: "Referenser" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
     ];
 
-    // Add admin link for admin/owner users
     if (isAdmin) {
-      allItems.splice(4, 0, { href: "/admin", label: "Administration" });
+      allItems.splice(-2, 0, { href: "/admin", label: "Administration" });
     }
 
     return allItems;
@@ -55,18 +54,27 @@ export default function Navigation() {
 
   const navItems = getNavItems();
 
+  const isActive = (href: string) => {
+    if (href === "/") return location.pathname === "/";
+    return location.pathname.startsWith(href);
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+    <header className="sticky top-0 z-50 bg-background border-b border-border" style={{ "--header-h": "64px" } as any}>
+      <nav className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-10">
+        <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-4 md:gap-x-6 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
+          
+          {/* Left: Logo */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group"
+          >
             <img 
               src="/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png" 
               alt="Company Logo" 
-              className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform"
+              className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
             />
-            <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <div className="ml-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <img 
                 src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
                 alt="Fixco F" 
@@ -75,131 +83,175 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Center: Primary Navigation */}
+          <ul className="hidden lg:flex items-center justify-center gap-x-[clamp(12px,1.2vw,24px)]">
             {navItems.map((item) => (
-              <Link 
-                key={item.href}
-                to={item.href} 
-                className="text-foreground hover:text-primary transition-colors"
-              >
-                {item.label}
-              </Link>
+              <li key={item.href}>
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "inline-flex items-center h-[var(--header-h)] px-3 md:px-3.5 lg:px-4",
+                    "text-foreground hover:text-primary transition-colors",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                    "hover:underline underline-offset-4 decoration-2",
+                    isActive(item.href) && "text-primary font-medium"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              </li>
             ))}
-          </nav>
+          </ul>
 
-          {/* Contact Info & CTA */}
-          <div className="hidden lg:flex items-center space-x-6">
-            <div className="flex items-center space-x-4 text-sm">
-              <div className="flex items-center space-x-1 text-muted-foreground">
+          {/* Right: Secondary Actions */}
+          <div className="flex items-center gap-x-3 md:gap-x-4">
+            {/* Contact (Desktop only) */}
+            <div className="hidden xl:flex items-center gap-x-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-x-1">
                 <Phone className="h-4 w-4" />
                 <span>08-123 456 78</span>
               </div>
-              <div className="flex items-center space-x-1 text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>Hela Sverige</span>
-              </div>
             </div>
             
-            <LanguageSelector />
+            {/* Language Selector (Desktop) */}
+            <div className="hidden md:block">
+              <LanguageSelector />
+            </div>
             
+            {/* User Actions */}
             {user ? (
-              <div className="flex items-center space-x-3">
+              <div className="hidden md:flex items-center gap-x-3">
                 <Link to="/mitt-fixco">
-                  <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="h-9 md:h-10 px-3.5 md:px-4 inline-flex items-center gap-x-2"
+                  >
                     <User className="h-4 w-4" />
-                    <span>Mitt Fixco</span>
+                    <span className="hidden lg:inline">Mitt Fixco</span>
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={handleLogout} className="flex items-center space-x-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleLogout}
+                  className="h-9 md:h-10 px-3.5 md:px-4 inline-flex items-center gap-x-2"
+                >
                   <LogOut className="h-4 w-4" />
-                  <span>Logga ut</span>
+                  <span className="hidden lg:inline">Logga ut</span>
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="hidden md:flex items-center gap-x-3">
                 <Link to="/auth">
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="h-9 md:h-10 px-3.5 md:px-4"
+                  >
                     Logga in
                   </Button>
                 </Link>
                 <Link to="/boka-hembesok">
-                  <Button variant="cta-primary" size="sm">
+                  <Button 
+                    variant="default" 
+                    size="sm"
+                    className="h-9 md:h-10 px-3.5 md:px-4 bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
                     Begär offert
                   </Button>
                 </Link>
               </div>
             )}
-          </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2"
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden inline-flex items-center h-9 px-3.5 hover:bg-muted rounded-md transition-colors"
+              aria-label="Öppna meny"
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Overlay */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <Link 
-                  key={item.href}
-                  to={item.href} 
-                  className="text-foreground hover:text-primary transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              
-              <div className="pt-4 space-y-2">
-                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+          <div className="lg:hidden border-t border-border bg-background">
+            <div className="py-4 space-y-2">
+              {/* Navigation Links */}
+              <nav className="space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                      isActive(item.href) && "text-primary font-medium bg-muted"
+                    )}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Mobile Actions */}
+              <div className="pt-4 space-y-3 border-t border-border">
+                <div className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground">
                   <Phone className="h-4 w-4" />
                   <span>08-123 456 78</span>
                 </div>
                 
+                <div className="px-4">
+                  <LanguageSelector />
+                </div>
+
                 {user ? (
-                  <div className="space-y-2">
-                    <Link to="/mitt-fixco">
-                      <Button variant="outline" size="sm" className="w-full flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
+                  <div className="space-y-2 px-4">
+                    <Link to="/mitt-fixco" onClick={() => setIsMenuOpen(false)}>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full justify-start gap-x-2"
+                      >
                         <User className="h-4 w-4" />
                         <span>Mitt Fixco</span>
                       </Button>
                     </Link>
-                    <Link to="/mitt-fixco/settings">
-                      <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
-                        <Settings className="h-4 w-4" />
-                        <span>Inställningar</span>
-                      </Button>
-                    </Link>
-                    <Button variant="ghost" size="sm" className="w-full flex items-center space-x-2" onClick={() => { handleLogout(); setIsMenuOpen(false); }}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full justify-start gap-x-2" 
+                      onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                    >
                       <LogOut className="h-4 w-4" />
                       <span>Logga ut</span>
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <Link to="/auth">
-                      <Button variant="outline" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                  <div className="space-y-2 px-4">
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" size="sm" className="w-full">
                         Logga in
                       </Button>
                     </Link>
-                    <Link to="/boka-hembesok">
-                      <Button variant="cta-primary" size="sm" className="w-full" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/boka-hembesok" onClick={() => setIsMenuOpen(false)}>
+                      <Button 
+                        variant="default" 
+                        size="sm" 
+                        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      >
                         Begär offert
                       </Button>
                     </Link>
                   </div>
                 )}
               </div>
-            </nav>
+            </div>
           </div>
         )}
-      </div>
+      </nav>
     </header>
   );
 };

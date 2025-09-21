@@ -101,7 +101,7 @@ const MyFixcoLayout = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <div className="pt-16">
+      <div className="pt-[calc(64px+2rem)] md:pt-[calc(64px+2rem)]">
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <Outlet />
           {show && <OwnerCongrats open={show} onClose={acknowledge} />}

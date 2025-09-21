@@ -8,7 +8,7 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <div className="pt-16">
+      <div className="pt-[calc(64px+1.5rem)] md:pt-[calc(64px+1.5rem)]">
         <div className="container mx-auto px-4 py-6 max-w-7xl">
           {/* Back to Overview Button */}
           <div className="mb-4">

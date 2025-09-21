@@ -129,7 +129,7 @@ export const SmartHome = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
       <Navigation />
       
-      <div className="container mx-auto px-4 pt-20 pb-16">
+      <div className="container mx-auto px-4 pt-[calc(64px+5rem)] pb-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-2xl">

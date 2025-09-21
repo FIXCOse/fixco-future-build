@@ -165,7 +165,7 @@ const HeroUltra = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-20 md:pt-0">
+    <section className="relative min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-[calc(64px+5rem)] md:pt-0">
         {/* Background System - Progressive Enhancement */}
         <div className="absolute inset-0">
           {/* Base gradient (always visible) */}
