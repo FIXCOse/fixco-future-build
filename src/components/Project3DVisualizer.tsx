@@ -4,7 +4,6 @@ import { OrbitControls, Box, Sphere, Text, Environment } from '@react-three/drei
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Play, RotateCcw, Maximize } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface Project3DVisualizerProps {
   projectType: 'bathroom' | 'kitchen' | 'livingroom' | 'exterior';
@@ -84,7 +83,6 @@ export const Project3DVisualizer: React.FC<Project3DVisualizerProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const { t } = useTranslation();
 
   const resetView = () => {
     setIsPlaying(false);
@@ -98,7 +96,7 @@ export const Project3DVisualizer: React.FC<Project3DVisualizerProps> = ({
   return (
     <Card className={`p-6 ${className}`}>
       <div className="mb-4">
-        <h3 className="text-xl font-semibold mb-2">{t('services.visualize3d')}</h3>
+        <h3 className="text-xl font-semibold mb-2">Visa i 3D</h3>
         <p className="text-muted-foreground text-sm">
           Interaktiv 3D-förhandsvisning av ditt projekt. Rotera och zooma för att se alla detaljer.
         </p>

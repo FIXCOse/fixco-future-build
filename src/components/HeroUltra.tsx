@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
-import { useTranslation } from 'react-i18next';
 
 interface ParticleSystemProps {
   count?: number;
@@ -152,7 +151,6 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
-  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -160,10 +158,10 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: t('common.fixcoQuality'), description: t('common.ourPromise') },
-    { icon: Award, title: t('common.lowestPriceROT'), description: t('common.afterROTDeduction') },
-    { icon: Users, title: t('common.customers2000'), description: t('common.averageRating') },
-    { icon: MapPin, title: t('common.swedenLocations'), description: t('common.nationalProjects') }
+    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
+    { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
+    { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
+    { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
   ];
 
   return (
@@ -245,7 +243,7 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">Fixco</span> {t('hero.title')}{" "}
+              <span className="gradient-text">Fixco</span> löser allt inom{" "}
               <br />
               <motion.span 
                 className="gradient-text"
@@ -255,7 +253,7 @@ const HeroUltra = () => {
                 } : {}}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                {t('hero.subtitle')}
+                hem & byggnad
               </motion.span>
             </motion.h1>
             
@@ -265,8 +263,8 @@ const HeroUltra = () => {
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              {t('hero.description')} 
-              <span className="text-primary font-semibold"> {t('hero.highlightText')}</span>
+              Snabbare, billigare och mer professionellt än konkurrenterna. 
+              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
@@ -280,7 +278,7 @@ const HeroUltra = () => {
                 <MagneticButton
                   className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
                 >
-                  {t('hero.cta1')}
+                  Begär offert
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
@@ -289,7 +287,7 @@ const HeroUltra = () => {
                   variant="outline"
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                 >
-                  {t('hero.cta2')}
+                  Se våra tjänster
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>

@@ -20,7 +20,6 @@ import {
   Star,
   TrendingUp
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useSmartProducts, SortOption } from '@/hooks/useSmartProducts';
 import { SmartProductSortFilter } from '@/components/SmartProductSortFilter';
@@ -46,7 +45,6 @@ const getIconForCategory = (category: string) => {
 };
 
 export const SmartHome = () => {
-  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
 
@@ -65,317 +63,493 @@ export const SmartHome = () => {
   const categories: CategoryFilter[] = [
     {
       id: 'all',
-      name: t('smartHome.allProducts'),
+      name: 'Alla Produkter',
       icon: Home,
       color: 'bg-gradient-to-r from-blue-500 to-purple-500',
-      description: t('smartHome.completeSmartHome')
+      description: 'Komplett smart hem-upplevelse'
     },
     {
       id: 'security',
-      name: t('smartHome.securityLocks'),
+      name: 'Säkerhet & Lås',
       icon: Shield,
       color: 'bg-gradient-to-r from-red-500 to-pink-500',
-      description: t('smartHome.protectYourHome')
+      description: 'Skydda ditt hem'
     },
     {
       id: 'lighting',
-      name: t('smartHome.smartLighting'),
+      name: 'Smart Belysning',
       icon: Lightbulb,
       color: 'bg-gradient-to-r from-yellow-400 to-orange-500',
-      description: t('smartHome.energyEfficientLighting')
+      description: 'Energisnål belysning'
     },
     {
       id: 'climate',
-      name: t('smartHome.climateHeating'),
+      name: 'Klimat & Värme',
       icon: Thermometer,
       color: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-      description: t('smartHome.temperatureControl')
+      description: 'Temperaturstyrning'
     },
     {
       id: 'cleaning',
-      name: t('smartHome.robots'),
+      name: 'Robotar',
       icon: Bot,
       color: 'bg-gradient-to-r from-green-500 to-emerald-500',
-      description: t('smartHome.automaticCleaning')
+      description: 'Automatisk rengöring'
     },
     {
       id: 'garden',
-      name: t('smartHome.garden'),
+      name: 'Trädgård',
       icon: Leaf,
-      color: 'bg-gradient-to-r from-green-400 to-lime-500',
-      description: t('smartHome.smartGardening')
+      color: 'bg-gradient-to-r from-green-600 to-lime-500',
+      description: 'Smart trädgårdsskötsel'
     },
     {
       id: 'entertainment',
-      name: t('smartHome.entertainment'),
+      name: 'Underhållning',
       icon: Speaker,
-      color: 'bg-gradient-to-r from-indigo-500 to-purple-500',
-      description: t('smartHome.speakersHomeTheater')
+      color: 'bg-gradient-to-r from-purple-500 to-indigo-500',
+      description: 'Högtalare & Hemmabio'
     }
   ];
 
   if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-400 mb-4">Ett fel uppstod</h2>
-          <p className="text-gray-300">Kunde inte ladda produkter. Försök igen senare.</p>
-        </div>
-      </div>
-    );
+    console.error('Error loading smart products:', error);
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
+    <>
       <Navigation />
-      
-      <div className="container mx-auto px-4 pt-[calc(64px+5rem)] pb-16">
+      <main className="pt-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-2xl">
-            {t('smartHome.heroTitle')}
-          </h1>
-          <p className="text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium">
-            {t('smartHome.heroSubtitle')}
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-lg">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              {t('smartHome.marketLeadingBrands')}
-            </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 shadow-lg">
-              <Shield className="h-5 w-5 mr-2" />
-              {t('smartHome.fullWarranty')}
-            </Badge>
-            <Badge variant="secondary" className="text-base px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg">
-              <Settings className="h-5 w-5 mr-2" />
-              {t('smartHome.professionalInstallation')}
-            </Badge>
+        <section className="relative py-24 px-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/5" />
+          
+          {/* F Watermark Background Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+            <img 
+              src="/assets/fixco-f-icon-new.png"
+              alt="" 
+              className="absolute top-16 right-16 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
+              style={{ animationDuration: '5s' }}
+            />
+            <img 
+              src="/assets/fixco-f-icon-new.png"
+              alt="" 
+              className="absolute bottom-16 left-16 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
+              style={{ animationDuration: '6s', animationDelay: '2s' }}
+            />
           </div>
-        </div>
 
-        {/* Category Filter */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-white">{t('smartHome.chooseCategory')}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category) => (
-              <Card 
-                key={category.id}
-                className={`p-0 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-110 border-0 bg-gradient-to-br from-gray-800 to-gray-900 ${
-                  selectedCategory === category.id 
-                    ? 'ring-4 ring-cyan-400 shadow-2xl transform scale-110 shadow-cyan-400/50' 
-                    : 'hover:shadow-xl'
-                }`}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                <div className={`${category.color} text-white p-6 rounded-t-lg mb-0 text-center shadow-2xl`}>
-                  <category.icon className="h-10 w-10 mx-auto mb-3 drop-shadow-lg" />
-                  <h3 className="font-bold text-sm drop-shadow-lg">{category.name}</h3>
+          <div className="container mx-auto max-w-6xl relative">
+            <div className="text-center mb-16">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                Smart Hemautomation
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+                Styr och optimera ditt hem med AI och IoT-teknik
+              </p>
+              
+              {/* Key Benefits */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text mb-2">
+                    -30%
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Energiförbrukning
+                  </div>
                 </div>
-                <div className="p-3 bg-gradient-to-br from-gray-800 to-gray-900 rounded-b-lg">
-                  <p className="text-xs text-gray-300 text-center font-medium">
-                    {category.description}
-                  </p>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text mb-2">
+                    50+
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Anslutna enheter
+                  </div>
                 </div>
-              </Card>
-            ))}
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text mb-2">
+                    24/7
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Automatisering
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text mb-2">
+                    50%
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Besparingar
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button size="lg" className="gradient-primary text-primary-foreground">
+                  Boka Installation
+                </Button>
+                <Button size="lg" variant="outline">
+                  Kostnadsfri konsultation
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Sort Filter */}
-        <SmartProductSortFilter 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productCount={products.length}
-        />
+        {/* Detailed Hero */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Smart Hem - Verkliga Produkter
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
+                Vi installerar endast beprövade, marknadsledande smart hem-produkter från världens största tillverkare. 
+                Alla produkter kommer med fullständig garanti och professionell installation.
+              </p>
+            </div>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-8 w-8 animate-spin text-cyan-400 mr-3" />
-            <span className="text-lg text-gray-300">{t('smartHome.loadingProducts')}</span>
+            {/* Trust Features */}
+            <div className="grid md:grid-cols-4 gap-8 mb-16">
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Marknadsledande Märken</h3>
+                <p className="text-sm text-muted-foreground">
+                  Endast #1 märken globalt
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Fullständig Garanti</h3>
+                <p className="text-sm text-muted-foreground">
+                  2 års fullgaranti
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Settings className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Professionell Installation</h3>
+                <p className="text-sm text-muted-foreground">
+                  Certifierade installatörer
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Brain className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">AI-Optimerad</h3>
+                <p className="text-sm text-muted-foreground">
+                  Intelligent automatisering
+                </p>
+              </div>
+            </div>
           </div>
-        )}
+        </section>
 
-        {/* Products Grid */}
-        {!isLoading && (
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-center mb-8 text-white">
-              {selectedCategory === 'all' ? t('smartHome.allSmartHomeProducts') : `${categories.find(c => c.id === selectedCategory)?.name}`}
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product) => {
-                const IconComponent = getIconForCategory(product.category);
+        {/* Category Selection */}
+        <section className="py-16 px-4 bg-gradient-primary-subtle">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">
+                Välj Produktkategori
+              </h2>
+              <p className="text-muted-foreground">
+                Klicka på en kategori för att se alla produkter inom det området
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+              {categories.map((category) => {
+                const IconComponent = category.icon;
+                const isSelected = selectedCategory === category.id;
+                
                 return (
-                  <Card 
-                    key={product.id} 
-                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] cursor-pointer border-0 bg-gradient-to-br from-slate-800 via-gray-800 to-slate-900 text-white"
-                    onClick={() => handleProductClick(product.id)}
+                  <Card
+                    key={category.id}
+                    className={`
+                      cursor-pointer transition-all duration-300 hover:scale-105 
+                      ${isSelected ? 'ring-2 ring-primary shadow-lg' : ''}
+                    `}
+                    onClick={() => setSelectedCategory(category.id)}
                   >
-                    {/* Product Header */}
-                    <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white p-6 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-4">
-                          <IconComponent className="h-12 w-12 text-white drop-shadow-lg" />
-                          <Badge className="bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 border-0 font-bold shadow-lg">
-                            {product.brand}
-                          </Badge>
-                        </div>
-                        <h3 className="text-2xl font-bold mb-2 drop-shadow-lg">{product.name}</h3>
-                        <p className="text-white/90 text-sm mb-4 font-medium">{product.model}</p>
-
-                        <div className="text-3xl font-bold text-yellow-300 drop-shadow-lg">
-                          {product.total_price.toLocaleString()} kr
-                        </div>
-                        <div className="text-xs text-white/80 font-medium">
-                          {t('smartHome.inclInstallationSetup')}
-                        </div>
+                    <div className="p-6 text-center">
+                      <div className={`
+                        w-16 h-16 rounded-xl mx-auto mb-4 flex items-center justify-center
+                        ${category.color}
+                      `}>
+                        <IconComponent className="h-8 w-8 text-white" />
                       </div>
-                    </div>
-
-                    {/* Product Content */}
-                    <div className="p-6">
-                      {/* Real Features */}
-                      <div className="mb-4">
-                        <h4 className="font-semibold mb-3 text-gray-100 flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-400" />
-                          {t('smartHome.mainFeatures')}
-                        </h4>
-                        <ul className="space-y-2">
-                          {product.features.slice(0, 4).map((feature, index) => (
-                            <li key={index} className="flex items-start gap-2 text-sm">
-                              <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                              <span className="text-gray-200">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* AI Features */}
-                      <div className="mb-6 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl border border-purple-400/30 backdrop-blur-sm">
-                        <h4 className="font-semibold mb-3 text-purple-300 flex items-center gap-2">
-                          <Brain className="h-4 w-4" />
-                          {t('smartHome.smartFeatures')}
-                        </h4>
-                        <ul className="space-y-2">
-                          {product.ai_features.slice(0, 3).map((feature, index) => (
-                            <li key={index} className="flex items-start gap-2 text-sm">
-                              <Target className="h-3 w-3 text-purple-400 mt-0.5 flex-shrink-0" />
-                              <span className="text-purple-200">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* CTA Button */}
-                    <div className="p-6 pt-0">
-                      <Button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 text-white border-0 shadow-xl font-bold py-3 text-lg">
-                        {t('smartHome.bookInstallation')}
-                      </Button>
+                      <h3 className="font-bold text-sm mb-2">
+                        {category.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        {category.description}
+                      </p>
                     </div>
                   </Card>
                 );
               })}
             </div>
+          </div>
+        </section>
 
-            {/* No Products Message */}
-            {products.length === 0 && (
-              <div className="text-center py-16">
-                <h3 className="text-2xl font-bold text-gray-400 mb-4">{t('smartHome.noProductsFound')}</h3>
-                <p className="text-gray-500">{t('smartHome.tryDifferentCategory')}</p>
+        {/* Products Section */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold">
+                Alla Smart Hem-Produkter
+              </h2>
+              <SmartProductSortFilter 
+                sortBy={sortBy} 
+                onSortChange={setSortBy} 
+                productCount={products.length}
+              />
+            </div>
+
+            {isLoading ? (
+              <div className="text-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+                <p className="text-muted-foreground">Laddar produkter...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground mb-4">Inga produkter hittades</p>
+                <p className="text-sm text-muted-foreground">
+                  Prova att välja en annan kategori eller sortering.
+                </p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product) => {
+                  const CategoryIcon = getIconForCategory(product.category);
+                  return (
+                    <Card 
+                      key={product.id} 
+                      className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      <div className="relative">
+                        {/* Product Image */}
+                        <div className="h-48 bg-gradient-to-br from-primary/10 to-primary/5 rounded-t-lg relative">
+                          {product.image_url ? (
+                            <img 
+                              src={product.image_url} 
+                              alt={product.name}
+                              className="w-full h-full object-cover rounded-t-lg"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full">
+                              <CategoryIcon className="h-16 w-16 text-primary/40" />
+                            </div>
+                          )}
+                          
+                          {/* Category Badge */}
+                          <Badge 
+                            variant="secondary" 
+                            className="absolute top-3 left-3 bg-white/90"
+                          >
+                            {product.category}
+                          </Badge>
+                          
+                          {/* Rating */}
+                          <div className="absolute top-3 right-3 flex items-center space-x-1 bg-white/90 rounded-full px-2 py-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs font-medium">{product.average_rating?.toFixed(1) || '5.0'}</span>
+                          </div>
+                        </div>
+
+                        <div className="p-4">
+                          {/* Brand and Name */}
+                          <div className="mb-3">
+                            <Badge variant="outline" className="mb-2 text-xs">
+                              {product.brand}
+                            </Badge>
+                            <h3 className="font-bold text-lg leading-tight mb-1">
+                              {product.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {product.description}
+                            </p>
+                          </div>
+
+                          {/* Features */}
+                          {product.features && Array.isArray(product.features) && (
+                            <div className="mb-4">
+                              <h4 className="text-xs font-medium text-muted-foreground mb-2">
+                                Huvudfunktioner:
+                              </h4>
+                              <div className="flex flex-wrap gap-1">
+                                {product.features.slice(0, 3).map((feature, index) => (
+                                  <Badge key={index} variant="secondary" className="text-xs">
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* AI Features */}
+                          {product.ai_features && Array.isArray(product.ai_features) && product.ai_features.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
+                                <Brain className="h-3 w-3 mr-1" />
+                                Smarta Funktioner:
+                              </h4>
+                              <div className="flex flex-wrap gap-1">
+                                {product.ai_features.slice(0, 2).map((feature, index) => (
+                                  <Badge key={index} variant="outline" className="text-xs border-primary/30">
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Pricing */}
+                          <div className="border-t pt-4">
+                            <div className="flex justify-between items-end mb-3">
+                              <div>
+                                <div className="text-2xl font-bold">
+                                  {product.product_price?.toLocaleString('sv-SE')} kr
+                                </div>
+                                {product.installation_price > 0 && (
+                                  <div className="text-sm text-muted-foreground">
+                                    + {product.installation_price?.toLocaleString('sv-SE')} kr installation
+                                  </div>
+                                )}
+                              </div>
+                              <Badge variant="secondary" className="text-primary">
+                                Inkl. installation & setup
+                              </Badge>
+                            </div>
+
+                            {/* Installation Details */}
+                            <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground mb-4">
+                              {product.installation_time && (
+                                <div>⏱️ {product.installation_time}</div>
+                              )}
+                              {product.installation_difficulty && (
+                                <div>🔧 {product.installation_difficulty}</div>
+                              )}
+                              {product.warranty_years && (
+                                <div>🛡️ {product.warranty_years} år garanti</div>
+                              )}
+                              <div>⭐ {product.average_rating?.toFixed(1) || '5.0'}/5</div>
+                            </div>
+
+                            {/* CTA */}
+                            <Button 
+                              className="w-full" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleProductClick(product.id);
+                              }}
+                            >
+                              Kontakta för installation
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>
-        )}
+        </section>
 
         {/* Why These Brands */}
-        <Card className="mb-12 p-8 bg-gradient-to-r from-slate-800 via-gray-800 to-slate-900 border-0 shadow-2xl">
-          <h2 className="text-3xl font-bold text-center mb-8 text-white">
-            {t('smartHome.whyTheseBrands')}
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <Star className="h-8 w-8 drop-shadow-lg" />
-              </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-100">{t('smartHome.marketLeader')}</h3>
-              <p className="text-sm text-gray-300">
-                {t('smartHome.marketLeaderDesc')}
-              </p>
+        <section className="py-16 px-4 bg-gradient-primary-subtle">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-6">
+                Varför Vi Valt Dessa Märken
+              </h2>
             </div>
-            
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <Shield className="h-8 w-8 drop-shadow-lg" />
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Marknadsledare</h3>
+                <p className="text-sm text-muted-foreground">
+                  Alla märken är #1 eller #2 i sina kategorier globalt. Beprövad teknik med miljontals installationer.
+                </p>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-100">{t('smartHome.secureIntegration')}</h3>
-              <p className="text-sm text-gray-300">
-                {t('smartHome.secureIntegrationDesc')}
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <Settings className="h-8 w-8 drop-shadow-lg" />
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Säker Integration</h3>
+                <p className="text-sm text-muted-foreground">
+                  Alla produkter fungerar tillsammans och har säkra protokoll som Zigbee 3.0 och WiFi 6.
+                </p>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-100">{t('smartHome.easySupport')}</h3>
-              <p className="text-sm text-gray-300">
-                {t('smartHome.easySupportDesc')}
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <TrendingUp className="h-8 w-8 drop-shadow-lg" />
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Phone className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Enkel Support</h3>
+                <p className="text-sm text-muted-foregrund">
+                  Vi är certifierade installatörer för alla märken. En kontakt för alla dina smart hem-behov.
+                </p>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-100">{t('smartHome.futureProof')}</h3>
-              <p className="text-sm text-gray-300">
-                {t('smartHome.futureProofDesc')}
-              </p>
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold mb-2">Framtidssäkert</h3>
+                <p className="text-sm text-muted-foreground">
+                  Alla produkter får regelbundna uppdateringar med nya funktioner. Din investering växer över tid.
+                </p>
+              </div>
             </div>
           </div>
-        </Card>
+        </section>
 
         {/* Final CTA */}
-        <Card className="p-10 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-center border-0 shadow-2xl">
-          <h2 className="text-4xl font-bold mb-6">
-            {t('smartHome.readyForInstallation')}
-          </h2>
-          <p className="text-xl mb-8 text-white/90 max-w-3xl mx-auto">
-            {t('smartHome.readyForInstallationDesc')}
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-6 mb-8">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg border-0 shadow-lg">
-              <Phone className="h-6 w-6 mr-3" />
-              {t('common.callUs')}: {t('common.phone')}
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg">
-              <Home className="h-6 w-6 mr-3" />
-              {t('smartHome.bookHomeConsultation')}
-            </Button>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-white/80">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              {t('smartHome.freeConsultation')}
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              {t('smartHome.certifiedInstallers')}
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              {t('smartHome.twoYearWarranty')}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-4xl text-center">
+            <div className="card-premium p-8 relative">
+              {/* F Brand Badge */}
+              <div className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                <img 
+                  src="/assets/fixco-f-icon-new.png"
+                  alt="Fixco" 
+                  className="h-6 w-6 object-contain opacity-90"
+                />
+              </div>
+
+              <h2 className="text-3xl font-bold mb-4">
+                Redo för Professionell Smart Hem-Installation?
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8">
+                Boka en kostnadsfri hemkonsultation idag. Vi kommer hem till dig med produkterna, 
+                visar hur de fungerar och ger dig en exakt offert på installationen.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="gradient-primary text-primary-foreground">
+                  Boka Installation
+                </Button>
+                <Button size="lg" variant="outline">
+                  Boka Hemkonsultation
+                </Button>
+              </div>
             </div>
           </div>
-        </Card>
-      </div>
-    </div>
+        </section>
+      </main>
+    </>
   );
 };
+
+export default SmartHome;
