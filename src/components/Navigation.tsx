@@ -61,34 +61,35 @@ export default function Navigation() {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border" style={{ "--header-h": "64px" } as any}>
-      <nav className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-10">
-        <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-8 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
+      <nav className="mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
           
-          {/* Left: Logo Only - Larger with More Spacing */}
-          <Link 
-            to="/" 
-            className="inline-flex items-center h-[var(--header-h)] mr-8 md:mr-12 lg:mr-16 group"
-          >
-            <img 
-              src="/assets/fixco-logo-black.png" 
-              alt="FIXCO - Din Helhetslösning" 
-              className="h-7 md:h-8 lg:h-9 w-auto group-hover:scale-105 transition-transform"
-            />
-          </Link>
+          {/* Left: Logo with Proper Spacing */}
+          <div className="flex items-center">
+            <Link 
+              to="/" 
+              className="inline-flex items-center py-2 group"
+            >
+              <img 
+                src="/assets/fixco-logo-black.png" 
+                alt="FIXCO - Din Helhetslösning" 
+                className="h-8 md:h-9 lg:h-10 w-auto group-hover:scale-105 transition-transform"
+              />
+            </Link>
+          </div>
 
-          {/* Center: Navigation Only - Clean Layout */}
-          <div className="hidden lg:flex items-center justify-center min-w-0">
-            <nav className="flex items-center gap-x-4 lg:gap-x-6">
+          {/* Center: Navigation - Desktop Only */}
+          <div className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
+            <nav className="flex items-center space-x-8">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "inline-flex items-center h-[var(--header-h)] px-2 lg:px-3 whitespace-nowrap text-sm lg:text-base",
-                    "text-foreground hover:text-primary transition-colors",
+                    "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                    "text-foreground hover:text-primary hover:bg-primary/10",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    "hover:underline underline-offset-4 decoration-2",
-                    isActive(item.href) && "text-primary font-medium"
+                    isActive(item.href) && "text-primary bg-primary/10 font-semibold"
                   )}
                 >
                   {item.label}
@@ -97,30 +98,31 @@ export default function Navigation() {
             </nav>
           </div>
 
-          {/* Right: Actions - Compact Layout with Better Spacing */}
-          <div className="flex items-center gap-x-1 lg:gap-x-2 xl:gap-x-3 whitespace-nowrap">
-            {/* Contact - Better Responsive Design */}
-            <a 
-              href="tel:+46812345678" 
-              className="hidden xl:inline-flex items-center gap-x-1 text-sm text-muted-foreground hover:text-primary transition-colors px-2"
-            >
-              <Phone className="h-4 w-4" />
-              <span>08-123 456 78</span>
-            </a>
+          {/* Right: Actions with Proper Spacing */}
+          <div className="flex items-center space-x-2 lg:space-x-4">
             
-            {/* Language Selector */}
+            {/* Language Selector - Desktop Only */}
             <div className="hidden xl:block">
               <LanguageSelector />
             </div>
             
-            {/* User Actions - Better Spacing */}
+            {/* Contact - Desktop Only */}
+            <a 
+              href="tel:+46812345678" 
+              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="hidden xl:inline font-medium">08-123 456 78</span>
+            </a>
+            
+            {/* User Actions - Desktop */}
             {user ? (
-              <div className="hidden lg:flex items-center gap-x-1 xl:gap-x-2">
+              <div className="hidden lg:flex items-center space-x-2">
                 <Link to="/mitt-fixco">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="h-9 px-2 xl:px-3 inline-flex items-center gap-x-1"
+                    className="h-9 px-3 inline-flex items-center space-x-2"
                   >
                     <User className="h-4 w-4" />
                     <span className="hidden xl:inline">Mitt Fixco</span>
@@ -130,19 +132,19 @@ export default function Navigation() {
                   variant="ghost" 
                   size="sm" 
                   onClick={handleLogout}
-                  className="h-9 px-2 xl:px-3 inline-flex items-center gap-x-1"
+                  className="h-9 px-3 inline-flex items-center space-x-2"
                 >
                   <LogOut className="h-4 w-4" />
                   <span className="hidden xl:inline">Logga ut</span>
                 </Button>
               </div>
             ) : (
-              <div className="hidden lg:flex items-center gap-x-1 xl:gap-x-2">
+              <div className="hidden lg:flex items-center space-x-2">
                 <Link to="/auth">
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="h-9 px-2 xl:px-3"
+                    className="h-9 px-3"
                   >
                     <span className="hidden xl:inline">Logga in</span>
                     <span className="xl:hidden">Login</span>
@@ -152,7 +154,7 @@ export default function Navigation() {
                   <Button 
                     variant="default" 
                     size="sm"
-                    className="h-9 px-2 xl:px-4 bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
                   >
                     <span className="hidden xl:inline">Begär offert</span>
                     <span className="xl:hidden">Offert</span>
@@ -164,7 +166,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden inline-flex items-center h-9 px-3 hover:bg-muted rounded-md transition-colors"
+              className="lg:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
               aria-label="Öppna meny"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -172,7 +174,7 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Overlay - Shows LG and below */}
+        {/* Mobile Navigation Overlay */}
         {isMenuOpen && (
           <div className="lg:hidden border-t border-border bg-background">
             <div className="py-4 space-y-2">
