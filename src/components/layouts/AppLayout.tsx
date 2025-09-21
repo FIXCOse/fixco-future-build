@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { LocaleProvider } from '../LocaleProvider';
+import { CopyProvider } from '@/copy/CopyProvider';
 import Navigation from '../Navigation';
 import StickyCtaBar from '../StickyCtaBar';
 import StickyCTA from '../StickyCTA';
@@ -15,16 +16,18 @@ interface AppLayoutProps {
 const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
   return (
     <LocaleProvider locale={locale}>
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <main>
-          <Outlet />
-        </main>
-        <StickyCtaBar />
-        <StickyCTA />
-        <AIChat />
-        <ModalHost />
-      </div>
+      <CopyProvider locale={locale}>
+        <div className="min-h-screen bg-background" data-header="main">
+          <Navigation />
+          <main>
+            <Outlet />
+          </main>
+          <StickyCtaBar />
+          <StickyCTA />
+          <AIChat />
+          <ModalHost />
+        </div>
+      </CopyProvider>
     </LocaleProvider>
   );
 };

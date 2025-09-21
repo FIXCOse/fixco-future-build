@@ -1,17 +1,17 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
-import { getAlternateLanguageUrl, getCurrentLanguage } from '@/utils/slugMapping';
+import { useCopy } from '@/copy/CopyProvider';
+import { useLocalePath } from '@/copy/useLocalePath';
 
 const LanguageSwitcher: React.FC = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const currentLang = getCurrentLanguage(location.pathname);
+  const { locale } = useCopy();
+  const { toEN, toSV } = useLocalePath();
 
   const switchLanguage = () => {
-    const targetLang = currentLang === 'sv' ? 'en' : 'sv';
-    const targetUrl = getAlternateLanguageUrl(location.pathname + location.search + location.hash, targetLang);
+    const targetUrl = locale === 'sv' ? toEN() : toSV();
     navigate(targetUrl);
   };
 
@@ -20,12 +20,12 @@ const LanguageSwitcher: React.FC = () => {
       variant="ghost"
       size="sm"
       onClick={switchLanguage}
-      className="flex items-center gap-2 h-9 px-3"
-      title={currentLang === 'sv' ? 'Switch to English' : 'Växla till svenska'}
+      className="flex items-center gap-2 h-9 px-3 whitespace-nowrap"
+      title={locale === 'sv' ? 'Switch to English' : 'Växla till svenska'}
     >
       <Globe className="h-4 w-4" />
       <span className="text-sm font-medium">
-        {currentLang === 'sv' ? 'EN' : 'SV'}
+        {locale === 'sv' ? 'EN' : 'SV'}
       </span>
     </Button>
   );

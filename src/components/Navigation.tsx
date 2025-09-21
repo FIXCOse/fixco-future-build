@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { useI18n } from '@/i18n/context';
+import { useCopy } from '@/copy/CopyProvider';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function Navigation() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin, isOwner } = useRole();
-  const { t } = useI18n();
+  const { t } = useCopy();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -41,18 +41,18 @@ export default function Navigation() {
     // For admin/owner users, show only admin-relevant items
     if (isAdmin || isOwner) {
       return [
-        { href: "/admin", label: t('navigation.adminPanel') },
+        { href: "/mitt-fixco", label: t('nav.adminPanel') },
       ];
     }
 
     // For regular users, show all navigation items
     return [
-      { href: "/", label: t('navigation.home') },
-      { href: "/tjanster", label: t('navigation.services') },
-      { href: "/smart-hem", label: t('navigation.smartHome') },
-      { href: "/referenser", label: t('navigation.references') },
-      { href: "/om-oss", label: t('navigation.about') },
-      { href: "/kontakt", label: t('navigation.contact') },
+      { href: "/", label: t('nav.home') },
+      { href: "/tjanster", label: t('nav.services') },
+      { href: "/smart-hem", label: t('nav.smartHome') },
+      { href: "/referenser", label: t('nav.references') },
+      { href: "/om-oss", label: t('nav.about') },
+      { href: "/kontakt", label: t('nav.contact') },
     ];
   };
 
@@ -128,7 +128,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? t('navigation.adminPanel') : t('navigation.myFixco')}</span>
+                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? t('nav.adminPanel') : t('nav.myFixco')}</span>
                       </Button>
                     </Link>
                     <Button 
@@ -149,7 +149,7 @@ export default function Navigation() {
                         size="sm"
                         className="h-9 px-3"
                       >
-                        <span className="hidden xl:inline">Logga in</span>
+                        <span className="hidden xl:inline">{t('cta.login')}</span>
                         <span className="xl:hidden">Login</span>
                       </Button>
                     </Link>
@@ -159,8 +159,8 @@ export default function Navigation() {
                         size="sm"
                         className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
                       >
-                        <span className="hidden xl:inline">Begär offert</span>
-                        <span className="xl:hidden">Offert</span>
+                        <span className="hidden xl:inline">{t('cta.request_quote')}</span>
+                        <span className="xl:hidden">{t('cta.get_quote')}</span>
                       </Button>
                     </Link>
               </div>
@@ -217,7 +217,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>{(isAdmin || isOwner) ? t('navigation.adminPanel') : t('navigation.myFixco')}</span>
+                        <span>{(isAdmin || isOwner) ? t('nav.adminPanel') : t('nav.myFixco')}</span>
                       </Button>
                     </Link>
                     <Button 
@@ -234,7 +234,7 @@ export default function Navigation() {
                   <div className="space-y-2 px-4">
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <Button variant="outline" size="sm" className="w-full">
-                        Logga in
+                        <span>{t('cta.login')}</span>
                       </Button>
                     </Link>
                     <Link to="/boka-hembesok" onClick={() => setIsMenuOpen(false)}>
@@ -243,7 +243,7 @@ export default function Navigation() {
                         size="sm" 
                         className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                       >
-                        Begär offert
+                        {t('cta.request_quote')}
                       </Button>
                     </Link>
                   </div>

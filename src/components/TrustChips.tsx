@@ -6,6 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TRUST_CHIPS_BASE, TRUST_CHIPS_EXTENDED, RATING_CHIP, LOCATION_CHIP, type TrustChip } from "@/data/trustChips.config";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface TrustChipsProps {
   variant?: 'home' | 'services' | 'category' | 'minimal';
@@ -25,6 +26,7 @@ const TrustChips = ({
   showAll: forceShowAll = false
 }: TrustChipsProps) => {
   const [showAll, setShowAll] = useState(forceShowAll);
+  const { t } = useCopy();
 
   // Select chip set based on variant - if showAll is true, always use extended set
   let chips: TrustChip[] = [];
@@ -65,7 +67,7 @@ const TrustChips = ({
           className={`inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 border-0 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group text-white text-xs sm:text-sm ${chip.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
         >
         <IconComponent className="h-4 w-4 shrink-0 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
-        <span className="font-medium drop-shadow-sm">{chip.label}</span>
+        <span className="font-medium drop-shadow-sm">{t(`chips.${chip.id}`) || chip.label}</span>
       </Badge>
     );
 
@@ -130,7 +132,7 @@ const TrustChips = ({
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="inline-flex items-center gap-1 whitespace-nowrap">
                 <Plus className="h-4 w-4" />
-                <span>+{remainingCount} fler</span>
+                <span>+{remainingCount} {t('chips.more')}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-80 p-4" align="center">

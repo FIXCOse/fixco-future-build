@@ -1,4 +1,3 @@
-import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CategoryGrid from "@/components/CategoryGrid";
 import FastServiceFilter from "@/components/FastServiceFilter";
@@ -9,11 +8,13 @@ import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
 import { AIProjectAssistant } from "@/components/AIProjectAssistant";
 import { Link } from "react-router-dom";
+import { useCopy } from "@/copy/CopyProvider";
 
 const Services = () => {
+  const { t } = useCopy();
+  
   return (
     <div className="min-h-screen">
-      <Navigation />
       <Breadcrumbs />
       
       {/* Hero Section */}
@@ -24,12 +25,17 @@ const Services = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Våra <span className="gradient-text">tjänster</span>
+              {t('services.title').split(' ').map((word, index, array) => 
+                index === array.length - 1 ? (
+                  <span key={index} className="gradient-text">{word}</span>
+                ) : (
+                  <span key={index}>{word} </span>
+                )
+              )}
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Från små reparationer till stora byggnationer – vi har expertisen och erfarenheten 
-              för att leverera professionella lösningar inom alla områden. 
-              <span className="text-primary font-semibold"> Utnyttja ROT-avdraget och spara 50%.</span>
+              {t('services.subtitle')} 
+              <span className="text-primary font-semibold"> {t('services.rot_benefit')}</span>
             </p>
             
             <TrustChips variant="services" showAll={true} />
@@ -41,9 +47,9 @@ const Services = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Välj kategori</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('services.choose_category')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Hitta rätt tjänst för ditt hem snabbt och enkelt. Vi erbjuder allt från små reparationer till stora renoveringsprojekt.
+              {t('services.category_description')}
             </p>
           </div>
           <CategoryGrid />
@@ -54,10 +60,9 @@ const Services = () => {
       <section className="py-16 bg-muted/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Alla tjänster</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('services.all_services')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Sök, filtrera och jämför våra tjänster snabbt och enkelt. 
-              Allt du behöver är synligt direkt - inga gömda menyer.
+              {t('services.all_services_description')}
             </p>
           </div>
           <FastServiceFilter />
@@ -68,9 +73,9 @@ const Services = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Visualisera ditt projekt</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('services.visualize_project')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Se hur ditt hem kan se ut efter renovering med våra avancerade verktyg.
+              {t('services.visualize_description')}
             </p>
           </div>
           
@@ -107,10 +112,9 @@ const Services = () => {
       <section className="py-16 bg-muted/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">AI Projektassistent</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('services.ai_assistant')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Få personliga rekommendationer för att optimera ditt hem med AI-analys, 
-              ROT-avdrag och miljötänk.
+              {t('services.ai_description')}
             </p>
           </div>
           <AIProjectAssistant />
@@ -124,28 +128,26 @@ const Services = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-8">
-              <span className="gradient-text">ROT-avdraget</span> – Spara 50% på arbetskostnaden
+              <span className="gradient-text">{t('services.rot_section_title').split(' – ')[0]}</span> – {t('services.rot_section_title').split(' – ')[1]}
             </h2>
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="card-premium p-8">
-                <h3 className="text-2xl font-bold mb-4">Vad är ROT-avdrag?</h3>
+                <h3 className="text-2xl font-bold mb-4">{t('services.rot_what_title')}</h3>
                 <p className="text-muted-foreground">
-                  ROT-avdrag ger dig 50% rabatt på arbetskostnaden för reparation, om- och tillbyggnad 
-                  samt underhållsarbeten i din bostad. Avdraget görs direkt från din skatt.
+                  {t('services.rot_what_description')}
                 </p>
               </div>
               <div className="card-premium p-8">
-                <h3 className="text-2xl font-bold mb-4">Vi sköter allt</h3>
+                <h3 className="text-2xl font-bold mb-4">{t('services.rot_we_handle_title')}</h3>
                 <p className="text-muted-foreground">
-                  Fixco hanterar alla ROT-ansökningar åt dig. Du behöver bara godkänna arbetet, 
-                  resten ordnar vi. Enkelt och bekvämt.
+                  {t('services.rot_we_handle_description')}
                 </p>
               </div>
             </div>
             
             <Link to="/kontakt">
               <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                Begär offert med ROT-avdrag
+                {t('services.request_quote_rot')}
               </button>
             </Link>
           </div>
