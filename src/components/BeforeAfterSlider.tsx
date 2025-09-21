@@ -3,7 +3,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Sparkles, RefreshCw } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface BeforeAfterSliderProps {
   beforeImage?: string;
@@ -45,7 +44,6 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   const [generatedBefore, setGeneratedBefore] = useState<string | null>(null);
   const [generatedAfter, setGeneratedAfter] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const { t } = useTranslation();
 
   const beforeSrc = beforeImage || generatedBefore;
   const afterSrc = afterImage || generatedAfter;
@@ -77,7 +75,7 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xl font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            {t('services.beforeAfter')}
+            Före & Efter
           </h3>
           <Button
             size="sm"

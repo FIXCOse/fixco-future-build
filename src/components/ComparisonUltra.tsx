@@ -7,7 +7,6 @@ import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
 import useGlobalROT from "@/hooks/useGlobalROT";
 import useGlobalPricing from "@/hooks/useGlobalPricing";
-import { useTranslation } from 'react-i18next';
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -22,7 +21,6 @@ interface ComparisonMetric {
 }
 
 const ComparisonUltra = () => {
-  const { t } = useTranslation();
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const { pricingMode, rotEnabled } = useGlobalPricing();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -67,59 +65,59 @@ const ComparisonUltra = () => {
   const metrics: ComparisonMetric[] = [
     {
       icon: Clock,
-      title: t('comparison.metrics.startTime.title'),
-      fixcoValue: t('comparison.metrics.startTime.fixco'),
-      competitorValue: t('comparison.metrics.startTime.competitor'),
+      title: "Starttid",
+      fixcoValue: "< 5 dagar",
+      competitorValue: "5-10 dagar",
       isWin: true,
-      description: t('comparison.metrics.startTime.description')
+      description: "Vi börjar inom 5 dagar vs konkurrenters veckolånga väntetider"
     },
     {
       icon: TrendingUp,
-      title: t('comparison.metrics.price.title'),
+      title: "Pris",
       fixcoValue: rotEnabled ? 480 : 959,
       fixcoUnit: "kr/h",
       competitorValue: rotEnabled ? "800-1 300" : "800-1 300",
       competitorUnit: "kr/h",
       isWin: true,
-      description: rotEnabled ? t('comparison.metrics.price.description') : t('comparison.metrics.price.descriptionNoRot')
+      description: rotEnabled ? "Upp till 50% billigare med ROT-avdrag" : "Konkurrenskraftiga priser utan ROT"
     },
     {
       icon: MapPin,
-      title: t('comparison.metrics.coverage.title'),
-      fixcoValue: t('comparison.metrics.coverage.fixco'),
-      competitorValue: t('comparison.metrics.coverage.competitor'),
+      title: "Täckningsområde",
+      fixcoValue: "Uppsala & Stockholm",
+      competitorValue: "Begränsat",
       isWin: true,
-      description: t('comparison.metrics.coverage.description')
+      description: "Full täckning i Uppsala & Stockholm, större projekt nationellt"
     },
     {
       icon: Star,
-      title: t('comparison.metrics.satisfaction.title'),
+      title: "Kundnöjdhet",
       fixcoValue: customerSatisfaction.value,
       fixcoUnit: "/5",
-      competitorValue: t('comparison.metrics.satisfaction.competitor'),
+      competitorValue: "3.8",
       competitorUnit: "/5",
       counterKey: "customer_satisfaction",
       isWin: true,
-      description: t('comparison.metrics.satisfaction.description')
+      description: "Branschens högsta kundnöjdhet baserat på tusentals recensioner"
     },
     {
       icon: Shield,
-      title: t('comparison.metrics.rutHandling.title'),
-      fixcoValue: t('comparison.metrics.rutHandling.fixco'),
-      competitorValue: t('comparison.metrics.rutHandling.competitor'),
+      title: "RUT-hantering",
+      fixcoValue: "Vi sköter allt",
+      competitorValue: "Du själv",
       isWin: true,
-      description: t('comparison.metrics.rutHandling.description')
+      description: "Vi hanterar all RUT-administration för hushållsnära tjänster"
     },
     {
       icon: Trophy,
-      title: t('comparison.metrics.projectsOnTime.title'),
+      title: "Projekt klart i tid",
       fixcoValue: completionRate.value,
       fixcoUnit: "%",
-      competitorValue: t('comparison.metrics.projectsOnTime.competitor'),
+      competitorValue: "70-80",
       competitorUnit: "%",
       counterKey: "completion_rate",
       isWin: true,
-      description: t('comparison.metrics.projectsOnTime.description')
+      description: "Nästan alla projekt levereras enligt överenskommen tidsplan"
     }
   ];
 
@@ -179,10 +177,10 @@ const ComparisonUltra = () => {
           className="text-center mb-6 md:mb-8"
         >
           <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
-            {t('comparison.title')}
+            Varför välja Fixco?
           </h2>
           <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
-            {t('comparison.subtitle')}
+            Transparent jämförelse som visar varför tusentals kunder väljer oss
           </p>
         </motion.div>
 
@@ -196,15 +194,15 @@ const ComparisonUltra = () => {
             className="hidden md:grid grid-cols-3 gap-3 mb-4"
           >
             <div className="text-center">
-              <h3 className="text-base font-semibold text-muted-foreground">{t('comparison.comparison')}</h3>
+              <h3 className="text-base font-semibold text-muted-foreground">Jämförelse</h3>
             </div>
             <div className="card-premium p-3 text-center border-primary/20">
               <Trophy className="h-5 w-5 mx-auto mb-1 text-primary" />
-              <h3 className="text-lg font-bold gradient-text">{t('comparison.fixco')}</h3>
+              <h3 className="text-lg font-bold gradient-text">Fixco</h3>
             </div>
             <div className="card-premium p-3 text-center border-muted/20">
               <Timer className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
-              <h3 className="text-lg font-bold text-muted-foreground">{t('comparison.competitors')}</h3>
+              <h3 className="text-lg font-bold text-muted-foreground">Konkurrenter</h3>
             </div>
           </motion.div>
 
@@ -215,9 +213,9 @@ const ComparisonUltra = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="md:hidden grid grid-cols-3 gap-2 mb-4 text-center"
           >
-            <div className="text-xs font-medium text-muted-foreground">{t('comparison.comparison')}</div>
-            <div className="text-xs font-bold gradient-text">{t('comparison.fixco')}</div>
-            <div className="text-xs font-medium text-muted-foreground">{t('comparison.competitors')}</div>
+            <div className="text-xs font-medium text-muted-foreground">Jämförelse</div>
+            <div className="text-xs font-bold gradient-text">Fixco</div>
+            <div className="text-xs font-medium text-muted-foreground">Konkurrenter</div>
           </motion.div>
 
           {/* Compact Metrics Grid */}
@@ -291,11 +289,11 @@ const ComparisonUltra = () => {
                       />
                     </div>
                     <h3 className="text-lg md:text-xl font-bold gradient-text">
-                      {t('comparison.fixcoWins')} {metrics.length}/{metrics.length}
+                      Fixco vinner {metrics.length}/{metrics.length}
                     </h3>
                   </div>
                   <p className="text-xs md:text-sm text-muted-foreground">
-                    {t('comparison.marketLeader')}{rotEnabled && ` ${t('comparison.rotSavings')}`}
+                    Marknadsledare inom alla områden{rotEnabled && ` + upp till 50% ROT-besparing`}
                   </p>
                 </div>
                 
@@ -307,7 +305,7 @@ const ComparisonUltra = () => {
                       size="cta"
                       className="w-full sm:w-auto"
                     >
-                      {t('common.requestQuote')}
+                      Begär offert
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
@@ -317,7 +315,7 @@ const ComparisonUltra = () => {
                       size="cta"
                       className="w-full sm:w-auto"
                     >
-                      {t('common.seeAllServices')}
+                      Se alla våra tjänster
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
@@ -337,15 +335,15 @@ const ComparisonUltra = () => {
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">
                 {startTime.value}
               </div>
-              <p className="text-xs text-muted-foreground">{t('comparison.startTime')}</p>
+              <p className="text-xs text-muted-foreground">Starttid</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">2000+</div>
-              <p className="text-xs text-muted-foreground">{t('comparison.happyCustomers')}</p>
+              <p className="text-xs text-muted-foreground">Nöjda kunder</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">24/7</div>
-              <p className="text-xs text-muted-foreground">{t('comparison.support247')}</p>
+              <p className="text-xs text-muted-foreground">Support</p>
             </div>
           </motion.div>
         </div>

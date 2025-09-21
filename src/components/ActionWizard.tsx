@@ -3,7 +3,6 @@ import { useActionWizard } from "@/stores/actionWizardStore";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -57,7 +56,6 @@ function ActionWizardInner({
   mode, payload, onClose
 }: { mode: "book" | "quote"; payload: any; onClose: () => void }) {
   const { user } = useAuth();
-  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -147,7 +145,7 @@ function ActionWizardInner({
   return (
     <div className="space-y-5">
       <h2 className="text-xl font-semibold text-foreground">
-        {mode === "book" ? t('common.bookService') : t('common.requestQuote')}
+        {mode === "book" ? "Boka tjänst" : "Begär offert"}
       </h2>
       
       {payload?.serviceName && (

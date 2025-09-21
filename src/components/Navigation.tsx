@@ -6,9 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
-import { LanguageSelector } from "@/components/LanguageSelector";
 import { cn } from "@/lib/utils";
-import { useTranslation } from 'react-i18next';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +14,6 @@ export default function Navigation() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin } = useRole();
-  const { t } = useTranslation();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -39,16 +36,16 @@ export default function Navigation() {
 
   const getNavItems = () => {
     const allItems = [
-      { href: "/", label: t('nav.home') },
-      { href: "/tjanster", label: t('nav.services') },
-      { href: "/smart-hem", label: t('nav.smartHome') },
-      { href: "/referenser", label: t('nav.references') },
-      { href: "/om-oss", label: t('nav.about') },
-      { href: "/kontakt", label: t('nav.contact') },
+      { href: "/", label: "Hem" },
+      { href: "/tjanster", label: "Tjänster" },
+      { href: "/smart-hem", label: "Smart Hem" },
+      { href: "/referenser", label: "Referenser" },
+      { href: "/om-oss", label: "Om oss" },
+      { href: "/kontakt", label: "Kontakt" },
     ];
 
     if (isAdmin) {
-      allItems.splice(-2, 0, { href: "/admin", label: t('nav.admin') });
+      allItems.splice(-2, 0, { href: "/admin", label: "Administration" });
     }
 
     return allItems;
@@ -104,10 +101,6 @@ export default function Navigation() {
           {/* Right: Actions with Proper Spacing */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             
-            {/* Language Selector - Desktop Only */}
-            <div className="hidden xl:block">
-              <LanguageSelector />
-            </div>
             
             {/* Contact - Desktop Only */}
             <a 
@@ -128,7 +121,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{t('nav.myFixco')}</span>
+                        <span className="hidden xl:inline">Mitt Fixco</span>
                       </Button>
                     </Link>
                     <Button 
@@ -207,10 +200,6 @@ export default function Navigation() {
                   <Phone className="h-4 w-4" />
                   <span>08-123 456 78</span>
                 </a>
-                
-                <div className="px-4">
-                  <LanguageSelector />
-                </div>
 
                 {user ? (
                   <div className="space-y-2 px-4">
@@ -221,7 +210,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>{t('nav.myFixco')}</span>
+                        <span>Mitt Fixco</span>
                       </Button>
                     </Link>
                     <Button 

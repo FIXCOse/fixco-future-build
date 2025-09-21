@@ -1,7 +1,6 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Leaf, TreePine, Droplets } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface EcoScoreDisplayProps {
   score: number; // 0-100
@@ -14,8 +13,6 @@ export const EcoScoreDisplay: React.FC<EcoScoreDisplayProps> = ({
   className = "",
   showDetails = false
 }) => {
-  const { t } = useTranslation();
-
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'bg-green-500';
     if (score >= 60) return 'bg-yellow-500';
@@ -24,10 +21,10 @@ export const EcoScoreDisplay: React.FC<EcoScoreDisplayProps> = ({
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 80) return t('ecoScore.excellent');
-    if (score >= 60) return t('ecoScore.good');
-    if (score >= 40) return t('ecoScore.fair');
-    return t('ecoScore.poor');
+    if (score >= 80) return 'Utmärkt';
+    if (score >= 60) return 'Bra';
+    if (score >= 40) return 'Okej';
+    return 'Dålig';
   };
 
   const getScoreIcon = (score: number) => {
@@ -52,7 +49,7 @@ export const EcoScoreDisplay: React.FC<EcoScoreDisplayProps> = ({
       {showDetails && (
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span>{t('ecoScore.description')}</span>
+            <span>Miljöpåverkan baserat på material och metoder</span>
           </div>
           
           {/* Score breakdown */}

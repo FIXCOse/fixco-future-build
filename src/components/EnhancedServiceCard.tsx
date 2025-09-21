@@ -14,7 +14,6 @@ import { EcoScoreDisplay } from '@/components/EcoScoreDisplay';
 import { Project3DVisualizer } from '@/components/Project3DVisualizer';
 import { BeforeAfterSlider } from '@/components/BeforeAfterSlider';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useTranslation } from 'react-i18next';
 
 interface Service {
   id: string;
@@ -39,7 +38,6 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
   onBooking,
   onQuote
 }) => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'3d' | 'beforeafter'>('3d');
 
   const calculateROTSavings = () => {
@@ -60,7 +58,7 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
               <DialogTrigger asChild>
                 <Button size="sm" variant="secondary" className="bg-white/90">
                   <Eye className="h-4 w-4 mr-1" />
-                  {t('services.visualize3d')}
+                  Visa i 3D
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl">
