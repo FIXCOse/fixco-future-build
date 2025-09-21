@@ -12,7 +12,6 @@ import {
 const languages = [
   { code: 'sv', name: 'Svenska', flag: '🇸🇪' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'no', name: 'Norsk', flag: '🇳🇴' },
 ];
 
 export const LanguageSelector = () => {

@@ -75,43 +75,6 @@ const resources = {
         description: "Environmental impact based on materials and methods"
       }
     }
-  },
-  no: {
-    translation: {
-      nav: {
-        home: "Hjem",
-        services: "Tjenester",
-        references: "Referanser", 
-        about: "Om oss",
-        contact: "Kontakt",
-        myFixco: "Min Fixco",
-        smartHome: "Smart Hjem",
-        admin: "Administrasjon"
-      },
-      services: {
-        title: "Våre Tjenester",
-        subtitle: "Fra små reparasjoner til store byggeprosjekter – vi har ekspertisen og erfaringen til å levere profesjonelle løsninger innen alle områder.",
-        rotSaving: "Benytt ROT-fradrag og spar 50%.",
-        visualize3d: "Vis i 3D",
-        beforeAfter: "Før & Etter",
-        ecoScore: "Miljøscore"
-      },
-      smartHome: {
-        title: "Smart Hjemmeautomatisering", 
-        subtitle: "Kontroller og optimaliser hjemmet ditt med AI og IoT-teknologi",
-        energyConsumption: "Energiforbruk",
-        devices: "Tilkoblede enheter",
-        automation: "Automatisering",
-        savings: "Besparelser"
-      },
-      ecoScore: {
-        excellent: "Utmerket",
-        good: "Bra",
-        fair: "Greit", 
-        poor: "Dårlig",
-        description: "Miljøpåvirkning basert på materialer og metoder"
-      }
-    }
   }
 };
 

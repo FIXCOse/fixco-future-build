@@ -68,12 +68,13 @@ export default function Navigation() {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="inline-flex items-center py-2 group"
+              className="inline-flex items-center py-2 group flex-shrink-0"
             >
               <img 
                 src="/assets/fixco-logo-black.png" 
                 alt="FIXCO - Din Helhetslösning" 
-                className="h-8 md:h-9 lg:h-10 w-auto group-hover:scale-105 transition-transform"
+                className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
+                style={{ minWidth: '80px', maxWidth: '140px' }}
               />
             </Link>
           </div>
