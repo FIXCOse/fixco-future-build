@@ -29,94 +29,100 @@ import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import AppLayout from "./components/layouts/AppLayout";
-import MyFixcoLayout from "./components/MyFixcoLayout";
+
+// MyFixco pages
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
-import RotRutPage from "./pages/MyFixco/RotRutPage";
-import ActivityPage from "./pages/MyFixco/ActivityPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
+import ActivityPage from "./pages/MyFixco/ActivityPage";
+import RotRutPage from "./pages/MyFixco/RotRutPage";
 import AccountSettings from "./pages/MyFixco/AccountSettings";
 import StaffManagement from "./pages/MyFixco/StaffManagement";
+
+// Admin pages
 import AdminRoute from "./components/AdminRoute";
 import AdminLayoutNew from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import WorkerLayout from "./components/worker/WorkerLayout";
-import WorkerDashboard from "./pages/worker/WorkerDashboard";
-import JobPool from "./pages/worker/JobPool";
-import MyJobs from "./pages/worker/MyJobs";
-import JobDetail from "./pages/worker/JobDetail";
-import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
-import WorkerSettings from "./pages/worker/WorkerSettings";
+import AdminQuotes from "./pages/admin/AdminQuotes";
+import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
+import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import QuoteWizard from "./pages/admin/QuoteWizard";
+import AdminInvoices from "./pages/admin/AdminInvoices";
+import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
+import AdminBookings from "./pages/admin/AdminBookings";
+import AdminBookingDetail from "./pages/admin/AdminBookingDetail";
+import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDatabase from "./pages/admin/AdminDatabase";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminStaff from "./pages/admin/AdminStaff";
-import AdminInvoices from "./pages/admin/AdminInvoices";
-import AdminBookings from "./pages/admin/AdminBookings";
-import AdminBookingDetail from "./pages/admin/AdminBookingDetail";
-import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
-import BookingWizard from "./pages/BookingWizard";
-import QuoteRequestWizard from "./pages/QuoteRequestWizard";
-import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
-import AdminCustomers from "./pages/admin/AdminCustomers";
-import AdminQuotes from "./pages/admin/AdminQuotes";
-import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
-import TestBooking from "./pages/TestBooking";
-import { SmartHome } from "./pages/SmartHome";
+import JobPool from "./pages/worker/JobPool";
+import MyJobs from "./pages/worker/MyJobs";
+import JobDetail from "./pages/worker/JobDetail";
+import WorkerDashboard from "./pages/worker/WorkerDashboard";
+import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
+import WorkerSettings from "./pages/worker/WorkerSettings";
 import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 
-const queryClient = new QueryClient();
+// Lazy load components for better performance
+const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
+const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
+const SmartHome = lazy(() => import('./pages/SmartHome'));
+const TestBooking = lazy(() => import('./pages/TestBooking'));
+const BookingWizard = lazy(() => import('./pages/BookingWizard'));
+const QuoteRequestWizard = lazy(() => import('./pages/QuoteRequestWizard'));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
-  console.log("App component is loading...");
-  
-  // Global event delegation for wizard buttons as fallback
+  // Global event handling for wizard actions
   useEffect(() => {
-    const handleWizardClick = (e: any) => {
-      const el = (e.target as HTMLElement).closest("[data-wizard]");
-      if (!el) return;
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const wizardType = target.getAttribute('data-wizard');
       
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const mode = el.getAttribute("data-wizard") as "book" | "quote";
-      const serviceId = el.getAttribute("data-service-id") || undefined;
-      const serviceName = el.getAttribute("data-service-name") || undefined;
-      
-      console.log("[Event Delegation] Opening wizard via delegation:", { mode, serviceId, serviceName });
-      
-      // @ts-ignore
-      if (window.__WIZ) {
-        // @ts-ignore
-        window.__WIZ.getState().open({ mode, serviceId, serviceName });
+      if (wizardType === 'booking') {
+        event.preventDefault();
+        window.open('/boka/standard', '_blank');
+      } else if (wizardType === 'quote') {
+        event.preventDefault();
+        window.open('/offert/standard', '_blank');
       }
     };
-    
-    document.addEventListener("click", handleWizardClick, true); // capture phase
-    return () => document.removeEventListener("click", handleWizardClick, true);
+
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
-  
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <SecurityWrapper>
           <TooltipProvider>
+            <div className="min-h-screen bg-background font-inter">
               <Toaster />
               <Sonner />
               <BrowserRouter>
                 <ScrollToTop />
                 <Routes>
-                  <Route path="/" element={<Home />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
-                  
+                  <Route path="/dashboard" element={<Dashboard />} />
+
+                  {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
                     <Route index element={<DashboardOverview />} />
                     <Route path="properties" element={<PropertiesPage />} />
@@ -128,7 +134,7 @@ const App = () => {
                     <Route path="staff" element={<StaffManagement />} />
                   </Route>
 
-                  {/* New Admin Routes */}
+                  {/* Admin Routes */}
                   <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="quotes" element={<AdminQuotes />} />
@@ -167,42 +173,43 @@ const App = () => {
                   <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
                   <Route path="/test-booking" element={<TestBooking />} />
                   
-  // Import the app.tsx file and replace the routing section
-  <Route path="/" element={<AppLayout />}>
-    <Route index element={<Home />} />
-    <Route path="tjanster" element={<Services />} />
-    <Route path="tjanster/:slug" element={<ServiceDetail />} />
-    <Route path="kontakt" element={<Contact />} />
-    <Route path="faq" element={<FAQ />} />
-    <Route path="om-oss" element={<AboutUs />} />
-    <Route path="boka-hembesok" element={<BookVisit />} />
-    <Route path="rot-info" element={<ROTInfo />} />
-    <Route path="rut" element={<RUT />} />
-    <Route path="referenser" element={<Referenser />} />
-    <Route path="smart-hem" element={<SmartHome />} />
-    <Route path="terms" element={<Terms />} />
-    <Route path="privacy" element={<Privacy />} />
-  </Route>
-  
-  {/* English Routes - Same components with EN locale */}
-  <Route path="/en/*" element={<AppLayout locale="en" />}>
-    <Route index element={<Home />} />
-    <Route path="services" element={<Services />} />
-    <Route path="contact" element={<Contact />} />
-    <Route path="about" element={<AboutUs />} />
-    <Route path="references" element={<Referenser />} />
-    <Route path="smart-home" element={<SmartHome />} />
-  </Route>
+                  {/* Main Swedish Routes */}
+                  <Route path="/" element={<AppLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="tjanster" element={<Services />} />
+                    <Route path="tjanster/:slug" element={<ServiceDetail />} />
+                    <Route path="kontakt" element={<Contact />} />
+                    <Route path="faq" element={<FAQ />} />
+                    <Route path="om-oss" element={<AboutUs />} />
+                    <Route path="boka-hembesok" element={<BookVisit />} />
+                    <Route path="rot-info" element={<ROTInfo />} />
+                    <Route path="rut" element={<RUT />} />
+                    <Route path="referenser" element={<Referenser />} />
+                    <Route path="smart-hem" element={<SmartHome />} />
+                    <Route path="terms" element={<Terms />} />
+                    <Route path="privacy" element={<Privacy />} />
+                  </Route>
                   
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  {/* English Routes - Same components with EN locale */}
+                  <Route path="/en/*" element={<AppLayout locale="en" />}>
+                    <Route index element={<Home />} />
+                    <Route path="services" element={<Services />} />
+                    <Route path="contact" element={<Contact />} />
+                    <Route path="about" element={<AboutUs />} />
+                    <Route path="references" element={<Referenser />} />
+                    <Route path="smart-home" element={<SmartHome />} />
+                  </Route>
+                  
+                  {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
-      <ModalHost />
+                <ModalHost />
               </BrowserRouter>
-            </TooltipProvider>
+            </div>
+          </TooltipProvider>
         </SecurityWrapper>
       </QueryClientProvider>
     </HelmetProvider>
