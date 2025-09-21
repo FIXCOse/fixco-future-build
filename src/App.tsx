@@ -29,8 +29,6 @@ import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
-import { I18nProvider } from "./components/I18nProvider";
-import { I18nTestComponent } from "./components/I18nTestComponent";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
@@ -105,17 +103,14 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <I18nProvider>
-          <SecurityWrapper>
-            <TooltipProvider>
+        <SecurityWrapper>
+          <TooltipProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter>
                 <ScrollToTop />
                 <Routes>
-                  {/* Locale-aware routing */}
-                  <Route path="/:locale?" element={<Home />} />
-                  <Route path="/:locale/auth" element={<Auth />} />
+                  <Route path="/" element={<Home />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
@@ -188,12 +183,10 @@ const App = () => {
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
-                <I18nTestComponent />
       <ModalHost />
               </BrowserRouter>
             </TooltipProvider>
-          </SecurityWrapper>
-        </I18nProvider>
+        </SecurityWrapper>
       </QueryClientProvider>
     </HelmetProvider>
   );

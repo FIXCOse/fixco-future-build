@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
 import heroImage from "@/assets/hero-construction.jpg";
 
 const Hero = () => {
-  const { t } = useTranslation('home');
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
@@ -28,16 +26,16 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="gradient-text">{t('hero.large', { defaultValue: 'Stora' })}</span> {t('hero.or', { defaultValue: 'eller' })}{" "}
-              <span className="gradient-text">{t('hero.small', { defaultValue: 'små' })}</span> {t('hero.projects', { defaultValue: 'projekt' })} –{" "}
+              <span className="gradient-text">Stora</span> eller{" "}
+              <span className="gradient-text">små</span> projekt –{" "}
               <br />
-              <span className="text-foreground">{t('hero.fixco_handles', { defaultValue: 'Fixco hanterar' })}</span>{" "}
-              <span className="gradient-text animate-float">{t('hero.everything', { defaultValue: 'allt' })}</span>
+              <span className="text-foreground">Fixco hanterar</span>{" "}
+              <span className="gradient-text animate-float">allt</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
-              {t('hero.description', { defaultValue: 'Snabbare, billigare och mer professionellt än våra konkurrenter.' })}{' '}
-              <span className="text-primary font-semibold">{t('hero.start_time', { defaultValue: 'Start inom < 5 dagar.' })}</span>
+              Snabbare, billigare och mer professionellt än våra konkurrenter. 
+              <span className="text-primary font-semibold"> Start inom {'< 5 dagar'}.</span>
             </p>
 
             {/* CTA Buttons */}
@@ -48,7 +46,7 @@ const Hero = () => {
                   size="cta"
                   className="w-full sm:w-auto"
                 >
-                  {t('hero.cta_primary', { defaultValue: 'Begär offert' })}
+                  Begär offert
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>
@@ -58,7 +56,7 @@ const Hero = () => {
                   size="cta"
                   className="w-full sm:w-auto"
                 >
-                  {t('hero.cta_secondary', { defaultValue: 'Se våra tjänster' })}
+                  Se våra tjänster
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>

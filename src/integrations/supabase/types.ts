@@ -1456,30 +1456,6 @@ export type Database = {
           },
         ]
       }
-      service_translations: {
-        Row: {
-          description: string
-          locale: string
-          name: string
-          service_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          description: string
-          locale: string
-          name: string
-          service_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          description?: string
-          locale?: string
-          name?: string
-          service_id?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       skills: {
         Row: {
           category: string
@@ -1775,107 +1751,6 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      translation_jobs: {
-        Row: {
-          created_at: string | null
-          entity_id: string
-          id: number
-          kind: string
-          last_error: string | null
-          locale: string
-          payload: Json
-          status: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          entity_id: string
-          id?: number
-          kind: string
-          last_error?: string | null
-          locale?: string
-          payload: Json
-          status?: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          entity_id?: string
-          id?: number
-          kind?: string
-          last_error?: string | null
-          locale?: string
-          payload?: Json
-          status?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      translation_keys: {
-        Row: {
-          checksum: string
-          created_at: string | null
-          default_text: string
-          id: string
-          is_locked: boolean
-          key: string
-          namespace: string
-          updated_at: string | null
-        }
-        Insert: {
-          checksum: string
-          created_at?: string | null
-          default_text: string
-          id?: string
-          is_locked?: boolean
-          key: string
-          namespace: string
-          updated_at?: string | null
-        }
-        Update: {
-          checksum?: string
-          created_at?: string | null
-          default_text?: string
-          id?: string
-          is_locked?: boolean
-          key?: string
-          namespace?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      translation_locales: {
-        Row: {
-          key_id: string
-          locale: string
-          status: string
-          text: string
-          updated_at: string | null
-        }
-        Insert: {
-          key_id: string
-          locale: string
-          status?: string
-          text: string
-          updated_at?: string | null
-        }
-        Update: {
-          key_id?: string
-          locale?: string
-          status?: string
-          text?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_locales_key_id_fkey"
-            columns: ["key_id"]
-            isOneToOne: false
-            referencedRelation: "translation_keys"
             referencedColumns: ["id"]
           },
         ]

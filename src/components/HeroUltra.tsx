@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight, Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
@@ -150,7 +149,6 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 };
 
 const HeroUltra = () => {
-  const { t } = useTranslation('home');
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -160,10 +158,10 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: t('trust.quality_title', { defaultValue: "Fixco Kvalitet" }), description: t('trust.quality_desc', { defaultValue: "Vårt löfte till dig" }) },
-    { icon: Award, title: t('trust.price_title', { defaultValue: "Lägst pris (ROT)" }), description: t('trust.price_desc', { defaultValue: "480 kr/h efter ROT-avdrag" }) },
-    { icon: Users, title: t('trust.customers_title', { defaultValue: "2000+ kunder" }), description: t('trust.customers_desc', { defaultValue: "Genomsnittligt betyg 4.9/5" }) },
-    { icon: MapPin, title: t('trust.location_title', { defaultValue: "Uppsala & Stockholm" }), description: t('trust.location_desc', { defaultValue: "Nationellt vid större projekt" }) }
+    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
+    { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
+    { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
+    { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
   ];
 
   return (
@@ -245,7 +243,7 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">{t('hero.brand', { defaultValue: 'Fixco' })}</span> {t('hero.solves_everything', { defaultValue: 'löser allt inom' })}{" "}
+              <span className="gradient-text">Fixco</span> löser allt inom{" "}
               <br />
               <motion.span 
                 className="gradient-text"
@@ -255,7 +253,7 @@ const HeroUltra = () => {
                 } : {}}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                {t('hero.home_construction', { defaultValue: 'hem & byggnad' })}
+                hem & byggnad
               </motion.span>
             </motion.h1>
             
@@ -265,8 +263,8 @@ const HeroUltra = () => {
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              {t('hero.main_description', { defaultValue: 'Snabbare, billigare och mer professionellt än konkurrenterna.' })}{' '}
-              <span className="text-primary font-semibold">{t('hero.quick_start_offer', { defaultValue: 'Start inom 5 dagar, 50% rabatt med ROT.' })}</span>
+              Snabbare, billigare och mer professionellt än konkurrenterna. 
+              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
@@ -280,7 +278,7 @@ const HeroUltra = () => {
                 <MagneticButton
                   className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
                 >
-                  {t('hero.cta_primary', { defaultValue: 'Begär offert' })}
+                  Begär offert
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
@@ -289,7 +287,7 @@ const HeroUltra = () => {
                   variant="outline"
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                 >
-                  {t('hero.cta_secondary', { defaultValue: 'Se våra tjänster' })}
+                  Se våra tjänster
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
