@@ -11,13 +11,20 @@ const AdminTranslations: React.FC = () => {
 
   const handleApproveAndPublish = async (id: string, enDraftJson: any) => {
     try {
+      // First get current version
+      const { data: currentContent } = await supabase
+        .from('content')
+        .select('version')
+        .eq('id', id)
+        .single();
+
       const { error } = await supabase
         .from('content')
         .update({
           en_live_json: enDraftJson,
           en_status: 'approved',
           en_last_reviewed_at: new Date().toISOString(),
-          version: supabase.raw('version + 1')
+          version: (currentContent?.version || 0) + 1
         })
         .eq('id', id);
 

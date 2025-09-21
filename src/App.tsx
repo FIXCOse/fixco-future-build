@@ -75,6 +75,7 @@ import ContactEn from "./pages/en/ContactEn";
 import AboutEn from "./pages/en/AboutEn";
 import ReferencesEn from "./pages/en/ReferencesEn";
 import SmartHomeEn from "./pages/en/SmartHomeEn";
+import AdminTranslations from "./pages/admin/AdminTranslations";
 
 const queryClient = new QueryClient();
 
@@ -154,7 +155,7 @@ const App = () => {
                     <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="jobs" element={<AdminJobs />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
-                    <Route path="translations" element={lazy(() => import('./pages/admin/AdminTranslations'))} />
+                    <Route path="translations" element={<AdminTranslations />} />
                   </Route>
 
                   {/* Worker Routes */}
