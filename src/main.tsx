@@ -3,17 +3,14 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-console.log("Main.tsx loaded - before i18n import");
-
-// Import i18n with error handling
-try {
-  import('./lib/i18n');
-  console.log("i18n import successful");
-} catch (error) {
-  console.error("i18n import failed:", error);
-}
-
 console.log("Main.tsx loaded, about to render App component");
+
+// Initialize i18n asynchronously to prevent blocking
+import('./lib/i18n').then(() => {
+  console.log("i18n loaded successfully");
+}).catch((error) => {
+  console.error("i18n failed to load:", error);
+});
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
