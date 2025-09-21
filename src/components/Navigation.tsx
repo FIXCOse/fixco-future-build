@@ -83,14 +83,14 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Center: Primary Navigation */}
-          <ul className="hidden lg:flex items-center justify-center gap-x-[clamp(12px,1.2vw,24px)]">
+          {/* Center: Primary Navigation - No Wrap, XL+ Only */}
+          <ul className="hidden xl:flex items-center flex-nowrap justify-center gap-x-[clamp(12px,1.2vw,22px)] min-w-0">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   to={item.href}
                   className={cn(
-                    "inline-flex items-center h-[var(--header-h)] px-3 md:px-3.5 lg:px-4",
+                    "inline-flex items-center h-[var(--header-h)] px-3 md:px-3.5 lg:px-4 whitespace-nowrap",
                     "text-foreground hover:text-primary transition-colors",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     "hover:underline underline-offset-4 decoration-2",
@@ -103,71 +103,75 @@ export default function Navigation() {
             ))}
           </ul>
 
-          {/* Right: Secondary Actions */}
-          <div className="flex items-center gap-x-3 md:gap-x-4">
-            {/* Contact (Desktop only) */}
-            <div className="hidden xl:flex items-center gap-x-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-x-1">
-                <Phone className="h-4 w-4" />
-                <span>08-123 456 78</span>
-              </div>
-            </div>
+          {/* Right: Secondary Actions - Single Line, No Wrap */}
+          <div className="flex items-center gap-x-3 md:gap-x-4 whitespace-nowrap">
+            {/* Contact (Compact for Space) */}
+            <a 
+              href="tel:+46812345678" 
+              className="hidden lg:inline-flex items-center gap-x-2 text-sm text-muted-foreground hover:text-primary transition-colors whitespace-nowrap"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="hidden xl:inline">08-123 456 78</span>
+              <span className="xl:hidden">08-123</span>
+            </a>
             
             {/* Language Selector (Desktop) */}
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <LanguageSelector />
             </div>
             
             {/* User Actions */}
             {user ? (
-              <div className="hidden md:flex items-center gap-x-3">
+              <div className="hidden lg:flex items-center gap-x-2">
                 <Link to="/mitt-fixco">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="h-9 md:h-10 px-3.5 md:px-4 inline-flex items-center gap-x-2"
+                    className="h-9 md:h-10 px-2 md:px-3 inline-flex items-center gap-x-1 whitespace-nowrap"
                   >
                     <User className="h-4 w-4" />
-                    <span className="hidden lg:inline">Mitt Fixco</span>
+                    <span className="hidden xl:inline">Mitt Fixco</span>
                   </Button>
                 </Link>
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={handleLogout}
-                  className="h-9 md:h-10 px-3.5 md:px-4 inline-flex items-center gap-x-2"
+                  className="h-9 md:h-10 px-2 md:px-3 inline-flex items-center gap-x-1 whitespace-nowrap"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span className="hidden lg:inline">Logga ut</span>
+                  <span className="hidden xl:inline">Logga ut</span>
                 </Button>
               </div>
             ) : (
-              <div className="hidden md:flex items-center gap-x-3">
+              <div className="hidden lg:flex items-center gap-x-2">
                 <Link to="/auth">
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="h-9 md:h-10 px-3.5 md:px-4"
+                    className="h-9 md:h-10 px-2 md:px-3 whitespace-nowrap"
                   >
-                    Logga in
+                    <span className="hidden xl:inline">Logga in</span>
+                    <span className="xl:hidden">Login</span>
                   </Button>
                 </Link>
                 <Link to="/boka-hembesok">
                   <Button 
                     variant="default" 
                     size="sm"
-                    className="h-9 md:h-10 px-3.5 md:px-4 bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="h-9 md:h-10 px-2 md:px-3 bg-primary text-primary-foreground hover:bg-primary/90 whitespace-nowrap"
                   >
-                    Begär offert
+                    <span className="hidden xl:inline">Begär offert</span>
+                    <span className="xl:hidden">Offert</span>
                   </Button>
                 </Link>
               </div>
             )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Shows XL and below */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden inline-flex items-center h-9 px-3.5 hover:bg-muted rounded-md transition-colors"
+              className="xl:hidden inline-flex items-center h-9 px-3 hover:bg-muted rounded-md transition-colors"
               aria-label="Öppna meny"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -175,9 +179,9 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Overlay */}
+        {/* Mobile Navigation Overlay - Shows XL and below */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-background">
+          <div className="xl:hidden border-t border-border bg-background">
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">
@@ -198,10 +202,13 @@ export default function Navigation() {
 
               {/* Mobile Actions */}
               <div className="pt-4 space-y-3 border-t border-border">
-                <div className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground">
+                <a 
+                  href="tel:+46812345678" 
+                  className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
                   <Phone className="h-4 w-4" />
                   <span>08-123 456 78</span>
-                </div>
+                </a>
                 
                 <div className="px-4">
                   <LanguageSelector />
