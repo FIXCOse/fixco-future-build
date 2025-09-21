@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send
+  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -113,6 +113,13 @@ const AdminDashboard = () => {
       href: '/admin/database',
       icon: Database,
       color: 'bg-indigo-500/10 text-indigo-600'
+    },
+    {
+      title: 'Översättningar',
+      description: 'Hantera engelska översättningar',
+      href: '/admin/translations',
+      icon: Languages,
+      color: 'bg-orange-500/10 text-orange-600'
     }
   ];
 

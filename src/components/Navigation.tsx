@@ -14,7 +14,7 @@ export default function Navigation() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
-  const { isAdmin } = useRole();
+  const { isAdmin, isOwner } = useRole();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -36,7 +36,15 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    const allItems = [
+    // For admin/owner users, show only admin-relevant items
+    if (isAdmin || isOwner) {
+      return [
+        { href: "/admin", label: "Administration" },
+      ];
+    }
+
+    // For regular users, show all navigation items
+    return [
       { href: "/", label: "Hem" },
       { href: "/tjanster", label: "Tjänster" },
       { href: "/smart-hem", label: "Smart Hem" },
@@ -44,12 +52,6 @@ export default function Navigation() {
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },
     ];
-
-    if (isAdmin) {
-      allItems.splice(-2, 0, { href: "/admin", label: "Administration" });
-    }
-
-    return allItems;
   };
 
   const navItems = getNavItems();
@@ -124,7 +126,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">Mitt Fixco</span>
+                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? 'Adminpanel' : 'Mitt Fixco'}</span>
                       </Button>
                     </Link>
                     <Button 
@@ -213,7 +215,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>Mitt Fixco</span>
+                        <span>{(isAdmin || isOwner) ? 'Adminpanel' : 'Mitt Fixco'}</span>
                       </Button>
                     </Link>
                     <Button 
