@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight, Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
@@ -149,6 +150,7 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 };
 
 const HeroUltra = () => {
+  const { t } = useTranslation('home');
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -243,7 +245,7 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">Fixco</span> löser allt inom{" "}
+              <span className="gradient-text">{t('hero.brand', { defaultValue: 'Fixco' })}</span> {t('hero.solves_everything', { defaultValue: 'löser allt inom' })}{" "}
               <br />
               <motion.span 
                 className="gradient-text"
@@ -253,7 +255,7 @@ const HeroUltra = () => {
                 } : {}}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                hem & byggnad
+                {t('hero.home_construction', { defaultValue: 'hem & byggnad' })}
               </motion.span>
             </motion.h1>
             
@@ -263,8 +265,8 @@ const HeroUltra = () => {
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              Snabbare, billigare och mer professionellt än konkurrenterna. 
-              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
+              {t('hero.main_description', { defaultValue: 'Snabbare, billigare och mer professionellt än konkurrenterna.' })}{' '}
+              <span className="text-primary font-semibold">{t('hero.quick_start_offer', { defaultValue: 'Start inom 5 dagar, 50% rabatt med ROT.' })}</span>
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
@@ -278,7 +280,7 @@ const HeroUltra = () => {
                 <MagneticButton
                   className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
                 >
-                  Begär offert
+                  {t('hero.cta_primary', { defaultValue: 'Begär offert' })}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
@@ -287,7 +289,7 @@ const HeroUltra = () => {
                   variant="outline"
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                 >
-                  Se våra tjänster
+                  {t('hero.cta_secondary', { defaultValue: 'Se våra tjänster' })}
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
