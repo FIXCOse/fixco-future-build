@@ -167,11 +167,11 @@ const FAQ = () => {
                   <div className="flex items-center mb-8">
                     <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle mr-4 relative">
                       {/* F Brand Badge on Category Headers */}
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-md z-10">
+                      <div className="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center z-10">
                         <img 
                           src="/assets/fixco-f-icon-new.png"
                           alt="Fixco" 
-                          className="h-3 w-3 object-contain opacity-90"
+                          className="h-6 w-6 object-contain opacity-90"
                         />
                       </div>
                       <CategoryIcon className="h-8 w-8 text-primary" />

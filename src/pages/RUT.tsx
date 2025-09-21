@@ -94,11 +94,11 @@ const RUT = () => {
             <div className="flex items-center justify-center mb-6">
               <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6 relative">
                 {/* F Brand Badge */}
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
+                <div className="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
                   <img 
                     src="/assets/fixco-f-icon-new.png"
                     alt="Fixco" 
-                    className="h-3 w-3 object-contain"
+                    className="h-6 w-6 object-contain"
                   />
                 </div>
                 <Percent className="h-10 w-10 text-primary" />
@@ -158,11 +158,11 @@ const RUT = () => {
                     onClick={() => setActiveStep(index)}
                   >
                     {/* F Brand Badge */}
-                    <div className="absolute bottom-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
+                    <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
                       <img 
                         src="/assets/fixco-f-icon-new.png"
                         alt="Fixco" 
-                        className="h-3 w-3 object-contain opacity-90"
+                        className="h-6 w-6 object-contain opacity-90"
                       />
                     </div>
 
@@ -219,11 +219,11 @@ const RUT = () => {
               {rutServices.map((category, index) => (
                 <Card key={index} className="p-6 relative">
                   {/* F Brand Badge */}
-                  <div className="absolute top-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
+                  <div className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
                     <img 
                       src="/assets/fixco-f-icon-new.png"
                       alt="Fixco" 
-                      className="h-3 w-3 object-contain opacity-90"
+                      className="h-6 w-6 object-contain opacity-90"
                     />
                   </div>
 
@@ -267,11 +267,11 @@ const RUT = () => {
               {faqs.map((faq, index) => (
                 <Card key={index} className="p-6 relative">
                   {/* F Brand Badge */}
-                  <div className="absolute bottom-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
+                  <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
                     <img 
                       src="/assets/fixco-f-icon-new.png"
                       alt="Fixco" 
-                      className="h-3 w-3 object-contain opacity-90"
+                      className="h-6 w-6 object-contain opacity-90"
                     />
                   </div>
 
