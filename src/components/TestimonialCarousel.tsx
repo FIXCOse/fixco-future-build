@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface Testimonial {
   name: string;
@@ -14,6 +15,7 @@ interface Testimonial {
 }
 
 const TestimonialCarousel = () => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -111,10 +113,10 @@ const TestimonialCarousel = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Våra kunder <span className="gradient-text">älskar oss</span>
+            {t('testimonials.title')}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Se vad våra nöjda kunder säger om Fixco
+            {t('testimonials.subtitle')}
           </p>
         </div>
 
@@ -135,7 +137,7 @@ const TestimonialCarousel = () => {
                     {testimonial.savings && (
                       <div className="absolute top-4 right-4">
                         <div className="bg-gradient-primary text-white px-3 py-1 rounded-full text-sm font-bold">
-                          Sparade {testimonial.savings}
+                          {t('testimonials.saved')} {testimonial.savings}
                         </div>
                       </div>
                     )}
