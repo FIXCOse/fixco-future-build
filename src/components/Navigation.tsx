@@ -109,7 +109,7 @@ export default function Navigation() {
             {/* Contact - Desktop Only */}
             <a 
               href="tel:+46812345678" 
-              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted"
+              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
               <Phone className="h-4 w-4" />
               <span className="hidden xl:inline font-medium">08-123 456 78</span>
