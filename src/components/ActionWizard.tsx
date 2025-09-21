@@ -3,6 +3,7 @@ import { useActionWizard } from "@/stores/actionWizardStore";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -56,6 +57,7 @@ function ActionWizardInner({
   mode, payload, onClose
 }: { mode: "book" | "quote"; payload: any; onClose: () => void }) {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 

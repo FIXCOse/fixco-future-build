@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Calculator, TrendingDown, CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const ROTCalculator = () => {
+  const { t } = useTranslation();
   const [projectCost, setProjectCost] = useState(50000);
   const [isCalculating, setIsCalculating] = useState(false);
 
