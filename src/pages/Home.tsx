@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
@@ -10,12 +10,13 @@ import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ROTCalculator from "@/components/ROTCalculator";
 import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
+import I18nProvider from "@/components/I18nProvider";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
 import { useTranslation } from 'react-i18next';
 
-const Home = () => {
-  console.log("Home component rendering...");
+const HomeContent = () => {
+  console.log("HomeContent component rendering...");
   const { t } = useTranslation();
   
   // Initialize pricing store from URL/localStorage
@@ -81,6 +82,14 @@ const Home = () => {
       {/* Global Sticky CTA */}
       <GlobalStickyCTA />
     </div>
+  );
+};
+
+const Home = () => {
+  return (
+    <I18nProvider>
+      <HomeContent />
+    </I18nProvider>
   );
 };
 
