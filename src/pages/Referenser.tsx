@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button-premium";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Quote, ArrowRight, MapPin, Calendar, Euro } from "lucide-react";
-import { useTranslation } from 'react-i18next';
-
 const references = [
   {
     id: 1,
@@ -155,7 +153,6 @@ const testimonials = [
 ];
 
 const Referenser = () => {
-  const { t } = useTranslation();
   
   return (
     <div className="min-h-screen">
@@ -169,10 +166,10 @@ const Referenser = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('references.title')}
+              Referenser & Kundcase
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              {t('references.subtitle')}
+              Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss.
             </p>
             
             <TrustChips variant="minimal" showAll={true} className="mb-8" />
@@ -186,19 +183,19 @@ const Referenser = () => {
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold gradient-text mb-2">500+</div>
-              <div className="text-muted-foreground">{t('references.happyCustomers')}</div>
+              <div className="text-muted-foreground">Nöjda kunder</div>
             </div>
             <div>
               <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
-              <div className="text-muted-foreground">{t('references.averageRating')}</div>
+              <div className="text-muted-foreground">Medelbetyg</div>
             </div>
             <div>
               <div className="text-3xl font-bold gradient-text mb-2">15M kr</div>
-              <div className="text-muted-foreground">{t('references.rotSavings')}</div>
+              <div className="text-muted-foreground">ROT-besparingar</div>
             </div>
             <div>
               <div className="text-3xl font-bold gradient-text mb-2">98%</div>
-              <div className="text-muted-foreground">{t('references.wouldRecommend')}</div>
+              <div className="text-muted-foreground">Skulle rekommendera oss</div>
             </div>
           </div>
         </div>
@@ -208,9 +205,9 @@ const Referenser = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('references.selectedProjects')}</h2>
+            <h2 className="text-3xl font-bold mb-4">Utvalda projekt</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('references.selectedProjectsDesc')}
+              Här är några av våra senaste projekt som visar bredden och kvaliteten i vårt arbete.
             </p>
           </div>
 
@@ -266,7 +263,7 @@ const Referenser = () => {
                   {ref.rotSaving !== "0 kr" && (
                     <div className="p-3 bg-primary/10 rounded-lg mb-4">
                       <div className="text-sm">
-                        <span className="text-muted-foreground">{t('references.rotSaving')} </span>
+                        <span className="text-muted-foreground">ROT-besparing: </span>
                         <span className="font-bold text-primary">{ref.rotSaving}</span>
                       </div>
                     </div>
@@ -282,11 +279,11 @@ const Referenser = () => {
                   {/* Project Details */}
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-muted-foreground">{t('references.projectTime')}</span>
+                      <span className="text-muted-foreground">Projekttid:</span>
                       <div className="font-medium">{ref.duration}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">{t('references.totalInvestment')}</span>
+                      <span className="text-muted-foreground">Total investering:</span>
                       <div className="font-medium">{ref.budget}</div>
                     </div>
                   </div>
@@ -301,8 +298,8 @@ const Referenser = () => {
       <section className="py-16 bg-muted/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('references.whatCustomersSay')}</h2>
-            <p className="text-muted-foreground">{t('references.realReviews')}</p>
+            <h2 className="text-3xl font-bold mb-4">Vad våra kunder säger</h2>
+            <p className="text-muted-foreground">Äkta recensioner från riktiga projekt</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -333,19 +330,19 @@ const Referenser = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              {t('references.readyToBeNext')}
+              Redo att bli nästa nöjda kund?
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              {t('references.readyToBeNextDesc')}
+              Kontakta oss idag för en kostnadsfri konsultation och offert på ditt projekt.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="cta" size="lg" className="animate-glow">
-                {t('references.requestFreeQuote')}
+                Begär kostnadsfri offert
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button variant="ghost-premium" size="lg">
-                {t('common.seeAllServices')}
+                Se alla tjänster
               </Button>
             </div>
 

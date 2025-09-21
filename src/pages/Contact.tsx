@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useTranslation } from "react-i18next";
-
 const Contact = () => {
-  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -41,8 +38,8 @@ const Contact = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       toast({
-        title: t('contact.thankYouTitle'),
-        description: t('contact.thankYouDesc'),
+        title: "Tack för din förfrågan!",
+        description: "Vi återkommer inom 24 timmar med en kostnadsfri offert.",
       });
       
       setFormData({
@@ -101,8 +98,8 @@ const Contact = () => {
               </div>
               <div className="card-premium p-6">
                 <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-4" />
-                <div className="font-bold">{t('contact.freeQuote')}</div>
-                <div className="text-sm text-muted-foreground">{t('contact.noHiddenCosts')}</div>
+                <div className="font-bold">Kostnadsfri offert</div>
+                <div className="text-sm text-muted-foreground">Inga dolda kostnader</div>
               </div>
               <div className="card-premium p-6">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />

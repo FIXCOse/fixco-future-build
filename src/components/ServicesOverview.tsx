@@ -12,8 +12,6 @@ import {
   Zap, 
   Building 
 } from "lucide-react";
-import { useTranslation } from 'react-i18next';
-
 const services = [
   {
     title: "Snickeri",
@@ -78,7 +76,6 @@ const services = [
 ];
 
 const ServicesOverview = () => {
-  const { t } = useTranslation();
   
   return (
     <section className="py-20 relative">
@@ -168,11 +165,11 @@ const ServicesOverview = () => {
         {/* CTA */}
         <div className="text-center">
           <p className="text-lg text-muted-foreground mb-6">
-            {t('services.dontSeeService')}
+            Hittar du inte den tjänst du söker? Kontakta oss för mer information.
           </p>
           <Link to="/tjanster">
             <Button variant="premium" size="lg">
-              {t('services.seeAllServices')}
+              Se alla tjänster
             </Button>
           </Link>
         </div>

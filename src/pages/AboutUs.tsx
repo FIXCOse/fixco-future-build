@@ -2,10 +2,7 @@ import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button-premium";
 import { CheckCircle, Star, Users, Award, Clock, MapPin, Phone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-
 const AboutUs = () => {
-  const { t } = useTranslation();
   
   return (
     <div className="min-h-screen">
@@ -16,10 +13,10 @@ const AboutUs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              {t('about.title')}
+              Om Fixco
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('about.subtitle')}
+              Din partner för professionella hantverk och byggnadstjänster i Uppsala och Stockholm
             </p>
           </div>
         </div>
@@ -31,16 +28,16 @@ const AboutUs = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">
-                {t('about.historyTitle')}
+                Vår historia
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                {t('about.historyParagraph1')}
+                Fixco grundades med en enkel vision: att göra kvalificerade hantverkstjänster tillgängliga, snabba och prisvärda för alla. Sedan starten har vi vuxit till en av de mest betrodda leverantörerna av byggnad- och renoveringstjänster i regionen.
               </p>
               <p className="text-lg text-muted-foreground mb-6">
-                {t('about.historyParagraph2')}
+                Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet.
               </p>
               <p className="text-lg text-muted-foreground">
-                {t('about.historyParagraph3')}
+                Genom åren har vi hjälpt hundratals familjer och företag att förverkliga sina projekt – från små reparationer till stora renoveringar. Vi är stolta över vår höga kundnöjdhet och vårt rykte som en pålitlig partner.
               </p>
             </div>
             
@@ -48,22 +45,22 @@ const AboutUs = () => {
               <div className="card-premium p-6">
                 <Users className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">500+</div>
-                <div className="text-sm text-muted-foreground">{t('about.statsHappyCustomers')}</div>
+                <div className="text-sm text-muted-foreground">Nöjda kunder</div>
               </div>
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">{'< 5 dagar'}</div>
-                <div className="text-sm text-muted-foreground">{t('about.statsProjectStart')}</div>
+                <div className="text-sm text-muted-foreground">Till projektstart</div>
               </div>
               <div className="card-premium p-6">
                 <Award className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">98%</div>
-                <div className="text-sm text-muted-foreground">{t('about.statsCustomerSatisfaction')}</div>
+                <div className="text-sm text-muted-foreground">Kundnöjdhet</div>
               </div>
               <div className="card-premium p-6">
                 <Star className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">5 år</div>
-                <div className="text-sm text-muted-foreground">{t('about.statsWarranty')}</div>
+                <div className="text-sm text-muted-foreground">Garanti</div>
               </div>
             </div>
           </div>
@@ -74,24 +71,24 @@ const AboutUs = () => {
       <section className="py-20 gradient-primary-subtle">
         <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16">
-            {t('about.valuesTitle')}
+            Våra värderingar
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: t('about.speedTitle'),
-                description: t('about.speedDescription'),
+                title: "Snabbhet",
+                description: "Vi starterar projekt inom 24 timmar och levererar alltid i tid. Ditt hem är viktigt och vi respekterar din tid.",
                 icon: Clock
               },
               {
-                title: t('about.qualityTitle'), 
-                description: t('about.qualityDescription'),
+                title: "Kvalitet", 
+                description: "Alla våra hantverkare är certifierade och vi använder endast material av högsta kvalitet. Vi ger garanti på alla våra arbeten.",
                 icon: Award
               },
               {
-                title: t('about.transparencyTitle'),
-                description: t('about.transparencyDescription'),
+                title: "Transparens",
+                description: "Inga dolda kostnader, tydliga offerter och öppen kommunikation genom hela projektet. Du vet alltid vad du betalar för.",
                 icon: CheckCircle
               }
             ].map((value, index) => {
@@ -115,16 +112,16 @@ const AboutUs = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-4xl font-bold mb-8">
-            {t('about.coverageTitle')}
+            Vårt verksamhetsområde
           </h2>
           <div className="card-premium p-8 mb-8">
             <MapPin className="h-12 w-12 text-primary mx-auto mb-6" />
-            <h3 className="text-2xl font-bold mb-4">{t('about.coverageMainTitle')}</h3>
+            <h3 className="text-2xl font-bold mb-4">Uppsala & Stockholms län</h3>
             <p className="text-lg text-muted-foreground mb-6">
-              {t('about.coverageDescription')}
+              Vi täcker hela Uppsala kommun och Stockholms län med våra tjänster. Våra erfarna hantverkare kan vara hos dig inom kort för både akuta ärenden och planerade projekt.
             </p>
             <p className="text-muted-foreground">
-              <strong>{t('about.coverageLargeProjects')}</strong>
+              <strong>För större projekt (över 50 000 kr) arbetar vi i hela Sverige.</strong>
             </p>
           </div>
         </div>
@@ -135,23 +132,23 @@ const AboutUs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              {t('about.readyToStart')}
+              Redo att komma igång?
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              {t('about.contactTitle')}
+              Kontakta oss idag för en kostnadsfri konsultation och offert. Vi är här för att hjälpa dig förverkliga dina projekt.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/kontakt">
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  {t('common.requestQuote')}
+                  Begär offert
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <a href="tel:08-123456789">
                 <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 font-bold">
                   <Phone className="mr-2 h-5 w-5" />
-                  {t('common.callUs')}: {t('common.phone')}
+                  Ring oss: 08-123 456 78
                 </Button>
               </a>
             </div>

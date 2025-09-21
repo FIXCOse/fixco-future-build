@@ -3,10 +3,7 @@ import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Phone } 
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-
 const FAQ = () => {
-  const { t } = useTranslation();
   const [openItems, setOpenItems] = useState<number[]>([0]); // First item open by default
 
   const toggleItem = (index: number) => {
@@ -137,21 +134,21 @@ const FAQ = () => {
           <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              {t('faq.title')}
+              Vanliga frågor
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('faq.subtitle')}
+              Här hittar du svar på de vanligaste frågorna om våra tjänster, priser och arbetssätt.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/kontakt">
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  {t('faq.askQuestion')}
+                  Ställ en fråga
                   <Phone className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                {t('common.callUs')}: {t('common.phone')}
+                Ring oss: 08-123 456 78
               </Button>
             </div>
           </div>
@@ -238,10 +235,10 @@ const FAQ = () => {
           <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              {t('faq.noAnswerTitle')}
+              Hittar du inte svar på din fråga?
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              {t('faq.noAnswerSubtitle')}
+              Kontakta oss så hjälper vi dig gärna med dina frågor och funderingar.
             </p>
             
               <div className="grid md:grid-cols-2 gap-6">
@@ -256,7 +253,7 @@ const FAQ = () => {
                       />
                     </div>
                     <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
-                      {t('faq.sendMessage')}
+                      Skicka meddelande
                     </Button>
                   </div>
                 </Link>
@@ -271,7 +268,7 @@ const FAQ = () => {
                       />
                     </div>
                     <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
-                      {t('common.callUs')}: {t('common.phone')}
+                      Ring oss: 08-123 456 78
                     </Button>
                   </div>
                 </a>
