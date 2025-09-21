@@ -12,9 +12,11 @@ import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   console.log("Home component rendering...");
+  const { t } = useTranslation();
   
   // Initialize pricing store from URL/localStorage
   useEffect(() => {
@@ -52,16 +54,16 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white">
-              Redo att starta ditt <span className="text-yellow-300">projekt</span>?
+              {t('cta.title')} <span className="text-yellow-300">{t('cta.titleHighlight')}</span>?
             </h2>
             <p className="text-xl text-white/90 mb-12">
-              Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco
+              {t('cta.description')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/kontakt">
                 <Button className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl">
-                  Boka nu - gratis offert <ArrowRight className="ml-2 h-5 w-5" />
+                  {t('cta.button1')} <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button
@@ -69,7 +71,7 @@ const Home = () => {
                 className="border-white text-white hover:bg-white/10 font-bold text-lg px-8 py-4"
                 onClick={() => window.open('tel:08-123-456-78')}
               >
-                Ring: 08-123 456 78
+                {t('cta.button2')}
               </Button>
             </div>
           </div>

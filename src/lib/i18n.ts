@@ -14,6 +14,21 @@ const resources = {
         smartHome: "Smart Hem",
         admin: "Administration"
       },
+      hero: {
+        title: "löser allt inom",
+        subtitle: "hem & byggnad",
+        description: "Snabbare, billigare och mer professionellt än konkurrenterna.",
+        highlightText: "Start inom < 5 dagar, 50% rabatt med ROT.",
+        cta1: "Begär offert",
+        cta2: "Se våra tjänster"
+      },
+      cta: {
+        title: "Redo att starta ditt",
+        titleHighlight: "projekt",
+        description: "Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco",
+        button1: "Boka nu - gratis offert",
+        button2: "Ring: 08-123 456 78"
+      },
       services: {
         title: "Våra tjänster",
         subtitle: "Från små reparationer till stora byggnationer – vi har expertisen och erfarenheten för att leverera professionella lösningar inom alla områden.",
@@ -51,6 +66,21 @@ const resources = {
         smartHome: "Smart Home",
         admin: "Administration"
       },
+      hero: {
+        title: "solves everything in",
+        subtitle: "home & construction",
+        description: "Faster, cheaper and more professional than the competition.",
+        highlightText: "Start within < 5 days, 50% discount with ROT.",
+        cta1: "Request quote",
+        cta2: "See our services"
+      },
+      cta: {
+        title: "Ready to start your",
+        titleHighlight: "project",
+        description: "Get a free quote within 24 hours and see why thousands of customers choose Fixco",
+        button1: "Book now - free quote",
+        button2: "Call: 08-123 456 78"
+      },
       services: {
         title: "Our Services",
         subtitle: "From small repairs to large constructions – we have the expertise and experience to deliver professional solutions in all areas.",
@@ -87,6 +117,9 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    react: {
+      useSuspense: false
+    }
   });
 
 export default i18n;

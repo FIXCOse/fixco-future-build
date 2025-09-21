@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { cn } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Navigation() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin } = useRole();
+  const { t } = useTranslation();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -37,16 +39,16 @@ export default function Navigation() {
 
   const getNavItems = () => {
     const allItems = [
-      { href: "/", label: "Hem" },
-      { href: "/tjanster", label: "Tjänster" },
-      { href: "/smart-hem", label: "Smart Hem" },
-      { href: "/referenser", label: "Referenser" },
-      { href: "/om-oss", label: "Om oss" },
-      { href: "/kontakt", label: "Kontakt" },
+      { href: "/", label: t('nav.home') },
+      { href: "/tjanster", label: t('nav.services') },
+      { href: "/smart-hem", label: t('nav.smartHome') },
+      { href: "/referenser", label: t('nav.references') },
+      { href: "/om-oss", label: t('nav.about') },
+      { href: "/kontakt", label: t('nav.contact') },
     ];
 
     if (isAdmin) {
-      allItems.splice(-2, 0, { href: "/admin", label: "Administration" });
+      allItems.splice(-2, 0, { href: "/admin", label: t('nav.admin') });
     }
 
     return allItems;
@@ -119,48 +121,48 @@ export default function Navigation() {
             {/* User Actions - Desktop */}
             {user ? (
               <div className="hidden lg:flex items-center space-x-2">
-                <Link to="/mitt-fixco">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-9 px-3 inline-flex items-center space-x-2"
-                  >
-                    <User className="h-4 w-4" />
-                    <span className="hidden xl:inline">Mitt Fixco</span>
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleLogout}
-                  className="h-9 px-3 inline-flex items-center space-x-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden xl:inline">Logga ut</span>
-                </Button>
+                    <Link to="/mitt-fixco">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="h-9 px-3 inline-flex items-center space-x-2"
+                      >
+                        <User className="h-4 w-4" />
+                        <span className="hidden xl:inline">{t('nav.myFixco')}</span>
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={handleLogout}
+                      className="h-9 px-3 inline-flex items-center space-x-2"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span className="hidden xl:inline">Logga ut</span>
+                    </Button>
               </div>
             ) : (
               <div className="hidden lg:flex items-center space-x-2">
-                <Link to="/auth">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="h-9 px-3"
-                  >
-                    <span className="hidden xl:inline">Logga in</span>
-                    <span className="xl:hidden">Login</span>
-                  </Button>
-                </Link>
-                <Link to="/boka-hembesok">
-                  <Button 
-                    variant="default" 
-                    size="sm"
-                    className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
-                  >
-                    <span className="hidden xl:inline">Begär offert</span>
-                    <span className="xl:hidden">Offert</span>
-                  </Button>
-                </Link>
+                    <Link to="/auth">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="h-9 px-3"
+                      >
+                        <span className="hidden xl:inline">Logga in</span>
+                        <span className="xl:hidden">Login</span>
+                      </Button>
+                    </Link>
+                    <Link to="/boka-hembesok">
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
+                      >
+                        <span className="hidden xl:inline">Begär offert</span>
+                        <span className="xl:hidden">Offert</span>
+                      </Button>
+                    </Link>
               </div>
             )}
 
@@ -219,7 +221,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>Mitt Fixco</span>
+                        <span>{t('nav.myFixco')}</span>
                       </Button>
                     </Link>
                     <Button 
