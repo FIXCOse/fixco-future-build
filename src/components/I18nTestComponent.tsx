@@ -18,8 +18,19 @@ export const I18nTestComponent: React.FC = () => {
   const testTranslation = () => {
     console.log('🧪 Testing i18n system:');
     console.log('Current locale:', currentLocale);
-    console.log('Home translation:', t('nav.home', { defaultValue: 'Hem' }));
-    console.log('Services translation:', t('nav.services', { defaultValue: 'Tjänster' }));
+    console.log('Navigation - Home:', t('nav.home', { defaultValue: 'Hem' }));
+    console.log('Navigation - Services:', t('nav.services', { defaultValue: 'Tjänster' }));
+    
+    // Test home namespace
+    const homeT = (key: string, defaultValue: string) => {
+      const translation = (window as any).i18n?.t(`home:${key}`, { defaultValue });
+      console.log(`Home - ${key}:`, translation);
+      return translation;
+    };
+    
+    homeT('hero.brand', 'Fixco');
+    homeT('hero.solves_everything', 'löser allt inom');
+    homeT('trust.quality_title', 'Fixco Kvalitet');
     
     // Clear cache and reload
     if ((window as any).i18nDebug) {
@@ -31,8 +42,8 @@ export const I18nTestComponent: React.FC = () => {
     <div className="fixed bottom-4 right-4 z-50 bg-black/80 text-white p-4 rounded-lg text-sm">
       <div className="font-bold mb-2">i18n Debug Panel</div>
       <div>Current: {currentLocale}</div>
-      <div>Home: {t('nav.home', { defaultValue: 'Hem' })}</div>
-      <div>Services: {t('nav.services', { defaultValue: 'Tjänster' })}</div>
+      <div>Nav - Home: {t('nav.home', { defaultValue: 'Hem' })}</div>
+      <div>Hero - Brand: {t('nav.services', { defaultValue: 'Tjänster' })}</div>
       <div className="flex gap-2 mt-2">
         <Button 
           size="sm" 
