@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
 import {
@@ -8,25 +7,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useLocale } from '@/hooks/useLocale';
 
 const languages = [
-  { code: 'sv', name: 'Svenska', flag: '🇸🇪' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'sv' as const, name: 'Svenska', flag: '🇸🇪' },
+  { code: 'en' as const, name: 'English', flag: '🇬🇧' },
 ];
 
 export const LanguageSelector = () => {
-  const { i18n } = useTranslation();
+  const { locale, setLocale, isLoading } = useLocale();
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const currentLanguage = languages.find(lang => lang.code === locale) || languages[0];
 
-  const changeLanguage = (languageCode: string) => {
-    i18n.changeLanguage(languageCode);
+  const handleLanguageChange = async (languageCode: 'sv' | 'en') => {
+    await setLocale(languageCode);
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="flex items-center gap-2"
+          disabled={isLoading}
+        >
           <Globe className="h-4 w-4" />
           <span className="hidden sm:inline">{currentLanguage.flag} {currentLanguage.name}</span>
           <span className="sm:hidden">{currentLanguage.flag}</span>
@@ -36,8 +41,9 @@ export const LanguageSelector = () => {
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
-            onClick={() => changeLanguage(language.code)}
-            className={i18n.language === language.code ? 'bg-accent' : ''}
+            onClick={() => handleLanguageChange(language.code)}
+            className={locale === language.code ? 'bg-accent' : ''}
+            disabled={isLoading}
           >
             <span className="mr-2">{language.flag}</span>
             {language.name}

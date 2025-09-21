@@ -28,8 +28,8 @@ const Contact = () => {
     // Basic validation
     if (!formData.name || !formData.email || !formData.phone || !formData.message) {
       toast({
-        title: "Fält saknas",
-        description: "Vänligen fyll i alla obligatoriska fält.",
+        title: t('errors.fieldsRequired'),
+        description: t('errors.fillAllFields'),
         variant: "destructive"
       });
       setIsSubmitting(false);
@@ -55,8 +55,8 @@ const Contact = () => {
       });
     } catch (error) {
       toast({
-        title: "Något gick fel",
-        description: "Vänligen försök igen eller ring oss direkt.",
+        title: t('errors.somethingWentWrong'),
+        description: t('errors.tryAgainOrCall'),
         variant: "destructive"
       });
     } finally {
@@ -72,9 +72,17 @@ const Contact = () => {
   };
 
   const services = [
-    "Snickeri", "VVS", "Montering", "Trädgård", "Städning", 
-    "Projektledning", "Markarbeten", "Tekniska installationer", 
-    "El", "Fastighetsskötsel", "Övrigt"
+    t('servicesData.carpentry'), 
+    t('servicesData.plumbing'), 
+    t('servicesData.assembly'), 
+    t('servicesData.garden'), 
+    t('servicesData.cleaning'),
+    t('servicesData.projectManagement'), 
+    t('servicesData.groundwork'),
+    t('servicesData.technicalInstallations'),
+    t('servicesData.electrical'), 
+    t('servicesData.propertyMaintenance'), 
+    t('servicesData.other')
   ];
 
   return (
@@ -86,18 +94,17 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Kontakta <span className="gradient-text">Fixco</span>
+              {t('contact.title')} <span className="gradient-text">{t('contact.titleHighlight')}</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Få en kostnadsfri offert inom 24 timmar. Vi arbetar i Uppsala & Stockholms län 
-              (nationellt vid större projekt).
+              {t('contact.subtitle')}
             </p>
             
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">Snabb respons</div>
-                <div className="text-sm text-muted-foreground">Svar inom 2 timmar</div>
+                <div className="font-bold">{t('contact.quickResponse')}</div>
+                <div className="text-sm text-muted-foreground">{t('contact.responseTime')}</div>
               </div>
               <div className="card-premium p-6">
                 <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-4" />
@@ -106,8 +113,8 @@ const Contact = () => {
               </div>
               <div className="card-premium p-6">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">Lokal service</div>
-                <div className="text-sm text-muted-foreground">Uppsala & Stockholm</div>
+                <div className="font-bold">{t('contact.localService')}</div>
+                <div className="text-sm text-muted-foreground">{t('contact.serviceArea')}</div>
               </div>
             </div>
           </div>
@@ -122,37 +129,37 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="card-premium p-8">
               <h2 className="text-3xl font-bold mb-6">
-                Begär <span className="gradient-text">offert</span>
+                {t('contact.formTitle')}
               </h2>
               <p className="text-muted-foreground mb-8">
-                Fyll i formuläret så återkommer vi inom 24 timmar med en kostnadsfri och detaljerad offert.
+                {t('contact.formSubtitle')}
               </p>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      Namn <span className="text-red-400">*</span>
+                      {t('forms.name')} <span className="text-red-400">*</span>
                     </label>
                     <Input
                       name="name"
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Ditt fullständiga namn"
+                      placeholder={t('forms.fullName')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      Telefon <span className="text-red-400">*</span>
+                      {t('forms.phone')} <span className="text-red-400">*</span>
                     </label>
                     <Input
                       name="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="070-123 45 67"
+                      placeholder={t('forms.phoneFormat')}
                       required
                     />
                   </div>
@@ -160,34 +167,34 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    E-post <span className="text-red-400">*</span>
+                    {t('forms.email')} <span className="text-red-400">*</span>
                   </label>
                   <Input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="din@email.se"
+                    placeholder={t('forms.emailFormat')}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Adress för projektet
+                    {t('forms.address')}
                   </label>
                   <Input
                     name="address"
                     type="text"
                     value={formData.address}
                     onChange={handleChange}
-                    placeholder="Gatuadress, ort"
+                    placeholder={t('forms.addressFormat')}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Typ av tjänst
+                    {t('forms.service')}
                   </label>
                   <select
                     name="service"
@@ -195,23 +202,23 @@ const Contact = () => {
                     onChange={handleChange}
                     className="w-full px-3 py-2 bg-input border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="">Välj tjänst</option>
-                    {services.map(service => (
-                      <option key={service} value={service}>{service}</option>
+                    <option value="">{t('forms.selectService')}</option>
+                    {services.map((service, index) => (
+                      <option key={index} value={service}>{service}</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Beskrivning av projekt <span className="text-red-400">*</span>
+                    {t('forms.projectDescription')} <span className="text-red-400">*</span>
                   </label>
                   <Textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    placeholder="Beskriv ditt projekt så detaljerat som möjligt. Vilka arbeten behöver utföras? Ungefär vilken tidsram? Finns det speciella önskemål?"
+                    placeholder={t('forms.projectDescriptionPlaceholder')}
                     required
                   />
                 </div>
@@ -222,17 +229,17 @@ const Contact = () => {
                   className="w-full gradient-primary text-primary-foreground font-bold text-lg py-3"
                 >
                   {isSubmitting ? (
-                    <>Skickar...</>
+                    <>{t('forms.submitting')}</>
                   ) : (
                     <>
-                      Skicka förfrågan
+                      {t('forms.submitRequest')}
                       <Send className="ml-2 h-5 w-5" />
                     </>
                   )}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Genom att skicka formuläret godkänner du att vi kontaktar dig angående din förfrågan.
+                  {t('forms.privacyConsent')}
                 </p>
               </form>
             </div>
@@ -240,7 +247,7 @@ const Contact = () => {
             {/* Contact Information */}
             <div className="space-y-8">
               <div className="card-premium p-8">
-                <h3 className="text-2xl font-bold mb-6">Kontaktinformation</h3>
+                <h3 className="text-2xl font-bold mb-6">{t('contact.contactInfo')}</h3>
                 
                 <div className="space-y-6">
                   <a href="tel:08-123456789" className="flex items-center space-x-4 hover:text-primary transition-colors">
@@ -248,9 +255,9 @@ const Contact = () => {
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">Telefon</div>
-                      <div className="text-muted-foreground">08-123 456 78</div>
-                      <div className="text-sm text-green-400">Ring nu för akuta ärenden</div>
+                      <div className="font-semibold">{t('contact.phone')}</div>
+                      <div className="text-muted-foreground">{t('common.phone')}</div>
+                      <div className="text-sm text-green-400">{t('contact.callNow')}</div>
                     </div>
                   </a>
 
@@ -259,9 +266,9 @@ const Contact = () => {
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">E-post</div>
+                      <div className="font-semibold">{t('contact.email')}</div>
                       <div className="text-muted-foreground">info@fixco.se</div>
-                      <div className="text-sm text-primary">Svar inom 2 timmar</div>
+                      <div className="text-sm text-primary">{t('contact.responseWithin2Hours')}</div>
                     </div>
                   </a>
 
@@ -270,9 +277,9 @@ const Contact = () => {
                       <MapPin className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">Verksamhetsområde</div>
-                      <div className="text-muted-foreground">Uppsala & Stockholms län</div>
-                      <div className="text-sm text-muted-foreground">Nationellt vid större projekt</div>
+                      <div className="font-semibold">{t('contact.businessArea')}</div>
+                      <div className="text-muted-foreground">{t('contact.businessAreaLocation')}</div>
+                      <div className="text-sm text-muted-foreground">{t('contact.nationalProjects')}</div>
                     </div>
                   </div>
                 </div>
@@ -280,48 +287,48 @@ const Contact = () => {
 
               <div className="card-premium p-8">
                 <h3 className="text-2xl font-bold mb-4">
-                  <span className="gradient-text">Öppettider</span>
+                  <span className="gradient-text">{t('contact.businessHours')}</span>
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span>Måndag - Fredag</span>
+                    <span>{t('contact.mondayFriday')}</span>
                     <span className="text-primary font-semibold">07:00 - 18:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Lördag</span>
+                    <span>{t('contact.saturday')}</span>
                     <span className="text-primary font-semibold">08:00 - 16:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Söndag</span>
-                    <span className="text-muted-foreground">Stängt</span>
+                    <span>{t('contact.sunday')}</span>
+                    <span className="text-muted-foreground">{t('contact.closed')}</span>
                   </div>
                   <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
                     <div className="text-sm">
                       <AlertCircle className="h-4 w-4 text-orange-400 inline mr-2" />
-                      <strong>Akutservice:</strong> Ring för akuta läckage och elfärder
+                      <strong>{t('contact.emergencyService')}:</strong> {t('contact.emergencyNote')}
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="card-premium p-8 gradient-primary-subtle border-primary/20">
-                <h3 className="text-xl font-bold mb-4">Varför välja Fixco?</h3>
+                <h3 className="text-xl font-bold mb-4">{t('contact.whyChooseFixco')}</h3>
                 <div className="space-y-3">
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Start inom 24 timmar</span>
+                    <span>{t('contact.startWithin24Hours')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>ROT-avdrag - endast 480 kr/h</span>
+                    <span>{t('contact.rotDiscount')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Garanterad kvalitet</span>
+                    <span>{t('contact.guaranteedQuality')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Kostnadsfria offerter</span>
+                    <span>{t('contact.freeQuotes')}</span>
                   </div>
                 </div>
               </div>
