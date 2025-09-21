@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from 'react-i18next';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Navigation() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin } = useRole();
+  const { t } = useTranslation('header');
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -29,24 +31,24 @@ export default function Navigation() {
       await supabase.auth.signOut();
       queryClient.clear();
       navigate('/');
-      toast.success('Du har loggats ut');
+      toast.success(t('auth.logged_out', { defaultValue: 'Du har loggats ut' }));
     } catch (error) {
-      toast.error('Kunde inte logga ut');
+      toast.error(t('auth.logout_error', { defaultValue: 'Kunde inte logga ut' }));
     }
   };
 
   const getNavItems = () => {
     const allItems = [
-      { href: "/", label: "Hem" },
-      { href: "/tjanster", label: "Tjänster" },
-      { href: "/smart-hem", label: "Smart Hem" },
-      { href: "/referenser", label: "Referenser" },
-      { href: "/om-oss", label: "Om oss" },
-      { href: "/kontakt", label: "Kontakt" },
+      { href: "/", label: t('nav.home', { defaultValue: "Hem" }) },
+      { href: "/tjanster", label: t('nav.services', { defaultValue: "Tjänster" }) },
+      { href: "/smart-hem", label: t('nav.smart_home', { defaultValue: "Smart Hem" }) },
+      { href: "/referenser", label: t('nav.references', { defaultValue: "Referenser" }) },
+      { href: "/om-oss", label: t('nav.about', { defaultValue: "Om oss" }) },
+      { href: "/kontakt", label: t('nav.contact', { defaultValue: "Kontakt" }) },
     ];
 
     if (isAdmin) {
-      allItems.splice(-2, 0, { href: "/admin", label: "Administration" });
+      allItems.splice(-2, 0, { href: "/admin", label: t('nav.admin', { defaultValue: "Administration" }) });
     }
 
     return allItems;
@@ -124,7 +126,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">Mitt Fixco</span>
+                        <span className="hidden xl:inline">{t('auth.my_fixco', { defaultValue: "Mitt Fixco" })}</span>
                       </Button>
                     </Link>
                     <Button 
@@ -134,7 +136,7 @@ export default function Navigation() {
                       className="h-9 px-3 inline-flex items-center space-x-2"
                     >
                       <LogOut className="h-4 w-4" />
-                      <span className="hidden xl:inline">Logga ut</span>
+                      <span className="hidden xl:inline">{t('auth.logout', { defaultValue: "Logga ut" })}</span>
                     </Button>
               </div>
             ) : (
