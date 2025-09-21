@@ -1,31 +1,34 @@
 import { Shield, MapPin, Clock, Award, CheckCircle, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const TrustBar = () => {
+  const { t } = useTranslation();
+  
   const trustItems = [
     {
       icon: "image",
       src: "/assets/fixco-f-icon-new.png",
-      text: "Fixco Kvalitet"
+      text: t('common.fixcoQuality')
     },
     {
       icon: Clock,
-      text: "Start inom < 5 dagar"
+      text: t('trustBar.startWithin5Days')
     },
     {
       icon: MapPin,
-      text: "Uppsala & Stockholm"
+      text: t('trustBar.locations')
     },
     {
       icon: CheckCircle,
-      text: "500+ nöjda kunder"
+      text: t('trustBar.happyCustomers')
     },
     {
       icon: Award,
-      text: "Försäkrad & garanterad"
+      text: t('trustBar.insuredGuaranteed')
     },
     {
       icon: Users,
-      text: "Familjeföretag sedan 2015"
+      text: t('trustBar.familyBusiness')
     }
   ];
 

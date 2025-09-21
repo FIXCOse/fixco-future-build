@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useActionWizard } from "@/stores/actionWizardStore";
+import { useTranslation } from "react-i18next";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -41,6 +42,7 @@ const ServiceCardV3 = ({
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
   const open = useActionWizard((s) => s.open);
+  const { t } = useTranslation();
 
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -128,7 +130,7 @@ const ServiceCardV3 = ({
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
           data-service-name={title}
         >
-            Begär offert
+            {t('common.requestQuote')}
           </Button>
         </div>
       </article>
@@ -280,7 +282,7 @@ const ServiceCardV3 = ({
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
           data-service-name={title}
         >
-          {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
+          {ctaType === 'book' ? t('common.bookNow') : t('common.requestQuote')}
         </Button>
       </div>
     </article>

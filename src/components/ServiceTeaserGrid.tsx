@@ -6,10 +6,12 @@ import { cn } from '@/lib/utils';
 import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
+import { useTranslation } from 'react-i18next';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { mode, shouldShowService } = usePriceStore();
+  const { t } = useTranslation();
 
   const services: Array<{
     id: string;
@@ -174,7 +176,7 @@ const ServiceTeaserGrid = () => {
             asChild
           >
             <Link to="/tjanster">
-              Se alla våra tjänster
+              {t('common.seeAllServices')}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </Button>

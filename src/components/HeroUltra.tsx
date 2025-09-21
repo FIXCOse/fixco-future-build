@@ -160,10 +160,10 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
-    { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
-    { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
-    { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
+    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: t('common.fixcoQuality'), description: t('common.ourPromise') },
+    { icon: Award, title: t('common.lowestPriceROT'), description: t('common.afterROTDeduction') },
+    { icon: Users, title: t('common.customers2000'), description: t('common.averageRating') },
+    { icon: MapPin, title: t('common.swedenLocations'), description: t('common.nationalProjects') }
   ];
 
   return (

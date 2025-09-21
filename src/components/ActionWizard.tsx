@@ -145,7 +145,7 @@ function ActionWizardInner({
   return (
     <div className="space-y-5">
       <h2 className="text-xl font-semibold text-foreground">
-        {mode === "book" ? "Boka tjänst" : "Begär offert"}
+        {mode === "book" ? t('common.bookService') : t('common.requestQuote')}
       </h2>
       
       {payload?.serviceName && (

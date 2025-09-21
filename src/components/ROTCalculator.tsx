@@ -173,7 +173,7 @@ const ROTCalculator = () => {
                   </div>
                 ) : (
                   <>
-                    Begär offert med ROT-priser
+                    {t('common.requestQuote')} med ROT-priser
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </>
                 )}
