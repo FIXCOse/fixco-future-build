@@ -64,41 +64,45 @@ export default function Navigation() {
       <nav className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-10">
         <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-4 md:gap-x-6 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
           
-          {/* Left: Logo + F Icon */}
-          <div className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group">
-            <Link to="/" className="inline-flex items-center">
-              <img 
-                src="/assets/fixco-logo-black.png" 
-                alt="FIXCO - Din Helhetslösning" 
-                className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
-              />
-            </Link>
+          {/* Left: Logo Only */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group"
+          >
+            <img 
+              src="/assets/fixco-logo-black.png" 
+              alt="FIXCO - Din Helhetslösning" 
+              className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
+            />
+          </Link>
+
+          {/* Center: F Icon + Primary Navigation - No Wrap, XL+ Only */}
+          <div className="hidden xl:flex items-center flex-nowrap justify-center gap-x-[clamp(12px,1.2vw,22px)] min-w-0">
+            {/* F Icon positioned before navigation */}
             <img 
               src="/assets/fixco-f-icon-black.png" 
               alt="F" 
-              className="h-5 w-5 ml-2 mr-2 opacity-70"
+              className="h-5 w-5 opacity-70 mr-2"
             />
+            <ul className="flex items-center flex-nowrap gap-x-[clamp(12px,1.2vw,22px)]">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "inline-flex items-center h-[var(--header-h)] px-3 md:px-3.5 lg:px-4 whitespace-nowrap",
+                      "text-foreground hover:text-primary transition-colors",
+                      "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      "hover:underline underline-offset-4 decoration-2",
+                      isActive(item.href) && "text-primary font-medium"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-
-          {/* Center: Primary Navigation - No Wrap, XL+ Only */}
-          <ul className="hidden xl:flex items-center flex-nowrap justify-center gap-x-[clamp(12px,1.2vw,22px)] min-w-0">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  to={item.href}
-                  className={cn(
-                    "inline-flex items-center h-[var(--header-h)] px-3 md:px-3.5 lg:px-4 whitespace-nowrap",
-                    "text-foreground hover:text-primary transition-colors",
-                    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    "hover:underline underline-offset-4 decoration-2",
-                    isActive(item.href) && "text-primary font-medium"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
 
           {/* Right: Secondary Actions - Single Line, No Wrap */}
           <div className="flex items-center gap-x-3 md:gap-x-4 whitespace-nowrap">
