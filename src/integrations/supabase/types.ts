@@ -484,6 +484,36 @@ export type Database = {
         }
         Relationships: []
       }
+      i18n_resources: {
+        Row: {
+          id: number
+          key: string
+          locale: string
+          ns: string
+          updated_at: string | null
+          updated_by: string | null
+          value: string
+        }
+        Insert: {
+          id?: number
+          key: string
+          locale: string
+          ns: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value: string
+        }
+        Update: {
+          id?: number
+          key?: string
+          locale?: string
+          ns?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           booking_id: string | null
@@ -1754,6 +1784,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      translations: {
+        Row: {
+          entity_id: string
+          entity_type: string
+          field: string
+          id: number
+          locale: string
+          updated_at: string | null
+          updated_by: string | null
+          value: string
+        }
+        Insert: {
+          entity_id: string
+          entity_type: string
+          field: string
+          id?: number
+          locale: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value: string
+        }
+        Update: {
+          entity_id?: string
+          entity_type?: string
+          field?: string
+          id?: number
+          locale?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
