@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Navigation from "@/components/Navigation";
 import HeroUltra from "@/components/HeroUltra";
 import TrustBar from "@/components/TrustBar";
 import ComparisonUltra from "@/components/ComparisonUltra";
@@ -12,9 +11,11 @@ import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
+import { useI18n } from "@/i18n/context";
 
 const Home = () => {
   console.log("Home component rendering...");
+  const { t } = useI18n();
   
   // Initialize pricing store from URL/localStorage
   useEffect(() => {
@@ -23,8 +24,6 @@ const Home = () => {
   
   return (
     <div className="min-h-screen">
-      <Navigation />
-      
       {/* Hero Section - ULTRA Enhanced */}
       <HeroUltra />
 
@@ -52,24 +51,24 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white">
-              Redo att starta ditt <span className="text-yellow-300">projekt</span>?
+              {t('home.finalCta.title')}
             </h2>
             <p className="text-xl text-white/90 mb-12">
-              Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco
+              {t('home.finalCta.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/kontakt">
                 <Button className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-8 py-4 shadow-xl">
-                  Boka nu - gratis offert <ArrowRight className="ml-2 h-5 w-5" />
+                  {t('home.finalCta.primaryButton')} <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 font-bold text-lg px-8 py-4"
-                onClick={() => window.open('tel:08-123-456-78')}
+                onClick={() => window.open(`tel:${t('common.phone')}`)}
               >
-                Ring: 08-123 456 78
+                {t('home.finalCta.secondaryButton')}
               </Button>
             </div>
           </div>

@@ -28,6 +28,7 @@ import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
+import AppLayout from "./components/layouts/AppLayout";
 import MyFixcoLayout from "./components/MyFixcoLayout";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
@@ -68,13 +69,6 @@ import TestBooking from "./pages/TestBooking";
 import { SmartHome } from "./pages/SmartHome";
 import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
-import EnglishLayout from "./components/layouts/EnglishLayout";
-import HomeEn from "./pages/en/HomeEn";
-import ServicesEn from "./pages/en/ServicesEn";
-import ContactEn from "./pages/en/ContactEn";
-import AboutEn from "./pages/en/AboutEn";
-import ReferencesEn from "./pages/en/ReferencesEn";
-import SmartHomeEn from "./pages/en/SmartHomeEn";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 
 const queryClient = new QueryClient();
@@ -173,29 +167,32 @@ const App = () => {
                   <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
                   <Route path="/test-booking" element={<TestBooking />} />
                   
-                  {/* Main Routes */}
-                  <Route path="/tjanster" element={<Services />} />
-                  <Route path="/tjanster/:slug" element={<ServiceDetail />} />
-                  <Route path="/kontakt" element={<Contact />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/om-oss" element={<AboutUs />} />
-                  <Route path="/boka-hembesok" element={<BookVisit />} />
-                  <Route path="/rot-info" element={<ROTInfo />} />
-                  <Route path="/rut" element={<RUT />} />
-                  <Route path="/referenser" element={<Referenser />} />
-                  <Route path="/smart-hem" element={<SmartHome />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  
-                  {/* English Routes */}
-                  <Route path="/en" element={<EnglishLayout />}>
-                    <Route index element={<HomeEn />} />
-                    <Route path="services" element={<ServicesEn />} />
-                    <Route path="contact" element={<ContactEn />} />
-                    <Route path="about" element={<AboutEn />} />
-                    <Route path="references" element={<ReferencesEn />} />
-                    <Route path="smart-home" element={<SmartHomeEn />} />
-                  </Route>
+  // Import the app.tsx file and replace the routing section
+  <Route path="/" element={<AppLayout />}>
+    <Route index element={<Home />} />
+    <Route path="tjanster" element={<Services />} />
+    <Route path="tjanster/:slug" element={<ServiceDetail />} />
+    <Route path="kontakt" element={<Contact />} />
+    <Route path="faq" element={<FAQ />} />
+    <Route path="om-oss" element={<AboutUs />} />
+    <Route path="boka-hembesok" element={<BookVisit />} />
+    <Route path="rot-info" element={<ROTInfo />} />
+    <Route path="rut" element={<RUT />} />
+    <Route path="referenser" element={<Referenser />} />
+    <Route path="smart-hem" element={<SmartHome />} />
+    <Route path="terms" element={<Terms />} />
+    <Route path="privacy" element={<Privacy />} />
+  </Route>
+  
+  {/* English Routes - Same components with EN locale */}
+  <Route path="/en/*" element={<AppLayout locale="en" />}>
+    <Route index element={<Home />} />
+    <Route path="services" element={<Services />} />
+    <Route path="contact" element={<Contact />} />
+    <Route path="about" element={<AboutUs />} />
+    <Route path="references" element={<Referenser />} />
+    <Route path="smart-home" element={<SmartHome />} />
+  </Route>
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useI18n } from '@/i18n/context';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Navigation() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin, isOwner } = useRole();
+  const { t } = useI18n();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -39,18 +41,18 @@ export default function Navigation() {
     // For admin/owner users, show only admin-relevant items
     if (isAdmin || isOwner) {
       return [
-        { href: "/admin", label: "Administration" },
+        { href: "/admin", label: t('navigation.adminPanel') },
       ];
     }
 
     // For regular users, show all navigation items
     return [
-      { href: "/", label: "Hem" },
-      { href: "/tjanster", label: "Tjänster" },
-      { href: "/smart-hem", label: "Smart Hem" },
-      { href: "/referenser", label: "Referenser" },
-      { href: "/om-oss", label: "Om oss" },
-      { href: "/kontakt", label: "Kontakt" },
+      { href: "/", label: t('navigation.home') },
+      { href: "/tjanster", label: t('navigation.services') },
+      { href: "/smart-hem", label: t('navigation.smartHome') },
+      { href: "/referenser", label: t('navigation.references') },
+      { href: "/om-oss", label: t('navigation.about') },
+      { href: "/kontakt", label: t('navigation.contact') },
     ];
   };
 
@@ -126,7 +128,7 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? 'Adminpanel' : 'Mitt Fixco'}</span>
+                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? t('navigation.adminPanel') : t('navigation.myFixco')}</span>
                       </Button>
                     </Link>
                     <Button 
@@ -215,7 +217,7 @@ export default function Navigation() {
                         className="w-full justify-start gap-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span>{(isAdmin || isOwner) ? 'Adminpanel' : 'Mitt Fixco'}</span>
+                        <span>{(isAdmin || isOwner) ? t('navigation.adminPanel') : t('navigation.myFixco')}</span>
                       </Button>
                     </Link>
                     <Button 

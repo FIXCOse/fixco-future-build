@@ -1,0 +1,41 @@
+{
+  "common": {
+    "loading": "Laddar...",
+    "error": "Något gick fel",
+    "contact": "Kontakt",
+    "about": "Om oss",
+    "services": "Tjänster",
+    "home": "Hem",
+    "smartHome": "Smart Hem",
+    "references": "Referenser",
+    "bookVisit": "Boka hembesök",
+    "login": "Logga in",
+    "getQuote": "Begär offert",
+    "callUs": "Ring oss",
+    "phone": "08-123 456 78"
+  },
+  "navigation": {
+    "home": "Hem",
+    "services": "Tjänster", 
+    "smartHome": "Smart Hem",
+    "references": "Referenser",
+    "about": "Om oss",
+    "contact": "Kontakt",
+    "myFixco": "Mitt Fixco",
+    "adminPanel": "Adminpanel"
+  },
+  "home": {
+    "hero": {
+      "title": "Professionell hemservice med ROT & RUT-avdrag",
+      "subtitle": "Från elmontörer till målare - vi löser allt inom hem & byggnad. Över 15 000 nöjda kunder och garanterat ROT & RUT-avdrag.",
+      "primaryCta": "Begär kostnadsfri offert",
+      "secondaryCta": "Ring: 08-123 456 78"
+    },
+    "finalCta": {
+      "title": "Redo att starta ditt projekt?",
+      "subtitle": "Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco",
+      "primaryButton": "Boka nu - gratis offert",
+      "secondaryButton": "Ring: 08-123 456 78"
+    }
+  }
+}

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
+import { useI18n } from "@/i18n/context";
 
 interface ParticleSystemProps {
   count?: number;
@@ -151,6 +152,7 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -243,18 +245,9 @@ const HeroUltra = () => {
               } : {}}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="gradient-text">Fixco</span> löser allt inom{" "}
-              <br />
-              <motion.span 
-                className="gradient-text"
-                animate={ultraEnabled ? { 
-                  scale: [1, 1.02, 1],
-                  rotate: [0, 0.5, 0] 
-                } : {}}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                hem & byggnad
-              </motion.span>
+              <span className="gradient-text">
+                {t('home.hero.title')}
+              </span>
             </motion.h1>
             
             <motion.p 
@@ -263,8 +256,7 @@ const HeroUltra = () => {
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              Snabbare, billigare och mer professionellt än konkurrenterna. 
-              <span className="text-primary font-semibold"> Start inom 5 dagar, 50% rabatt med ROT.</span>
+              {t('home.hero.subtitle')}
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
@@ -278,7 +270,7 @@ const HeroUltra = () => {
                 <MagneticButton
                   className="gradient-primary text-primary-foreground text-lg px-8 py-4 shadow-premium hover:shadow-glow"
                 >
-                  Begär offert
+                  {t('home.hero.primaryCta')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
@@ -287,7 +279,7 @@ const HeroUltra = () => {
                   variant="outline"
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10 backdrop-blur-sm"
                 >
-                  Se våra tjänster
+                  {t('common.services')}
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>

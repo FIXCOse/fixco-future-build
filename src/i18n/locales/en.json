@@ -1,0 +1,41 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "contact": "Contact",
+    "about": "About us",
+    "services": "Services", 
+    "home": "Home",
+    "smartHome": "Smart Home",
+    "references": "References",
+    "bookVisit": "Book visit",
+    "login": "Login",
+    "getQuote": "Get Quote",
+    "callUs": "Call us",
+    "phone": "08-123 456 78"
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "smartHome": "Smart Home", 
+    "references": "References",
+    "about": "About us",
+    "contact": "Contact",
+    "myFixco": "My Fixco",
+    "adminPanel": "Admin Panel"
+  },
+  "home": {
+    "hero": {
+      "title": "Professional home services with ROT & RUT deductions",
+      "subtitle": "From electricians to painters - we handle everything for your home & construction needs. Over 15,000 satisfied customers with guaranteed ROT & RUT deductions.",
+      "primaryCta": "Request free quote",
+      "secondaryCta": "Call: 08-123 456 78"
+    },
+    "finalCta": {
+      "title": "Ready to start your project?",
+      "subtitle": "Get a free quote within 24 hours and see why thousands of customers choose Fixco",
+      "primaryButton": "Book now - free quote",
+      "secondaryButton": "Call: 08-123 456 78"
+    }
+  }
+}
