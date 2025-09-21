@@ -64,3 +64,8 @@ export const getI18n = () => {
 };
 
 export default getI18n();
+
+// Import debug utilities in development
+if (import.meta.env.DEV) {
+  import('./i18n/debug');
+}

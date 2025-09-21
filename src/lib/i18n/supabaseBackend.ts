@@ -124,6 +124,11 @@ class SupabaseBackend implements BackendModule<{}> {
       // Clear entire cache
       this.cache.clear();
     }
+    
+    // Also clear i18next resource store
+    if (typeof window !== 'undefined' && (window as any).i18n) {
+      (window as any).i18n.reloadResources();
+    }
   }
 }
 

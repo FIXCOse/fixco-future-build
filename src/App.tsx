@@ -30,6 +30,7 @@ import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
 import { I18nProvider } from "./components/I18nProvider";
+import { I18nTestComponent } from "./components/I18nTestComponent";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
@@ -187,6 +188,7 @@ const App = () => {
                 <StickyCtaBar />
                 <StickyCTA />
                 <AIChat />
+                <I18nTestComponent />
       <ModalHost />
               </BrowserRouter>
             </TooltipProvider>
