@@ -35,13 +35,13 @@ const FAQTeaser = () => {
       {/* F Watermark Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
         <img 
-          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          src="/assets/fixco-f-icon-new.png"
           alt="" 
           className="absolute top-16 right-16 w-18 h-18 object-contain rotate-12 opacity-30 animate-pulse"
           style={{ animationDuration: '4s' }}
         />
         <img 
-          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+          src="/assets/fixco-f-icon-new.png" 
           alt="" 
           className="absolute bottom-16 left-16 w-14 h-14 object-contain -rotate-6 opacity-25 animate-pulse"
           style={{ animationDuration: '5s', animationDelay: '1.5s' }}

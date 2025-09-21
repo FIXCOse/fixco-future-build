@@ -62,17 +62,17 @@ export default function Navigation() {
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border" style={{ "--header-h": "64px" } as any}>
       <nav className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-10">
-        <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-6 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
+        <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-8 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
           
-          {/* Left: Logo Only */}
+          {/* Left: Logo Only - Larger with More Spacing */}
           <Link 
             to="/" 
-            className="inline-flex items-center h-[var(--header-h)] group"
+            className="inline-flex items-center h-[var(--header-h)] mr-6 md:mr-8 group"
           >
             <img 
               src="/assets/fixco-logo-black.png" 
               alt="FIXCO - Din Helhetslösning" 
-              className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
+              className="h-7 md:h-8 lg:h-9 w-auto group-hover:scale-105 transition-transform"
             />
           </Link>
 

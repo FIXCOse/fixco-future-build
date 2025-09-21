@@ -71,13 +71,13 @@ const ServiceDetail = () => {
           {/* F Watermark Background Elements - More Visible */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute top-20 right-20 w-16 h-16 object-contain rotate-12 opacity-35 animate-pulse"
               style={{ animationDuration: '4s' }}
             />
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute bottom-10 left-20 w-12 h-12 object-contain -rotate-12 opacity-25 animate-pulse"
               style={{ animationDuration: '5s', animationDelay: '1s' }}
@@ -91,7 +91,7 @@ const ServiceDetail = () => {
                 {/* F Brand Badge */}
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
                   <img 
-                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    src="/assets/fixco-f-icon-new.png" 
                     alt="Fixco" 
                     className="h-3 w-3 object-contain"
                   />

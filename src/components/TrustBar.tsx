@@ -4,7 +4,7 @@ const TrustBar = () => {
   const trustItems = [
     {
       icon: "image",
-      src: "/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png",
+      src: "/assets/fixco-f-icon-new.png",
       text: "Fixco Kvalitet"
     },
     {

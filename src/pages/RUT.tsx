@@ -76,13 +76,13 @@ const RUT = () => {
         {/* F Watermark Background Elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '5s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
             style={{ animationDuration: '4s', animationDelay: '2s' }}
@@ -96,7 +96,7 @@ const RUT = () => {
                 {/* F Brand Badge */}
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
                   <img 
-                    src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                    src="/assets/fixco-f-icon-new.png"
                     alt="Fixco" 
                     className="h-3 w-3 object-contain"
                   />
@@ -160,7 +160,7 @@ const RUT = () => {
                     {/* F Brand Badge */}
                     <div className="absolute bottom-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
                       <img 
-                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        src="/assets/fixco-f-icon-new.png"
                         alt="Fixco" 
                         className="h-3 w-3 object-contain opacity-90"
                       />
@@ -191,13 +191,13 @@ const RUT = () => {
         {/* F Watermark Background Elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute top-16 right-16 w-18 h-18 object-contain rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '4s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute bottom-16 left-16 w-14 h-14 object-contain -rotate-6 opacity-25 animate-pulse"
             style={{ animationDuration: '5s', animationDelay: '1.5s' }}
@@ -221,7 +221,7 @@ const RUT = () => {
                   {/* F Brand Badge */}
                   <div className="absolute top-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
                     <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      src="/assets/fixco-f-icon-new.png"
                       alt="Fixco" 
                       className="h-3 w-3 object-contain opacity-90"
                     />
@@ -269,7 +269,7 @@ const RUT = () => {
                   {/* F Brand Badge */}
                   <div className="absolute bottom-3 right-3 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 z-10">
                     <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      src="/assets/fixco-f-icon-new.png"
                       alt="Fixco" 
                       className="h-3 w-3 object-contain opacity-90"
                     />
@@ -301,7 +301,7 @@ const RUT = () => {
                   {/* F Brand Badge */}
                   <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                     <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      src="/assets/fixco-f-icon-new.png"
                       alt="Fixco" 
                       className="h-3.5 w-3.5 object-contain opacity-90"
                     />
@@ -317,7 +317,7 @@ const RUT = () => {
                   {/* F Brand Badge */}
                   <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                     <img 
-                      src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                      src="/assets/fixco-f-icon-new.png" 
                       alt="Fixco" 
                       className="h-3.5 w-3.5 object-contain opacity-90"
                     />

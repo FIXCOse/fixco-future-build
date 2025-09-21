@@ -133,19 +133,19 @@ const ComparisonUltra = () => {
         {/* F Watermark Background Elements - More Visible */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute top-20 left-20 w-24 h-24 object-contain rotate-12 opacity-40 animate-pulse"
             style={{ animationDuration: '5s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute bottom-32 right-32 w-16 h-16 object-contain -rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '4s', animationDelay: '1.5s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png" 
             alt="" 
             className="absolute top-1/2 left-1/4 w-20 h-20 object-contain rotate-45 opacity-25 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '0.8s' }}
@@ -283,7 +283,7 @@ const ComparisonUltra = () => {
                   <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                     <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
                       <img 
-                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        src="/assets/fixco-f-icon-new.png"
                         alt="Fixco" 
                         className="h-4 w-4 object-contain opacity-90"
                       />

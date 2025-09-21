@@ -119,13 +119,13 @@ const FAQ = () => {
           {/* F Watermark Background Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
               style={{ animationDuration: '5s' }}
             />
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
               style={{ animationDuration: '4s', animationDelay: '2s' }}
@@ -169,7 +169,7 @@ const FAQ = () => {
                       {/* F Brand Badge on Category Headers */}
                       <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center shadow-md z-10">
                         <img 
-                          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                          src="/assets/fixco-f-icon-new.png"
                           alt="Fixco" 
                           className="h-3 w-3 object-contain opacity-90"
                         />
@@ -220,13 +220,13 @@ const FAQ = () => {
           {/* F Watermark Background Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute top-10 left-10 w-20 h-20 object-contain rotate-12 opacity-30 animate-pulse"
               style={{ animationDuration: '4s' }}
             />
             <img 
-              src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+              src="/assets/fixco-f-icon-new.png"
               alt="" 
               className="absolute bottom-10 right-10 w-16 h-16 object-contain -rotate-6 opacity-25 animate-pulse"
               style={{ animationDuration: '5s', animationDelay: '1.5s' }}
@@ -248,7 +248,7 @@ const FAQ = () => {
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                       <img 
-                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        src="/assets/fixco-f-icon-new.png"
                         alt="Fixco" 
                         className="h-3.5 w-3.5 object-contain opacity-90"
                       />
@@ -263,7 +263,7 @@ const FAQ = () => {
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                       <img 
-                        src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                        src="/assets/fixco-f-icon-new.png" 
                         alt="Fixco" 
                         className="h-3.5 w-3.5 object-contain opacity-90"
                       />

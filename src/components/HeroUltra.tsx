@@ -158,7 +158,7 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/assets/fixco-f-icon-black.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
+    { icon: "image", src: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
     { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
     { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }
@@ -174,25 +174,25 @@ const HeroUltra = () => {
         {/* F Watermark Background Elements - More Visible */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
             style={{ animationDuration: '4s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
             style={{ animationDuration: '5s', animationDelay: '1s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png"
             alt="" 
             className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '2s' }}
           />
           <img 
-            src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+            src="/assets/fixco-f-icon-new.png" 
             alt="" 
             className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
             style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}

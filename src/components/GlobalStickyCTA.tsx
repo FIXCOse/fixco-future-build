@@ -75,7 +75,7 @@ const GlobalStickyCTA = () => {
             {/* F Brand Badge - Make More Visible */}
             <div className="absolute top-1 left-1 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-20">
               <img 
-                src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                src="/assets/fixco-f-icon-new.png"
                 alt="Fixco" 
                 className="h-4 w-4 object-contain opacity-95"
               />
@@ -124,7 +124,7 @@ const GlobalStickyCTA = () => {
                     <div className="flex items-center space-x-2">
                       <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center mr-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10">
                         <img 
-                          src="/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png" 
+                          src="/assets/fixco-f-icon-new.png" 
                           alt="Fixco" 
                           className="h-4 w-4 object-contain opacity-95"
                         />
