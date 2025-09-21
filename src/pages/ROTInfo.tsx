@@ -1,4 +1,3 @@
-import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button-premium";
 import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -30,8 +29,6 @@ const ROTInfo = () => {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-      
       {/* Hero Section */}
       <section className="pt-32 pb-20 hero-background">
         <div className="container mx-auto px-4">

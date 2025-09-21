@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
+import { useCopy } from '@/copy/CopyProvider';
 
 interface BreadcrumbItem {
   label: string;
@@ -8,18 +9,22 @@ interface BreadcrumbItem {
 
 const Breadcrumbs = () => {
   const location = useLocation();
+  const { t } = useCopy();
   
   const getBreadcrumbs = (): BreadcrumbItem[] => {
     const path = location.pathname;
-    const segments = path.split('/').filter(Boolean);
+    // Remove /en prefix for breadcrumb processing
+    const cleanPath = path.startsWith('/en') ? path.replace('/en', '') || '/' : path;
+    const segments = cleanPath.split('/').filter(Boolean);
     
     const breadcrumbs: BreadcrumbItem[] = [
-      { label: 'Hem', path: '/' }
+      { label: t('breadcrumbs.home'), path: path.startsWith('/en') ? '/en' : '/' }
     ];
 
     // Map path segments to readable labels
     const segmentLabels: Record<string, string> = {
-      'tjanster': 'Tjänster',
+      'tjanster': t('breadcrumbs.services'),
+      'services': t('breadcrumbs.services'),
       'snickeri': 'Snickeri',
       'vvs': 'VVS',
       'montering': 'Montering',
@@ -30,15 +35,18 @@ const Breadcrumbs = () => {
       'tekniska-installationer': 'Tekniska installationer',
       'el': 'El',
       'fastighetsskotsel': 'Fastighetsskötsel',
-      'kontakt': 'Kontakt',
-      'om-oss': 'Om oss',
+      'kontakt': t('nav.contact'),
+      'contact': t('nav.contact'),
+      'om-oss': t('nav.about'),
+      'about': t('nav.about'),
       'faq': 'FAQ',
       'boka-hembesok': 'Boka hembesök',
       'rot-info': 'ROT-information',
-      'referenser': 'Referenser'
+      'referenser': t('nav.references'),
+      'references': t('nav.references')
     };
 
-    let currentPath = '';
+    let currentPath = path.startsWith('/en') ? '/en' : '';
     segments.forEach((segment, index) => {
       currentPath += `/${segment}`;
       const label = segmentLabels[segment] || segment;
@@ -57,7 +65,7 @@ const Breadcrumbs = () => {
   const breadcrumbs = getBreadcrumbs();
 
   // Don't show breadcrumbs on homepage
-  if (location.pathname === '/') return null;
+  if (location.pathname === '/' || location.pathname === '/en') return null;
 
   return (
     <nav className="bg-muted/20 border-b border-border">

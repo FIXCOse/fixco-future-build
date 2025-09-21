@@ -26,6 +26,9 @@ export function useLocalePath() {
   const pathname = location.pathname.replace(/\/$/, '') || '/';
 
   const toEN = () => {
+    // If already on English, return as is
+    if (pathname.startsWith('/en')) return pathname;
+    
     // Find current Swedish path and map to English
     const svEntry = Object.entries(pathMap.sv).find(([, v]) => v === pathname);
     if (svEntry) {
@@ -36,16 +39,15 @@ export function useLocalePath() {
   };
 
   const toSV = () => {
+    // If already on Swedish, return as is
+    if (!pathname.startsWith('/en')) return pathname;
+    
     // Find current English path and map to Swedish
     const enEntry = Object.entries(pathMap.en).find(([, v]) => v === pathname);
     if (enEntry) {
       return enEntry[0];
     }
-    // If already on Swedish path, return as is
-    if (pathname.startsWith('/en')) {
-      return '/';
-    }
-    return pathname;
+    return '/';
   };
 
   return { toEN, toSV };

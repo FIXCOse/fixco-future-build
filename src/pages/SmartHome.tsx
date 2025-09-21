@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Navigation from '@/components/Navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -118,7 +117,6 @@ export const SmartHome = () => {
 
   return (
     <>
-      <Navigation />
       <main className="pt-16">
         {/* Hero Section */}
         <section className="relative py-24 px-4 overflow-hidden">

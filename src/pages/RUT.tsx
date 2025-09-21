@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle, ArrowRight, Home, Calculator, FileText, Phone, Percent, Receipt } from "lucide-react";
-import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -69,8 +68,6 @@ const RUT = () => {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-      
       {/* Hero Section */}
       <section className="pt-32 pb-20 hero-background relative">
         {/* F Watermark Background Elements */}

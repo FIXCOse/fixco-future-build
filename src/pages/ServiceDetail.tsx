@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
@@ -32,7 +31,6 @@ const ServiceDetail = () => {
   if (!service) {
     return (
       <div className="min-h-screen">
-        <Navigation />
         <div className="container mx-auto px-4 py-20">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Tjänsten hittades inte</h1>
@@ -61,7 +59,6 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <Breadcrumbs />
       
         {/* Hero Section */}

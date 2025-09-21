@@ -1,11 +1,12 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import sv from './sv';
-import en from './en';
+import { sv } from './sv';
+import { en } from './en';
+import type { CopyKey } from './keys';
 
-const dictionaries = { sv, en };
+const dictionaries = { sv, en } as const;
 
 interface CopyContextType {
-  t: (path: string) => string;
+  t: (key: CopyKey) => string;
   locale: 'sv' | 'en';
 }
 
@@ -19,15 +20,8 @@ interface CopyProviderProps {
 export const CopyProvider: React.FC<CopyProviderProps> = ({ locale, children }) => {
   const dict = dictionaries[locale];
   
-  const t = (path: string): string => {
-    const keys = path.split('.');
-    let value: any = dict;
-    
-    for (const key of keys) {
-      value = value?.[key];
-    }
-    
-    return value || path;
+  const t = (key: CopyKey): string => {
+    return dict[key] || key;
   };
 
   return (

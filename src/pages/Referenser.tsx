@@ -1,4 +1,3 @@
-import Navigation from "@/components/Navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
@@ -156,7 +155,6 @@ const Referenser = () => {
   
   return (
     <div className="min-h-screen">
-      <Navigation />
       <Breadcrumbs />
 
       {/* Hero Section */}

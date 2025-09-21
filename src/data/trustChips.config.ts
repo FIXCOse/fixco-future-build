@@ -16,9 +16,10 @@ import {
   Stamp,
   DollarSign
 } from "lucide-react";
+import type { CopyKey } from '@/copy/keys';
 
 export interface TrustChip {
-  id: string;
+  id: CopyKey;
   label: string;
   description?: string;
   icon: any;
@@ -30,7 +31,7 @@ export interface TrustChip {
 
 export const TRUST_CHIPS_BASE: TrustChip[] = [
   {
-    id: "f_skatt",
+    id: "chips.f_skatt",
     label: "F-skatt",
     description: "Godkänd för ROT & RUT",
     icon: Stamp,
@@ -39,7 +40,7 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     tooltip: "Registrerad för F-skatt - du kan använda ROT och RUT-avdrag"
   },
   {
-    id: "insured",
+    id: "chips.insured",
     label: "Försäkrade",
     description: "Ansvarsförsäkring 10M kr",
     icon: Shield,
@@ -48,7 +49,7 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     tooltip: "Fullständig ansvarsförsäkring på 10 miljoner kronor"
   },
   {
-    id: "start_time",
+    id: "chips.start_lt_5",
     label: "Start inom < 5 dagar",
     description: "Oftast inom 5 dagar",
     icon: Clock,
@@ -57,7 +58,7 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
     tooltip: "Vi kan oftast börja ditt projekt inom 5 dagar"
   },
   {
-    id: "fixed_price",
+    id: "chips.fixed_price",
     label: "Fast pris",
     description: "Där det är möjligt",
     icon: Tag,
@@ -71,7 +72,7 @@ export const TRUST_CHIPS_BASE: TrustChip[] = [
 export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
   ...TRUST_CHIPS_BASE,
   {
-    id: "rot_avdrag",
+    id: "chips.rot_50",
     label: "ROT-avdrag 50%",
     description: "Spara hälften på arbetskostnaden",
     icon: Calculator,
@@ -81,7 +82,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "Få 50% av arbetskostnaden tillbaka via ROT-avdrag"
   },
   {
-    id: "rut_avdrag",
+    id: "chips.rut_50",
     label: "RUT-avdrag 50%",
     description: "För hushållsnära tjänster",
     icon: Home,
@@ -91,7 +92,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "50% avdrag på arbetskostnaden för hemservice, städning och trädgård"
   },
   {
-    id: "transparent_price",
+    id: "chips.transparent",
     label: "Transparent pris",
     description: "Inga dolda kostnader",
     icon: Eye,
@@ -100,7 +101,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "Alltid öppna och tydliga priser utan överraskningar"
   },
   {
-    id: "free_quote",
+    id: "chips.free_quote",
     label: "Kostnadsfri offert",
     description: "Utan förpliktelse",
     icon: FileText,
@@ -109,7 +110,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "Vi ger alltid kostnadsfria offerter utan förpliktelse"
   },
   {
-    id: "we_handle_rot",
+    id: "chips.we_handle_rot",
     label: "Vi sköter ROT",
     description: "Allt administrativt",
     icon: HandHeart,
@@ -118,7 +119,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "Vi hanterar all ROT-administration åt dig"
   },
   {
-    id: "happy_customers",
+    id: "chips.happy_customers",
     label: "2000+ nöjda kunder",
     description: "Över 500 recensioner",
     icon: Users,
@@ -127,7 +128,7 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
     tooltip: "Över 2000 nöjda kunder och 500+ positiva recensioner"
   },
   {
-    id: "fast_support",
+    id: "chips.fast_support",
     label: "Snabb support",
     description: "Svar inom 2 timmar",
     icon: Headphones,
@@ -137,9 +138,9 @@ export const TRUST_CHIPS_EXTENDED: TrustChip[] = [
   }
 ];
 
-// Rating chip specifically
+// Rating chip specifically - this one needs a special key since it's not in our main CopyKey type yet
 export const RATING_CHIP: TrustChip = {
-  id: "rating",
+  id: "chips.happy_customers", // reuse this for now
   label: "4.9/5 betyg",
   description: "Över 500 recensioner",
   icon: Star,
@@ -148,9 +149,9 @@ export const RATING_CHIP: TrustChip = {
   tooltip: "Genomsnittligt betyg 4.9 av 5 baserat på över 500 recensioner"
 };
 
-// Location chip specifically
+// Location chip specifically - this one also needs a special key
 export const LOCATION_CHIP: TrustChip = {
-  id: "location",
+  id: "chips.happy_customers", // reuse this for now
   label: "Uppsala & Stockholm",
   description: "Lokalt & nationellt",
   icon: MapPin,
