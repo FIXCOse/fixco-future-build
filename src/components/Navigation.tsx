@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,6 +102,8 @@ export default function Navigation() {
           {/* Right: Actions with Proper Spacing */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             
+            {/* Language Switcher */}
+            <LanguageSwitcher variant="minimal" />
             
             {/* Contact - Desktop Only */}
             <a 

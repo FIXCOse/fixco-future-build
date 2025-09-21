@@ -29,6 +29,7 @@ import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import MyFixcoLayout from "./components/MyFixcoLayout";
+import { I18nProvider } from "./components/I18nProvider";
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
@@ -103,14 +104,17 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <SecurityWrapper>
-          <TooltipProvider>
+        <I18nProvider>
+          <SecurityWrapper>
+            <TooltipProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter>
                 <ScrollToTop />
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  {/* Locale-aware routing */}
+                  <Route path="/:locale?" element={<Home />} />
+                  <Route path="/:locale/auth" element={<Auth />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
@@ -186,7 +190,8 @@ const App = () => {
       <ModalHost />
               </BrowserRouter>
             </TooltipProvider>
-        </SecurityWrapper>
+          </SecurityWrapper>
+        </I18nProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );
