@@ -4,7 +4,9 @@ import { useContent } from '@/hooks/useContent';
 import { Loader2 } from 'lucide-react';
 
 const HomeEn: React.FC = () => {
+  console.log('HomeEn component rendering');
   const { content, isLoading, isEnglishMissing } = useContent('/en', 'en');
+  console.log('HomeEn useContent result:', { content, isLoading, isEnglishMissing });
 
   if (isLoading) {
     return (
