@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
@@ -16,39 +16,12 @@ import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   console.log("Home component rendering...");
-  const { t, ready } = useTranslation();
+  const { t } = useTranslation();
   
   // Initialize pricing store from URL/localStorage
   useEffect(() => {
     usePriceStore.getState().initFromUrlOrStorage();
   }, []);
-
-  // Show simple fallback if i18n not ready
-  if (!ready) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="container mx-auto px-4 py-24">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-8">
-              Welcome to <span className="text-primary">Fixco</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-12">
-              Professional services for your home and property
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-lg px-8 py-4 rounded-lg">
-                Get Free Quote
-              </button>
-              <button className="border border-border hover:bg-accent font-bold text-lg px-8 py-4 rounded-lg">
-                Call: 08-123 456 78
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
   
   return (
     <div className="min-h-screen">
