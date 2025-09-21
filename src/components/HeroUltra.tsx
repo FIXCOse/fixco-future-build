@@ -158,7 +158,7 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/lovable-uploads/cd4b4a33-e533-437c-9014-624e6c7e6e27.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
+    { icon: "image", src: "/assets/fixco-f-icon-black.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
     { icon: Users, title: "2000+ kunder", description: "Genomsnittligt betyg 4.9/5" },
     { icon: MapPin, title: "Uppsala & Stockholm", description: "Nationellt vid större projekt" }

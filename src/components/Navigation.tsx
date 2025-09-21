@@ -76,35 +76,25 @@ export default function Navigation() {
             />
           </Link>
 
-          {/* Center: F Icon + Navigation - Single Flex Container */}
+          {/* Center: Navigation Only - Clean Layout */}
           <div className="hidden xl:flex items-center justify-center min-w-0">
-            <div className="flex items-center gap-x-4">
-              {/* F Icon */}
-              <img 
-                src="/assets/fixco-f-icon-black.png" 
-                alt="F" 
-                className="h-5 w-5 opacity-70 flex-shrink-0"
-              />
-              
-              {/* Navigation Items */}
-              <nav className="flex items-center gap-x-6">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className={cn(
-                      "inline-flex items-center h-[var(--header-h)] px-3 whitespace-nowrap",
-                      "text-foreground hover:text-primary transition-colors",
-                      "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                      "hover:underline underline-offset-4 decoration-2",
-                      isActive(item.href) && "text-primary font-medium"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-            </div>
+            <nav className="flex items-center gap-x-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "inline-flex items-center h-[var(--header-h)] px-3 whitespace-nowrap",
+                    "text-foreground hover:text-primary transition-colors",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                    "hover:underline underline-offset-4 decoration-2",
+                    isActive(item.href) && "text-primary font-medium"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
           {/* Right: Actions - Compact Layout */}
