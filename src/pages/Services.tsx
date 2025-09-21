@@ -9,10 +9,8 @@ import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
 import { AIProjectAssistant } from "@/components/AIProjectAssistant";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const Services = () => {
-  const { t } = useTranslation();
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -43,9 +41,9 @@ const Services = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('services.chooseCategory')}</h2>
+            <h2 className="text-3xl font-bold mb-4">Välj kategori</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('services.chooseCategoryDesc')}
+              Hitta rätt tjänst för ditt hem snabbt och enkelt. Vi erbjuder allt från små reparationer till stora renoveringsprojekt.
             </p>
           </div>
           <CategoryGrid />
@@ -83,7 +81,7 @@ const Services = () => {
               <div className="p-6 border rounded-lg">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <span className="text-2xl">🌱</span>
-                  {t('services.ecoScore')}
+                  Miljöpoäng
                 </h3>
                 <EcoScoreDisplay score={85} showDetails={true} />
                 <p className="text-sm text-muted-foreground mt-3">
