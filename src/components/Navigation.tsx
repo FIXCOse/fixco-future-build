@@ -67,7 +67,7 @@ export default function Navigation() {
           {/* Left: Logo Only - Larger with More Spacing */}
           <Link 
             to="/" 
-            className="inline-flex items-center h-[var(--header-h)] mr-6 md:mr-8 group"
+            className="inline-flex items-center h-[var(--header-h)] mr-8 md:mr-12 lg:mr-16 group"
           >
             <img 
               src="/assets/fixco-logo-black.png" 
@@ -77,14 +77,14 @@ export default function Navigation() {
           </Link>
 
           {/* Center: Navigation Only - Clean Layout */}
-          <div className="hidden xl:flex items-center justify-center min-w-0">
-            <nav className="flex items-center gap-x-6">
+          <div className="hidden lg:flex items-center justify-center min-w-0">
+            <nav className="flex items-center gap-x-4 lg:gap-x-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "inline-flex items-center h-[var(--header-h)] px-3 whitespace-nowrap",
+                    "inline-flex items-center h-[var(--header-h)] px-2 lg:px-3 whitespace-nowrap text-sm lg:text-base",
                     "text-foreground hover:text-primary transition-colors",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     "hover:underline underline-offset-4 decoration-2",
@@ -97,30 +97,30 @@ export default function Navigation() {
             </nav>
           </div>
 
-          {/* Right: Actions - Compact Layout */}
-          <div className="flex items-center gap-x-2 whitespace-nowrap">
-            {/* Contact */}
+          {/* Right: Actions - Compact Layout with Better Spacing */}
+          <div className="flex items-center gap-x-1 lg:gap-x-2 xl:gap-x-3 whitespace-nowrap">
+            {/* Contact - Better Responsive Design */}
             <a 
               href="tel:+46812345678" 
-              className="hidden lg:inline-flex items-center gap-x-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="hidden xl:inline-flex items-center gap-x-1 text-sm text-muted-foreground hover:text-primary transition-colors px-2"
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline">08-123 456 78</span>
+              <span>08-123 456 78</span>
             </a>
             
             {/* Language Selector */}
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <LanguageSelector />
             </div>
             
-            {/* User Actions */}
+            {/* User Actions - Better Spacing */}
             {user ? (
-              <div className="hidden lg:flex items-center gap-x-1">
+              <div className="hidden lg:flex items-center gap-x-1 xl:gap-x-2">
                 <Link to="/mitt-fixco">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="h-9 px-2 inline-flex items-center gap-x-1"
+                    className="h-9 px-2 xl:px-3 inline-flex items-center gap-x-1"
                   >
                     <User className="h-4 w-4" />
                     <span className="hidden xl:inline">Mitt Fixco</span>
@@ -130,19 +130,19 @@ export default function Navigation() {
                   variant="ghost" 
                   size="sm" 
                   onClick={handleLogout}
-                  className="h-9 px-2 inline-flex items-center gap-x-1"
+                  className="h-9 px-2 xl:px-3 inline-flex items-center gap-x-1"
                 >
                   <LogOut className="h-4 w-4" />
                   <span className="hidden xl:inline">Logga ut</span>
                 </Button>
               </div>
             ) : (
-              <div className="hidden lg:flex items-center gap-x-1">
+              <div className="hidden lg:flex items-center gap-x-1 xl:gap-x-2">
                 <Link to="/auth">
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="h-9 px-2"
+                    className="h-9 px-2 xl:px-3"
                   >
                     <span className="hidden xl:inline">Logga in</span>
                     <span className="xl:hidden">Login</span>
@@ -152,7 +152,7 @@ export default function Navigation() {
                   <Button 
                     variant="default" 
                     size="sm"
-                    className="h-9 px-3 bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="h-9 px-2 xl:px-4 bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     <span className="hidden xl:inline">Begär offert</span>
                     <span className="xl:hidden">Offert</span>
@@ -164,7 +164,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="xl:hidden inline-flex items-center h-9 px-3 hover:bg-muted rounded-md transition-colors"
+              className="lg:hidden inline-flex items-center h-9 px-3 hover:bg-muted rounded-md transition-colors"
               aria-label="Öppna meny"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -172,9 +172,9 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Overlay - Shows XL and below */}
+        {/* Mobile Navigation Overlay - Shows LG and below */}
         {isMenuOpen && (
-          <div className="xl:hidden border-t border-border bg-background">
+          <div className="lg:hidden border-t border-border bg-background">
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">

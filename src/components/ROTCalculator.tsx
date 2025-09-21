@@ -82,11 +82,11 @@ const ROTCalculator = () => {
           {/* Calculator */}
           <div className="card-premium p-8 relative">
             {/* F Brand Badge */}
-            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+            <div className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
               <img 
                 src="/assets/fixco-f-icon-new.png"
                 alt="Fixco" 
-                className="h-4 w-4 object-contain opacity-90"
+                className="h-6 w-6 object-contain opacity-90"
               />
             </div>
 
@@ -246,11 +246,11 @@ const ROTCalculator = () => {
         <div className="text-center mt-16">
           <div className="card-premium p-8 max-w-2xl mx-auto relative">
             {/* F Brand Badge */}
-            <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+            <div className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
               <img 
                 src="/assets/fixco-f-icon-new.png" 
                 alt="Fixco" 
-                className="h-4 w-4 object-contain opacity-90"
+                className="h-6 w-6 object-contain opacity-90"
               />
             </div>
 

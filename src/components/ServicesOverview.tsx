@@ -129,11 +129,11 @@ const ServicesOverview = () => {
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* F Brand Badge - Bottom Right, Larger & More Visible */}
-                  <div className="absolute bottom-4 right-4 w-7 h-7 bg-gradient-primary rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
+                  <div className="absolute bottom-4 right-4 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                     <img 
                       src="/assets/fixco-f-icon-new.png" 
                       alt="Fixco" 
-                      className="h-3.5 w-3.5 object-contain opacity-90"
+                      className="h-6 w-6 object-contain opacity-90"
                     />
                   </div>
 
