@@ -40,8 +40,6 @@ export default function Navigation() {
       { href: "/tjanster", label: "Tjänster" },
       { href: "/mitt-fixco", label: "Mitt Fixco" },
       { href: "/smart-hem", label: "Smart Hem" },
-      { href: "/naromrade", label: "Närområde" },
-      { href: "/topplista", label: "Topplista" },
       { href: "/referenser", label: "Referenser" },
       { href: "/om-oss", label: "Om oss" },
       { href: "/kontakt", label: "Kontakt" },

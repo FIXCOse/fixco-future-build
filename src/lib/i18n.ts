@@ -12,8 +12,6 @@ const resources = {
         contact: "Kontakt",
         myFixco: "Mitt Fixco",
         smartHome: "Smart Hem",
-        neighborhood: "Närområde",
-        leaderboard: "Topplista",
         admin: "Administration"
       },
       services: {
@@ -31,21 +29,6 @@ const resources = {
         devices: "Anslutna enheter",
         automation: "Automatisering",
         savings: "Besparingar"
-      },
-      neighborhood: {
-        title: "Närområde Intelligence",
-        subtitle: "Upptäck vad som händer i ditt område",
-        permits: "Bygglov",
-        statistics: "Statistik",
-        neighbors: "Grannar",
-        priceHistory: "Prisutveckling"
-      },
-      leaderboard: {
-        title: "Energibesparings Topplista", 
-        subtitle: "Tävla och spara energi tillsammans",
-        monthly: "Månadsvis",
-        allTime: "All-time",
-        yourRank: "Din placering"
       },
       ecoScore: {
         excellent: "Utmärkt",
@@ -66,8 +49,6 @@ const resources = {
         contact: "Contact",
         myFixco: "My Fixco",
         smartHome: "Smart Home",
-        neighborhood: "Neighborhood", 
-        leaderboard: "Leaderboard",
         admin: "Administration"
       },
       services: {
@@ -85,21 +66,6 @@ const resources = {
         devices: "Connected Devices",
         automation: "Automation",
         savings: "Savings"
-      },
-      neighborhood: {
-        title: "Neighborhood Intelligence",
-        subtitle: "Discover what's happening in your area",
-        permits: "Building Permits",
-        statistics: "Statistics",
-        neighbors: "Neighbors", 
-        priceHistory: "Price Development"
-      },
-      leaderboard: {
-        title: "Energy Savings Leaderboard",
-        subtitle: "Compete and save energy together", 
-        monthly: "Monthly",
-        allTime: "All-time",
-        yourRank: "Your Rank"
       },
       ecoScore: {
         excellent: "Excellent",
@@ -120,8 +86,6 @@ const resources = {
         contact: "Kontakt",
         myFixco: "Min Fixco",
         smartHome: "Smart Hjem",
-        neighborhood: "Nabolag",
-        leaderboard: "Toppliste", 
         admin: "Administrasjon"
       },
       services: {
@@ -139,21 +103,6 @@ const resources = {
         devices: "Tilkoblede enheter",
         automation: "Automatisering",
         savings: "Besparelser"
-      },
-      neighborhood: {
-        title: "Nabolag Intelligence",
-        subtitle: "Oppdag hva som skjer i ditt område",
-        permits: "Byggetillatelser", 
-        statistics: "Statistikk",
-        neighbors: "Naboer",
-        priceHistory: "Prisutvikling"
-      },
-      leaderboard: {
-        title: "Energisparings Toppliste",
-        subtitle: "Konkurer og spar energi sammen",
-        monthly: "Månedlig",
-        allTime: "All-time",
-        yourRank: "Din plassering"
       },
       ecoScore: {
         excellent: "Utmerket",
