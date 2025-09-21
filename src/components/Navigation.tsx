@@ -64,30 +64,26 @@ export default function Navigation() {
       <nav className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-10">
         <div className="grid grid-cols-[auto,1fr,auto] items-center gap-x-4 md:gap-x-6 min-h-[48px] md:min-h-[56px] lg:min-h-[64px]">
           
-          {/* Left: Logo */}
-          <Link 
-            to="/" 
-            className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group"
-          >
+          {/* Left: Logo + F Icon */}
+          <div className="inline-flex items-center h-[var(--header-h)] mr-2 md:mr-4 group">
+            <Link to="/" className="inline-flex items-center">
+              <img 
+                src="/assets/fixco-logo-black.png" 
+                alt="FIXCO - Din Helhetslösning" 
+                className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
+              />
+            </Link>
             <img 
-              src="/assets/fixco-logo-black.png" 
-              alt="FIXCO - Din Helhetslösning" 
-              className="h-6 md:h-7 w-auto group-hover:scale-105 transition-transform"
+              src="/assets/fixco-f-icon-black.png" 
+              alt="F" 
+              className="h-5 w-5 ml-2 mr-2 opacity-70"
             />
-          </Link>
+          </div>
 
           {/* Center: Primary Navigation - No Wrap, XL+ Only */}
           <ul className="hidden xl:flex items-center flex-nowrap justify-center gap-x-[clamp(12px,1.2vw,22px)] min-w-0">
-            {navItems.map((item, index) => (
-              <li key={item.href} className="flex items-center">
-                {/* Add F icon before "Hem" */}
-                {index === 0 && (
-                  <img 
-                    src="/assets/fixco-f-icon-black.png" 
-                    alt="F" 
-                    className="h-5 w-5 mr-2 opacity-70"
-                  />
-                )}
+            {navItems.map((item) => (
+              <li key={item.href}>
                 <Link
                   to={item.href}
                   className={cn(
@@ -186,7 +182,7 @@ export default function Navigation() {
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">
-                {navItems.map((item, index) => (
+                {navItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
@@ -196,14 +192,6 @@ export default function Navigation() {
                     )}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {/* Add F icon before "Hem" in mobile menu too */}
-                    {index === 0 && (
-                      <img 
-                        src="/assets/fixco-f-icon-black.png" 
-                        alt="F" 
-                        className="h-4 w-4 mr-2 opacity-70"
-                      />
-                    )}
                     {item.label}
                   </Link>
                 ))}
