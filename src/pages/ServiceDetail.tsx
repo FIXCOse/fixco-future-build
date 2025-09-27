@@ -202,25 +202,26 @@ const ServiceDetail = () => {
             const pricing = calcDisplayPrice(serviceForPricing, mode);
             const eligible = isEligibleForMode(serviceForPricing, mode);
 
-            return (
-              <ServiceCardV3
-                key={subService.id}
-                title={subService.title}
-                category={subService.category}
-                description={subService.description}
-                pricingType={subService.priceType === 'quote' ? 'quote' : 
-                             subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
-                priceIncl={subService.basePrice}
-                eligible={subService.eligible}
-                serviceSlug={subService.id}
-                onBook={() => {
-                  // Handle booking
-                }}
-                onQuote={() => {
-                  // Handle quote request
-                }}
-              />
-            );
+             return (
+               <ServiceCardV3
+                 key={subService.id}
+                 title={subService.title}
+                 category={subService.category}
+                 description={subService.description}
+                 pricingType={subService.priceType === 'quote' ? 'quote' : 
+                              subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+                 priceIncl={subService.basePrice}
+                 eligible={subService.eligible}
+                 serviceSlug={subService.id}
+                 serviceId={subService.id}
+                 onBook={() => {
+                   // Handle booking
+                 }}
+                 onQuote={() => {
+                   // Handle quote request
+                 }}
+               />
+             );
             })}
           </div>
 

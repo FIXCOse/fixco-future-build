@@ -254,6 +254,10 @@ export const en: Record<CopyKey, string> = {
   'service.stadning-3.description': 'Cleaning after renovation and construction work',
   'service.stadning-4.title': 'Window Cleaning',
   'service.stadning-4.description': 'Professional window cleaning inside and outside',
+  'service.stadning-5.title': 'Deep Cleaning Kitchen/Bathroom',
+  'service.stadning-5.description': 'Thorough cleaning of kitchen or bathroom',
+  'service.stadning-6.title': 'Office Cleaning (B2B)',
+  'service.stadning-6.description': 'Cleaning of office premises - business customer',
   
   // Individual service translations - MARKARBETEN
   'service.markarbeten-1.title': 'Excavation',
@@ -280,6 +284,10 @@ export const en: Record<CopyKey, string> = {
   'service.flytt-2.description': 'Professional packing of your belongings',
   'service.flytt-3.title': 'Moving Transport',
   'service.flytt-3.description': 'Transport of furniture and belongings',
+  'service.flytt-4.title': 'Recycling Clearance',
+  'service.flytt-4.description': 'Clearance and transport to recycling',
+  'service.flytt-5.title': 'Furniture Assembly/Disassembly',
+  'service.flytt-5.description': 'Disassembly and assembly of furniture during moves',
   
   // Project visualization texts
   'project.eco_performance': 'This project has high environmental performance thanks to energy efficient materials and methods.',

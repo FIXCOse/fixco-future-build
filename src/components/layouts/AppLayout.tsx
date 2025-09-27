@@ -8,12 +8,16 @@ import StickyCTA from '../StickyCTA';
 import AIChat from '../AIChat';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
+import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 
 interface AppLayoutProps {
   locale?: Locale;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
+  // Initialize language persistence
+  useLanguagePersistence();
+  
   return (
     <LocaleProvider locale={locale}>
       <CopyProvider locale={locale}>

@@ -254,6 +254,10 @@ export const sv: Record<CopyKey, string> = {
   'service.stadning-3.description': 'Städning efter renovering och byggarbeten',
   'service.stadning-4.title': 'Fönsterputs',
   'service.stadning-4.description': 'Professionell fönsterputsning in- och utvändigt',
+  'service.stadning-5.title': 'Djuprengöring kök/badrum',
+  'service.stadning-5.description': 'Grundlig rengöring av kök eller badrum',
+  'service.stadning-6.title': 'Kontorsstäd (B2B)',
+  'service.stadning-6.description': 'Städning av kontorslokaler - företagskund',
   
   // Individual service translations - MARKARBETEN
   'service.markarbeten-1.title': 'Schaktning',
@@ -280,6 +284,10 @@ export const sv: Record<CopyKey, string> = {
   'service.flytt-2.description': 'Professionell packning av dina tillhörigheter',
   'service.flytt-3.title': 'Flyttransport',
   'service.flytt-3.description': 'Transport av möbler och tillhörigheter',
+  'service.flytt-4.title': 'Tömning till återvinning',
+  'service.flytt-4.description': 'Tömning och transport till återvinning',
+  'service.flytt-5.title': 'Ned/upp-montering av möbler',
+  'service.flytt-5.description': 'Demontering och montering av möbler vid flytt',
   
   // Project visualization texts
   'project.eco_performance': 'Detta projekt har hög miljöprestanda tack vare energieffektiva material och metoder.',

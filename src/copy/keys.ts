@@ -118,6 +118,8 @@ export type CopyKey =
   | 'service.stadning-2.title' | 'service.stadning-2.description'
   | 'service.stadning-3.title' | 'service.stadning-3.description'
   | 'service.stadning-4.title' | 'service.stadning-4.description'
+  | 'service.stadning-5.title' | 'service.stadning-5.description'
+  | 'service.stadning-6.title' | 'service.stadning-6.description'
   
   // Individual service translations - MARKARBETEN
   | 'service.markarbeten-1.title' | 'service.markarbeten-1.description'
@@ -134,6 +136,8 @@ export type CopyKey =
   | 'service.flytt-1.title' | 'service.flytt-1.description'
   | 'service.flytt-2.title' | 'service.flytt-2.description'
   | 'service.flytt-3.title' | 'service.flytt-3.description'
+  | 'service.flytt-4.title' | 'service.flytt-4.description'
+  | 'service.flytt-5.title' | 'service.flytt-5.description'
   
   // Service Detail Page
   | 'serviceDetail.notFound' | 'serviceDetail.backToServices' | 'serviceDetail.requestQuote'
