@@ -2,6 +2,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CategoryGrid from "@/components/CategoryGrid";
 import EditableCategoryGrid from "@/components/EditableCategoryGrid";
 import FastServiceFilter from "@/components/FastServiceFilter";
+import EditableFastServiceFilter from "@/components/EditableFastServiceFilter";
 import { useEditMode } from "@/contexts/EditModeContext";
 import HeroMotion from "@/components/HeroMotion";
 import TrustChips from "@/components/TrustChips";
@@ -68,7 +69,7 @@ const Services = () => {
               {t('services.all_services_description')}
             </p>
           </div>
-          <FastServiceFilter />
+          {isEditMode ? <EditableFastServiceFilter /> : <FastServiceFilter />}
         </div>
       </section>
 
