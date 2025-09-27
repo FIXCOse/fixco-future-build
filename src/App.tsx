@@ -208,8 +208,12 @@ const App = () => {
                     <Route path="services" element={<Services />} />
                     <Route path="services/:slug" element={<ServiceDetail />} />
                     <Route path="contact" element={<Contact />} />
+                    <Route path="faq" element={<FAQ />} />
                     <Route path="about" element={<AboutUs />} />
                     <Route path="references" element={<Referenser />} />
+                    <Route path="terms" element={<Terms />} />
+                    <Route path="privacy" element={<Privacy />} />
+                    <Route path="rot-info" element={<ROTInfo />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">

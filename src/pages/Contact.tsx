@@ -5,9 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopy } from '@/copy/CopyProvider';
+import { useLocation } from 'react-router-dom';
 
 const Contact = () => {
   const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
   
   const [formData, setFormData] = useState({
     name: "",
@@ -71,9 +74,17 @@ const Contact = () => {
   };
 
   const services = [
-    "Snickeri", "VVS", "Montering", "Trädgård", "Städning", 
-    "Projektledning", "Markarbeten", "Tekniska installationer", 
-    "El", "Fastighetsskötsel", "Övrigt"
+    t('serviceCategories.snickeri'), 
+    t('serviceCategories.vvs'), 
+    t('serviceCategories.montering'), 
+    t('serviceCategories.tradgard'), 
+    t('serviceCategories.stadning'),
+    isEnglish ? "Project management" : "Projektledning", 
+    t('serviceCategories.markarbeten'), 
+    t('serviceCategories.tekniska-installationer'),
+    t('serviceCategories.el'), 
+    isEnglish ? "Property maintenance" : "Fastighetsskötsel", 
+    isEnglish ? "Other" : "Övrigt"
   ];
 
   return (
@@ -156,34 +167,34 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    E-post <span className="text-red-400">*</span>
+                    {t('pages.contact.email')} <span className="text-red-400">*</span>
                   </label>
                   <Input
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="din@email.se"
+                    placeholder={isEnglish ? "your@email.com" : "din@email.se"}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Adress för projektet
+                    {t('pages.contact.address')}
                   </label>
                   <Input
                     name="address"
                     type="text"
                     value={formData.address}
                     onChange={handleChange}
-                    placeholder="Gatuadress, ort"
+                    placeholder={isEnglish ? "Street address, city" : "Gatuadress, ort"}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Typ av tjänst
+                    {t('pages.contact.serviceType')}
                   </label>
                   <select
                     name="service"
@@ -191,7 +202,7 @@ const Contact = () => {
                     onChange={handleChange}
                     className="w-full px-3 py-2 bg-input border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="">Välj tjänst</option>
+                    <option value="">{t('pages.contact.selectService')}</option>
                     {services.map(service => (
                       <option key={service} value={service}>{service}</option>
                     ))}
@@ -200,14 +211,14 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Beskrivning av projekt <span className="text-red-400">*</span>
+                    {t('pages.contact.projectDescription')} <span className="text-red-400">*</span>
                   </label>
                   <Textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    placeholder="Beskriv ditt projekt så detaljerat som möjligt. Vilka arbeten behöver utföras? Ungefär vilken tidsram? Finns det speciella önskemål?"
+                    placeholder={t('pages.contact.projectPlaceholder')}
                     required
                   />
                 </div>
@@ -218,17 +229,17 @@ const Contact = () => {
                   className="w-full gradient-primary text-primary-foreground font-bold text-lg py-3"
                 >
                   {isSubmitting ? (
-                    <>Skickar...</>
+                    <>{t('pages.contact.sending')}</>
                   ) : (
                     <>
-                      Skicka förfrågan
+                      {t('pages.contact.sendRequest')}
                       <Send className="ml-2 h-5 w-5" />
                     </>
                   )}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Genom att skicka formuläret godkänner du att vi kontaktar dig angående din förfrågan.
+                  {t('pages.contact.consent')}
                 </p>
               </form>
             </div>
@@ -276,48 +287,48 @@ const Contact = () => {
 
               <div className="card-premium p-8">
                 <h3 className="text-2xl font-bold mb-4">
-                  <span className="gradient-text">Öppettider</span>
+                  <span className="gradient-text">{t('pages.contact.openingHours')}</span>
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span>Måndag - Fredag</span>
+                    <span>{t('pages.contact.mondayFriday')}</span>
                     <span className="text-primary font-semibold">07:00 - 18:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Lördag</span>
+                    <span>{t('pages.contact.saturday')}</span>
                     <span className="text-primary font-semibold">08:00 - 16:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Söndag</span>
-                    <span className="text-muted-foreground">Stängt</span>
+                    <span>{t('pages.contact.sunday')}</span>
+                    <span className="text-muted-foreground">{t('pages.contact.closed')}</span>
                   </div>
                   <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
                     <div className="text-sm">
                       <AlertCircle className="h-4 w-4 text-orange-400 inline mr-2" />
-                      <strong>Akutservice:</strong> Ring för akuta läckage och elfärder
+                      <strong>{t('pages.contact.emergencyService')}</strong> {t('pages.contact.emergencyDesc')}
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="card-premium p-8 gradient-primary-subtle border-primary/20">
-                <h3 className="text-xl font-bold mb-4">Varför välja Fixco?</h3>
+                <h3 className="text-xl font-bold mb-4">{t('pages.contact.whyChoose')}</h3>
                 <div className="space-y-3">
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Start inom 24 timmar</span>
+                    <span>{t('pages.contact.startIn24h')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>ROT-avdrag - endast 480 kr/h</span>
+                    <span>{t('pages.contact.rotDeduction')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Garanterad kvalitet</span>
+                    <span>{t('pages.contact.guaranteedQuality')}</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-                    <span>Kostnadsfria offerter</span>
+                    <span>{t('pages.contact.freeQuotes')}</span>
                   </div>
                 </div>
               </div>
