@@ -78,7 +78,6 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
         translatedTitle: service.title,
         translatedDescription: service.description
       }));
-      console.log('EditableFastServiceFilter services:', mappedServices.map(s => ({ id: s.id, title: s.title })));
       setServices(mappedServices);
     }
   }, [servicesFromDB]);
@@ -165,7 +164,7 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
     return Array.from(subCats).sort();
   }, [selectedCategory, services]);
 
-  // Main filtering logic
+  // Main filtering logic  
   const filteredServices = useMemo(() => {
     let filtered = [...services];
 
@@ -268,103 +267,104 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
             <p className="text-muted-foreground mb-4">Inga tjänster hittade</p>
           </div>
         ) : (
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="services-list" direction="horizontal">
-              {(provided, snapshot) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[200px] p-4 rounded-lg transition-colors ${
-                    snapshot.isDraggingOver ? 'bg-primary/5 border-2 border-dashed border-primary' : ''
-                  }`}
-                >
-                  {paginatedServices.map((service, index) => {
-                    const uniqueId = `service-${service.id}-${index}`;
-                    console.log('Rendering service draggable:', uniqueId, service.id, service.title);
-                    
-                    return (
-                      <Draggable 
-                        key={uniqueId} 
-                        draggableId={uniqueId} 
-                        index={index}
-                      >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          className={`
-                            relative
-                            ${snapshot.isDragging ? 'shadow-2xl rotate-1 scale-105 z-50' : ''}
-                            transition-all duration-200
-                          `}
+          <div className="select-none">
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="services-only">
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[200px] p-4 rounded-lg transition-colors ${
+                      snapshot.isDraggingOver ? 'bg-primary/5 border-2 border-dashed border-primary' : ''
+                    }`}
+                  >
+                    {paginatedServices.map((service, index) => {
+                      const draggableId = `srv-${service.id}`;
+                      
+                      return (
+                        <Draggable 
+                          key={draggableId} 
+                          draggableId={draggableId} 
+                          index={index}
                         >
-                          {/* Edit Controls */}
-                          <div className="absolute top-2 left-2 z-20 flex gap-1">
+                          {(provided, snapshot) => (
                             <div
-                              {...provided.dragHandleProps}
-                              className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
-                              title="Dra för att flytta"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              className={`
+                                relative
+                                ${snapshot.isDragging ? 'shadow-2xl rotate-1 scale-105 z-50' : ''}
+                                transition-all duration-200
+                              `}
                             >
-                              <GripVertical className="h-4 w-4" />
-                            </div>
-                            <button
-                              onClick={() => handleEditService(service.id)}
-                              className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
-                              title="Redigera tjänst"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteService(service.id)}
-                              className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
-                              title="Ta bort tjänst"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
+                              {/* Edit Controls */}
+                              <div className="absolute top-2 left-2 z-20 flex gap-1">
+                                <div
+                                  {...provided.dragHandleProps}
+                                  className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
+                                  title="Dra för att flytta"
+                                >
+                                  <GripVertical className="h-4 w-4" />
+                                </div>
+                                <button
+                                  onClick={() => handleEditService(service.id)}
+                                  className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
+                                  title="Redigera tjänst"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteService(service.id)}
+                                  className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+                                  title="Ta bort tjänst"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
 
-                          <div className={`
-                            border-2 border-dashed border-primary/30 rounded-lg p-2
-                            ${snapshot.isDragging ? 'border-primary bg-background' : ''}
-                          `}>
-                            <ServiceCardV3
-                              title={service.title}
-                              category={service.category}
-                              description={service.description}
-                              pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
-                              priceIncl={service.basePrice}
-                              eligible={{
-                                rot: service.eligible?.rot || false,
-                                rut: service.eligible?.rut || false
-                              }}
-                              serviceSlug={service.id}
-                              serviceId={service.id}
-                              onBook={() => {
-                                if (onServiceSelect) {
-                                  onServiceSelect(service);
-                                } else {
-                                  toast.success(`Bokning för ${service.title} startad`);
-                                }
-                              }}
-                              onQuote={() => {
-                                if (onServiceSelect) {
-                                  onServiceSelect(service);
-                                } else {
-                                  toast.success(`Offert för ${service.title} skickad`);
-                                }
-                              }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+                              <div className={`
+                                border-2 border-dashed border-primary/30 rounded-lg p-2
+                                ${snapshot.isDragging ? 'border-primary bg-background' : ''}
+                              `}>
+                                <ServiceCardV3
+                                  title={service.title}
+                                  category={service.category}
+                                  description={service.description}
+                                  pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
+                                  priceIncl={service.basePrice}
+                                  eligible={{
+                                    rot: service.eligible?.rot || false,
+                                    rut: service.eligible?.rut || false
+                                  }}
+                                  serviceSlug={service.id}
+                                  serviceId={service.id}
+                                  onBook={() => {
+                                    if (onServiceSelect) {
+                                      onServiceSelect(service);
+                                    } else {
+                                      toast.success(`Bokning för ${service.title} startad`);
+                                    }
+                                  }}
+                                  onQuote={() => {
+                                    if (onServiceSelect) {
+                                      onServiceSelect(service);
+                                    } else {
+                                      toast.success(`Offert för ${service.title} skickad`);
+                                    }
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </div>
         )}
       </div>
 

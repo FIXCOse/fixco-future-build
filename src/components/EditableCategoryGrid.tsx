@@ -108,11 +108,11 @@ const EditableCategoryGrid = () => {
   return (
     <div className="select-none">
       <DragDropContext 
-        onDragStart={onDragStart}
-        onDragUpdate={onDragUpdate}
+        onDragStart={(start) => console.log('Category drag start:', start)}
+        onDragUpdate={(update) => console.log('Category drag update:', update)}
         onDragEnd={handleDragEnd}
       >
-        <Droppable droppableId="category-services-grid" direction="horizontal">
+        <Droppable droppableId="categories-only">
           {(provided, snapshot) => (
             <div
               {...provided.droppableProps}
@@ -124,14 +124,12 @@ const EditableCategoryGrid = () => {
               {services.map((service, index) => {
                 const IconComponent = service.icon as LucideIcon;
                 const translateKey = `serviceCategories.${service.slug}` as CopyKey;
-                const uniqueId = `category-${service.slug}-${index}`;
-                
-                console.log('Rendering draggable:', uniqueId, service.slug);
+                const draggableId = `cat-${service.slug}`;
                 
                 return (
                   <Draggable 
-                    key={uniqueId} 
-                    draggableId={uniqueId} 
+                    key={draggableId} 
+                    draggableId={draggableId} 
                     index={index}
                   >
                     {(provided, snapshot) => (
