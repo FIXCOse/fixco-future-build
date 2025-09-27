@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useActionWizard } from "@/stores/actionWizardStore";
+import { useCopy } from "@/copy/CopyProvider";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -41,6 +42,7 @@ const ServiceCardV3 = ({
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
   const open = useActionWizard((s) => s.open);
+  const { t } = useCopy();
 
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -110,10 +112,10 @@ const ServiceCardV3 = ({
         {/* Price block */}
         <div className="space-y-1 mb-6">
           <div className="text-lg font-semibold text-primary">
-            Begär offert
+            {t('cta.request_quote')}
           </div>
           <div className="text-xs text-muted-foreground">
-            Prisuppgift efter besiktning
+            {t('services.quote_after_inspection')}
           </div>
         </div>
 
@@ -128,7 +130,7 @@ const ServiceCardV3 = ({
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
           data-service-name={title}
         >
-            Begär offert
+            {t('cta.request_quote')}
           </Button>
         </div>
       </article>
@@ -145,7 +147,7 @@ const ServiceCardV3 = ({
   // Helper function for savings text
   const formatSavingsText = (savings: number, deductionType: 'ROT' | 'RUT') => {
     const suffix = pricingType === 'hourly' ? '/h' : '';
-    return `Sparar ${formatMoney(savings)} kr${suffix} med ${deductionType}`;
+    return `${t('services.savings')} ${formatMoney(savings)} kr${suffix} med ${deductionType}`;
   };
 
   // Determine primary price and discounted state
@@ -244,7 +246,7 @@ const ServiceCardV3 = ({
         {/* Original price (strikethrough when discounted) */}
         {originalPrice && (
           <div className="text-[13px] text-muted-foreground line-through">
-            Ordinarie: {formatMoney(originalPrice)} kr{unit}
+            {t('services.ordinary_price')} {formatMoney(originalPrice)} kr{unit}
           </div>
         )}
         
@@ -280,7 +282,7 @@ const ServiceCardV3 = ({
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
           data-service-name={title}
         >
-          {ctaType === 'book' ? 'Boka nu' : 'Begär offert'}
+          {ctaType === 'book' ? t('cta.book_now') : t('cta.request_quote')}
         </Button>
       </div>
     </article>

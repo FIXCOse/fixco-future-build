@@ -26,6 +26,7 @@ export type CopyKey =
   | 'services.with_rot' | 'services.savings' | 'services.energy_efficient'
   | 'services.eco_materials' | 'services.ai_optimized' | 'services.rot_eligible'
   | 'services.eco_score' | 'services.preview' | 'services.show_3d' | 'services.incl_install'
+  | 'services.quote_after_inspection'
   
   // Smart Home
   | 'smartHome.title' | 'smartHome.subtitle' | 'smartHome.energy_reduction'

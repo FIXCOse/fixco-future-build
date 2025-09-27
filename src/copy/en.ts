@@ -71,6 +71,7 @@ export const en: Record<CopyKey, string> = {
   'services.preview': 'Preview',
   'services.show_3d': 'Show in 3D',
   'services.incl_install': 'Incl. installation & setup',
+  'services.quote_after_inspection': 'Quote after inspection',
   
   // Smart Home
   'smartHome.title': 'Smart Home Automation',

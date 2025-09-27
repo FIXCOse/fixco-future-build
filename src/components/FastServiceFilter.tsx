@@ -16,6 +16,61 @@ import ServiceCardV3 from "@/components/ServiceCardV3";
 import { toast } from "sonner";
 import { useCopy } from "@/copy/CopyProvider";
 
+// Translation helper for service titles and descriptions
+const getServiceTranslation = (serviceId: string, field: 'title' | 'description', locale: string = 'sv') => {
+  const translations: { [key: string]: { title: { [locale: string]: string }, description: { [locale: string]: string } } } = {
+    'el-1': {
+      title: { sv: 'Byta vägguttag', en: 'Replace Wall Outlet' },
+      description: { sv: 'Byte av vägguttag till nyare modeller. Antal väljs vid bokning', en: 'Replace wall outlets with newer models. Quantity selected at booking' }
+    },
+    'el-2': {
+      title: { sv: 'Byta strömbrytare och dimmer', en: 'Replace Switch & Dimmer' },
+      description: { sv: 'Installation av nya strömbrytare och dimrar. Antal väljs vid bokning', en: 'Installation of new switches and dimmers. Quantity selected at booking' }
+    },
+    'el-3': {
+      title: { sv: 'Installera takarmatur/pendel', en: 'Install Ceiling Fixture/Pendant' },
+      description: { sv: 'Montering av takarmaturer och pendellampor. Antal väljs vid bokning', en: 'Installation of ceiling fixtures and pendant lamps. Quantity selected at booking' }
+    },
+    'el-4': {
+      title: { sv: 'Installera spotlights', en: 'Install Spotlights' },
+      description: { sv: 'Installation av spotlights i tak. Antal väljs vid bokning (typiskt 0,5-1h per 4-6 st)', en: 'Installation of spotlights in ceiling. Quantity selected at booking (typically 0.5-1h per 4-6 pcs)' }
+    },
+    'el-5': {
+      title: { sv: 'Utebelysning', en: 'Outdoor Lighting' },
+      description: { sv: 'Installation av fasad- och trädgårdsbelysning. Typ väljs vid bokning', en: 'Installation of facade and garden lighting. Type selected at booking' }
+    },
+    'el-6': {
+      title: { sv: 'Installera jordfelsbrytare', en: 'Install Ground Fault Breaker' },
+      description: { sv: 'Installation av jordfelsbrytare för säkerhet', en: 'Installation of ground fault breakers for safety' }
+    },
+    'vvs-1': {
+      title: { sv: 'Byta blandare', en: 'Replace Faucet' },
+      description: { sv: 'Byte av blandare. Rum/typ väljs vid bokning', en: 'Replace faucet. Room/type selected at booking' }
+    },
+    'vvs-2': {
+      title: { sv: 'Byta toalettstol', en: 'Replace Toilet' },
+      description: { sv: 'Byte av toalettstol med installation', en: 'Replace toilet with installation' }
+    },
+    // Add more translations as needed based on most commonly used services
+    'snickeri-1': {
+      title: { sv: 'Montera köksluckor', en: 'Install Kitchen Doors' },
+      description: { sv: 'Installation av köksluckor och lådor', en: 'Installation of kitchen doors and drawers' }
+    },
+    'montering-1': {
+      title: { sv: 'Montera möbler', en: 'Assemble Furniture' },
+      description: { sv: 'Montering av alla typer av möbler', en: 'Assembly of all types of furniture' }
+    }
+  };
+
+  const translation = translations[serviceId];
+  if (!translation) {
+    // Fallback to original title/description from servicesDataNew if no translation exists
+    return null;
+  }
+
+  return translation[field][locale] || translation[field]['sv'];
+};
+
 interface FastServiceFilterProps {
   onServiceSelect?: (service: SubService) => void;
   className?: string;
@@ -24,7 +79,7 @@ interface FastServiceFilterProps {
 const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode, shouldShowService } = usePriceStore();
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   
   // Get initial state from URL and sessionStorage
   const getInitialState = (key: string, defaultValue: string | boolean) => {
@@ -65,10 +120,13 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         parentSlug: service.slug,
         priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
         location: subService.location as "inomhus" | "utomhus" | "båda",
-        priceType: subService.priceType as "hourly" | "fixed" | "quote"
+        priceType: subService.priceType as "hourly" | "fixed" | "quote",
+        // Add translated title and description
+        translatedTitle: getServiceTranslation(subService.id, 'title', locale) || subService.title,
+        translatedDescription: getServiceTranslation(subService.id, 'description', locale) || subService.description
       }))
     );
-  }, []);
+  }, [locale]);
 
   // Filter services based on eligibility and other filters
   const filteredServices = useMemo(() => {
@@ -81,8 +139,8 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     filtered = filtered.filter(service => {
       // Search filter
       const matchesSearch = searchDebounced === "" || 
-        service.title.toLowerCase().includes(searchDebounced.toLowerCase()) ||
-        service.description.toLowerCase().includes(searchDebounced.toLowerCase()) ||
+        service.translatedTitle.toLowerCase().includes(searchDebounced.toLowerCase()) ||
+        service.translatedDescription.toLowerCase().includes(searchDebounced.toLowerCase()) ||
         service.category.toLowerCase().includes(searchDebounced.toLowerCase()) ||
         service.parentService.toLowerCase().includes(searchDebounced.toLowerCase());
 
@@ -426,9 +484,9 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               {paginatedServices.map(service => (
                 <ServiceCardV3
                   key={`${service.id}-${mode}`}
-                  title={service.title}
+                  title={service.translatedTitle}
                   category={service.category}
-                  description={service.description}
+                  description={service.translatedDescription}
                   pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
                   priceIncl={service.basePrice}
                   eligible={{
@@ -440,14 +498,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`${t('service_text.booking_for')} ${service.title} ${t('service_text.started')}`);
+                      toast.success(`${t('service_text.booking_for')} ${service.translatedTitle} ${t('service_text.started')}`);
                     }
                   }}
                   onQuote={() => {
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`${t('service_text.quote_for')} ${service.title} ${t('service_text.sent')}`);
+                      toast.success(`${t('service_text.quote_for')} ${service.translatedTitle} ${t('service_text.sent')}`);
                     }
                   }}
                 />

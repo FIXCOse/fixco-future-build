@@ -71,6 +71,7 @@ export const sv: Record<CopyKey, string> = {
   'services.preview': 'Förhandsvisning',
   'services.show_3d': 'Visa i 3D',
   'services.incl_install': 'Inkl. installation & setup',
+  'services.quote_after_inspection': 'Prisuppgift efter besiktning',
   
   // Smart Home
   'smartHome.title': 'Smart Hemautomation',
