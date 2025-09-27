@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useActionWizard } from "@/stores/actionWizardStore";
 import { useCopy } from "@/copy/CopyProvider";
+import { type CopyKey } from "@/copy/keys";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -19,6 +20,7 @@ interface ServiceCardV3Props {
   onBook?: () => void;
   onQuote?: () => void;
   serviceSlug?: string;
+  serviceId?: string;
   className?: string;
   showFullWidth?: boolean;
 }
@@ -37,12 +39,40 @@ const ServiceCardV3 = ({
   onBook,
   onQuote,
   serviceSlug,
+  serviceId,
   className = "",
   showFullWidth = false
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
   const open = useActionWizard((s) => s.open);
   const { t } = useCopy();
+
+  // Helper function to get translated service title
+  const getTranslatedTitle = () => {
+    if (serviceId) {
+      const key = `service.${serviceId}.title` as CopyKey;
+      const translated = t(key);
+      if (translated !== key) {
+        return translated;
+      }
+    }
+    return title;
+  };
+
+  // Helper function to get translated service description
+  const getTranslatedDescription = () => {
+    if (serviceId) {
+      const key = `service.${serviceId}.description` as CopyKey;
+      const translated = t(key);
+      if (translated !== key) {
+        return translated;
+      }
+    }
+    return description;
+  };
+
+  const translatedTitle = getTranslatedTitle();
+  const translatedDescription = getTranslatedDescription();
 
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,7 +85,7 @@ const ServiceCardV3 = ({
       open({
         mode: "book",
         serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
-        serviceName: title,
+        serviceName: translatedTitle,
         defaults: { priceType: "hourly", hourlyRate: priceIncl }
       });
     }
@@ -72,7 +102,7 @@ const ServiceCardV3 = ({
       open({
         mode: "quote",
         serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
-        serviceName: title,
+        serviceName: translatedTitle,
         defaults: { priceType: "quote" }
       });
     }
@@ -87,9 +117,9 @@ const ServiceCardV3 = ({
       )}>
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-3">
-          <h3 className="text-base md:text-lg font-semibold text-foreground">
-            {title}
-          </h3>
+        <h3 className="text-base md:text-lg font-semibold text-foreground">
+          {translatedTitle}
+        </h3>
           <div className="flex gap-1 flex-shrink-0">
             {eligible.rot && (
               <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
@@ -106,7 +136,7 @@ const ServiceCardV3 = ({
 
         {/* Description */}
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-          {description}
+          {translatedDescription}
         </p>
 
         {/* Price block */}
@@ -128,7 +158,7 @@ const ServiceCardV3 = ({
           onClick={handleQuoteClick}
           data-wizard="quote"
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
-          data-service-name={title}
+          data-service-name={translatedTitle}
         >
             {t('cta.request_quote')}
           </Button>
@@ -198,7 +228,7 @@ const ServiceCardV3 = ({
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <h3 className="text-base md:text-lg font-semibold text-foreground">
-          {title}
+          {translatedTitle}
         </h3>
         <div className="flex gap-1 flex-shrink-0">
           {mode === 'rot' && eligible.rot && (
@@ -238,7 +268,7 @@ const ServiceCardV3 = ({
 
       {/* Description */}
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-        {description}
+        {translatedDescription}
       </p>
 
       {/* Price block */}
@@ -280,7 +310,7 @@ const ServiceCardV3 = ({
           onClick={ctaType === 'book' ? handleBookingClick : handleQuoteClick}
           data-wizard={ctaType}
           data-service-id={serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')}
-          data-service-name={title}
+          data-service-name={translatedTitle}
         >
           {ctaType === 'book' ? t('cta.book_now') : t('cta.request_quote')}
         </Button>

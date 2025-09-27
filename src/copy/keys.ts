@@ -61,6 +61,77 @@ export type CopyKey =
   | 'service_text.quote_for' | 'service_text.booking_for' | 'service_text.started'
   | 'service_text.sent'
   
+  // Individual service translations - EL
+  | 'service.el-1.title' | 'service.el-1.description'
+  | 'service.el-2.title' | 'service.el-2.description'
+  | 'service.el-3.title' | 'service.el-3.description'
+  | 'service.el-4.title' | 'service.el-4.description'
+  | 'service.el-5.title' | 'service.el-5.description'
+  | 'service.el-6.title' | 'service.el-6.description'
+  | 'service.el-7.title' | 'service.el-7.description'
+  | 'service.el-8.title' | 'service.el-8.description'
+  | 'service.el-9.title' | 'service.el-9.description'
+  | 'service.el-10.title' | 'service.el-10.description'
+  | 'service.el-11.title' | 'service.el-11.description'
+  
+  // Individual service translations - VVS
+  | 'service.vvs-1.title' | 'service.vvs-1.description'
+  | 'service.vvs-2.title' | 'service.vvs-2.description'
+  | 'service.vvs-3.title' | 'service.vvs-3.description'
+  | 'service.vvs-4.title' | 'service.vvs-4.description'
+  | 'service.vvs-5.title' | 'service.vvs-5.description'
+  | 'service.vvs-6.title' | 'service.vvs-6.description'
+  | 'service.vvs-7.title' | 'service.vvs-7.description'
+  | 'service.vvs-8.title' | 'service.vvs-8.description'
+  | 'service.vvs-9.title' | 'service.vvs-9.description'
+  | 'service.vvs-10.title' | 'service.vvs-10.description'
+  | 'service.vvs-11.title' | 'service.vvs-11.description'
+  | 'service.vvs-12.title' | 'service.vvs-12.description'
+  | 'service.vvs-13.title' | 'service.vvs-13.description'
+  
+  // Individual service translations - SNICKERI
+  | 'service.snickeri-1.title' | 'service.snickeri-1.description'
+  | 'service.snickeri-2.title' | 'service.snickeri-2.description'
+  | 'service.snickeri-3.title' | 'service.snickeri-3.description'
+  | 'service.snickeri-4.title' | 'service.snickeri-4.description'
+  | 'service.snickeri-5.title' | 'service.snickeri-5.description'
+  
+  // Individual service translations - MONTERING
+  | 'service.montering-1.title' | 'service.montering-1.description'
+  | 'service.montering-2.title' | 'service.montering-2.description'
+  | 'service.montering-3.title' | 'service.montering-3.description'
+  | 'service.montering-4.title' | 'service.montering-4.description'
+  
+  // Individual service translations - TRADGARD
+  | 'service.tradgard-1.title' | 'service.tradgard-1.description'
+  | 'service.tradgard-2.title' | 'service.tradgard-2.description'
+  | 'service.tradgard-3.title' | 'service.tradgard-3.description'
+  | 'service.tradgard-4.title' | 'service.tradgard-4.description'
+  | 'service.tradgard-5.title' | 'service.tradgard-5.description'
+  | 'service.tradgard-6.title' | 'service.tradgard-6.description'
+  
+  // Individual service translations - STADNING
+  | 'service.stadning-1.title' | 'service.stadning-1.description'
+  | 'service.stadning-2.title' | 'service.stadning-2.description'
+  | 'service.stadning-3.title' | 'service.stadning-3.description'
+  | 'service.stadning-4.title' | 'service.stadning-4.description'
+  
+  // Individual service translations - MARKARBETEN
+  | 'service.markarbeten-1.title' | 'service.markarbeten-1.description'
+  | 'service.markarbeten-2.title' | 'service.markarbeten-2.description'
+  | 'service.markarbeten-3.title' | 'service.markarbeten-3.description'
+  | 'service.markarbeten-4.title' | 'service.markarbeten-4.description'
+  
+  // Individual service translations - TEKNISKA INSTALLATIONER
+  | 'service.tekniska-1.title' | 'service.tekniska-1.description'
+  | 'service.tekniska-2.title' | 'service.tekniska-2.description'
+  | 'service.tekniska-3.title' | 'service.tekniska-3.description'
+  
+  // Individual service translations - FLYTT
+  | 'service.flytt-1.title' | 'service.flytt-1.description'
+  | 'service.flytt-2.title' | 'service.flytt-2.description'
+  | 'service.flytt-3.title' | 'service.flytt-3.description'
+  
   // Project visualization texts
   | 'project.eco_performance' | 'project.ai_results' | 'project.environmental_impact'
   | 'project.rot_rut_optimization'

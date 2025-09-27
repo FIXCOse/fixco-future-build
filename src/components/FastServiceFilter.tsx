@@ -484,9 +484,9 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               {paginatedServices.map(service => (
                 <ServiceCardV3
                   key={`${service.id}-${mode}`}
-                  title={service.translatedTitle}
+                  title={service.title}
                   category={service.category}
-                  description={service.translatedDescription}
+                  description={service.description}
                   pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
                   priceIncl={service.basePrice}
                   eligible={{
@@ -494,6 +494,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     rut: service.eligible?.rut || false
                   }}
                   serviceSlug={service.id}
+                  serviceId={service.id}
                   onBook={() => {
                     if (onServiceSelect) {
                       onServiceSelect(service);
