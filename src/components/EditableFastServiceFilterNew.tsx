@@ -272,32 +272,43 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     if (active.id !== over?.id) {
       console.log('🔄 Drag end detected, starting reorder...', { active: active.id, over: over?.id });
       
-      setServices((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over?.id);
+      setServices((allServices) => {
+        // Find the dragged items in the current paginated view
+        const paginatedItems = [...paginatedServices];
+        const oldIndex = paginatedItems.findIndex((item) => item.id === active.id);
+        const newIndex = paginatedItems.findIndex((item) => item.id === over?.id);
 
-        console.log('📍 Reordering:', { oldIndex, newIndex, totalItems: items.length });
+        console.log('📍 Reordering in paginated view:', { oldIndex, newIndex, totalPaginatedItems: paginatedItems.length });
 
-        const newItems = arrayMove(items, oldIndex, newIndex);
+        if (oldIndex === -1 || newIndex === -1) {
+          console.warn('⚠️ Could not find dragged items in current page');
+          return allServices;
+        }
+
+        // Reorder within the paginated view
+        const reorderedPaginated = arrayMove(paginatedItems, oldIndex, newIndex);
         
-        // Update sort_order for all affected items
-        const updatedItems = newItems.map((item, index) => ({
-          ...item,
-          sort_order: index + 1
-        }));
+        // Calculate the starting sort_order for this page
+        const startingOrder = (currentPage - 1) * ITEMS_PER_PAGE + 1;
         
-        console.log('💾 Preparing to save order to database...', updatedItems.map(i => ({ id: i.id, sort_order: i.sort_order })));
-        
-        // Save to database
-        const servicesToUpdate = updatedItems.map(item => ({
+        // Update sort_order for the reordered items
+        const servicesToUpdate = reorderedPaginated.map((item, index) => ({
           id: item.id,
-          sort_order: item.sort_order
+          sort_order: startingOrder + index
         }));
+        
+        console.log('💾 Preparing to save order to database...', servicesToUpdate);
+        
+        // Update the full services array with new sort orders
+        const updatedAllServices = allServices.map(service => {
+          const updatedService = servicesToUpdate.find(s => s.id === service.id);
+          return updatedService ? { ...service, sort_order: updatedService.sort_order } : service;
+        });
         
         console.log('🚀 Calling reorderServices.mutate...', servicesToUpdate);
         reorderServices.mutate(servicesToUpdate);
         
-        return updatedItems;
+        return updatedAllServices;
       });
     }
   };
