@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
+import { EditModeProvider } from './components/edit/EditModeProvider';
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -116,7 +117,8 @@ const App = () => {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <SecurityWrapper>
-          <TooltipProvider>
+          <EditModeProvider>
+            <TooltipProvider>
             <div className="min-h-screen bg-background font-inter">
               <Toaster />
               <Sonner />
@@ -266,7 +268,8 @@ const App = () => {
                 <ModalHost />
               </BrowserRouter>
             </div>
-          </TooltipProvider>
+            </TooltipProvider>
+          </EditModeProvider>
         </SecurityWrapper>
       </QueryClientProvider>
     </HelmetProvider>

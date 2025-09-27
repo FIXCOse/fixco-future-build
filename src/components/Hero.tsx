@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-construction.jpg";
 import { useCopy } from "@/copy/CopyProvider";
+import { InlineText } from "@/components/edit/InlineText";
+import { useContentBlock } from "@/hooks/useContentBlock";
 
 const Hero = () => {
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
+  const { getContent } = useContentBlock('home.hero', locale);
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
@@ -27,18 +30,33 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl">
           <div>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="gradient-text">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
-              <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
-              <br />
-              <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-              <span className="gradient-text animate-float">{t('hero.everything')}</span>
-            </h1>
+            <InlineText
+              field="title"
+              scope="content:home.hero:sv"
+              value={getContent('title') || `${t('hero.title_large')} ${t('hero.title_or')} ${t('hero.title_small')} ${t('hero.title_projects')} ${t('hero.fixco_handles')} ${t('hero.everything')}`}
+              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                <span className="gradient-text">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
+                <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
+                <br />
+                <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
+                <span className="gradient-text animate-float">{t('hero.everything')}</span>
+              </h1>
+            </InlineText>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
-              {t('hero.subtitle')} 
-              <span className="text-primary font-semibold"> {t('timing.start_within_5_days')}.</span>
-            </p>
+            <InlineText
+              field="subtitle"
+              scope="content:home.hero:sv"
+              value={getContent('subtitle') || `${t('hero.subtitle')} ${t('timing.start_within_5_days')}.`}
+              multiline
+              className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl"
+            >
+              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
+                {t('hero.subtitle')} 
+                <span className="text-primary font-semibold"> {t('timing.start_within_5_days')}.</span>
+              </p>
+            </InlineText>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">

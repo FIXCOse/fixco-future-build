@@ -426,6 +426,63 @@ export type Database = {
         }
         Relationships: []
       }
+      content_blocks: {
+        Row: {
+          created_at: string | null
+          draft: Json
+          id: string
+          key: string
+          locale: string
+          published: Json
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          draft?: Json
+          id?: string
+          key: string
+          locale: string
+          published?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          draft?: Json
+          id?: string
+          key?: string
+          locale?: string
+          published?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      edit_locks: {
+        Row: {
+          expires_at: string
+          id: string
+          locked_at: string | null
+          locked_by: string
+          scope: string
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          locked_at?: string | null
+          locked_by: string
+          scope: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          locked_at?: string | null
+          locked_by?: string
+          scope?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string | null
@@ -956,6 +1013,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      media_assets: {
+        Row: {
+          alt_en: string | null
+          alt_sv: string | null
+          bucket: string
+          created_at: string | null
+          created_by: string | null
+          height: number | null
+          id: string
+          path: string
+          width: number | null
+        }
+        Insert: {
+          alt_en?: string | null
+          alt_sv?: string | null
+          bucket: string
+          created_at?: string | null
+          created_by?: string | null
+          height?: number | null
+          id?: string
+          path: string
+          width?: number | null
+        }
+        Update: {
+          alt_en?: string | null
+          alt_sv?: string | null
+          bucket?: string
+          created_at?: string | null
+          created_by?: string | null
+          height?: number | null
+          id?: string
+          path?: string
+          width?: number | null
+        }
+        Relationships: []
       }
       organization_members: {
         Row: {
@@ -1525,6 +1618,30 @@ export type Database = {
           name?: string
           service_id?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      service_versions: {
+        Row: {
+          edited_at: string | null
+          edited_by: string | null
+          id: number
+          service_id: string
+          snapshot: Json
+        }
+        Insert: {
+          edited_at?: string | null
+          edited_by?: string | null
+          id?: never
+          service_id: string
+          snapshot: Json
+        }
+        Update: {
+          edited_at?: string | null
+          edited_by?: string | null
+          id?: never
+          service_id?: string
+          snapshot?: Json
         }
         Relationships: []
       }
@@ -2378,6 +2495,26 @@ export type Database = {
       reorder_services: {
         Args: { _service_updates: Json }
         Returns: undefined
+      }
+      rpc_acquire_lock: {
+        Args: { p_scope: string }
+        Returns: boolean
+      }
+      rpc_batch_publish_content: {
+        Args: { p_items: Json }
+        Returns: number
+      }
+      rpc_publish_content_block: {
+        Args: { p_key: string; p_locale: string }
+        Returns: boolean
+      }
+      rpc_release_lock: {
+        Args: { p_scope: string }
+        Returns: boolean
+      }
+      rpc_update_service_partial: {
+        Args: { p_id: string; p_patch: Json }
+        Returns: boolean
       }
       track_product_view: {
         Args: { p_product_id: string }
