@@ -27,7 +27,6 @@ import { useDebounce } from "@/hooks/useDebounce";
 import ServiceCardV3 from "./ServiceCardV3";
 import SegmentedPriceToggle from "./SegmentedPriceToggle";
 import { usePriceStore } from "@/stores/priceStore";
-import { toast } from "sonner";
 import { useCopy } from '@/copy/CopyProvider';
 import { useServices, useUpdateService } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
@@ -292,8 +291,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     }
   };
 
-  };
-
   // Drag and drop handlers
   const handleDragEnd = (event: DragEndEvent) => {
     console.log('🔍 DRAG END EVENT:', event);
@@ -353,7 +350,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     });
   };
 
-  // Update URL and sessionStorage  
+  // Update URL and sessionStorage
   const updateStateAndURL = React.useCallback((updates: Record<string, string | boolean>) => {
     const newParams = new URLSearchParams(searchParams);
     
