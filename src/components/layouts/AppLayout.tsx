@@ -4,8 +4,6 @@ import { LocaleProvider } from '../LocaleProvider';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
-import StickyCtaBar from '../StickyCtaBar';
-import StickyCTA from '../StickyCTA';
 import AIChat from '../AIChat';
 import { EditModeToggle } from '../EditModeToggle';
 import { ModalHost } from '../ActionWizard';
@@ -29,8 +27,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <main>
               <Outlet />
             </main>
-            
-            <StickyCTA />
             <AIChat />
             <EditModeToggle />
             <ModalHost />
