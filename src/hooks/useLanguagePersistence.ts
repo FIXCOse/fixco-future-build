@@ -48,6 +48,8 @@ export const useLanguagePersistence = () => {
       '/om-oss': '/en/about',
       '/referenser': '/en/references',
       '/smart-hem': '/en/smart-home',
+      '/rot': '/en/rot',
+      '/rut': '/en/rut',
       '/faq': '/en/faq',
       '/terms': '/en/terms',
       '/privacy': '/en/privacy'
@@ -86,6 +88,8 @@ export const useLanguagePersistence = () => {
       '/en/about': '/om-oss',
       '/en/references': '/referenser',
       '/en/smart-home': '/smart-hem',
+      '/en/rot': '/rot',
+      '/en/rut': '/rut',
       '/en/faq': '/faq',
       '/en/terms': '/terms',
       '/en/privacy': '/privacy'
