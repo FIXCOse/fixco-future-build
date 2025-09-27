@@ -4,7 +4,6 @@ import { LocaleProvider } from '../LocaleProvider';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
-import AIChat from '../AIChat';
 import { EditModeToggle } from '../EditModeToggle';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
@@ -27,7 +26,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <main>
               <Outlet />
             </main>
-            <AIChat />
             <EditModeToggle />
             <ModalHost />
           </div>
