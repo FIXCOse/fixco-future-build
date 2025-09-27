@@ -5,17 +5,43 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown } from 'lucide-react';
 import { useServices, useAddService, useUpdateService, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const ServiceManagement = () => {
+  const queryClient = useQueryClient();
   const { data: services = [], isLoading } = useServices('sv');
   const addService = useAddService();
   const updateService = useUpdateService();
+  
+  // Hook for reordering services
+  const reorderServices = useMutation({
+    mutationFn: async ({ services: servicesToUpdate }: { services: { id: string; sort_order: number }[] }) => {
+      // Update each service individually since we only want to update sort_order
+      for (const service of servicesToUpdate) {
+        const { error } = await supabase
+          .from('services')
+          .update({ sort_order: service.sort_order })
+          .eq('id', service.id);
+        
+        if (error) throw error;
+      }
+      return servicesToUpdate;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      toast.success('Ordning uppdaterad!');
+    },
+    onError: (error) => {
+      toast.error('Fel vid uppdatering av ordning: ' + error.message);
+    }
+  });
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
@@ -130,6 +156,32 @@ const ServiceManagement = () => {
     }
   };
 
+  const moveService = (serviceId: string, direction: 'up' | 'down') => {
+    const currentIndex = filteredServices.findIndex(s => s.id === serviceId);
+    if (currentIndex === -1) return;
+    
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= filteredServices.length) return;
+    
+    // Create new sort orders
+    const servicesToUpdate = filteredServices.map((service, index) => {
+      let newSortOrder = service.sort_order;
+      
+      if (index === currentIndex) {
+        newSortOrder = filteredServices[newIndex].sort_order;
+      } else if (index === newIndex) {
+        newSortOrder = filteredServices[currentIndex].sort_order;
+      }
+      
+      return {
+        id: service.id,
+        sort_order: newSortOrder
+      };
+    });
+    
+    reorderServices.mutate({ services: servicesToUpdate });
+  };
+
   const categories = ['el', 'vvs', 'snickeri', 'montering', 'tradgard', 'stadning', 'markarbeten', 'tekniska-installationer', 'flytt'];
   
   const filteredServices = selectedCategory === 'all' 
@@ -178,13 +230,36 @@ const ServiceManagement = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filteredServices.map((service) => (
+        {filteredServices.map((service, index) => (
           <Card key={service.id} className="h-fit">
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start mb-2">
-                <Badge variant="outline" className="text-xs">{service.category}</Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-xs">{service.category}</Badge>
+                  <Badge variant="secondary" className="text-xs">#{service.sort_order}</Badge>
+                </div>
                 <div className="flex items-center gap-1">
                   {getTranslationStatusBadge(service.translation_status)}
+                  <div className="flex flex-col">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => moveService(service.id, 'up')}
+                      disabled={index === 0 || reorderServices.isPending}
+                      className="h-6 w-6 p-0"
+                    >
+                      <ChevronUp className="h-3 w-3" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => moveService(service.id, 'down')}
+                      disabled={index === filteredServices.length - 1 || reorderServices.isPending}
+                      className="h-6 w-6 p-0"
+                    >
+                      <ChevronDown className="h-3 w-3" />
+                    </Button>
+                  </div>
                   <Button variant="ghost" size="sm" onClick={() => handleEdit(service)} className="h-8 w-8 p-0">
                     <Edit className="h-3 w-3" />
                   </Button>
