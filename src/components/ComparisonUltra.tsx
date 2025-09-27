@@ -75,13 +75,13 @@ const ComparisonUltra = () => {
     },
     {
       icon: TrendingUp,
-      title: "Pris",
+      title: t('comparison.price_title'),
       fixcoValue: rotEnabled ? 480 : 959,
       fixcoUnit: "kr/h",
       competitorValue: rotEnabled ? "800-1 300" : "800-1 300",
       competitorUnit: "kr/h",
       isWin: true,
-      description: rotEnabled ? "Upp till 50% billigare med ROT-avdrag" : "Konkurrenskraftiga priser utan ROT"
+      description: rotEnabled ? t('comparison.price_rot_desc') : t('comparison.price_no_rot_desc')
     },
     {
       icon: MapPin,
@@ -196,7 +196,7 @@ const ComparisonUltra = () => {
             className="hidden md:grid grid-cols-3 gap-3 mb-4"
           >
             <div className="text-center">
-              <h3 className="text-base font-semibold text-muted-foreground">Jämförelse</h3>
+              <h3 className="text-base font-semibold text-muted-foreground">{t('comparison.header')}</h3>
             </div>
             <div className="card-premium p-3 text-center border-primary/20">
               <Trophy className="h-5 w-5 mx-auto mb-1 text-primary" />
@@ -204,7 +204,7 @@ const ComparisonUltra = () => {
             </div>
             <div className="card-premium p-3 text-center border-muted/20">
               <Timer className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
-              <h3 className="text-lg font-bold text-muted-foreground">Konkurrenter</h3>
+              <h3 className="text-lg font-bold text-muted-foreground">{t('comparison.competitors')}</h3>
             </div>
           </motion.div>
 
@@ -215,9 +215,9 @@ const ComparisonUltra = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="md:hidden grid grid-cols-3 gap-2 mb-4 text-center"
           >
-            <div className="text-xs font-medium text-muted-foreground">Jämförelse</div>
+            <div className="text-xs font-medium text-muted-foreground">{t('comparison.header')}</div>
             <div className="text-xs font-bold gradient-text">Fixco</div>
-            <div className="text-xs font-medium text-muted-foreground">Konkurrenter</div>
+            <div className="text-xs font-medium text-muted-foreground">{t('comparison.competitors')}</div>
           </motion.div>
 
           {/* Compact Metrics Grid */}

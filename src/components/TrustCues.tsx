@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Shield, Award, Clock, CheckCircle2, Star, MapPin } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface TrustCuesProps {
   variant?: 'inline' | 'grid' | 'minimal';
@@ -7,41 +8,43 @@ interface TrustCuesProps {
 }
 
 const TrustCues = ({ variant = 'inline', className = "" }: TrustCuesProps) => {
+  const { t } = useCopy();
+
   const cues = [
     {
       icon: Shield,
-      label: "F-skatt",
-      description: "Godkänd för ROT & RUT",
+      label: t('trust.f_tax'),
+      description: t('trust.f_tax_desc'),
       color: "text-green-500"
     },
     {
       icon: Award,
-      label: "Försäkrade",
-      description: "Ansvarsförsäkring 10M kr",
+      label: t('trust.insured'),
+      description: t('trust.insured_desc'),
       color: "text-blue-500"
     },
     {
       icon: Clock,
-      label: "Start inom < 5 dagar",
-      description: "Oftast inom 5 dagar",
+      label: t('trust.fast_start'),
+      description: t('trust.fast_start_desc'),
       color: "text-primary"
     },
     {
       icon: CheckCircle2,
-      label: "Fast pris",
-      description: "Där det är möjligt",
+      label: t('trust.fixed_price'),
+      description: t('trust.fixed_price_desc'),
       color: "text-primary"
     },
     {
       icon: Star,
-      label: "4.9/5 betyg",
-      description: "Över 500 recensioner",
+      label: t('trust.rating'),
+      description: t('trust.rating_desc'),
       color: "text-yellow-500"
     },
     {
       icon: MapPin,
-      label: "Uppsala & Stockholm",
-      description: "Lokalt & nationellt",
+      label: t('trust.coverage'),
+      description: t('trust.coverage_desc'),
       color: "text-primary"
     }
   ];

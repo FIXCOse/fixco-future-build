@@ -253,4 +253,12 @@ export type CopyKey =
    | 'timing.start_within_5_days' | 'timing.less_than_5_days'
    | 'comparison.coverage_area' | 'comparison.limited' | 'comparison.5_10_days'
    | 'comparison.coverage_description' | 'comparison.timing_description'
-   | 'comparison.start_time';
+   | 'comparison.start_time' | 'comparison.header' | 'comparison.competitors'
+   | 'trust.f_tax' | 'trust.f_tax_desc' | 'trust.insured' | 'trust.insured_desc'
+   | 'trust.fast_start' | 'trust.fast_start_desc' | 'trust.fixed_price' | 'trust.fixed_price_desc'
+   | 'trust.rating' | 'trust.rating_desc' | 'trust.coverage' | 'trust.coverage_desc'
+   | 'hero.title_large' | 'hero.title_or' | 'hero.title_small' | 'hero.title_projects'
+   | 'hero.subtitle' | 'hero.fixco_handles' | 'hero.everything'
+   | 'hero.cta_request_quote' | 'hero.cta_see_services' | 'hero.trust_rot' | 'hero.trust_rot_desc'
+   | 'hero.trust_coverage' | 'hero.trust_coverage_desc' | 'hero.trust_start' | 'hero.trust_start_desc'
+   | 'comparison.price_title' | 'comparison.price_rot_desc' | 'comparison.price_no_rot_desc';

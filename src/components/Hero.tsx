@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-construction.jpg";
+import { useCopy } from "@/copy/CopyProvider";
 
 const Hero = () => {
+  const { t } = useCopy();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
@@ -26,16 +28,16 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="gradient-text">Stora</span> eller{" "}
-              <span className="gradient-text">små</span> projekt –{" "}
+              <span className="gradient-text">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
+              <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
               <br />
-              <span className="text-foreground">Fixco hanterar</span>{" "}
-              <span className="gradient-text animate-float">allt</span>
+              <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
+              <span className="gradient-text animate-float">{t('hero.everything')}</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
-              Snabbare, billigare och mer professionellt än våra konkurrenter. 
-              <span className="text-primary font-semibold"> Start inom {'< 5 dagar'}.</span>
+              {t('hero.subtitle')} 
+              <span className="text-primary font-semibold"> {t('timing.start_within_5_days')}.</span>
             </p>
 
             {/* CTA Buttons */}
@@ -46,7 +48,7 @@ const Hero = () => {
                   size="cta"
                   className="w-full sm:w-auto"
                 >
-                  Begär offert
+                  {t('hero.cta_request_quote')}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>
@@ -56,7 +58,7 @@ const Hero = () => {
                   size="cta"
                   className="w-full sm:w-auto"
                 >
-                  Se våra tjänster
+                  {t('hero.cta_see_services')}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>
@@ -66,15 +68,15 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-8 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                <span>ROT-avdrag: <span className="text-primary font-semibold">50% rabatt</span></span>
+                <span>{t('hero.trust_rot')} <span className="text-primary font-semibold">{t('hero.trust_rot_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                <span>Nationell täckning: <span className="text-primary font-semibold">Hela Sverige</span></span>
+                <span>{t('hero.trust_coverage')} <span className="text-primary font-semibold">{t('hero.trust_coverage_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
-                <span>Snabb start: <span className="text-primary font-semibold">Inom {'< 5 dagar'}</span></span>
+                <span>{t('hero.trust_start')} <span className="text-primary font-semibold">{t('hero.trust_start_desc')}</span></span>
               </div>
             </div>
           </div>
