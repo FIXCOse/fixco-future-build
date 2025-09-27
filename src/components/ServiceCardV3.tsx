@@ -177,7 +177,8 @@ const ServiceCardV3 = ({
   // Helper function for savings text
   const formatSavingsText = (savings: number, deductionType: 'ROT' | 'RUT') => {
     const suffix = pricingType === 'hourly' ? '/h' : '';
-    return `${t('services.savings')} ${formatMoney(savings)} kr${suffix} med ${deductionType}`;
+    const deductionKey = deductionType === 'ROT' ? 'price.with_rot_discount' : 'price.with_rut_discount';
+    return `${t('services.savings')} ${formatMoney(savings)} kr${suffix} ${t(deductionKey)}`;
   };
 
   // Determine primary price and discounted state
