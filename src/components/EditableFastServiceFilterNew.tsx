@@ -152,18 +152,17 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
   // DEBUG: Global event listeners to check if events are being blocked
   React.useEffect(() => {
-    const handlePointerDown = (e: PointerEvent) => console.log('🌍 document pointerdown', e.target);
-    const handleMouseDown = (e: MouseEvent) => console.log('🌍 document mousedown', e.target);
-    const handleTouchStart = (e: TouchEvent) => console.log('🌍 document touchstart', e.target);
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.textContent?.includes('☰')) {
+        console.log('🎯 DRAG HANDLE CLICKED!', target);
+      }
+    };
     
-    document.addEventListener('pointerdown', handlePointerDown, { capture: true });
     document.addEventListener('mousedown', handleMouseDown, { capture: true });
-    document.addEventListener('touchstart', handleTouchStart, { capture: true });
     
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown, { capture: true });
       document.removeEventListener('mousedown', handleMouseDown, { capture: true });
-      document.removeEventListener('touchstart', handleTouchStart, { capture: true });
     };
   }, []);
 

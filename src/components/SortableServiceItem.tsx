@@ -37,29 +37,29 @@ export function SortableServiceItem({ id, service, onEdit, onDelete, onServiceSe
       style={style}
       className={`relative ${isDragging ? 'opacity-50' : ''}`}
     >
-      {/* Edit Controls */}
+      {/* Edit Controls - Made more visible */}
       <div className="absolute top-2 left-2 z-20 flex gap-1">
-        {/* DRAG HANDLE - Critical: listeners go HERE on neutral element */}
-         <span
-           className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 touch-none select-none"
-           {...attributes}
-           {...listeners}
-           style={{ 
-             touchAction: 'none',
-             userSelect: 'none',
-             WebkitUserSelect: 'none',
-             MozUserSelect: 'none',
-             msUserSelect: 'none',
-             WebkitUserDrag: 'none'
-           } as React.CSSProperties}
-           title="Dra för att flytta"
-           role="button"
-           aria-label="Dra för att flytta tjänst"
-           onPointerDown={(e) => console.log('🔎 pointer down on handle', e.pointerType, 'id:', id)}
-           onMouseDown={() => console.log('🔎 mouse down on handle, id:', id)}
-           onTouchStart={() => console.log('🔎 touch start on handle, id:', id)}
-         >
-          ☰
+        {/* DRAG HANDLE - Made more prominent */}
+        <span
+          className="p-3 bg-orange-500 text-white rounded-full shadow-xl cursor-grab active:cursor-grabbing hover:bg-orange-600 touch-none select-none border-2 border-white"
+          {...attributes}
+          {...listeners}
+          style={{ 
+            touchAction: 'none',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            MozUserSelect: 'none',
+            msUserSelect: 'none',
+            WebkitUserDrag: 'none'
+          } as React.CSSProperties}
+          title="DRA HÄR för att flytta tjänst"
+          role="button"
+          aria-label="Dra för att flytta tjänst"
+          onPointerDown={(e) => console.log('🔎 pointer down on handle', e.pointerType, 'id:', id)}
+          onMouseDown={() => console.log('🔎 mouse down on handle, id:', id)}
+          onTouchStart={() => console.log('🔎 touch start on handle, id:', id)}
+        >
+          ⇅ DRAG
         </span>
         
         {/* Other buttons WITHOUT listeners */}
