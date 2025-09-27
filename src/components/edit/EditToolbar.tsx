@@ -46,10 +46,11 @@ export const EditToolbar: React.FC<EditToolbarProps> = ({
     shouldRender: canAccessAdmin && canEdit 
   });
 
-  if (!canAccessAdmin || !canEdit) {
-    console.log('EditToolbar returning null because:', { canAccessAdmin, canEdit });
-    return null;
-  }
+  // Temporarily remove null check to debug
+  // if (!canAccessAdmin || !canEdit) {
+  //   console.log('EditToolbar returning null because:', { canAccessAdmin, canEdit });
+  //   return null;
+  // }
 
   const changeCount = Object.keys(changes).length;
 
