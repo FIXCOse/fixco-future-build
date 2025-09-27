@@ -74,9 +74,10 @@ function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: Sor
         <div
           {...attributes}
           {...listeners}
-          className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
+          className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 touch-none"
           title="Dra för att flytta"
           onMouseDown={() => console.log('🔍 Drag handle clicked for:', service.id)}
+          onTouchStart={() => console.log('🔍 Touch started for:', service.id)}
         >
           <GripVertical className="h-4 w-4" />
         </div>
@@ -273,7 +274,11 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const searchDebounced = useDebounce(searchQuery, 300);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px drag distance before activating
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -729,7 +734,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
             )}
           </div>
         ) : (
-          <div className="select-none">
+          <div>
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
