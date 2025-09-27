@@ -55,6 +55,9 @@ function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: Sor
     isDragging,
   } = useSortable({ id: service.id });
 
+  // DEBUG: Log when sortable item is created
+  console.log('🔍 SortableServiceItem created for:', service.id, { isDragging });
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -73,6 +76,7 @@ function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: Sor
           {...listeners}
           className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
           title="Dra för att flytta"
+          onMouseDown={() => console.log('🔍 Drag handle clicked for:', service.id)}
         >
           <GripVertical className="h-4 w-4" />
         </div>
@@ -141,6 +145,12 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode } = usePriceStore();
   const queryClient = useQueryClient();
+  
+  // DEBUG: Log edit mode status
+  console.log('🔍 EditableFastServiceFilterNew render:', { 
+    isEditMode, 
+    timestamp: new Date().toISOString() 
+  });
   
   // Get services from database
   const { data: servicesFromDB = [], isLoading } = useServices(locale);
@@ -724,6 +734,9 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
               sensors={sensors}
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
+              onDragStart={(event) => {
+                console.log('🔍 DND DRAG START:', event.active.id);
+              }}
             >
               <SortableContext items={paginatedServices.map(s => s.id)} strategy={rectSortingStrategy}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
