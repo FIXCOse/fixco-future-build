@@ -49,7 +49,7 @@ const ComparisonUltra = () => {
     from: 0,
     to: 5,
     duration: 1500,
-    formatter: (value) => `< ${Math.round(value)} dagar`
+    formatter: (value) => `< ${Math.round(value)} ${t('comparison.days')}`
   });
 
   // Attach observers to the main section when it becomes visible
@@ -93,33 +93,33 @@ const ComparisonUltra = () => {
     },
     {
       icon: Star,
-      title: "Kundnöjdhet",
+      title: t('comparison.customer_satisfaction'),
       fixcoValue: customerSatisfaction.value,
       fixcoUnit: "/5",
       competitorValue: "3.8",
       competitorUnit: "/5",
       counterKey: "customer_satisfaction",
       isWin: true,
-      description: "Branschens högsta kundnöjdhet baserat på tusentals recensioner"
+      description: t('comparison.customer_satisfaction_desc')
     },
     {
       icon: Shield,
-      title: "RUT-hantering",
-      fixcoValue: "Vi sköter allt",
-      competitorValue: "Du själv",
+      title: t('comparison.rut_handling'),
+      fixcoValue: t('comparison.rut_handling_fixco'),
+      competitorValue: t('comparison.rut_handling_competitor'),
       isWin: true,
-      description: "Vi hanterar all RUT-administration för hushållsnära tjänster"
+      description: t('comparison.rut_handling_desc')
     },
     {
       icon: Trophy,
-      title: "Projekt klart i tid",
+      title: t('comparison.project_completion'),
       fixcoValue: completionRate.value,
       fixcoUnit: "%",
       competitorValue: "70-80",
       competitorUnit: "%",
       counterKey: "completion_rate",
       isWin: true,
-      description: "Nästan alla projekt levereras enligt överenskommen tidsplan"
+      description: t('comparison.project_completion_desc')
     }
   ];
 
@@ -291,11 +291,11 @@ const ComparisonUltra = () => {
                       />
                     </div>
                     <h3 className="text-lg md:text-xl font-bold gradient-text">
-                      Fixco vinner {metrics.length}/{metrics.length}
+                      {t('comparison.wins_all')} {metrics.length}/{metrics.length}
                     </h3>
                   </div>
                   <p className="text-xs md:text-sm text-muted-foreground">
-                    Marknadsledare inom alla områden{rotEnabled && ` + upp till 50% ROT-besparing`}
+                    {t('comparison.market_leader')}{rotEnabled && ` + upp till 50% ROT-besparing`}
                   </p>
                 </div>
                 
@@ -307,7 +307,7 @@ const ComparisonUltra = () => {
                       size="cta"
                       className="w-full sm:w-auto"
                     >
-                      Begär offert
+                      {t('comparison.request_quote')}
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
@@ -317,7 +317,7 @@ const ComparisonUltra = () => {
                       size="cta"
                       className="w-full sm:w-auto"
                     >
-                      Se alla våra tjänster
+                      {t('comparison.see_all_services')}
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
@@ -337,15 +337,15 @@ const ComparisonUltra = () => {
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">
                 {startTime.value}
               </div>
-              <p className="text-xs text-muted-foreground">Starttid</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.start_time_label')}</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">2000+</div>
-              <p className="text-xs text-muted-foreground">Nöjda kunder</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.satisfied_customers')}</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">24/7</div>
-              <p className="text-xs text-muted-foreground">Support</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.support')}</p>
             </div>
           </motion.div>
         </div>

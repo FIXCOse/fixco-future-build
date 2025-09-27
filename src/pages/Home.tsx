@@ -11,11 +11,11 @@ import FAQTeaser from "@/components/FAQTeaser";
 import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
-import { useI18n } from "@/i18n/context";
+import { useCopy } from "@/copy/CopyProvider";
 
 const Home = () => {
   console.log("Home component rendering...");
-  const { t } = useI18n();
+  const { t } = useCopy();
   
   // Initialize pricing store from URL/localStorage
   useEffect(() => {

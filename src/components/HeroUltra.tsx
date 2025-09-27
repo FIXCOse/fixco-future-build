@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
-import { useI18n } from "@/i18n/context";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface ParticleSystemProps {
   count?: number;
@@ -152,7 +152,7 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
-  const { t } = useI18n();
+  const { t } = useCopy();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);

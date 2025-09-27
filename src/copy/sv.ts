@@ -3,13 +3,17 @@ import type { CopyKey } from './keys';
 export const sv: Record<CopyKey, string> = {
   // Navigation
   'nav.home': 'Hem',
-  'nav.services': 'Tjänster', 
+  'nav.services': 'Tjänster',
   'nav.smartHome': 'Smart Hem',
   'nav.references': 'Referenser',
   'nav.about': 'Om oss',
   'nav.contact': 'Kontakt',
   'nav.myFixco': 'Mitt Fixco',
   'nav.adminPanel': 'Adminpanel',
+  
+  // Common
+  'common.phone': '08-123 456 78',
+  'common.services': 'Tjänster',
   
   // Trust chips
   'chips.f_skatt': 'F-skatt',
@@ -528,6 +532,13 @@ export const sv: Record<CopyKey, string> = {
   'home.services.title': 'Våra huvudtjänster',
   'home.services.subtitle': 'Från små reparationer till stora projekt – vi hanterar allt professionellt',
   'home.services.viewAll': 'Se alla tjänster',
+  'home.hero.title': 'Professionell hemservice med ROT & RUT-avdrag',
+  'home.hero.subtitle': 'Från elmontörer till målare - vi löser allt inom hem & byggnad. Över 15 000 nöjda kunder och garanterat ROT & RUT-avdrag.',
+  'home.hero.primaryCta': 'Begär kostnadsfri offert',
+  'home.finalCta.title': 'Redo att starta ditt projekt?',
+  'home.finalCta.subtitle': 'Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco',
+  'home.finalCta.primaryButton': 'Boka nu - gratis offert',
+  'home.finalCta.secondaryButton': 'Ring: 08-123 456 78',
   'services.el.title': 'El',
   'services.el.description': 'Uttag, belysning, laddbox',
   'services.vvs.title': 'VVS',
@@ -583,6 +594,25 @@ export const sv: Record<CopyKey, string> = {
   'hero.trust_start': 'Snabb start:',
   'hero.trust_start_desc': 'Inom < 5 dagar',
   'comparison.price_title': 'Pris',
-  'comparison.price_rot_desc': 'Upp till 50% billigare med ROT-avdrag',
-  'comparison.price_no_rot_desc': 'Konkurrenskraftiga priser utan ROT'
+  'comparison.price_rot_desc': 'Med 50% ROT-avdrag blir våra priser marknadsledande',
+  'comparison.price_no_rot_desc': 'Konkurrensdyktig timprissättning med transparent prismodell',
+  
+  // Additional comparison terms
+  'comparison.customer_satisfaction': 'Kundnöjdhet',
+  'comparison.customer_satisfaction_desc': 'Branschens högsta kundnöjdhet baserat på tusentals recensioner',
+  'comparison.rut_handling': 'RUT-hantering',
+  'comparison.rut_handling_fixco': 'Vi sköter allt',
+  'comparison.rut_handling_competitor': 'Du själv',
+  'comparison.rut_handling_desc': 'Vi hanterar all RUT-administration för hushållsnära tjänster',
+  'comparison.project_completion': 'Projekt klart i tid',
+  'comparison.project_completion_desc': 'Nästan alla projekt levereras enligt överenskommen tidsplan',
+  'comparison.wins_all': 'Fixco vinner',
+  'comparison.market_leader': 'Marknadsledare inom alla områden',
+  'comparison.start_time_label': 'Starttid',
+  'comparison.satisfied_customers': 'Nöjda kunder',
+  'comparison.support': 'Support',
+  'comparison.request_quote': 'Begär offert',
+  'comparison.see_all_services': 'Se alla våra tjänster',
+  'comparison.days': 'dagar',
+  'comparison.within_days': 'inom'
 };

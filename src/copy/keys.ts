@@ -3,6 +3,9 @@ export type CopyKey =
   | 'nav.home' | 'nav.services' | 'nav.smartHome' | 'nav.references' 
   | 'nav.about' | 'nav.contact' | 'nav.myFixco' | 'nav.adminPanel'
   
+  // Common
+  | 'common.phone' | 'common.services'
+  
   // Trust chips
   | 'chips.f_skatt' | 'chips.insured' | 'chips.start_lt_5' | 'chips.fixed_price'
   | 'chips.rot_50' | 'chips.rut_50' | 'chips.transparent' | 'chips.free_quote'
@@ -241,6 +244,8 @@ export type CopyKey =
    | 'pages.rut.cta.title' | 'pages.rut.cta.description' | 'pages.rut.cta.bookNow' | 'pages.rut.cta.requestQuote'
    | 'home.comparison.title' | 'home.comparison.subtitle'
    | 'home.services.title' | 'home.services.subtitle' | 'home.services.viewAll'
+   | 'home.hero.title' | 'home.hero.subtitle' | 'home.hero.primaryCta'
+   | 'home.finalCta.title' | 'home.finalCta.subtitle' | 'home.finalCta.primaryButton' | 'home.finalCta.secondaryButton'
    | 'services.el.title' | 'services.el.description'
    | 'services.vvs.title' | 'services.vvs.description'
    | 'services.snickeri.title' | 'services.snickeri.description'
@@ -261,4 +266,11 @@ export type CopyKey =
    | 'hero.subtitle' | 'hero.fixco_handles' | 'hero.everything'
    | 'hero.cta_request_quote' | 'hero.cta_see_services' | 'hero.trust_rot' | 'hero.trust_rot_desc'
    | 'hero.trust_coverage' | 'hero.trust_coverage_desc' | 'hero.trust_start' | 'hero.trust_start_desc'
-   | 'comparison.price_title' | 'comparison.price_rot_desc' | 'comparison.price_no_rot_desc';
+   | 'comparison.price_title' | 'comparison.price_rot_desc' | 'comparison.price_no_rot_desc'
+   // Additional comparison terms
+   | 'comparison.customer_satisfaction' | 'comparison.customer_satisfaction_desc'
+   | 'comparison.rut_handling' | 'comparison.rut_handling_fixco' | 'comparison.rut_handling_competitor'
+   | 'comparison.rut_handling_desc' | 'comparison.project_completion' | 'comparison.project_completion_desc'
+   | 'comparison.wins_all' | 'comparison.market_leader' | 'comparison.start_time_label'
+   | 'comparison.satisfied_customers' | 'comparison.support' | 'comparison.request_quote'
+   | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';

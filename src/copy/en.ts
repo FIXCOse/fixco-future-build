@@ -11,6 +11,10 @@ export const en: Record<CopyKey, string> = {
   'nav.myFixco': 'My Fixco',
   'nav.adminPanel': 'Admin Panel',
   
+  // Common
+  'common.phone': '08-123 456 78',
+  'common.services': 'Services',
+  
   // Trust chips
   'chips.f_skatt': 'F-tax',
   'chips.insured': 'Insured',
@@ -528,6 +532,13 @@ export const en: Record<CopyKey, string> = {
   'home.services.title': 'Our main services',
   'home.services.subtitle': 'From small repairs to large projects – we handle everything professionally',
   'home.services.viewAll': 'View all services',
+  'home.hero.title': 'Professional home services with ROT & RUT deductions',
+  'home.hero.subtitle': 'From electricians to painters - we handle everything for your home & construction needs. Over 15,000 satisfied customers with guaranteed ROT & RUT deductions.',
+  'home.hero.primaryCta': 'Request free quote',
+  'home.finalCta.title': 'Ready to start your project?',
+  'home.finalCta.subtitle': 'Get a free quote within 24 hours and see why thousands of customers choose Fixco',
+  'home.finalCta.primaryButton': 'Book now - free quote',
+  'home.finalCta.secondaryButton': 'Call: 08-123 456 78',
   'services.el.title': 'Electrical',
   'services.el.description': 'Outlets, lighting, charging stations',
   'services.vvs.title': 'Plumbing',
@@ -583,6 +594,25 @@ export const en: Record<CopyKey, string> = {
   'hero.trust_start': 'Quick start:',
   'hero.trust_start_desc': 'Within < 5 days',
   'comparison.price_title': 'Price',
-  'comparison.price_rot_desc': 'Up to 50% cheaper with ROT deduction',
-  'comparison.price_no_rot_desc': 'Competitive prices without ROT'
+  'comparison.price_rot_desc': 'With 50% ROT deduction, our prices become market-leading',
+  'comparison.price_no_rot_desc': 'Competitive hourly pricing with transparent pricing model',
+  
+  // Additional comparison terms
+  'comparison.customer_satisfaction': 'Customer satisfaction',
+  'comparison.customer_satisfaction_desc': 'Industry-highest customer satisfaction based on thousands of reviews',
+  'comparison.rut_handling': 'RUT handling',
+  'comparison.rut_handling_fixco': 'We handle everything',
+  'comparison.rut_handling_competitor': 'You handle it',
+  'comparison.rut_handling_desc': 'We handle all RUT administration for household services',
+  'comparison.project_completion': 'Projects completed on time',
+  'comparison.project_completion_desc': 'Almost all projects delivered according to agreed timeline',
+  'comparison.wins_all': 'Fixco wins',
+  'comparison.market_leader': 'Market leader in all areas',
+  'comparison.start_time_label': 'Start time',
+  'comparison.satisfied_customers': 'Satisfied customers',
+  'comparison.support': 'Support',
+  'comparison.request_quote': 'Request quote',
+  'comparison.see_all_services': 'See all our services',
+  'comparison.days': 'days',
+  'comparison.within_days': 'within'
 };
