@@ -1528,6 +1528,72 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          base_price: number
+          category: string
+          created_at: string
+          created_by: string | null
+          description_en: string | null
+          description_sv: string
+          id: string
+          is_active: boolean
+          location: string
+          price_type: string
+          price_unit: string
+          rot_eligible: boolean
+          rut_eligible: boolean
+          sort_order: number | null
+          sub_category: string | null
+          title_en: string | null
+          title_sv: string
+          translation_status: string
+          updated_at: string
+        }
+        Insert: {
+          base_price: number
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description_en?: string | null
+          description_sv: string
+          id: string
+          is_active?: boolean
+          location?: string
+          price_type?: string
+          price_unit?: string
+          rot_eligible?: boolean
+          rut_eligible?: boolean
+          sort_order?: number | null
+          sub_category?: string | null
+          title_en?: string | null
+          title_sv: string
+          translation_status?: string
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description_en?: string | null
+          description_sv?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          price_type?: string
+          price_unit?: string
+          rot_eligible?: boolean
+          rut_eligible?: boolean
+          sort_order?: number | null
+          sub_category?: string | null
+          title_en?: string | null
+          title_sv?: string
+          translation_status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           category: string
@@ -2312,6 +2378,10 @@ export type Database = {
       track_product_view: {
         Args: { p_product_id: string }
         Returns: undefined
+      }
+      translate_service_to_english: {
+        Args: { service_id: string }
+        Returns: boolean
       }
       update_job_status: {
         Args: { p_job_id: string; p_status: string }

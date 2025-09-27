@@ -1,202 +1,114 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
-import { Search, X, SortAsc, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button-premium";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { servicesDataNew, SubService } from "@/data/servicesDataNew";
+import { X, Search, MapPin } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "@/hooks/useDebounce";
+import ServiceCardV3 from "./ServiceCardV3";
+import SegmentedPriceToggle from "./SegmentedPriceToggle";
 import { usePriceStore } from "@/stores/priceStore";
-import { cn } from "@/lib/utils";
-import SegmentedPriceToggle from "@/components/SegmentedPriceToggle";
-import ServiceCardV3 from "@/components/ServiceCardV3";
 import { toast } from "sonner";
-import { useCopy } from "@/copy/CopyProvider";
+import { useCopy } from '@/copy/CopyProvider';
+import { useServices } from '@/hooks/useServices';
+import { serviceCategories } from '@/data/servicesDataNew';
 
-// Translation helper for service titles and descriptions
-const getServiceTranslation = (serviceId: string, field: 'title' | 'description', locale: string = 'sv') => {
-  const translations: { [key: string]: { title: { [locale: string]: string }, description: { [locale: string]: string } } } = {
-    'el-1': {
-      title: { sv: 'Byta vägguttag', en: 'Replace Wall Outlet' },
-      description: { sv: 'Byte av vägguttag till nyare modeller. Antal väljs vid bokning', en: 'Replace wall outlets with newer models. Quantity selected at booking' }
-    },
-    'el-2': {
-      title: { sv: 'Byta strömbrytare och dimmer', en: 'Replace Switch & Dimmer' },
-      description: { sv: 'Installation av nya strömbrytare och dimrar. Antal väljs vid bokning', en: 'Installation of new switches and dimmers. Quantity selected at booking' }
-    },
-    'el-3': {
-      title: { sv: 'Installera takarmatur/pendel', en: 'Install Ceiling Fixture/Pendant' },
-      description: { sv: 'Montering av takarmaturer och pendellampor. Antal väljs vid bokning', en: 'Installation of ceiling fixtures and pendant lamps. Quantity selected at booking' }
-    },
-    'el-4': {
-      title: { sv: 'Installera spotlights', en: 'Install Spotlights' },
-      description: { sv: 'Installation av spotlights i tak. Antal väljs vid bokning (typiskt 0,5-1h per 4-6 st)', en: 'Installation of spotlights in ceiling. Quantity selected at booking (typically 0.5-1h per 4-6 pcs)' }
-    },
-    'el-5': {
-      title: { sv: 'Utebelysning', en: 'Outdoor Lighting' },
-      description: { sv: 'Installation av fasad- och trädgårdsbelysning. Typ väljs vid bokning', en: 'Installation of facade and garden lighting. Type selected at booking' }
-    },
-    'el-6': {
-      title: { sv: 'Installera jordfelsbrytare', en: 'Install Ground Fault Breaker' },
-      description: { sv: 'Installation av jordfelsbrytare för säkerhet', en: 'Installation of ground fault breakers for safety' }
-    },
-    'vvs-1': {
-      title: { sv: 'Byta blandare', en: 'Replace Faucet' },
-      description: { sv: 'Byte av blandare. Rum/typ väljs vid bokning', en: 'Replace faucet. Room/type selected at booking' }
-    },
-    'vvs-2': {
-      title: { sv: 'Byta toalettstol', en: 'Replace Toilet' },
-      description: { sv: 'Byte av toalettstol med installation', en: 'Replace toilet with installation' }
-    },
-    // Add more translations as needed based on most commonly used services
-    'snickeri-1': {
-      title: { sv: 'Montera köksluckor', en: 'Install Kitchen Doors' },
-      description: { sv: 'Installation av köksluckor och lådor', en: 'Installation of kitchen doors and drawers' }
-    },
-    'montering-1': {
-      title: { sv: 'Montera möbler', en: 'Assemble Furniture' },
-      description: { sv: 'Montering av alla typer av möbler', en: 'Assembly of all types of furniture' }
-    }
-  };
-
-  const translation = translations[serviceId];
-  if (!translation) {
-    // Fallback to original title/description from servicesDataNew if no translation exists
-    return null;
-  }
-
-  return translation[field][locale] || translation[field]['sv'];
-};
+const ITEMS_PER_PAGE = 12;
 
 interface FastServiceFilterProps {
-  onServiceSelect?: (service: SubService) => void;
+  onServiceSelect?: (service: any) => void;
   className?: string;
 }
 
-const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilterProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { mode, shouldShowService } = usePriceStore();
+const FastServiceFilter: React.FC<FastServiceFilterProps> = ({ 
+  onServiceSelect, 
+  className = "" 
+}) => {
   const { t, locale } = useCopy();
   
-  // Get initial state from URL and sessionStorage
-  const getInitialState = (key: string, defaultValue: string | boolean) => {
-    const urlValue = searchParams.get(key);
-    const storageValue = sessionStorage.getItem(`fixco-filter-${key}`);
-    
-    if (urlValue !== null) return urlValue === 'true' ? true : urlValue;
-    if (storageValue !== null) return storageValue === 'true' ? true : storageValue;
-    return defaultValue;
-  };
+  // Get services from database
+  const { data: servicesFromDB = [], isLoading } = useServices(locale);
+  
+  // Convert database services to the expected format
+  const allServices = useMemo(() => {
+    return servicesFromDB.map(service => ({
+      id: service.id,
+      title: service.title,
+      description: service.description,
+      category: service.category,
+      subCategory: service.sub_category || '',
+      priceType: service.price_type,
+      basePrice: service.base_price,
+      priceUnit: service.price_unit,
+      location: service.location,
+      eligible: {
+        rot: service.rot_eligible,
+        rut: service.rut_eligible
+      },
+      laborShare: 1.0,
+      translatedTitle: service.title,
+      translatedDescription: service.description
+    }));
+  }, [servicesFromDB]);
 
-  const [searchQuery, setSearchQuery] = useState(() => getInitialState('search', '') as string);
-  const [selectedCategory, setSelectedCategory] = useState(() => getInitialState('category', 'alla') as string);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
-  const [selectedPriceType, setSelectedPriceType] = useState(() => getInitialState('priceType', 'alla') as string);
-  const [showROTPrice, setShowROTPrice] = useState(() => getInitialState('rot', true) as boolean);
-  const [indoorOutdoor, setIndoorOutdoor] = useState(() => getInitialState('location', 'alla') as string);
-  const [sortBy, setSortBy] = useState(() => getInitialState('sort', 'relevans') as string);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchDebounced, setSearchDebounced] = useState(searchQuery);
-
-  const ITEMS_PER_PAGE = 12;
-
-  // Debounce search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchDebounced(searchQuery);
-    }, 250);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  // Get all sub-services with parent info and filter by eligibility
-  const allSubServices = useMemo(() => {
-    return servicesDataNew.flatMap(service => 
-      service.subServices.map(subService => ({
-        ...subService,
-        parentService: service.title,
-        parentSlug: service.slug,
-        priceUnit: subService.priceUnit as "kr/h" | "kr" | "från",
-        location: subService.location as "inomhus" | "utomhus" | "båda",
-        priceType: subService.priceType as "hourly" | "fixed" | "quote",
-        // Add translated title and description
-        translatedTitle: getServiceTranslation(subService.id, 'title', locale) || subService.title,
-        translatedDescription: getServiceTranslation(subService.id, 'description', locale) || subService.description
-      }))
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <span className="ml-2 text-muted-foreground">Laddar tjänster...</span>
+      </div>
     );
-  }, [locale]);
+  }
 
-  // Filter services based on eligibility and other filters
-  const filteredServices = useMemo(() => {
-    let filtered = allSubServices;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { mode } = usePriceStore();
 
-    // Apply eligibility filter first
-    filtered = filtered.filter(service => shouldShowService(service.eligible));
+  // Initialize state from URL and sessionStorage
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return searchParams.get('search') || sessionStorage.getItem('fixco-filter-search') || '';
+  });
+  
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return searchParams.get('category') || sessionStorage.getItem('fixco-filter-category') || 'alla';
+  });
+  
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+  
+  const [selectedPriceType, setSelectedPriceType] = useState(() => {
+    return searchParams.get('priceType') || sessionStorage.getItem('fixco-filter-priceType') || 'alla';
+  });
+  
+  const [indoorOutdoor, setIndoorOutdoor] = useState(() => {
+    return searchParams.get('location') || sessionStorage.getItem('fixco-filter-location') || 'alla';
+  });
+  
+  const [sortBy, setSortBy] = useState(() => {
+    return searchParams.get('sort') || sessionStorage.getItem('fixco-filter-sort') || 'relevans';
+  });
+  
+  const [currentPage, setCurrentPage] = useState(1);
 
-    // Then apply other filters
-    filtered = filtered.filter(service => {
-      // Search filter
-      const matchesSearch = searchDebounced === "" || 
-        service.translatedTitle.toLowerCase().includes(searchDebounced.toLowerCase()) ||
-        service.translatedDescription.toLowerCase().includes(searchDebounced.toLowerCase()) ||
-        service.category.toLowerCase().includes(searchDebounced.toLowerCase()) ||
-        service.parentService.toLowerCase().includes(searchDebounced.toLowerCase());
+  // Debounced search
+  const searchDebounced = useDebounce(searchQuery, 300);
 
-      // Category filter
-      const matchesCategory = selectedCategory === "alla" || service.parentSlug === selectedCategory;
-      
-      // Sub-category filter
-      const matchesSubCategory = selectedSubCategories.length === 0 || 
-        selectedSubCategories.includes(service.category);
-
-      // Price type filter
-      const matchesPriceType = selectedPriceType === "alla" || service.priceType === selectedPriceType;
-      
-      // Indoor/outdoor filter
-      const matchesLocation = indoorOutdoor === "alla" || 
-        service.location === indoorOutdoor || 
-        service.location === "båda";
-
-      return matchesSearch && matchesCategory && matchesSubCategory && 
-             matchesPriceType && matchesLocation;
-    });
-
-    // Sort
-    switch (sortBy) {
-      case 'pris-låg':
-        filtered.sort((a, b) => {
-          const priceA = typeof a.basePrice === 'number' ? a.basePrice : parseInt(String(a.basePrice).replace(/[^\d]/g, '')) || 0;
-          const priceB = typeof b.basePrice === 'number' ? b.basePrice : parseInt(String(b.basePrice).replace(/[^\d]/g, '')) || 0;
-          return priceA - priceB;
-        });
-        break;
-      case 'pris-hög':
-        filtered.sort((a, b) => {
-          const priceA = typeof a.basePrice === 'number' ? a.basePrice : parseInt(String(a.basePrice).replace(/[^\d]/g, '')) || 0;
-          const priceB = typeof b.basePrice === 'number' ? b.basePrice : parseInt(String(b.basePrice).replace(/[^\d]/g, '')) || 0;
-          return priceB - priceA;
-        });
-        break;
-      case 'mest-bokad':
-        // Mock popularity sorting - in real app would use booking data
-        filtered.sort(() => Math.random() - 0.5);
-        break;
-      default: // relevans
-        // Keep original order for relevance
-        break;
+  // Restore subcategories from sessionStorage
+  useEffect(() => {
+    const stored = sessionStorage.getItem('fixco-filter-subCategories');
+    if (stored) {
+      try {
+        setSelectedSubCategories(JSON.parse(stored));
+      } catch (e) {
+        console.warn('Failed to parse stored subcategories');
+      }
     }
+  }, []);
 
-    return filtered;
-  }, [allSubServices, searchDebounced, selectedCategory, selectedSubCategories, 
-      selectedPriceType, indoorOutdoor, sortBy, shouldShowService, mode]);
-
-  // Get unique categories for display with translations
+  // Categories for filter chips
   const categories = useMemo(() => {
-    return servicesDataNew.map(service => ({
-      name: t(`serviceCategories.${service.slug}` as any) || service.title,
-      slug: service.slug
+    return serviceCategories.map(cat => ({
+      slug: cat.slug,
+      name: t(`serviceCategories.${cat.slug}` as any) || cat.title
     }));
   }, [t]);
 
@@ -204,12 +116,67 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   const subCategories = useMemo(() => {
     if (selectedCategory === 'alla') return [];
     
-    const service = servicesDataNew.find(s => s.slug === selectedCategory);
-    if (!service) return [];
-    
-    const subCats = new Set(service.subServices.map(s => s.category));
+    const servicesInCategory = allServices.filter(s => s.category === selectedCategory);
+    const subCats = new Set(servicesInCategory.map(s => s.subCategory).filter(Boolean));
     return Array.from(subCats).sort();
-  }, [selectedCategory]);
+  }, [selectedCategory, allServices]);
+
+  // Main filtering logic
+  const filteredServices = useMemo(() => {
+    let filtered = [...allServices];
+
+    // Text search
+    if (searchDebounced) {
+      const searchTerm = searchDebounced.toLowerCase();
+      filtered = filtered.filter(service => 
+        service.title.toLowerCase().includes(searchTerm) ||
+        service.description.toLowerCase().includes(searchTerm) ||
+        service.subCategory.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Category filter
+    if (selectedCategory !== 'alla') {
+      filtered = filtered.filter(service => service.category === selectedCategory);
+    }
+
+    // Subcategory filter
+    if (selectedSubCategories.length > 0) {
+      filtered = filtered.filter(service => 
+        selectedSubCategories.includes(service.subCategory)
+      );
+    }
+
+    // Price type filter
+    if (selectedPriceType !== 'alla') {
+      filtered = filtered.filter(service => service.priceType === selectedPriceType);
+    }
+
+    // Location filter
+    if (indoorOutdoor !== 'alla') {
+      filtered = filtered.filter(service => 
+        service.location === indoorOutdoor || service.location === 'båda'
+      );
+    }
+
+    // ROT/RUT filter based on price mode
+    if (mode === 'rot') {
+      filtered = filtered.filter(service => service.eligible.rot);
+    } else if (mode === 'rut') {
+      filtered = filtered.filter(service => service.eligible.rut);
+    }
+
+    // Sort
+    if (sortBy === 'pris-låg') {
+      filtered.sort((a, b) => a.basePrice - b.basePrice);
+    } else if (sortBy === 'pris-hög') {
+      filtered.sort((a, b) => b.basePrice - a.basePrice);
+    } else if (sortBy === 'namn') {
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    return filtered;
+  }, [allServices, searchDebounced, selectedCategory, selectedSubCategories, selectedPriceType, indoorOutdoor, mode, sortBy]);
 
   // Pagination
   const paginatedServices = useMemo(() => {
@@ -242,7 +209,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     setSelectedSubCategories([]);
     setCurrentPage(1);
     updateStateAndURL({ category, search: searchQuery, priceType: selectedPriceType, 
-                      rot: showROTPrice, location: indoorOutdoor, sort: sortBy });
+                      location: indoorOutdoor, sort: sortBy });
   };
 
   const handleSubCategoryToggle = (subCat: string) => {
@@ -251,6 +218,9 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
       : [...selectedSubCategories, subCat];
     setSelectedSubCategories(newSubCats);
     setCurrentPage(1);
+    
+    // Store subcategories in sessionStorage
+    sessionStorage.setItem('fixco-filter-subCategories', JSON.stringify(newSubCats));
   };
 
   const clearFilters = () => {
@@ -264,7 +234,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     
     // Clear URL and storage
     setSearchParams({}, { replace: true });
-    ['search', 'category', 'priceType', 'location', 'sort'].forEach(key => {
+    ['search', 'category', 'priceType', 'location', 'sort', 'subCategories'].forEach(key => {
       sessionStorage.removeItem(`fixco-filter-${key}`);
     });
   };
@@ -276,7 +246,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
     selectedPriceType !== "alla",
     indoorOutdoor !== "alla"
   ].filter(Boolean).length;
-
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -317,7 +286,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           {/* Category Chips */}
           <div className="flex flex-wrap gap-2">
             <Button
-              variant={selectedCategory === 'alla' ? "premium" : "outline"}
+              variant={selectedCategory === 'alla' ? "default" : "outline"}
               size="sm"
               onClick={() => handleCategoryChange('alla')}
               className="h-8"
@@ -327,7 +296,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             {categories.map(category => (
               <Button
                 key={category.slug}
-                variant={selectedCategory === category.slug ? "premium" : "outline"}
+                variant={selectedCategory === category.slug ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleCategoryChange(category.slug)}
                 className="h-8"
@@ -370,7 +339,6 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             </SelectContent>
           </Select>
 
-
           {/* Clear Filters */}
           {activeFiltersCount > 0 && (
             <Button 
@@ -392,61 +360,34 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
             {subCategories.map(subCat => (
               <Button
                 key={subCat}
-                variant={selectedSubCategories.includes(subCat) ? "premium" : "outline"}
+                variant={selectedSubCategories.includes(subCat) ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleSubCategoryToggle(subCat)}
                 className="h-7 text-xs"
               >
                 {subCat}
-                {selectedSubCategories.includes(subCat) && (
-                  <X className="h-3 w-3 ml-1" />
-                )}
               </Button>
-            ))}
-          </div>
-        )}
-
-
-        {/* Active Filters Display */}
-        {(searchDebounced || selectedSubCategories.length > 0) && (
-          <div className="flex flex-wrap gap-2 items-center">
-            {searchDebounced && (
-              <Badge variant="secondary" className="text-xs">
-                {t('filter.searching')} "{searchDebounced}"
-                <X 
-                  className="h-3 w-3 ml-1 cursor-pointer" 
-                  onClick={() => {
-                    setSearchQuery("");
-                    updateStateAndURL({ search: "" });
-                  }}
-                />
-              </Badge>
-            )}
-            {selectedSubCategories.map(subCat => (
-              <Badge key={subCat} variant="secondary" className="text-xs">
-                {subCat}
-                <X 
-                  className="h-3 w-3 ml-1 cursor-pointer" 
-                  onClick={() => handleSubCategoryToggle(subCat)}
-                />
-              </Badge>
             ))}
           </div>
         )}
       </div>
 
-      {/* Results */}
-      <div className="space-y-6">
-        {/* Results Header */}
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">
-            {filteredServices.length} {t('filter.services_found')}
-          </h3>
+      {/* Results summary */}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          {searchDebounced && (
+            <span className="mr-4">
+              <strong>{t('filter.searching')}</strong> "{searchDebounced}"
+            </span>
+          )}
+          <strong>{filteredServices.length}</strong> {t('filter.services_found')}
         </div>
+      </div>
 
-        {/* Results Grid */}
+      {/* Results */}
+      <div className="min-h-[400px]">
         {filteredServices.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="flex flex-col items-center justify-center py-12 text-center">
             {mode !== 'all' ? (
               // Empty state for ROT/RUT filtering
               <div className="max-w-md mx-auto">
@@ -461,7 +402,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                   {t('filter.show_all_services')}
                 </Button>
                 <div className="mt-4">
-                  <Button variant="ghost-premium" onClick={clearFilters}>
+                  <Button variant="ghost" onClick={clearFilters}>
                     {t('filter.clear_other_filters')}
                   </Button>
                 </div>
@@ -472,7 +413,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                 <p className="text-muted-foreground mb-4">
                   {t('filter.no_services_general')}
                 </p>
-                <Button variant="ghost-premium" onClick={clearFilters}>
+                <Button variant="ghost" onClick={clearFilters}>
                   {t('filter.clear_filters_try_again')}
                 </Button>
               </>
@@ -499,14 +440,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`${t('service_text.booking_for')} ${service.translatedTitle} ${t('service_text.started')}`);
+                      toast.success(`${t('service_text.booking_for')} ${service.title} ${t('service_text.started')}`);
                     }
                   }}
                   onQuote={() => {
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`${t('service_text.quote_for')} ${service.translatedTitle} ${t('service_text.sent')}`);
+                      toast.success(`${t('service_text.quote_for')} ${service.title} ${t('service_text.sent')}`);
                     }
                   }}
                 />
@@ -531,7 +472,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     return (
                       <Button
                         key={pageNum}
-                        variant={currentPage === pageNum ? "premium" : "outline"}
+                        variant={currentPage === pageNum ? "default" : "outline"}
                         size="sm"
                         onClick={() => setCurrentPage(pageNum)}
                         className="w-8 h-8 p-0"
