@@ -44,10 +44,21 @@ export type CopyKey =
   | 'categories.climate_desc' | 'categories.cleaning_desc' | 'categories.garden_desc'
   | 'categories.entertainment_desc'
   
-  // Service Categories  
-  | 'serviceCategories.el' | 'serviceCategories.vvs' | 'serviceCategories.snickeri'
-  | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
-  | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska-installationer' | 'serviceCategories.flytt'
+   // Service Categories  
+   | 'serviceCategories.el' | 'serviceCategories.vvs' | 'serviceCategories.snickeri'
+   | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
+   | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska-installationer' | 'serviceCategories.flytt'
+   
+   // Service Categories Extended  
+   | 'serviceCategories.el.title' | 'serviceCategories.el.description'
+   | 'serviceCategories.vvs.title' | 'serviceCategories.vvs.description'  
+   | 'serviceCategories.snickeri.title' | 'serviceCategories.snickeri.description'
+   | 'serviceCategories.montering.title' | 'serviceCategories.montering.description'
+   | 'serviceCategories.tradgard.title' | 'serviceCategories.tradgard.description'
+   | 'serviceCategories.stadning.title' | 'serviceCategories.stadning.description'
+   | 'serviceCategories.markarbeten.title' | 'serviceCategories.markarbeten.description'
+   | 'serviceCategories.tekniska-installationer.title' | 'serviceCategories.tekniska-installationer.description'
+   | 'serviceCategories.flytt.title' | 'serviceCategories.flytt.description'
   
   // Filter UI  
   | 'filter.search_placeholder' | 'filter.all_services' | 'filter.all_prices'
@@ -148,7 +159,8 @@ export type CopyKey =
   | 'serviceDetail.relatedServices' | 'serviceDetail.relatedService' | 'serviceDetail.readyToStart'
   | 'serviceDetail.contactToday' | 'serviceDetail.requestFreeQuote' | 'serviceDetail.quickStart'
   | 'serviceDetail.canStartWithin' | 'serviceDetail.secureGuarantee' | 'serviceDetail.yearsGuarantee'
-  | 'serviceDetail.rotRutHandling' | 'serviceDetail.weHandleAll'
+   | 'serviceDetail.days' | 'serviceDetail.discount' | 'serviceDetail.taxAndInsurance' | 'serviceDetail.startWithinDays'
+   | 'serviceDetail.rotRutHandling' | 'serviceDetail.weHandleAll'
   
   // Project visualization texts
   | 'project.eco_performance' | 'project.ai_results' | 'project.environmental_impact'

@@ -112,7 +112,7 @@ export const en: Record<CopyKey, string> = {
   'categories.garden_desc': 'Smart garden care',
   'categories.entertainment_desc': 'Speakers & Home Cinema',
   
-  // Service Categories
+  // Service Categories (keep both versions for compatibility)
   'serviceCategories.el': 'Electrical',
   'serviceCategories.vvs': 'Plumbing',
   'serviceCategories.snickeri': 'Carpentry',
@@ -122,6 +122,26 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.markarbeten': 'Groundwork',
   'serviceCategories.tekniska-installationer': 'Technical installations',
   'serviceCategories.flytt': 'Moving',
+
+  // Service Categories Extended
+  'serviceCategories.el.title': 'Electrical',
+  'serviceCategories.el.description': 'Installation, repair and maintenance of electrical systems',
+  'serviceCategories.vvs.title': 'Plumbing', 
+  'serviceCategories.vvs.description': 'Pipes, water and drainage',
+  'serviceCategories.snickeri.title': 'Carpentry',
+  'serviceCategories.snickeri.description': 'Custom wood solutions',
+  'serviceCategories.montering.title': 'Assembly',
+  'serviceCategories.montering.description': 'Furniture and appliances',
+  'serviceCategories.tradgard.title': 'Garden',
+  'serviceCategories.tradgard.description': 'Maintenance and landscaping',
+  'serviceCategories.stadning.title': 'Cleaning',
+  'serviceCategories.stadning.description': 'Home service and cleaning',
+  'serviceCategories.markarbeten.title': 'Groundwork',
+  'serviceCategories.markarbeten.description': 'Excavation and landscaping',
+  'serviceCategories.tekniska-installationer.title': 'Technical installations',
+  'serviceCategories.tekniska-installationer.description': 'Network, security and IT support',
+  'serviceCategories.flytt.title': 'Moving',
+  'serviceCategories.flytt.description': 'Transport and moving assistance',
   
   // Filter UI
   'filter.search_placeholder': 'Search for service, e.g. "dimmer", "IKEA", "dishwasher"',
@@ -332,6 +352,10 @@ export const en: Record<CopyKey, string> = {
   'serviceDetail.yearsGuarantee': '2 years guarantee on all work performed',
   'serviceDetail.rotRutHandling': 'ROT/RUT handling',
   'serviceDetail.weHandleAll': 'We handle all deductions and administration',
+  'serviceDetail.days': 'days',
+  'serviceDetail.discount': 'discount',
+  'serviceDetail.taxAndInsurance': 'tax & insurance', 
+  'serviceDetail.startWithinDays': 'Start within < 5 days',
   
   // Contact Page Extended  
   'pages.contact.bookVisit': 'Book visit',

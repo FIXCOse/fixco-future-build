@@ -112,7 +112,7 @@ export const sv: Record<CopyKey, string> = {
   'categories.garden_desc': 'Smart trädgårdsskötsel',
   'categories.entertainment_desc': 'Högtalare & Hemmabio',
   
-  // Service Categories
+  // Service Categories (keep both versions for compatibility)
   'serviceCategories.el': 'El',
   'serviceCategories.vvs': 'VVS',
   'serviceCategories.snickeri': 'Snickeri',
@@ -122,6 +122,26 @@ export const sv: Record<CopyKey, string> = {
   'serviceCategories.markarbeten': 'Markarbeten',
   'serviceCategories.tekniska-installationer': 'Tekniska installationer',
   'serviceCategories.flytt': 'Flytt',
+
+  // Service Categories Extended
+  'serviceCategories.el.title': 'El',
+  'serviceCategories.el.description': 'Installation, reparation och underhåll av el',
+  'serviceCategories.vvs.title': 'VVS', 
+  'serviceCategories.vvs.description': 'Rör, vatten och avlopp',
+  'serviceCategories.snickeri.title': 'Snickeri',
+  'serviceCategories.snickeri.description': 'Specialanpassade lösningar i trä',
+  'serviceCategories.montering.title': 'Montering',
+  'serviceCategories.montering.description': 'Möbler och vitvaror',
+  'serviceCategories.tradgard.title': 'Trädgård',
+  'serviceCategories.tradgard.description': 'Skötsel och anläggning',
+  'serviceCategories.stadning.title': 'Städning',
+  'serviceCategories.stadning.description': 'Hemservice och rengöring',
+  'serviceCategories.markarbeten.title': 'Markarbeten',
+  'serviceCategories.markarbeten.description': 'Grävning och anläggning',
+  'serviceCategories.tekniska-installationer.title': 'Tekniska installationer',
+  'serviceCategories.tekniska-installationer.description': 'Nätverk, larm och IT-support',
+  'serviceCategories.flytt.title': 'Flytt',
+  'serviceCategories.flytt.description': 'Transport och bärhjälp',
   
   // Filter UI
   'filter.search_placeholder': 'Sök efter tjänst, t.ex. "dimmer", "IKEA", "diskmaskin"',
@@ -332,6 +352,10 @@ export const sv: Record<CopyKey, string> = {
   'serviceDetail.yearsGuarantee': '2 års garanti på alla utförda arbeten',
   'serviceDetail.rotRutHandling': 'ROT/RUT-hantering',
   'serviceDetail.weHandleAll': 'Vi sköter alla avdrag och administration',
+  'serviceDetail.days': 'dagar',
+  'serviceDetail.discount': 'rabatt', 
+  'serviceDetail.taxAndInsurance': 'skatt & försäkring',
+  'serviceDetail.startWithinDays': 'Start inom < 5 dagar',
   
   // Contact Page Extended  
   'pages.contact.bookVisit': 'Boka hembesök',

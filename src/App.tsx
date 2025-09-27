@@ -231,7 +231,6 @@ const App = () => {
                     <Route path="privacy" element={<Privacy />} />
                   </Route>
                   
-                  {/* English Routes - Same components with EN locale */}
                   <Route path="/en/*" element={<AppLayout locale="en" />}>
                     <Route index element={<Home />} />
                     <Route path="services" element={<Services />} />
@@ -243,6 +242,7 @@ const App = () => {
                     <Route path="terms" element={<Terms />} />
                     <Route path="privacy" element={<Privacy />} />
                     <Route path="rot-info" element={<ROTInfo />} />
+                    <Route path="book-visit" element={<BookVisit />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">

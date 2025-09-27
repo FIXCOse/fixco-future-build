@@ -101,12 +101,14 @@ const ServiceDetail = () => {
                 </div>
                 <IconComponent className="h-10 w-10 text-primary" />
               </div>
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold">{service.title}</h1>
-              </div>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold">
+                {t(`serviceCategories.${service.slug}.title` as any) || service.title}
+              </h1>
+            </div>
             </div>
             <p className="text-xl text-muted-foreground mb-8">
-              {service.description}
+              {t(`serviceCategories.${service.slug}.description` as any) || service.description}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -127,12 +129,12 @@ const ServiceDetail = () => {
                 <div className="text-sm text-muted-foreground">{t('serviceDetail.differentServices')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{'< 5 ' + (isEnglish ? 'days' : 'dagar')}</div>
+                <div className="text-2xl font-bold text-primary">{'< 5 ' + t('serviceDetail.days')}</div>
                 <div className="text-sm text-muted-foreground">{t('serviceDetail.projectStart')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">50%</div>
-                <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + (isEnglish ? 'discount' : 'rabatt') : 'ROT-' + (isEnglish ? 'discount' : 'rabatt')}</div>
+                <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + t('serviceDetail.discount') : 'ROT-' + t('serviceDetail.discount')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">100%</div>
@@ -149,11 +151,11 @@ const ServiceDetail = () => {
           <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
               <Shield className="h-4 w-4 text-primary" />
-              <span>F-{isEnglish ? 'tax & insurance' : 'skatt & försäkring'}</span>
+              <span>F-{t('serviceDetail.taxAndInsurance')}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>{isEnglish ? 'Start within < 5 days' : 'Start inom < 5 dagar'}</span>
+              <span>{t('serviceDetail.startWithinDays')}</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4 text-primary" />
@@ -172,7 +174,9 @@ const ServiceDetail = () => {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('serviceDetail.allOurServices')} {service.title.toLowerCase()}{isEnglish ? ' services' : 'stjänster'}</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              {t('serviceDetail.allOurServices')} {(t(`serviceCategories.${service.slug}.title` as any) || service.title).toLowerCase()} {t('services.count')}
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {filteredSubServices.length} {t('serviceDetail.specializedServices')} {' '}
               {t('serviceDetail.allPricesInclude')}
@@ -265,7 +269,7 @@ const ServiceDetail = () => {
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold mb-4">{t('serviceDetail.customersAlsoBook')}</h2>
             <p className="text-muted-foreground">
-              {t('serviceDetail.relatedServices')} {service.title.toLowerCase()}
+              {t('serviceDetail.relatedServices')} {(t(`serviceCategories.${service.slug}.title` as any) || service.title).toLowerCase()}
             </p>
           </div>
           
@@ -318,7 +322,7 @@ const ServiceDetail = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-8">
-              {t('serviceDetail.readyToStart')} <span className="gradient-text">{service.title.toLowerCase()}</span>{isEnglish ? ' project?' : 'projekt?'}
+              {t('serviceDetail.readyToStart')} <span className="gradient-text">{(t(`serviceCategories.${service.slug}.title` as any) || service.title).toLowerCase()}</span> {isEnglish ? 'project?' : 'projekt?'}
             </h2>
             <p className="text-xl text-muted-foreground mb-12">
               {t('serviceDetail.contactToday')}
