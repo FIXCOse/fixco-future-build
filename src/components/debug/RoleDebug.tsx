@@ -1,16 +1,19 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useAuthProfile } from '@/hooks/useAuthProfile';
 import { useRoleGate } from '@/hooks/useRoleGate';
 import { useEditMode } from '@/stores/useEditMode';
 import { supabase } from '@/integrations/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const RoleDebug: React.FC = () => {
   const { profile, role, loading } = useAuthProfile();
   const { canAccessAdmin } = useRoleGate();
   const { canEdit, isEditMode } = useEditMode();
   const [user, setUser] = React.useState<any>(null);
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -19,6 +22,10 @@ export const RoleDebug: React.FC = () => {
     };
     getUser();
   }, []);
+
+  const refreshProfile = () => {
+    queryClient.invalidateQueries({ queryKey: ['auth-profile'] });
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -74,6 +81,10 @@ export const RoleDebug: React.FC = () => {
         <div className="text-xs text-muted-foreground mt-2">
           EditToolbar visas när: canAccessAdmin = true OCH canEdit = true
         </div>
+        
+        <Button onClick={refreshProfile} size="sm" className="mt-2 w-full">
+          Refresh Profile Cache
+        </Button>
       </div>
     </Card>
   );
