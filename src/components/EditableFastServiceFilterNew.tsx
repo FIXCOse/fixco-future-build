@@ -149,22 +149,34 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   // Mutation for bulk reordering services
   const reorderServices = useMutation({
     mutationFn: async (servicesToUpdate: { id: string; sort_order: number }[]) => {
+      console.log('🔧 Starting database update for services:', servicesToUpdate);
+      
       // Update each service individually since we only want to update sort_order
       for (const service of servicesToUpdate) {
-        const { error } = await supabase
+        console.log(`📝 Updating service ${service.id} with sort_order ${service.sort_order}`);
+        
+        const { data, error } = await supabase
           .from('services')
           .update({ sort_order: service.sort_order })
-          .eq('id', service.id);
+          .eq('id', service.id)
+          .select();
         
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Database error:', error);
+          throw error;
+        }
+        
+        console.log('✅ Updated service:', service.id, data);
       }
       return servicesToUpdate;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('🎉 All services updated successfully:', data);
       queryClient.invalidateQueries({ queryKey: ['services'] });
       toast.success('Tjänstordning sparad i databasen!');
     },
     onError: (error) => {
+      console.error('💥 Mutation failed:', error);
       toast.error('Fel vid sparande av ordning: ' + error.message);
     }
   });
@@ -258,12 +270,15 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     const { active, over } = event;
 
     if (active.id !== over?.id) {
+      console.log('🔄 Drag end detected, starting reorder...', { active: active.id, over: over?.id });
+      
       setServices((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over?.id);
 
+        console.log('📍 Reordering:', { oldIndex, newIndex, totalItems: items.length });
+
         const newItems = arrayMove(items, oldIndex, newIndex);
-        console.log('New service order:', newItems.map(s => s.id));
         
         // Update sort_order for all affected items
         const updatedItems = newItems.map((item, index) => ({
@@ -271,12 +286,15 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
           sort_order: index + 1
         }));
         
+        console.log('💾 Preparing to save order to database...', updatedItems.map(i => ({ id: i.id, sort_order: i.sort_order })));
+        
         // Save to database
         const servicesToUpdate = updatedItems.map(item => ({
           id: item.id,
           sort_order: item.sort_order
         }));
         
+        console.log('🚀 Calling reorderServices.mutate...', servicesToUpdate);
         reorderServices.mutate(servicesToUpdate);
         
         return updatedItems;
