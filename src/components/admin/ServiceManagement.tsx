@@ -177,48 +177,51 @@ const ServiceManagement = () => {
         )}
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredServices.map((service) => (
-          <Card key={service.id}>
+          <Card key={service.id} className="h-fit">
             <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">{service.title_sv}</CardTitle>
-                  <div className="flex gap-2 mt-1">
-                    <Badge variant="outline">{service.category}</Badge>
-                    {service.sub_category && (
-                      <Badge variant="secondary">{service.sub_category}</Badge>
-                    )}
-                    <Badge variant={service.rot_eligible ? "default" : "secondary"}>
-                      ROT: {service.rot_eligible ? 'Ja' : 'Nej'}
-                    </Badge>
-                    <Badge variant={service.rut_eligible ? "default" : "secondary"}>
-                      RUT: {service.rut_eligible ? 'Ja' : 'Nej'}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
+              <div className="flex justify-between items-start mb-2">
+                <Badge variant="outline" className="text-xs">{service.category}</Badge>
+                <div className="flex items-center gap-1">
                   {getTranslationStatusBadge(service.translation_status)}
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(service)}>
-                    <Edit className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" onClick={() => handleEdit(service)} className="h-8 w-8 p-0">
+                    <Edit className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-2">{service.description_sv}</p>
-              <div className="flex justify-between items-center text-sm">
-                <span>Pris: {service.base_price} {service.price_unit}</span>
-                <span>Typ: {service.price_type}</span>
-                <span>Plats: {service.location}</span>
+              <CardTitle className="text-sm font-medium leading-tight mb-2">{service.title_sv}</CardTitle>
+              <div className="flex items-center gap-1 mb-2">
+                <Badge variant={service.rot_eligible ? "default" : "secondary"} className="text-xs px-1 py-0">
+                  ROT
+                </Badge>
+                <Badge variant={service.rut_eligible ? "default" : "secondary"} className="text-xs px-1 py-0">
+                  RUT
+                </Badge>
+                {service.sub_category && (
+                  <Badge variant="secondary" className="text-xs px-1 py-0">{service.sub_category}</Badge>
+                )}
               </div>
-              {service.title_en && (
-                <div className="mt-3 pt-3 border-t">
-                  <p className="font-medium text-sm">Engelsk översättning:</p>
-                  <p className="text-sm font-medium">{service.title_en}</p>
-                  <p className="text-sm text-muted-foreground">{service.description_en}</p>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{service.description_sv}</p>
+              <div className="space-y-1 text-xs">
+                <div className="flex justify-between">
+                  <span className="font-medium">Pris:</span>
+                  <span>{service.base_price} {service.price_unit}</span>
                 </div>
-              )}
+                <div className="flex justify-between">
+                  <span className="font-medium">Typ:</span>
+                  <span>{service.price_type}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Plats:</span>
+                  <span>{service.location}</span>
+                </div>
+                {!service.is_active && (
+                  <Badge variant="destructive" className="w-full justify-center text-xs mt-2">Inaktiv</Badge>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
