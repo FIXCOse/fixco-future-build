@@ -31,32 +31,18 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div>
             <InlineText
-              field="title"
-              scope="content:home.hero:sv"
+              id="home.hero.title"
               value={getContent('title') || `${t('hero.title_large')} ${t('hero.title_or')} ${t('hero.title_small')} ${t('hero.title_projects')} ${t('hero.fixco_handles')} ${t('hero.everything')}`}
+              as="h1"
               className="text-5xl md:text-7xl font-bold leading-tight mb-6"
-            >
-              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                <span className="gradient-text">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
-                <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
-                <br />
-                <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-                <span className="gradient-text animate-float">{t('hero.everything')}</span>
-              </h1>
-            </InlineText>
+            />
             
             <InlineText
-              field="subtitle"
-              scope="content:home.hero:sv"
+              id="home.hero.subtitle"
               value={getContent('subtitle') || `${t('hero.subtitle')} ${t('timing.start_within_5_days')}.`}
-              multiline
+              as="p"
               className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl"
-            >
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
-                {t('hero.subtitle')} 
-                <span className="text-primary font-semibold"> {t('timing.start_within_5_days')}.</span>
-              </p>
-            </InlineText>
+            />
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">

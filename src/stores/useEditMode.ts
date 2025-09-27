@@ -34,6 +34,7 @@ export const useEditMode = create<EditModeState>((set, get) => ({
   isPublishing: false,
 
   setCanEdit: (canEdit: boolean) => {
+    console.log('useEditMode.setCanEdit called with:', canEdit);
     set({ canEdit });
   },
 
@@ -41,15 +42,20 @@ export const useEditMode = create<EditModeState>((set, get) => ({
     const { isEditMode, releaseAllLocks } = get();
     const newEditMode = !isEditMode;
     
+    console.log('useEditMode.toggleEditMode:', { old: isEditMode, new: newEditMode });
     set({ isEditMode: newEditMode });
     
-    if (!newEditMode) {
-      // Release all locks when exiting edit mode
+    // Set edit mode attribute on document for CSS targeting
+    if (newEditMode) {
+      document.documentElement.setAttribute('data-edit-mode', 'on');
+    } else {
+      document.documentElement.removeAttribute('data-edit-mode');
       releaseAllLocks();
     }
   },
 
   stage: (scope: string, data: any, type: Change['type']) => {
+    console.log('useEditMode.stage called:', { scope, data, type });
     const { changes } = get();
     set({
       changes: {

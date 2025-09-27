@@ -271,19 +271,23 @@
   }
 }
 
-/* ROT pricing highlight */
-.rot-highlight {
-  @apply relative overflow-hidden;
+/* Edit Mode Specific Styles */
+[data-edit-mode="on"] .edit-safe {
+  pointer-events: auto !important;
+  user-select: text !important;
 }
 
-.rot-highlight::before {
-  content: '';
-  @apply absolute inset-0 gradient-primary opacity-10 rounded-lg;
+[data-edit-mode="on"] .edit-safe:hover {
+  outline: 2px dashed hsl(var(--primary) / 0.5);
+  outline-offset: 2px;
 }
 
-.rot-highlight::after {
-  content: 'ROT-AVDRAG';
-  @apply absolute top-0 right-0 text-xs font-bold px-2 py-1;
-  @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;
-  @apply transform rotate-12 translate-x-2 -translate-y-1;
+/* Smooth transitions for better UX */
+.edit-safe {
+  transition: outline 0.2s ease-in-out;
+}
+
+/* Ensure text selection works in edit mode */
+[data-edit-mode="on"] * {
+  user-select: text;
 }

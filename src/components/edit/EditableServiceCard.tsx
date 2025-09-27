@@ -79,26 +79,19 @@ export const EditableServiceCard: React.FC<EditableServiceCardProps> = ({
         <div className="space-y-4">
           {/* Title */}
           <InlineText
-            field="title"
-            scope={`service:${service.id}`}
+            id={`service.${service.id}.title`}
             value={title}
+            as="h3"
             className="text-lg font-semibold"
-          >
-            <h3 className="text-lg font-semibold">{title}</h3>
-          </InlineText>
+          />
 
           {/* Description */}
           <InlineText
-            field="description"
-            scope={`service:${service.id}`}
+            id={`service.${service.id}.description`}
             value={description}
-            multiline
-            className="text-sm text-muted-foreground"
-          >
-            <p className="text-sm text-muted-foreground line-clamp-3">
-              {description}
-            </p>
-          </InlineText>
+            as="p"
+            className="text-sm text-muted-foreground line-clamp-3"
+          />
 
           {/* Price & Category */}
           <div className="flex items-center justify-between">
@@ -115,15 +108,11 @@ export const EditableServiceCard: React.FC<EditableServiceCardProps> = ({
 
             <div className="text-right">
               <InlineText
-                field="base_price"
-                scope={`service:${service.id}`}
+                id={`service.${service.id}.base_price`}
                 value={service.base_price.toString()}
+                as="span"
                 className="font-semibold"
-              >
-                <span className="font-semibold">
-                  {service.base_price.toLocaleString()} kr
-                </span>
-              </InlineText>
+              />
               <div className="text-xs text-muted-foreground">
                 {service.price_type === 'hourly' ? '/timme' : '/jobb'}
               </div>

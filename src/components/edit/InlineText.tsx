@@ -1,126 +1,110 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { useEffect, useRef, useState, createElement } from 'react';
 import { useEditMode } from '@/stores/useEditMode';
-import { useCopy } from '@/copy/CopyProvider';
 import { cn } from '@/lib/utils';
 
 interface InlineTextProps {
-  children: React.ReactNode;
-  field: string;
-  scope: string;
-  multiline?: boolean;
+  id: string;               // t.ex. "home.hero.title"
+  value: string;            // aktuellt värde att visa
+  locale?: 'sv' | 'en';     // aktivt språk
+  as?: keyof JSX.IntrinsicElements; // 'h1', 'p', 'span'
+  onChange?: (next: string) => void; // kallas vid commit
   className?: string;
-  placeholder?: string;
-  value?: string;
-  onChange?: (value: string) => void;
 }
 
-export const InlineText: React.FC<InlineTextProps> = ({
-  children,
-  field,
-  scope,
-  multiline = false,
+export function InlineText({
+  id,
+  value,
+  locale = 'sv',
+  as: Tag = 'span',
+  onChange,
   className,
-  placeholder,
-  value = '',
-  onChange
-}) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(value);
-  const { isEditMode, stage } = useEditMode();
-  const { locale } = useCopy();
+}: InlineTextProps) {
+  const { isEditMode, canEdit, stage } = useEditMode((s) => ({
+    isEditMode: s.isEditMode,
+    canEdit: s.canEdit,
+    stage: s.stage,
+  }));
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  const fieldWithLocale = `${field}_${locale}`;
+  console.log('InlineText render:', { id, isEditMode, canEdit, editing, value });
 
   useEffect(() => {
-    setEditValue(value);
-  }, [value]);
+    if (!editing) setDraft(value);
+  }, [value, editing]);
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+    if (editing) inputRef.current?.focus();
+  }, [editing]);
+
+  const commit = () => {
+    const next = draft.trim();
+    if (next !== value) {
+      console.log('InlineText commit:', { id, old: value, new: next });
+      // lägg i Edit-store som pending change
+      stage(`content:${id}:${locale}`, { value: next }, 'content');
+      onChange?.(next);
     }
-  }, [isEditing]);
+    setEditing(false);
+  };
 
   const handleDoubleClick = () => {
-    if (isEditMode) {
-      setIsEditing(true);
+    console.log('InlineText double-click:', { id, canEdit, isEditMode });
+    if (canEdit && isEditMode) {
+      setEditing(true);
     }
   };
 
-  const handleSave = () => {
-    const newValue = editValue.trim();
-    
-    if (newValue !== value) {
-      // Stage the change
-      stage(scope, { [fieldWithLocale]: newValue }, 'content');
-      
-      // Call onChange if provided
-      onChange?.(newValue);
-    }
-    
-    setIsEditing(false);
-  };
+  // Visuell indikator i edit-läge
+  const wrapperClass = cn(
+    className,
+    canEdit && isEditMode && 'relative group edit-safe'
+  );
 
-  const handleCancel = () => {
-    setEditValue(value);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !multiline) {
-      e.preventDefault();
-      handleSave();
-    } else if (e.key === 'Enter' && e.ctrlKey && multiline) {
-      e.preventDefault();
-      handleSave();
-    } else if (e.key === 'Escape') {
-      handleCancel();
-    }
-  };
-
-  const handleBlur = () => {
-    handleSave();
-  };
-
-  if (!isEditMode || !isEditing) {
+  if (canEdit && isEditMode) {
     return (
-      <div
-        className={cn(
-          className,
-          isEditMode && "cursor-pointer hover:bg-accent/10 hover:outline hover:outline-2 hover:outline-primary/20 transition-all duration-200 rounded-sm px-1 -mx-1"
+      <div className={wrapperClass}>
+        {!editing ? (
+          <button
+            type="button"
+            onDoubleClick={handleDoubleClick}
+            className="inline-flex items-center gap-2 cursor-text outline-none text-left w-full"
+            style={{ pointerEvents: 'auto', userSelect: 'text' }}
+            aria-label="Redigera text"
+          >
+            {createElement(Tag, { className: "contents" }, value)}
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-xs px-1.5 py-0.5 rounded bg-foreground/10">
+              ✎ Redigera
+            </span>
+          </button>
+        ) : (
+          <textarea
+            ref={inputRef as any}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onBlur={commit}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                commit();
+              }
+              if (e.key === 'Escape') {
+                setEditing(false);
+                setDraft(value);
+              }
+            }}
+            className="min-w-[260px] w-full rounded border border-border bg-background/90 p-2 text-sm shadow focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+            style={{ pointerEvents: 'auto' }}
+            rows={3}
+          />
         )}
-        onDoubleClick={handleDoubleClick}
-        title={isEditMode ? "Dubbelklicka för att redigera" : undefined}
-      >
-        {children}
+        {/* Subtil highlight i edit-läge */}
+        <span className="pointer-events-none absolute inset-0 rounded ring-1 ring-primary/0 group-hover:ring-primary/40" />
       </div>
     );
   }
 
-  const InputComponent = multiline ? Textarea : Input;
-
-  return (
-    <div className={className}>
-      <InputComponent
-        ref={inputRef as any}
-        value={editValue}
-        onChange={(e) => setEditValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-        placeholder={placeholder}
-        className={cn(
-          "min-h-0 border-primary shadow-lg",
-          multiline && "resize-none"
-        )}
-        rows={multiline ? 3 : undefined}
-      />
-      <div className="text-xs text-muted-foreground mt-1">
-        {multiline ? 'Ctrl+Enter' : 'Enter'} för att spara • Escape för att avbryta
-      </div>
-    </div>
-  );
-};
+  // Visningsläge (ingen redigering)
+  return createElement(Tag, { className }, value);
+}

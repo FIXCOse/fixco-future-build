@@ -43,14 +43,14 @@ export const EditToolbar: React.FC<EditToolbarProps> = ({
     canAccessAdmin, 
     canEdit, 
     isEditMode,
-    shouldRender: canAccessAdmin && canEdit 
+    changes: Object.keys(changes).length,
+    storeState: useEditMode.getState()
   });
 
-  // Temporarily remove null check to debug
-  // if (!canAccessAdmin || !canEdit) {
-  //   console.log('EditToolbar returning null because:', { canAccessAdmin, canEdit });
-  //   return null;
-  // }
+  // Show toolbar if user has admin access
+  if (!canAccessAdmin) {
+    return null;
+  }
 
   const changeCount = Object.keys(changes).length;
 

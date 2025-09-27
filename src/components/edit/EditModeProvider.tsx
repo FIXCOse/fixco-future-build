@@ -9,12 +9,13 @@ interface EditModeProviderProps {
 }
 
 export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) => {
-  const { canAccessAdmin } = useRoleGate();
+  const { canAccessAdmin, isOwner, isAdmin } = useRoleGate();
   const { setCanEdit, releaseAllLocks } = useEditMode();
 
   useEffect(() => {
+    console.log('EditModeProvider: Setting canEdit based on role', { canAccessAdmin, isOwner, isAdmin });
     setCanEdit(canAccessAdmin);
-  }, [canAccessAdmin, setCanEdit]);
+  }, [canAccessAdmin, setCanEdit, isOwner, isAdmin]);
 
   // Release locks on page unload
   useEffect(() => {
