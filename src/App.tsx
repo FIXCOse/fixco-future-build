@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react';
+import React, { lazy, useEffect, Suspense, startTransition } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -69,7 +69,7 @@ import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 
-// Lazy load components for better performance
+// Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
 const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
 const SmartHome = lazy(() => import('./pages/SmartHome'));
@@ -77,6 +77,13 @@ const TestBooking = lazy(() => import('./pages/TestBooking'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
 const QuoteRequestWizard = lazy(() => import('./pages/QuoteRequestWizard'));
 import { ErrorBoundary } from './components/ErrorBoundary';
+
+// Suspense fallback component
+const SuspenseFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  </div>
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -124,7 +131,11 @@ const App = () => {
                   <Route path="/dashboard" element={<Dashboard />} />
 
                   {/* MyFixco Layout with nested routes */}
-                  <Route path="/mitt-fixco" element={<MyFixcoLayout />}>
+                  <Route path="/mitt-fixco" element={
+                    <Suspense fallback={<SuspenseFallback />}>
+                      <MyFixcoLayout />
+                    </Suspense>
+                  }>
                     <Route index element={<DashboardOverview />} />
                     <Route path="properties" element={<PropertiesPage />} />
                     <Route path="invoices" element={<InvoicesPage />} />
@@ -160,7 +171,11 @@ const App = () => {
                   </Route>
 
                   {/* Worker Routes */}
-                  <Route path="/worker" element={<WorkerLayout />}>
+                  <Route path="/worker" element={
+                    <Suspense fallback={<SuspenseFallback />}>
+                      <WorkerLayout />
+                    </Suspense>
+                  }>
                     <Route index element={<WorkerDashboard />} />
                     <Route path="pool" element={<JobPool />} />
                     <Route path="jobs" element={<MyJobs />} />
@@ -170,9 +185,21 @@ const App = () => {
                   </Route>
 
                   {/* Booking and Quote Request Routes */}
-                  <Route path="/boka/:slug" element={<BookingWizard />} />
-                  <Route path="/offert/:slug" element={<QuoteRequestWizard />} />
-                  <Route path="/test-booking" element={<TestBooking />} />
+                  <Route path="/boka/:slug" element={
+                    <Suspense fallback={<SuspenseFallback />}>
+                      <BookingWizard />
+                    </Suspense>
+                  } />
+                  <Route path="/offert/:slug" element={
+                    <Suspense fallback={<SuspenseFallback />}>
+                      <QuoteRequestWizard />
+                    </Suspense>
+                  } />
+                  <Route path="/test-booking" element={
+                    <Suspense fallback={<SuspenseFallback />}>
+                      <TestBooking />
+                    </Suspense>
+                  } />
                   
                   {/* Main Swedish Routes */}
                   <Route path="/" element={<AppLayout />}>
@@ -195,7 +222,9 @@ const App = () => {
                           </div>
                         </div>
                       }>
-                        <SmartHome />
+                        <Suspense fallback={<SuspenseFallback />}>
+                          <SmartHome />
+                        </Suspense>
                       </ErrorBoundary>
                     } />
                     <Route path="terms" element={<Terms />} />
@@ -223,7 +252,9 @@ const App = () => {
                           </div>
                         </div>
                       }>
-                        <SmartHome />
+                        <Suspense fallback={<SuspenseFallback />}>
+                          <SmartHome />
+                        </Suspense>
                       </ErrorBoundary>
                     } />
                   </Route>

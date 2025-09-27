@@ -12,6 +12,9 @@ import { useAuthProfile } from '@/hooks/useAuthProfile';
 import { useRoleGate } from '@/hooks/useRoleGate';
 import AdminDashboardContent from '@/components/AdminDashboardContent';
 import SalesOverview from '@/components/SalesOverview';
+import { LocaleProvider } from '@/components/LocaleProvider';
+import { CopyProvider } from '@/copy/CopyProvider';
+import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 
 const PageSkeleton = () => (
   <div className="min-h-screen bg-background">
@@ -48,6 +51,7 @@ const MyFixcoLayout = () => {
   const { shouldUseAdminLayout } = useRoleGate();
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentLanguage } = useLanguagePersistence();
 
   useEffect(() => {
     let mounted = true;
@@ -99,15 +103,19 @@ const MyFixcoLayout = () => {
 
   // Regular layout for all other pages
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <div className="pt-[calc(64px+2rem)] md:pt-[calc(64px+2rem)]">
-        <div className="container mx-auto px-4 py-8 max-w-6xl">
-          <Outlet />
-          {show && <OwnerCongrats open={show} onClose={acknowledge} />}
+    <LocaleProvider locale={currentLanguage}>
+      <CopyProvider locale={currentLanguage}>
+        <div className="min-h-screen bg-background">
+          <Navigation />
+          <div className="pt-[calc(64px+2rem)] md:pt-[calc(64px+2rem)]">
+            <div className="container mx-auto px-4 py-8 max-w-6xl">
+              <Outlet />
+              {show && <OwnerCongrats open={show} onClose={acknowledge} />}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </CopyProvider>
+    </LocaleProvider>
   );
 };
 
