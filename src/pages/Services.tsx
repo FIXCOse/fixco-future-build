@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import CategoryGrid from '@/components/CategoryGrid';
 import { useServices } from '@/hooks/useServices';
 import { Search, ArrowRight } from 'lucide-react';
-import { InlineText } from '@/components/edit/InlineText';
 
 const Services: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -55,18 +54,12 @@ const Services: React.FC = () => {
         {/* Hero Section */}
         <section className="relative py-20 px-4">
           <div className="container mx-auto text-center">
-            <InlineText
-              id="services.hero.title"
-              value="Våra Tjänster"
-              as="h1"
-              className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-6"
-            />
-            <InlineText
-              id="services.hero.subtitle"  
-              value="Professionella lösningar för hem och företag"
-              as="p"
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            />
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-6">
+              Våra Tjänster
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Professionella lösningar för hem och företag
+            </p>
           </div>
         </section>
 
@@ -74,18 +67,10 @@ const Services: React.FC = () => {
         <section className="py-12 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-12">
-              <InlineText
-                id="services.categories.heading"
-                value="Välj kategori"
-                as="h2"
-                className="text-3xl font-bold mb-4"
-              />
-              <InlineText
-                id="services.categories.description"
-                value="Bläddra genom våra tjänstekategorier"
-                as="p"
-                className="text-lg text-muted-foreground"
-              />
+              <h2 className="text-3xl font-bold mb-4">Välj kategori</h2>
+              <p className="text-lg text-muted-foreground">
+                Bläddra genom våra tjänstekategorier
+              </p>
             </div>
             <CategoryGrid />
           </div>

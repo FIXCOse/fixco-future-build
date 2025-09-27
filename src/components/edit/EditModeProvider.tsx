@@ -31,9 +31,7 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
 
   return (
     <>
-      <EditToolbar />
       {children}
-      <SaveBar />
     </>
   );
 };
