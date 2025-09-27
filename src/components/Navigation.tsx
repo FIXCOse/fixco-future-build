@@ -84,8 +84,8 @@ export default function Navigation() {
       contact: '/kontakt'
     };
     
-    // Base navigation items for everyone
-    const baseNavItems = [
+    // Base navigation items for everyone (no admin dropdown here anymore)
+    return [
       { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
       { href: paths.services, label: t('nav.services') },
       { href: paths.smartHome, label: t('nav.smartHome') },
@@ -93,16 +93,6 @@ export default function Navigation() {
       { href: paths.about, label: t('nav.about') },
       { href: paths.contact, label: t('nav.contact') },
     ];
-
-    // For admin/owner users, add admin dropdown to base navigation
-    if (isAdmin || isOwner) {
-      return [
-        ...baseNavItems,
-        { href: "/admin", label: "Admin Panel", isDropdown: true },
-      ];
-    }
-
-    return baseNavItems;
   };
 
   const navItems = getNavItems();
@@ -136,23 +126,54 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <nav className="flex items-center space-x-8">
               {navItems.map((item) => (
-                ('isDropdown' in item && item.isDropdown && (isAdmin || isOwner)) ? (
-                  <DropdownMenu key={item.href}>
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                    "text-foreground hover:text-primary hover:bg-primary/10",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                    isActive(item.href) && "text-primary bg-primary/10 font-semibold"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right: Actions with Proper Spacing */}
+          <div className="flex items-center space-x-2 lg:space-x-4">
+            
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+            
+            {/* Contact - Desktop Only */}
+            <a 
+              href="tel:+46812345678" 
+              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="hidden xl:inline font-medium">08-123 456 78</span>
+            </a>
+            
+            {/* User Actions - Desktop */}
+            {user ? (
+              <div className="hidden lg:flex items-center space-x-2">
+                {(isAdmin || isOwner) ? (
+                  <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className={cn(
-                          "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
-                          "text-foreground hover:text-primary hover:bg-primary/10",
-                          "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                          location.pathname.startsWith('/admin') && "text-primary bg-primary/10 font-semibold"
-                        )}
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="h-9 px-3 inline-flex items-center space-x-2"
                       >
-                        {item.label}
-                        <ChevronDown className="ml-1 h-4 w-4" />
+                        <User className="h-4 w-4" />
+                        <span className="hidden xl:inline">Admin Panel</span>
+                        <ChevronDown className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="center" className="w-56 bg-background border border-border shadow-lg z-50">
+                    <DropdownMenuContent align="end" className="w-56 bg-background border border-border shadow-lg z-50">
                       <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {adminMenuItems.slice(0, 6).map((adminItem) => (
@@ -201,60 +222,26 @@ export default function Navigation() {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className={cn(
-                      "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
-                      "text-foreground hover:text-primary hover:bg-primary/10",
-                      "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                      isActive(item.href) && "text-primary bg-primary/10 font-semibold"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                )
-              ))}
-            </nav>
-          </div>
-
-          {/* Right: Actions with Proper Spacing */}
-          <div className="flex items-center space-x-2 lg:space-x-4">
-            
-            {/* Language Switcher */}
-            <LanguageSwitcher />
-            
-            {/* Contact - Desktop Only */}
-            <a 
-              href="tel:+46812345678" 
-              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
-            >
-              <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline font-medium">08-123 456 78</span>
-            </a>
-            
-            {/* User Actions - Desktop */}
-            {user ? (
-              <div className="hidden lg:flex items-center space-x-2">
-                     <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"}>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="h-9 px-3 inline-flex items-center space-x-2"
-                      >
-                        <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{(isAdmin || isOwner) ? t('nav.adminPanel') : t('nav.myFixco')}</span>
-                      </Button>
-                    </Link>
+                  <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"}>
                     <Button 
-                      variant="ghost" 
+                      variant="outline" 
                       size="sm" 
-                      onClick={handleLogout}
                       className="h-9 px-3 inline-flex items-center space-x-2"
                     >
-                      <LogOut className="h-4 w-4" />
-                      <span className="hidden xl:inline">{currentLanguage === 'en' ? 'Log out' : 'Logga ut'}</span>
+                      <User className="h-4 w-4" />
+                      <span className="hidden xl:inline">{t('nav.myFixco')}</span>
                     </Button>
+                  </Link>
+                )}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleLogout}
+                  className="h-9 px-3 inline-flex items-center space-x-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden xl:inline">{currentLanguage === 'en' ? 'Log out' : 'Logga ut'}</span>
+                </Button>
               </div>
             ) : (
               <div className="hidden lg:flex items-center space-x-2">
@@ -298,53 +285,19 @@ export default function Navigation() {
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">
-                {(isAdmin || isOwner) ? (
-                  <>
-                    {/* Regular nav items */}
-                    {navItems.filter(item => !('isDropdown' in item)).map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        className={cn(
-                          "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
-                          isActive(item.href) && "text-primary font-medium bg-muted"
-                        )}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                    {/* Admin items */}
-                    <div className="px-4 py-2 text-sm font-medium text-muted-foreground border-t border-border mt-4 pt-4">Admin Panel</div>
-                    {adminMenuItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        className={cn(
-                          "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
-                          isActive(item.href) && "text-primary font-medium bg-muted"
-                        )}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </>
-                ) : (
-                  navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      className={cn(
-                        "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
-                        isActive(item.href) && "text-primary font-medium bg-muted"
-                      )}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))
-                )}
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                      isActive(item.href) && "text-primary font-medium bg-muted"
+                    )}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
               </nav>
 
               {/* Mobile Actions */}
@@ -359,16 +312,36 @@ export default function Navigation() {
 
                 {user ? (
                   <div className="space-y-2 px-4">
-                    <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"} onClick={() => setIsMenuOpen(false)}>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full justify-start gap-x-2"
-                      >
-                        <User className="h-4 w-4" />
-                        <span>{(isAdmin || isOwner) ? t('nav.adminPanel') : t('nav.myFixco')}</span>
-                      </Button>
-                    </Link>
+                    {(isAdmin || isOwner) ? (
+                      <>
+                        <div className="text-sm font-medium text-muted-foreground">Admin Panel</div>
+                        {adminMenuItems.map((item) => (
+                          <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className={cn(
+                                "w-full justify-start gap-x-2",
+                                location.pathname === item.href && "bg-accent text-accent-foreground"
+                              )}
+                            >
+                              {item.label}
+                            </Button>
+                          </Link>
+                        ))}
+                      </>
+                    ) : (
+                      <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"} onClick={() => setIsMenuOpen(false)}>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full justify-start gap-x-2"
+                        >
+                          <User className="h-4 w-4" />
+                          <span>{t('nav.myFixco')}</span>
+                        </Button>
+                      </Link>
+                    )}
                     <Button 
                       variant="ghost" 
                       size="sm" 
