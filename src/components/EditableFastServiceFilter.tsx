@@ -60,7 +60,7 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
   // Update services when data changes
   React.useEffect(() => {
     if (servicesFromDB.length > 0) {
-      setServices(servicesFromDB.map(service => ({
+      const mappedServices = servicesFromDB.map(service => ({
         id: service.id,
         title: service.title,
         description: service.description,
@@ -77,7 +77,9 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
         laborShare: 1.0,
         translatedTitle: service.title,
         translatedDescription: service.description
-      })));
+      }));
+      console.log('EditableFastServiceFilter services:', mappedServices.map(s => ({ id: s.id, title: s.title })));
+      setServices(mappedServices);
     }
   }, [servicesFromDB]);
 
@@ -267,7 +269,7 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
           </div>
         ) : (
           <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="services-list">
+            <Droppable droppableId="services-list" direction="horizontal">
               {(provided, snapshot) => (
                 <div
                   {...provided.droppableProps}
@@ -276,12 +278,16 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
                     snapshot.isDraggingOver ? 'bg-primary/5 border-2 border-dashed border-primary' : ''
                   }`}
                 >
-                  {paginatedServices.map((service, index) => (
-                    <Draggable 
-                      key={service.id} 
-                      draggableId={service.id} 
-                      index={index}
-                    >
+                  {paginatedServices.map((service, index) => {
+                    const uniqueId = `service-${service.id}-${index}`;
+                    console.log('Rendering service draggable:', uniqueId, service.id, service.title);
+                    
+                    return (
+                      <Draggable 
+                        key={uniqueId} 
+                        draggableId={uniqueId} 
+                        index={index}
+                      >
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
@@ -352,7 +358,8 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
                         </div>
                       )}
                     </Draggable>
-                  ))}
+                    );
+                  })}
                   {provided.placeholder}
                 </div>
               )}

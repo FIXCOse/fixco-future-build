@@ -30,6 +30,11 @@ const EditableCategoryGrid = () => {
   const { isEditMode } = useEditMode();
   const [services, setServices] = useState(servicesDataNew);
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log('EditableCategoryGrid services:', services.map(s => ({ slug: s.slug, title: s.title })));
+  }, [services]);
+
   const handleDragEnd = (result: DropResult) => {
     console.log('Drag end result:', result);
     if (!result.destination) return;
@@ -107,7 +112,7 @@ const EditableCategoryGrid = () => {
         onDragUpdate={onDragUpdate}
         onDragEnd={handleDragEnd}
       >
-        <Droppable droppableId="category-services-grid">
+        <Droppable droppableId="category-services-grid" direction="horizontal">
           {(provided, snapshot) => (
             <div
               {...provided.droppableProps}
@@ -119,11 +124,14 @@ const EditableCategoryGrid = () => {
               {services.map((service, index) => {
                 const IconComponent = service.icon as LucideIcon;
                 const translateKey = `serviceCategories.${service.slug}` as CopyKey;
+                const uniqueId = `category-${service.slug}-${index}`;
+                
+                console.log('Rendering draggable:', uniqueId, service.slug);
                 
                 return (
                   <Draggable 
-                    key={service.slug} 
-                    draggableId={service.slug} 
+                    key={uniqueId} 
+                    draggableId={uniqueId} 
                     index={index}
                   >
                     {(provided, snapshot) => (
