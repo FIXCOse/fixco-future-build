@@ -117,8 +117,7 @@ const App = () => {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <SecurityWrapper>
-          <EditModeProvider>
-            <TooltipProvider>
+          <TooltipProvider>
             <div className="min-h-screen bg-background font-inter">
               <Toaster />
               <Sonner />
@@ -269,7 +268,6 @@ const App = () => {
               </BrowserRouter>
             </div>
             </TooltipProvider>
-          </EditModeProvider>
         </SecurityWrapper>
       </QueryClientProvider>
     </HelmetProvider>
