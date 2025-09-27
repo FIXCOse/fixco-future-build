@@ -69,13 +69,6 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    // For admin/owner users, show simplified navigation with admin dropdown
-    if (isAdmin || isOwner) {
-      return [
-        { href: "/admin", label: "Admin Panel", isDropdown: true },
-      ];
-    }
-
     // Language-specific paths
     const paths = currentLanguage === 'en' ? {
       services: '/en/services',
@@ -91,8 +84,8 @@ export default function Navigation() {
       contact: '/kontakt'
     };
     
-    // For regular users, show all navigation items
-    return [
+    // Base navigation items for everyone
+    const baseNavItems = [
       { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
       { href: paths.services, label: t('nav.services') },
       { href: paths.smartHome, label: t('nav.smartHome') },
@@ -100,6 +93,16 @@ export default function Navigation() {
       { href: paths.about, label: t('nav.about') },
       { href: paths.contact, label: t('nav.contact') },
     ];
+
+    // For admin/owner users, add admin dropdown to base navigation
+    if (isAdmin || isOwner) {
+      return [
+        ...baseNavItems,
+        { href: "/admin", label: "Admin Panel", isDropdown: true },
+      ];
+    }
+
+    return baseNavItems;
   };
 
   const navItems = getNavItems();
@@ -133,7 +136,7 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <nav className="flex items-center space-x-8">
               {navItems.map((item) => (
-                item.isDropdown && (isAdmin || isOwner) ? (
+                ('isDropdown' in item && item.isDropdown && (isAdmin || isOwner)) ? (
                   <DropdownMenu key={item.href}>
                     <DropdownMenuTrigger asChild>
                       <Button
@@ -297,7 +300,22 @@ export default function Navigation() {
               <nav className="space-y-1">
                 {(isAdmin || isOwner) ? (
                   <>
-                    <div className="px-4 py-2 text-sm font-medium text-muted-foreground">Admin Panel</div>
+                    {/* Regular nav items */}
+                    {navItems.filter(item => !('isDropdown' in item)).map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        className={cn(
+                          "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                          isActive(item.href) && "text-primary font-medium bg-muted"
+                        )}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                    {/* Admin items */}
+                    <div className="px-4 py-2 text-sm font-medium text-muted-foreground border-t border-border mt-4 pt-4">Admin Panel</div>
                     {adminMenuItems.map((item) => (
                       <Link
                         key={item.href}
