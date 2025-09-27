@@ -37,7 +37,17 @@ const ROTInfo = () => {
     }
   ];
 
-  const qualifyingServices = [
+  const qualifyingServices = isEnglish ? [
+    "Carpentry work (kitchen, bathroom, interior)",
+    "Plumbing installations and repairs", 
+    "Electrical installations and lighting",
+    "Painting and wallpapering",
+    "Floor laying and tiling work",
+    "Garden work and landscaping",
+    "Facade work and roofing",
+    "Assembly of furniture and equipment",
+    "Ground work and drainage"
+  ] : [
     "Snickeriarbeten (kök, badrum, inredning)",
     "VVS-installationer och reparationer", 
     "Elinstallationer och belysning",
@@ -49,7 +59,17 @@ const ROTInfo = () => {
     "Markarbeten och dränering"
   ];
 
-  const nonQualifyingServices = [
+  const nonQualifyingServices = isEnglish ? [
+    "Cleaning only (without construction work)",
+    "New construction of entire houses",
+    "Work on holiday homes that are not permanent residences", 
+    "Outdoor work not related to the residence",
+    "Pure consulting services without physical work",
+    "Materials (only labor costs qualify)",
+    "Moving costs",
+    "Insurance matters",
+    "Work on commercial properties"
+  ] : [
     "Enbart städning (utan byggarbete)",
     "Nybyggnation av hela hus",
     "Arbete på fritidshus som inte är permanentbostad", 
@@ -254,19 +274,19 @@ const ROTInfo = () => {
           {/* Process Benefits */}
           <div className="mt-16 grid md:grid-cols-2 gap-8">
             <div className="card-premium p-6">
-              <h4 className="text-lg font-bold mb-4 text-primary">🚀 Snabbt & Enkelt</h4>
+              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '🚀 Fast & Easy' : '🚀 Snabbt & Enkelt'}</h4>
               <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Ingen väntan på godkännande</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Direkt rabatt vid betalning</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Vi sköter allt pappersarbete</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'No waiting for approval' : 'Ingen väntan på godkännande'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Direct discount at payment' : 'Direkt rabatt vid betalning'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'We handle all paperwork' : 'Vi sköter allt pappersarbete'}</li>
               </ul>
             </div>
             <div className="card-premium p-6">
-              <h4 className="text-lg font-bold mb-4 text-primary">💰 Garanterad Besparing</h4>
+              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '💰 Guaranteed Savings' : '💰 Garanterad Besparing'}</h4>
               <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />50% på alla kvalificerade arbeten</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Maximera ditt årliga avdrag</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Professionell rådgivning</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '50% on all qualified work' : '50% på alla kvalificerade arbeten'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Maximize your annual deduction' : 'Maximera ditt årliga avdrag'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Professional advice' : 'Professionell rådgivning'}</li>
               </ul>
             </div>
           </div>
