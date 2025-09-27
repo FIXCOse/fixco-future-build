@@ -2,9 +2,10 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { LocaleProvider } from '../LocaleProvider';
 import { CopyProvider } from '@/copy/CopyProvider';
-import { EditModeProvider } from '../edit/EditModeProvider';
-import { RoleDebug } from '../debug/RoleDebug';
+import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
+import AIChat from '../AIChat';
+import { EditModeToggle } from '../EditModeToggle';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
@@ -26,8 +27,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <main>
               <Outlet />
             </main>
+            <AIChat />
+            <EditModeToggle />
             <ModalHost />
-            <RoleDebug />
           </div>
         </EditModeProvider>
       </CopyProvider>

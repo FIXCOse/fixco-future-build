@@ -1,0 +1,656 @@
+import React, { useState, useMemo } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { X, Search, MapPin, GripVertical, Edit, Trash2 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "@/hooks/useDebounce";
+import ServiceCardV3 from "./ServiceCardV3";
+import SegmentedPriceToggle from "./SegmentedPriceToggle";
+import { usePriceStore } from "@/stores/priceStore";
+import { toast } from "sonner";
+import { useCopy } from '@/copy/CopyProvider';
+import { useServices } from '@/hooks/useServices';
+import { serviceCategories } from '@/data/servicesDataNew';
+import { useEditMode } from '@/contexts/EditModeContext';
+import { ServiceEditModal } from './ServiceEditModal';
+
+const ITEMS_PER_PAGE = 12;
+
+interface SortableServiceItemProps {
+  service: any;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  onServiceSelect?: (service: any) => void;
+}
+
+function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: SortableServiceItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: service.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`relative ${isDragging ? 'opacity-50 z-50' : ''}`}
+    >
+      {/* Edit Controls */}
+      <div className="absolute top-2 left-2 z-20 flex gap-1">
+        <div
+          {...attributes}
+          {...listeners}
+          className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
+          title="Dra för att flytta"
+        >
+          <GripVertical className="h-4 w-4" />
+        </div>
+        <button
+          onClick={() => onEdit(service.id)}
+          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
+          title="Redigera tjänst"
+        >
+          <Edit className="h-4 w-4" />
+        </button>
+        <button
+          onClick={() => onDelete(service.id)}
+          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+          title="Ta bort tjänst"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className={`border-2 border-dashed border-primary/30 rounded-lg p-2 ${
+        isDragging ? 'border-primary bg-background' : ''
+      }`}>
+        <ServiceCardV3
+          title={service.title}
+          category={service.category}
+          description={service.description}
+          pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
+          priceIncl={service.basePrice}
+          eligible={{
+            rot: service.eligible?.rot || false,
+            rut: service.eligible?.rut || false
+          }}
+          serviceSlug={service.id}
+          serviceId={service.id}
+          onBook={() => {
+            if (onServiceSelect) {
+              onServiceSelect(service);
+            } else {
+              toast.success(`Bokning för ${service.title} startad`);
+            }
+          }}
+          onQuote={() => {
+            if (onServiceSelect) {
+              onServiceSelect(service);
+            } else {
+              toast.success(`Offert för ${service.title} skickad`);
+            }
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+interface EditableFastServiceFilterNewProps {
+  onServiceSelect?: (service: any) => void;
+  className?: string;
+}
+
+const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> = ({ 
+  onServiceSelect, 
+  className = "" 
+}) => {
+  const { t, locale } = useCopy();
+  const { isEditMode } = useEditMode();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { mode } = usePriceStore();
+  
+  // Get services from database
+  const { data: servicesFromDB = [], isLoading } = useServices(locale);
+  
+  // Convert database services to the expected format and add local state for reordering
+  const [services, setServices] = useState(() => {
+    return servicesFromDB.map(service => ({
+      id: service.id,
+      title: service.title,
+      description: service.description,
+      category: service.category,
+      subCategory: service.sub_category || '',
+      priceType: service.price_type,
+      basePrice: service.base_price,
+      priceUnit: service.price_unit,
+      location: service.location,
+      eligible: {
+        rot: service.rot_eligible,
+        rut: service.rut_eligible
+      },
+      laborShare: 1.0,
+      translatedTitle: service.title,
+      translatedDescription: service.description
+    }));
+  });
+
+  // Update services when data changes
+  React.useEffect(() => {
+    if (servicesFromDB.length > 0) {
+      const mappedServices = servicesFromDB.map(service => ({
+        id: service.id,
+        title: service.title,
+        description: service.description,
+        category: service.category,
+        subCategory: service.sub_category || '',
+        priceType: service.price_type,
+        basePrice: service.base_price,
+        priceUnit: service.price_unit,
+        location: service.location,
+        eligible: {
+          rot: service.rot_eligible,
+          rut: service.rut_eligible
+        },
+        laborShare: 1.0,
+        translatedTitle: service.title,
+        translatedDescription: service.description
+      }));
+      setServices(mappedServices);
+    }
+  }, [servicesFromDB]);
+
+  // Initialize state from URL and sessionStorage
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return searchParams.get('search') || sessionStorage.getItem('fixco-filter-search') || '';
+  });
+  
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return searchParams.get('category') || sessionStorage.getItem('fixco-filter-category') || 'alla';
+  });
+  
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+  
+  const [selectedPriceType, setSelectedPriceType] = useState(() => {
+    return searchParams.get('priceType') || sessionStorage.getItem('fixco-filter-priceType') || 'alla';
+  });
+  
+  const [indoorOutdoor, setIndoorOutdoor] = useState(() => {
+    return searchParams.get('location') || sessionStorage.getItem('fixco-filter-location') || 'alla';
+  });
+  
+  const [sortBy, setSortBy] = useState(() => {
+    return searchParams.get('sort') || sessionStorage.getItem('fixco-filter-sort') || 'relevans';
+  });
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editingService, setEditingService] = useState<any>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // Debounced search
+  const searchDebounced = useDebounce(searchQuery, 300);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Drag and drop handlers
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setServices((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over?.id);
+
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        console.log('New service order:', newItems.map(s => s.id));
+        toast.success('Tjänstordning uppdaterad');
+        return newItems;
+      });
+    }
+  };
+
+  const handleEditService = (serviceId: string) => {
+    const service = services.find(s => s.id === serviceId);
+    if (service) {
+      setEditingService(service);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const handleDeleteService = (serviceId: string) => {
+    if (confirm('Är du säker på att du vill ta bort denna tjänst?')) {
+      setServices(prev => prev.filter(service => service.id !== serviceId));
+      toast.success('Tjänst borttagen');
+    }
+  };
+
+  const handleSaveService = (updatedService: any) => {
+    setServices(prev => prev.map(service => 
+      service.id === updatedService.id ? updatedService : service
+    ));
+  };
+
+  // Update URL and sessionStorage  
+  const updateStateAndURL = React.useCallback((updates: Record<string, string | boolean>) => {
+    const newParams = new URLSearchParams(searchParams);
+    
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === '' || value === 'alla' || value === false) {
+        newParams.delete(key);
+        sessionStorage.removeItem(`fixco-filter-${key}`);
+      } else {
+        newParams.set(key, String(value));
+        sessionStorage.setItem(`fixco-filter-${key}`, String(value));
+      }
+    });
+    
+    setSearchParams(newParams, { replace: true });
+  }, [searchParams, setSearchParams]);
+
+  // Update handlers
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setSelectedSubCategories([]);
+    setCurrentPage(1);
+    updateStateAndURL({ category, search: searchQuery, priceType: selectedPriceType, 
+                      location: indoorOutdoor, sort: sortBy });
+  };
+
+  const handleSubCategoryToggle = (subCat: string) => {
+    const newSubCats = selectedSubCategories.includes(subCat)
+      ? selectedSubCategories.filter(s => s !== subCat)
+      : [...selectedSubCategories, subCat];
+    setSelectedSubCategories(newSubCats);
+    setCurrentPage(1);
+    
+    // Store subcategories in sessionStorage
+    sessionStorage.setItem('fixco-filter-subCategories', JSON.stringify(newSubCats));
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory("alla");
+    setSelectedSubCategories([]);
+    setSelectedPriceType("alla");
+    setIndoorOutdoor("alla");
+    setSortBy("relevans");
+    setCurrentPage(1);
+    
+    // Clear URL and storage
+    setSearchParams({}, { replace: true });
+    ['search', 'category', 'priceType', 'location', 'sort', 'subCategories'].forEach(key => {
+      sessionStorage.removeItem(`fixco-filter-${key}`);
+    });
+  };
+
+  const activeFiltersCount = [
+    searchDebounced !== "",
+    selectedCategory !== "alla",
+    selectedSubCategories.length > 0,
+    selectedPriceType !== "alla",
+    indoorOutdoor !== "alla"
+  ].filter(Boolean).length;
+
+  // Categories for filter chips
+  const categories = useMemo(() => {
+    return serviceCategories.map(cat => ({
+      slug: cat.slug,
+      name: t(`serviceCategories.${cat.slug}` as any) || cat.title
+    }));
+  }, [t]);
+
+  // Get sub-categories for selected category
+  const subCategories = useMemo(() => {
+    if (selectedCategory === 'alla') return [];
+    
+    const servicesInCategory = services.filter(s => s.category === selectedCategory);
+    const subCats = new Set(servicesInCategory.map(s => s.subCategory).filter(Boolean));
+    return Array.from(subCats).sort();
+  }, [selectedCategory, services]);
+
+  // Main filtering logic  
+  const filteredServices = useMemo(() => {
+    let filtered = [...services];
+
+    // Text search
+    if (searchDebounced) {
+      const searchTerm = searchDebounced.toLowerCase();
+      filtered = filtered.filter(service => 
+        service.title.toLowerCase().includes(searchTerm) ||
+        service.description.toLowerCase().includes(searchTerm) ||
+        service.subCategory.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Category filter
+    if (selectedCategory !== 'alla') {
+      filtered = filtered.filter(service => service.category === selectedCategory);
+    }
+
+    // Subcategory filter
+    if (selectedSubCategories.length > 0) {
+      filtered = filtered.filter(service => 
+        selectedSubCategories.includes(service.subCategory)
+      );
+    }
+
+    // Price type filter
+    if (selectedPriceType !== 'alla') {
+      filtered = filtered.filter(service => service.priceType === selectedPriceType);
+    }
+
+    // Location filter
+    if (indoorOutdoor !== 'alla') {
+      filtered = filtered.filter(service => 
+        service.location === indoorOutdoor || service.location === 'båda'
+      );
+    }
+
+    // ROT/RUT filter based on price mode
+    if (mode === 'rot') {
+      filtered = filtered.filter(service => service.eligible.rot);
+    } else if (mode === 'rut') {
+      filtered = filtered.filter(service => service.eligible.rut);
+    }
+
+    // Sort
+    if (sortBy === 'pris-låg') {
+      filtered.sort((a, b) => a.basePrice - b.basePrice);
+    } else if (sortBy === 'pris-hög') {
+      filtered.sort((a, b) => b.basePrice - a.basePrice);
+    } else if (sortBy === 'namn') {
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    return filtered;
+  }, [services, searchDebounced, selectedCategory, selectedSubCategories, selectedPriceType, indoorOutdoor, mode, sortBy]);
+
+  // Pagination
+  const paginatedServices = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredServices.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredServices, currentPage]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <span className="ml-2 text-muted-foreground">Laddar tjänster...</span>
+      </div>
+    );
+  }
+
+  if (!isEditMode) {
+    // Return original FastServiceFilter functionality here
+    return <div>Använd FastServiceFilter för normal visning</div>;
+  }
+
+  return (
+    <div className={`space-y-6 ${className}`}>
+      {/* Filter info */}
+      <div className="text-center p-4 bg-primary/10 rounded-lg">
+        <p className="text-sm text-muted-foreground mb-2">
+          <strong>Redigeringsläge aktivt</strong> - Filtrera och dra tjänsterna för att ändra ordning
+        </p>
+      </div>
+
+      {/* Filter Controls */}
+      <div className="space-y-4">
+        {/* Search Row */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder={t('filter.search_placeholder')}
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+                updateStateAndURL({ search: e.target.value });
+              }}
+              className="pl-10 pr-4 h-12 text-base"
+            />
+          </div>
+
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4" />
+            <span>Uppsala & Stockholm</span>
+          </div>
+        </div>
+        
+        {/* Centered Toggle Row */}
+        <div className="w-full max-w-[1200px] mx-auto px-2">
+          <div className="flex justify-center py-2">
+            <SegmentedPriceToggle />
+          </div>
+        </div>
+
+        {/* Filter Controls Row */}
+        <div className="flex flex-wrap gap-3 items-center">
+          {/* Category Chips */}
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={selectedCategory === 'alla' ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleCategoryChange('alla')}
+              className="h-8"
+            >
+              {t('filter.all_services')}
+            </Button>
+            {categories.map(category => (
+              <Button
+                key={category.slug}
+                variant={selectedCategory === category.slug ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleCategoryChange(category.slug)}
+                className="h-8"
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+
+          {/* Price Type */}
+          <Select value={selectedPriceType} onValueChange={(value) => {
+            setSelectedPriceType(value);
+            setCurrentPage(1);
+            updateStateAndURL({ priceType: value });
+          }}>
+            <SelectTrigger className="w-32 h-8">
+              <SelectValue placeholder="Pris" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="alla">{t('filter.all_prices')}</SelectItem>
+              <SelectItem value="hourly">{t('filter.hourly_rate')}</SelectItem>
+              <SelectItem value="fixed">{t('filter.fixed_price')}</SelectItem>
+              <SelectItem value="quote">{t('filter.request_quote')}</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Indoor/Outdoor */}
+          <Select value={indoorOutdoor} onValueChange={(value) => {
+            setIndoorOutdoor(value);
+            setCurrentPage(1);
+            updateStateAndURL({ location: value });
+          }}>
+            <SelectTrigger className="w-32 h-8">
+              <SelectValue placeholder="Plats" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="alla">{t('filter.all_locations')}</SelectItem>
+              <SelectItem value="inomhus">{t('filter.indoor')}</SelectItem>
+              <SelectItem value="utomhus">{t('filter.outdoor')}</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Sort */}
+          <Select value={sortBy} onValueChange={(value) => {
+            setSortBy(value);
+            updateStateAndURL({ sort: value });
+          }}>
+            <SelectTrigger className="w-32 h-8">
+              <SelectValue placeholder="Sortera" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="relevans">Relevans</SelectItem>
+              <SelectItem value="namn">Namn A-Ö</SelectItem>
+              <SelectItem value="pris-låg">Pris: Låg-Hög</SelectItem>
+              <SelectItem value="pris-hög">Pris: Hög-Låg</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Clear Filters */}
+          {activeFiltersCount > 0 && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={clearFilters}
+              className="text-muted-foreground hover:text-foreground h-8"
+            >
+              <X className="h-4 w-4 mr-1" />
+              {t('filter.clear')} ({activeFiltersCount})
+            </Button>
+          )}
+        </div>
+
+        {/* Sub-category Chips (shown when category is selected) */}
+        {selectedCategory !== 'alla' && subCategories.length > 0 && (
+          <div className="flex flex-wrap gap-2 border-t border-border pt-3">
+            <span className="text-sm text-muted-foreground mr-2">{t('filter.specialty_areas')}</span>
+            {subCategories.map(subCat => (
+              <Button
+                key={subCat}
+                variant={selectedSubCategories.includes(subCat) ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSubCategoryToggle(subCat)}
+                className="h-7 text-xs"
+              >
+                {subCat}
+              </Button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Results summary */}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          {searchDebounced && (
+            <span className="mr-4">
+              <strong>{t('filter.searching')}</strong> "{searchDebounced}"
+            </span>
+          )}
+          <strong>{filteredServices.length}</strong> {t('filter.services_found')}
+        </div>
+      </div>
+
+      {/* Results with drag and drop */}
+      <div className="min-h-[400px]">
+        {filteredServices.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            {mode !== 'all' ? (
+              // Empty state for ROT/RUT filtering
+              <div className="max-w-md mx-auto">
+                <p className="text-muted-foreground mb-4">
+                  {t('filter.no_services_rot_rut')} {mode === 'rot' ? 'ROT' : 'RUT'} {t('filter.with_current_filters')}
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => usePriceStore.getState().setMode('all')}
+                  className="mb-4"
+                >
+                  {t('filter.show_all_services')}
+                </Button>
+                <div className="mt-4">
+                  <Button variant="ghost" onClick={clearFilters}>
+                    {t('filter.clear_other_filters')}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              // General empty state
+              <>
+                <p className="text-muted-foreground mb-4">
+                  {t('filter.no_services_general')}
+                </p>
+                <Button variant="ghost" onClick={clearFilters}>
+                  {t('filter.clear_filters_try_again')}
+                </Button>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="select-none">
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={paginatedServices.map(s => s.id)} strategy={rectSortingStrategy}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedServices.map((service) => (
+                    <SortableServiceItem
+                      key={service.id}
+                      service={service}
+                      onEdit={handleEditService}
+                      onDelete={handleDeleteService}
+                      onServiceSelect={onServiceSelect}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
+          </div>
+        )}
+      </div>
+
+      <ServiceEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingService(null);
+        }}
+        service={editingService}
+        onSave={handleSaveService}
+      />
+    </div>
+  );
+};
+
+export default EditableFastServiceFilterNew;

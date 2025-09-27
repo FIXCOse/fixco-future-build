@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { EditModeProvider } from './components/edit/EditModeProvider';
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -24,6 +23,7 @@ import Dashboard from "./pages/Dashboard";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import ScrollToTop from "./components/ScrollToTop";
+import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import AppLayout from "./components/layouts/AppLayout";
@@ -264,10 +264,11 @@ const App = () => {
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                <AIChat />
                 <ModalHost />
               </BrowserRouter>
             </div>
-            </TooltipProvider>
+          </TooltipProvider>
         </SecurityWrapper>
       </QueryClientProvider>
     </HelmetProvider>
