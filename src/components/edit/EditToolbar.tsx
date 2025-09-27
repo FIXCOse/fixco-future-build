@@ -55,122 +55,19 @@ export const EditToolbar: React.FC<EditToolbarProps> = ({
   const changeCount = Object.keys(changes).length;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Edit Mode Toggle */}
-            <div className="flex items-center gap-2">
-              <Edit3 className="h-4 w-4 text-muted-foreground" />
-              <Switch 
-                checked={isEditMode}
-                onCheckedChange={toggleEditMode}
-                disabled={isPublishing}
-              />
-              <span className="text-sm font-medium">
-                {isEditMode ? 'Redigeringsläge' : 'Visningsläge'}
-              </span>
-            </div>
-
-            <Separator orientation="vertical" className="h-6" />
-
-            {/* Preview Toggle */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onTogglePreview?.(!showPublished)}
-                disabled={!isEditMode}
-                className="gap-2"
-              >
-                {showPublished ? (
-                  <>
-                    <Eye className="h-4 w-4" />
-                    Publicerat
-                  </>
-                ) : (
-                  <>
-                    <EyeOff className="h-4 w-4" />
-                    Utkast
-                  </>
-                )}
-              </Button>
-            </div>
-
-            <Separator orientation="vertical" className="h-6" />
-
-            {/* Language Indicator */}
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-muted-foreground" />
-              <Badge variant="secondary">
-                {locale.toUpperCase()}
-              </Badge>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Change Counter */}
-            {changeCount > 0 && (
-              <Badge variant="default" className="gap-1">
-                {changeCount} {changeCount === 1 ? 'ändring' : 'ändringar'}
-              </Badge>
-            )}
-
-            {/* Action Buttons */}
-            {isEditMode && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={changeCount === 0}
-                  className="gap-2"
-                >
-                  <Undo className="h-4 w-4" />
-                  Ångra
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={changeCount === 0}
-                  className="gap-2"
-                >
-                  <Redo className="h-4 w-4" />
-                  Gör om
-                </Button>
-
-                <Separator orientation="vertical" className="h-6" />
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => discard()}
-                  disabled={changeCount === 0 || isPublishing}
-                >
-                  Avbryt ändringar
-                </Button>
-
-                <Button
-                  onClick={publishAll}
-                  disabled={changeCount === 0 || isPublishing}
-                  className="gap-2"
-                >
-                  <Save className="h-4 w-4" />
-                  {isPublishing ? 'Publicerar...' : 'Publicera'}
-                </Button>
-              </>
-            )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2"
-            >
-              <Settings className="h-4 w-4" />
-              Inställningar
-            </Button>
-          </div>
-        </div>
+    <div 
+      className="fixed top-0 left-0 right-0 z-[9999] bg-red-500 text-white p-4 shadow-lg"
+      style={{ zIndex: 9999 }}
+    >
+      <div className="text-center">
+        <h2 className="text-xl font-bold">🎯 EDIT TOOLBAR - DU SER MIG NU!</h2>
+        <p>canAccessAdmin: {canAccessAdmin ? 'JA' : 'NEJ'} | canEdit: {canEdit ? 'JA' : 'NEJ'}</p>
+        <button 
+          className="bg-white text-red-500 px-4 py-2 rounded mt-2"
+          onClick={toggleEditMode}
+        >
+          {isEditMode ? 'Exit Edit' : 'Enter Edit'} Mode
+        </button>
       </div>
     </div>
   );
