@@ -40,23 +40,25 @@ export function SortableServiceItem({ id, service, onEdit, onDelete, onServiceSe
       {/* Edit Controls */}
       <div className="absolute top-2 left-2 z-20 flex gap-1">
         {/* DRAG HANDLE - Critical: listeners go HERE on neutral element */}
-        <span
-          className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 touch-none select-none"
-          {...attributes}
-          {...listeners}
-          style={{ 
-            touchAction: 'none',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            MozUserSelect: 'none',
-            msUserSelect: 'none'
-          } as React.CSSProperties}
-          title="Dra för att flytta"
-          role="button"
-          aria-label="Dra för att flytta tjänst"
-          onMouseDown={() => console.log('🔍 Drag handle clicked for:', id)}
-          onTouchStart={() => console.log('🔍 Touch started for:', id)}
-        >
+         <span
+           className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 touch-none select-none"
+           {...attributes}
+           {...listeners}
+           style={{ 
+             touchAction: 'none',
+             userSelect: 'none',
+             WebkitUserSelect: 'none',
+             MozUserSelect: 'none',
+             msUserSelect: 'none',
+             WebkitUserDrag: 'none'
+           } as React.CSSProperties}
+           title="Dra för att flytta"
+           role="button"
+           aria-label="Dra för att flytta tjänst"
+           onPointerDown={(e) => console.log('🔎 pointer down on handle', e.pointerType, 'id:', id)}
+           onMouseDown={() => console.log('🔎 mouse down on handle, id:', id)}
+           onTouchStart={() => console.log('🔎 touch start on handle, id:', id)}
+         >
           ☰
         </span>
         

@@ -3,10 +3,12 @@ import {
   DndContext,
   closestCenter,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -148,26 +150,35 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     })
   );
 
-  // Update ids when services change
+  // DEBUG: Global event listeners to check if events are being blocked
   React.useEffect(() => {
-    if (services.length > 0) {
-      const sortedIds = services
-        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
-        .map(s => s.id);
-      setIds(sortedIds);
-      setLastSaved(sortedIds);
-    }
-  }, [services]);
+    const handlePointerDown = (e: PointerEvent) => console.log('🌍 document pointerdown', e.target);
+    const handleMouseDown = (e: MouseEvent) => console.log('🌍 document mousedown', e.target);
+    const handleTouchStart = (e: TouchEvent) => console.log('🌍 document touchstart', e.target);
+    
+    document.addEventListener('pointerdown', handlePointerDown, { capture: true });
+    document.addEventListener('mousedown', handleMouseDown, { capture: true });
+    document.addEventListener('touchstart', handleTouchStart, { capture: true });
+    
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown, { capture: true });
+      document.removeEventListener('mousedown', handleMouseDown, { capture: true });
+      document.removeEventListener('touchstart', handleTouchStart, { capture: true });
+    };
+  }, []);
 
   // Check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
     return JSON.stringify(ids) !== JSON.stringify(lastSaved);
   }, [ids, lastSaved]);
 
-  // CRITICAL: Sensors with proper activation constraint
+  // CRITICAL: Sensors with proper activation constraint - using Mouse+Touch instead of Pointer
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 } // 8px drag distance before activating
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 6 } // 6px drag distance before activating
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 120, tolerance: 5 } // 120ms delay, 5px tolerance for touch
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -614,10 +625,10 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-              onDragStart={(event) => {
-                console.log('🔍 DND DRAG START:', event.active.id);
+              onDragStart={(event: DragStartEvent) => {
+                console.log('🔎 DND DRAG START:', event.active.id, event);
               }}
+              onDragEnd={handleDragEnd}
             >
               <SortableContext items={stableIds} strategy={rectSortingStrategy}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
