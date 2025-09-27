@@ -29,7 +29,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <main>
               <Outlet />
             </main>
-            <StickyCtaBar />
+            
             <StickyCTA />
             <AIChat />
             <EditModeToggle />

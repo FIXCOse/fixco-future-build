@@ -92,20 +92,21 @@ const EditableCategoryGrid = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="services-grid" direction="horizontal">
+      <Droppable droppableId="services-grid">
         {(provided) => (
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+            className="space-y-4"
           >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {services.map((service, index) => {
               const IconComponent = service.icon as LucideIcon;
               const basePath = locale === 'en' ? '/en/services' : '/tjanster';
               const translateKey = `serviceCategories.${service.slug}` as CopyKey;
               
               return (
-                <Draggable key={service.slug} draggableId={service.slug} index={index}>
+                <Draggable key={`service-${service.slug}`} draggableId={`service-${service.slug}`} index={index}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
@@ -162,6 +163,7 @@ const EditableCategoryGrid = () => {
               );
             })}
             {provided.placeholder}
+            </div>
           </div>
         )}
       </Droppable>

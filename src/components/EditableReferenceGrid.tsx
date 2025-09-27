@@ -78,7 +78,7 @@ const EditableReferenceGrid: React.FC<EditableReferenceGridProps> = ({ initialRe
             className="grid lg:grid-cols-2 gap-8"
           >
             {references.map((ref, index) => (
-              <Draggable key={ref.id.toString()} draggableId={ref.id.toString()} index={index}>
+              <Draggable key={`ref-${ref.id}`} draggableId={`ref-${ref.id}`} index={index}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
