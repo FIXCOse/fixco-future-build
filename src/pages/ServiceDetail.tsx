@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
@@ -8,6 +8,7 @@ import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import PriceSummary from '@/components/PriceSummary';
 import ServiceCardV3 from '@/components/ServiceCardV3';
 import { Badge } from '@/components/ui/badge';
+import { useCopy } from "@/copy/CopyProvider";
 import { 
   ArrowRight,
   CheckCircle,
@@ -22,10 +23,15 @@ import {
 
 const ServiceDetail = () => {
   const { slug } = useParams();
+  const location = useLocation();
+  const { t } = useCopy();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
 
+  // Determine if we're on English site
+  const isEnglish = location.pathname.startsWith('/en');
+  
   const service = servicesDataNew.find(s => s.slug === slug);
 
   if (!service) {
@@ -33,9 +39,9 @@ const ServiceDetail = () => {
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Tjänsten hittades inte</h1>
-            <Link to="/tjanster">
-              <Button variant="premium">Tillbaka till tjänster</Button>
+            <h1 className="text-2xl font-bold mb-4">{t('serviceDetail.notFound')}</h1>
+            <Link to={isEnglish ? "/en/services" : "/tjanster"}>
+              <Button variant="premium">{t('serviceDetail.backToServices')}</Button>
             </Link>
           </div>
         </div>
@@ -106,11 +112,11 @@ const ServiceDetail = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button variant="cta" size="lg">
                 <Calculator className="h-5 w-5 mr-2" />
-                Begär offert
+                {t('serviceDetail.requestQuote')}
               </Button>
               <Button variant="ghost-premium" size="lg">
                 <Phone className="h-5 w-5 mr-2" />
-                Ring 08-123 456 78
+                {t('serviceDetail.callUs')}
               </Button>
             </div>
 
@@ -118,19 +124,19 @@ const ServiceDetail = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">{service.subServices.length}</div>
-                <div className="text-sm text-muted-foreground">Olika tjänster</div>
+                <div className="text-sm text-muted-foreground">{t('serviceDetail.differentServices')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{'< 5 dagar'}</div>
-                <div className="text-sm text-muted-foreground">Projektstart</div>
+                <div className="text-2xl font-bold text-primary">{'< 5 ' + (isEnglish ? 'days' : 'dagar')}</div>
+                <div className="text-sm text-muted-foreground">{t('serviceDetail.projectStart')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">50%</div>
-                <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-rabatt' : 'ROT-rabatt'}</div>
+                <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + (isEnglish ? 'discount' : 'rabatt') : 'ROT-' + (isEnglish ? 'discount' : 'rabatt')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">100%</div>
-                <div className="text-sm text-muted-foreground">Garanterat</div>
+                <div className="text-sm text-muted-foreground">{t('serviceDetail.guaranteed')}</div>
               </div>
             </div>
           </div>
@@ -143,11 +149,11 @@ const ServiceDetail = () => {
           <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
               <Shield className="h-4 w-4 text-primary" />
-              <span>F-skatt & försäkring</span>
+              <span>F-{isEnglish ? 'tax & insurance' : 'skatt & försäkring'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>Start inom {'< 5 dagar'}</span>
+              <span>{isEnglish ? 'Start within < 5 days' : 'Start inom < 5 dagar'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4 text-primary" />
@@ -155,7 +161,7 @@ const ServiceDetail = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-4 w-4 text-primary" />
-              <span>98% kundnöjdhet</span>
+              <span>98% {t('serviceDetail.customerSatisfaction')}</span>
             </div>
           </div>
         </div>
@@ -166,14 +172,14 @@ const ServiceDetail = () => {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Alla våra {service.title.toLowerCase()}stjänster</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('serviceDetail.allOurServices')} {service.title.toLowerCase()}{isEnglish ? ' services' : 'stjänster'}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {filteredSubServices.length} specialiserade tjänster med transparent prissättning. 
-              Alla priser inkluderar moms och kan kombineras med ROT/RUT-avdrag för 50% rabatt.
+              {filteredSubServices.length} {t('serviceDetail.specializedServices')} {' '}
+              {t('serviceDetail.allPricesInclude')}
             </p>
             <div className="flex items-center justify-center mt-4 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mr-2" />
-              <span>Tillgängligt i Uppsala & Stockholm</span>
+              <span>{t('serviceDetail.availableIn')}</span>
             </div>
           </div>
           
@@ -226,7 +232,7 @@ const ServiceDetail = () => {
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
-                Föregående
+                {t('serviceDetail.previous')}
               </Button>
               
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
@@ -245,7 +251,7 @@ const ServiceDetail = () => {
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
               >
-                Nästa
+                {t('serviceDetail.next')}
               </Button>
             </div>
           )}
@@ -256,9 +262,9 @@ const ServiceDetail = () => {
       <section className="py-16 bg-muted/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold mb-4">Kunder bokar även</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('serviceDetail.customersAlsoBook')}</h2>
             <p className="text-muted-foreground">
-              Relaterade tjänster som ofta kombineras med {service.title.toLowerCase()}
+              {t('serviceDetail.relatedServices')} {service.title.toLowerCase()}
             </p>
           </div>
           
@@ -285,7 +291,7 @@ const ServiceDetail = () => {
                 <ServiceCardV3
                   key={relatedService.slug}
                   title={relatedService.title}
-                  category="Relaterad tjänst"
+                  category={t('serviceDetail.relatedService')}
                   description={relatedService.description}
                   pricingType="hourly"
                   priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
@@ -311,43 +317,43 @@ const ServiceDetail = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-8">
-              Redo att komma igång med ditt <span className="gradient-text">{service.title.toLowerCase()}</span>projekt?
+              {t('serviceDetail.readyToStart')} <span className="gradient-text">{service.title.toLowerCase()}</span>{isEnglish ? ' project?' : 'projekt?'}
             </h2>
             <p className="text-xl text-muted-foreground mb-12">
-              Kontakta oss idag för en kostnadsfri konsultation. Vi hjälper dig från idé till färdigt resultat.
+              {t('serviceDetail.contactToday')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button variant="cta" size="xl">
                 <Calculator className="h-5 w-5 mr-2" />
-                Begär kostnadsfri offert
+                {t('serviceDetail.requestFreeQuote')}
               </Button>
               <Button variant="ghost-premium" size="xl">
                 <Phone className="h-5 w-5 mr-2" />
-                Ring 08-123 456 78
+                {t('serviceDetail.callUs')}
               </Button>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
               <div className="text-center">
                 <Clock className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Snabb start</h3>
+                <h3 className="font-semibold mb-2">{t('serviceDetail.quickStart')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Vi kan påbörja ditt projekt inom 24-48 timmar
+                  {t('serviceDetail.canStartWithin')}
                 </p>
               </div>
               <div className="text-center">
                 <Shield className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Trygg garanti</h3>
+                <h3 className="font-semibold mb-2">{t('serviceDetail.secureGuarantee')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  2 års garanti på alla utförda arbeten
+                  {t('serviceDetail.yearsGuarantee')}
                 </p>
               </div>
               <div className="text-center">
                 <CheckCircle className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">ROT/RUT-hantering</h3>
+                <h3 className="font-semibold mb-2">{t('serviceDetail.rotRutHandling')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Vi sköter alla avdrag och administration
+                  {t('serviceDetail.weHandleAll')}
                 </p>
               </div>
             </div>

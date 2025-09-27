@@ -135,6 +135,17 @@ export type CopyKey =
   | 'service.flytt-2.title' | 'service.flytt-2.description'
   | 'service.flytt-3.title' | 'service.flytt-3.description'
   
+  // Service Detail Page
+  | 'serviceDetail.notFound' | 'serviceDetail.backToServices' | 'serviceDetail.requestQuote'
+  | 'serviceDetail.callUs' | 'serviceDetail.differentServices' | 'serviceDetail.projectStart'  
+  | 'serviceDetail.guaranteed' | 'serviceDetail.customerSatisfaction' | 'serviceDetail.allOurServices'
+  | 'serviceDetail.specializedServices' | 'serviceDetail.allPricesInclude' | 'serviceDetail.availableIn'
+  | 'serviceDetail.previous' | 'serviceDetail.next' | 'serviceDetail.customersAlsoBook'
+  | 'serviceDetail.relatedServices' | 'serviceDetail.relatedService' | 'serviceDetail.readyToStart'
+  | 'serviceDetail.contactToday' | 'serviceDetail.requestFreeQuote' | 'serviceDetail.quickStart'
+  | 'serviceDetail.canStartWithin' | 'serviceDetail.secureGuarantee' | 'serviceDetail.yearsGuarantee'
+  | 'serviceDetail.rotRutHandling' | 'serviceDetail.weHandleAll'
+  
   // Project visualization texts
   | 'project.eco_performance' | 'project.ai_results' | 'project.environmental_impact'
   | 'project.rot_rut_optimization'

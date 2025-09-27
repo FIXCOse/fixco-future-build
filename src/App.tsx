@@ -206,6 +206,7 @@ const App = () => {
                   <Route path="/en/*" element={<AppLayout locale="en" />}>
                     <Route index element={<Home />} />
                     <Route path="services" element={<Services />} />
+                    <Route path="services/:slug" element={<ServiceDetail />} />
                     <Route path="contact" element={<Contact />} />
                     <Route path="about" element={<AboutUs />} />
                     <Route path="references" element={<Referenser />} />
