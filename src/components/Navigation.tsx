@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, User, LogOut, Phone } from "lucide-react";
+import { Menu, X, User, LogOut, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,15 +10,44 @@ import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
   const { isAdmin, isOwner } = useRole();
   const { t } = useCopy();
   const { currentLanguage } = useLanguagePersistence();
+
+  const adminMenuItems = [
+    { href: "/admin", label: "Översikt" },
+    { href: "/admin/services", label: "Tjänster" },
+    { href: "/admin/quotes", label: "Offerter" },
+    { href: "/admin/quote-requests", label: "Offertförfrågningar" },
+    { href: "/admin/bookings", label: "Bokningar" },
+    { href: "/admin/jobs", label: "Arbetsordrar" },
+    { href: "/admin/job-requests", label: "Jobbförfrågningar" },
+    { href: "/admin/ongoing-projects", label: "Pågående projekt" },
+    { href: "/admin/invoices", label: "Fakturor" },
+    { href: "/admin/customers", label: "Kunder" },
+    { href: "/admin/users", label: "Användare" },
+    { href: "/admin/staff", label: "Personal" },
+    { href: "/admin/translations", label: "Översättningar" },
+    { href: "/admin/reports", label: "Rapporter" },
+    { href: "/admin/database", label: "Databas" },
+    { href: "/admin/security", label: "Säkerhet" },
+    { href: "/admin/settings", label: "Inställningar" },
+  ];
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -40,26 +69,10 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    // For admin/owner users, show all admin sections
+    // For admin/owner users, show simplified navigation with admin dropdown
     if (isAdmin || isOwner) {
       return [
-        { href: "/admin", label: "Översikt" },
-        { href: "/admin/services", label: "Tjänster" },
-        { href: "/admin/quotes", label: "Offerter" },
-        { href: "/admin/quote-requests", label: "Offertförfrågningar" },
-        { href: "/admin/bookings", label: "Bokningar" },
-        { href: "/admin/jobs", label: "Arbetsordrar" },
-        { href: "/admin/job-requests", label: "Jobbförfrågningar" },
-        { href: "/admin/ongoing-projects", label: "Pågående projekt" },
-        { href: "/admin/invoices", label: "Fakturor" },
-        { href: "/admin/customers", label: "Kunder" },
-        { href: "/admin/users", label: "Användare" },
-        { href: "/admin/staff", label: "Personal" },
-        { href: "/admin/translations", label: "Översättningar" },
-        { href: "/admin/reports", label: "Rapporter" },
-        { href: "/admin/database", label: "Databas" },
-        { href: "/admin/security", label: "Säkerhet" },
-        { href: "/admin/settings", label: "Inställningar" },
+        { href: "/admin", label: "Admin Panel", isDropdown: true },
       ];
     }
 
@@ -120,18 +133,84 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <nav className="flex items-center space-x-8">
               {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={cn(
-                    "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
-                    "text-foreground hover:text-primary hover:bg-primary/10",
-                    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    isActive(item.href) && "text-primary bg-primary/10 font-semibold"
-                  )}
-                >
-                  {item.label}
-                </Link>
+                item.isDropdown && (isAdmin || isOwner) ? (
+                  <DropdownMenu key={item.href}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                          "text-foreground hover:text-primary hover:bg-primary/10",
+                          "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                          location.pathname.startsWith('/admin') && "text-primary bg-primary/10 font-semibold"
+                        )}
+                      >
+                        {item.label}
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="center" className="w-56 bg-background border border-border shadow-lg z-50">
+                      <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {adminMenuItems.slice(0, 6).map((adminItem) => (
+                        <DropdownMenuItem key={adminItem.href} asChild>
+                          <Link
+                            to={adminItem.href}
+                            className={cn(
+                              "w-full cursor-pointer",
+                              location.pathname === adminItem.href && "bg-accent text-accent-foreground"
+                            )}
+                          >
+                            {adminItem.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel>Hantering</DropdownMenuLabel>
+                      {adminMenuItems.slice(6, 12).map((adminItem) => (
+                        <DropdownMenuItem key={adminItem.href} asChild>
+                          <Link
+                            to={adminItem.href}
+                            className={cn(
+                              "w-full cursor-pointer",
+                              location.pathname === adminItem.href && "bg-accent text-accent-foreground"
+                            )}
+                          >
+                            {adminItem.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel>System</DropdownMenuLabel>
+                      {adminMenuItems.slice(12).map((adminItem) => (
+                        <DropdownMenuItem key={adminItem.href} asChild>
+                          <Link
+                            to={adminItem.href}
+                            className={cn(
+                              "w-full cursor-pointer",
+                              location.pathname === adminItem.href && "bg-accent text-accent-foreground"
+                            )}
+                          >
+                            {adminItem.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                      "text-foreground hover:text-primary hover:bg-primary/10",
+                      "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      isActive(item.href) && "text-primary bg-primary/10 font-semibold"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                )
               ))}
             </nav>
           </div>
@@ -216,19 +295,38 @@ export default function Navigation() {
             <div className="py-4 space-y-2">
               {/* Navigation Links */}
               <nav className="space-y-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className={cn(
-                      "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
-                      isActive(item.href) && "text-primary font-medium bg-muted"
-                    )}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                {(isAdmin || isOwner) ? (
+                  <>
+                    <div className="px-4 py-2 text-sm font-medium text-muted-foreground">Admin Panel</div>
+                    {adminMenuItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        className={cn(
+                          "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                          isActive(item.href) && "text-primary font-medium bg-muted"
+                        )}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </>
+                ) : (
+                  navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className={cn(
+                        "flex items-center py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                        isActive(item.href) && "text-primary font-medium bg-muted"
+                      )}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))
+                )}
               </nav>
 
               {/* Mobile Actions */}
