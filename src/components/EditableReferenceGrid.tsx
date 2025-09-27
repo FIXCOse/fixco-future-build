@@ -1,28 +1,7 @@
-import React, { useState } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy,
-} from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Quote, MapPin, Calendar, Euro, GripVertical, Edit, Trash2 } from "lucide-react";
-import { useEditMode } from '@/contexts/EditModeContext';
-import { Button } from '@/components/ui/button';
+import { Star, Quote, MapPin, Calendar, Euro } from "lucide-react";
 
 interface Reference {
   id: number;
@@ -49,143 +28,14 @@ interface EditableReferenceGridProps {
   initialReferences: Reference[];
 }
 
-interface SortableReferenceProps {
-  reference: Reference;
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-}
-
-function SortableReference({ reference: ref, onEdit, onDelete }: SortableReferenceProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: ref.id.toString() });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`${isDragging ? 'opacity-50 z-50' : ''}`}
-    >
-      <Card className={`
-        overflow-hidden transition-all duration-300 relative group
-        ${isDragging ? 'shadow-glow border-2 border-primary' : 'hover:shadow-premium'}
-      `}>
-        {/* Edit Controls */}
-        <div className="absolute top-2 left-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-1">
-          <div
-            {...attributes}
-            {...listeners}
-            className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90"
-          >
-            <GripVertical className="h-4 w-4" />
-          </div>
-          <Button
-            size="sm"
-            onClick={() => onEdit(ref.id)}
-            className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => onDelete(ref.id)}
-            className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <ReferenceCard reference={ref} />
-      </Card>
-    </div>
-  );
-}
 
 const EditableReferenceGrid: React.FC<EditableReferenceGridProps> = ({ initialReferences }) => {
-  const { isEditMode } = useEditMode();
-  const [references, setReferences] = useState(initialReferences);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setReferences((items) => {
-        const oldIndex = items.findIndex((item) => item.id.toString() === active.id);
-        const newIndex = items.findIndex((item) => item.id.toString() === over?.id);
-
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        console.log('New reference order:', newItems.map(r => r.id));
-        // TODO: Save to database
-        return newItems;
-      });
-    }
-  };
-
-  const handleEdit = (id: number) => {
-    // TODO: Open edit modal
-    console.log('Edit reference:', id);
-  };
-
-  const handleDelete = (id: number) => {
-    if (confirm('Är du säker på att du vill ta bort detta projekt?')) {
-      setReferences(prev => prev.filter(ref => ref.id !== id));
-      // TODO: Delete from database
-    }
-  };
-
-  if (!isEditMode) {
-    return (
-      <div className="grid lg:grid-cols-2 gap-8">
-        {references.map((ref) => (
-          <ReferenceCard key={ref.id} reference={ref} />
-        ))}
-      </div>
-    );
-  }
 
   return (
-    <div className="select-none">
-      <div className="text-center p-4 bg-primary/10 rounded-lg mb-6">
-        <p className="text-sm text-muted-foreground">
-          <strong>Redigeringsläge aktivt</strong> - Hovra över projekt och dra handtaget för att ändra ordning
-        </p>
-      </div>
-
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={references.map(r => r.id.toString())} strategy={rectSortingStrategy}>
-          <div className="grid lg:grid-cols-2 gap-8">
-            {references.map((ref) => (
-              <SortableReference
-                key={ref.id}
-                reference={ref}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+    <div className="grid lg:grid-cols-2 gap-8">
+      {initialReferences.map((ref) => (
+        <ReferenceCard key={ref.id} reference={ref} />
+      ))}
     </div>
   );
 };

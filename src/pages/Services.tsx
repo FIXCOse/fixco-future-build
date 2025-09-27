@@ -2,8 +2,6 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CategoryGrid from "@/components/CategoryGrid";
 import EditableCategoryGridNew from "@/components/EditableCategoryGridNew";
 import FastServiceFilter from "@/components/FastServiceFilter";
-import EditableFastServiceFilterNew from "@/components/EditableFastServiceFilterNew";
-import { useEditMode } from "@/contexts/EditModeContext";
 import HeroMotion from "@/components/HeroMotion";
 import TrustChips from "@/components/TrustChips";
 import { Project3DVisualizer } from "@/components/Project3DVisualizer";
@@ -15,7 +13,6 @@ import { useCopy } from "@/copy/CopyProvider";
 
 const Services = () => {
   const { t } = useCopy();
-  const { isEditMode } = useEditMode();
   
   return (
     <div className="min-h-screen">
@@ -56,7 +53,7 @@ const Services = () => {
               {t('services.category_description')}
             </p>
           </div>
-          {isEditMode ? <EditableCategoryGridNew /> : <CategoryGrid />}
+          <CategoryGrid />
         </div>
       </section>
 
@@ -69,7 +66,7 @@ const Services = () => {
               {t('services.all_services_description')}
             </p>
           </div>
-          {isEditMode ? <EditableFastServiceFilterNew /> : <FastServiceFilter />}
+          <FastServiceFilter />
         </div>
       </section>
 
