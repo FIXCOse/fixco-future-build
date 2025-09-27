@@ -47,17 +47,29 @@ export default function Navigation() {
       ];
     }
 
-    // Determine base path for language
-    const basePath = currentLanguage === 'en' ? '/en' : '';
+    // Language-specific paths
+    const paths = currentLanguage === 'en' ? {
+      services: '/en/services',
+      smartHome: '/en/smart-home', 
+      references: '/en/references',
+      about: '/en/about',
+      contact: '/en/contact'
+    } : {
+      services: '/tjanster',
+      smartHome: '/smart-hem',
+      references: '/referenser', 
+      about: '/om-oss',
+      contact: '/kontakt'
+    };
     
     // For regular users, show all navigation items
     return [
       { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
-      { href: `${basePath}/tjanster`, label: t('nav.services') },
-      { href: `${basePath}/smart-hem`, label: t('nav.smartHome') },
-      { href: `${basePath}/referenser`, label: t('nav.references') },
-      { href: `${basePath}/om-oss`, label: t('nav.about') },
-      { href: `${basePath}/kontakt`, label: t('nav.contact') },
+      { href: paths.services, label: t('nav.services') },
+      { href: paths.smartHome, label: t('nav.smartHome') },
+      { href: paths.references, label: t('nav.references') },
+      { href: paths.about, label: t('nav.about') },
+      { href: paths.contact, label: t('nav.contact') },
     ];
   };
 
