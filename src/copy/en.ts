@@ -333,9 +333,8 @@ export const en: Record<CopyKey, string> = {
   'serviceDetail.rotRutHandling': 'ROT/RUT handling',
   'serviceDetail.weHandleAll': 'We handle all deductions and administration',
   
-  // Breadcrumbs
-  'breadcrumbs.home': 'Home',
-  'breadcrumbs.services': 'Services',
+  // Contact Page Extended  
+  'pages.contact.bookVisit': 'Book visit',
 
   // Contact Page
   'pages.contact.title': 'Contact Us',

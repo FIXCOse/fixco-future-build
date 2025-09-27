@@ -18,32 +18,36 @@ const Breadcrumbs = () => {
     const segments = cleanPath.split('/').filter(Boolean);
     
     const breadcrumbs: BreadcrumbItem[] = [
-      { label: t('breadcrumbs.home'), path: path.startsWith('/en') ? '/en' : '/' }
+      { label: t('nav.home'), path: path.startsWith('/en') ? '/en' : '/' }
     ];
 
     // Map path segments to readable labels
     const segmentLabels: Record<string, string> = {
-      'tjanster': t('breadcrumbs.services'),
-      'services': t('breadcrumbs.services'),
-      'snickeri': 'Snickeri',
-      'vvs': 'VVS',
-      'montering': 'Montering',
-      'tradgard': 'Trädgård',
-      'stadning': 'Städning',
-      'projektledning': 'Projektledning',
-      'markarbeten': 'Markarbeten',
-      'tekniska-installationer': 'Tekniska installationer',
-      'el': 'El',
-      'fastighetsskotsel': 'Fastighetsskötsel',
+      'tjanster': t('nav.services'),
+      'services': t('nav.services'),
+      'snickeri': t('serviceCategories.snickeri'),
+      'vvs': t('serviceCategories.vvs'),
+      'montering': t('serviceCategories.montering'),
+      'tradgard': t('serviceCategories.tradgard'),
+      'stadning': t('serviceCategories.stadning'),
+      'markarbeten': t('serviceCategories.markarbeten'),
+      'tekniska-installationer': t('serviceCategories.tekniska-installationer'),
+      'el': t('serviceCategories.el'),
+      'flytt': t('serviceCategories.flytt'),
       'kontakt': t('nav.contact'),
       'contact': t('nav.contact'),
       'om-oss': t('nav.about'),
       'about': t('nav.about'),
-      'faq': 'FAQ',
-      'boka-hembesok': 'Boka hembesök',
-      'rot-info': 'ROT-information',
+      'faq': t('pages.faq.title'),
+      'boka-hembesok': t('pages.contact.bookVisit'),
+      'book-visit': t('pages.contact.bookVisit'),
+      'rot-info': t('pages.rot.title'),
+      'smart-hem': t('nav.smartHome'),
+      'smart-home': t('nav.smartHome'),
       'referenser': t('nav.references'),
-      'references': t('nav.references')
+      'references': t('nav.references'),
+      'privacy': t('pages.privacy.title'),
+      'terms': t('pages.terms.title')
     };
 
     let currentPath = path.startsWith('/en') ? '/en' : '';

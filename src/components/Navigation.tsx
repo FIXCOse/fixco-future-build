@@ -9,6 +9,7 @@ import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useCopy } from '@/copy/CopyProvider';
+import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function Navigation() {
   const location = useLocation();
   const { isAdmin, isOwner } = useRole();
   const { t } = useCopy();
+  const { currentLanguage } = useLanguagePersistence();
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -30,10 +32,10 @@ export default function Navigation() {
     try {
       await supabase.auth.signOut();
       queryClient.clear();
-      navigate('/');
-      toast.success('Du har loggats ut');
+      navigate(currentLanguage === 'en' ? '/en' : '/');
+      toast.success(currentLanguage === 'en' ? 'You have been logged out' : 'Du har loggats ut');
     } catch (error) {
-      toast.error('Kunde inte logga ut');
+      toast.error(currentLanguage === 'en' ? 'Could not log out' : 'Kunde inte logga ut');
     }
   };
 
@@ -41,18 +43,21 @@ export default function Navigation() {
     // For admin/owner users, show only admin-relevant items
     if (isAdmin || isOwner) {
       return [
-        { href: "/mitt-fixco", label: t('nav.adminPanel') },
+        { href: currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco", label: t('nav.adminPanel') },
       ];
     }
 
+    // Determine base path for language
+    const basePath = currentLanguage === 'en' ? '/en' : '';
+    
     // For regular users, show all navigation items
     return [
-      { href: "/", label: t('nav.home') },
-      { href: "/tjanster", label: t('nav.services') },
-      { href: "/smart-hem", label: t('nav.smartHome') },
-      { href: "/referenser", label: t('nav.references') },
-      { href: "/om-oss", label: t('nav.about') },
-      { href: "/kontakt", label: t('nav.contact') },
+      { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
+      { href: `${basePath}/tjanster`, label: t('nav.services') },
+      { href: `${basePath}/smart-hem`, label: t('nav.smartHome') },
+      { href: `${basePath}/referenser`, label: t('nav.references') },
+      { href: `${basePath}/om-oss`, label: t('nav.about') },
+      { href: `${basePath}/kontakt`, label: t('nav.contact') },
     ];
   };
 
@@ -71,12 +76,12 @@ export default function Navigation() {
           {/* Left: Logo with Proper Spacing */}
           <div className="flex items-center">
             <Link 
-              to="/" 
+              to={currentLanguage === 'en' ? "/en" : "/"} 
               className="inline-flex items-center py-2 group flex-shrink-0"
             >
               <img 
                 src="/assets/fixco-logo-black.png" 
-                alt="FIXCO - Din Helhetslösning" 
+                alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
                 className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
                 style={{ minWidth: '80px', maxWidth: '140px' }}
               />
@@ -121,7 +126,7 @@ export default function Navigation() {
             {/* User Actions - Desktop */}
             {user ? (
               <div className="hidden lg:flex items-center space-x-2">
-                    <Link to="/mitt-fixco">
+                     <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"}>
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -138,7 +143,7 @@ export default function Navigation() {
                       className="h-9 px-3 inline-flex items-center space-x-2"
                     >
                       <LogOut className="h-4 w-4" />
-                      <span className="hidden xl:inline">Logga ut</span>
+                      <span className="hidden xl:inline">{currentLanguage === 'en' ? 'Log out' : 'Logga ut'}</span>
                     </Button>
               </div>
             ) : (
@@ -153,7 +158,7 @@ export default function Navigation() {
                         <span className="xl:hidden">Login</span>
                       </Button>
                     </Link>
-                    <Link to="/boka-hembesok">
+                    <Link to={currentLanguage === 'en' ? "/en/book-visit" : "/boka-hembesok"}>
                       <Button 
                         variant="default" 
                         size="sm"
@@ -170,7 +175,7 @@ export default function Navigation() {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
-              aria-label="Öppna meny"
+              aria-label={currentLanguage === 'en' ? 'Open menu' : 'Öppna meny'}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -210,7 +215,7 @@ export default function Navigation() {
 
                 {user ? (
                   <div className="space-y-2 px-4">
-                    <Link to="/mitt-fixco" onClick={() => setIsMenuOpen(false)}>
+                    <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"} onClick={() => setIsMenuOpen(false)}>
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -227,7 +232,7 @@ export default function Navigation() {
                       onClick={() => { handleLogout(); setIsMenuOpen(false); }}
                     >
                       <LogOut className="h-4 w-4" />
-                      <span>Logga ut</span>
+                      <span>{currentLanguage === 'en' ? 'Log out' : 'Logga ut'}</span>
                     </Button>
                   </div>
                 ) : (
@@ -237,7 +242,7 @@ export default function Navigation() {
                         <span>{t('cta.login')}</span>
                       </Button>
                     </Link>
-                    <Link to="/boka-hembesok" onClick={() => setIsMenuOpen(false)}>
+                    <Link to={currentLanguage === 'en' ? "/en/book-visit" : "/boka-hembesok"} onClick={() => setIsMenuOpen(false)}>
                       <Button 
                         variant="default" 
                         size="sm" 

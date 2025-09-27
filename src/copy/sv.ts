@@ -333,9 +333,8 @@ export const sv: Record<CopyKey, string> = {
   'serviceDetail.rotRutHandling': 'ROT/RUT-hantering',
   'serviceDetail.weHandleAll': 'Vi sköter alla avdrag och administration',
   
-  // Breadcrumbs
-  'breadcrumbs.home': 'Hem',
-  'breadcrumbs.services': 'Tjänster',
+  // Contact Page Extended  
+  'pages.contact.bookVisit': 'Boka hembesök',
 
   // Contact Page
   'pages.contact.title': 'Kontakta oss',

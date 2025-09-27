@@ -159,8 +159,8 @@ export type CopyKey =
   | 'pages.about.history_text' | 'pages.about.customers' | 'pages.about.days_start'
   | 'pages.about.years_exp' | 'pages.references.title'
   
-  // Breadcrumbs
-  | 'breadcrumbs.home' | 'breadcrumbs.services'
+   // Contact Page Extended
+   | 'pages.contact.bookVisit'
 
   // Contact Page
   | 'pages.contact.title' | 'pages.contact.subtitle' | 'pages.contact.quickResponse'

@@ -42,7 +42,7 @@ import StaffManagement from "./pages/MyFixco/StaffManagement";
 
 // Admin pages
 import AdminRoute from "./components/AdminRoute";
-import AdminLayoutNew from "./components/admin/AdminLayout";
+import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
@@ -147,7 +147,7 @@ const App = () => {
                   </Route>
 
                   {/* Admin Routes */}
-                  <Route path="/admin" element={<AdminRoute><AdminLayoutNew /></AdminRoute>}>
+                  <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="quotes" element={<AdminQuotes />} />
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
@@ -217,8 +217,8 @@ const App = () => {
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
                           <div className="text-center">
-                            <h2 className="text-2xl font-bold mb-4">Smart Hem är tillfälligt otillgänglig</h2>
-                            <p className="text-muted-foreground">Vänligen försök igen senare</p>
+                            <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
+                            <p className="text-muted-foreground">Please try again later</p>
                           </div>
                         </div>
                       }>
