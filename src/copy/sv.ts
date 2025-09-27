@@ -122,6 +122,38 @@ export const sv: Record<CopyKey, string> = {
   'serviceCategories.tekniska-installationer': 'Tekniska installationer',
   'serviceCategories.flytt': 'Flytt',
   
+  // Filter UI
+  'filter.search_placeholder': 'Sök efter tjänst, t.ex. "dimmer", "IKEA", "diskmaskin"',
+  'filter.all_services': 'Alla tjänster',
+  'filter.all_prices': 'Alla priser',
+  'filter.hourly_rate': 'Timpris',
+  'filter.fixed_price': 'Fast pris',
+  'filter.request_quote': 'Begär offert',
+  'filter.all_locations': 'Alla platser',
+  'filter.indoor': 'Inomhus',
+  'filter.outdoor': 'Utomhus',
+  'filter.clear': 'Rensa',
+  'filter.specialty_areas': 'Specialområden:',
+  'filter.searching': 'Sökning:',
+  'filter.services_found': 'tjänster funna',
+  'filter.no_services_rot_rut': 'Inga tjänster är berättigade till',
+  'filter.show_all_services': 'Visa alla tjänster',
+  'filter.clear_other_filters': 'Rensa övriga filter',
+  'filter.no_services_general': 'Inga tjänster matchade dina sökkriterier',
+  'filter.clear_filters_try_again': 'Rensa filter och försök igen',
+  
+  // Service texts that need translation
+  'service_text.quote_for': 'Offertförfrågan för',
+  'service_text.booking_for': 'Bokning för',
+  'service_text.started': 'påbörjad!',
+  'service_text.sent': 'skickad!',
+  
+  // Project visualization texts
+  'project.eco_performance': 'Detta projekt har hög miljöprestanda tack vare energieffektiva material och metoder.',
+  'project.ai_results': 'AI-genererade resultat',
+  'project.environmental_impact': 'Miljöpåverkan analys',
+  'project.rot_rut_optimization': 'ROT/RUT optimering',
+  
   // Pages
   'pages.about.title': 'Om Fixco',
   'pages.about.subtitle': 'Din partner för professionella hantverk och byggnadsrjänster i Uppsala och Stockholm.',

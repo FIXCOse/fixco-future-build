@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import SegmentedPriceToggle from "@/components/SegmentedPriceToggle";
 import ServiceCardV3 from "@/components/ServiceCardV3";
 import { toast } from "sonner";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface FastServiceFilterProps {
   onServiceSelect?: (service: SubService) => void;
@@ -23,6 +24,7 @@ interface FastServiceFilterProps {
 const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode, shouldShowService } = usePriceStore();
+  const { t } = useCopy();
   
   // Get initial state from URL and sessionStorage
   const getInitialState = (key: string, defaultValue: string | boolean) => {
@@ -132,13 +134,13 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
   }, [allSubServices, searchDebounced, selectedCategory, selectedSubCategories, 
       selectedPriceType, indoorOutdoor, sortBy, shouldShowService, mode]);
 
-  // Get unique categories for display
+  // Get unique categories for display with translations
   const categories = useMemo(() => {
     return servicesDataNew.map(service => ({
-      name: service.title,
+      name: t(`serviceCategories.${service.slug}` as any) || service.title,
       slug: service.slug
     }));
-  }, []);
+  }, [t]);
 
   // Get sub-categories for selected category
   const subCategories = useMemo(() => {
@@ -228,7 +230,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Sök efter tjänst, t.ex. 'dimmer', 'IKEA', 'diskmaskin'"
+              placeholder={t('filter.search_placeholder')}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -262,7 +264,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               onClick={() => handleCategoryChange('alla')}
               className="h-8"
             >
-              Alla tjänster
+              {t('filter.all_services')}
             </Button>
             {categories.map(category => (
               <Button
@@ -287,10 +289,10 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               <SelectValue placeholder="Pris" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="alla">Alla priser</SelectItem>
-              <SelectItem value="hourly">Timpris</SelectItem>
-              <SelectItem value="fixed">Fast pris</SelectItem>
-              <SelectItem value="quote">Begär offert</SelectItem>
+              <SelectItem value="alla">{t('filter.all_prices')}</SelectItem>
+              <SelectItem value="hourly">{t('filter.hourly_rate')}</SelectItem>
+              <SelectItem value="fixed">{t('filter.fixed_price')}</SelectItem>
+              <SelectItem value="quote">{t('filter.request_quote')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -304,9 +306,9 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               <SelectValue placeholder="Plats" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="alla">Alla platser</SelectItem>
-              <SelectItem value="inomhus">Inomhus</SelectItem>
-              <SelectItem value="utomhus">Utomhus</SelectItem>
+              <SelectItem value="alla">{t('filter.all_locations')}</SelectItem>
+              <SelectItem value="inomhus">{t('filter.indoor')}</SelectItem>
+              <SelectItem value="utomhus">{t('filter.outdoor')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -320,7 +322,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               className="text-muted-foreground hover:text-foreground h-8"
             >
               <X className="h-4 w-4 mr-1" />
-              Rensa ({activeFiltersCount})
+              {t('filter.clear')} ({activeFiltersCount})
             </Button>
           )}
         </div>
@@ -328,7 +330,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         {/* Sub-category Chips (shown when category is selected) */}
         {selectedCategory !== 'alla' && subCategories.length > 0 && (
           <div className="flex flex-wrap gap-2 border-t border-border pt-3">
-            <span className="text-sm text-muted-foreground mr-2">Specialområden:</span>
+            <span className="text-sm text-muted-foreground mr-2">{t('filter.specialty_areas')}</span>
             {subCategories.map(subCat => (
               <Button
                 key={subCat}
@@ -352,7 +354,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
           <div className="flex flex-wrap gap-2 items-center">
             {searchDebounced && (
               <Badge variant="secondary" className="text-xs">
-                Sökning: "{searchDebounced}"
+                {t('filter.searching')} "{searchDebounced}"
                 <X 
                   className="h-3 w-3 ml-1 cursor-pointer" 
                   onClick={() => {
@@ -380,7 +382,7 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
         {/* Results Header */}
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
-            {filteredServices.length} tjänster funna
+            {filteredServices.length} {t('filter.services_found')}
           </h3>
         </div>
 
@@ -391,18 +393,18 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               // Empty state for ROT/RUT filtering
               <div className="max-w-md mx-auto">
                 <p className="text-muted-foreground mb-4">
-                  Inga tjänster är berättigade till {mode === 'rot' ? 'ROT' : 'RUT'} med dina nuvarande filter.
+                  {t('filter.no_services_rot_rut')} {mode === 'rot' ? 'ROT' : 'RUT'} med dina nuvarande filter.
                 </p>
                 <Button 
                   variant="outline" 
                   onClick={() => usePriceStore.getState().setMode('all')}
                   className="mb-4"
                 >
-                  Visa alla tjänster
+                  {t('filter.show_all_services')}
                 </Button>
                 <div className="mt-4">
                   <Button variant="ghost-premium" onClick={clearFilters}>
-                    Rensa övriga filter
+                    {t('filter.clear_other_filters')}
                   </Button>
                 </div>
               </div>
@@ -410,10 +412,10 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
               // General empty state
               <>
                 <p className="text-muted-foreground mb-4">
-                  Inga tjänster matchade dina sökkriterier
+                  {t('filter.no_services_general')}
                 </p>
                 <Button variant="ghost-premium" onClick={clearFilters}>
-                  Rensa filter och försök igen
+                  {t('filter.clear_filters_try_again')}
                 </Button>
               </>
             )}
@@ -438,14 +440,14 @@ const FastServiceFilter = ({ onServiceSelect, className = "" }: FastServiceFilte
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`Bokning för ${service.title} påbörjad!`);
+                      toast.success(`${t('service_text.booking_for')} ${service.title} ${t('service_text.started')}`);
                     }
                   }}
                   onQuote={() => {
                     if (onServiceSelect) {
                       onServiceSelect(service);
                     } else {
-                      toast.success(`Offertförfrågan för ${service.title} skickad!`);
+                      toast.success(`${t('service_text.quote_for')} ${service.title} ${t('service_text.sent')}`);
                     }
                   }}
                 />

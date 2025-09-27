@@ -84,25 +84,25 @@ const Services = () => {
             <BeforeAfterSlider projectType="kitchen" />
             <div className="space-y-6">
               <div className="p-6 border rounded-lg">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <span className="text-2xl">🌱</span>
-                  Miljöpoäng
-                </h3>
+                 <h3 className="font-bold mb-2 flex items-center gap-2">
+                   <span className="text-2xl">🌱</span>
+                   {t('services.eco_score')}
+                 </h3>
                 <EcoScoreDisplay score={85} showDetails={true} />
-                <p className="text-sm text-muted-foreground mt-3">
-                  Detta projekt har hög miljöprestanda tack vare energieffektiva material och metoder.
-                </p>
+                 <p className="text-sm text-muted-foreground mt-3">
+                   {t('project.eco_performance')}
+                 </p>
               </div>
               
-              <div className="p-4 bg-primary/5 rounded-lg">
-                <h4 className="font-medium mb-2">Smarta funktioner</h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• 3D-förhandsvisning</li>
-                  <li>• AI-genererade resultat</li>
-                  <li>• Miljöpåverkan analys</li>
-                  <li>• ROT/RUT optimering</li>
-                </ul>
-              </div>
+               <div className="p-4 bg-primary/5 rounded-lg">
+                 <h4 className="font-medium mb-2">{t('smartHome.smart_features')}</h4>
+                 <ul className="text-sm text-muted-foreground space-y-1">
+                   <li>• 3D-{t('services.preview').toLowerCase()}</li>
+                   <li>• {t('project.ai_results')}</li>
+                   <li>• {t('project.environmental_impact')}</li>
+                   <li>• {t('project.rot_rut_optimization')}</li>
+                 </ul>
+               </div>
             </div>
           </div>
         </div>

@@ -48,6 +48,22 @@ export type CopyKey =
   | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
   | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska-installationer' | 'serviceCategories.flytt'
   
+  // Filter UI  
+  | 'filter.search_placeholder' | 'filter.all_services' | 'filter.all_prices'
+  | 'filter.hourly_rate' | 'filter.fixed_price' | 'filter.request_quote'
+  | 'filter.all_locations' | 'filter.indoor' | 'filter.outdoor' | 'filter.clear'
+  | 'filter.specialty_areas' | 'filter.searching' | 'filter.services_found'
+  | 'filter.no_services_rot_rut' | 'filter.show_all_services' | 'filter.clear_other_filters'
+  | 'filter.no_services_general' | 'filter.clear_filters_try_again'
+  
+  // Service texts that need translation
+  | 'service_text.quote_for' | 'service_text.booking_for' | 'service_text.started'
+  | 'service_text.sent'
+  
+  // Project visualization texts
+  | 'project.eco_performance' | 'project.ai_results' | 'project.environmental_impact'
+  | 'project.rot_rut_optimization'
+  
   // Pages
   | 'pages.about.title' | 'pages.about.subtitle' | 'pages.about.history_title'
   | 'pages.about.history_text' | 'pages.about.customers' | 'pages.about.days_start'
