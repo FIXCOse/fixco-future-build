@@ -67,11 +67,11 @@ const ComparisonUltra = () => {
   const metrics: ComparisonMetric[] = [
     {
       icon: Clock,
-      title: "Starttid",
-      fixcoValue: "< 5 dagar",
-      competitorValue: "5-10 dagar",
+      title: t('comparison.start_time'),
+      fixcoValue: t('timing.less_than_5_days'),
+      competitorValue: t('comparison.5_10_days'),
       isWin: true,
-      description: "Vi börjar inom 5 dagar vs konkurrenters veckolånga väntetider"
+      description: t('comparison.timing_description')
     },
     {
       icon: TrendingUp,
@@ -85,11 +85,11 @@ const ComparisonUltra = () => {
     },
     {
       icon: MapPin,
-      title: "Täckningsområde",
-      fixcoValue: "Uppsala & Stockholm",
-      competitorValue: "Begränsat",
+      title: t('comparison.coverage_area'),
+      fixcoValue: t('location.uppsala_stockholm'),
+      competitorValue: t('comparison.limited'),
       isWin: true,
-      description: "Full täckning i Uppsala & Stockholm, större projekt nationellt"
+      description: t('location.national_large_projects')
     },
     {
       icon: Star,

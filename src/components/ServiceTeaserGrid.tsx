@@ -29,9 +29,9 @@ const ServiceTeaserGrid = () => {
   }> = [
     {
       id: "el",
-      title: "El",
+      title: t('services.el.title'),
       icon: Zap,
-      description: "Uttag, belysning, laddbox",
+      description: t('services.el.description'),
       basePrice: 1059,
       priceUnit: "kr/h",
       eligible: { rot: true, rut: false },
@@ -42,9 +42,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "vvs",
-      title: "VVS",
+      title: t('services.vvs.title'),
       icon: Droplets,
-      description: "WC, handfat, duschvägg",
+      description: t('services.vvs.description'),
       basePrice: 959,
       priceUnit: "kr/h",
       eligible: { rot: true, rut: false },
@@ -55,9 +55,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "snickeri",
-      title: "Snickeri",
+      title: t('services.snickeri.title'),
       icon: Hammer,
-      description: "Kök, garderober, lister",
+      description: t('services.snickeri.description'),
       basePrice: 859,
       priceUnit: "kr/h",
       eligible: { rot: true, rut: false },
@@ -68,9 +68,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "montering",
-      title: "Montering",
+      title: t('services.montering.title'),
       icon: Wrench,
-      description: "IKEA, vitvaror, TV-fästen",
+      description: t('services.montering.description'),
       basePrice: 759,
       priceUnit: "kr/h",
       eligible: { rot: true, rut: false },
@@ -81,9 +81,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "tradgard",
-      title: "Trädgård",
+      title: t('services.tradgard.title'),
       icon: Shovel,
-      description: "Gräs, häck, ogräs, snö",
+      description: t('services.tradgard.description'),
       basePrice: 659,
       priceUnit: "kr/h",
       eligible: { rot: false, rut: true },
@@ -94,9 +94,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "stadning",
-      title: "Städning",
+      title: t('services.stadning.title'),
       icon: Sparkles,
-      description: "Hem, bygg, kontor, flytt",
+      description: t('services.stadning.description'),
       basePrice: 459,
       priceUnit: "kr/h",
       eligible: { rot: false, rut: true },
@@ -107,9 +107,9 @@ const ServiceTeaserGrid = () => {
     },
     {
       id: "flytt",
-      title: "Flytt",
+      title: t('services.flytt.title'),
       icon: Truck,
-      description: "Bärhjälp, lastning, packning",
+      description: t('services.flytt.description'),
       basePrice: 559,
       priceUnit: "kr/h",
       eligible: { rot: false, rut: true },
@@ -152,7 +152,7 @@ const ServiceTeaserGrid = () => {
             >
               <ServiceCardV3
                 title={service.title}
-                category="Huvudtjänst"
+                category={t('services.category.main')}
                 description={service.description}
                 pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
                 priceIncl={service.basePrice}

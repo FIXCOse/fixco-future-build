@@ -240,4 +240,17 @@ export type CopyKey =
    | 'pages.rut.qualifies.title' | 'pages.rut.qualifies.yes.title' | 'pages.rut.qualifies.no.title'
    | 'pages.rut.cta.title' | 'pages.rut.cta.description' | 'pages.rut.cta.bookNow' | 'pages.rut.cta.requestQuote'
    | 'home.comparison.title' | 'home.comparison.subtitle'
-   | 'home.services.title' | 'home.services.subtitle' | 'home.services.viewAll';
+   | 'home.services.title' | 'home.services.subtitle' | 'home.services.viewAll'
+   | 'services.el.title' | 'services.el.description'
+   | 'services.vvs.title' | 'services.vvs.description'
+   | 'services.snickeri.title' | 'services.snickeri.description'
+   | 'services.montering.title' | 'services.montering.description'
+   | 'services.tradgard.title' | 'services.tradgard.description'
+   | 'services.stadning.title' | 'services.stadning.description'
+   | 'services.flytt.title' | 'services.flytt.description'
+   | 'services.category.main'
+   | 'location.uppsala_stockholm' | 'location.national_large_projects'
+   | 'timing.start_within_5_days' | 'timing.less_than_5_days'
+   | 'comparison.coverage_area' | 'comparison.limited' | 'comparison.5_10_days'
+   | 'comparison.coverage_description' | 'comparison.timing_description'
+   | 'comparison.start_time';
