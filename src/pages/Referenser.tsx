@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button-premium";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Quote, ArrowRight, MapPin, Calendar, Euro } from "lucide-react";
+import { useCopy } from '@/copy/CopyProvider';
 const references = [
   {
     id: 1,
@@ -152,6 +153,7 @@ const testimonials = [
 ];
 
 const Referenser = () => {
+  const { t } = useCopy();
   
   return (
     <div className="min-h-screen">
@@ -164,7 +166,7 @@ const Referenser = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Referenser & Kundcase
+              {t('pages.references.title')}
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
               Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss.

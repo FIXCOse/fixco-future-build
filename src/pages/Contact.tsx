@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { useCopy } from '@/copy/CopyProvider';
+
 const Contact = () => {
+  const { t } = useCopy();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -80,7 +83,7 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Kontakta <span className="gradient-text">Fixco</span>
+              {t('pages.contact.title')}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
               Få en kostnadsfri offert inom 24 timmar. Vi arbetar i Uppsala & Stockholms län 

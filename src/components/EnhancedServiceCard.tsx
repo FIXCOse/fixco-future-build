@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useCopy } from '@/copy/CopyProvider';
 import { 
   Eye, 
   Sparkles, 
@@ -38,6 +39,7 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
   onBooking,
   onQuote
 }) => {
+  const { t } = useCopy();
   const [activeTab, setActiveTab] = useState<'3d' | 'beforeafter'>('3d');
 
   const calculateROTSavings = () => {
@@ -58,7 +60,7 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
               <DialogTrigger asChild>
                 <Button size="sm" variant="secondary" className="bg-white/90">
                   <Eye className="h-4 w-4 mr-1" />
-                  Visa i 3D
+                  {t('services.show_3d')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl">
@@ -96,17 +98,17 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
           {/* Enhanced pricing display */}
           <div className="space-y-3 mb-6">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Ordinarie pris:</span>
+              <span className="text-sm text-muted-foreground">{t('services.ordinary_price')}</span>
               <span className="font-medium">{service.basePrice.toLocaleString()} kr</span>
             </div>
             
             {service.rotPrice && (
               <div className="flex items-center justify-between text-primary">
-                <span className="text-sm font-medium">Med ROT-avdrag:</span>
+                <span className="text-sm font-medium">{t('services.with_rot')}</span>
                 <div className="text-right">
                   <div className="font-bold">{service.rotPrice.toLocaleString()} kr</div>
                   <div className="text-xs">
-                    Sparar {calculateROTSavings().toLocaleString()} kr
+                    {t('services.savings')} {calculateROTSavings().toLocaleString()} kr
                   </div>
                 </div>
               </div>
@@ -114,9 +116,9 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Zap className="h-3 w-3" />
-              <span>Energieffektiv lösning</span>
+              <span>{t('services.energy_efficient')}</span>
               <Leaf className="h-3 w-3" />
-              <span>Miljövänliga material</span>
+              <span>{t('services.eco_materials')}</span>
             </div>
           </div>
 
@@ -124,11 +126,11 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
           <div className="grid grid-cols-2 gap-3 mb-6">
             <div className="flex items-center gap-2 text-sm">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span>AI-optimerad</span>
+              <span>{t('services.ai_optimized')}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <Calculator className="h-4 w-4 text-green-500" />
-              <span>ROT-berättigad</span>
+              <span>{t('services.rot_eligible')}</span>
             </div>
           </div>
 
@@ -139,14 +141,14 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
               className="flex-1"
               onClick={() => onQuote?.(service.id)}
             >
-              Begär offert
+              {t('cta.request_quote')}
             </Button>
             <Button 
               variant="cta-primary" 
               className="flex-1"
               onClick={() => onBooking?.(service.id)}
             >
-              Boka direkt
+              {t('cta.book_direct')}
               <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
@@ -158,19 +160,19 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
                 <div className="text-lg font-semibold text-primary">
                   {service.ecoScore}
                 </div>
-                <div className="text-xs text-muted-foreground">Eco Score</div>
+                <div className="text-xs text-muted-foreground">{t('services.eco_score')}</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-green-600">
                   {calculateROTSavings().toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">kr besparing</div>
+                <div className="text-xs text-muted-foreground">kr {t('services.savings').toLowerCase()}</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-blue-600">
                   3D
                 </div>
-                <div className="text-xs text-muted-foreground">Förhandsvisning</div>
+                <div className="text-xs text-muted-foreground">{t('services.preview')}</div>
               </div>
             </div>
           </div>

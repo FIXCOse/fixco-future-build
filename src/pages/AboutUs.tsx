@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button-premium";
 import { CheckCircle, Star, Users, Award, Clock, MapPin, Phone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCopy } from '@/copy/CopyProvider';
+
 const AboutUs = () => {
+  const { t } = useCopy();
   
   return (
     <div className="min-h-screen">
@@ -10,10 +13,10 @@ const AboutUs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Om Fixco
+              {t('pages.about.title')}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Din partner för professionella hantverk och byggnadstjänster i Uppsala och Stockholm
+              {t('pages.about.subtitle')}
             </p>
           </div>
         </div>
@@ -25,10 +28,10 @@ const AboutUs = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">
-                Vår historia
+                {t('pages.about.history_title')}
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Fixco grundades med en enkel vision: att göra kvalificerade hantverkstjänster tillgängliga, snabba och prisvärda för alla. Sedan starten har vi vuxit till en av de mest betrodda leverantörerna av byggnad- och renoveringstjänster i regionen.
+                {t('pages.about.history_text')}
               </p>
               <p className="text-lg text-muted-foreground mb-6">
                 Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet.
@@ -42,7 +45,7 @@ const AboutUs = () => {
               <div className="card-premium p-6">
                 <Users className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">500+</div>
-                <div className="text-sm text-muted-foreground">Nöjda kunder</div>
+                <div className="text-sm text-muted-foreground">{t('pages.about.customers')}</div>
               </div>
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mb-4" />

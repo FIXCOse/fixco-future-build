@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useCopy } from '@/copy/CopyProvider';
 import { 
   CheckCircle,
   Home,
@@ -44,6 +45,7 @@ const getIconForCategory = (category: string) => {
 };
 
 export const SmartHome = () => {
+  const { t } = useCopy();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
 
@@ -62,52 +64,52 @@ export const SmartHome = () => {
   const categories: CategoryFilter[] = [
     {
       id: 'all',
-      name: 'Alla Produkter',
+      name: t('categories.all'),
       icon: Home,
       color: 'bg-gradient-to-r from-blue-500 to-purple-500',
-      description: 'Komplett smart hem-upplevelse'
+      description: t('categories.all_desc')
     },
     {
       id: 'security',
-      name: 'Säkerhet & Lås',
+      name: t('categories.security'),
       icon: Shield,
       color: 'bg-gradient-to-r from-red-500 to-pink-500',
-      description: 'Skydda ditt hem'
+      description: t('categories.security_desc')
     },
     {
       id: 'lighting',
-      name: 'Smart Belysning',
+      name: t('categories.lighting'),
       icon: Lightbulb,
       color: 'bg-gradient-to-r from-yellow-400 to-orange-500',
-      description: 'Energisnål belysning'
+      description: t('categories.lighting_desc')
     },
     {
       id: 'climate',
-      name: 'Klimat & Värme',
+      name: t('categories.climate'),
       icon: Thermometer,
       color: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-      description: 'Temperaturstyrning'
+      description: t('categories.climate_desc')
     },
     {
       id: 'cleaning',
-      name: 'Robotar',
+      name: t('categories.cleaning'),
       icon: Bot,
       color: 'bg-gradient-to-r from-green-500 to-emerald-500',
-      description: 'Automatisk rengöring'
+      description: t('categories.cleaning_desc')
     },
     {
       id: 'garden',
-      name: 'Trädgård',
+      name: t('categories.garden'),
       icon: Leaf,
       color: 'bg-gradient-to-r from-green-600 to-lime-500',
-      description: 'Smart trädgårdsskötsel'
+      description: t('categories.garden_desc')
     },
     {
       id: 'entertainment',
-      name: 'Underhållning',
+      name: t('categories.entertainment'),
       icon: Speaker,
       color: 'bg-gradient-to-r from-purple-500 to-indigo-500',
-      description: 'Högtalare & Hemmabio'
+      description: t('categories.entertainment_desc')
     }
   ];
 
@@ -141,10 +143,10 @@ export const SmartHome = () => {
           <div className="container mx-auto max-w-6xl relative">
             <div className="text-center mb-16">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Smart Hemautomation
+                {t('smartHome.title')}
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Styr och optimera ditt hem med AI och IoT-teknik
+                {t('smartHome.subtitle')}
               </p>
               
               {/* Key Benefits */}
@@ -154,7 +156,7 @@ export const SmartHome = () => {
                     -30%
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Energiförbrukning
+                    {t('smartHome.energy_reduction')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -162,7 +164,7 @@ export const SmartHome = () => {
                     50+
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Anslutna enheter
+                    {t('smartHome.connected_devices')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -170,7 +172,7 @@ export const SmartHome = () => {
                     24/7
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Automatisering
+                    {t('smartHome.automation')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -178,17 +180,17 @@ export const SmartHome = () => {
                     50%
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Besparingar
+                    {t('smartHome.savings')}
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button size="lg" className="gradient-primary text-primary-foreground">
-                  Boka Installation
+                  {t('cta.book_installation')}
                 </Button>
                 <Button size="lg" variant="outline">
-                  Kostnadsfri konsultation
+                  {t('cta.free_consultation')}
                 </Button>
               </div>
             </div>
@@ -200,11 +202,10 @@ export const SmartHome = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Smart Hem - Verkliga Produkter
+                {t('smartHome.products_title')}
               </h2>
               <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
-                Vi installerar endast beprövade, marknadsledande smart hem-produkter från världens största tillverkare. 
-                Alla produkter kommer med fullständig garanti och professionell installation.
+                {t('smartHome.products_subtitle')}
               </p>
             </div>
 
@@ -214,7 +215,7 @@ export const SmartHome = () => {
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Marknadsledande Märken</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.market_leaders')}</h3>
                 <p className="text-sm text-muted-foreground">
                   Endast #1 märken globalt
                 </p>
@@ -223,16 +224,16 @@ export const SmartHome = () => {
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Fullständig Garanti</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.full_warranty')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  2 års fullgaranti
+                  {t('smartHome.years_warranty')}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Settings className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Professionell Installation</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.professional_install')}</h3>
                 <p className="text-sm text-muted-foreground">
                   Certifierade installatörer
                 </p>
@@ -241,7 +242,7 @@ export const SmartHome = () => {
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Brain className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">AI-Optimerad</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.ai_optimized')}</h3>
                 <p className="text-sm text-muted-foreground">
                   Intelligent automatisering
                 </p>
@@ -255,7 +256,7 @@ export const SmartHome = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">
-                Välj Produktkategori
+                {t('smartHome.choose_category')}
               </h2>
               <p className="text-muted-foreground">
                 Klicka på en kategori för att se alla produkter inom det området
@@ -302,7 +303,7 @@ export const SmartHome = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold">
-                Alla Smart Hem-Produkter
+                {t('smartHome.all_products')}
               </h2>
               <SmartProductSortFilter 
                 sortBy={sortBy} 
@@ -314,11 +315,11 @@ export const SmartHome = () => {
             {isLoading ? (
               <div className="text-center py-12">
                 <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-                <p className="text-muted-foreground">Laddar produkter...</p>
+                <p className="text-muted-foreground">{t('smartHome.loading')}</p>
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">Inga produkter hittades</p>
+                <p className="text-muted-foreground mb-4">{t('smartHome.no_products')}</p>
                 <p className="text-sm text-muted-foreground">
                   Prova att välja en annan kategori eller sortering.
                 </p>
@@ -381,7 +382,7 @@ export const SmartHome = () => {
                           {product.features && Array.isArray(product.features) && (
                             <div className="mb-4">
                               <h4 className="text-xs font-medium text-muted-foreground mb-2">
-                                Huvudfunktioner:
+                                {t('smartHome.main_features')}
                               </h4>
                               <div className="flex flex-wrap gap-1">
                                 {product.features.slice(0, 3).map((feature, index) => (
@@ -398,7 +399,7 @@ export const SmartHome = () => {
                             <div className="mb-4">
                               <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center">
                                 <Brain className="h-3 w-3 mr-1" />
-                                Smarta Funktioner:
+                                {t('smartHome.smart_features')}
                               </h4>
                               <div className="flex flex-wrap gap-1">
                                 {product.ai_features.slice(0, 2).map((feature, index) => (
@@ -424,7 +425,7 @@ export const SmartHome = () => {
                                 )}
                               </div>
                               <Badge variant="secondary" className="text-primary">
-                                Inkl. installation & setup
+                                {t('smartHome.installation_setup')}
                               </Badge>
                             </div>
 

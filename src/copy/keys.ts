@@ -12,6 +12,7 @@ export type CopyKey =
   
   // Buttons & CTAs  
   | 'cta.book_now' | 'cta.request_quote' | 'cta.call_us' | 'cta.login' | 'cta.get_quote'
+  | 'cta.see_all' | 'cta.book_direct' | 'cta.book_installation' | 'cta.free_consultation'
   
   // Services
   | 'services.title' | 'services.subtitle' | 'services.rot_benefit'
@@ -21,7 +22,36 @@ export type CopyKey =
   | 'services.ai_assistant' | 'services.ai_description'
   | 'services.rot_section_title' | 'services.rot_what_title' | 'services.rot_what_description'
   | 'services.rot_we_handle_title' | 'services.rot_we_handle_description'
-  | 'services.request_quote_rot'
+  | 'services.request_quote_rot' | 'services.count' | 'services.ordinary_price'
+  | 'services.with_rot' | 'services.savings' | 'services.energy_efficient'
+  | 'services.eco_materials' | 'services.ai_optimized' | 'services.rot_eligible'
+  | 'services.eco_score' | 'services.preview' | 'services.show_3d' | 'services.incl_install'
+  
+  // Smart Home
+  | 'smartHome.title' | 'smartHome.subtitle' | 'smartHome.energy_reduction'
+  | 'smartHome.connected_devices' | 'smartHome.automation' | 'smartHome.savings'
+  | 'smartHome.products_title' | 'smartHome.products_subtitle' | 'smartHome.all_products'
+  | 'smartHome.loading' | 'smartHome.no_products' | 'smartHome.market_leaders'
+  | 'smartHome.full_warranty' | 'smartHome.professional_install' | 'smartHome.ai_optimized'
+  | 'smartHome.choose_category' | 'smartHome.main_features' | 'smartHome.smart_features'
+  | 'smartHome.installation_setup' | 'smartHome.years_warranty'
+  
+  // Categories
+  | 'categories.all' | 'categories.security' | 'categories.lighting' | 'categories.climate'
+  | 'categories.cleaning' | 'categories.garden' | 'categories.entertainment'
+  | 'categories.all_desc' | 'categories.security_desc' | 'categories.lighting_desc'
+  | 'categories.climate_desc' | 'categories.cleaning_desc' | 'categories.garden_desc'
+  | 'categories.entertainment_desc'
+  
+  // Service Categories  
+  | 'serviceCategories.el' | 'serviceCategories.vvs' | 'serviceCategories.snickeri'
+  | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
+  | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska' | 'serviceCategories.flytt'
+  
+  // Pages
+  | 'pages.about.title' | 'pages.about.subtitle' | 'pages.about.history_title'
+  | 'pages.about.history_text' | 'pages.about.customers' | 'pages.about.days_start'
+  | 'pages.about.years_exp' | 'pages.contact.title' | 'pages.references.title'
   
   // Breadcrumbs
   | 'breadcrumbs.home' | 'breadcrumbs.services';

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
+import { useCopy } from '@/copy/CopyProvider';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -20,14 +21,17 @@ const getGradientForService = (slug: string): string => {
 };
 
 const CategoryGrid = () => {
+  const { t, locale } = useCopy();
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       {servicesDataNew.map((service, index) => {
         const IconComponent = service.icon as LucideIcon;
+        const basePath = locale === 'en' ? '/en/services' : '/tjanster';
         return (
           <Link
             key={service.slug}
-            to={`/tjanster/${service.slug}`}
+            to={`${basePath}/${service.slug}`}
             className="group"
           >
             <div 
@@ -50,17 +54,17 @@ const CategoryGrid = () => {
               
               {/* Title */}
               <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
-                {service.title}
+                {t(`serviceCategories.${service.slug}` as any) || service.title}
               </h3>
               
               {/* Sub-services count */}
               <p className="text-xs text-muted-foreground">
-                {service.subServices.length} tjänster
+                {service.subServices.length} {t('services.count')}
               </p>
               
               {/* Hover indicator */}
               <div className="mt-3 text-primary text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-                Se alla →
+                {t('cta.see_all')}
               </div>
             </div>
           </Link>
