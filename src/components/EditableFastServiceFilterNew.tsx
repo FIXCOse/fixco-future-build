@@ -238,8 +238,27 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     ));
   };
 
-  // Simple filtering for demo - take first few services
-  const filteredServices = services.slice(0, 6);
+  // Main filtering logic  
+  const filteredServices = useMemo(() => {
+    let filtered = [...services];
+
+    // Text search - removed for now but can be added back
+    // Category filter - removed for now but can be added back  
+    // Price type filter - removed for now but can be added back
+    // Location filter - removed for now but can be added back
+
+    // ROT/RUT filter based on price mode
+    if (mode === 'rot') {
+      filtered = filtered.filter(service => service.eligible.rot);
+    } else if (mode === 'rut') {
+      filtered = filtered.filter(service => service.eligible.rut);
+    }
+
+    // Sort alphabetically by default
+    filtered.sort((a, b) => a.title.localeCompare(b.title));
+
+    return filtered;
+  }, [services, mode]);
 
   // Pagination
   const paginatedServices = useMemo(() => {
@@ -274,7 +293,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       {/* Results summary */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          <strong>{filteredServices.length}</strong> tjänster hittade (demo: visar endast första 6)
+          <strong>{filteredServices.length}</strong> tjänster hittade
         </div>
       </div>
 
