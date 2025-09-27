@@ -37,32 +37,38 @@ export function SortableServiceItem({ id, service, onEdit, onDelete, onServiceSe
       style={style}
       className={`relative ${isDragging ? 'opacity-50' : ''}`}
     >
-      {/* Edit Controls - Made more visible */}
-      <div className="absolute top-2 left-2 z-20 flex gap-1">
-        {/* DRAG HANDLE - Made more prominent */}
-        <span
-          className="p-3 bg-orange-500 text-white rounded-full shadow-xl cursor-grab active:cursor-grabbing hover:bg-orange-600 touch-none select-none border-2 border-white"
-          {...attributes}
-          {...listeners}
-          style={{ 
-            touchAction: 'none',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            MozUserSelect: 'none',
-            msUserSelect: 'none',
-            WebkitUserDrag: 'none'
-          } as React.CSSProperties}
-          title="DRA HÄR för att flytta tjänst"
-          role="button"
-          aria-label="Dra för att flytta tjänst"
-          onPointerDown={(e) => console.log('🔎 pointer down on handle', e.pointerType, 'id:', id)}
-          onMouseDown={() => console.log('🔎 mouse down on handle, id:', id)}
-          onTouchStart={() => console.log('🔎 touch start on handle, id:', id)}
-        >
-          ⇅ DRAG
-        </span>
-        
-        {/* Other buttons WITHOUT listeners */}
+      {/* DRAG HANDLE - Simplified and prominent */}
+      <div
+        className="absolute top-2 left-2 z-50 p-3 bg-red-500 text-white rounded-full shadow-xl cursor-grab active:cursor-grabbing hover:bg-red-600 touch-none select-none border-2 border-white"
+        {...attributes}
+        {...listeners}
+        style={{ 
+          touchAction: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none',
+          WebkitUserDrag: 'none',
+          pointerEvents: 'auto'
+        } as React.CSSProperties}
+        title="DRA HÄR för att flytta tjänst"
+        role="button"
+        aria-label="Dra för att flytta tjänst"
+        onClick={() => console.log('🎯 DRAG HANDLE CLICKED!', id)}
+        onMouseDown={(e) => {
+          console.log('🔎 mouse down on handle, id:', id);
+          e.stopPropagation();
+        }}
+        onTouchStart={(e) => {
+          console.log('🔎 touch start on handle, id:', id);
+          e.stopPropagation();
+        }}
+      >
+        DRAG
+      </div>
+
+      {/* Edit and Delete buttons */}
+      <div className="absolute top-2 right-2 z-40 flex gap-1">        
         <button
           onClick={() => onEdit(id)}
           className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
