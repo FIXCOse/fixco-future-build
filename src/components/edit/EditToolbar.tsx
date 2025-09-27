@@ -38,7 +38,16 @@ export const EditToolbar: React.FC<EditToolbarProps> = ({
   } = useEditMode();
   const { locale } = useCopy();
 
+  // Debug logging
+  console.log('EditToolbar render:', { 
+    canAccessAdmin, 
+    canEdit, 
+    isEditMode,
+    shouldRender: canAccessAdmin && canEdit 
+  });
+
   if (!canAccessAdmin || !canEdit) {
+    console.log('EditToolbar returning null because:', { canAccessAdmin, canEdit });
     return null;
   }
 
