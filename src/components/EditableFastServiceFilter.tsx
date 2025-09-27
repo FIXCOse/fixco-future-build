@@ -14,6 +14,7 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useServices } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
 import { useEditMode } from '@/contexts/EditModeContext';
+import { ServiceEditModal } from './ServiceEditModal';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -104,6 +105,8 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
   });
   
   const [currentPage, setCurrentPage] = useState(1);
+  const [editingService, setEditingService] = useState<any>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Debounced search
   const searchDebounced = useDebounce(searchQuery, 300);
@@ -123,8 +126,11 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
   };
 
   const handleEditService = (serviceId: string) => {
-    console.log('Edit service:', serviceId);
-    toast.info(`Redigera tjänst: ${serviceId}`);
+    const service = services.find(s => s.id === serviceId);
+    if (service) {
+      setEditingService(service);
+      setIsEditModalOpen(true);
+    }
   };
 
   const handleDeleteService = (serviceId: string) => {
@@ -132,6 +138,12 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
       setServices(prev => prev.filter(service => service.id !== serviceId));
       toast.success('Tjänst borttagen');
     }
+  };
+
+  const handleSaveService = (updatedService: any) => {
+    setServices(prev => prev.map(service => 
+      service.id === updatedService.id ? updatedService : service
+    ));
   };
 
   // Categories for filter chips
@@ -266,8 +278,8 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
                 >
                   {paginatedServices.map((service, index) => (
                     <Draggable 
-                      key={`service-${service.id}`} 
-                      draggableId={`service-${service.id}`} 
+                      key={service.id} 
+                      draggableId={service.id} 
                       index={index}
                     >
                       {(provided, snapshot) => (
@@ -348,6 +360,16 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
           </DragDropContext>
         )}
       </div>
+
+      <ServiceEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingService(null);
+        }}
+        service={editingService}
+        onSave={handleSaveService}
+      />
     </div>
   );
 };

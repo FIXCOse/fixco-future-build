@@ -122,8 +122,8 @@ const EditableCategoryGrid = () => {
                 
                 return (
                   <Draggable 
-                    key={`category-${service.slug}`} 
-                    draggableId={`category-${service.slug}`} 
+                    key={service.slug} 
+                    draggableId={service.slug} 
                     index={index}
                   >
                     {(provided, snapshot) => (
