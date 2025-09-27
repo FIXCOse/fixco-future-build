@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages
+  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages, Wrench
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,6 +73,13 @@ const AdminDashboard = () => {
 
   const adminSections = [
     {
+      title: 'Tjänster',
+      description: 'Hantera tjänster och priser',
+      href: '/admin/services',
+      icon: Wrench,
+      color: 'bg-blue-500/10 text-blue-600'
+    },
+    {
       title: 'Offerter',
       description: 'Se alla skapade offerter',
       href: '/admin/quotes',
@@ -84,7 +91,7 @@ const AdminDashboard = () => {
       description: 'Hantera användarkonton och roller',
       href: '/admin/users',
       icon: Users,
-      color: 'bg-blue-500/10 text-blue-600'
+      color: 'bg-green-500/10 text-green-600'
     },
     {
       title: 'Inställningar',

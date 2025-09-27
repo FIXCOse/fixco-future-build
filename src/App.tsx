@@ -68,6 +68,7 @@ import WorkerSettings from "./pages/worker/WorkerSettings";
 import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
+import AdminServices from "./pages/admin/AdminServices";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -149,6 +150,7 @@ const App = () => {
                   {/* Admin Routes */}
                   <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
                     <Route index element={<AdminDashboard />} />
+                    <Route path="services" element={<AdminServices />} />
                     <Route path="quotes" element={<AdminQuotes />} />
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quote-requests" element={<AdminQuoteRequests />} />
