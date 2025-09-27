@@ -40,24 +40,26 @@ interface EditableFastServiceFilterNewProps {
   className?: string;
 }
 
-// Reorder services in Supabase
+// Reorder services in Supabase using new RPC function
 async function reorderServicesInSupabase(updates: {id: string, sort_order: number}[]) {
-  console.log('🔧 Reordering services in Supabase:', updates);
+  console.log('🔧 Reordering services in Supabase using RPC:', updates);
   
-  const promises = updates.map(u =>
-    supabase.from('services').update({ sort_order: u.sort_order }).eq('id', u.id)
-  );
-  
-  const results = await Promise.all(promises);
-  const error = results.find(r => r.error)?.error ?? null;
-  
-  if (error) {
-    console.error('❌ Supabase error:', error);
-  } else {
-    console.log('✅ All services updated successfully');
+  try {
+    const { error } = await supabase.rpc('reorder_services', { 
+      _service_updates: updates 
+    });
+    
+    if (error) {
+      console.error('❌ RPC Error:', error);
+      return { error };
+    }
+    
+    console.log('✅ Services reordered successfully');
+    return { error: null };
+  } catch (error) {
+    console.error('❌ RPC Exception:', error);
+    return { error };
   }
-  
-  return { error };
 }
 
 const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> = ({ 
