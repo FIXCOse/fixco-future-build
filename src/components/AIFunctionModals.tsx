@@ -384,7 +384,10 @@ export function AIFunctionModals({ activeModal, onClose, onRequestQuote }: AIFun
               <Calculator className="h-4 w-4 mr-2" />
               Begär detaljerad offert
             </Button>
-            <Button variant="outline" onClick={() => navigate('/rot-info')}>
+            <Button variant="outline" onClick={() => {
+              const isEnglish = window.location.pathname.startsWith('/en');
+              navigate(isEnglish ? '/en/rot' : '/rot');
+            }}>
               <BookOpen className="h-4 w-4 mr-2" />
               Läs mer om ROT
             </Button>

@@ -82,10 +82,22 @@ const TrustChips = ({
       </Badge>
     );
 
-    // Handle links
+    // Handle links with language awareness
     if (config.link) {
+      const isEnglish = window.location.pathname.startsWith('/en');
+      let localizedLink = config.link;
+      
+      // Make ROT/RUT links language-aware
+      if (config.link === '/rot') {
+        localizedLink = isEnglish ? '/en/rot' : '/rot';
+      } else if (config.link === '/rut') {
+        localizedLink = isEnglish ? '/en/rut' : '/rut';
+      } else if (config.link.startsWith('/tjanster') && isEnglish) {
+        localizedLink = '/en/services' + config.link.substring('/tjanster'.length);
+      }
+      
       return (
-        <Link to={config.link} className="transition-transform hover:scale-105 duration-200">
+        <Link to={localizedLink} className="transition-transform hover:scale-105 duration-200">
           {chipContent}
         </Link>
       );
