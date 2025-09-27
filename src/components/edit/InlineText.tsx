@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, createElement } from 'react';
+import { useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
 import { useEditMode } from '@/stores/useEditMode';
 import { cn } from '@/lib/utils';
 
@@ -19,16 +19,18 @@ export function InlineText({
   onChange,
   className,
 }: InlineTextProps) {
-  const { isEditMode, canEdit, stage } = useEditMode((s) => ({
-    isEditMode: s.isEditMode,
-    canEdit: s.canEdit,
-    stage: s.stage,
-  }));
+  // Stable selector to prevent re-renders
+  const editState = useEditMode(
+    useCallback((s) => ({
+      isEditMode: s.isEditMode,
+      canEdit: s.canEdit,
+      stage: s.stage,
+    }), [])
+  );
+
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-
-  console.log('InlineText render:', { id, isEditMode, canEdit, editing, value });
 
   useEffect(() => {
     if (!editing) setDraft(value);
@@ -38,31 +40,28 @@ export function InlineText({
     if (editing) inputRef.current?.focus();
   }, [editing]);
 
-  const commit = () => {
+  const commit = useCallback(() => {
     const next = draft.trim();
     if (next !== value) {
-      console.log('InlineText commit:', { id, old: value, new: next });
-      // lägg i Edit-store som pending change
-      stage(`content:${id}:${locale}`, { value: next }, 'content');
+      editState.stage(`content:${id}:${locale}`, { value: next }, 'content');
       onChange?.(next);
     }
     setEditing(false);
-  };
+  }, [draft, value, editState.stage, id, locale, onChange]);
 
-  const handleDoubleClick = () => {
-    console.log('InlineText double-click:', { id, canEdit, isEditMode });
-    if (canEdit && isEditMode) {
+  const handleDoubleClick = useCallback(() => {
+    if (editState.canEdit && editState.isEditMode) {
       setEditing(true);
     }
-  };
+  }, [editState.canEdit, editState.isEditMode]);
 
-  // Visuell indikator i edit-läge
-  const wrapperClass = cn(
+  // Stable wrapper class calculation
+  const wrapperClass = useMemo(() => cn(
     className,
-    canEdit && isEditMode && 'relative group edit-safe'
-  );
+    editState.canEdit && editState.isEditMode && 'relative group edit-safe'
+  ), [className, editState.canEdit, editState.isEditMode]);
 
-  if (canEdit && isEditMode) {
+  if (editState.canEdit && editState.isEditMode) {
     return (
       <div className={wrapperClass}>
         {!editing ? (

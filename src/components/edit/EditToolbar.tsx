@@ -38,15 +38,6 @@ export const EditToolbar: React.FC<EditToolbarProps> = ({
   } = useEditMode();
   const { locale } = useCopy();
 
-  // Debug logging
-  console.log('EditToolbar render:', { 
-    canAccessAdmin, 
-    canEdit, 
-    isEditMode,
-    changes: Object.keys(changes).length,
-    storeState: useEditMode.getState()
-  });
-
   // Show toolbar if user has admin access
   if (!canAccessAdmin) {
     return null;
