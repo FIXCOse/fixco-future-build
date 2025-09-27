@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
+import type { CopyKey } from '@/copy/keys';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -28,6 +29,8 @@ const CategoryGrid = () => {
       {servicesDataNew.map((service, index) => {
         const IconComponent = service.icon as LucideIcon;
         const basePath = locale === 'en' ? '/en/services' : '/tjanster';
+        const translateKey = `serviceCategories.${service.slug}` as CopyKey;
+        
         return (
           <Link
             key={service.slug}
@@ -54,7 +57,7 @@ const CategoryGrid = () => {
               
               {/* Title */}
               <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
-                {t(`serviceCategories.${service.slug}` as any) || service.title}
+                {t(translateKey) || service.title}
               </h3>
               
               {/* Sub-services count */}

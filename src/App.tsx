@@ -76,6 +76,7 @@ const SmartHome = lazy(() => import('./pages/SmartHome'));
 const TestBooking = lazy(() => import('./pages/TestBooking'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
 const QuoteRequestWizard = lazy(() => import('./pages/QuoteRequestWizard'));
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -185,7 +186,18 @@ const App = () => {
                     <Route path="rot-info" element={<ROTInfo />} />
                     <Route path="rut" element={<RUT />} />
                     <Route path="referenser" element={<Referenser />} />
-                    <Route path="smart-hem" element={<SmartHome />} />
+                    <Route path="smart-hem" element={
+                      <ErrorBoundary fallback={
+                        <div className="min-h-screen flex items-center justify-center">
+                          <div className="text-center">
+                            <h2 className="text-2xl font-bold mb-4">Smart Hem är tillfälligt otillgänglig</h2>
+                            <p className="text-muted-foreground">Vänligen försök igen senare</p>
+                          </div>
+                        </div>
+                      }>
+                        <SmartHome />
+                      </ErrorBoundary>
+                    } />
                     <Route path="terms" element={<Terms />} />
                     <Route path="privacy" element={<Privacy />} />
                   </Route>
@@ -197,7 +209,18 @@ const App = () => {
                     <Route path="contact" element={<Contact />} />
                     <Route path="about" element={<AboutUs />} />
                     <Route path="references" element={<Referenser />} />
-                    <Route path="smart-home" element={<SmartHome />} />
+                    <Route path="smart-home" element={
+                      <ErrorBoundary fallback={
+                        <div className="min-h-screen flex items-center justify-center">
+                          <div className="text-center">
+                            <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
+                            <p className="text-muted-foreground">Please try again later</p>
+                          </div>
+                        </div>
+                      }>
+                        <SmartHome />
+                      </ErrorBoundary>
+                    } />
                   </Route>
                   
                   {/* Catch-all route */}

@@ -58,7 +58,7 @@ export const SmartHome = () => {
   // Track product view when clicked - simplified without actual tracking for now
   const handleProductClick = (productId: string) => {
     // Just show success message without tracking
-    toast.success('Kontakta oss för installation och mer information!');
+    toast.success(t('smartHome.contact_for_info'));
   };
 
   const categories: CategoryFilter[] = [
@@ -118,9 +118,16 @@ export const SmartHome = () => {
   }
 
   return (
-    <>
+    <React.Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    }>
       <main className="pt-16">
-        {/* Hero Section */}
+                  {/* Hero Section */}
         <section className="relative py-24 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/5" />
           
@@ -547,7 +554,7 @@ export const SmartHome = () => {
           </div>
         </section>
       </main>
-    </>
+    </React.Suspense>
   );
 };
 

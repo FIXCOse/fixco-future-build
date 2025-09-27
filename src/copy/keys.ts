@@ -34,7 +34,7 @@ export type CopyKey =
   | 'smartHome.loading' | 'smartHome.no_products' | 'smartHome.market_leaders'
   | 'smartHome.full_warranty' | 'smartHome.professional_install' | 'smartHome.ai_optimized'
   | 'smartHome.choose_category' | 'smartHome.main_features' | 'smartHome.smart_features'
-  | 'smartHome.installation_setup' | 'smartHome.years_warranty'
+  | 'smartHome.installation_setup' | 'smartHome.years_warranty' | 'smartHome.contact_for_info'
   
   // Categories
   | 'categories.all' | 'categories.security' | 'categories.lighting' | 'categories.climate'
@@ -46,7 +46,7 @@ export type CopyKey =
   // Service Categories  
   | 'serviceCategories.el' | 'serviceCategories.vvs' | 'serviceCategories.snickeri'
   | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
-  | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska' | 'serviceCategories.flytt'
+  | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska-installationer' | 'serviceCategories.flytt'
   
   // Pages
   | 'pages.about.title' | 'pages.about.subtitle' | 'pages.about.history_title'

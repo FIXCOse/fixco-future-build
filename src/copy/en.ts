@@ -93,6 +93,7 @@ export const en: Record<CopyKey, string> = {
   'smartHome.smart_features': 'Smart Features:',
   'smartHome.installation_setup': 'Incl. installation & setup',
   'smartHome.years_warranty': '2 years full warranty',
+  'smartHome.contact_for_info': 'Contact us for installation and more information!',
   
   // Categories
   'categories.all': 'All Products',
@@ -118,7 +119,7 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.tradgard': 'Garden',
   'serviceCategories.stadning': 'Cleaning',
   'serviceCategories.markarbeten': 'Groundwork',
-  'serviceCategories.tekniska': 'Technical installations',
+  'serviceCategories.tekniska-installationer': 'Technical installations',
   'serviceCategories.flytt': 'Moving',
   
   // Pages
