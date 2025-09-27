@@ -64,43 +64,30 @@ async function reorderServicesInSupabase(updates: {id: string, sort_order: numbe
 
 const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> = ({ 
   onServiceSelect, 
-  className = "" 
+  className 
 }) => {
-  const { t, locale } = useCopy();
-  const { isEditMode } = useEditMode();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mode } = usePriceStore();
+  const { t } = useCopy();
+  const mode = usePriceStore((state) => state.mode);
+  const { isEditMode } = useEditMode();
   const queryClient = useQueryClient();
+
+  // Get services from API
+  const { data: servicesFromDB = [], isLoading } = useServices();
   
-  // DEBUG: Log edit mode status
-  console.log('🔍 EditableFastServiceFilterNew render:', { 
-    isEditMode, 
-    timestamp: new Date().toISOString() 
-  });
-  
-  // Get services from database
-  const { data: servicesFromDB = [], isLoading } = useServices(locale);
-  const updateService = useUpdateService();
-  
-  // Convert database services to the expected format
+  // Transform services data consistently
   const services = useMemo(() => {
     return servicesFromDB.map(service => ({
       id: service.id,
-      title: service.title,
-      description: service.description,
+      title: service.title_sv || service.title_en || 'Untitled',
       category: service.category,
-      subCategory: service.sub_category || '',
-      priceType: service.price_type,
+      description: service.description_sv || service.description_en || '',
       basePrice: service.base_price,
-      priceUnit: service.price_unit,
-      location: service.location,
+      priceType: service.price_type,
       eligible: {
         rot: service.rot_eligible,
         rut: service.rut_eligible
       },
-      laborShare: 1.0,
-      translatedTitle: service.title,
-      translatedDescription: service.description,
       sort_order: service.sort_order || 0
     }));
   }, [servicesFromDB]);
@@ -152,21 +139,16 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     })
   );
 
-  // DEBUG: Global event listeners to check if events are being blocked
+  // Update ids when services change
   React.useEffect(() => {
-    const handleMouseDown = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.textContent?.includes('☰')) {
-        console.log('🎯 DRAG HANDLE CLICKED!', target);
-      }
-    };
-    
-    document.addEventListener('mousedown', handleMouseDown, { capture: true });
-    
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown, { capture: true });
-    };
-  }, []);
+    if (services.length > 0) {
+      const sortedIds = services
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+        .map(s => s.id);
+      setIds(sortedIds);
+      setLastSaved(sortedIds);
+    }
+  }, [services]);
 
   // Check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
@@ -209,201 +191,135 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
         return prev;
       }
 
-      const newIds = arrayMove(prev, oldIndex, newIndex);
-      console.log('♻️ New order:', newIds);
-      return newIds;
+      const next = arrayMove(prev, oldIndex, newIndex);
+      console.log('♻️ New order:', next);
+      return next;
     });
   }, []);
 
-  // Save function
-  const handleSave = useCallback(async () => {
-    console.log('🔴 SAVE BUTTON CLICKED!');
-    console.log('🔴 Current IDs:', ids);
-    console.log('🔴 Last saved:', lastSaved);
-    
-    // Create updates with new sort_order
-    const updates = ids.map((id, index) => ({ id, sort_order: index }));
-    console.log('🔴 Updates to save:', updates);
+  // Reorder services mutation
+  const reorderMutation = useMutation({
+    mutationFn: reorderServicesInSupabase,
+    onSuccess: () => {
+      console.log('✅ Services reordered successfully');
+      setLastSaved([...ids]);
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+    },
+    onError: (error) => {
+      console.error('❌ Failed to reorder services:', error);
+      // Revert changes on error
+      setIds([...lastSaved]);
+    }
+  });
 
-    // Optimistic update
+  // Save changes
+  const handleSave = useCallback(async () => {
+    console.log('💾 Saving changes...');
+    
+    // Optimistically update lastSaved
     const prevSaved = lastSaved;
     setLastSaved([...ids]);
-
-    const { error } = await reorderServicesInSupabase(updates);
-    if (error) {
-      console.error('💥 Save failed:', error);
-      // Rollback on error
-      setLastSaved(prevSaved);
-      setIds(prevSaved);
-      return;
-    }
     
-    // Invalidate cache to refetch
-    queryClient.invalidateQueries({ queryKey: ['services'] });
-    console.log('✅ Successfully saved!');
-  }, [ids, lastSaved, queryClient]);
+    // Create updates array with new sort_order values
+    const updates = ids.map((id, index) => ({
+      id,
+      sort_order: index
+    }));
 
-  // Other handlers
-  const handleEditService = (serviceId: string) => {
-    const service = services.find(s => s.id === serviceId);
-    if (service) {
-      setEditingService(service);
-      setIsEditModalOpen(true);
-    }
-  };
+    // Call mutation
+    reorderMutation.mutate(updates);
+  }, [ids, lastSaved, reorderMutation]);
 
-  const handleDeleteService = (serviceId: string) => {
-    if (confirm('Är du säker på att du vill ta bort denna tjänst?')) {
-      // Remove from local state
-      setIds(prev => prev.filter(id => id !== serviceId));
-      // TODO: Also delete from database
-    }
-  };
-
-  const handleSaveService = (updatedService: any) => {
-    updateService.mutate({
-      id: updatedService.id,
-      updates: updatedService
-    });
-  };
-
-  // Update URL and sessionStorage
-  const updateStateAndURL = React.useCallback((updates: Record<string, string | boolean>) => {
-    const newParams = new URLSearchParams(searchParams);
+  const updateStateAndURL = useCallback((newParams: Record<string, string>) => {
+    const updatedParams = new URLSearchParams(searchParams);
     
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value === '' || value === 'alla' || value === false) {
-        newParams.delete(key);
-        sessionStorage.removeItem(`fixco-filter-${key}`);
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value && value !== 'alla') {
+        updatedParams.set(key, value);
+        sessionStorage.setItem(`fixco-filter-${key}`, value);
       } else {
-        newParams.set(key, String(value));
-        sessionStorage.setItem(`fixco-filter-${key}`, String(value));
+        updatedParams.delete(key);
+        sessionStorage.removeItem(`fixco-filter-${key}`);
       }
     });
     
-    setSearchParams(newParams, { replace: true });
+    setSearchParams(updatedParams);
   }, [searchParams, setSearchParams]);
 
-  // Filter handlers
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+  const clearFilters = useCallback(() => {
+    setSearchQuery('');
+    setSelectedCategory('alla');
     setSelectedSubCategories([]);
-    setCurrentPage(1);
-    updateStateAndURL({ category, search: searchQuery, priceType: selectedPriceType, 
-                      location: indoorOutdoor, sort: sortBy });
-  };
-
-  const handleSubCategoryToggle = (subCat: string) => {
-    const newSubCats = selectedSubCategories.includes(subCat)
-      ? selectedSubCategories.filter(s => s !== subCat)
-      : [...selectedSubCategories, subCat];
-    setSelectedSubCategories(newSubCats);
+    setSelectedPriceType('alla');
+    setIndoorOutdoor('alla');
+    setSortBy('relevans');
     setCurrentPage(1);
     
-    sessionStorage.setItem('fixco-filter-subCategories', JSON.stringify(newSubCats));
-  };
-
-  const clearFilters = () => {
-    setSearchQuery("");
-    setSelectedCategory("alla");
-    setSelectedSubCategories([]);
-    setSelectedPriceType("alla");
-    setIndoorOutdoor("alla");
-    setSortBy("relevans");
-    setCurrentPage(1);
+    // Clear from sessionStorage
+    sessionStorage.removeItem('fixco-filter-search');
+    sessionStorage.removeItem('fixco-filter-category');
+    sessionStorage.removeItem('fixco-filter-priceType');
+    sessionStorage.removeItem('fixco-filter-location');
+    sessionStorage.removeItem('fixco-filter-sort');
     
-    setSearchParams({}, { replace: true });
-    ['search', 'category', 'priceType', 'location', 'sort', 'subCategories'].forEach(key => {
-      sessionStorage.removeItem(`fixco-filter-${key}`);
-    });
-  };
+    setSearchParams(new URLSearchParams());
+  }, [setSearchParams]);
 
-  const activeFiltersCount = [
-    searchDebounced !== "",
-    selectedCategory !== "alla",
-    selectedSubCategories.length > 0,
-    selectedPriceType !== "alla",
-    indoorOutdoor !== "alla"
-  ].filter(Boolean).length;
+  const categories = useMemo(() => 
+    serviceCategories.filter(cat => cat.slug !== 'all'),
+    []
+  );
 
-  // Categories for filter chips
-  const categories = useMemo(() => {
-    return serviceCategories.map(cat => ({
-      slug: cat.slug,
-      name: t(`serviceCategories.${cat.slug}` as any) || cat.title
-    }));
-  }, [t]);
-
-  // Get sub-categories for selected category
   const subCategories = useMemo(() => {
     if (selectedCategory === 'alla') return [];
-    
-    const servicesInCategory = services.filter(s => s.category === selectedCategory);
-    const subCats = new Set(servicesInCategory.map(s => s.subCategory).filter(Boolean));
-    return Array.from(subCats).sort();
-  }, [selectedCategory, services]);
+    // For now, return empty array since serviceCategories doesn't have subCategories
+    return [];
+  }, [selectedCategory]);
 
-  // Main filtering logic  
+  const handleCategoryChange = useCallback((categorySlug: string) => {
+    setSelectedCategory(categorySlug);
+    setSelectedSubCategories([]);
+    setCurrentPage(1);
+    updateStateAndURL({ category: categorySlug });
+  }, [updateStateAndURL]);
+
+  // Filter services
   const filteredServices = useMemo(() => {
-    // Start with services in the current drag order
-    let filtered = ids.map(id => services.find(s => s.id === id)).filter(Boolean) as any[];
-
-    // Text search
-    if (searchDebounced) {
-      const searchTerm = searchDebounced.toLowerCase();
-      filtered = filtered.filter(service => 
-        service.title.toLowerCase().includes(searchTerm) ||
-        service.description.toLowerCase().includes(searchTerm) ||
-        service.subCategory.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    // Category filter
-    if (selectedCategory !== 'alla') {
-      filtered = filtered.filter(service => service.category === selectedCategory);
-    }
-
-    // Subcategory filter
-    if (selectedSubCategories.length > 0) {
-      filtered = filtered.filter(service => 
-        selectedSubCategories.includes(service.subCategory)
-      );
-    }
-
-    // Price type filter
-    if (selectedPriceType !== 'alla') {
-      filtered = filtered.filter(service => service.priceType === selectedPriceType);
-    }
-
-    // Location filter
-    if (indoorOutdoor !== 'alla') {
-      filtered = filtered.filter(service => 
-        service.location === indoorOutdoor || service.location === 'båda'
-      );
-    }
-
-    // ROT/RUT filter based on price mode
-    if (mode === 'rot') {
-      filtered = filtered.filter(service => service.eligible.rot);
-    } else if (mode === 'rut') {
-      filtered = filtered.filter(service => service.eligible.rut);
-    }
-
-    // Sort (only apply when not in edit mode with custom order)
-    if (sortBy !== 'relevans') {
-      if (sortBy === 'pris-låg') {
-        filtered.sort((a, b) => a.basePrice - b.basePrice);
-      } else if (sortBy === 'pris-hög') {
-        filtered.sort((a, b) => b.basePrice - a.basePrice);
-      } else if (sortBy === 'namn') {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
+    return services.filter(service => {
+      // Search filter
+      if (searchDebounced && !service.title.toLowerCase().includes(searchDebounced.toLowerCase()) 
+          && !service.description.toLowerCase().includes(searchDebounced.toLowerCase())) {
+        return false;
       }
-    }
 
-    return filtered;
-  }, [ids, services, searchDebounced, selectedCategory, selectedSubCategories, selectedPriceType, indoorOutdoor, mode, sortBy]);
+      // Category filter
+      if (selectedCategory !== 'alla' && service.category !== selectedCategory) {
+        return false;
+      }
 
-  // Pagination
+      // Price type filter
+      if (selectedPriceType !== 'alla' && service.priceType !== selectedPriceType) {
+        return false;
+      }
+
+      // ROT/RUT filter
+      if (mode === 'rot' && !service.eligible.rot) return false;
+      if (mode === 'rut' && !service.eligible.rut) return false;
+
+      return true;
+    });
+  }, [services, searchDebounced, selectedCategory, selectedPriceType, mode]);
+
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (searchQuery) count++;
+    if (selectedCategory !== 'alla') count++;
+    if (selectedPriceType !== 'alla') count++;
+    if (indoorOutdoor !== 'alla') count++;
+    if (sortBy !== 'relevans') count++;
+    return count;
+  }, [searchQuery, selectedCategory, selectedPriceType, indoorOutdoor, sortBy]);
+
   const paginatedServices = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredServices.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -411,6 +327,43 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
   // CRITICAL: Stable items array for SortableContext - only IDs that are actually rendered
   const stableIds = useMemo(() => paginatedServices.map(s => s.id), [paginatedServices]);
+
+  // Service operations
+  const updateServiceMutation = useUpdateService();
+
+  const handleEditService = useCallback((id: string) => {
+    const service = services.find(s => s.id === id);
+    if (service) {
+      setEditingService(service);
+      setIsEditModalOpen(true);
+    }
+  }, [services]);
+
+  const handleDeleteService = useCallback(async (id: string) => {
+    if (confirm('Är du säker på att du vill ta bort denna tjänst?')) {
+      try {
+        const { error } = await supabase
+          .from('services')
+          .update({ is_active: false })
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        queryClient.invalidateQueries({ queryKey: ['services'] });
+      } catch (error) {
+        console.error('Failed to delete service:', error);
+      }
+    }
+  }, [queryClient]);
+
+  const handleSaveService = useCallback(async (serviceData: any) => {
+    updateServiceMutation.mutate(serviceData, {
+      onSuccess: () => {
+        setIsEditModalOpen(false);
+        setEditingService(null);
+      }
+    });
+  }, [updateServiceMutation]);
 
   // Loading state
   if (isLoading) {
@@ -489,7 +442,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                 onClick={() => handleCategoryChange(category.slug)}
                 className="h-8"
               >
-                {category.name}
+                {category.title}
               </Button>
             ))}
           </div>
@@ -560,35 +513,29 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
         {/* Sub-category Chips */}
         {selectedCategory !== 'alla' && subCategories.length > 0 && (
           <div className="flex flex-wrap gap-2 border-t border-border pt-3">
-            <span className="text-sm text-muted-foreground mr-2">{t('filter.specialty_areas')}</span>
-            {subCategories.map(subCat => (
+            {subCategories.map(subCategory => (
               <Button
-                key={subCat}
-                variant={selectedSubCategories.includes(subCat) ? "default" : "outline"}
+                key={subCategory}
+                variant={selectedSubCategories.includes(subCategory) ? "default" : "outline"}
                 size="sm"
-                onClick={() => handleSubCategoryToggle(subCat)}
+                onClick={() => {
+                  setSelectedSubCategories(prev => 
+                    prev.includes(subCategory) 
+                      ? prev.filter(sc => sc !== subCategory)
+                      : [...prev, subCategory]
+                  );
+                  setCurrentPage(1);
+                }}
                 className="h-7 text-xs"
               >
-                {subCat}
+                {subCategory}
               </Button>
             ))}
           </div>
         )}
       </div>
 
-      {/* Results summary */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          {searchDebounced && (
-            <span className="mr-4">
-              <strong>{t('filter.searching')}</strong> "{searchDebounced}"
-            </span>
-          )}
-          <strong>{filteredServices.length}</strong> {t('filter.services_found')}
-        </div>
-      </div>
-
-      {/* CRITICAL: Drag and Drop Results */}
+      {/* Services Grid */}
       <div className="min-h-[400px]">
         {filteredServices.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -622,31 +569,29 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
             )}
           </div>
         ) : (
-          <div className="touch-none">
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragStart={(event: DragStartEvent) => {
-                console.log('🔎 DND DRAG START:', event.active.id, event);
-              }}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext items={stableIds} strategy={rectSortingStrategy}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {paginatedServices.map((service) => (
-                    <SortableServiceItem
-                      key={service.id}
-                      id={service.id}
-                      service={service}
-                      onEdit={handleEditService}
-                      onDelete={handleDeleteService}
-                      onServiceSelect={onServiceSelect}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>
-          </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={(event: DragStartEvent) => {
+              console.log('🔎 DND DRAG START:', event.active.id, event);
+            }}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={stableIds} strategy={rectSortingStrategy}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedServices.map((service) => (
+                  <SortableServiceItem
+                    key={service.id}
+                    id={service.id}
+                    service={service}
+                    onEdit={handleEditService}
+                    onDelete={handleDeleteService}
+                    onServiceSelect={onServiceSelect}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 
@@ -671,8 +616,9 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
             <Button 
               size="sm"
               onClick={handleSave}
+              disabled={reorderMutation.isPending}
             >
-              Spara
+              {reorderMutation.isPending ? 'Sparar...' : 'Spara'}
             </Button>
           </div>
         </div>
