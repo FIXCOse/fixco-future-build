@@ -159,9 +159,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     }
   }, [services]);
 
-  // CRITICAL: Stable items array for SortableContext
-  const stableIds = useMemo(() => ids, [ids]);
-
   // Check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
     return JSON.stringify(ids) !== JSON.stringify(lastSaved);
@@ -399,6 +396,9 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredServices.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredServices, currentPage]);
+
+  // CRITICAL: Stable items array for SortableContext - only IDs that are actually rendered
+  const stableIds = useMemo(() => paginatedServices.map(s => s.id), [paginatedServices]);
 
   // Loading state
   if (isLoading) {
