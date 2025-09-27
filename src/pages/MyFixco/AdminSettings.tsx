@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-import { Settings, Phone, Mail, MapPin, DollarSign, Zap } from 'lucide-react';
+import { Settings, Phone, Mail, MapPin, DollarSign, Zap, Wrench } from 'lucide-react';
 import { getSettings, setSetting } from '@/lib/admin';
 import { useToast } from '@/hooks/use-toast';
 import AdminBack from '@/components/admin/AdminBack';
+import ServiceManagement from '@/components/admin/ServiceManagement';
 
 const AdminSettings = () => {
   const [settings, setSettings] = useState<Record<string, any>>({});
@@ -185,6 +186,21 @@ const AdminSettings = () => {
               onCheckedChange={(checked) => updateSetting('features.offerWizard', checked)}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wrench className="h-5 w-5" />
+            Tjänsthantering
+          </CardTitle>
+          <CardDescription>
+            Lägg till och hantera tjänster med automatisk engelsköversättning
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ServiceManagement />
         </CardContent>
       </Card>
     </div>
