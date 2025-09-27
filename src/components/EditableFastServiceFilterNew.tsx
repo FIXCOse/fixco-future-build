@@ -29,10 +29,12 @@ import SegmentedPriceToggle from "./SegmentedPriceToggle";
 import { usePriceStore } from "@/stores/priceStore";
 import { toast } from "sonner";
 import { useCopy } from '@/copy/CopyProvider';
-import { useServices } from '@/hooks/useServices';
+import { useServices, useUpdateService } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { ServiceEditModal } from './ServiceEditModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -138,9 +140,34 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const { isEditMode } = useEditMode();
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode } = usePriceStore();
+  const queryClient = useQueryClient();
   
   // Get services from database
   const { data: servicesFromDB = [], isLoading } = useServices(locale);
+  const updateService = useUpdateService();
+  
+  // Mutation for bulk reordering services
+  const reorderServices = useMutation({
+    mutationFn: async (servicesToUpdate: { id: string; sort_order: number }[]) => {
+      // Update each service individually since we only want to update sort_order
+      for (const service of servicesToUpdate) {
+        const { error } = await supabase
+          .from('services')
+          .update({ sort_order: service.sort_order })
+          .eq('id', service.id);
+        
+        if (error) throw error;
+      }
+      return servicesToUpdate;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      toast.success('Tjänstordning sparad i databasen!');
+    },
+    onError: (error) => {
+      toast.error('Fel vid sparande av ordning: ' + error.message);
+    }
+  });
   
   // Convert database services to the expected format and add local state for reordering
   const [services, setServices] = useState(() => {
@@ -237,8 +264,22 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
         const newItems = arrayMove(items, oldIndex, newIndex);
         console.log('New service order:', newItems.map(s => s.id));
-        toast.success('Tjänstordning uppdaterad');
-        return newItems;
+        
+        // Update sort_order for all affected items
+        const updatedItems = newItems.map((item, index) => ({
+          ...item,
+          sort_order: index + 1
+        }));
+        
+        // Save to database
+        const servicesToUpdate = updatedItems.map(item => ({
+          id: item.id,
+          sort_order: item.sort_order
+        }));
+        
+        reorderServices.mutate(servicesToUpdate);
+        
+        return updatedItems;
       });
     }
   };
@@ -259,9 +300,11 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   };
 
   const handleSaveService = (updatedService: any) => {
-    setServices(prev => prev.map(service => 
-      service.id === updatedService.id ? updatedService : service
-    ));
+    // Use the database mutation to save the service
+    updateService.mutate({
+      id: updatedService.id,
+      updates: updatedService
+    });
   };
 
   // Update URL and sessionStorage  
