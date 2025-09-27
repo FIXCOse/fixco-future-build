@@ -8,7 +8,6 @@ import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ROTCalculator from "@/components/ROTCalculator";
 import FAQTeaser from "@/components/FAQTeaser";
-import GlobalStickyCTA from "@/components/GlobalStickyCTA";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
@@ -74,9 +73,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Global Sticky CTA */}
-      <GlobalStickyCTA />
     </div>
   );
 };

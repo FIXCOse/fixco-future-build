@@ -22,9 +22,7 @@ import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import StickyCtaBar from "./components/StickyCtaBar";
 import ScrollToTop from "./components/ScrollToTop";
-import StickyCTA from "./components/StickyCTA";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
@@ -266,8 +264,6 @@ const App = () => {
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-                <StickyCtaBar />
-                <StickyCTA />
                 <AIChat />
                 <ModalHost />
               </BrowserRouter>
