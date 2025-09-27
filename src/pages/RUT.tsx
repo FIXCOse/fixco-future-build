@@ -1,330 +1,358 @@
-import { useState } from "react";
+import { Button } from "@/components/ui/button-premium";
+import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent, Home, Clipboard, CreditCard, Phone, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CheckCircle, ArrowRight, Home, Calculator, FileText, Phone, Percent, Receipt } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { useCopy } from '@/copy/CopyProvider';
+import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const RUT = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
+  
+  const bookingPath = isEnglish ? '/en/book-visit' : '/boka-hembesok';
+  const contactPath = isEnglish ? '/en/contact' : '/kontakt';
 
-  const steps = [
+  const examples = [
     {
-      title: "Boka tjänst",
-      description: "Välj RUT när du beställer",
-      icon: Calculator,
-      details: "Markera att du vill använda RUT-avdrag när du bokar. Vi hanterar resten."
+      service: t('pages.rut.examples.service1'),
+      work: t('pages.rut.examples.work1'),
+      normalPrice: "2 040 kr",
+      rutPrice: "1 020 kr",
+      savings: "1 020 kr"
     },
     {
-      title: "Vi utför arbetet", 
-      description: "Endast arbetskostnaden omfattas",
-      icon: Home,
-      details: "Vi utför tjänsten enligt överenskommelse. RUT gäller bara arbetskostnad, inte material."
+      service: t('pages.rut.examples.service2'), 
+      work: t('pages.rut.examples.work2'),
+      normalPrice: "1 020 kr",
+      rutPrice: "510 kr", 
+      savings: "510 kr"
     },
     {
-      title: "Avdrag på fakturan",
-      description: "Vi administrerar ansökan",
-      icon: Receipt,
-      details: "Du betalar direkt det reducerade priset. Vi sköter all administration mot Skatteverket."
+      service: t('pages.rut.examples.service3'),
+      work: t('pages.rut.examples.work3'),
+      normalPrice: "4 080 kr",
+      rutPrice: "2 040 kr",
+      savings: "2 040 kr"
     }
   ];
 
-  const rutServices = [
-    {
-      category: "Städning i hemmet",
-      services: ["Hemstädning", "Veckostäd", "Storstädning", "Flyttstädning", "Fönsterputs"]
-    },
-    {
-      category: "Trädgård",
-      services: ["Gräsklippning", "Häckklippning", "Ogräsrensning", "Lövkrattning", "Snöskottning/sandning"]
-    },
-    {
-      category: "Flytt",
-      services: ["Bärhjälp", "Lastning/lossning", "Enklare packning/uppackning"]
-    }
+  const qualifyingServices = isEnglish ? [
+    "Regular home cleaning",
+    "Window cleaning (inside and outside)",
+    "Deep cleaning of kitchen and bathroom",
+    "Construction cleaning after renovation",
+    "Move-out cleaning",
+    "Laundry and ironing services",
+    "Carpet and upholstery cleaning",
+    "Cleaning of balconies and patios",
+    "Small maintenance tasks"
+  ] : [
+    "Regelbunden hemstädning",
+    "Fönsterputs (in- och utvändigt)",
+    "Djuprengöring av kök och badrum",
+    "Byggstäd efter renovering",
+    "Flyttstäd",
+    "Tvätt- och stryktjänster",
+    "Matta- och möbelrengöring",
+    "Städning av balkonger och uteplatser",
+    "Mindre underhållsarbeten"
   ];
 
-  const faqs = [
-    {
-      question: "Vad gäller för RUT?",
-      answer: "50% avdrag på arbetskostnaden för hushållsnära tjänster. Vi sköter ansökan och drar av direkt på fakturan."
-    },
-    {
-      question: "Vilka tjänster omfattas av RUT hos Fixco?",
-      answer: "Städning, flytt och enklare trädgårdsarbete som gräsklippning, häckklippning och snöskottning."
-    },
-    {
-      question: "Kan jag kombinera ROT och RUT?",
-      answer: "Beror på tjänstetyp. ROT för renovering/bygg/el/VVS; RUT för hushållsnära som städ/flytt/trädgård."
-    },
-    {
-      question: "Gäller material och resor?",
-      answer: "Nej, avdraget gäller endast arbetskostnaden. Material och resor betalas till normalt pris."
-    },
-    {
-      question: "Hur väljer jag RUT hos er?",
-      answer: "Markera RUT i beställningsflödet eller säg till vid kontakt; vi löser resten."
-    }
+  const nonQualifyingServices = isEnglish ? [
+    "Construction and renovation work",
+    "New installations (covered by ROT)",
+    "Garden work and landscaping",
+    "Exterior maintenance of building facades",
+    "Electrical and plumbing installations",
+    "Material costs (only labor qualifies)",
+    "Business premises cleaning",
+    "Industrial cleaning services",
+    "Repairs requiring permits"
+  ] : [
+    "Bygg- och renoveringsarbeten",
+    "Nyinstallationer (täcks av ROT)",
+    "Trädgårdsarbeten och anläggning",
+    "Yttre underhåll av byggnadsfasader",
+    "El- och VVS-installationer",
+    "Materialkostnader (endast arbetskostnad berättigar)",
+    "Städning av affärslokaler",
+    "Industriell rengöring",
+    "Reparationer som kräver bygglov"
   ];
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-background relative">
-        {/* F Watermark Background Elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
-            style={{ animationDuration: '5s' }}
-          />
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
-            style={{ animationDuration: '4s', animationDelay: '2s' }}
-          />
-        </div>
+      <Helmet>
+        <title>{isEnglish ? 'RUT Tax Deduction - Save 50% on Home Services | Fixco' : 'RUT-avdrag - Spara 50% på hemservice | Fixco'}</title>
+        <meta name="description" content={isEnglish ? 'Save 50% on home service costs with RUT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 50% på hemservice med RUT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
+        <meta name="keywords" content={isEnglish ? 'RUT tax deduction, home cleaning, Sweden tax benefits, labor cost savings, home services' : 'RUT-avdrag, hemstäd, skatteavdrag, hemservice, besparingar'} />
+      </Helmet>
 
-        <div className="container mx-auto px-4 relative z-10">
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 hero-background">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6 relative">
-                {/* F Brand Badge */}
-                <div className="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
-                  <img 
-                    src="/assets/fixco-f-icon-new.png"
-                    alt="Fixco" 
-                    className="h-6 w-6 object-contain"
-                  />
-                </div>
-                <Percent className="h-10 w-10 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold">
-                  <span className="gradient-text">RUT-avdrag</span> – spara 50%
-                </h1>
-                <p className="text-xl text-muted-foreground mt-2">
-                  på hushållsnära tjänster
-                </p>
-              </div>
-            </div>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Som privatperson kan du få RUT-avdrag på arbetskostnaden för t.ex. städning, flytt och trädgård. 
-              Vi sköter allt mot Skatteverket – avdraget görs direkt på fakturan.
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+              <span className="gradient-text">{t('pages.rut.hero.title')}</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+              {t('pages.rut.hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/kontakt">
+              <Link to={bookingPath}>
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  Begär RUT-offert
+                  {t('pages.rut.hero.bookVisit')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                Ring: 08-123 456 78
+                <Phone className="mr-2 h-5 w-5" />
+                {t('pages.rut.hero.phone')}
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* What is RUT */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
               <h2 className="text-4xl font-bold mb-6">
-                Så funkar <span className="gradient-text">RUT-avdraget</span>
+                <span className="gradient-text">{t('pages.rut.what.title')}</span>
               </h2>
-              <p className="text-xl text-muted-foreground">
-                Enkelt i 3 steg – vi sköter allt administrativt
+              <p className="text-lg text-muted-foreground mb-6">
+                {t('pages.rut.what.description1')}
               </p>
+              <p className="text-lg text-muted-foreground mb-8">
+                {t('pages.rut.what.description2')}
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span>{t('pages.rut.what.benefit1')}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span>{t('pages.rut.what.benefit2')}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span>{t('pages.rut.what.benefit3')}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span>{t('pages.rut.what.benefit4')}</span>
+                </div>
+              </div>
             </div>
+            
+            <div className="card-premium p-8">
+              <Sparkles className="h-12 w-12 text-primary mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-center mb-4 gradient-text">{t('pages.rut.what.discount')}</h3>
+              <p className="text-center text-muted-foreground mb-6">
+                {t('pages.rut.what.discountDescription')}
+              </p>
+              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6">
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-2">{isEnglish ? 'Example: Price' : 'Exempel: Pris'}</div>
+                  <div className="text-2xl font-bold line-through text-muted-foreground mb-2">510 kr/h</div>
+                  <div className="text-sm text-primary mb-2">{isEnglish ? 'With RUT deduction' : 'Med RUT-avdrag'}</div>
+                  <div className="text-3xl font-bold gradient-text">255 kr/h</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {steps.map((step, index) => {
-                const StepIcon = step.icon;
-                const isActive = activeStep === index;
+      {/* Examples */}
+      <section className="py-20 gradient-primary-subtle">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <span className="gradient-text">{t('pages.rut.examples.title')}</span>
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {examples.map((example, index) => (
+              <div key={example.service} className="card-premium p-6 animate-fade-in-up"
+                   style={{ animationDelay: `${index * 0.2}s` }}>
+                <h3 className="text-xl font-bold mb-4">{example.service}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{example.work}</p>
                 
-                return (
-                  <Card
-                    key={index}
-                    className={`p-6 cursor-pointer transition-all duration-300 relative ${isActive ? 'border-primary shadow-glow' : 'hover:shadow-card'}`}
-                    onClick={() => setActiveStep(index)}
-                  >
-                    {/* F Brand Badge */}
-                    <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
-                      <img 
-                        src="/assets/fixco-f-icon-new.png"
-                        alt="Fixco" 
-                        className="h-6 w-6 object-contain opacity-90"
-                      />
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">{t('pages.rut.examples.price')}</span>
+                    <span className="font-semibold line-through text-muted-foreground">{example.normalPrice}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-primary">{t('pages.rut.examples.withRut')}</span>
+                    <span className="font-bold text-primary">{example.rutPrice}</span>
+                  </div>
+                  <div className="border-t pt-3">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold">{t('pages.rut.examples.savings')}</span>
+                      <span className="text-xl font-bold gradient-text">{example.savings}</span>
                     </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                    <div className="flex items-center mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mr-4 ${isActive ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}`}>
-                        <StepIcon className="h-6 w-6" />
+      {/* Modern Process Visualization */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <span className="gradient-text">{t('pages.rut.process.title')}</span>
+          </h2>
+          
+          {/* Modern Process Steps */}
+          <div className="relative">
+            {/* Connection Lines */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-full max-w-4xl h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20"></div>
+            </div>
+            
+            <div className="relative grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: "1",
+                  title: t('pages.rut.process.step1.title'),
+                  description: t('pages.rut.process.step1.description'),
+                  icon: Sparkles,
+                  color: "from-pink-500 to-pink-600"
+                },
+                {
+                  step: "2", 
+                  title: t('pages.rut.process.step2.title'),
+                  description: t('pages.rut.process.step2.description'),
+                  icon: Clipboard,
+                  color: "from-green-500 to-green-600"
+                },
+                {
+                  step: "3",
+                  title: t('pages.rut.process.step3.title'),
+                  description: t('pages.rut.process.step3.description'),
+                  icon: CreditCard,
+                  color: "from-purple-500 to-purple-600"
+                }
+              ].map((step, index) => {
+                const IconComponent = step.icon;
+                return (
+                  <div key={step.step} className="relative animate-fade-in-up"
+                       style={{ animationDelay: `${index * 0.3}s` }}>
+                    {/* Step Circle with modern gradient */}
+                    <div className="relative z-10 mx-auto w-24 h-24 mb-6">
+                      <div className={`w-full h-full bg-gradient-to-br ${step.color} rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300`}>
+                        <span className="text-white font-bold text-xl">{step.step}</span>
                       </div>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${isActive ? 'bg-primary text-white' : 'bg-muted text-muted-foreground'}`}>
-                        {index + 1}
+                      
+                      {/* Icon overlay */}
+                      <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-primary/20">
+                        <IconComponent className="h-5 w-5 text-primary" />
                       </div>
                     </div>
                     
-                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground mb-4">{step.description}</p>
-                    <p className="text-sm text-muted-foreground">{step.details}</p>
-                  </Card>
+                    {/* Content Card */}
+                    <div className="card-premium p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                      <h3 className="text-xl font-bold mb-3 gradient-text">{step.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* RUT Services */}
-      <section className="py-20 bg-gradient-primary-subtle relative">
-        {/* F Watermark Background Elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute top-16 right-16 w-18 h-18 object-contain rotate-12 opacity-30 animate-pulse"
-            style={{ animationDuration: '4s' }}
-          />
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute bottom-16 left-16 w-14 h-14 object-contain -rotate-6 opacity-25 animate-pulse"
-            style={{ animationDuration: '5s', animationDelay: '1.5s' }}
-          />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6">
-                RUT-tjänster vi <span className="gradient-text">erbjuder</span>
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Alla dessa tjänster berättigar till 50% RUT-avdrag
-              </p>
+          {/* Process Benefits */}
+          <div className="mt-16 grid md:grid-cols-2 gap-8">
+            <div className="card-premium p-6">
+              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '🧹 Perfect for Home Services' : '🧹 Perfekt för Hemservice'}</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Professional cleaning services' : 'Professionell städservice'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Flexible scheduling' : 'Flexibel schemaläggning'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Trusted and insured staff' : 'Pålitlig och försäkrad personal'}</li>
+              </ul>
             </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {rutServices.map((category, index) => (
-                <Card key={index} className="p-6 relative">
-                  {/* F Brand Badge */}
-                  <div className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
-                    <img 
-                      src="/assets/fixco-f-icon-new.png"
-                      alt="Fixco" 
-                      className="h-6 w-6 object-contain opacity-90"
-                    />
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-4 text-primary">{category.category}</h3>
-                  <ul className="space-y-2">
-                    {category.services.map((service, serviceIndex) => (
-                      <li key={serviceIndex} className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0" />
-                        <span className="text-sm">{service}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              ))}
-            </div>
-
-            <div className="mt-12 p-6 bg-blue-50/50 border border-blue-200/50 rounded-xl">
-              <p className="text-sm text-muted-foreground text-center">
-                <strong>Obs:</strong> RUT gäller hushållsnära arbete i eller i anslutning till bostaden. 
-                Avdrag gäller arbetskostnad (inte material/resor). Gäller enligt Skatteverkets regler.
-              </p>
+            <div className="card-premium p-6">
+              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '💰 Maximum Savings' : '💰 Maximal Besparing'}</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '50% on all RUT services' : '50% på alla RUT-tjänster'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'No waiting for tax return' : 'Ingen väntan på skatteåterbäring'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Immediate discount' : 'Omedelbar rabatt'}</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6">
-                Vanliga frågor om <span className="gradient-text">RUT</span>
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Svar på de vanligaste frågorna om RUT-avdrag
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
-                <Card key={index} className="p-6 relative">
-                  {/* F Brand Badge */}
-                  <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
-                    <img 
-                      src="/assets/fixco-f-icon-new.png"
-                      alt="Fixco" 
-                      className="h-6 w-6 object-contain opacity-90"
-                    />
-                  </div>
-
-                  <h3 className="text-lg font-bold mb-3">{faq.question}</h3>
-                  <p className="text-muted-foreground">{faq.answer}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
+      {/* What qualifies */}
       <section className="py-20 gradient-primary-subtle">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <span className="gradient-text">{t('pages.rut.qualifies.title')}</span>
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="card-premium p-8">
+              <h3 className="text-2xl font-bold mb-6 text-primary">{t('pages.rut.qualifies.yes.title')}</h3>
+              <div className="space-y-3">
+                {qualifyingServices.map((item) => (
+                  <div key={item} className="flex items-center space-x-3">
+                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span className="text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="card-premium p-8">
+              <h3 className="text-2xl font-bold mb-6 text-muted-foreground">{t('pages.rut.qualifies.no.title')}</h3>
+              <div className="space-y-3">
+                {nonQualifyingServices.map((item) => (
+                  <div key={item} className="flex items-center space-x-3">
+                    <div className="w-5 h-5 rounded-full bg-muted-foreground flex items-center justify-center flex-shrink-0">
+                      <span className="text-background text-xs">✕</span>
+                    </div>
+                    <span className="text-sm text-muted-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 hero-background">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              Redo att spara 50% med <span className="gradient-text">RUT</span>?
+              <span className="gradient-text">{t('pages.rut.cta.title')}</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Kontakta oss så hjälper vi dig komma igång med RUT-avdrag direkt
+              {t('pages.rut.cta.description')}
             </p>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              <Link to="/kontakt">
-                <div className="relative">
-                  {/* F Brand Badge */}
-                  <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <img 
-                      src="/assets/fixco-f-icon-new.png"
-                      alt="Fixco" 
-                      className="h-6 w-6 object-contain opacity-90"
-                    />
-                  </div>
-                  <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
-                    Begär RUT-offert
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to={bookingPath}>
+                <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
+                  {t('pages.rut.cta.bookNow')}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </Link>
-              <a href="tel:08-123456789">
-                <div className="relative">
-                  {/* F Brand Badge */}
-                  <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <img 
-                      src="/assets/fixco-f-icon-new.png" 
-                      alt="Fixco" 
-                      className="h-6 w-6 object-contain opacity-90"
-                    />
-                  </div>
-                  <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Ring nu: 08-123 456 78
-                  </Button>
-                </div>
-              </a>
+              <Link to={contactPath}>
+                <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 font-bold">
+                  {t('pages.rut.cta.requestQuote')}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

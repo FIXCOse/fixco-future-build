@@ -223,4 +223,19 @@ export type CopyKey =
   | 'pages.rot.process.step2.title' | 'pages.rot.process.step2.description'
   | 'pages.rot.process.step3.title' | 'pages.rot.process.step3.description'
   | 'pages.rot.qualifies.title' | 'pages.rot.qualifies.yes.title' | 'pages.rot.qualifies.no.title'
-  | 'pages.rot.cta.title' | 'pages.rot.cta.description' | 'pages.rot.cta.bookNow' | 'pages.rot.cta.requestQuote';
+  | 'pages.rot.cta.title' | 'pages.rot.cta.description' | 'pages.rot.cta.bookNow' | 'pages.rot.cta.requestQuote'
+
+  // RUT Info Page
+  | 'pages.rut.title' | 'pages.rut.subtitle' 
+  | 'pages.rut.hero.title' | 'pages.rut.hero.subtitle' | 'pages.rut.hero.bookVisit' | 'pages.rut.hero.phone'
+  | 'pages.rut.what.title' | 'pages.rut.what.description1' | 'pages.rut.what.description2'
+  | 'pages.rut.what.benefit1' | 'pages.rut.what.benefit2' | 'pages.rut.what.benefit3' | 'pages.rut.what.benefit4'
+  | 'pages.rut.what.discount' | 'pages.rut.what.discountDescription'
+  | 'pages.rut.examples.title' | 'pages.rut.examples.service1' | 'pages.rut.examples.service2' | 'pages.rut.examples.service3'
+  | 'pages.rut.examples.work1' | 'pages.rut.examples.work2' | 'pages.rut.examples.work3'
+  | 'pages.rut.examples.savings' | 'pages.rut.examples.price' | 'pages.rut.examples.withRut'
+  | 'pages.rut.process.title' | 'pages.rut.process.step1.title' | 'pages.rut.process.step1.description'
+  | 'pages.rut.process.step2.title' | 'pages.rut.process.step2.description'
+  | 'pages.rut.process.step3.title' | 'pages.rut.process.step3.description'
+  | 'pages.rut.qualifies.title' | 'pages.rut.qualifies.yes.title' | 'pages.rut.qualifies.no.title'
+  | 'pages.rut.cta.title' | 'pages.rut.cta.description' | 'pages.rut.cta.bookNow' | 'pages.rut.cta.requestQuote';

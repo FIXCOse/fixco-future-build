@@ -243,6 +243,7 @@ const App = () => {
                     <Route path="terms" element={<Terms />} />
                     <Route path="privacy" element={<Privacy />} />
                     <Route path="rot" element={<ROTInfo />} />
+                    <Route path="rut" element={<RUT />} />
                     <Route path="book-visit" element={<BookVisit />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
