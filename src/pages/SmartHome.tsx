@@ -49,11 +49,10 @@ export const SmartHome = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
 
-  // Fetch products from database
-  const { data: products = [], isLoading, error } = useSmartProducts({ 
-    category: selectedCategory, 
-    sortBy 
-  });
+  // For now, use mock data since smart_products table doesn't exist yet
+  const products: any[] = [];
+  const isLoading = false;
+  const error = null;
 
   // Track product view when clicked - simplified without actual tracking for now
   const handleProductClick = (productId: string) => {
@@ -118,15 +117,7 @@ export const SmartHome = () => {
   }
 
   return (
-    <React.Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p>Loading...</p>
-        </div>
-      </div>
-    }>
-      <main className="pt-16">
+    <main className="pt-16">
                   {/* Hero Section */}
         <section className="relative py-24 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/5" />
@@ -554,7 +545,6 @@ export const SmartHome = () => {
           </div>
         </section>
       </main>
-    </React.Suspense>
   );
 };
 
