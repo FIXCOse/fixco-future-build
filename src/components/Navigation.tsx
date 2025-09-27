@@ -40,10 +40,26 @@ export default function Navigation() {
   };
 
   const getNavItems = () => {
-    // For admin/owner users, show only admin-relevant items
+    // For admin/owner users, show all admin sections
     if (isAdmin || isOwner) {
       return [
-        { href: currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco", label: t('nav.adminPanel') },
+        { href: "/admin", label: "Översikt" },
+        { href: "/admin/services", label: "Tjänster" },
+        { href: "/admin/quotes", label: "Offerter" },
+        { href: "/admin/quote-requests", label: "Offertförfrågningar" },
+        { href: "/admin/bookings", label: "Bokningar" },
+        { href: "/admin/jobs", label: "Arbetsordrar" },
+        { href: "/admin/job-requests", label: "Jobbförfrågningar" },
+        { href: "/admin/ongoing-projects", label: "Pågående projekt" },
+        { href: "/admin/invoices", label: "Fakturor" },
+        { href: "/admin/customers", label: "Kunder" },
+        { href: "/admin/users", label: "Användare" },
+        { href: "/admin/staff", label: "Personal" },
+        { href: "/admin/translations", label: "Översättningar" },
+        { href: "/admin/reports", label: "Rapporter" },
+        { href: "/admin/database", label: "Databas" },
+        { href: "/admin/security", label: "Säkerhet" },
+        { href: "/admin/settings", label: "Inställningar" },
       ];
     }
 
