@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { LocaleProvider } from '../LocaleProvider';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '../edit/EditModeProvider';
+import { RoleDebug } from '../debug/RoleDebug';
 import Navigation from '../Navigation';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
@@ -26,6 +27,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
               <Outlet />
             </main>
             <ModalHost />
+            <RoleDebug />
           </div>
         </EditModeProvider>
       </CopyProvider>
