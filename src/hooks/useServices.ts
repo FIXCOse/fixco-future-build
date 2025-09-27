@@ -11,10 +11,10 @@ export interface Service {
   description_en?: string;
   base_price: number;
   price_unit: string;
-  price_type: string;
+  price_type: 'hourly' | 'fixed' | 'quote';
   rot_eligible: boolean;
   rut_eligible: boolean;
-  location: string;
+  location: 'inomhus' | 'utomhus' | 'båda';
   sub_category?: string;
   is_active: boolean;
   translation_status: 'pending' | 'completed' | 'failed';
@@ -48,7 +48,8 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
         title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
         description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
         price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
-        location: service.location as 'inomhus' | 'utomhus' | 'båda'
+        location: service.location as 'inomhus' | 'utomhus' | 'båda',
+        translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
       }));
     },
   });
@@ -78,7 +79,8 @@ export const useServicesByCategory = (category: string, locale: 'sv' | 'en' = 's
         title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
         description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
         price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
-        location: service.location as 'inomhus' | 'utomhus' | 'båda'
+        location: service.location as 'inomhus' | 'utomhus' | 'båda',
+        translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
       }));
     },
   });
@@ -89,7 +91,7 @@ export const useAddService = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (serviceData: Omit<Service, 'id' | 'created_at' | 'updated_at' | 'translation_status'>) => {
+    mutationFn: async (serviceData: Omit<Service, 'created_at' | 'updated_at' | 'translation_status'>) => {
       const { data, error } = await supabase
         .from('services')
         .insert([{

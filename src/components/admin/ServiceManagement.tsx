@@ -20,19 +20,34 @@ const ServiceManagement = () => {
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    id: string;
+    category: string;
+    title_sv: string;
+    description_sv: string;
+    base_price: number;
+    price_unit: string;
+    price_type: 'hourly' | 'fixed' | 'quote';
+    rot_eligible: boolean;
+    rut_eligible: boolean;
+    location: 'inomhus' | 'utomhus' | 'båda';
+    sub_category: string;
+    sort_order: number;
+    is_active: boolean;
+  }>({
     id: '',
     category: '',
     title_sv: '',
     description_sv: '',
     base_price: 0,
     price_unit: 'kr/h',
-    price_type: 'hourly' as const,
+    price_type: 'hourly',
     rot_eligible: true,
     rut_eligible: false,
-    location: 'inomhus' as const,
+    location: 'inomhus',
     sub_category: '',
-    sort_order: 0
+    sort_order: 0,
+    is_active: true
   });
 
   const resetForm = () => {
@@ -48,7 +63,8 @@ const ServiceManagement = () => {
       rut_eligible: false,
       location: 'inomhus',
       sub_category: '',
-      sort_order: 0
+      sort_order: 0,
+      is_active: true
     });
     setEditingService(null);
   };
@@ -71,7 +87,8 @@ const ServiceManagement = () => {
       rut_eligible: service.rut_eligible,
       location: service.location,
       sub_category: service.sub_category || '',
-      sort_order: service.sort_order
+      sort_order: service.sort_order,
+      is_active: service.is_active
     });
     setEditingService(service);
     setIsAddModalOpen(true);
