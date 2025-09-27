@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock } from 'lucide-react';
-import { useServices, useAddService, useUpdateService, useTranslateAllPending, Service } from '@/hooks/useServices';
+import { useServices, useAddService, useUpdateService, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -16,10 +16,10 @@ const ServiceManagement = () => {
   const { data: services = [], isLoading } = useServices('sv');
   const addService = useAddService();
   const updateService = useUpdateService();
-  const translateAll = useTranslateAllPending();
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [formData, setFormData] = useState<{
     id: string;
     category: string;
@@ -131,6 +131,10 @@ const ServiceManagement = () => {
   };
 
   const categories = ['el', 'vvs', 'snickeri', 'montering', 'tradgard', 'stadning', 'markarbeten', 'tekniska-installationer', 'flytt'];
+  
+  const filteredServices = selectedCategory === 'all' 
+    ? services 
+    : services.filter(service => service.category === selectedCategory);
 
   if (isLoading) {
     return (
@@ -145,26 +149,36 @@ const ServiceManagement = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Tjänsthantering</h1>
-        <div className="flex gap-2">
-          <Button
-            onClick={() => translateAll.mutate()}
-            disabled={translateAll.isPending}
-            variant="outline"
-          >
-            {translateAll.isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            ) : null}
-            Översätt alla väntande
-          </Button>
-          <Button onClick={handleAdd}>
-            <Plus className="h-4 w-4 mr-2" />
-            Lägg till tjänst
-          </Button>
-        </div>
+        <Button onClick={handleAdd}>
+          <Plus className="h-4 w-4 mr-2" />
+          Lägg till tjänst
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-4">
+        <Label htmlFor="category-filter">Filtrera efter kategori:</Label>
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Välj kategori" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla kategorier</SelectItem>
+            {categories.map(cat => (
+              <SelectItem key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {selectedCategory !== 'all' && (
+          <Badge variant="outline">
+            {filteredServices.length} tjänster i {selectedCategory}
+          </Badge>
+        )}
       </div>
 
       <div className="grid gap-4">
-        {services.map((service) => (
+        {filteredServices.map((service) => (
           <Card key={service.id}>
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
