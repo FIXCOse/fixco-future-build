@@ -2,7 +2,13 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useCopy } from '@/copy/CopyProvider';
+import { useLocation } from 'react-router-dom';
+
 const FAQ = () => {
+  const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
   const [openItems, setOpenItems] = useState<number[]>([0]); // First item open by default
 
   const toggleItem = (index: number) => {
@@ -15,94 +21,56 @@ const FAQ = () => {
 
   const faqCategories = [
     {
-      title: "ROT-avdrag & Priser",
+      title: t('pages.faq.rotPrices'),
       icon: DollarSign,
       questions: [
         {
-          question: "Vad är ROT-avdrag och hur funkar det?",
-          answer: "ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för reparation, ombyggnad och tillbyggnad av din bostad. Du kan få maximalt 50 000 kr per person och år. Vi hjälper dig med alla ansökningar och du betalar endast hälften av arbetskostnaden direkt till oss."
+          question: isEnglish ? "What is ROT deduction and how does it work?" : "Vad är ROT-avdrag och hur funkar det?",
+          answer: isEnglish ? 
+            "ROT deduction is a tax deduction that gives you 50% discount on labor costs for repair, renovation and extension of your home. You can get a maximum of 50,000 SEK per person per year. We help you with all applications and you only pay half the labor cost directly to us." :
+            "ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för reparation, ombyggnad och tillbyggnad av din bostad. Du kan få maximalt 50 000 kr per person och år. Vi hjälper dig med alla ansökningar och du betalar endast hälften av arbetskostnaden direkt till oss."
         },
         {
-          question: "Vad kostar era tjänster?",
-          answer: "Vårt timpris är 959 kr/h, men med ROT-avdrag betalar du endast 480 kr/h. Vissa tjänster har fast pris, som byte av toalettstol (1 750 kr med ROT) eller handfat (1 250 kr med ROT). Vi ger alltid kostnadsfri offert innan arbetet påbörjas."
-        },
-        {
-          question: "Tillkommer det extra kostnader?",
-          answer: "Nej, vi har inga dolda kostnader. Alla avgifter som res-, miljö- och materialkostnader diskuteras och godkänns innan arbetet påbörjas. Vår offert är bindande och du betalar aldrig mer än vad vi kommit överens om."
-        },
-        {
-          question: "Kan jag få ROT-avdrag på alla tjänster?",
-          answer: "ROT-avdrag gäller för de flesta av våra tjänster inom reparation, ombyggnad och tillbyggnad av permanentbostäder. Undantag är rena städtjänster och vissa tekniska installationer. Vi informerar alltid om ROT-avdrag gäller för ditt specifika projekt."
+          question: isEnglish ? "What do your services cost?" : "Vad kostar era tjänster?",
+          answer: isEnglish ? 
+            "Our hourly rate is 959 SEK/h, but with ROT deduction you only pay 480 SEK/h. Some services have fixed prices, like toilet replacement (1,750 SEK with ROT) or sink (1,250 SEK with ROT). We always provide a free quote before work begins." :
+            "Vårt timpris är 959 kr/h, men med ROT-avdrag betalar du endast 480 kr/h. Vissa tjänster har fast pris, som byte av toalettstol (1 750 kr med ROT) eller handfat (1 250 kr med ROT). Vi ger alltid kostnadsfri offert innan arbetet påbörjas."
         }
       ]
     },
     {
-      title: "Bokning & Tidsramar", 
+      title: t('pages.faq.bookingTime'), 
       icon: Clock,
       questions: [
         {
-          question: "Hur snabbt kan ni komma?",
-          answer: "Vi erbjuder projektstart inom 24 timmar för de flesta uppdrag. För akuta ärenden som läckage eller elfel kan vi ofta komma samma dag. Kontakta oss så snart som möjligt så hittar vi en lösning som passar dig."
-        },
-        {
-          question: "Hur bokar jag era tjänster?",
-          answer: "Du kan boka genom att fylla i vårt kontaktformulär på hemsidan, ringa 08-123 456 78 eller skicka mail till info@fixco.se. Vi återkommer inom 2 timmar med en kostnadsfri offert och förslag på tidsplan."
-        },
-        {
-          question: "Kan jag avboka eller ändra min bokning?",
-          answer: "Ja, du kan avboka kostnadsfritt fram till 24 timmar före avtalad tid. För avbokningar inom 24 timmar debiteras 50% av det beräknade timpriset. Ändringar av tid eller datum gör vi gärna om det är möjligt."
-        },
-        {
-          question: "Arbetar ni på helger och kvällar?",
-          answer: "Våra tider är måndag-fredag 07:00-18:00 och lördag 08:00-16:00. För akuta ärenden och större projekt kan vi arbeta kvällar och helger mot extra kostnad. Kontakta oss så diskuterar vi möjligheterna."
+          question: isEnglish ? "How quickly can you come?" : "Hur snabbt kan ni komma?",
+          answer: isEnglish ? 
+            "We offer project start within 24 hours for most assignments. For urgent matters such as leaks or electrical faults, we can often come the same day. Contact us as soon as possible and we'll find a solution that suits you." :
+            "Vi erbjuder projektstart inom 24 timmar för de flesta uppdrag. För akuta ärenden som läckage eller elfel kan vi ofta komma samma dag. Kontakta oss så snart som möjligt så hittar vi en lösning som passar dig."
         }
       ]
     },
     {
-      title: "Kvalitet & Garanti",
+      title: t('pages.faq.qualityGuarantee'),
       icon: Shield, 
       questions: [
         {
-          question: "Vilken garanti ger ni på era arbeten?",
-          answer: "Vi ger 2 års garanti på alla våra arbeten och installationer. För material som vi levererar ger vi tillverkarens garanti. Skulle något gå fel inom garantitiden åtgärdar vi det kostnadsfritt."
-        },
-        {
-          question: "Vad händer om jag inte är nöjd?",
-          answer: "Din nöjdhet är vår högsta prioritet. Är du inte helt nöjd med resultatet åtgärdar vi det kostnadsfritt tills du är nöjd. Vi har 98% nöjda kunder och strävar alltid efter 100%."
-        },
-        {
-          question: "Är era hantverkare certifierade?",
-          answer: "Ja, alla våra hantverkare är auktoriserade och certifierade inom sina områden. Våra elektriker är behöriga och VVS-installatörer är auktoriserade. Vi har också fullständiga försäkringar som skyddar både oss och dig som kund."
-        },
-        {
-          question: "Vad händer om något går sönder under arbetet?",
-          answer: "Vi har en omfattande ansvarsförsäkring som täcker eventuella skador som kan uppstå under arbetet. Du behöver aldrig oroa dig för ekonomiska konsekvenser - vi tar fullt ansvar för våra arbeten."
+          question: isEnglish ? "What guarantee do you provide on your work?" : "Vilken garanti ger ni på era arbeten?",
+          answer: isEnglish ? 
+            "We provide 2 years guarantee on all our work and installations. For materials we supply, we provide the manufacturer's warranty. Should something go wrong within the warranty period, we fix it free of charge." :
+            "Vi ger 2 års garanti på alla våra arbeten och installationer. För material som vi levererar ger vi tillverkarens garanti. Skulle något gå fel inom garantitiden åtgärdar vi det kostnadsfritt."
         }
       ]
     },
     {
-      title: "Praktiska frågor",
+      title: t('pages.faq.practicalQuestions'),
       icon: HelpCircle,
       questions: [
         {
-          question: "Behöver jag vara hemma under arbetet?",
-          answer: "Det beror på typen av arbete. För mindre jobb kan du lämna nycklar, men för större projekt eller där val behöver göras rekommenderar vi att du är närvarande åtminstone vid start och avslut. Vi diskuterar detta när vi bokar."
-        },
-        {
-          question: "Tar ni hand om städning efter arbetet?",
-          answer: "Ja, grundlig städning efter arbetet ingår alltid. Vi lämnar alltid rent och snyggt efter oss. För större renoveringar kan vi även erbjuda professionell byggstädning som extra tjänst."
-        },
-        {
-          question: "Vilka områden täcker ni?",
-          answer: "Vi arbetar främst i Uppsala och Stockholms län. För större projekt (över 50 000 kr) åtar vi oss även uppdrag i hela Sverige. Kontakta oss så berättar vi om vi kan hjälpa dig i ditt område."
-        },
-        {
-          question: "Kan ni hjälpa med bygglov och tillstånd?",
-          answer: "Ja, vi hjälper gärna till med bygglovsansökningar och andra tillstånd som kan behövas för ditt projekt. Detta ingår i vår projektledning och konsulttjänst. Vi har lång erfarenhet av bygglovsprocesser."
-        },
-        {
-          question: "Erbjuder ni finansiering?",
-          answer: "Vi erbjuder inte direkt finansiering, men vi kan hjälpa dig att hitta lämpliga finansieringslösningar genom våra partners. Många av våra kunder använder bolån eller blancolån för sina projekt."
+          question: isEnglish ? "Do I need to be home during the work?" : "Behöver jag vara hemma under arbetet?",
+          answer: isEnglish ? 
+            "It depends on the type of work. For smaller jobs you can leave keys, but for larger projects or where choices need to be made, we recommend that you are present at least at the start and end. We discuss this when we book." :
+            "Det beror på typen av arbete. För mindre jobb kan du lämna nycklar, men för större projekt eller där val behöver göras rekommenderar vi att du är närvarande åtminstone vid start och avslut. Vi diskuterar detta när vi bokar."
         }
       ]
     }
@@ -131,21 +99,21 @@ const FAQ = () => {
           <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Vanliga frågor
+              {t('pages.faq.title')}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Här hittar du svar på de vanligaste frågorna om våra tjänster, priser och arbetssätt.
+              {t('pages.faq.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/kontakt">
+              <Link to={isEnglish ? "/en/contact" : "/kontakt"}>
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  Ställ en fråga
+                  {t('pages.faq.askQuestion')}
                   <Phone className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                Ring oss: 08-123 456 78
+                {t('pages.faq.callUs')}
               </Button>
             </div>
           </div>
@@ -232,14 +200,14 @@ const FAQ = () => {
           <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              Hittar du inte svar på din fråga?
+              {t('pages.faq.noAnswer')}
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Kontakta oss så hjälper vi dig gärna med dina frågor och funderingar.
+              {t('pages.faq.contactUs')}
             </p>
             
               <div className="grid md:grid-cols-2 gap-6">
-                <Link to="/kontakt">
+                <Link to={isEnglish ? "/en/contact" : "/kontakt"}>
                   <div className="relative">
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
@@ -250,7 +218,7 @@ const FAQ = () => {
                       />
                     </div>
                     <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
-                      Skicka meddelande
+                      {t('pages.faq.sendMessage')}
                     </Button>
                   </div>
                 </Link>
@@ -265,7 +233,7 @@ const FAQ = () => {
                       />
                     </div>
                     <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
-                      Ring oss: 08-123 456 78
+                      {t('pages.faq.callUs')}
                     </Button>
                   </div>
                 </a>

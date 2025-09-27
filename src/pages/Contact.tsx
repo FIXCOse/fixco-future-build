@@ -27,8 +27,8 @@ const Contact = () => {
     // Basic validation
     if (!formData.name || !formData.email || !formData.phone || !formData.message) {
       toast({
-        title: "Fält saknas",
-        description: "Vänligen fyll i alla obligatoriska fält.",
+        title: t('pages.contact.fieldsMissing'),
+        description: t('pages.contact.fillAllFields'),
         variant: "destructive"
       });
       setIsSubmitting(false);
@@ -40,8 +40,8 @@ const Contact = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       toast({
-        title: "Tack för din förfrågan!",
-        description: "Vi återkommer inom 24 timmar med en kostnadsfri offert.",
+        title: t('pages.contact.thankYou'),
+        description: t('pages.contact.responseIn24h'),
       });
       
       setFormData({
@@ -54,8 +54,8 @@ const Contact = () => {
       });
     } catch (error) {
       toast({
-        title: "Något gick fel",
-        description: "Vänligen försök igen eller ring oss direkt.",
+        title: t('pages.contact.somethingWrong'),
+        description: t('pages.contact.tryAgain'),
         variant: "destructive"
       });
     } finally {
@@ -86,25 +86,24 @@ const Contact = () => {
               {t('pages.contact.title')}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Få en kostnadsfri offert inom 24 timmar. Vi arbetar i Uppsala & Stockholms län 
-              (nationellt vid större projekt).
+              {t('pages.contact.subtitle')}
             </p>
             
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">Snabb respons</div>
-                <div className="text-sm text-muted-foreground">Svar inom 2 timmar</div>
+                <div className="font-bold">{t('pages.contact.quickResponse')}</div>
+                <div className="text-sm text-muted-foreground">{t('pages.contact.quickResponseDesc')}</div>
               </div>
               <div className="card-premium p-6">
                 <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-4" />
-                <div className="font-bold">Kostnadsfri offert</div>
-                <div className="text-sm text-muted-foreground">Inga dolda kostnader</div>
+                <div className="font-bold">{t('pages.contact.freeQuote')}</div>
+                <div className="text-sm text-muted-foreground">{t('pages.contact.freeQuoteDesc')}</div>
               </div>
               <div className="card-premium p-6">
                 <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">Lokal service</div>
-                <div className="text-sm text-muted-foreground">Uppsala & Stockholm</div>
+                <div className="font-bold">{t('pages.contact.localService')}</div>
+                <div className="text-sm text-muted-foreground">{t('pages.contact.localServiceDesc')}</div>
               </div>
             </div>
           </div>
@@ -119,30 +118,30 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="card-premium p-8">
               <h2 className="text-3xl font-bold mb-6">
-                Begär <span className="gradient-text">offert</span>
+                {t('pages.contact.requestQuote')}
               </h2>
               <p className="text-muted-foreground mb-8">
-                Fyll i formuläret så återkommer vi inom 24 timmar med en kostnadsfri och detaljerad offert.
+                {t('pages.contact.formDescription')}
               </p>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      Namn <span className="text-red-400">*</span>
+                      {t('pages.contact.name')} <span className="text-red-400">*</span>
                     </label>
                     <Input
                       name="name"
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Ditt fullständiga namn"
+                      placeholder={t('pages.contact.name')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      Telefon <span className="text-red-400">*</span>
+                      {t('pages.contact.phone')} <span className="text-red-400">*</span>
                     </label>
                     <Input
                       name="phone"
@@ -237,7 +236,7 @@ const Contact = () => {
             {/* Contact Information */}
             <div className="space-y-8">
               <div className="card-premium p-8">
-                <h3 className="text-2xl font-bold mb-6">Kontaktinformation</h3>
+              <h3 className="text-2xl font-bold mb-6">{t('pages.contact.contactInfo')}</h3>
                 
                 <div className="space-y-6">
                   <a href="tel:08-123456789" className="flex items-center space-x-4 hover:text-primary transition-colors">
@@ -245,9 +244,9 @@ const Contact = () => {
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">Telefon</div>
+                      <div className="font-semibold">{t('pages.contact.telephone')}</div>
                       <div className="text-muted-foreground">08-123 456 78</div>
-                      <div className="text-sm text-green-400">Ring nu för akuta ärenden</div>
+                      <div className="text-sm text-green-400">{t('pages.contact.callNow')}</div>
                     </div>
                   </a>
 
@@ -256,9 +255,9 @@ const Contact = () => {
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">E-post</div>
+                      <div className="font-semibold">{t('pages.contact.emailContact')}</div>
                       <div className="text-muted-foreground">info@fixco.se</div>
-                      <div className="text-sm text-primary">Svar inom 2 timmar</div>
+                      <div className="text-sm text-primary">{t('pages.contact.responseTime')}</div>
                     </div>
                   </a>
 
@@ -267,9 +266,9 @@ const Contact = () => {
                       <MapPin className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">Verksamhetsområde</div>
+                      <div className="font-semibold">{t('pages.contact.operatingArea')}</div>
                       <div className="text-muted-foreground">Uppsala & Stockholms län</div>
-                      <div className="text-sm text-muted-foreground">Nationellt vid större projekt</div>
+                      <div className="text-sm text-muted-foreground">{t('pages.contact.areaDesc')}</div>
                     </div>
                   </div>
                 </div>

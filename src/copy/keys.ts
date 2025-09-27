@@ -157,7 +157,48 @@ export type CopyKey =
   // Pages
   | 'pages.about.title' | 'pages.about.subtitle' | 'pages.about.history_title'
   | 'pages.about.history_text' | 'pages.about.customers' | 'pages.about.days_start'
-  | 'pages.about.years_exp' | 'pages.contact.title' | 'pages.references.title'
+  | 'pages.about.years_exp' | 'pages.references.title'
   
   // Breadcrumbs
-  | 'breadcrumbs.home' | 'breadcrumbs.services';
+  | 'breadcrumbs.home' | 'breadcrumbs.services'
+
+  // Contact Page
+  | 'pages.contact.title' | 'pages.contact.subtitle' | 'pages.contact.quickResponse'
+  | 'pages.contact.quickResponseDesc' | 'pages.contact.freeQuote' | 'pages.contact.freeQuoteDesc'
+  | 'pages.contact.localService' | 'pages.contact.localServiceDesc' | 'pages.contact.requestQuote'
+  | 'pages.contact.formDescription' | 'pages.contact.name' | 'pages.contact.phone'
+  | 'pages.contact.email' | 'pages.contact.address' | 'pages.contact.serviceType'
+  | 'pages.contact.selectService' | 'pages.contact.projectDescription' | 'pages.contact.projectPlaceholder'
+  | 'pages.contact.sendRequest' | 'pages.contact.sending' | 'pages.contact.consent'
+  | 'pages.contact.contactInfo' | 'pages.contact.telephone' | 'pages.contact.callNow'
+  | 'pages.contact.emailContact' | 'pages.contact.responseTime' | 'pages.contact.operatingArea'
+  | 'pages.contact.areaDesc' | 'pages.contact.openingHours' | 'pages.contact.mondayFriday'
+  | 'pages.contact.saturday' | 'pages.contact.sunday' | 'pages.contact.closed'
+  | 'pages.contact.emergencyService' | 'pages.contact.emergencyDesc' | 'pages.contact.whyChoose'
+  | 'pages.contact.startIn24h' | 'pages.contact.rotDeduction' | 'pages.contact.guaranteedQuality'
+  | 'pages.contact.freeQuotes' | 'pages.contact.fieldsMissing' | 'pages.contact.fillAllFields'
+  | 'pages.contact.thankYou' | 'pages.contact.responseIn24h' | 'pages.contact.somethingWrong'
+  | 'pages.contact.tryAgain'
+
+  // FAQ Page
+  | 'pages.faq.title' | 'pages.faq.subtitle' | 'pages.faq.askQuestion' | 'pages.faq.callUs'
+  | 'pages.faq.rotPrices' | 'pages.faq.bookingTime' | 'pages.faq.qualityGuarantee'
+  | 'pages.faq.practicalQuestions' | 'pages.faq.noAnswer' | 'pages.faq.contactUs'
+  | 'pages.faq.sendMessage'
+
+  // About Page Extended
+  | 'pages.about.values' | 'pages.about.speed' | 'pages.about.speedDesc'
+  | 'pages.about.quality' | 'pages.about.qualityDesc' | 'pages.about.transparency'
+  | 'pages.about.transparencyDesc' | 'pages.about.coverageArea' | 'pages.about.coverageDesc'
+  | 'pages.about.readyToStart' | 'pages.about.contactToday'
+
+  // Privacy Page
+  | 'pages.privacy.title' | 'pages.privacy.description'
+
+  // Terms Page  
+  | 'pages.terms.title' | 'pages.terms.description'
+
+  // ROT Info Page
+  | 'pages.rot.title' | 'pages.rot.subtitle' | 'pages.rot.bookVisit' | 'pages.rot.whatIs'
+  | 'pages.rot.whatDesc' | 'pages.rot.examples' | 'pages.rot.howWorks'
+  | 'pages.rot.whatQualifies' | 'pages.rot.readyToSave';

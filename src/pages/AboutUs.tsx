@@ -2,9 +2,12 @@ import { Button } from "@/components/ui/button-premium";
 import { CheckCircle, Star, Users, Award, Clock, MapPin, Phone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
+import { useLocation } from 'react-router-dom';
 
 const AboutUs = () => {
   const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
   
   return (
     <div className="min-h-screen">
@@ -34,10 +37,16 @@ const AboutUs = () => {
                 {t('pages.about.history_text')}
               </p>
               <p className="text-lg text-muted-foreground mb-6">
-                Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet.
+                {isEnglish ? 
+                  "We specialize in combining traditional craftsmanship with modern technology and smart solutions. Our team consists of experienced craftsmen who are passionate about quality and customer satisfaction." :
+                  "Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet."
+                }
               </p>
               <p className="text-lg text-muted-foreground">
-                Genom åren har vi hjälpt hundratals familjer och företag att förverkliga sina projekt – från små reparationer till stora renoveringar. Vi är stolta över vår höga kundnöjdhet och vårt rykte som en pålitlig partner.
+                {isEnglish ?
+                  "Over the years, we have helped hundreds of families and businesses realize their projects – from small repairs to major renovations. We are proud of our high customer satisfaction and our reputation as a reliable partner." :
+                  "Genom åren har vi hjälpt hundratals familjer och företag att förverkliga sina projekt – från små reparationer till stora renoveringar. Vi är stolta över vår höga kundnöjdhet och vårt rykte som en pålitlig partner."
+                }
               </p>
             </div>
             
@@ -50,17 +59,23 @@ const AboutUs = () => {
               <div className="card-premium p-6">
                 <Clock className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">{'< 5 dagar'}</div>
-                <div className="text-sm text-muted-foreground">Till projektstart</div>
+                <div className="text-sm text-muted-foreground">
+                  {isEnglish ? "To project start" : "Till projektstart"}
+                </div>
               </div>
               <div className="card-premium p-6">
                 <Award className="h-8 w-8 text-primary mb-4" />
                 <div className="text-3xl font-bold gradient-text mb-2">98%</div>
-                <div className="text-sm text-muted-foreground">Kundnöjdhet</div>
+                <div className="text-sm text-muted-foreground">
+                  {isEnglish ? "Customer satisfaction" : "Kundnöjdhet"}
+                </div>
               </div>
               <div className="card-premium p-6">
                 <Star className="h-8 w-8 text-primary mb-4" />
-                <div className="text-3xl font-bold gradient-text mb-2">5 år</div>
-                <div className="text-sm text-muted-foreground">Garanti</div>
+                <div className="text-3xl font-bold gradient-text mb-2">{isEnglish ? "5 years" : "5 år"}</div>
+                <div className="text-sm text-muted-foreground">
+                  {isEnglish ? "Guarantee" : "Garanti"}
+                </div>
               </div>
             </div>
           </div>
@@ -71,24 +86,24 @@ const AboutUs = () => {
       <section className="py-20 gradient-primary-subtle">
         <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Våra värderingar
+            {t('pages.about.values')}
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "Snabbhet",
-                description: "Vi starterar projekt inom 24 timmar och levererar alltid i tid. Ditt hem är viktigt och vi respekterar din tid.",
+                title: t('pages.about.speed'),
+                description: t('pages.about.speedDesc'),
                 icon: Clock
               },
               {
-                title: "Kvalitet", 
-                description: "Alla våra hantverkare är certifierade och vi använder endast material av högsta kvalitet. Vi ger garanti på alla våra arbeten.",
+                title: t('pages.about.quality'), 
+                description: t('pages.about.qualityDesc'),
                 icon: Award
               },
               {
-                title: "Transparens",
-                description: "Inga dolda kostnader, tydliga offerter och öppen kommunikation genom hela projektet. Du vet alltid vad du betalar för.",
+                title: t('pages.about.transparency'),
+                description: t('pages.about.transparencyDesc'),
                 icon: CheckCircle
               }
             ].map((value, index) => {
@@ -112,16 +127,21 @@ const AboutUs = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-4xl font-bold mb-8">
-            Vårt verksamhetsområde
+            {t('pages.about.coverageArea')}
           </h2>
           <div className="card-premium p-8 mb-8">
             <MapPin className="h-12 w-12 text-primary mx-auto mb-6" />
             <h3 className="text-2xl font-bold mb-4">Uppsala & Stockholms län</h3>
             <p className="text-lg text-muted-foreground mb-6">
-              Vi täcker hela Uppsala kommun och Stockholms län med våra tjänster. Våra erfarna hantverkare kan vara hos dig inom kort för både akuta ärenden och planerade projekt.
+              {t('pages.about.coverageDesc')}
             </p>
             <p className="text-muted-foreground">
-              <strong>För större projekt (över 50 000 kr) arbetar vi i hela Sverige.</strong>
+              <strong>
+                {isEnglish ?
+                  "For larger projects (over 50,000 SEK) we work throughout Sweden." :
+                  "För större projekt (över 50 000 kr) arbetar vi i hela Sverige."
+                }
+              </strong>
             </p>
           </div>
         </div>
@@ -132,23 +152,23 @@ const AboutUs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              Redo att komma igång?
+              {t('pages.about.readyToStart')}
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Kontakta oss idag för en kostnadsfri konsultation och offert. Vi är här för att hjälpa dig förverkliga dina projekt.
+              {t('pages.about.contactToday')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/kontakt">
+              <Link to={isEnglish ? "/en/contact" : "/kontakt"}>
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  Begär offert
+                  {isEnglish ? "Request quote" : "Begär offert"}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <a href="tel:08-123456789">
                 <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 font-bold">
                   <Phone className="mr-2 h-5 w-5" />
-                  Ring oss: 08-123 456 78
+                  {isEnglish ? "Call us: 08-123 456 78" : "Ring oss: 08-123 456 78"}
                 </Button>
               </a>
             </div>

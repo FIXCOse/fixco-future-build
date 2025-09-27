@@ -303,7 +303,6 @@ export const sv: Record<CopyKey, string> = {
   'pages.about.customers': 'Nöjda kunder',
   'pages.about.days_start': 'Vi startar på < 5 dagar',
   'pages.about.years_exp': '5 år',
-  'pages.contact.title': 'Kontakta Fixco',
   'pages.references.title': 'Referenser',
   
   // Service Detail Page
@@ -336,5 +335,98 @@ export const sv: Record<CopyKey, string> = {
   
   // Breadcrumbs
   'breadcrumbs.home': 'Hem',
-  'breadcrumbs.services': 'Tjänster'
+  'breadcrumbs.services': 'Tjänster',
+
+  // Contact Page
+  'pages.contact.title': 'Kontakta oss',
+  'pages.contact.subtitle': 'Få en kostnadsfri offert inom 24 timmar. Vi arbetar i Uppsala & Stockholms län (nationellt vid större projekt).',
+  'pages.contact.quickResponse': 'Snabb respons',
+  'pages.contact.quickResponseDesc': 'Svar inom 2 timmar',
+  'pages.contact.freeQuote': 'Kostnadsfri offert',
+  'pages.contact.freeQuoteDesc': 'Inga dolda kostnader',
+  'pages.contact.localService': 'Lokal service',
+  'pages.contact.localServiceDesc': 'Uppsala & Stockholm',
+  'pages.contact.requestQuote': 'Begär offert',
+  'pages.contact.formDescription': 'Fyll i formuläret så återkommer vi inom 24 timmar med en kostnadsfri och detaljerad offert.',
+  'pages.contact.name': 'Namn',
+  'pages.contact.phone': 'Telefon',
+  'pages.contact.email': 'E-post',
+  'pages.contact.address': 'Adress för projektet',
+  'pages.contact.serviceType': 'Typ av tjänst',
+  'pages.contact.selectService': 'Välj tjänst',
+  'pages.contact.projectDescription': 'Beskrivning av projekt',
+  'pages.contact.projectPlaceholder': 'Beskriv ditt projekt så detaljerat som möjligt. Vilka arbeten behöver utföras? Ungefär vilken tidsram? Finns det speciella önskemål?',
+  'pages.contact.sendRequest': 'Skicka förfrågan',
+  'pages.contact.sending': 'Skickar...',
+  'pages.contact.consent': 'Genom att skicka formuläret godkänner du att vi kontaktar dig angående din förfrågan.',
+  'pages.contact.contactInfo': 'Kontaktinformation',
+  'pages.contact.telephone': 'Telefon',
+  'pages.contact.callNow': 'Ring nu för akuta ärenden',
+  'pages.contact.emailContact': 'E-post',
+  'pages.contact.responseTime': 'Svar inom 2 timmar',
+  'pages.contact.operatingArea': 'Verksamhetsområde',
+  'pages.contact.areaDesc': 'Nationellt vid större projekt',
+  'pages.contact.openingHours': 'Öppettider',
+  'pages.contact.mondayFriday': 'Måndag - Fredag',
+  'pages.contact.saturday': 'Lördag',
+  'pages.contact.sunday': 'Söndag',
+  'pages.contact.closed': 'Stängt',
+  'pages.contact.emergencyService': 'Akutservice:',
+  'pages.contact.emergencyDesc': 'Ring för akuta läckage och elfärder',
+  'pages.contact.whyChoose': 'Varför välja Fixco?',
+  'pages.contact.startIn24h': 'Start inom 24 timmar',
+  'pages.contact.rotDeduction': 'ROT-avdrag - endast 480 kr/h',
+  'pages.contact.guaranteedQuality': 'Garanterad kvalitet',
+  'pages.contact.freeQuotes': 'Kostnadsfria offerter',
+  'pages.contact.fieldsMissing': 'Fält saknas',
+  'pages.contact.fillAllFields': 'Vänligen fyll i alla obligatoriska fält.',
+  'pages.contact.thankYou': 'Tack för din förfrågan!',
+  'pages.contact.responseIn24h': 'Vi återkommer inom 24 timmar med en kostnadsfri offert.',
+  'pages.contact.somethingWrong': 'Något gick fel',
+  'pages.contact.tryAgain': 'Vänligen försök igen eller ring oss direkt.',
+
+  // FAQ Page
+  'pages.faq.title': 'Vanliga frågor',
+  'pages.faq.subtitle': 'Här hittar du svar på de vanligaste frågorna om våra tjänster, priser och arbetssätt.',
+  'pages.faq.askQuestion': 'Ställ en fråga',
+  'pages.faq.callUs': 'Ring oss: 08-123 456 78',
+  'pages.faq.rotPrices': 'ROT-avdrag & Priser',
+  'pages.faq.bookingTime': 'Bokning & Tidsramar',
+  'pages.faq.qualityGuarantee': 'Kvalitet & Garanti',
+  'pages.faq.practicalQuestions': 'Praktiska frågor',
+  'pages.faq.noAnswer': 'Hittar du inte svar på din fråga?',
+  'pages.faq.contactUs': 'Kontakta oss så hjälper vi dig gärna med dina frågor och funderingar.',
+  'pages.faq.sendMessage': 'Skicka meddelande',
+
+  // About Page Extended
+  'pages.about.values': 'Våra värderingar',
+  'pages.about.speed': 'Snabbhet',
+  'pages.about.speedDesc': 'Vi starterar projekt inom 24 timmar och levererar alltid i tid. Ditt hem är viktigt och vi respekterar din tid.',
+  'pages.about.quality': 'Kvalitet',
+  'pages.about.qualityDesc': 'Alla våra hantverkare är certifierade och vi använder endast material av högsta kvalitet. Vi ger garanti på alla våra arbeten.',
+  'pages.about.transparency': 'Transparens',
+  'pages.about.transparencyDesc': 'Inga dolda kostnader, tydliga offerter och öppen kommunikation genom hela projektet. Du vet alltid vad du betalar för.',
+  'pages.about.coverageArea': 'Vårt verksamhetsområde',
+  'pages.about.coverageDesc': 'Vi täcker hela Uppsala kommun och Stockholms län med våra tjänster. Våra erfarna hantverkare kan vara hos dig inom kort för både akuta ärenden och planerade projekt.',
+  'pages.about.readyToStart': 'Redo att komma igång?',
+  'pages.about.contactToday': 'Kontakta oss idag för en kostnadsfri konsultation och offert. Vi är här för att hjälpa dig förverkliga dina projekt.',
+
+  // Privacy Page
+  'pages.privacy.title': 'Integritetspolicy',
+  'pages.privacy.description': 'Vi värnar om din integritet. Denna sida är en placeholder och kommer att uppdateras med komplett policytext.',
+
+  // Terms Page
+  'pages.terms.title': 'Användarvillkor',
+  'pages.terms.description': 'Här beskriver vi de villkor som gäller för användning av våra tjänster. Denna sida är en placeholder och kan uppdateras med fullständigt juridiskt innehåll senare.',
+
+  // ROT Info Page
+  'pages.rot.title': 'ROT-avdrag',
+  'pages.rot.subtitle': 'Spara 50% på arbetskostnaden med ROT-avdraget. Vi hjälper dig genom hela processen så du får maximal avdrag utan krångel.',
+  'pages.rot.bookVisit': 'Boka hembesök',
+  'pages.rot.whatIs': 'Vad är ROT-avdrag?',
+  'pages.rot.whatDesc': 'ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för reparation, om- och tillbyggnad samt underhållsarbeten i din bostad.',
+  'pages.rot.examples': 'Exempel på besparingar',
+  'pages.rot.howWorks': 'Så enkelt fungerar det',
+  'pages.rot.whatQualifies': 'Vad kvalificerar för ROT?',
+  'pages.rot.readyToSave': 'Redo att spara 50% på ditt projekt?'
 };

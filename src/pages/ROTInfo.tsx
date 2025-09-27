@@ -1,8 +1,13 @@
 import { Button } from "@/components/ui/button-premium";
 import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCopy } from '@/copy/CopyProvider';
+import { useLocation } from 'react-router-dom';
 
 const ROTInfo = () => {
+  const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
   const examples = [
     {
       service: "Köksblandare byte",
@@ -34,11 +39,10 @@ const ROTInfo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              <span className="gradient-text">ROT-avdrag</span>
+              <span className="gradient-text">{t('pages.rot.title')}</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Spara 50% på arbetskostnaden med ROT-avdraget. Vi hjälper dig genom hela processen 
-              så du får maximal avdrag utan krångel.
+              {t('pages.rot.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

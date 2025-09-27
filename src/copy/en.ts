@@ -303,7 +303,6 @@ export const en: Record<CopyKey, string> = {
   'pages.about.customers': 'Satisfied customers',
   'pages.about.days_start': 'We start within < 5 days',
   'pages.about.years_exp': '5 years',
-  'pages.contact.title': 'Contact Fixco',
   'pages.references.title': 'References',
   
   // Service Detail Page
@@ -336,5 +335,98 @@ export const en: Record<CopyKey, string> = {
   
   // Breadcrumbs
   'breadcrumbs.home': 'Home',
-  'breadcrumbs.services': 'Services'
+  'breadcrumbs.services': 'Services',
+
+  // Contact Page
+  'pages.contact.title': 'Contact Us',
+  'pages.contact.subtitle': 'Get a free quote within 24 hours. We work in Uppsala & Stockholm counties (nationwide for larger projects).',
+  'pages.contact.quickResponse': 'Quick response',
+  'pages.contact.quickResponseDesc': 'Response within 2 hours',
+  'pages.contact.freeQuote': 'Free quote',
+  'pages.contact.freeQuoteDesc': 'No hidden costs',
+  'pages.contact.localService': 'Local service',
+  'pages.contact.localServiceDesc': 'Uppsala & Stockholm',
+  'pages.contact.requestQuote': 'Request Quote',
+  'pages.contact.formDescription': 'Fill out the form and we\'ll get back to you within 24 hours with a free and detailed quote.',
+  'pages.contact.name': 'Name',
+  'pages.contact.phone': 'Phone',
+  'pages.contact.email': 'Email',
+  'pages.contact.address': 'Project address',
+  'pages.contact.serviceType': 'Type of service',
+  'pages.contact.selectService': 'Select service',
+  'pages.contact.projectDescription': 'Project description',
+  'pages.contact.projectPlaceholder': 'Describe your project as detailed as possible. What work needs to be done? Approximate timeframe? Any special requirements?',
+  'pages.contact.sendRequest': 'Send request',
+  'pages.contact.sending': 'Sending...',
+  'pages.contact.consent': 'By submitting the form, you agree that we may contact you regarding your request.',
+  'pages.contact.contactInfo': 'Contact Information',
+  'pages.contact.telephone': 'Phone',
+  'pages.contact.callNow': 'Call now for urgent matters',
+  'pages.contact.emailContact': 'Email',
+  'pages.contact.responseTime': 'Response within 2 hours',
+  'pages.contact.operatingArea': 'Service Area',
+  'pages.contact.areaDesc': 'Nationwide for larger projects',
+  'pages.contact.openingHours': 'Opening Hours',
+  'pages.contact.mondayFriday': 'Monday - Friday',
+  'pages.contact.saturday': 'Saturday',
+  'pages.contact.sunday': 'Sunday',
+  'pages.contact.closed': 'Closed',
+  'pages.contact.emergencyService': 'Emergency service:',
+  'pages.contact.emergencyDesc': 'Call for urgent leaks and electrical issues',
+  'pages.contact.whyChoose': 'Why choose Fixco?',
+  'pages.contact.startIn24h': 'Start within 24 hours',
+  'pages.contact.rotDeduction': 'ROT deduction - only 480 SEK/h',
+  'pages.contact.guaranteedQuality': 'Guaranteed quality',
+  'pages.contact.freeQuotes': 'Free quotes',
+  'pages.contact.fieldsMissing': 'Fields missing',
+  'pages.contact.fillAllFields': 'Please fill in all required fields.',
+  'pages.contact.thankYou': 'Thank you for your request!',
+  'pages.contact.responseIn24h': 'We will get back to you within 24 hours with a free quote.',
+  'pages.contact.somethingWrong': 'Something went wrong',
+  'pages.contact.tryAgain': 'Please try again or call us directly.',
+
+  // FAQ Page
+  'pages.faq.title': 'Frequently Asked Questions',
+  'pages.faq.subtitle': 'Here you can find answers to the most common questions about our services, prices, and work methods.',
+  'pages.faq.askQuestion': 'Ask a question',
+  'pages.faq.callUs': 'Call us: 08-123 456 78',
+  'pages.faq.rotPrices': 'ROT Deduction & Prices',
+  'pages.faq.bookingTime': 'Booking & Time Frames',
+  'pages.faq.qualityGuarantee': 'Quality & Guarantee',
+  'pages.faq.practicalQuestions': 'Practical Questions',
+  'pages.faq.noAnswer': 'Can\'t find an answer to your question?',
+  'pages.faq.contactUs': 'Contact us and we\'ll be happy to help with your questions and concerns.',
+  'pages.faq.sendMessage': 'Send message',
+
+  // About Page Extended
+  'pages.about.values': 'Our Values',
+  'pages.about.speed': 'Speed',
+  'pages.about.speedDesc': 'We start projects within 24 hours and always deliver on time. Your home is important and we respect your time.',
+  'pages.about.quality': 'Quality',
+  'pages.about.qualityDesc': 'All our craftsmen are certified and we only use materials of the highest quality. We guarantee all our work.',
+  'pages.about.transparency': 'Transparency',
+  'pages.about.transparencyDesc': 'No hidden costs, clear quotes, and open communication throughout the project. You always know what you\'re paying for.',
+  'pages.about.coverageArea': 'Our Service Area',
+  'pages.about.coverageDesc': 'We cover all of Uppsala municipality and Stockholm county with our services. Our experienced craftsmen can be with you shortly for both urgent matters and planned projects.',
+  'pages.about.readyToStart': 'Ready to get started?',
+  'pages.about.contactToday': 'Contact us today for a free consultation and quote. We\'re here to help you realize your projects.',
+
+  // Privacy Page
+  'pages.privacy.title': 'Privacy Policy',
+  'pages.privacy.description': 'We value your privacy. This page is a placeholder and will be updated with complete policy text.',
+
+  // Terms Page
+  'pages.terms.title': 'Terms of Service',
+  'pages.terms.description': 'Here we describe the terms that apply to the use of our services. This page is a placeholder and may be updated with complete legal content later.',
+
+  // ROT Info Page
+  'pages.rot.title': 'ROT Deduction',
+  'pages.rot.subtitle': 'Save 50% on labor costs with the ROT deduction. We help you through the entire process so you get maximum deduction without hassle.',
+  'pages.rot.bookVisit': 'Book home visit',
+  'pages.rot.whatIs': 'What is ROT deduction?',
+  'pages.rot.whatDesc': 'ROT deduction is a tax deduction that gives you 50% discount on labor costs for repair, renovation, and extension as well as maintenance work in your home.',
+  'pages.rot.examples': 'Savings Examples',
+  'pages.rot.howWorks': 'How it works',
+  'pages.rot.whatQualifies': 'What qualifies for ROT?',
+  'pages.rot.readyToSave': 'Ready to save 50% on your project?'
 };
