@@ -211,6 +211,16 @@ export type CopyKey =
   | 'pages.terms.title' | 'pages.terms.description'
 
   // ROT Info Page
-  | 'pages.rot.title' | 'pages.rot.subtitle' | 'pages.rot.bookVisit' | 'pages.rot.whatIs'
-  | 'pages.rot.whatDesc' | 'pages.rot.examples' | 'pages.rot.howWorks'
-  | 'pages.rot.whatQualifies' | 'pages.rot.readyToSave';
+  | 'pages.rot.title' | 'pages.rot.subtitle' 
+  | 'pages.rot.hero.title' | 'pages.rot.hero.subtitle' | 'pages.rot.hero.bookVisit' | 'pages.rot.hero.phone'
+  | 'pages.rot.what.title' | 'pages.rot.what.description1' | 'pages.rot.what.description2'
+  | 'pages.rot.what.benefit1' | 'pages.rot.what.benefit2' | 'pages.rot.what.benefit3' | 'pages.rot.what.benefit4'
+  | 'pages.rot.what.discount' | 'pages.rot.what.discountDescription'
+  | 'pages.rot.examples.title' | 'pages.rot.examples.service1' | 'pages.rot.examples.service2' | 'pages.rot.examples.service3'
+  | 'pages.rot.examples.work1' | 'pages.rot.examples.work2' | 'pages.rot.examples.work3'
+  | 'pages.rot.examples.savings' | 'pages.rot.examples.price' | 'pages.rot.examples.withRot'
+  | 'pages.rot.process.title' | 'pages.rot.process.step1.title' | 'pages.rot.process.step1.description'
+  | 'pages.rot.process.step2.title' | 'pages.rot.process.step2.description'
+  | 'pages.rot.process.step3.title' | 'pages.rot.process.step3.description'
+  | 'pages.rot.qualifies.title' | 'pages.rot.qualifies.yes.title' | 'pages.rot.qualifies.no.title'
+  | 'pages.rot.cta.title' | 'pages.rot.cta.description' | 'pages.rot.cta.bookNow' | 'pages.rot.cta.requestQuote';

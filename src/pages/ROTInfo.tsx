@@ -1,59 +1,95 @@
 import { Button } from "@/components/ui/button-premium";
-import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent } from "lucide-react";
+import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent, Home, Clipboard, CreditCard, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const ROTInfo = () => {
   const { t } = useCopy();
   const location = useLocation();
   const isEnglish = location.pathname.startsWith('/en');
+  
+  const bookingPath = isEnglish ? '/en/book-visit' : '/boka-hembesok';
+  const contactPath = isEnglish ? '/en/contact' : '/kontakt';
+
   const examples = [
     {
-      service: "Köksblandare byte",
-      work: "2 timmar arbete",
+      service: t('pages.rot.examples.service1'),
+      work: t('pages.rot.examples.work1'),
       normalPrice: "1 918 kr",
       rotPrice: "960 kr",
       savings: "958 kr"
     },
     {
-      service: "Toalettstol byte", 
-      work: "Fast pris",
+      service: t('pages.rot.examples.service2'), 
+      work: t('pages.rot.examples.work2'),
       normalPrice: "3 500 kr",
       rotPrice: "1 750 kr", 
       savings: "1 750 kr"
     },
     {
-      service: "Köksrenovering",
-      work: "40 timmar arbete",
+      service: t('pages.rot.examples.service3'),
+      work: t('pages.rot.examples.work3'),
       normalPrice: "38 360 kr",
       rotPrice: "19 200 kr",
       savings: "19 160 kr"
     }
   ];
 
+  const qualifyingServices = [
+    "Snickeriarbeten (kök, badrum, inredning)",
+    "VVS-installationer och reparationer", 
+    "Elinstallationer och belysning",
+    "Målning och tapetsering",
+    "Golvläggning och kakelarbeten",
+    "Trädgårdsarbeten och anläggning",
+    "Fasadarbeten och takarbeten",
+    "Montering av möbler och utrustning",
+    "Markarbeten och dränering"
+  ];
+
+  const nonQualifyingServices = [
+    "Enbart städning (utan byggarbete)",
+    "Nybyggnation av hela hus",
+    "Arbete på fritidshus som inte är permanentbostad", 
+    "Arbete utomhus som inte hör till bostaden",
+    "Rena konsulttjänster utan fysiskt arbete",
+    "Material (endast arbetskostnaden berättigar)",
+    "Flyttkostnader",
+    "Försäkringsärenden",
+    "Arbete på kommersiella fastigheter"
+  ];
+
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{isEnglish ? 'ROT Tax Deduction - Save 50% on Home Improvements | Fixco' : 'ROT-avdrag - Spara 50% på hemförbättringar | Fixco'}</title>
+        <meta name="description" content={isEnglish ? 'Save 50% on labor costs with ROT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 50% på arbetskostnaden med ROT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
+        <meta name="keywords" content={isEnglish ? 'ROT tax deduction, home renovation, Sweden tax benefits, labor cost savings' : 'ROT-avdrag, hemrenovering, skatteavdrag, arbetskostnad, besparingar'} />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 hero-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              <span className="gradient-text">{t('pages.rot.title')}</span>
+              <span className="gradient-text">{t('pages.rot.hero.title')}</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('pages.rot.subtitle')}
+              {t('pages.rot.hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/boka-hembesok">
+              <Link to={bookingPath}>
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  Boka hembesök
+                  {t('pages.rot.hero.bookVisit')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                Ring: 08-123 456 78
+                <Phone className="mr-2 h-5 w-5" />
+                {t('pages.rot.hero.phone')}
               </Button>
             </div>
           </div>
@@ -66,48 +102,46 @@ const ROTInfo = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">
-                Vad är <span className="gradient-text">ROT-avdrag</span>?
+                <span className="gradient-text">{t('pages.rot.what.title')}</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för 
-                <strong> reparation, om- och tillbyggnad</strong> samt underhållsarbeten i din bostad.
+                {t('pages.rot.what.description1')}
               </p>
               <p className="text-lg text-muted-foreground mb-8">
-                Avdraget görs direkt från din skatt och du kan få maximalt 50 000 kr per person och år. 
-                För sambor blir det totalt 100 000 kr per hushåll.
+                {t('pages.rot.what.description2')}
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>50% rabatt på arbetskostnaden</span>
+                  <span>{t('pages.rot.what.benefit1')}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>Max 50 000 kr per person och år</span>
+                  <span>{t('pages.rot.what.benefit2')}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>Gäller för permanentbostäder</span>
+                  <span>{t('pages.rot.what.benefit3')}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>Vi sköter alla ansökningar</span>
+                  <span>{t('pages.rot.what.benefit4')}</span>
                 </div>
               </div>
             </div>
             
             <div className="card-premium p-8">
               <Percent className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-center mb-4 gradient-text">50% Rabatt</h3>
+              <h3 className="text-2xl font-bold text-center mb-4 gradient-text">{t('pages.rot.what.discount')}</h3>
               <p className="text-center text-muted-foreground mb-6">
-                Du betalar bara hälften av arbetskostnaden när du använder ROT-avdraget
+                {t('pages.rot.what.discountDescription')}
               </p>
               <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6">
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-2">Exempel: Pris</div>
+                  <div className="text-sm text-muted-foreground mb-2">{isEnglish ? 'Example: Price' : 'Exempel: Pris'}</div>
                   <div className="text-2xl font-bold line-through text-muted-foreground mb-2">959 kr/h</div>
-                  <div className="text-sm text-primary mb-2">Med ROT-avdrag</div>
+                  <div className="text-sm text-primary mb-2">{isEnglish ? 'With ROT deduction' : 'Med ROT-avdrag'}</div>
                   <div className="text-3xl font-bold gradient-text">480 kr/h</div>
                 </div>
               </div>
@@ -120,7 +154,7 @@ const ROTInfo = () => {
       <section className="py-20 gradient-primary-subtle">
         <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Exempel på <span className="gradient-text">besparingar</span>
+            <span className="gradient-text">{t('pages.rot.examples.title')}</span>
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -132,16 +166,16 @@ const ROTInfo = () => {
                 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Pris:</span>
+                    <span className="text-sm text-muted-foreground">{t('pages.rot.examples.price')}</span>
                     <span className="font-semibold line-through text-muted-foreground">{example.normalPrice}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-primary">Med ROT-avdrag:</span>
+                    <span className="text-sm text-primary">{t('pages.rot.examples.withRot')}</span>
                     <span className="font-bold text-primary">{example.rotPrice}</span>
                   </div>
                   <div className="border-t pt-3">
                     <div className="flex justify-between items-center">
-                      <span className="font-bold">Du sparar:</span>
+                      <span className="font-bold">{t('pages.rot.examples.savings')}</span>
                       <span className="text-xl font-bold gradient-text">{example.savings}</span>
                     </div>
                   </div>
@@ -152,49 +186,89 @@ const ROTInfo = () => {
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Modern Process Visualization */}
       <section className="py-20">
-        <div className="container mx-auto px-4 max-w-4xl">
+        <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Så <span className="gradient-text">enkelt</span> fungerar det
+            <span className="gradient-text">{t('pages.rot.process.title')}</span>
           </h2>
           
-          <div className="space-y-8">
-            {[
-              {
-                step: "1",
-                title: "Vi gör jobbet",
-                description: "Du bokar tjänsten och vi utför arbetet professionellt enligt offert.",
-                icon: CheckCircle
-              },
-              {
-                step: "2", 
-                title: "Vi skickar in ansökan",
-                description: "Vi fyller i och skickar ROT-ansökan till Skatteverket åt dig. Inget krångel för dig.",
-                icon: FileText
-              },
-              {
-                step: "3",
-                title: "Du betalar rabatterat pris",
-                description: "Du betalar bara 50% av arbetskostnaden direkt till oss. Resten får du tillbaka via skatten.",
-                icon: DollarSign
-              }
-            ].map((step, index) => {
-              const IconComponent = step.icon;
-              return (
-                <div key={step.step} className="flex items-center space-x-6 card-premium p-6 animate-fade-in-up"
-                     style={{ animationDelay: `${index * 0.2}s` }}>
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-xl flex-shrink-0">
-                    {step.step}
+          {/* Modern Process Steps */}
+          <div className="relative">
+            {/* Connection Lines */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-full max-w-4xl h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20"></div>
+            </div>
+            
+            <div className="relative grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: "1",
+                  title: t('pages.rot.process.step1.title'),
+                  description: t('pages.rot.process.step1.description'),
+                  icon: Home,
+                  color: "from-blue-500 to-blue-600"
+                },
+                {
+                  step: "2", 
+                  title: t('pages.rot.process.step2.title'),
+                  description: t('pages.rot.process.step2.description'),
+                  icon: Clipboard,
+                  color: "from-green-500 to-green-600"
+                },
+                {
+                  step: "3",
+                  title: t('pages.rot.process.step3.title'),
+                  description: t('pages.rot.process.step3.description'),
+                  icon: CreditCard,
+                  color: "from-purple-500 to-purple-600"
+                }
+              ].map((step, index) => {
+                const IconComponent = step.icon;
+                return (
+                  <div key={step.step} className="relative animate-fade-in-up"
+                       style={{ animationDelay: `${index * 0.3}s` }}>
+                    {/* Step Circle with modern gradient */}
+                    <div className="relative z-10 mx-auto w-24 h-24 mb-6">
+                      <div className={`w-full h-full bg-gradient-to-br ${step.color} rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300`}>
+                        <span className="text-white font-bold text-xl">{step.step}</span>
+                      </div>
+                      
+                      {/* Icon overlay */}
+                      <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-primary/20">
+                        <IconComponent className="h-5 w-5 text-primary" />
+                      </div>
+                    </div>
+                    
+                    {/* Content Card */}
+                    <div className="card-premium p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                      <h3 className="text-xl font-bold mb-3 gradient-text">{step.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                    <p className="text-muted-foreground">{step.description}</p>
-                  </div>
-                  <IconComponent className="h-8 w-8 text-primary flex-shrink-0" />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Process Benefits */}
+          <div className="mt-16 grid md:grid-cols-2 gap-8">
+            <div className="card-premium p-6">
+              <h4 className="text-lg font-bold mb-4 text-primary">🚀 Snabbt & Enkelt</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Ingen väntan på godkännande</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Direkt rabatt vid betalning</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Vi sköter allt pappersarbete</li>
+              </ul>
+            </div>
+            <div className="card-premium p-6">
+              <h4 className="text-lg font-bold mb-4 text-primary">💰 Garanterad Besparing</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />50% på alla kvalificerade arbeten</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Maximera ditt årliga avdrag</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />Professionell rådgivning</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -203,24 +277,14 @@ const ROTInfo = () => {
       <section className="py-20 gradient-primary-subtle">
         <div className="container mx-auto px-4 max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Vad <span className="gradient-text">kvalificerar</span> för ROT?
+            <span className="gradient-text">{t('pages.rot.qualifies.title')}</span>
           </h2>
           
           <div className="grid md:grid-cols-2 gap-12">
             <div className="card-premium p-8">
-              <h3 className="text-2xl font-bold mb-6 text-primary">✅ Kvalificerar för ROT</h3>
+              <h3 className="text-2xl font-bold mb-6 text-primary">{t('pages.rot.qualifies.yes.title')}</h3>
               <div className="space-y-3">
-                {[
-                  "Snickeriarbeten (kök, badrum, inredning)",
-                  "VVS-installationer och reparationer", 
-                  "Elinstallationer och belysning",
-                  "Målning och tapetsering",
-                  "Golvläggning och kakelarbeten",
-                  "Trädgårdsarbeten och anläggning",
-                  "Fasadarbeten och takarbeten",
-                  "Montering av möbler och utrustning",
-                  "Markarbeten och dränering"
-                ].map((item) => (
+                {qualifyingServices.map((item) => (
                   <div key={item} className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
                     <span className="text-sm">{item}</span>
@@ -230,19 +294,9 @@ const ROTInfo = () => {
             </div>
             
             <div className="card-premium p-8">
-              <h3 className="text-2xl font-bold mb-6 text-muted-foreground">❌ Kvalificerar INTE för ROT</h3>
+              <h3 className="text-2xl font-bold mb-6 text-muted-foreground">{t('pages.rot.qualifies.no.title')}</h3>
               <div className="space-y-3">
-                {[
-                  "Enbart städning (utan byggarbete)",
-                  "Nybyggnation av hela hus",
-                  "Arbete på fritidshus som inte är permanentbostad", 
-                  "Arbete utomhus som inte hör till bostaden",
-                  "Rena konsulttjänster utan fysiskt arbete",
-                  "Material (endast arbetskostnaden berättigar)",
-                  "Flyttkostnader",
-                  "Försäkringsärenden",
-                  "Arbete på kommersiella fastigheter"
-                ].map((item) => (
+                {nonQualifyingServices.map((item) => (
                   <div key={item} className="flex items-center space-x-3">
                     <div className="w-5 h-5 rounded-full bg-muted-foreground flex items-center justify-center flex-shrink-0">
                       <span className="text-background text-xs">✕</span>
@@ -261,22 +315,22 @@ const ROTInfo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              Redo att <span className="gradient-text">spara 50%</span> på ditt projekt?
+              <span className="gradient-text">{t('pages.rot.cta.title')}</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Boka en kostnadsfri konsultation så hjälper vi dig få maximal ROT-avdrag.
+              {t('pages.rot.cta.description')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/boka-hembesok">
+              <Link to={bookingPath}>
                 <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  Boka hembesök nu
+                  {t('pages.rot.cta.bookNow')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Link to="/kontakt">
+              <Link to={contactPath}>
                 <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 font-bold">
-                  Begär offert
+                  {t('pages.rot.cta.requestQuote')}
                 </Button>
               </Link>
             </div>
