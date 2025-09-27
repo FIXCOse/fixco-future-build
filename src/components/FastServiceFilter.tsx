@@ -25,6 +25,8 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
   className = "" 
 }) => {
   const { t, locale } = useCopy();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { mode } = usePriceStore();
   
   // Get services from database
   const { data: servicesFromDB = [], isLoading } = useServices(locale);
@@ -50,20 +52,6 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
       translatedDescription: service.description
     }));
   }, [servicesFromDB]);
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        <span className="ml-2 text-muted-foreground">Laddar tjänster...</span>
-      </div>
-    );
-  }
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { mode } = usePriceStore();
-
   // Initialize state from URL and sessionStorage
   const [searchQuery, setSearchQuery] = useState(() => {
     return searchParams.get('search') || sessionStorage.getItem('fixco-filter-search') || '';
@@ -246,6 +234,16 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
     selectedPriceType !== "alla",
     indoorOutdoor !== "alla"
   ].filter(Boolean).length;
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <span className="ml-2 text-muted-foreground">Laddar tjänster...</span>
+      </div>
+    );
+  }
 
   return (
     <div className={`space-y-6 ${className}`}>
