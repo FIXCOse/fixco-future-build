@@ -271,11 +271,16 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
   // Manual save function
   const handleManualSave = () => {
+    console.log('🔴 SAVE BUTTON CLICKED!');
+    console.log('🔴 Pending changes:', pendingChanges);
+    console.log('🔴 Has unsaved changes:', hasUnsavedChanges);
+    
     if (pendingChanges.length > 0) {
       console.log('🚀 Manually saving changes...', pendingChanges);
       reorderServices.mutate(pendingChanges);
-      setPendingChanges([]);
-      setHasUnsavedChanges(false);
+    } else {
+      console.log('🔴 NO PENDING CHANGES TO SAVE');
+      toast.info('Inga ändringar att spara');
     }
   };
 
@@ -284,7 +289,12 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      console.log('🔄 Drag end detected, preparing changes...', { active: active.id, over: over?.id });
+      console.log('🔄 Drag end detected, preparing changes...', { 
+        active: active.id, 
+        over: over?.id,
+        currentPage,
+        ITEMS_PER_PAGE 
+      });
       
       setServices((allServices) => {
         // Find the dragged items in the current paginated view
@@ -292,7 +302,12 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
         const oldIndex = paginatedItems.findIndex((item) => item.id === active.id);
         const newIndex = paginatedItems.findIndex((item) => item.id === over?.id);
 
-        console.log('📍 Reordering in paginated view:', { oldIndex, newIndex, totalPaginatedItems: paginatedItems.length });
+        console.log('📍 Reordering in paginated view:', { 
+          oldIndex, 
+          newIndex, 
+          totalPaginatedItems: paginatedItems.length,
+          paginatedIds: paginatedItems.map(i => i.id)
+        });
 
         if (oldIndex === -1 || newIndex === -1) {
           console.warn('⚠️ Could not find dragged items in current page');
@@ -312,6 +327,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
         }));
         
         console.log('💾 Changes prepared (not saved yet):', servicesToUpdate);
+        console.log('💾 Setting pending changes and hasUnsavedChanges=true');
         
         // Store pending changes instead of saving immediately
         setPendingChanges(servicesToUpdate);
@@ -704,37 +720,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
           </div>
         ) : (
           <div className="select-none">
-            {/* Save button for unsaved changes */}
-            {hasUnsavedChanges && (
-              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center justify-between">
-                <div>
-                  <p className="text-yellow-800 font-medium">Du har osparade ändringar</p>
-                  <p className="text-yellow-600 text-sm">Tryck på "Spara" för att spara den nya sorteringsordningen</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => {
-                      setPendingChanges([]);
-                      setHasUnsavedChanges(false);
-                      // Reload services to reset order
-                      window.location.reload();
-                    }}
-                  >
-                    Ångra
-                  </Button>
-                  <Button 
-                    size="sm"
-                    onClick={handleManualSave}
-                    disabled={reorderServices.isPending}
-                  >
-                    {reorderServices.isPending ? 'Sparar...' : 'Spara'}
-                  </Button>
-                </div>
-              </div>
-            )}
-            
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -754,6 +739,41 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                 </div>
               </SortableContext>
             </DndContext>
+
+            {/* Fixed save bar at bottom */}
+            {hasUnsavedChanges && (
+              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-gray-200 rounded-xl shadow-xl p-4 flex items-center gap-4">
+                <div>
+                  <p className="font-medium text-gray-900">Osparade ändringar</p>
+                  <p className="text-sm text-gray-600">Tryck spara för att behålla ordningen</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      console.log('🔴 UNDO CLICKED');
+                      setPendingChanges([]);
+                      setHasUnsavedChanges(false);
+                      queryClient.invalidateQueries({ queryKey: ['services'] });
+                      toast.info('Ändringar ångrades');
+                    }}
+                  >
+                    Ångra
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={() => {
+                      console.log('🔴 SAVE CLICKED FROM BOTTOM BAR');
+                      handleManualSave();
+                    }}
+                    disabled={reorderServices.isPending}
+                  >
+                    {reorderServices.isPending ? 'Sparar...' : 'Spara'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
