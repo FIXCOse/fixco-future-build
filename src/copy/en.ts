@@ -138,6 +138,7 @@ export const en: Record<CopyKey, string> = {
   'filter.searching': 'Search:',
   'filter.services_found': 'services found',
   'filter.no_services_rot_rut': 'No services are eligible for',
+  'filter.with_current_filters': 'with your current filters.',
   'filter.show_all_services': 'Show all services',
   'filter.clear_other_filters': 'Clear other filters',
   'filter.no_services_general': 'No services matched your search criteria',

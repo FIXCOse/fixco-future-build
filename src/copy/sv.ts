@@ -138,6 +138,7 @@ export const sv: Record<CopyKey, string> = {
   'filter.searching': 'Sökning:',
   'filter.services_found': 'tjänster funna',
   'filter.no_services_rot_rut': 'Inga tjänster är berättigade till',
+  'filter.with_current_filters': 'med dina nuvarande filter.',
   'filter.show_all_services': 'Visa alla tjänster',
   'filter.clear_other_filters': 'Rensa övriga filter',
   'filter.no_services_general': 'Inga tjänster matchade dina sökkriterier',

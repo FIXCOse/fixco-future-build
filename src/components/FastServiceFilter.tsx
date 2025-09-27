@@ -390,7 +390,7 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
               // Empty state for ROT/RUT filtering
               <div className="max-w-md mx-auto">
                 <p className="text-muted-foreground mb-4">
-                  {t('filter.no_services_rot_rut')} {mode === 'rot' ? 'ROT' : 'RUT'} med dina nuvarande filter.
+                  {t('filter.no_services_rot_rut')} {mode === 'rot' ? 'ROT' : 'RUT'} {t('filter.with_current_filters')}
                 </p>
                 <Button 
                   variant="outline" 

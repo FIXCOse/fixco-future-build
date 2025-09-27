@@ -54,7 +54,7 @@ export type CopyKey =
   | 'filter.hourly_rate' | 'filter.fixed_price' | 'filter.request_quote'
   | 'filter.all_locations' | 'filter.indoor' | 'filter.outdoor' | 'filter.clear'
   | 'filter.specialty_areas' | 'filter.searching' | 'filter.services_found'
-  | 'filter.no_services_rot_rut' | 'filter.show_all_services' | 'filter.clear_other_filters'
+  | 'filter.no_services_rot_rut' | 'filter.with_current_filters' | 'filter.show_all_services' | 'filter.clear_other_filters'
   | 'filter.no_services_general' | 'filter.clear_filters_try_again'
   
   // Service texts that need translation
