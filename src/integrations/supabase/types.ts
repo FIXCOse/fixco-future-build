@@ -2375,6 +2375,10 @@ export type Database = {
         Args: { p_job_id: string }
         Returns: Json
       }
+      reorder_services: {
+        Args: { _service_updates: Json }
+        Returns: undefined
+      }
       track_product_view: {
         Args: { p_product_id: string }
         Returns: undefined
