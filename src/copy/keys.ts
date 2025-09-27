@@ -57,6 +57,9 @@ export type CopyKey =
   | 'filter.no_services_rot_rut' | 'filter.with_current_filters' | 'filter.show_all_services' | 'filter.clear_other_filters'
   | 'filter.no_services_general' | 'filter.clear_filters_try_again'
   
+  // Price display
+  | 'price.saves_with_rot' | 'price.saves_with_rut' | 'price.with_rot_discount' | 'price.with_rut_discount' | 'price.show_rot_prices'
+  
   // Service texts that need translation
   | 'service_text.quote_for' | 'service_text.booking_for' | 'service_text.started'
   | 'service_text.sent'

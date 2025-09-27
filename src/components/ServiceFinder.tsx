@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button-premium";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, MapPin, Clock, Euro, Star } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface Service {
   id: string;
@@ -101,6 +102,7 @@ interface ServiceFinderProps {
 }
 
 const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
+  const { t } = useCopy();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Alla");
   const [selectedPriceType, setSelectedPriceType] = useState("Alla");
@@ -225,7 +227,7 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
             onChange={(e) => setShowROTPrice(e.target.checked)}
             className="w-4 h-4 accent-primary"
           />
-          <span className="font-medium">Visa priser med ROT-avdrag (50% rabatt)</span>
+          <span className="font-medium">{t('price.show_rot_prices')}</span>
         </label>
         
         <div className="flex items-center space-x-2">
@@ -295,7 +297,7 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
                   {formatPrice(service)}
                 </div>
                 {showROTPrice && service.price !== service.rotPrice && (
-                  <div className="text-xs text-primary font-medium">med ROT-avdrag</div>
+                  <div className="text-xs text-primary font-medium">{t('price.with_rot_discount')}</div>
                 )}
               </div>
 

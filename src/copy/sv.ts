@@ -140,6 +140,13 @@ export const sv: Record<CopyKey, string> = {
   'filter.no_services_rot_rut': 'Inga tjänster är berättigade till',
   'filter.with_current_filters': 'med dina nuvarande filter.',
   'filter.show_all_services': 'Visa alla tjänster',
+  
+  // Price display
+  'price.saves_with_rot': 'Sparar',
+  'price.saves_with_rut': 'Sparar',
+  'price.with_rot_discount': 'med ROT-avdrag',
+  'price.with_rut_discount': 'med RUT-avdrag',
+  'price.show_rot_prices': 'Visa priser med ROT-avdrag (50% rabatt)',
   'filter.clear_other_filters': 'Rensa övriga filter',
   'filter.no_services_general': 'Inga tjänster matchade dina sökkriterier',
   'filter.clear_filters_try_again': 'Rensa filter och försök igen',

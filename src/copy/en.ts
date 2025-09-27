@@ -140,6 +140,13 @@ export const en: Record<CopyKey, string> = {
   'filter.no_services_rot_rut': 'No services are eligible for',
   'filter.with_current_filters': 'with your current filters.',
   'filter.show_all_services': 'Show all services',
+  
+  // Price display
+  'price.saves_with_rot': 'Saves',
+  'price.saves_with_rut': 'Saves', 
+  'price.with_rot_discount': 'with ROT',
+  'price.with_rut_discount': 'with RUT',
+  'price.show_rot_prices': 'Show prices with ROT discount (50% off)',
   'filter.clear_other_filters': 'Clear other filters',
   'filter.no_services_general': 'No services matched your search criteria',
   'filter.clear_filters_try_again': 'Clear filters and try again',

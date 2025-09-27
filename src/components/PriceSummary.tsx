@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
+import { useCopy } from "@/copy/CopyProvider";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -28,6 +29,7 @@ const PriceSummary = ({
   size = 'md'
 }: PriceSummaryProps) => {
   const { mode } = usePriceStore();
+  const { t } = useCopy();
   
   if (pricingType === 'quote') {
     return (
@@ -98,14 +100,14 @@ const PriceSummary = ({
           {/* ROT chip */}
           {mode === 'rot' && eligible.rot && savingsRot > 0 && (
             <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Sparar {formatMoney(savingsRot)}{unit} med ROT
+              {t('price.saves_with_rot')} {formatMoney(savingsRot)}{unit} {t('price.with_rot_discount')}
             </Badge>
           )}
           
           {/* RUT chip */}
           {mode === 'rut' && eligible.rut && savingsRut > 0 && (
             <Badge className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Sparar {formatMoney(savingsRut)}{unit} med RUT
+              {t('price.saves_with_rut')} {formatMoney(savingsRut)}{unit} {t('price.with_rut_discount')}
             </Badge>
           )}
           
