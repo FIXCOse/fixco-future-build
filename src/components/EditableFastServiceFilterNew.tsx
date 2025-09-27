@@ -115,15 +115,11 @@ function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: Sor
           onBook={() => {
             if (onServiceSelect) {
               onServiceSelect(service);
-            } else {
-              toast.success(`Bokning för ${service.title} startad`);
             }
           }}
           onQuote={() => {
             if (onServiceSelect) {
               onServiceSelect(service);
-            } else {
-              toast.success(`Offert för ${service.title} skickad`);
             }
           }}
         />
@@ -186,11 +182,9 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       queryClient.invalidateQueries({ queryKey: ['services'] });
       setPendingChanges([]);
       setHasUnsavedChanges(false);
-      toast.success('Tjänstordning sparad!');
     },
     onError: (error) => {
       console.error('💥 Mutation failed:', error);
-      toast.error('Fel vid sparande av ordning: ' + error.message);
     }
   });
   
@@ -295,66 +289,44 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       reorderServices.mutate(pendingChanges);
     } else {
       console.log('🔴 NO PENDING CHANGES TO SAVE');
-      toast.info('Inga ändringar att spara');
     }
+  };
+
   };
 
   // Drag and drop handlers
   const handleDragEnd = (event: DragEndEvent) => {
+    console.log('🔍 DRAG END EVENT:', event);
     const { active, over } = event;
 
-    if (active.id !== over?.id) {
-      console.log('🔄 Drag end detected, preparing changes...', { 
-        active: active.id, 
-        over: over?.id,
-        currentPage,
-        ITEMS_PER_PAGE 
-      });
+    if (active.id !== over?.id && over) {
+      console.log('🔍 Moving service from', active.id, 'to', over.id);
       
-      setServices((allServices) => {
-        // Find the dragged items in the current paginated view
-        const paginatedItems = [...paginatedServices];
-        const oldIndex = paginatedItems.findIndex((item) => item.id === active.id);
-        const newIndex = paginatedItems.findIndex((item) => item.id === over?.id);
+      setServices((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
 
-        console.log('📍 Reordering in paginated view:', { 
-          oldIndex, 
-          newIndex, 
-          totalPaginatedItems: paginatedItems.length,
-          paginatedIds: paginatedItems.map(i => i.id)
-        });
+        console.log('🔍 Old index:', oldIndex, 'New index:', newIndex);
 
         if (oldIndex === -1 || newIndex === -1) {
-          console.warn('⚠️ Could not find dragged items in current page');
-          return allServices;
+          console.log('🔴 Invalid indices, aborting drag');
+          return items;
         }
 
-        // Reorder within the paginated view
-        const reorderedPaginated = arrayMove(paginatedItems, oldIndex, newIndex);
+        const newItems = arrayMove(items, oldIndex, newIndex);
         
-        // Calculate the starting sort_order for this page
-        const startingOrder = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-        
-        // Update sort_order for the reordered items
-        const servicesToUpdate = reorderedPaginated.map((item, index) => ({
+        // Create pending changes with new sort orders
+        const newPendingChanges = newItems.map((item, index) => ({
           id: item.id,
-          sort_order: startingOrder + index
+          sort_order: index
         }));
+
+        console.log('🔍 New pending changes:', newPendingChanges);
         
-        console.log('💾 Changes prepared (not saved yet):', servicesToUpdate);
-        console.log('💾 Setting pending changes and hasUnsavedChanges=true');
-        
-        // Store pending changes instead of saving immediately
-        setPendingChanges(servicesToUpdate);
+        setPendingChanges(newPendingChanges);
         setHasUnsavedChanges(true);
-        
-        // Update the full services array with new sort orders
-        const updatedAllServices = allServices.map(service => {
-          const updatedService = servicesToUpdate.find(s => s.id === service.id);
-          return updatedService ? { ...service, sort_order: updatedService.sort_order } : service;
-        });
-        
-        return updatedAllServices;
+
+        return newItems;
       });
     }
   };
@@ -370,7 +342,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const handleDeleteService = (serviceId: string) => {
     if (confirm('Är du säker på att du vill ta bort denna tjänst?')) {
       setServices(prev => prev.filter(service => service.id !== serviceId));
-      toast.success('Tjänst borttagen');
     }
   };
 
@@ -774,7 +745,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                       setPendingChanges([]);
                       setHasUnsavedChanges(false);
                       queryClient.invalidateQueries({ queryKey: ['services'] });
-                      toast.info('Ändringar ångrades');
                     }}
                   >
                     Ångra
