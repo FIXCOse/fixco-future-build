@@ -7,6 +7,7 @@ import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
 import useGlobalROT from "@/hooks/useGlobalROT";
 import useGlobalPricing from "@/hooks/useGlobalPricing";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -23,6 +24,7 @@ interface ComparisonMetric {
 const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const { pricingMode, rotEnabled } = useGlobalPricing();
+  const { t } = useCopy();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Robust once-only counters
@@ -177,10 +179,10 @@ const ComparisonUltra = () => {
           className="text-center mb-6 md:mb-8"
         >
           <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
-            Varför välja Fixco?
+            {t('home.comparison.title')}
           </h2>
           <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
-            Transparent jämförelse som visar varför tusentals kunder väljer oss
+            {t('home.comparison.subtitle')}
           </p>
         </motion.div>
 

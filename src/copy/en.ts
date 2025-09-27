@@ -522,5 +522,10 @@ export const en: Record<CopyKey, string> = {
   'pages.rut.cta.title': 'Ready to save 50% on home services?',
   'pages.rut.cta.description': 'Book a free consultation and we\'ll help you get maximum RUT tax deduction.',
   'pages.rut.cta.bookNow': 'Book home visit now',
-  'pages.rut.cta.requestQuote': 'Request quote'
+  'pages.rut.cta.requestQuote': 'Request quote',
+  'home.comparison.title': 'Why choose Fixco?',
+  'home.comparison.subtitle': 'Transparent comparison showing why thousands of customers choose us',
+  'home.services.title': 'Our main services',
+  'home.services.subtitle': 'From small repairs to large projects – we handle everything professionally',
+  'home.services.viewAll': 'View all services'
 };

@@ -522,5 +522,10 @@ export const sv: Record<CopyKey, string> = {
   'pages.rut.cta.title': 'Redo att spara 50% på hemservice?',
   'pages.rut.cta.description': 'Boka en kostnadsfri konsultation så hjälper vi dig få maximal RUT-avdrag.',
   'pages.rut.cta.bookNow': 'Boka hembesök nu',
-  'pages.rut.cta.requestQuote': 'Begär offert'
+  'pages.rut.cta.requestQuote': 'Begär offert',
+  'home.comparison.title': 'Varför välja Fixco?',
+  'home.comparison.subtitle': 'Transparent jämförelse som visar varför tusentals kunder väljer oss',
+  'home.services.title': 'Våra huvudtjänster',
+  'home.services.subtitle': 'Från små reparationer till stora projekt – vi hanterar allt professionellt',
+  'home.services.viewAll': 'Se alla tjänster'
 };

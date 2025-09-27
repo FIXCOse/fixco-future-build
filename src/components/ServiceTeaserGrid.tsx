@@ -1,14 +1,18 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
+import { useCopy } from '@/copy/CopyProvider';
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { mode, shouldShowService } = usePriceStore();
+  const { t } = useCopy();
+  const location = useLocation();
+  const isEnglish = location.pathname.startsWith('/en');
 
   const services: Array<{
     id: string;
@@ -127,10 +131,11 @@ const ServiceTeaserGrid = () => {
         {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Våra <span className="gradient-text">huvudtjänster</span>
+            <span>{t('home.services.title').split(' ')[0]} </span>
+            <span className="gradient-text">{t('home.services.title').split(' ').slice(1).join(' ')}</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Från små reparationer till stora projekt – vi hanterar allt professionellt
+            {t('home.services.subtitle')}
           </p>
           
           {/* Enhanced Pricing Toggle */}
@@ -142,7 +147,7 @@ const ServiceTeaserGrid = () => {
           {filteredServices.map((service, index) => (
             <Link
               key={`${service.id}-${mode}`}
-              to={`/tjanster/${service.slug}`}
+              to={isEnglish ? `/en/services/${service.slug}` : `/tjanster/${service.slug}`}
               className="group block"
             >
               <ServiceCardV3
@@ -172,8 +177,8 @@ const ServiceTeaserGrid = () => {
             className="group" 
             asChild
           >
-            <Link to="/tjanster">
-              Se alla tjänster
+            <Link to={isEnglish ? '/en/services' : '/tjanster'}>
+              {t('home.services.viewAll')}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </Button>
