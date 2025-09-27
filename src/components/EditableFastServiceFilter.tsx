@@ -15,7 +15,7 @@ import { useServices } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { ServiceEditModal } from './ServiceEditModal';
-import { SimpleDragTest } from './SimpleDragTest';
+import { ModernDragTest } from './ModernDragTest';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -245,15 +245,15 @@ const EditableFastServiceFilter: React.FC<EditableFastServiceFilterProps> = ({
     return <div>Använd FastServiceFilter för normal visning</div>;
   }
 
-  // For now, show the simple drag test instead of the complex service filter
+  // For now, show the modern drag test instead of the complex service filter
   return (
     <div className={`space-y-6 ${className}`}>
       <div className="text-center p-4 bg-primary/10 rounded-lg">
         <p className="text-sm text-muted-foreground mb-2">
-          <strong>Redigeringsläge aktivt</strong> - Test av drag-funktion
+          <strong>Redigeringsläge aktivt</strong> - Test av ny drag-funktion
         </p>
       </div>
-      <SimpleDragTest />
+      <ModernDragTest />
     </div>
   );
 };

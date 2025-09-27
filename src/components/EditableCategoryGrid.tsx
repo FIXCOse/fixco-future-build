@@ -5,7 +5,7 @@ import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useEditMode } from '@/contexts/EditModeContext';
-import { SimpleDragTest } from './SimpleDragTest';
+import { ModernDragTest } from './ModernDragTest';
 import type { CopyKey } from '@/copy/keys';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
@@ -105,8 +105,8 @@ const EditableCategoryGrid = () => {
     );
   }
 
-  // For now, show the simple drag test instead of the complex drag and drop
-  return <SimpleDragTest />;
+  // For now, show the modern drag test instead of the complex drag and drop
+  return <ModernDragTest />;
 };
 
 export default EditableCategoryGrid;
