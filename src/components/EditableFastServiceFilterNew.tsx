@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   DndContext,
   closestCenter,
@@ -14,17 +14,13 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { X, Search, MapPin, GripVertical, Edit, Trash2 } from "lucide-react";
+import { X, Search, MapPin } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@/hooks/useDebounce";
-import ServiceCardV3 from "./ServiceCardV3";
+import { SortableServiceItem } from "./SortableServiceItem";
 import SegmentedPriceToggle from "./SegmentedPriceToggle";
 import { usePriceStore } from "@/stores/priceStore";
 import { useCopy } from '@/copy/CopyProvider';
@@ -37,99 +33,29 @@ import { supabase } from '@/integrations/supabase/client';
 
 const ITEMS_PER_PAGE = 12;
 
-interface SortableServiceItemProps {
-  service: any;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
-  onServiceSelect?: (service: any) => void;
-}
-
-function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: SortableServiceItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: service.id });
-
-  // DEBUG: Log when sortable item is created
-  console.log('🔍 SortableServiceItem created for:', service.id, { isDragging });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`relative ${isDragging ? 'opacity-50 z-50' : ''}`}
-    >
-      {/* Edit Controls */}
-      <div className="absolute top-2 left-2 z-20 flex gap-1">
-        <div
-          {...attributes}
-          {...listeners}
-          className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg cursor-grab active:cursor-grabbing hover:bg-primary/90 touch-none"
-          title="Dra för att flytta"
-          onMouseDown={() => console.log('🔍 Drag handle clicked for:', service.id)}
-          onTouchStart={() => console.log('🔍 Touch started for:', service.id)}
-        >
-          <GripVertical className="h-4 w-4" />
-        </div>
-        <button
-          onClick={() => onEdit(service.id)}
-          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
-          title="Redigera tjänst"
-        >
-          <Edit className="h-4 w-4" />
-        </button>
-        <button
-          onClick={() => onDelete(service.id)}
-          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
-          title="Ta bort tjänst"
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className={`border-2 border-dashed border-primary/30 rounded-lg p-2 ${
-        isDragging ? 'border-primary bg-background' : ''
-      }`}>
-        <ServiceCardV3
-          title={service.title}
-          category={service.category}
-          description={service.description}
-          pricingType={service.priceType as 'hourly' | 'fixed' | 'quote'}
-          priceIncl={service.basePrice}
-          eligible={{
-            rot: service.eligible?.rot || false,
-            rut: service.eligible?.rut || false
-          }}
-          serviceSlug={service.id}
-          serviceId={service.id}
-          onBook={() => {
-            if (onServiceSelect) {
-              onServiceSelect(service);
-            }
-          }}
-          onQuote={() => {
-            if (onServiceSelect) {
-              onServiceSelect(service);
-            }
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 interface EditableFastServiceFilterNewProps {
   onServiceSelect?: (service: any) => void;
   className?: string;
+}
+
+// Reorder services in Supabase
+async function reorderServicesInSupabase(updates: {id: string, sort_order: number}[]) {
+  console.log('🔧 Reordering services in Supabase:', updates);
+  
+  const promises = updates.map(u =>
+    supabase.from('services').update({ sort_order: u.sort_order }).eq('id', u.id)
+  );
+  
+  const results = await Promise.all(promises);
+  const error = results.find(r => r.error)?.error ?? null;
+  
+  if (error) {
+    console.error('❌ Supabase error:', error);
+  } else {
+    console.log('✅ All services updated successfully');
+  }
+  
+  return { error };
 }
 
 const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> = ({ 
@@ -152,43 +78,8 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const { data: servicesFromDB = [], isLoading } = useServices(locale);
   const updateService = useUpdateService();
   
-  // Mutation for bulk reordering services
-  const reorderServices = useMutation({
-    mutationFn: async (servicesToUpdate: { id: string; sort_order: number }[]) => {
-      console.log('🔧 Starting database update for services:', servicesToUpdate);
-      
-      // Update each service individually since we only want to update sort_order
-      for (const service of servicesToUpdate) {
-        console.log(`📝 Updating service ${service.id} with sort_order ${service.sort_order}`);
-        
-        const { data, error } = await supabase
-          .from('services')
-          .update({ sort_order: service.sort_order })
-          .eq('id', service.id)
-          .select();
-        
-        if (error) {
-          console.error('❌ Database error:', error);
-          throw error;
-        }
-        
-        console.log('✅ Updated service:', service.id, data);
-      }
-      return servicesToUpdate;
-    },
-    onSuccess: (data) => {
-      console.log('🎉 All services updated successfully:', data);
-      queryClient.invalidateQueries({ queryKey: ['services'] });
-      setPendingChanges([]);
-      setHasUnsavedChanges(false);
-    },
-    onError: (error) => {
-      console.error('💥 Mutation failed:', error);
-    }
-  });
-  
-  // Convert database services to the expected format and add local state for reordering
-  const [services, setServices] = useState(() => {
+  // Convert database services to the expected format
+  const services = useMemo(() => {
     return servicesFromDB.map(service => ({
       id: service.id,
       title: service.title,
@@ -205,33 +96,9 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       },
       laborShare: 1.0,
       translatedTitle: service.title,
-      translatedDescription: service.description
+      translatedDescription: service.description,
+      sort_order: service.sort_order || 0
     }));
-  });
-
-  // Update services when data changes
-  React.useEffect(() => {
-    if (servicesFromDB.length > 0) {
-      const mappedServices = servicesFromDB.map(service => ({
-        id: service.id,
-        title: service.title,
-        description: service.description,
-        category: service.category,
-        subCategory: service.sub_category || '',
-        priceType: service.price_type,
-        basePrice: service.base_price,
-        priceUnit: service.price_unit,
-        location: service.location,
-        eligible: {
-          rot: service.rot_eligible,
-          rut: service.rut_eligible
-        },
-        laborShare: 1.0,
-        translatedTitle: service.title,
-        translatedDescription: service.description
-      }));
-      setServices(mappedServices);
-    }
   }, [servicesFromDB]);
 
   // Initialize state from URL and sessionStorage
@@ -260,74 +127,114 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   const [currentPage, setCurrentPage] = useState(1);
   const [editingService, setEditingService] = useState<any>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [pendingChanges, setPendingChanges] = useState<{ id: string; sort_order: number }[]>([]);
 
   // Debounced search
   const searchDebounced = useDebounce(searchQuery, 300);
 
+  // CRITICAL: Stable IDs for drag and drop
+  const [ids, setIds] = useState<string[]>(() => 
+    services.map(s => s.id).sort((a, b) => {
+      const serviceA = services.find(s => s.id === a);
+      const serviceB = services.find(s => s.id === b);
+      return (serviceA?.sort_order || 0) - (serviceB?.sort_order || 0);
+    })
+  );
+  
+  const [lastSaved, setLastSaved] = useState<string[]>(() => 
+    services.map(s => s.id).sort((a, b) => {
+      const serviceA = services.find(s => s.id === a);
+      const serviceB = services.find(s => s.id === b);
+      return (serviceA?.sort_order || 0) - (serviceB?.sort_order || 0);
+    })
+  );
+
+  // Update ids when services change
+  React.useEffect(() => {
+    if (services.length > 0) {
+      const sortedIds = services
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+        .map(s => s.id);
+      setIds(sortedIds);
+      setLastSaved(sortedIds);
+    }
+  }, [services]);
+
+  // CRITICAL: Stable items array for SortableContext
+  const stableIds = useMemo(() => ids, [ids]);
+
+  // Check for unsaved changes
+  const hasUnsavedChanges = useMemo(() => {
+    return JSON.stringify(ids) !== JSON.stringify(lastSaved);
+  }, [ids, lastSaved]);
+
+  // CRITICAL: Sensors with proper activation constraint
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8, // 8px drag distance before activating
-      },
+      activationConstraint: { distance: 8 } // 8px drag distance before activating
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
-  // Manual save function
-  const handleManualSave = () => {
-    console.log('🔴 SAVE BUTTON CLICKED!');
-    console.log('🔴 Pending changes:', pendingChanges);
-    console.log('🔴 Has unsaved changes:', hasUnsavedChanges);
-    
-    if (pendingChanges.length > 0) {
-      console.log('🚀 Manually saving changes...', pendingChanges);
-      reorderServices.mutate(pendingChanges);
-    } else {
-      console.log('🔴 NO PENDING CHANGES TO SAVE');
-    }
-  };
-
-  // Drag and drop handlers
-  const handleDragEnd = (event: DragEndEvent) => {
+  // CRITICAL: Drag end handler
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     console.log('🔍 DRAG END EVENT:', event);
     const { active, over } = event;
-
-    if (active.id !== over?.id && over) {
-      console.log('🔍 Moving service from', active.id, 'to', over.id);
-      
-      setServices((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-
-        console.log('🔍 Old index:', oldIndex, 'New index:', newIndex);
-
-        if (oldIndex === -1 || newIndex === -1) {
-          console.log('🔴 Invalid indices, aborting drag');
-          return items;
-        }
-
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        
-        // Create pending changes with new sort orders
-        const newPendingChanges = newItems.map((item, index) => ({
-          id: item.id,
-          sort_order: index
-        }));
-
-        console.log('🔍 New pending changes:', newPendingChanges);
-        
-        setPendingChanges(newPendingChanges);
-        setHasUnsavedChanges(true);
-
-        return newItems;
-      });
+    
+    if (!over || active.id === over.id) {
+      console.log('🔍 No valid drop target or same position');
+      return;
     }
-  };
 
+    console.log('🔍 Moving service from', active.id, 'to', over.id);
+
+    setIds((prev) => {
+      const oldIndex = prev.indexOf(String(active.id));
+      const newIndex = prev.indexOf(String(over.id));
+      
+      console.log('🔍 Indices:', { oldIndex, newIndex });
+      
+      if (oldIndex === -1 || newIndex === -1) {
+        console.log('🔴 Invalid indices, aborting drag');
+        return prev;
+      }
+
+      const newIds = arrayMove(prev, oldIndex, newIndex);
+      console.log('♻️ New order:', newIds);
+      return newIds;
+    });
+  }, []);
+
+  // Save function
+  const handleSave = useCallback(async () => {
+    console.log('🔴 SAVE BUTTON CLICKED!');
+    console.log('🔴 Current IDs:', ids);
+    console.log('🔴 Last saved:', lastSaved);
+    
+    // Create updates with new sort_order
+    const updates = ids.map((id, index) => ({ id, sort_order: index }));
+    console.log('🔴 Updates to save:', updates);
+
+    // Optimistic update
+    const prevSaved = lastSaved;
+    setLastSaved([...ids]);
+
+    const { error } = await reorderServicesInSupabase(updates);
+    if (error) {
+      console.error('💥 Save failed:', error);
+      // Rollback on error
+      setLastSaved(prevSaved);
+      setIds(prevSaved);
+      return;
+    }
+    
+    // Invalidate cache to refetch
+    queryClient.invalidateQueries({ queryKey: ['services'] });
+    console.log('✅ Successfully saved!');
+  }, [ids, lastSaved, queryClient]);
+
+  // Other handlers
   const handleEditService = (serviceId: string) => {
     const service = services.find(s => s.id === serviceId);
     if (service) {
@@ -338,12 +245,13 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
   const handleDeleteService = (serviceId: string) => {
     if (confirm('Är du säker på att du vill ta bort denna tjänst?')) {
-      setServices(prev => prev.filter(service => service.id !== serviceId));
+      // Remove from local state
+      setIds(prev => prev.filter(id => id !== serviceId));
+      // TODO: Also delete from database
     }
   };
 
   const handleSaveService = (updatedService: any) => {
-    // Use the database mutation to save the service
     updateService.mutate({
       id: updatedService.id,
       updates: updatedService
@@ -367,7 +275,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     setSearchParams(newParams, { replace: true });
   }, [searchParams, setSearchParams]);
 
-  // Update handlers
+  // Filter handlers
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setSelectedSubCategories([]);
@@ -383,7 +291,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     setSelectedSubCategories(newSubCats);
     setCurrentPage(1);
     
-    // Store subcategories in sessionStorage
     sessionStorage.setItem('fixco-filter-subCategories', JSON.stringify(newSubCats));
   };
 
@@ -396,7 +303,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
     setSortBy("relevans");
     setCurrentPage(1);
     
-    // Clear URL and storage
     setSearchParams({}, { replace: true });
     ['search', 'category', 'priceType', 'location', 'sort', 'subCategories'].forEach(key => {
       sessionStorage.removeItem(`fixco-filter-${key}`);
@@ -430,7 +336,8 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
 
   // Main filtering logic  
   const filteredServices = useMemo(() => {
-    let filtered = [...services];
+    // Start with services in the current drag order
+    let filtered = ids.map(id => services.find(s => s.id === id)).filter(Boolean) as any[];
 
     // Text search
     if (searchDebounced) {
@@ -473,17 +380,19 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       filtered = filtered.filter(service => service.eligible.rut);
     }
 
-    // Sort
-    if (sortBy === 'pris-låg') {
-      filtered.sort((a, b) => a.basePrice - b.basePrice);
-    } else if (sortBy === 'pris-hög') {
-      filtered.sort((a, b) => b.basePrice - a.basePrice);
-    } else if (sortBy === 'namn') {
-      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    // Sort (only apply when not in edit mode with custom order)
+    if (sortBy !== 'relevans') {
+      if (sortBy === 'pris-låg') {
+        filtered.sort((a, b) => a.basePrice - b.basePrice);
+      } else if (sortBy === 'pris-hög') {
+        filtered.sort((a, b) => b.basePrice - a.basePrice);
+      } else if (sortBy === 'namn') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+      }
     }
 
     return filtered;
-  }, [services, searchDebounced, selectedCategory, selectedSubCategories, selectedPriceType, indoorOutdoor, mode, sortBy]);
+  }, [ids, services, searchDebounced, selectedCategory, selectedSubCategories, selectedPriceType, indoorOutdoor, mode, sortBy]);
 
   // Pagination
   const paginatedServices = useMemo(() => {
@@ -502,9 +411,11 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
   }
 
   if (!isEditMode) {
-    // Return original FastServiceFilter functionality here
     return <div>Använd FastServiceFilter för normal visning</div>;
   }
+
+  console.log('🔍 Rendering with stableIds:', stableIds.slice(0, 5), '...');
+  console.log('🔍 Paginated services:', paginatedServices.map(s => s.id));
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -519,7 +430,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
       <div className="space-y-4">
         {/* Search Row */}
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
@@ -635,7 +545,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
           )}
         </div>
 
-        {/* Sub-category Chips (shown when category is selected) */}
+        {/* Sub-category Chips */}
         {selectedCategory !== 'alla' && subCategories.length > 0 && (
           <div className="flex flex-wrap gap-2 border-t border-border pt-3">
             <span className="text-sm text-muted-foreground mr-2">{t('filter.specialty_areas')}</span>
@@ -666,12 +576,11 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
         </div>
       </div>
 
-      {/* Results with drag and drop */}
+      {/* CRITICAL: Drag and Drop Results */}
       <div className="min-h-[400px]">
         {filteredServices.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             {mode !== 'all' ? (
-              // Empty state for ROT/RUT filtering
               <div className="max-w-md mx-auto">
                 <p className="text-muted-foreground mb-4">
                   {t('filter.no_services_rot_rut')} {mode === 'rot' ? 'ROT' : 'RUT'} {t('filter.with_current_filters')}
@@ -690,7 +599,6 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                 </div>
               </div>
             ) : (
-              // General empty state
               <>
                 <p className="text-muted-foreground mb-4">
                   {t('filter.no_services_general')}
@@ -702,7 +610,7 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
             )}
           </div>
         ) : (
-          <div>
+          <div className="touch-none">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -711,11 +619,12 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                 console.log('🔍 DND DRAG START:', event.active.id);
               }}
             >
-              <SortableContext items={paginatedServices.map(s => s.id)} strategy={rectSortingStrategy}>
+              <SortableContext items={stableIds} strategy={rectSortingStrategy}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {paginatedServices.map((service) => (
                     <SortableServiceItem
                       key={service.id}
+                      id={service.id}
                       service={service}
                       onEdit={handleEditService}
                       onDelete={handleDeleteService}
@@ -725,43 +634,37 @@ const EditableFastServiceFilterNew: React.FC<EditableFastServiceFilterNewProps> 
                 </div>
               </SortableContext>
             </DndContext>
-
-            {/* Fixed save bar at bottom */}
-            {hasUnsavedChanges && (
-              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-gray-200 rounded-xl shadow-xl p-4 flex items-center gap-4">
-                <div>
-                  <p className="font-medium text-gray-900">Osparade ändringar</p>
-                  <p className="text-sm text-gray-600">Tryck spara för att behålla ordningen</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => {
-                      console.log('🔴 UNDO CLICKED');
-                      setPendingChanges([]);
-                      setHasUnsavedChanges(false);
-                      queryClient.invalidateQueries({ queryKey: ['services'] });
-                    }}
-                  >
-                    Ångra
-                  </Button>
-                  <Button 
-                    size="sm"
-                    onClick={() => {
-                      console.log('🔴 SAVE CLICKED FROM BOTTOM BAR');
-                      handleManualSave();
-                    }}
-                    disabled={reorderServices.isPending}
-                  >
-                    {reorderServices.isPending ? 'Sparar...' : 'Spara'}
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
         )}
       </div>
+
+      {/* CRITICAL: Save bar when unsaved changes */}
+      {hasUnsavedChanges && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white/95 backdrop-blur border border-gray-200 rounded-xl shadow-xl p-4 flex items-center gap-4">
+          <div>
+            <p className="font-medium text-gray-900">Osparade ändringar</p>
+            <p className="text-sm text-gray-600">Tryck spara för att behålla ordningen</p>
+          </div>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                console.log('🔴 UNDO CLICKED');
+                setIds([...lastSaved]);
+              }}
+            >
+              Ångra
+            </Button>
+            <Button 
+              size="sm"
+              onClick={handleSave}
+            >
+              Spara
+            </Button>
+          </div>
+        </div>
+      )}
 
       <ServiceEditModal
         isOpen={isEditModalOpen}
