@@ -53,13 +53,6 @@ const ROTCalculator = () => {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 {/* Left: Input Section */}
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Calculator className="h-5 w-5 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Projektets totalkostnad</h3>
-                  </div>
-
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
