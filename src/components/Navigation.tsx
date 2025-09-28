@@ -8,6 +8,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRole } from "@/hooks/useRole";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { ThemeSwitcher } from "./ThemeSwitcher";
+import { useTheme } from "@/theme/useTheme";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import {
@@ -28,6 +30,7 @@ export default function Navigation() {
   const { isAdmin, isOwner } = useRole();
   const { t } = useCopy();
   const { currentLanguage } = useLanguagePersistence();
+  const { theme } = useTheme();
 
   const adminMenuItems = [
     { href: "/admin", label: "Översikt" },
@@ -114,10 +117,10 @@ export default function Navigation() {
               className="inline-flex items-center py-2 group flex-shrink-0"
             >
               <img 
-                src="/assets/fixco-logo-black.png" 
+                src={theme === 'light' ? "/assets/fixco-logo-black.png" : "/assets/fixco-logo-black.png"} 
                 alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
                 className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
-                style={{ minWidth: '80px', maxWidth: '140px' }}
+                style={{ minWidth: '80px', maxWidth: '140px', filter: theme === 'light' ? 'none' : 'invert(1) brightness(2)' }}
               />
             </Link>
           </div>
@@ -145,8 +148,11 @@ export default function Navigation() {
           {/* Right: Actions with Proper Spacing */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+            {/* Language & Theme Switchers */}
+            <div className="flex items-center space-x-2">
+              <LanguageSwitcher />
+              <ThemeSwitcher />
+            </div>
             
             {/* Contact - Desktop Only */}
             <a 
@@ -173,7 +179,7 @@ export default function Navigation() {
                         <ChevronDown className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 bg-background border border-border shadow-lg z-50">
+                    <DropdownMenuContent align="end" className="w-56 bg-card border-border shadow-card z-50">
                       <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {adminMenuItems.slice(0, 6).map((adminItem) => (
@@ -309,6 +315,12 @@ export default function Navigation() {
                   <Phone className="h-4 w-4" />
                   <span>08-123 456 78</span>
                 </a>
+
+                {/* Mobile Language & Theme Switchers */}
+                <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
+                  <LanguageSwitcher />
+                  <ThemeSwitcher />
+                </div>
 
                 {user ? (
                   <div className="space-y-2 px-4">

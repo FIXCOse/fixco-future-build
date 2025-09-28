@@ -16,65 +16,62 @@
 /* Premium Fixco Design System - Light theme with calm indigo accents */
 
 @layer base {
-  :root {
+  /* ===== Base tokens that Tailwind classes read ===== */
+  :root, [data-theme] {
     /* Brand colors (accent) */
     --primary-h: 258;
     --primary-s: 90%;
     --primary-l: 64%;
-    --secondary-h: 200;
-    --secondary-s: 90%;
-    --secondary-l: 60%;
 
-    /* Dark theme - comfortable black foundation */
-    --background: 240 8% 7%;
+    /* Text */
     --foreground: 220 14% 92%;
+    --muted-fg: 220 10% 70%;
 
-    --card: 240 6% 11%;
-    --card-foreground: 220 14% 92%;
-
-    --popover: 240 6% 11%;
-    --popover-foreground: 220 14% 92%;
-
-    --primary: 258 90% 64%;
-    --primary-foreground: 0 0% 100%;
-    --primary-muted: 258 70% 75%;
-
-    --secondary: 240 5% 14%;
-    --secondary-foreground: 220 14% 92%;
-
-    --muted: 240 5% 14%;
-    --muted-foreground: 220 10% 70%;
-
-    --accent: 142 72% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 240 5% 24%;
-    --input: 240 5% 14%;
-    --ring: 258 90% 64%;
-
-    --radius: 0.75rem;
-
-    /* Surface variants for dark theme */
+    /* Surfaces */
+    --background: 240 8% 7%;
     --surface: 240 6% 11%;
     --surface-2: 240 5% 14%;
+    --border: 240 5% 24%;
+
+    /* Status */
+    --success: 142 72% 45%;
+    --warning: 32 100% 65%;
+    --destructive: 0 84% 60%;
+
+    /* Derived tokens for shadcn compatibility */
+    --card: var(--surface);
+    --card-foreground: var(--foreground);
+    --popover: var(--surface);
+    --popover-foreground: var(--foreground);
+    --primary: var(--primary-h) var(--primary-s) var(--primary-l);
+    --primary-foreground: 0 0% 100%;
+    --primary-muted: var(--primary-h) 70% 75%;
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--foreground);
+    --muted: var(--surface-2);
+    --muted-foreground: var(--muted-fg);
+    --accent: var(--success);
+    --accent-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 100%;
+    --input: var(--surface-2);
+    --ring: var(--primary-h) var(--primary-s) var(--primary-l);
+
+    --radius: 0.75rem;
 
     /* ServiceCard v3 Design System */
     --card-bg: hsl(var(--surface));
     --card-border: hsl(var(--border));
-    --good-text: 142 60% 60%;
+    --good-text: var(--success);
 
-    /* Dark theme gradients - subtle and professional */
-    --gradient-primary: linear-gradient(135deg, hsl(258 90% 64%) 0%, hsl(258 85% 68%) 100%);
-    --gradient-primary-subtle: linear-gradient(135deg, hsl(258 90% 64% / 0.1) 0%, hsl(258 85% 68% / 0.15) 100%);
-    --gradient-primary-glow: linear-gradient(135deg, hsl(258 90% 64% / 0.2) 0%, hsl(258 85% 68% / 0.15) 100%);
+    /* Dynamic gradients based on theme */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l)) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%)) 100%);
+    --gradient-primary-subtle: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%) / 0.15) 100%);
+    --gradient-primary-glow: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%) / 0.15) 100%);
     
-    /* Professional dark shadows */
-    --shadow-premium: 0 4px 20px -4px hsl(258 90% 64% / 0.15);
-    --shadow-glow: 0 0 40px hsl(258 90% 64% / 0.1);
-    --shadow-card: 0 2px 12px hsl(240 8% 7% / 0.3);
+    /* Professional shadows */
+    --shadow-premium: 0 4px 20px -4px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
+    --shadow-card: 0 2px 12px hsl(var(--background) / 0.3);
 
     /* Animation timings */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,18 +84,60 @@
 
     --radius: 0.75rem;
 
-    --sidebar-background: 240 5% 14%;
-    --sidebar-foreground: 220 14% 92%;
-    --sidebar-primary: 258 90% 64%;
+    --sidebar-background: var(--surface-2);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 5% 18%;
-    --sidebar-accent-foreground: 220 14% 92%;
-    --sidebar-border: 240 5% 24%;
-    --sidebar-ring: 258 90% 64%;
+    --sidebar-accent: var(--surface);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 
-  /* Remove light theme (now using dark as default) */
-  .dark {
+  /* ===== THEME 1: DARK (default) – soft black ===== */
+  [data-theme="dark"] {
+    --foreground: 220 14% 92%;
+    --muted-fg: 220 10% 70%;
+    --background: 240 8% 7%;
+    --surface: 240 6% 11%;
+    --surface-2: 240 5% 14%;
+    --border: 240 5% 24%;
+
+    --primary-h: 258;
+    --primary-s: 90%;
+    --primary-l: 64%;
+  }
+
+  /* ===== THEME 2: LIGHT – paper/white-gray ===== */
+  [data-theme="light"] {
+    --foreground: 222 22% 12%;
+    --muted-fg: 222 12% 40%;
+    --background: 0 0% 100%;
+    --surface: 220 20% 98%;
+    --surface-2: 220 16% 96%;
+    --border: 220 14% 90%;
+
+    --primary-h: 258;
+    --primary-s: 90%;
+    --primary-l: 54%; /* darker for better contrast */
+  }
+
+  /* ===== THEME 3: OCEAN – deep blue-black ===== */
+  [data-theme="ocean"] {
+    --foreground: 210 14% 94%;
+    --muted-fg: 210 10% 72%;
+    --background: 215 27% 10%;
+    --surface: 215 23% 13%;
+    --surface-2: 215 20% 16%;
+    --border: 215 15% 26%;
+
+    --primary-h: 200;
+    --primary-s: 90%;
+    --primary-l: 60%;
+  }
+
+  /* Remove dark mode overrides - now using theme-based switching */
+  .light-theme-legacy {
     --background: 222 15% 7%;
     --foreground: 0 0% 98%;
 
@@ -152,7 +191,23 @@
   }
 }
 
+  /* Helper utility classes for themes */
+  .bg-background  { background-color: hsl(var(--background)); }
+  .bg-surface     { background-color: hsl(var(--surface)); }
+  .bg-surface-2   { background-color: hsl(var(--surface-2)); }
+  .text-foreground{ color: hsl(var(--foreground)); }
+  .text-muted     { color: hsl(var(--muted-fg)); }
+  .border-border  { border-color: hsl(var(--border)); }
+
 @layer components {
+  /* Theme utility classes */
+  .bg-background  { background-color: hsl(var(--background)); }
+  .bg-surface     { background-color: hsl(var(--surface)); }
+  .bg-surface-2   { background-color: hsl(var(--surface-2)); }
+  .text-foreground{ color: hsl(var(--foreground)); }
+  .text-muted     { color: hsl(var(--muted-fg)); }
+  .border-border  { border-color: hsl(var(--border)); }
+
   /* Premium gradient backgrounds */
   .gradient-primary {
     background: var(--gradient-primary);
@@ -227,8 +282,8 @@
 }
 
 @keyframes glow {
-  from { box-shadow: 0 0 20px hsl(258 90% 64% / 0.2); }
-  to { box-shadow: 0 0 30px hsl(258 90% 64% / 0.3); }
+  from { box-shadow: 0 0 20px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2); }
+  to { box-shadow: 0 0 30px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.3); }
 }
 
 @keyframes fadeInUp {
