@@ -33,6 +33,8 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
   return useQuery({
     queryKey: ['services', locale],
     queryFn: async (): Promise<ServiceWithTranslations[]> => {
+      console.log('Fetching services for locale:', locale);
+      
       const { data, error } = await supabase
         .from('services')
         .select('*')
@@ -40,7 +42,12 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
         .order('category')
         .order('sort_order');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching services:', error);
+        throw error;
+      }
+
+      console.log('Services fetched:', data?.length || 0);
 
       // Add localized title and description
       return data.map(service => ({
@@ -52,6 +59,8 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
         translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
       }));
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -92,6 +101,8 @@ export const useAddService = () => {
 
   return useMutation({
     mutationFn: async (serviceData: Omit<Service, 'created_at' | 'updated_at' | 'translation_status'>) => {
+      console.log('Adding new service:', serviceData);
+      
       const { data, error } = await supabase
         .from('services')
         .insert([{
@@ -105,9 +116,11 @@ export const useAddService = () => {
         .single();
 
       if (error) {
-        console.error('Service insert error:', error);
+        console.error('Add service error:', error);
         throw error;
       }
+
+      console.log('Service added successfully:', data);
 
       // Trigger automatic translation
       try {
@@ -122,12 +135,14 @@ export const useAddService = () => {
       return data;
     },
     onSuccess: (data) => {
+      // Invalidate and refetch all services
       queryClient.invalidateQueries({ queryKey: ['services'] });
-      toast.success('Ny tjänst tillagd framgångsrikt!');
-      console.log('Service added successfully:', data);
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ['services'] });
+      toast.success('Tjänst tillagd! Översättning pågår...');
     },
     onError: (error) => {
-      console.error('Service add failed:', error);
+      console.error('Add service error:', error);
       toast.error('Fel vid tillägg av tjänst: ' + error.message);
     }
   });
@@ -139,6 +154,8 @@ export const useUpdateService = () => {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<Service> }) => {
+      console.log('Updating service:', id, updates);
+      
       const { data, error } = await supabase
         .from('services')
         .update({
@@ -152,32 +169,80 @@ export const useUpdateService = () => {
         .single();
 
       if (error) {
-        console.error('Service update error:', error);
+        console.error('Update error:', error);
         throw error;
       }
 
+      console.log('Service updated successfully:', data);
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log('Update mutation succeeded, invalidating cache...');
+      
+      // Invalidate all services queries to force refresh
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ['services'] });
+      
+      toast.success('Tjänst uppdaterad och sparad!');
+
       // Trigger re-translation if Swedish text was updated
-      if (updates.title_sv || updates.description_sv) {
+      if (data.title_sv || data.description_sv) {
         try {
-          await supabase.functions.invoke('translate-service', {
-            body: { service_id: id }
+          supabase.functions.invoke('translate-service', {
+            body: { service_id: data.id }
           });
         } catch (translationError) {
           console.warn('Auto-translation failed:', translationError);
         }
       }
-
-      return data;
-    },
-    onSuccess: (data) => {
-      // Invalidate both the general services query and category-specific queries
-      queryClient.invalidateQueries({ queryKey: ['services'] });
-      toast.success('Tjänst uppdaterad framgångsrikt!');
-      console.log('Service updated successfully:', data);
     },
     onError: (error) => {
-      console.error('Service update failed:', error);
-      toast.error('Fel vid uppdatering av tjänst: ' + error.message);
+      console.error('Update service error:', error);
+      toast.error('Fel vid uppdatering: ' + error.message);
+    }
+  });
+};
+
+// Hook to delete service (soft delete)
+export const useDeleteService = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      console.log('Soft deleting service:', id);
+      
+      const { data, error } = await supabase
+        .from('services')
+        .update({ 
+          is_active: false,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Delete error:', error);
+        throw error;
+      }
+
+      console.log('Service deleted successfully:', data);
+      return data;
+    },
+    onSuccess: () => {
+      console.log('Delete mutation succeeded, invalidating cache...');
+      
+      // Invalidate all services queries to force refresh
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ['services'] });
+      
+      toast.success('Tjänst borttagen!');
+    },
+    onError: (error) => {
+      console.error('Delete service error:', error);
+      toast.error('Fel vid borttagning: ' + error.message);
     }
   });
 };
@@ -212,6 +277,7 @@ export const useTranslateAllPending = () => {
     },
     onSuccess: (results) => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
+      queryClient.refetchQueries({ queryKey: ['services'] });
       toast.success(`Översättning klar! ${results.successful} lyckades, ${results.failed} misslyckades.`);
     },
     onError: (error) => {

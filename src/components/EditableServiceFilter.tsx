@@ -10,7 +10,7 @@ import SegmentedPriceToggle from "./SegmentedPriceToggle";
 import { usePriceStore } from "@/stores/priceStore";
 import { toast } from "sonner";
 import { useCopy } from '@/copy/CopyProvider';
-import { useServices, useUpdateService, useAddService } from '@/hooks/useServices';
+import { useServices, useUpdateService, useAddService, useDeleteService } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
 import { ServiceEditModal } from './ServiceEditModal';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -35,9 +35,10 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   const { mode } = usePriceStore();
   
   // Get services from database
-  const { data: servicesFromDB = [], isLoading } = useServices(locale);
+  const { data: servicesFromDB = [], isLoading, refetch } = useServices(locale);
   const updateService = useUpdateService();
   const addService = useAddService();
+  const deleteService = useDeleteService();
   
   // Convert database services to the expected format
   const allServices = useMemo(() => {
@@ -249,15 +250,10 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
     if (!confirm('Är du säker på att du vill ta bort denna tjänst?')) return;
     
     try {
-      const { error } = await supabase
-        .from('services')
-        .update({ is_active: false })
-        .eq('id', serviceId);
-      
-      if (error) throw error;
-      
-      toast.success('Tjänst borttagen');
+      console.log('Deleting service:', serviceId);
+      deleteService.mutate(serviceId);
     } catch (error) {
+      console.error('Delete service error:', error);
       toast.error('Fel vid borttagning: ' + (error as Error).message);
     }
   };
