@@ -73,44 +73,6 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Interactive Project Visualization */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('services.visualize_project')}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('services.visualize_description')}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
-            <Project3DVisualizer projectType="bathroom" />
-            <BeforeAfterSlider projectType="kitchen" />
-            <div className="space-y-6">
-              <div className="p-6 border rounded-lg">
-                 <h3 className="font-bold mb-2 flex items-center gap-2">
-                   <span className="text-2xl">🌱</span>
-                   {t('services.eco_score')}
-                 </h3>
-                <EcoScoreDisplay score={85} showDetails={true} />
-                 <p className="text-sm text-muted-foreground mt-3">
-                   {t('project.eco_performance')}
-                 </p>
-              </div>
-              
-               <div className="p-4 bg-primary/5 rounded-lg">
-                 <h4 className="font-medium mb-2">{t('smartHome.smart_features')}</h4>
-                 <ul className="text-sm text-muted-foreground space-y-1">
-                   <li>• 3D-{t('services.preview').toLowerCase()}</li>
-                   <li>• {t('project.ai_results')}</li>
-                   <li>• {t('project.environmental_impact')}</li>
-                   <li>• {t('project.rot_rut_optimization')}</li>
-                 </ul>
-               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       {/* ROT Info Section */}
