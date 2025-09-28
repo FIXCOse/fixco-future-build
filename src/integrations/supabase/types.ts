@@ -2508,7 +2508,6 @@ export type Database = {
       booking_summary: {
         Row: {
           base_price: number | null
-          contact_email: string | null
           contact_name: string | null
           created_at: string | null
           customer_id: string | null
@@ -2520,10 +2519,9 @@ export type Database = {
         }
         Insert: {
           base_price?: number | null
-          contact_email?: never
-          contact_name?: never
+          contact_name?: string | null
           created_at?: string | null
-          customer_id?: never
+          customer_id?: string | null
           final_price?: number | null
           id?: string | null
           scheduled_date?: string | null
@@ -2532,17 +2530,24 @@ export type Database = {
         }
         Update: {
           base_price?: number | null
-          contact_email?: never
-          contact_name?: never
+          contact_name?: string | null
           created_at?: string | null
-          customer_id?: never
+          customer_id?: string | null
           final_price?: number | null
           id?: string | null
           scheduled_date?: string | null
           service_name?: string | null
           status?: Database["public"]["Enums"]["booking_status"] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookings_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
