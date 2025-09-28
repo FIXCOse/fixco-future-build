@@ -22,6 +22,8 @@ import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
+import Insurance from "./pages/Insurance";
 import ScrollToTop from "./components/ScrollToTop";
 import AIChat from "./components/AIChat";
 import SecurityWrapper from "./components/SecurityWrapper";
@@ -230,6 +232,8 @@ const App = () => {
                     } />
                     <Route path="terms" element={<Terms />} />
                     <Route path="privacy" element={<Privacy />} />
+                    <Route path="cookies" element={<Cookies />} />
+                    <Route path="ansvar-forsakring" element={<Insurance />} />
                   </Route>
                   
                   <Route path="/en/*" element={<AppLayout locale="en" />}>
@@ -242,6 +246,8 @@ const App = () => {
                     <Route path="references" element={<Referenser />} />
                     <Route path="terms" element={<Terms />} />
                     <Route path="privacy" element={<Privacy />} />
+                    <Route path="cookies" element={<Cookies />} />
+                    <Route path="insurance" element={<Insurance />} />
                     <Route path="rot" element={<ROTInfo />} />
                     <Route path="rut" element={<RUT />} />
                     <Route path="book-visit" element={<BookVisit />} />

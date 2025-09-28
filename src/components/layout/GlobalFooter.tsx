@@ -186,10 +186,26 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                 </li>
                 <li>
                   <Link 
+                    to={`${basePath}/${isEnglish ? 'insurance' : 'ansvar-forsakring'}`} 
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {isEnglish ? "Insurance" : "Ansvar & Försäkring"}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     to={`${basePath}/rot`} 
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {t('rot')}
+                    ROT
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to={`${basePath}/rut`} 
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    RUT
                   </Link>
                 </li>
               </ul>
