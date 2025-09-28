@@ -8,9 +8,9 @@ const Hero = () => {
   const { t } = useCopy();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated gradient background */}
+      {/* Static background */}
       <div className="absolute inset-0 hero-background">
-        <div className="absolute inset-0 bg-gradient-primary opacity-5" />
+        <div className="absolute inset-0 bg-primary/5" />
       </div>
       
       {/* Hero image with overlay */}
@@ -20,7 +20,7 @@ const Hero = () => {
           alt="Professional construction work" 
           className="w-full h-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-background/80" />
       </div>
 
       {/* Content */}
@@ -28,11 +28,11 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="gradient-text">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
-              <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
+              <span className="text-primary">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
+              <span className="text-primary">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
               <br />
               <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-              <span className="gradient-text">{t('hero.everything')}</span>
+              <span className="text-primary">{t('hero.everything')}</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">

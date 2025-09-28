@@ -16,15 +16,12 @@ export const useTheme = create<ThemeState>((set, get) => ({
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem(STORAGE_KEY, t);
     
-    // Update meta theme-color for mobile
+    // Update meta theme-color for mobile - remove setTimeout to prevent periodic updates
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
     if (meta) {
-      // Get the computed background color after theme change
-      setTimeout(() => {
-        const css = getComputedStyle(document.documentElement);
-        const bg = css.getPropertyValue('--background').trim();
-        meta.content = `hsl(${bg})`;
-      }, 0);
+      const css = getComputedStyle(document.documentElement);
+      const bg = css.getPropertyValue('--background').trim();
+      meta.content = `hsl(${bg})`;
     }
   },
   init: () => {
