@@ -263,24 +263,32 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   };
 
   const handleSaveService = (updatedService: any) => {
-    const serviceData = servicesFromDB.find(s => s.id === updatedService.id);
-    if (serviceData) {
-      updateService.mutate({
-        id: updatedService.id,
-        updates: {
-          title_sv: updatedService.title,
-          description_sv: updatedService.description,
-          category: updatedService.category,
-          price_type: updatedService.priceType,
-          base_price: updatedService.basePrice
-        }
-      });
-    }
+    console.log('Saving service:', updatedService);
+    updateService.mutate({
+      id: updatedService.id,
+      updates: {
+        title_sv: updatedService.title,
+        description_sv: updatedService.description,
+        category: updatedService.category,
+        sub_category: updatedService.subCategory,
+        price_type: updatedService.priceType,
+        base_price: updatedService.basePrice,
+        rot_eligible: updatedService.eligible?.rot || false,
+        rut_eligible: updatedService.eligible?.rut || false,
+        location: updatedService.location || 'båda',
+        price_unit: updatedService.priceUnit || 'kr/tim'
+      }
+    });
   };
 
   const handleAddNewService = () => {
+    console.log('Adding new service:', newServiceData);
+    
+    // Generate unique ID using timestamp + random
+    const newId = `${newServiceData.category}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
     addService.mutate({
-      id: crypto.randomUUID(),
+      id: newId,
       ...newServiceData,
       is_active: true
     });

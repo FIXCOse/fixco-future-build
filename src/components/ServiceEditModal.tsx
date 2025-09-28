@@ -60,8 +60,8 @@ export const ServiceEditModal: React.FC<ServiceEditModalProps> = ({
       ...formData
     };
     
+    console.log('ServiceEditModal - Saving service:', updatedService);
     onSave(updatedService);
-    toast.success('Tjänst uppdaterad');
     onClose();
   };
 

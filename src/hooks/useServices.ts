@@ -97,12 +97,17 @@ export const useAddService = () => {
         .insert([{
           ...serviceData,
           translation_status: 'pending',
-          is_active: true
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         }])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Service insert error:', error);
+        throw error;
+      }
 
       // Trigger automatic translation
       try {
@@ -116,11 +121,13 @@ export const useAddService = () => {
 
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
-      toast.success('Tjänst tillagd! Översättning pågår...');
+      toast.success('Ny tjänst tillagd framgångsrikt!');
+      console.log('Service added successfully:', data);
     },
     onError: (error) => {
+      console.error('Service add failed:', error);
       toast.error('Fel vid tillägg av tjänst: ' + error.message);
     }
   });
@@ -137,13 +144,17 @@ export const useUpdateService = () => {
         .update({
           ...updates,
           // Reset translation status if Swedish text was changed
-          translation_status: (updates.title_sv || updates.description_sv) ? 'pending' : undefined
+          translation_status: (updates.title_sv || updates.description_sv) ? 'pending' : undefined,
+          updated_at: new Date().toISOString()
         })
         .eq('id', id)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Service update error:', error);
+        throw error;
+      }
 
       // Trigger re-translation if Swedish text was updated
       if (updates.title_sv || updates.description_sv) {
@@ -158,12 +169,15 @@ export const useUpdateService = () => {
 
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Invalidate both the general services query and category-specific queries
       queryClient.invalidateQueries({ queryKey: ['services'] });
-      toast.success('Tjänst uppdaterad!');
+      toast.success('Tjänst uppdaterad framgångsrikt!');
+      console.log('Service updated successfully:', data);
     },
     onError: (error) => {
-      toast.error('Fel vid uppdatering: ' + error.message);
+      console.error('Service update failed:', error);
+      toast.error('Fel vid uppdatering av tjänst: ' + error.message);
     }
   });
 };
