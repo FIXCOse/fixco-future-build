@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { useContentStore } from '@/stores/contentStore';
 
 interface SectionEditorProps {
   sectionId: string;
@@ -33,19 +34,30 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
   initialData = {},
   onSave
 }) => {
+  const { updateSection, getSection } = useContentStore();
+  
+  // Load saved section data
+  const savedSection = getSection(sectionId);
+  const mergedData = { ...initialData, ...savedSection };
+  
   const [formData, setFormData] = useState({
-    title: initialData.title || '',
-    backgroundColor: initialData.backgroundColor || '',
-    textColor: initialData.textColor || '',
-    padding: initialData.padding || 'default',
-    margin: initialData.margin || 'default',
-    visibility: initialData.visibility !== false,
-    customCss: initialData.customCss || '',
+    title: mergedData.title || '',
+    backgroundColor: mergedData.backgroundColor || '',
+    textColor: mergedData.textColor || '',
+    padding: mergedData.padding || 'default',
+    margin: mergedData.margin || 'default',
+    visibility: mergedData.visibility !== false,
+    customCss: mergedData.customCss || '',
   });
 
   const handleSave = () => {
+    // Save to store
+    updateSection(sectionId, formData);
+    
+    // Call parent callback
     onSave(formData);
-    toast.success('Sektion uppdaterad');
+    
+    toast.success('Sektion uppdaterad och sparad!');
     onClose();
   };
 

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableSection } from "@/components/EditableSection";
+import { ContextualEditor } from "@/components/ContextualEditor";
 
 const Home = () => {
   console.log("Home component rendering...");
@@ -25,32 +26,44 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section - ULTRA Enhanced */}
       <EditableSection id="hero" title="Hero sektion">
-        <HeroUltra />
+        <ContextualEditor contentId="hero-section" type="heading">
+          <HeroUltra />
+        </ContextualEditor>
       </EditableSection>
 
       {/* Trust Bar */}
       <EditableSection id="trust-bar" title="Förtroende bar">
-        <TrustBar />
+        <ContextualEditor contentId="trust-bar-section">
+          <TrustBar />
+        </ContextualEditor>
       </EditableSection>
 
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
-        <ComparisonUltra />
+        <ContextualEditor contentId="comparison-section">
+          <ComparisonUltra />
+        </ContextualEditor>
       </EditableSection>
 
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
-        <ServiceTeaserGrid />
+        <ContextualEditor contentId="services-section">
+          <ServiceTeaserGrid />
+        </ContextualEditor>
       </EditableSection>
 
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
-        <ProjectShowcase />
+        <ContextualEditor contentId="projects-section">
+          <ProjectShowcase />
+        </ContextualEditor>
       </EditableSection>
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
-        <FAQTeaser />
+        <ContextualEditor contentId="faq-section">
+          <FAQTeaser />
+        </ContextualEditor>
       </EditableSection>
 
     </div>

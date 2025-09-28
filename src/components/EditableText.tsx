@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { ContentEditor } from './ContentEditor';
+import { AdvancedTextEditor } from './AdvancedTextEditor';
+import { useContentStore } from '@/stores/contentStore';
 
 interface EditableTextProps {
   id: string;
@@ -25,47 +27,134 @@ export const EditableText: React.FC<EditableTextProps> = ({
 }) => {
   const { isEditMode } = useEditMode();
   const [content, setContent] = useState(initialContent);
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
+  const { updateContent, getContent } = useContentStore();
+
+  // Load saved content and styles
+  const savedContent = getContent(id);
+  const displayContent = savedContent?.value as string || content;
+  const textStyles = savedContent?.styles || {};
 
   const handleSave = (newContent: any) => {
-    setContent(newContent.value);
+    const newText = typeof newContent === 'string' ? newContent : newContent.value;
+    setContent(newText);
+    
+    // Save to store
+    updateContent(id, {
+      id,
+      type,
+      value: newText,
+      styles: textStyles
+    });
+    
     if (onSave) {
-      onSave(newContent.value);
+      onSave(newText);
+    }
+  };
+
+  const handleAdvancedSave = (text: string, styles: any) => {
+    setContent(text);
+    
+    // Save to store with styles
+    updateContent(id, {
+      id,
+      type,
+      value: text,
+      styles
+    });
+    
+    if (onSave) {
+      onSave(text);
+    }
+  };
+
+  const handleDoubleClick = () => {
+    if (isEditMode) {
+      setShowAdvancedEditor(true);
     }
   };
 
   const contentConfig = {
     id,
     type,
-    value: content,
+    value: displayContent,
     placeholder
+  };
+
+  // Apply saved styles
+  const inlineStyles: React.CSSProperties = {
+    fontSize: textStyles.fontSize,
+    fontWeight: textStyles.fontWeight as any,
+    color: textStyles.color,
+    fontFamily: textStyles.fontFamily,
+    textAlign: textStyles.textAlign as any,
+    lineHeight: textStyles.lineHeight,
+    letterSpacing: textStyles.letterSpacing,
+    textDecoration: textStyles.textDecoration as any,
+    textTransform: textStyles.textTransform as any,
+    fontStyle: textStyles.fontStyle as any,
+    cursor: isEditMode ? 'pointer' : 'default'
   };
 
   if (children) {
     return (
+      <>
+        <ContentEditor
+          content={contentConfig}
+          onSave={handleSave}
+          className={className}
+        >
+          <div 
+            style={inlineStyles}
+            onDoubleClick={handleDoubleClick}
+            title={isEditMode ? "Dubbelklicka för avancerad redigering" : undefined}
+          >
+            {children}
+          </div>
+        </ContentEditor>
+        
+        <AdvancedTextEditor
+          isOpen={showAdvancedEditor}
+          onClose={() => setShowAdvancedEditor(false)}
+          contentId={id}
+          initialText={displayContent}
+          initialStyles={textStyles}
+          onSave={handleAdvancedSave}
+        />
+      </>
+    );
+  }
+
+  // Create element with proper typing and styles
+  const element = React.createElement(
+    Component,
+    { 
+      className,
+      style: inlineStyles,
+      onDoubleClick: handleDoubleClick,
+      title: isEditMode ? "Dubbelklicka för avancerad redigering" : undefined
+    },
+    displayContent || placeholder
+  );
+
+  return (
+    <>
       <ContentEditor
         content={contentConfig}
         onSave={handleSave}
         className={className}
       >
-        {children}
+        {element}
       </ContentEditor>
-    );
-  }
-
-  // Create element with proper typing
-  const element = React.createElement(
-    Component,
-    { className },
-    content || placeholder
-  );
-
-  return (
-    <ContentEditor
-      content={contentConfig}
-      onSave={handleSave}
-      className={className}
-    >
-      {element}
-    </ContentEditor>
+      
+      <AdvancedTextEditor
+        isOpen={showAdvancedEditor}
+        onClose={() => setShowAdvancedEditor(false)}
+        contentId={id}
+        initialText={displayContent}
+        initialStyles={textStyles}
+        onSave={handleAdvancedSave}
+      />
+    </>
   );
 };

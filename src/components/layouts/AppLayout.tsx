@@ -7,6 +7,7 @@ import Navigation from '../Navigation';
 import AIChat from '../AIChat';
 import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
+import EditModeIndicator from '../EditModeIndicator';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
@@ -33,6 +34,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <AIChat />
             <EditModeToggle />
             <GlobalContentEditor />
+            <EditModeIndicator />
             <ModalHost />
           </div>
         </EditModeProvider>

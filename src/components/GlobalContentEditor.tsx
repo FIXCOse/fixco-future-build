@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useEditMode } from '@/contexts/EditModeContext';
 import { useRoleGate } from '@/hooks/useRoleGate';
 import { toast } from 'sonner';
+import { useContentStore } from '@/stores/contentStore';
 
 interface GlobalSettings {
   siteName: string;
@@ -29,30 +30,25 @@ interface GlobalSettings {
 export const GlobalContentEditor: React.FC = () => {
   const { isEditMode } = useEditMode();
   const { isAdmin, isOwner } = useRoleGate();
+  const { updateGlobalSettings, globalSettings } = useContentStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [settings, setSettings] = useState<GlobalSettings>({
-    siteName: 'Fixco',
-    siteDescription: 'Professionella hemtjänster för ditt hem',
-    contactEmail: 'info@fixco.se',
-    contactPhone: '08-123 456 78',
-    primaryColor: '#3b82f6',
-    secondaryColor: '#64748b',
-    logoUrl: '/assets/fixco-logo-black.png',
-    faviconUrl: '/favicon.ico',
-    maintenanceMode: false,
-    analyticsEnabled: true,
-    chatEnabled: true
-  });
+  const [settings, setSettings] = useState(globalSettings);
 
   if (!isEditMode || (!isAdmin && !isOwner)) {
     return null;
   }
 
   const handleSave = () => {
-    // Here you would save to your database/CMS
-    console.log('Saving global settings:', settings);
-    toast.success('Globala inställningar sparade');
+    // Save to store
+    updateGlobalSettings(settings);
+    
+    toast.success('Globala inställningar sparade!');
     setIsOpen(false);
+    
+    // Apply settings immediately if needed
+    if (settings.primaryColor) {
+      document.documentElement.style.setProperty('--primary', settings.primaryColor);
+    }
   };
 
   const updateSetting = (key: keyof GlobalSettings, value: any) => {
