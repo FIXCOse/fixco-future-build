@@ -661,13 +661,6 @@ export type Database = {
             foreignKeyName: "invoices_booking_id_fkey"
             columns: ["booking_id"]
             isOneToOne: false
-            referencedRelation: "booking_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "invoices_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
@@ -954,13 +947,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "loyalty_transactions_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "booking_summary"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "loyalty_transactions_booking_id_fkey"
             columns: ["booking_id"]
@@ -1542,13 +1528,6 @@ export type Database = {
           vat_amount?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_quotes_source_booking"
-            columns: ["source_booking_id"]
-            isOneToOne: false
-            referencedRelation: "booking_summary"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "fk_quotes_source_booking"
             columns: ["source_booking_id"]
@@ -2285,13 +2264,6 @@ export type Database = {
             foreignKeyName: "voucher_usage_booking_id_fkey"
             columns: ["booking_id"]
             isOneToOne: false
-            referencedRelation: "booking_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "voucher_usage_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
@@ -2422,13 +2394,6 @@ export type Database = {
             foreignKeyName: "work_orders_booking_id_fkey"
             columns: ["booking_id"]
             isOneToOne: false
-            referencedRelation: "booking_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "work_orders_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
@@ -2505,50 +2470,7 @@ export type Database = {
       }
     }
     Views: {
-      booking_summary: {
-        Row: {
-          base_price: number | null
-          contact_name: string | null
-          created_at: string | null
-          customer_id: string | null
-          final_price: number | null
-          id: string | null
-          scheduled_date: string | null
-          service_name: string | null
-          status: Database["public"]["Enums"]["booking_status"] | null
-        }
-        Insert: {
-          base_price?: number | null
-          contact_name?: string | null
-          created_at?: string | null
-          customer_id?: string | null
-          final_price?: number | null
-          id?: string | null
-          scheduled_date?: string | null
-          service_name?: string | null
-          status?: Database["public"]["Enums"]["booking_status"] | null
-        }
-        Update: {
-          base_price?: number | null
-          contact_name?: string | null
-          created_at?: string | null
-          customer_id?: string | null
-          final_price?: number | null
-          id?: string | null
-          scheduled_date?: string | null
-          service_name?: string | null
-          status?: Database["public"]["Enums"]["booking_status"] | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "bookings_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       assign_job_to_worker: {
