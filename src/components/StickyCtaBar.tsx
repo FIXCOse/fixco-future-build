@@ -91,7 +91,7 @@ const StickyCtaBar = () => {
               <Button 
                 variant={contextualCta.variant}
                 size="sm"
-                className="shadow-glow animate-glow"
+                className="shadow-glow"
               >
                 <CtaIcon className="h-4 w-4 mr-2" />
                 {contextualCta.text}
