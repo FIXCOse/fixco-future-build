@@ -63,15 +63,15 @@
     --card-border: hsl(var(--border));
     --good-text: var(--success);
 
-    /* Dynamic gradients based on theme */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l)) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%)) 100%);
-    --gradient-primary-subtle: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%) / 0.15) 100%);
-    --gradient-primary-glow: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2) 0%, hsl(var(--primary-h) calc(var(--primary-s) - 5%) calc(var(--primary-l) + 4%) / 0.15) 100%);
+    /* Dynamic gradients based on theme - simplified to prevent flickering */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l)) 0%, hsl(var(--primary-h) var(--primary-s) 68%) 100%);
+    --gradient-primary-subtle: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1) 0%, hsl(var(--primary-h) var(--primary-s) 68% / 0.15) 100%);
+    --gradient-primary-glow: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2) 0%, hsl(var(--primary-h) var(--primary-s) 68% / 0.15) 100%);
     
-    /* Professional shadows */
+    /* Professional shadows - simplified */
     --shadow-premium: 0 4px 20px -4px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
     --shadow-glow: 0 0 40px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
-    --shadow-card: 0 2px 12px hsl(var(--background) / 0.3);
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.1);
 
     /* Animation timings */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
