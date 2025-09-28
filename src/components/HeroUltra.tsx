@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight, Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
@@ -6,8 +7,157 @@ import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import { useCopy } from "@/copy/CopyProvider";
 
+interface ParticleSystemProps {
+  count?: number;
+  speed?: number;
+}
+
+// PRO: CSS-based particle system (lightweight)
+const ParticleSystemPRO = ({ count = 50, speed = 1 }: ParticleSystemProps) => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: count }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-primary/20 rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+          }}
+          transition={{
+            duration: 3 + Math.random() * 2,
+            repeat: Infinity,
+            delay: Math.random() * 3,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// ULTRA: WebGL-based particle system (will be lazy loaded)
+const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Particle system
+    const particles: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      life: number;
+      maxLife: number;
+      size: number;
+    }> = [];
+
+    // Initialize particles
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.offsetWidth,
+        y: Math.random() * canvas.offsetHeight,
+        vx: (Math.random() - 0.5) * 2 * speed,
+        vy: (Math.random() - 0.5) * 2 * speed,
+        life: Math.random() * 100,
+        maxLife: 100 + Math.random() * 100,
+        size: Math.random() * 3 + 1,
+      });
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      
+      // Create gradient with resolved CSS custom properties
+      const gradient = ctx.createRadialGradient(
+        canvas.offsetWidth / 2, canvas.offsetHeight / 2, 0,
+        canvas.offsetWidth / 2, canvas.offsetHeight / 2, canvas.offsetWidth / 2
+      );
+      
+      // Get computed CSS values and convert to proper color format
+      const primaryHsl = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      const accentHsl = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      
+      gradient.addColorStop(0, `hsl(${primaryHsl})`);
+      gradient.addColorStop(1, `hsl(${accentHsl})`);
+      
+      particles.forEach(particle => {
+        // Update particle
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.life++;
+        
+        // Reset if out of bounds or dead
+        if (particle.x < 0 || particle.x > canvas.offsetWidth || 
+            particle.y < 0 || particle.y > canvas.offsetHeight || 
+            particle.life > particle.maxLife) {
+          particle.x = Math.random() * canvas.offsetWidth;
+          particle.y = Math.random() * canvas.offsetHeight;
+          particle.life = 0;
+        }
+        
+        // Draw particle
+        const alpha = (1 - particle.life / particle.maxLife) * 0.6;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animate();
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [count, speed]);
+  
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none"
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
+};
+
 const HeroUltra = () => {
+  const { ultraEnabled, capabilities } = useProgressiveEnhancement();
+  const [isVisible, setIsVisible] = useState(false);
   const { t } = useCopy();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const trustIndicators = [
     { icon: "image", src: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
@@ -23,32 +173,57 @@ const HeroUltra = () => {
           {/* Base gradient (always visible) */}
           <div className="absolute inset-0 hero-background" />
           
-        {/* F Watermark Background Elements - Static */}
+        {/* F Watermark Background Elements - Animated */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
           <img 
             src="/assets/fixco-f-icon-new.png"
             alt="" 
-            className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40"
+            className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
+            style={{ animationDuration: '4s' }}
           />
           <img 
             src="/assets/fixco-f-icon-new.png"
             alt="" 
-            className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30"
+            className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
+            style={{ animationDuration: '5s', animationDelay: '1s' }}
           />
           <img 
             src="/assets/fixco-f-icon-new.png"
             alt="" 
-            className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25"
+            className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
+            style={{ animationDuration: '6s', animationDelay: '2s' }}
           />
           <img 
             src="/assets/fixco-f-icon-new.png" 
             alt="" 
-            className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35"
+            className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
+            style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
           />
         </div>
           
-          {/* Static gradient - no animation */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-pink-900/10" />
+          {/* Animated gradients */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"
+          animate={{
+            background: [
+              "linear-gradient(45deg, rgba(147, 51, 234, 0.2) 0%, transparent 50%, rgba(236, 72, 153, 0.2) 100%)",
+              "linear-gradient(225deg, rgba(147, 51, 234, 0.2) 0%, transparent 50%, rgba(236, 72, 153, 0.2) 100%)",
+              "linear-gradient(45deg, rgba(147, 51, 234, 0.2) 0%, transparent 50%, rgba(236, 72, 153, 0.2) 100%)"
+            ]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Particle System - Progressive Enhancement */}
+        {capabilities.prefersMotion && (
+          <>
+            {ultraEnabled ? (
+              <ParticleSystemULTRA count={150} speed={0.5} />
+            ) : (
+              <ParticleSystemPRO count={30} speed={1} />
+            )}
+          </>
+        )}
       </div>
 
       {/* Content */}
@@ -123,12 +298,20 @@ const HeroUltra = () => {
         </div>
       </div>
 
-      {/* Static scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      {/* Animated scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
         <div className="w-6 h-10 border-2 border-primary/50 rounded-full flex justify-center">
-          <div className="w-1 h-2 bg-primary rounded-full mt-2" />
+          <motion.div
+            className="w-1 h-2 bg-primary rounded-full mt-2"
+            animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
