@@ -114,8 +114,8 @@ const RUTCalculator = () => {
                       Antal personer i hushållet
                     </label>
                     
-                    <div className="grid grid-cols-4 gap-2">
-                      {[1, 2, 3, 4].map((size) => (
+                    <div className="grid grid-cols-2 gap-2">
+                      {[1, 2].map((size) => (
                         <button
                           key={size}
                           onClick={() => setHouseholdSize(size)}

@@ -106,8 +106,8 @@ const ROTCalculator = () => {
                       <h4 className="font-medium">Antal personer i hushållet</h4>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-2">
-                      {[1, 2, 3, 4].map((size) => (
+                    <div className="grid grid-cols-2 gap-2">
+                      {[1, 2].map((size) => (
                         <button
                           key={size}
                           onClick={() => setHouseholdSize(size)}
