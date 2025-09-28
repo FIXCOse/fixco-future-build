@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CategoryGrid from "@/components/CategoryGrid";
 import EditableCategoryGridNew from "@/components/EditableCategoryGridNew";
 import FastServiceFilter from "@/components/FastServiceFilter";
-import EditableFastServiceFilterNew from "@/components/EditableFastServiceFilterNew";
+import EditableServiceFilter from "@/components/EditableServiceFilter";
 import { useEditMode } from "@/contexts/EditModeContext";
 import HeroMotion from "@/components/HeroMotion";
 import TrustChips from "@/components/TrustChips";
@@ -94,7 +94,7 @@ const Services = () => {
                 className="text-muted-foreground max-w-2xl mx-auto"
               />
             </div>
-            {isEditMode ? <EditableFastServiceFilterNew /> : <FastServiceFilter />}
+            {isEditMode ? <EditableServiceFilter /> : <FastServiceFilter />}
           </div>
         </section>
       </EditableSection>
