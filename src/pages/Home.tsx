@@ -6,7 +6,6 @@ import TrustBar from "@/components/TrustBar";
 import ComparisonUltra from "@/components/ComparisonUltra";
 import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
-import ROTCalculator from "@/components/ROTCalculator";
 import FAQTeaser from "@/components/FAQTeaser";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
@@ -37,9 +36,6 @@ const Home = () => {
 
       {/* Testimonials Carousel */}
       <TestimonialCarousel />
-
-      {/* ROT Calculator */}
-      <ROTCalculator />
 
       {/* FAQ Teaser */}
       <FAQTeaser />

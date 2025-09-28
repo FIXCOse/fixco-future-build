@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import ROTCalculator from "@/components/ROTCalculator";
 
 const ROTInfo = () => {
   const { t } = useCopy();
@@ -329,6 +330,9 @@ const ROTInfo = () => {
           </div>
         </div>
       </section>
+
+      {/* ROT Calculator */}
+      <ROTCalculator />
 
     </div>
   );

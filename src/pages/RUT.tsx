@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import RUTCalculator from "@/components/RUTCalculator";
 
 const RUT = () => {
   const { t } = useCopy();
@@ -329,6 +330,9 @@ const RUT = () => {
           </div>
         </div>
       </section>
+
+      {/* RUT Calculator */}
+      <RUTCalculator />
 
     </div>
   );
