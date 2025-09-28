@@ -17,7 +17,7 @@ export default function QuoteRequestWizard() {
   const { user } = useAuth();
 
   const [loading, setLoading] = useState(false);
-  const [rotRut, setRotRut] = useState<"" | "ROT" | "RUT">("");
+  const [rotRut, setRotRut] = useState<"none" | "ROT" | "RUT">("none");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -69,7 +69,7 @@ export default function QuoteRequestWizard() {
         service_id: slug,
         customer_id: user.id,
         message: message || undefined,
-        rot_rut_type: rotRut || undefined,
+        rot_rut_type: rotRut === "none" ? "" : rotRut,
         name,
         phone,
         email,
@@ -207,12 +207,12 @@ export default function QuoteRequestWizard() {
 
             <div>
               <Label htmlFor="rotRut">ROT/RUT-avdrag</Label>
-              <Select value={rotRut} onValueChange={(value: "" | "ROT" | "RUT") => setRotRut(value)}>
+              <Select value={rotRut} onValueChange={(value: "none" | "ROT" | "RUT") => setRotRut(value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Välj typ av avdrag" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Inget avdrag</SelectItem>
+                  <SelectItem value="none">Inget avdrag</SelectItem>
                   <SelectItem value="ROT">ROT (Reparation, Underhåll, Tillbyggnad)</SelectItem>
                   <SelectItem value="RUT">RUT (Rengöring, Underhåll, Tvätt)</SelectItem>
                 </SelectContent>

@@ -21,7 +21,7 @@ export default function BookingWizard() {
   const [hours, setHours] = useState<string>("");
   const [hourlyRate, setHourlyRate] = useState<string>("500");
   const [materials, setMaterials] = useState<string>("0");
-  const [rotRut, setRotRut] = useState<"" | "ROT" | "RUT">("");
+  const [rotRut, setRotRut] = useState<"none" | "ROT" | "RUT">("none");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -78,7 +78,7 @@ export default function BookingWizard() {
         hours_estimated: hours ? parseFloat(hours) : undefined,
         hourly_rate: hourlyRate ? parseFloat(hourlyRate) : undefined,
         materials: materials ? parseFloat(materials) : undefined,
-        rot_rut_type: rotRut || undefined,
+        rot_rut_type: rotRut === "none" ? "" : rotRut,
         contact_name: name,
         contact_phone: phone,
         contact_email: email,
@@ -252,12 +252,12 @@ export default function BookingWizard() {
 
             <div>
               <Label htmlFor="rotRut">ROT/RUT-avdrag</Label>
-              <Select value={rotRut} onValueChange={(value: "" | "ROT" | "RUT") => setRotRut(value)}>
+              <Select value={rotRut} onValueChange={(value: "none" | "ROT" | "RUT") => setRotRut(value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Välj typ av avdrag" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Inget avdrag</SelectItem>
+                  <SelectItem value="none">Inget avdrag</SelectItem>
                   <SelectItem value="ROT">ROT (Reparation, Underhåll, Tillbyggnad)</SelectItem>
                   <SelectItem value="RUT">RUT (Rengöring, Underhåll, Tvätt)</SelectItem>
                 </SelectContent>

@@ -37,8 +37,8 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
     title: initialData.title || '',
     backgroundColor: initialData.backgroundColor || '',
     textColor: initialData.textColor || '',
-    padding: initialData.padding || '',
-    margin: initialData.margin || '',
+    padding: initialData.padding || 'default',
+    margin: initialData.margin || 'default',
     visibility: initialData.visibility !== false,
     customCss: initialData.customCss || '',
   });
@@ -135,7 +135,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
                     <SelectValue placeholder="Välj padding" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Standard</SelectItem>
+                    <SelectItem value="default">Standard</SelectItem>
                     <SelectItem value="p-2">Liten (p-2)</SelectItem>
                     <SelectItem value="p-4">Medium (p-4)</SelectItem>
                     <SelectItem value="p-6">Stor (p-6)</SelectItem>
@@ -151,7 +151,7 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
                     <SelectValue placeholder="Välj margin" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Standard</SelectItem>
+                    <SelectItem value="default">Standard</SelectItem>
                     <SelectItem value="m-2">Liten (m-2)</SelectItem>
                     <SelectItem value="m-4">Medium (m-4)</SelectItem>
                     <SelectItem value="m-6">Stor (m-6)</SelectItem>
