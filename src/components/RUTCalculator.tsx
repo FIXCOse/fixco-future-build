@@ -48,88 +48,84 @@ const RUTCalculator = () => {
 
   return (
     <section className="py-20 bg-background">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-6">
-            <Calculator className="w-10 h-10 text-primary" />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">RUT-avdrag</span> Kalkylator
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            RUT-avdrag beräknare
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Beräkna exakt hur mycket du sparar med RUT-avdrag på hushållstjänster. 
-            Få 50% rabatt direkt, upp till 25 000 kr per person.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Beräkna din besparing med RUT-avdrag. 50% rabatt på arbetskostnaden, max 25 000 kr per person och år.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Calculator */}
-          <div className="space-y-8">
-            <Card className="overflow-hidden border-2 border-primary/20 shadow-xl">
-              <CardContent className="p-8">
-                <div className="space-y-8">
-                  {/* Project Cost Slider */}
+        <div className="max-w-4xl mx-auto">
+          {/* Main Calculator Card */}
+          <Card className="mb-8">
+            <CardContent className="p-8">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                {/* Left: Input Section */}
+                <div className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <label className="text-lg font-semibold text-foreground">
-                        Projektets totalkostnad
-                      </label>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-primary">
-                          {projectCost.toLocaleString('sv-SE')} kr
-                        </div>
-                        <div className="text-sm text-muted-foreground">inklusive material & arbete</div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Calculator className="h-4 w-4 text-primary" />
                       </div>
+                      <h4 className="font-medium">Projektets totalkostnad</h4>
                     </div>
-                    
-                    <div className="space-y-2">
+
+                    <div className="relative">
                       <input
                         type="range"
-                        min="10000"
-                        max="150000"
-                        step="5000"
+                        min="5000"
+                        max="100000"
+                        step="2500"
                         value={projectCost}
                         onChange={(e) => setProjectCost(Number(e.target.value))}
                         className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 150000) * 100}%, hsl(var(--muted)) ${(projectCost / 150000) * 100}%, hsl(var(--muted)) 100%)`
+                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 100000) * 100}%, hsl(var(--muted)) ${(projectCost / 100000) * 100}%, hsl(var(--muted)) 100%)`
                         }}
                       />
                     </div>
                     
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>10 000 kr</span>
+                      <span>5 000 kr</span>
                       <span className="font-semibold text-foreground text-lg">
                         {projectCost.toLocaleString('sv-SE')} kr
                       </span>
-                      <span>150 000 kr</span>
+                      <span>100 000 kr</span>
                     </div>
                   </div>
 
-                  {/* Household Size */}
+                  {/* Household Size Selector */}
                   <div className="space-y-4">
-                    <label className="text-lg font-semibold text-foreground">
-                      Antal personer i hushållet
-                    </label>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Home className="h-4 w-4 text-primary" />
+                      </div>
+                      <h4 className="font-medium">Antal personer i hushållet</h4>
+                    </div>
                     
                     <div className="grid grid-cols-2 gap-2">
                       {[1, 2].map((size) => (
                         <button
                           key={size}
                           onClick={() => setHouseholdSize(size)}
-                          className={`p-4 text-center rounded-lg border-2 font-semibold transition-all ${
+                          className={`p-3 rounded-lg border transition-colors ${
                             householdSize === size
-                              ? 'border-primary bg-primary text-primary-foreground shadow-md'
-                              : 'border-border bg-background text-foreground hover:border-primary/50'
+                              ? 'border-primary bg-primary text-primary-foreground'
+                              : 'border-border bg-background hover:bg-muted'
                           }`}
                         >
-                          {size} {size === 1 ? 'person' : 'personer'}
+                          <div className="text-lg font-semibold">{size}</div>
+                          <div className="text-xs opacity-80">
+                            {size === 1 ? 'person' : 'personer'}
+                          </div>
                         </button>
                       ))}
                     </div>
                     
-                    <p className="text-xs text-muted-foreground text-center bg-muted/30 p-3 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
                       Max avdrag: {maxTotalRutDeduction.toLocaleString('sv-SE')} kr 
                       ({householdSize} × 25 000 kr = {(householdSize * 25000).toLocaleString('sv-SE')} kr)
                     </p>
@@ -138,29 +134,21 @@ const RUTCalculator = () => {
                     </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Results */}
-            <Card className="overflow-hidden border-2 border-green-200 bg-green-50 dark:bg-green-900/20">
-              <CardContent className="p-8">
-                <div className="text-center space-y-6">
-                  <div className="flex items-center justify-center gap-2 text-green-700 dark:text-green-400">
-                    <Percent className="h-6 w-6" />
-                    <span className="text-lg font-semibold">Ditt RUT-avdrag</span>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center text-lg">
+                {/* Right: Results Section */}
+                <div className="space-y-4">
+                  <div className="bg-muted/50 rounded-lg p-6 space-y-4">
+                    <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Projektets kostnad:</span>
-                      <span className="font-semibold">
-                        {projectCost.toLocaleString('sv-SE')} kr
-                      </span>
+                      <span className="font-semibold">{projectCost.toLocaleString('sv-SE')} kr</span>
                     </div>
                     
-                    <div className="flex justify-between items-center text-lg border-t border-green-200 pt-4">
-                      <span className="text-green-700 dark:text-green-400 font-semibold">RUT-avdrag (50%):</span>
-                      <span className="text-2xl font-bold text-green-700 dark:text-green-400">
+                    <div className="flex justify-between items-center text-primary">
+                      <div className="flex items-center gap-2">
+                        <Percent className="h-4 w-4" />
+                        <span>RUT-avdrag (50%):</span>
+                      </div>
+                      <span className="font-semibold">
                         -{actualDeduction.toLocaleString('sv-SE')} kr
                       </span>
                     </div>
@@ -168,99 +156,110 @@ const RUTCalculator = () => {
                     {actualDeduction < maxTotalRutDeduction && (
                       <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
                         <p className="text-sm text-blue-700">
-                          Du kan få upp till {(maxTotalRutDeduction - actualDeduction).toLocaleString('sv-SE')} kr mer i avdrag med större projekt!
+                          Du kan få upp till {(maxTotalRutDeduction - actualDeduction).toLocaleString('sv-SE')} kr mer i avdrag med ett större projekt!
                         </p>
                       </div>
                     )}
                     
-                    <div className="border-t border-green-200 pt-4">
+                    <div className="border-t border-border pt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-foreground">Du betalar endast:</span>
-                        <span className="text-3xl font-bold text-green-700 dark:text-green-400">
+                        <span className="font-semibold">Du betalar:</span>
+                        <span className="text-2xl font-bold text-primary">
                           {finalCost.toLocaleString('sv-SE')} kr
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground text-center mt-2">
-                        Rabatten dras av direkt vid fakturering
-                      </p>
                     </div>
+                    
+                    {actualDeduction >= maxTotalRutDeduction && (
+                      <div className="bg-primary/10 border border-primary/20 rounded-md p-3">
+                        <p className="text-sm text-primary font-medium">
+                          Maximal RUT-besparing uppnådd ({maxTotalRutDeduction.toLocaleString('sv-SE')} kr för {householdSize} {householdSize === 1 ? 'person' : 'personer'})
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  
-                  <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
-                    <Calculator className="h-5 w-5 mr-2" />
-                    Begär offert med RUT-avdrag
+
+                  <Button className="w-full" size="lg">
+                    Begär offert med RUT-priser
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Examples & Info */}
-          <div className="space-y-8">
-            {/* Example Projects */}
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-foreground">Populära RUT-tjänster</h3>
-              
-              <div className="space-y-4">
-                {examples.map((example, index) => {
-                  const exampleDeduction = Math.min((example.originalCost * 50) / 100, maxTotalRutDeduction);
-                  const exampleFinalCost = example.originalCost - exampleDeduction;
-                  
-                  return (
-                    <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300 border border-primary/20">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <example.icon className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-lg mb-1">{example.title}</h4>
-                            <p className="text-sm text-muted-foreground mb-3">{example.description}</p>
-                            <div className="flex justify-between items-center">
-                              <div className="text-sm">
-                                <span className="line-through text-muted-foreground">{example.originalCost.toLocaleString('sv-SE')} kr</span>
-                                <span className="ml-2 font-bold text-green-600">
-                                  {exampleFinalCost.toLocaleString('sv-SE')} kr
-                                </span>
-                              </div>
-                              <div className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                                -{exampleDeduction.toLocaleString('sv-SE')} kr besparing
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Examples Grid */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-2">Populära RUT-tjänster</h3>
+              <p className="text-muted-foreground">
+                Se hur mycket våra kunder sparar på vanliga hushållstjänster
+              </p>
             </div>
 
-            {/* Key Benefits */}
-            <Card className="border-primary/20">
-              <CardContent className="p-6">
-                <h4 className="font-bold text-lg mb-4 text-primary">Så fungerar RUT-avdrag</h4>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Direkt rabatt:</strong> Du betalar mindre direkt, ingen ansökan</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>50% avdrag:</strong> På arbetskostnaden för hushållstjänster</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>25 000 kr max:</strong> Per person i hushållet per år</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Vi sköter allt:</strong> Ingen administration för dig</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-3 gap-6">
+              {examples.map((example, index) => {
+                const exampleDeduction = Math.min(example.originalCost * 0.5, maxTotalRutDeduction);
+                const exampleFinalCost = example.originalCost - exampleDeduction;
+                const IconComponent = example.icon;
+                
+                return (
+                  <Card key={index} className="h-full">
+                    <CardContent className="p-6 h-full flex flex-col">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <IconComponent className="h-5 w-5 text-primary" />
+                        </div>
+                        <h4 className="font-semibold text-lg">{example.title}</h4>
+                      </div>
+                      
+                      <p className="text-sm text-muted-foreground mb-6 flex-1">
+                        {example.description}
+                      </p>
+                      
+                      <div className="space-y-2 border-t border-border pt-4">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Ursprungspris:</span>
+                          <span className="line-through">
+                            {example.originalCost.toLocaleString('sv-SE')} kr
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-sm text-primary">
+                          <span>RUT-besparing:</span>
+                          <span>-{exampleDeduction.toLocaleString('sv-SE')} kr</span>
+                        </div>
+                        <div className="flex justify-between font-semibold text-lg">
+                          <span>Med RUT-avdrag:</span>
+                          <span className="text-primary">
+                            {exampleFinalCost.toLocaleString('sv-SE')} kr
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
+
+          {/* Bottom CTA */}
+          <Card className="mt-12">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4">
+                Börja ditt RUT-projekt idag
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Vi hjälper dig med alla RUT-papper och ser till att du får maximal besparing på dina hushållstjänster.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg">
+                  Boka kostnadsfri konsultation
+                </Button>
+                <Button size="lg" variant="outline">
+                  Läs mer om RUT-avdrag
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
