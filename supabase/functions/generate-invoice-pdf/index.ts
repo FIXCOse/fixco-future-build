@@ -192,12 +192,12 @@ const generateInvoiceHTML = (invoice: any, customer: any, property: any, company
                 
                 <div class="customer-info">
                     <div class="section-title">Till</div>
-                    <div class="info-line"><strong>${customer.first_name ? `${customer.first_name} ${customer.last_name}` : quote.customer_name || 'Okänd kund'}</strong></div>
+                    <div class="info-line"><strong>${customer.first_name ? `${customer.first_name} ${customer.last_name}` : 'Okänd kund'}</strong></div>
                      ${customer.company_name ? `<div class="info-line">${customer.company_name}</div>` : ''}
                      ${customer.org_number ? `<div class="info-line">Org.nr: ${customer.org_number}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.address}</div>` : quote.customer_address ? `<div class="info-line">${quote.customer_address}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : (quote.customer_postal_code && quote.customer_city) ? `<div class="info-line">${quote.customer_postal_code} ${quote.customer_city}</div>` : ''}
-                     <div class="info-line">${customer.email || quote.customer_email || ''}</div>
+                     ${property ? `<div class="info-line">${property.address}</div>` : customer.address ? `<div class="info-line">${customer.address}</div>` : ''}
+                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : (customer.postal_code && customer.city) ? `<div class="info-line">${customer.postal_code} ${customer.city}</div>` : ''}
+                     <div class="info-line">${customer.email || ''}</div>
                 </div>
             </div>
             
@@ -520,8 +520,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error("Error in generate-invoice-pdf function:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" }

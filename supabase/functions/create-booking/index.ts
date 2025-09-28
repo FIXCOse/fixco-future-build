@@ -114,7 +114,7 @@ serve(async (req) => {
     // Check for loyalty discounts
     const { data: profile } = await supabaseClient
       .from('profiles')
-      .select('loyalty_tier')
+      .select('loyalty_tier, loyalty_points')
       .eq('id', user.id)
       .single();
 
@@ -181,7 +181,7 @@ serve(async (req) => {
       await supabaseServiceClient
         .from('profiles')
         .update({
-          loyalty_points: profile ? (profile.loyalty_points || 0) + pointsEarned : pointsEarned
+          loyalty_points: (profile?.loyalty_points || 0) + pointsEarned
         })
         .eq('id', user.id);
     }
@@ -221,8 +221,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error("Error in create-booking function:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" }

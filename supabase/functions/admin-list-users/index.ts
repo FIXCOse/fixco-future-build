@@ -42,15 +42,24 @@ serve(async (req) => {
 
     // 2) Get corresponding profiles
     const userIds = users.map(u => u.id);
-    const { data: profiles = [] } = await supabase
+    const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
       .select('id, first_name, last_name, role, created_at, user_type, company_name, brf_name')
       .in('id', userIds);
 
-    console.log(`Found ${profiles.length} profiles`);
+    if (profilesError) {
+      console.error('Error fetching profiles:', profilesError);
+      return new Response(JSON.stringify({ error: 'Failed to fetch profiles' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    const profilesData = profiles || [];
+    console.log(`Found ${profilesData.length} profiles`);
 
     // 3) Create lookup map
-    const profileMap = Object.fromEntries(profiles.map(p => [p.id, p]));
+    const profileMap = Object.fromEntries(profilesData.map(p => [p.id, p]));
 
     // 4) Combine auth + profile data and apply filters
     const combinedUsers = users
@@ -105,7 +114,8 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Edge function error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    return new Response(JSON.stringify({ error: errorMessage }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
