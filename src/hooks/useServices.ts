@@ -177,7 +177,7 @@ export const useUpdateService = () => {
       console.log('Service updated successfully:', data);
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       console.log('Update mutation succeeded, invalidating cache...');
       
       // Invalidate all services queries to force refresh
@@ -188,11 +188,12 @@ export const useUpdateService = () => {
       toast.success('Tjänst uppdaterad och sparad!');
 
       // Trigger re-translation if Swedish text was updated
-      if (data.title_sv || data.description_sv) {
+      if (variables.updates.title_sv || variables.updates.description_sv) {
         try {
           supabase.functions.invoke('translate-service', {
             body: { service_id: data.id }
           });
+          console.log('Auto-translation triggered for service:', data.id);
         } catch (translationError) {
           console.warn('Auto-translation failed:', translationError);
         }
