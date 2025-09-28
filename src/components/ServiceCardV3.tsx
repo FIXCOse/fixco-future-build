@@ -47,32 +47,9 @@ const ServiceCardV3 = ({
   const open = useActionWizard((s) => s.open);
   const { t } = useCopy();
 
-  // Helper function to get translated service title
-  const getTranslatedTitle = () => {
-    if (serviceId) {
-      const key = `service.${serviceId}.title` as CopyKey;
-      const translated = t(key);
-      if (translated !== key) {
-        return translated;
-      }
-    }
-    return title;
-  };
-
-  // Helper function to get translated service description
-  const getTranslatedDescription = () => {
-    if (serviceId) {
-      const key = `service.${serviceId}.description` as CopyKey;
-      const translated = t(key);
-      if (translated !== key) {
-        return translated;
-      }
-    }
-    return description;
-  };
-
-  const translatedTitle = getTranslatedTitle();
-  const translatedDescription = getTranslatedDescription();
+  // Use database data directly - no need for copy system lookup for services
+  const translatedTitle = title;
+  const translatedDescription = description;
 
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();

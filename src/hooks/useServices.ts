@@ -59,8 +59,9 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
         translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
       }));
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    refetchOnWindowFocus: false,
+    staleTime: 0, // Always refetch to get latest data
+    refetchOnWindowFocus: true, // Refetch when window gets focus
+    refetchInterval: 30000, // Refetch every 30 seconds to ensure data is fresh
   });
 };
 
