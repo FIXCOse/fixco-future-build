@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
+import { Resend } from "https://esm.sh/resend@4.0.0";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -172,7 +172,7 @@ const handler = async (req: Request): Promise<Response> => {
       to: [customerEmail],
       subject: `Offert ${quote.quote_number} från Fixco`,
       html: emailHtml,
-      reply_to: ["info@fixco.se"],
+      replyTo: ["info@fixco.se"],
     });
 
     // If Resend returns an error, return preview so admins can test without domain verification
@@ -181,7 +181,7 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response(
         JSON.stringify({
           success: false,
-          error: emailResponse.error.error || 'E-post kunde inte skickas',
+          error: emailResponse.error.message || 'E-post kunde inte skickas',
           previewHtml: emailHtml,
         }),
         {
