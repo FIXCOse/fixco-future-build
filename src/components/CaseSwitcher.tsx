@@ -90,7 +90,7 @@ const CaseSwitcher = ({ selectedCase, onCaseChange, disabled }: CaseSwitcherProp
                 w-14 h-14 rounded-xl mb-4 flex items-center justify-center
                 bg-gradient-to-br ${caseItem.color} ${isSelected ? 'shadow-lg' : ''}
               `}>
-                <IconComponent className="h-7 w-7 text-white" />
+                <IconComponent className="h-7 w-7 text-primary-foreground" />
               </div>
 
               {/* Content */}
@@ -139,7 +139,7 @@ const CaseSwitcher = ({ selectedCase, onCaseChange, disabled }: CaseSwitcherProp
             return (
               <>
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${selectedCaseData.color} flex items-center justify-center`}>
-                  <IconComponent className="h-4 w-4 text-white" />
+                  <IconComponent className="h-4 w-4 text-primary-foreground" />
                 </div>
                 <div>
                   <div className="font-semibold text-sm">Visar data för: {selectedCaseData.description}</div>

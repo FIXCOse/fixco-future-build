@@ -108,7 +108,7 @@ export const SmartIntegrations = () => {
       case 'comfort': return 'bg-blue-500/10 text-blue-700';
       case 'energy': return 'bg-green-500/10 text-green-700';
       case 'entertainment': return 'bg-purple-500/10 text-purple-700';
-      default: return 'bg-gray-500/10 text-gray-700';
+      default: return 'bg-muted/20 text-muted-foreground';
     }
   };
 
@@ -183,16 +183,16 @@ export const SmartIntegrations = () => {
               <div 
                 key={device.id} 
                 className={`border rounded-lg p-4 transition-colors ${
-                  device.connected ? 'bg-green-50 border-green-200' : 'bg-gray-50'
+                  device.connected ? 'bg-accent/10 border-accent/20' : 'bg-muted'
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${
-                      device.connected ? 'bg-green-100' : 'bg-gray-100'
+                      device.connected ? 'bg-accent/20' : 'bg-muted/50'
                     }`}>
                       <IconComponent className={`h-5 w-5 ${
-                        device.connected ? 'text-green-600' : 'text-gray-500'
+                         device.connected ? 'text-accent-foreground' : 'text-muted-foreground'
                       }`} />
                     </div>
                     <div>
@@ -231,7 +231,7 @@ export const SmartIntegrations = () => {
                   <div>
                     <span className="text-muted-foreground">Status:</span>
                     <div className={`font-medium ${
-                      device.connected ? 'text-green-600' : 'text-gray-500'
+                      device.connected ? 'text-accent' : 'text-muted-foreground'
                     }`}>
                       {device.connected ? 'Ansluten' : 'Frånkopplad'}
                     </div>

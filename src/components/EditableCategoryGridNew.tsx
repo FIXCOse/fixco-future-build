@@ -78,7 +78,7 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
         className="card-service p-6 text-center h-full shadow-2xl border-2 border-primary bg-background transform rotate-2 scale-105 z-50 opacity-90"
       >
         <div className="w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 bg-primary">
-          <IconComponent className="h-6 w-6 text-white" />
+          <IconComponent className="h-6 w-6 text-primary-foreground" />
         </div>
         <h3 className="text-base font-bold mb-2">
           {t(translateKey) || service.title}
@@ -117,7 +117,7 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
           </div>
 
           <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
-            <IconComponent className="h-6 w-6 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+             <IconComponent className="h-6 w-6 text-primary-foreground drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
           </div>
           
           <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
@@ -192,7 +192,7 @@ const EditableCategoryGridNew = () => {
                 </div>
 
                 <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
-                  <IconComponent className="h-6 w-6 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+                  <IconComponent className="h-6 w-6 text-primary-foreground drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 
                 <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">

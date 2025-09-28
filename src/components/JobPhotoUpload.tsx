@@ -138,11 +138,11 @@ export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUpload
                     className="w-full h-32 object-cover rounded-lg border"
                   />
                   {photo.caption && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-2 rounded-b-lg">
+                    <div className="absolute bottom-0 left-0 right-0 bg-background/90 backdrop-blur-sm text-foreground text-xs p-2 rounded-b-lg">
                       {photo.caption}
                     </div>
                   )}
-                  <div className="absolute top-0 right-0 left-0 bg-black/50 text-white text-xs p-1 rounded-t-lg">
+                  <div className="absolute top-0 right-0 left-0 bg-background/80 backdrop-blur-sm text-foreground text-xs p-1 rounded-t-lg">
                     {new Date(photo.created_at).toLocaleDateString('sv-SE')}
                   </div>
                 </div>

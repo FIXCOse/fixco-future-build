@@ -43,7 +43,7 @@ export function PropertyModal({ open, onClose, children, title = "Lägg till fas
     >
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+        className="absolute inset-0 bg-background/60 backdrop-blur-sm z-[100]"
         onClick={onClose}
         aria-hidden="true"
       />

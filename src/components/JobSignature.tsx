@@ -214,7 +214,7 @@ export const JobSignature = ({ jobId, signatures, onSignaturesUpdate }: JobSigna
                 ref={canvasRef}
                 width={400}
                 height={200}
-                className="w-full max-w-lg border border-border rounded bg-white cursor-crosshair touch-none"
+                className="w-full max-w-lg border border-border rounded bg-card cursor-crosshair touch-none"
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
                 onMouseUp={stopDrawing}
@@ -264,7 +264,7 @@ export const JobSignature = ({ jobId, signatures, onSignaturesUpdate }: JobSigna
                       <img
                         src={getSignatureUrl(signature.file_path)}
                         alt={`Signatur av ${signature.signed_by_name}`}
-                        className="h-16 border rounded bg-white"
+                        className="h-16 border rounded bg-card"
                       />
                     </div>
                   </div>

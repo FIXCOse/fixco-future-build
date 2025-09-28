@@ -8,18 +8,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        default: "bg-primary text-primary-foreground hover:brightness-110 active:brightness-95",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-border bg-card hover:bg-muted hover:text-foreground",
+        secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-muted",
+        ghost: "text-foreground hover:bg-muted/60",
         link: "text-primary underline-offset-4 hover:underline",
         hero: "gradient-primary text-primary-foreground font-bold shadow-glow hover:shadow-premium hover:scale-105 animate-glow",
         premium: "bg-card border border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/40 hover:shadow-premium",
-        cta: "gradient-primary text-primary-foreground font-bold text-lg px-8 py-4 shadow-premium hover:shadow-glow hover:scale-[1.02] transition-all duration-300",
+        cta: "gradient-primary text-primary-foreground font-bold shadow-premium hover:shadow-glow hover:scale-[1.02] transition-all duration-300",
+        "cta-primary": "gradient-primary text-primary-foreground font-bold shadow-premium hover:shadow-glow hover:scale-[1.02] transition-all duration-300",
+        "cta-secondary": "bg-secondary text-secondary-foreground border border-border hover:bg-muted hover:scale-[1.02] transition-all duration-300",
         "ghost-premium": "text-foreground hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20"
       },
       size: {
@@ -27,6 +26,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-lg px-3",
         lg: "h-11 rounded-lg px-8",
         xl: "h-14 rounded-xl px-10 text-base",
+        cta: "h-12 px-8 py-3 text-base rounded-xl",
         icon: "h-10 w-10",
       },
     },

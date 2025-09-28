@@ -92,14 +92,14 @@ function SortableReference({ reference: ref, onEdit, onDelete }: SortableReferen
           <Button
             size="sm"
             onClick={() => onEdit(ref.id)}
-            className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
+            className="p-2 bg-primary hover:bg-primary/80 text-primary-foreground rounded-full shadow-lg transition-colors"
           >
             <Edit className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             onClick={() => onDelete(ref.id)}
-            className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+            className="p-2 bg-destructive hover:bg-destructive/80 text-destructive-foreground rounded-full shadow-lg transition-colors"
           >
             <Trash2 className="h-4 w-4" />
           </Button>

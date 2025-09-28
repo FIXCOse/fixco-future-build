@@ -169,7 +169,7 @@ export const RewardSystem = () => {
           <div className="flex items-center justify-between mb-2">
             <Badge 
               variant="outline" 
-              className={`bg-gradient-to-r ${currentLevel.color} text-white border-0`}
+              className={`bg-gradient-to-r ${currentLevel.color} text-primary-foreground border-0`}
             >
               {currentLevel.name} medlem
             </Badge>

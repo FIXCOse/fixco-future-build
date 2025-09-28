@@ -74,10 +74,10 @@ export const SmartProductSortFilter: React.FC<SmartProductSortFilterProps> = ({
     <div className="mb-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-2">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
             Sortera Produkter
           </h2>
-          <p className="text-gray-300">
+          <p className="text-muted-foreground">
             Visar {productCount} produkter
           </p>
         </div>

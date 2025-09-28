@@ -76,14 +76,14 @@ function SortableServiceItem({ service, onEdit, onDelete, onServiceSelect }: Sor
         </div>
         <button
           onClick={() => onEdit(service.id)}
-          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg"
+          className="p-2 bg-primary hover:bg-primary/80 text-primary-foreground rounded-full shadow-lg transition-colors"
           title="Redigera tjänst"
         >
           <Edit className="h-4 w-4" />
         </button>
         <button
           onClick={() => onDelete(service.id)}
-          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+          className="p-2 bg-destructive hover:bg-destructive/80 text-destructive-foreground rounded-full shadow-lg transition-colors"
           title="Ta bort tjänst"
         >
           <Trash2 className="h-4 w-4" />

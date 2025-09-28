@@ -35,7 +35,7 @@ export function ModalHost() {
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={close} />
+      <div className="absolute inset-0 bg-background/50 backdrop-blur-sm" onClick={close} />
       {/* Card */}
       <div className="relative w-full max-w-lg rounded-2xl bg-card border border-border p-6 shadow-2xl">
         <button

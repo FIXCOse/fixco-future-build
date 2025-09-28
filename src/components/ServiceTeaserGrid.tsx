@@ -77,7 +77,7 @@ const ServiceTeaserGrid = () => {
       laborShare: 1.0,
       slug: "montering",
       gradient: "from-gray-500/20 to-zinc-500/20",
-      iconColor: "text-gray-400"
+      iconColor: "text-muted-foreground"
     },
     {
       id: "tradgard",

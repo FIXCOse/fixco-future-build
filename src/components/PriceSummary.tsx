@@ -129,13 +129,13 @@ const PriceSummary = ({
           
           {/* Not eligible chips */}
           {mode === 'rot' && !eligible.rot && (
-            <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+             <Badge className="text-xs bg-muted text-muted-foreground">
               Ej ROT
             </Badge>
           )}
           
           {mode === 'rut' && !eligible.rut && (
-            <Badge className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            <Badge className="text-xs bg-muted text-muted-foreground">
               Ej RUT
             </Badge>
           )}

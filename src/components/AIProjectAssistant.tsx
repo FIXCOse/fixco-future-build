@@ -98,7 +98,7 @@ export const AIProjectAssistant = () => {
       case 'high': return 'bg-red-500';
       case 'medium': return 'bg-yellow-500';
       case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-muted/10 text-muted-foreground';
     }
   };
 
@@ -192,7 +192,7 @@ export const AIProjectAssistant = () => {
                       <span className="text-lg font-bold text-primary">#{index + 1}</span>
                       <Badge 
                         variant="outline"
-                        className={`${getPriorityColor(suggestion.priority)} text-white border-0`}
+                        className={`${getPriorityColor(suggestion.priority)} text-primary-foreground border-0`}
                       >
                         {getPriorityText(suggestion.priority)}
                       </Badge>

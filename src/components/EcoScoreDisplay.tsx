@@ -38,7 +38,7 @@ export const EcoScoreDisplay: React.FC<EcoScoreDisplayProps> = ({
       <div className="flex items-center gap-2">
         <Badge 
           variant="outline" 
-          className={`${getScoreColor(score)} text-white border-0`}
+          className={`${getScoreColor(score)} text-primary-foreground border-0`}
         >
           {getScoreIcon(score)}
           <span className="ml-1 font-semibold">{score}/100</span>

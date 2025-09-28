@@ -128,19 +128,19 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             
             {/* Slider Line */}
             <div 
-              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10"
+              className="absolute top-0 bottom-0 w-1 bg-foreground shadow-lg z-10"
               style={{ left: `${sliderValue[0]}%` }}
             >
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-card border border-border rounded-full shadow-lg flex items-center justify-center">
                 <div className="w-3 h-3 bg-primary rounded-full"></div>
               </div>
             </div>
             
             {/* Labels */}
-            <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded text-sm">
+            <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm text-foreground px-3 py-1 rounded text-sm">
               Före
             </div>
-            <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded text-sm">
+            <div className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm text-foreground px-3 py-1 rounded text-sm">
               Efter
             </div>
           </>

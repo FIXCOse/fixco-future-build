@@ -52,13 +52,13 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
       <div className="relative">
         {/* Enhanced visual preview */}
         <div className="h-48 bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-background/20 opacity-0 group-hover:opacity-100 transition-opacity" />
           
           {/* Quick preview buttons */}
           <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="sm" variant="secondary" className="bg-white/90">
+                <Button size="sm" variant="secondary" className="bg-card/90 text-foreground">
                   <Eye className="h-4 w-4 mr-1" />
                   {t('services.show_3d')}
                 </Button>
@@ -79,7 +79,7 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
           
           {/* Service category */}
           <div className="absolute bottom-3 left-3">
-            <Badge variant="secondary" className="bg-white/90">
+            <Badge variant="secondary" className="bg-card/90 text-foreground">
               {service.category}
             </Badge>
           </div>

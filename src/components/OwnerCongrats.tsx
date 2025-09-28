@@ -37,7 +37,7 @@ export function OwnerCongrats({ open, onClose }: OwnerCongratsProps) {
       aria-modal="true"
       onKeyDown={(e) => e.key === "Escape" && onClose()}
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" onClick={onClose} />
       <div
         className="relative z-[210] w-full max-w-[720px] rounded-2xl bg-card border shadow-2xl p-8 animate-scale-in"
         onClick={(e) => e.stopPropagation()}
