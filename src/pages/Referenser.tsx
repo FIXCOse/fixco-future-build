@@ -11,6 +11,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRole } from '@/hooks/useRole';
 import ProjectEditModal from '@/components/admin/ProjectEditModal';
 import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
+import { EditableSection } from '@/components/EditableSection';
+import { EditableText } from '@/components/EditableText';
 import { useState } from 'react';
 
 const Referenser = () => {
@@ -52,69 +54,106 @@ const Referenser = () => {
       <Breadcrumbs />
 
       {/* Hero Section */}
-      <section className="pt-12 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 hero-background opacity-30" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <h1 className="text-4xl md:text-5xl font-bold">
-                {t('pages.references.title')}
-              </h1>
-              {isAdmin && (
-                <Button 
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Nytt projekt
-                </Button>
-              )}
+      <EditableSection id="references-hero" title="Referenser Hero">
+        <section className="pt-12 pb-16 relative overflow-hidden">
+          <div className="absolute inset-0 hero-background opacity-30" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <EditableText 
+                  id="references-title"
+                  initialContent={t('pages.references.title')}
+                  type="heading"
+                  as="h1"
+                  className="text-4xl md:text-5xl font-bold"
+                />
+                {isAdmin && (
+                  <Button 
+                    onClick={() => setIsCreateModalOpen(true)}
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nytt projekt
+                  </Button>
+                )}
+              </div>
+              <EditableText 
+                id="references-description"
+                initialContent="Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss."
+                as="p"
+                className="text-xl text-muted-foreground mb-8"
+              />
+              
+              <TrustChips variant="minimal" showAll={true} className="mb-8" />
             </div>
-            <p className="text-xl text-muted-foreground mb-8">
-              Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss.
-            </p>
-            
-            <TrustChips variant="minimal" showAll={true} className="mb-8" />
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* Statistics */}
-      <section className="py-12 bg-muted/10">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
-              <div className="text-muted-foreground">Slutförda projekt</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
-              <div className="text-muted-foreground">Medelbetyg</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold gradient-text mb-2">
-                {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
+      <EditableSection id="references-stats" title="Statistik sektion">
+        <section className="py-12 bg-muted/10">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
+                <EditableText 
+                  id="stat-projects-label"
+                  initialContent="Slutförda projekt"
+                  className="text-muted-foreground"
+                />
               </div>
-              <div className="text-muted-foreground">ROT/RUT-besparingar</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold gradient-text mb-2">100%</div>
-              <div className="text-muted-foreground">Nöjda kunder</div>
+              <div>
+                <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
+                <EditableText 
+                  id="stat-rating-label"
+                  initialContent="Medelbetyg"
+                  className="text-muted-foreground"
+                />
+              </div>
+              <div>
+                <div className="text-3xl font-bold gradient-text mb-2">
+                  {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
+                </div>
+                <EditableText 
+                  id="stat-savings-label"
+                  initialContent="ROT/RUT-besparingar"
+                  className="text-muted-foreground"
+                />
+              </div>
+              <div>
+                <div className="text-3xl font-bold gradient-text mb-2">100%</div>
+                <EditableText 
+                  id="stat-satisfaction-label"
+                  initialContent="Nöjda kunder"
+                  className="text-muted-foreground"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* Projects Grid */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Våra Referensprojekt</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Här är alla våra projekt som visar bredden och kvaliteten i vårt arbete.
-            </p>
-          </div>
+      <EditableSection id="references-grid" title="Projekt grid">
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <EditableText 
+                id="grid-title"
+                initialContent="Våra Referensprojekt"
+                type="heading"
+                as="h2"
+                className="text-3xl font-bold mb-4"
+              />
+              <EditableText 
+                id="grid-description"
+                initialContent="Här är alla våra projekt som visar bredden och kvaliteten i vårt arbete."
+                as="p"
+                className="text-muted-foreground max-w-2xl mx-auto"
+              />
+            </div>
 
           {isLoading ? (
             <div className="text-center py-12">
@@ -260,6 +299,7 @@ const Referenser = () => {
           )}
         </div>
       </section>
+      </EditableSection>
 
       {/* Edit Modal */}
       <ProjectEditModal
