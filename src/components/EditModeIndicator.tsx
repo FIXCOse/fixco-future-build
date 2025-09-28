@@ -10,12 +10,7 @@ export const EditModeIndicator: React.FC = () => {
   const { isAdmin, isOwner } = useRoleGate();
   const [showTip, setShowTip] = useState(false);
 
-  // Only show for admin/owner
-  if (!isAdmin && !isOwner) {
-    return null;
-  }
-
-  // Show tip when entering edit mode
+  // Show tip when entering edit mode - hook must run before any conditional returns
   useEffect(() => {
     if (isEditMode) {
       setShowTip(true);
@@ -23,6 +18,11 @@ export const EditModeIndicator: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [isEditMode]);
+
+  // Only show for admin/owner - conditional return AFTER all hooks
+  if (!isAdmin && !isOwner) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
