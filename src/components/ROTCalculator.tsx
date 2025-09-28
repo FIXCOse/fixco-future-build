@@ -77,13 +77,13 @@ const ROTCalculator = () => {
                       <input
                         type="range"
                         min="10000"
-                        max="300000"
+                        max="500000"
                         step="5000"
                         value={projectCost}
                         onChange={(e) => setProjectCost(Number(e.target.value))}
                         className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 300000) * 100}%, hsl(var(--muted)) ${(projectCost / 300000) * 100}%, hsl(var(--muted)) 100%)`
+                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 500000) * 100}%, hsl(var(--muted)) ${(projectCost / 500000) * 100}%, hsl(var(--muted)) 100%)`
                         }}
                       />
                     </div>
@@ -93,7 +93,7 @@ const ROTCalculator = () => {
                       <span className="font-semibold text-foreground text-lg">
                         {projectCost.toLocaleString('sv-SE')} kr
                       </span>
-                      <span>300 000 kr</span>
+                      <span>500 000 kr</span>
                     </div>
                   </div>
 
@@ -129,6 +129,9 @@ const ROTCalculator = () => {
                       Max avdrag: {maxTotalRotDeduction.toLocaleString('sv-SE')} kr 
                       ({householdSize} × 50 000 kr = {(householdSize * 50000).toLocaleString('sv-SE')} kr)
                     </p>
+                    <p className="text-xs text-muted-foreground">
+                      💡 För att få fullt avdrag ({maxTotalRotDeduction.toLocaleString('sv-SE')} kr) behöver projektet kosta minst {(maxTotalRotDeduction * 2).toLocaleString('sv-SE')} kr
+                    </p>
                   </div>
                 </div>
 
@@ -149,6 +152,14 @@ const ROTCalculator = () => {
                         -{actualDeduction.toLocaleString('sv-SE')} kr
                       </span>
                     </div>
+                    
+                    {actualDeduction < maxTotalRotDeduction && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                        <p className="text-sm text-blue-700">
+                          Du kan få upp till {(maxTotalRotDeduction - actualDeduction).toLocaleString('sv-SE')} kr mer i avdrag med ett större projekt!
+                        </p>
+                      </div>
+                    )}
                     
                     <div className="border-t border-border pt-4">
                       <div className="flex justify-between items-center">
