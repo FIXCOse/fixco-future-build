@@ -330,33 +330,6 @@ const RUT = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 hero-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">
-              <span className="gradient-text">{t('pages.rut.cta.title')}</span>
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              {t('pages.rut.cta.description')}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to={bookingPath}>
-                <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  {t('pages.rut.cta.bookNow')}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link to={contactPath}>
-                <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 font-bold">
-                  {t('pages.rut.cta.requestQuote')}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

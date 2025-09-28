@@ -9,6 +9,7 @@ import { EditModeToggle } from '../EditModeToggle';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import GlobalFooter from '../layout/GlobalFooter';
 
 interface AppLayoutProps {
   locale?: Locale;
@@ -24,9 +25,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
         <EditModeProvider>
           <div className="min-h-screen bg-background" data-header="main">
             <Navigation />
-            <main>
+            <main className="min-h-[60vh]">
               <Outlet />
             </main>
+            <GlobalFooter locale={locale} />
             <AIChat />
             <EditModeToggle />
             <ModalHost />

@@ -315,56 +315,6 @@ const ServiceDetail = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 relative">
-        <div className="absolute inset-0 gradient-primary-subtle opacity-20" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-8">
-              {t('serviceDetail.readyToStart')} <span className="gradient-text">{(t(`serviceCategories.${service.slug}.title` as any) || service.title).toLowerCase()}</span> {isEnglish ? 'project?' : 'projekt?'}
-            </h2>
-            <p className="text-xl text-muted-foreground mb-12">
-              {t('serviceDetail.contactToday')}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button variant="cta" size="xl">
-                <Calculator className="h-5 w-5 mr-2" />
-                {t('serviceDetail.requestFreeQuote')}
-              </Button>
-              <Button variant="ghost-premium" size="xl">
-                <Phone className="h-5 w-5 mr-2" />
-                {t('serviceDetail.callUs')}
-              </Button>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <Clock className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">{t('serviceDetail.quickStart')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('serviceDetail.canStartWithin')}
-                </p>
-              </div>
-              <div className="text-center">
-                <Shield className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">{t('serviceDetail.secureGuarantee')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('serviceDetail.yearsGuarantee')}
-                </p>
-              </div>
-              <div className="text-center">
-                <CheckCircle className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">{t('serviceDetail.rotRutHandling')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('serviceDetail.weHandleAll')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

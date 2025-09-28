@@ -330,33 +330,6 @@ const Referenser = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 relative">
-        <div className="absolute inset-0 gradient-primary-subtle opacity-10" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">
-              Redo att bli nästa nöjda kund?
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Kontakta oss idag för en kostnadsfri konsultation och offert på ditt projekt.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="cta" size="lg">
-                Begär kostnadsfri offert
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="ghost-premium" size="lg">
-                Se alla tjänster
-              </Button>
-            </div>
-
-            <TrustChips variant="minimal" showAll={true} className="mt-8" />
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
