@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calculator, Percent, Users, Home, Wrench, Leaf } from 'lucide-react';
+import { Calculator, Percent, Building, Home, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -7,10 +7,10 @@ const RUTCalculator = () => {
   const [projectCost, setProjectCost] = useState(25000);
   const [householdSize, setHouseholdSize] = useState(2);
 
-  // RUT calculations - different rules than ROT
+  // Step-by-step calculation to ensure correctness - RUT specific amounts
   const maxRutDeductionPerPerson = 25000; // RUT is 25k per person vs ROT's 50k
-  const maxTotalRutDeduction = householdSize * maxRutDeductionPerPerson; // 1=25k, 2=50k, 3=75k, 4=100k
-  const rutPercentage = 50; // Same 50% as ROT
+  const maxTotalRutDeduction = householdSize * maxRutDeductionPerPerson; // 1=25k, 2=50k
+  const rutPercentage = 50;
   const calculatedDeduction = (projectCost * rutPercentage) / 100;
   const actualDeduction = Math.min(calculatedDeduction, maxTotalRutDeduction);
   const finalCost = projectCost - actualDeduction;
@@ -27,21 +27,21 @@ const RUTCalculator = () => {
 
   const examples = [
     {
-      title: "Städning",
-      originalCost: 15000,
-      description: "Regelbunden hemstädning under hela året",
+      title: "Hemstädning",
+      originalCost: 25000,
+      description: "Regelbunden städning av hela hemmet",
       icon: Home
     },
     {
       title: "Trädgårdsskötsel", 
-      originalCost: 30000,
+      originalCost: 35000,
       description: "Beskärning, plantering och gräsklippning",
-      icon: Leaf
+      icon: Building
     },
     {
-      title: "Reparationer",
-      originalCost: 20000,
-      description: "Mindre reparationer och underhållsarbeten",
+      title: "Mindre reparationer",
+      originalCost: 15000,
+      description: "Mindre underhållsarbeten i hemmet",
       icon: Wrench
     }
   ];
@@ -58,8 +58,8 @@ const RUTCalculator = () => {
             <span className="gradient-text">RUT-avdrag</span> Kalkylator
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Beräkna exakt hur mycket du kan spara på hushållsnära tjänster med RUT-avdrag. 
-            Få 50% rabatt direkt vid betalning, upp till 25 000 kr per person och år.
+            Beräkna exakt hur mycket du sparar med RUT-avdrag på hushållstjänster. 
+            Få 50% rabatt direkt, upp till 25 000 kr per person.
           </p>
         </div>
 
@@ -86,9 +86,9 @@ const RUTCalculator = () => {
                     <div className="space-y-2">
                       <input
                         type="range"
-                        min="5000"
+                        min="10000"
                         max="150000"
-                        step="2500"
+                        step="5000"
                         value={projectCost}
                         onChange={(e) => setProjectCost(Number(e.target.value))}
                         className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
@@ -99,7 +99,7 @@ const RUTCalculator = () => {
                     </div>
                     
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>5 000 kr</span>
+                      <span>10 000 kr</span>
                       <span className="font-semibold text-foreground text-lg">
                         {projectCost.toLocaleString('sv-SE')} kr
                       </span>
@@ -109,8 +109,7 @@ const RUTCalculator = () => {
 
                   {/* Household Size */}
                   <div className="space-y-4">
-                    <label className="text-lg font-semibold text-foreground flex items-center gap-2">
-                      <Users className="h-5 w-5" />
+                    <label className="text-lg font-semibold text-foreground">
                       Antal personer i hushållet
                     </label>
                     
@@ -125,7 +124,7 @@ const RUTCalculator = () => {
                               : 'border-border bg-background text-foreground hover:border-primary/50'
                           }`}
                         >
-                          {size}
+                          {size} {size === 1 ? 'person' : 'personer'}
                         </button>
                       ))}
                     </div>
@@ -169,7 +168,7 @@ const RUTCalculator = () => {
                     {actualDeduction < maxTotalRutDeduction && (
                       <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
                         <p className="text-sm text-blue-700">
-                          Du kan få upp till {(maxTotalRutDeduction - actualDeduction).toLocaleString('sv-SE')} kr mer i avdrag med större tjänster!
+                          Du kan få upp till {(maxTotalRutDeduction - actualDeduction).toLocaleString('sv-SE')} kr mer i avdrag med större projekt!
                         </p>
                       </div>
                     )}
@@ -200,7 +199,7 @@ const RUTCalculator = () => {
           <div className="space-y-8">
             {/* Example Projects */}
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-foreground">Exempel på RUT-berättigade tjänster</h3>
+              <h3 className="text-2xl font-bold text-foreground">Populära RUT-tjänster</h3>
               
               <div className="space-y-4">
                 {examples.map((example, index) => {
@@ -240,23 +239,23 @@ const RUTCalculator = () => {
             {/* Key Benefits */}
             <Card className="border-primary/20">
               <CardContent className="p-6">
-                <h4 className="font-bold text-lg mb-4 text-primary">Fördelar med RUT-avdrag</h4>
+                <h4 className="font-bold text-lg mb-4 text-primary">Så fungerar RUT-avdrag</h4>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Direkt rabatt:</strong> Du får rabatten vid betalning, inte som återbäring</span>
+                    <span className="text-sm"><strong>Direkt rabatt:</strong> Du betalar mindre direkt, ingen ansökan</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Ingen ansökan:</strong> Vi sköter alla RUT-formaliteter automatiskt</span>
+                    <span className="text-sm"><strong>50% avdrag:</strong> På arbetskostnaden för hushållstjänster</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Årligt:</strong> 25 000 kr avdrag per person per år</span>
+                    <span className="text-sm"><strong>25 000 kr max:</strong> Per person i hushållet per år</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-sm"><strong>Flexibelt:</strong> Kan användas för många olika hushållstjänster</span>
+                    <span className="text-sm"><strong>Vi sköter allt:</strong> Ingen administration för dig</span>
                   </li>
                 </ul>
               </CardContent>
