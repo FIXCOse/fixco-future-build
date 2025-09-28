@@ -1,162 +1,49 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Quote, ArrowRight, MapPin, Calendar, Euro } from "lucide-react";
+import { Star, Quote, ArrowRight, MapPin, Calendar, Euro, Plus, Edit, Trash2, Eye } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useEditMode } from '@/contexts/EditModeContext';
-import EditableReferenceGrid from '@/components/EditableReferenceGrid';
-const references = [
-  {
-    id: 1,
-    title: "Köksrenovering Villa Täby",
-    category: "Snickeri & VVS",
-    location: "Täby, Stockholm",
-    date: "December 2024",
-    duration: "2 veckor",
-    budget: "180 000 kr",
-    rotSaving: "35 000 kr",
-    image: "/api/placeholder/400/300",
-    description: "Komplett köksrenovering med nya skåp, bänkskivor och vitvaror. Inklusive VVS-arbeten för diskmaskin och kylskåp.",
-    services: ["Snickeri", "VVS", "El"],
-    quote: "Fantastisk service från start till mål. Fixco höll alla tidsramar och budgeten. Köket blev ännu vackrare än vi föreställt oss.",
-    client: "Maria och Lars Andersson",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  },
-  {
-    id: 2,
-    title: "Badrumstotalrenovering",
-    category: "VVS & Snickeri",
-    location: "Uppsala Centrum",
-    date: "November 2024",
-    duration: "10 dagar",
-    budget: "95 000 kr",
-    rotSaving: "22 000 kr",
-    image: "/api/placeholder/400/300",
-    description: "Totalrenovering av badrum med ny duschkabin, kakel och golvvärme. Modern design med smarta förvaringslösningar.",
-    services: ["VVS", "Snickeri", "El"],
-    quote: "Professionellt utfört från A till Ö. Tack vare ROT-avdraget blev det mycket mer överkomligt än vi trott.",
-    client: "Anna Petersson",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  },
-  {
-    id: 3,
-    title: "Altan & Trädgårdsanläggning",
-    category: "Snickeri & Trädgård",
-    location: "Sigtuna",
-    date: "Oktober 2024",
-    duration: "1 vecka",
-    budget: "65 000 kr",
-    rotSaving: "18 000 kr",
-    image: "/api/placeholder/400/300",
-    description: "Ny altan i mahogny med integrerad belysning plus komplett trädgårdsanläggning med planteringar och automatisk bevattning.",
-    services: ["Snickeri", "Trädgård", "El"],
-    quote: "Vi har fått vår drömträdgård! Fixco förstod precis vad vi ville ha och levererade över förväntan.",
-    client: "Henrik och Sara Lindström",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  },
-  {
-    id: 4,
-    title: "Kontorsrenovering",
-    category: "Projektledning",
-    location: "Stockholm City",
-    date: "September 2024",
-    duration: "3 veckor",
-    budget: "320 000 kr",
-    rotSaving: "0 kr",
-    image: "/api/placeholder/400/300",
-    description: "Totalrenovering av kontorslokaler för IT-företag. Moderna mötesrum, öppen kontorslandskap och dedicated serverrum.",
-    services: ["Projektledning", "Snickeri", "El"],
-    quote: "Fixco hanterade hela projektet smidigt medan vi kunde fokusera på vår verksamhet. Noll driftsstörningar.",
-    client: "TechStart AB",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  },
-  {
-    id: 5,
-    title: "IKEA-montering & Homestyling",
-    category: "Montering",
-    location: "Uppsala Luthagen",
-    date: "Januari 2025",
-    duration: "2 dagar",
-    budget: "8 500 kr",
-    rotSaving: "2 200 kr",
-    image: "/api/placeholder/400/300",
-    description: "Komplett möbleringspaket för nyinflyttade. IKEA PAX-system, kök, vardagsrum och sovrumsmöbler plus homestyling.",
-    services: ["Montering"],
-    quote: "Snabbt, smidigt och professionellt. På två dagar förvandlades lägenheten från tom till hemkänsla!",
-    client: "Julia Nilsson",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  },
-  {
-    id: 6,
-    title: "Markdränering & Grundförstärkning",
-    category: "Markarbeten",
-    location: "Enköping",
-    date: "Augusti 2024",
-    duration: "1 vecka",
-    budget: "120 000 kr",
-    rotSaving: "28 000 kr",
-    image: "/api/placeholder/400/300",
-    description: "Fuktproblem löstes med professionell dränering runt huset och förstärkning av grundmur. Inga mer fuktproblem!",
-    services: ["Markarbeten"],
-    quote: "Efter år av fuktproblem är de äntligen lösta. Fixco levererade expertis och kvalitet som andra inte kunde.",
-    client: "Gunnar Eriksson",
-    rating: 5,
-    beforeAfter: {
-      before: "/api/placeholder/200/150",
-      after: "/api/placeholder/200/150"
-    }
-  }
-];
-
-const testimonials = [
-  {
-    quote: "Fixco levererade exakt det vi lovats. Professionellt, i tid och till rätt pris. Rekommenderas varmt!",
-    author: "Emma Johansson",
-    service: "Köksrenovering",
-    rating: 5,
-    location: "Stockholm"
-  },
-  {
-    quote: "Fantastisk service! De löste våra VVS-problem på nolltid och hjälpte oss spara pengar med ROT-avdraget.",
-    author: "Michael Berg",
-    service: "VVS-reparationer",
-    rating: 5,
-    location: "Uppsala"
-  },
-  {
-    quote: "Bästa beslutet vi gjorde var att anlita Fixco. Från offert till färdigt projekt - allt flöt på perfekt.",
-    author: "Sofia Lindgren",
-    service: "Badrumssanering",
-    rating: 5,
-    location: "Täby"
-  }
-];
+import { useAllReferenceProjects, useUpdateReferenceProject, useCreateReferenceProject, useDeleteReferenceProject, ReferenceProject } from '@/hooks/useReferenceProjects';
+import { useAuth } from '@/hooks/useAuth';
+import { useRole } from '@/hooks/useRole';
+import ProjectEditModal from '@/components/admin/ProjectEditModal';
+import { useState } from 'react';
 
 const Referenser = () => {
   const { t } = useCopy();
   const { isEditMode } = useEditMode();
+  const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  const { data: projects = [], isLoading } = useAllReferenceProjects();
+  const { user } = useAuth();
+  const { role } = useRole();
+  const updateProject = useUpdateReferenceProject();
+  const createProject = useCreateReferenceProject();
+  const deleteProject = useDeleteReferenceProject();
+
+  const isAdmin = role === 'owner' || role === 'admin';
+
+  const handleSaveProject = (projectData: Partial<ReferenceProject>) => {
+    if (editingProject) {
+      updateProject.mutate({ 
+        id: editingProject.id, 
+        updates: projectData 
+      });
+    } else {
+      createProject.mutate(projectData as any);
+    }
+    setEditingProject(null);
+  };
+
+  const handleDeleteProject = (projectId: string) => {
+    if (confirm('Är du säker på att du vill radera detta projekt?')) {
+      deleteProject.mutate(projectId);
+    }
+  };
   
   return (
     <div className="min-h-screen">
@@ -168,9 +55,20 @@ const Referenser = () => {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('pages.references.title')}
-            </h1>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold">
+                {t('pages.references.title')}
+              </h1>
+              {isAdmin && (
+                <Button 
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nytt projekt
+                </Button>
+              )}
+            </div>
             <p className="text-xl text-muted-foreground mb-8">
               Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss.
             </p>
@@ -185,115 +83,154 @@ const Referenser = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold gradient-text mb-2">500+</div>
-              <div className="text-muted-foreground">Nöjda kunder</div>
+              <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
+              <div className="text-muted-foreground">Slutförda projekt</div>
             </div>
             <div>
               <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
               <div className="text-muted-foreground">Medelbetyg</div>
             </div>
             <div>
-              <div className="text-3xl font-bold gradient-text mb-2">15M kr</div>
-              <div className="text-muted-foreground">ROT-besparingar</div>
+              <div className="text-3xl font-bold gradient-text mb-2">
+                {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
+              </div>
+              <div className="text-muted-foreground">ROT/RUT-besparingar</div>
             </div>
             <div>
-              <div className="text-3xl font-bold gradient-text mb-2">98%</div>
-              <div className="text-muted-foreground">Skulle rekommendera oss</div>
+              <div className="text-3xl font-bold gradient-text mb-2">100%</div>
+              <div className="text-muted-foreground">Nöjda kunder</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Case Studies */}
+      {/* Projects Grid */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Utvalda projekt</h2>
+            <h2 className="text-3xl font-bold mb-4">Våra Referensprojekt</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Här är några av våra senaste projekt som visar bredden och kvaliteten i vårt arbete.
+              Här är alla våra projekt som visar bredden och kvaliteten i vårt arbete.
             </p>
           </div>
 
-          {isEditMode ? (
-            <EditableReferenceGrid initialReferences={references} />
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Laddar projekt...</p>
+            </div>
           ) : (
-            <div className="grid lg:grid-cols-2 gap-8">
-              {references.map((ref, index) => (
-                <Card key={ref.id} className="overflow-hidden hover:shadow-premium transition-all duration-300">
+            <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
+              {projects.map((project, index) => (
+                <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
                   {/* Project Image */}
-                  <div className="relative h-48 bg-gradient-to-r from-primary/20 to-accent/20">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <div className="text-4xl mb-2">🏠</div>
-                        <div className="text-sm">{ref.title}</div>
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    
+                    {/* Admin Controls */}
+                    {isAdmin && (
+                      <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => setEditingProject(project)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteProject(project.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
-                    </div>
-                    <Badge className="absolute top-4 left-4">{ref.category}</Badge>
-                    <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                    )}
+                    
+                    <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground shadow-lg">
+                      {project.category}
+                    </Badge>
+                    
+                    {(project.rot_saving_amount > 0 || project.rut_saving_amount > 0) && (
+                      <Badge className="absolute bottom-4 right-4 bg-green-600 text-white shadow-lg">
+                        {project.rot_saving_amount > 0 && `ROT: -${project.rot_saving_amount.toLocaleString('sv-SE')} kr`}
+                        {project.rut_saving_amount > 0 && `RUT: -${project.rut_saving_amount.toLocaleString('sv-SE')} kr`}
+                      </Badge>
+                    )}
+                    
+                    <div className="absolute bottom-4 left-4 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
                       <Star className="h-3 w-3 fill-current text-yellow-500" />
-                      <span className="text-xs font-medium">{ref.rating}.0</span>
+                      <span className="text-xs font-medium">{project.rating}.0</span>
                     </div>
                   </div>
 
-                  <div className="p-6">
+                  <CardContent className="p-6">
                     {/* Project Header */}
                     <div className="mb-4">
-                      <h3 className="text-xl font-bold mb-2">{ref.title}</h3>
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1">
                           <MapPin className="h-4 w-4" />
-                          <span>{ref.location}</span>
+                          <span>{project.location}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Calendar className="h-4 w-4" />
-                          <span>{ref.date}</span>
+                          <span>{new Date(project.completed_date).toLocaleDateString('sv-SE')}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Euro className="h-4 w-4" />
-                          <span>{ref.budget}</span>
+                          <span>{project.price_amount.toLocaleString('sv-SE')} kr</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Description */}
-                    <p className="text-muted-foreground mb-4">{ref.description}</p>
+                    <p className="text-muted-foreground mb-4">{project.description}</p>
 
-                    {/* Services */}
+                    {/* Features */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {ref.services.map(service => (
-                        <Badge key={service} variant="secondary">{service}</Badge>
+                      {project.features.map(feature => (
+                        <Badge key={feature} variant="secondary">{feature}</Badge>
                       ))}
                     </div>
 
-                    {/* ROT Saving */}
-                    {ref.rotSaving !== "0 kr" && (
+                    {/* ROT/RUT Savings */}
+                    {(project.rot_saving_amount > 0 || project.rut_saving_amount > 0) && (
                       <div className="p-3 bg-primary/10 rounded-lg mb-4">
                         <div className="text-sm">
-                          <span className="text-muted-foreground">ROT-besparing: </span>
-                          <span className="font-bold text-primary">{ref.rotSaving}</span>
+                          {project.rot_saving_amount > 0 && (
+                            <div>
+                              <span className="text-muted-foreground">ROT-besparing: </span>
+                              <span className="font-bold text-primary">{project.rot_saving_amount.toLocaleString('sv-SE')} kr</span>
+                            </div>
+                          )}
+                          {project.rut_saving_amount > 0 && (
+                            <div>
+                              <span className="text-muted-foreground">RUT-besparing: </span>
+                              <span className="font-bold text-primary">{project.rut_saving_amount.toLocaleString('sv-SE')} kr</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
 
-                    {/* Quote */}
-                    <div className="relative p-4 bg-muted/20 rounded-lg mb-4">
-                      <Quote className="h-6 w-6 text-primary mb-2" />
-                      <p className="text-sm italic mb-2">"{ref.quote}"</p>
-                      <p className="text-xs text-muted-foreground font-medium">– {ref.client}</p>
-                    </div>
-
                     {/* Project Details */}
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-2 gap-4 text-sm pt-4 border-t">
                       <div>
                         <span className="text-muted-foreground">Projekttid:</span>
-                        <div className="font-medium">{ref.duration}</div>
+                        <div className="font-medium">{project.duration}</div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Total investering:</span>
-                        <div className="font-medium">{ref.budget}</div>
+                        <span className="text-muted-foreground">Klient:</span>
+                        <div className="font-medium">{project.client_initials}</div>
                       </div>
                     </div>
-                  </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
@@ -301,35 +238,22 @@ const Referenser = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Vad våra kunder säger</h2>
-            <p className="text-muted-foreground">Äkta recensioner från riktiga projekt</p>
-          </div>
+      {/* Edit Modal */}
+      <ProjectEditModal
+        project={editingProject}
+        isOpen={!!editingProject}
+        onClose={() => setEditingProject(null)}
+        onSave={handleSaveProject}
+      />
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6 text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-current text-yellow-500" />
-                  ))}
-                </div>
-                <Quote className="h-8 w-8 text-primary mx-auto mb-4" />
-                <p className="italic mb-4">"{testimonial.quote}"</p>
-                <div>
-                  <div className="font-semibold">{testimonial.author}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.service}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.location}</div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* Create Modal */}
+      <ProjectEditModal
+        project={null}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleSaveProject}
+        isCreating={true}
+      />
     </div>
   );
 };

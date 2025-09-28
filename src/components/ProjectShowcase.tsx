@@ -1,122 +1,56 @@
 import { useState } from 'react';
-import { ArrowRight, Calendar, MapPin, Clock, Star, ExternalLink } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Clock, Star, ExternalLink, Plus, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
+import { useReferenceProjects, useUpdateReferenceProject, useCreateReferenceProject, ReferenceProject } from '@/hooks/useReferenceProjects';
+import { useAuth } from '@/hooks/useAuth';
+import { useRole } from '@/hooks/useRole';
+import ProjectEditModal from '@/components/admin/ProjectEditModal';
 
 const ProjectShowcase = () => {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  const { data: projects = [], isLoading } = useReferenceProjects();
+  const { user } = useAuth();
+  const { role } = useRole();
+  const updateProject = useUpdateReferenceProject();
+  const createProject = useCreateReferenceProject();
 
-  const projects = [
-    {
-      id: 1,
-      title: "Moderna Köksrenovering",
-      location: "Östermalm, Stockholm",
-      category: "Kök & Badrum",
-      duration: "3 veckor",
-      completedDate: "2024-01-15",
-      price: "185 000 kr",
-      rotSaving: "92 500 kr",
-      rating: 5,
-      description: "Komplett renovering med marmorbänkskivor och integrerade vitvaror",
-      images: [
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1556909185-4d3f0e82b799?w=800&h=600&fit=crop"
-      ],
-      features: ["Marmorbänkskivor", "Integrerade vitvaror", "LED-belysning", "Mjuka stängningar"],
-      clientInitials: "M.L"
-    },
-    {
-      id: 2,
-      title: "Lyxigt Spa-badrum",
-      location: "Södermalm, Stockholm", 
-      category: "Badrum",
-      duration: "4 veckor",
-      completedDate: "2024-02-10",
-      price: "220 000 kr",
-      rotSaving: "110 000 kr",
-      rating: 5,
-      description: "Spa-känsla med natursten, golvvärme och regnduschhuvud",
-      images: [
-        "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=800&h=600&fit=crop"
-      ],
-      features: ["Natursten", "Golvvärme", "Regnduschhuvud", "Handdukstork"],
-      clientInitials: "A.S"
-    },
-    {
-      id: 3,
-      title: "Skandinavisk Vardagsrum",
-      location: "Vasastan, Stockholm",
-      category: "Vardagsrum", 
-      duration: "2 veckor",
-      completedDate: "2024-03-05",
-      price: "95 000 kr",
-      rotSaving: "47 500 kr",
-      rating: 5,
-      description: "Minimalistisk design med naturliga material och smarta förvaringslösningar",
-      images: [
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&h=600&fit=crop"
-      ],
-      features: ["Inbyggd förvaring", "Parkettgolv", "Smart belysning", "Eldstad"],
-      clientInitials: "L.E"
-    },
-    {
-      id: 4,
-      title: "Trädgårdsaltan Premium",
-      location: "Djursholm, Danderyd",
-      category: "Trädgård & Utomhus",
-      duration: "3 veckor", 
-      completedDate: "2024-03-20",
-      price: "150 000 kr",
-      rotSaving: "75 000 kr",
-      rating: 5,
-      description: "Lyxig altan med integrerad utomhuskök och lounge-område",
-      images: [
-        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?w=800&h=600&fit=crop"
-      ],
-      features: ["Utomhuskök", "Pergola", "LED-streifen", "Väderskydd"],
-      clientInitials: "K.H"
-    },
-    {
-      id: 5,
-      title: "Smart Hemkontor",
-      location: "Gamla Stan, Stockholm",
-      category: "Kontor & Arbetsrum",
-      duration: "1 vecka",
-      completedDate: "2024-04-02",
-      price: "75 000 kr", 
-      rotSaving: "37 500 kr",
-      rating: 5,
-      description: "Ergonomiskt hemkontor med smarta lösningar och perfekt belysning",
-      images: [
-        "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop"
-      ],
-      features: ["Höj/sänkbart skrivbord", "Akustikpaneler", "Smart belysning", "Kabelhantering"],
-      clientInitials: "J.P"
-    },
-    {
-      id: 6,
-      title: "Barnrums Äventyr",
-      location: "Lidingö, Stockholm",
-      category: "Barnrum", 
-      duration: "2 veckor",
-      completedDate: "2024-04-15",
-      price: "65 000 kr",
-      rotSaving: "32 500 kr", 
-      rating: 5,
-      description: "Kreativt och säkert barnrum med lekfulla element och smarta förvaringslösningar",
-      images: [
-        "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop"
-      ],
-      features: ["Klättervägg", "Inbyggd säng", "Leksaksförvaring", "Säker design"],
-      clientInitials: "H.W"
+  const isAdmin = role === 'owner' || role === 'admin';
+  
+  // Show featured projects on home page (limit to 6)
+  const displayedProjects = projects
+    .filter(p => p.is_featured)
+    .slice(0, 6);
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground mt-4">Laddar projekt...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const handleSaveProject = (projectData: Partial<ReferenceProject>) => {
+    if (editingProject) {
+      updateProject.mutate({ 
+        id: editingProject.id, 
+        updates: projectData 
+      });
+    } else {
+      createProject.mutate(projectData as any);
     }
-  ];
+    setEditingProject(null);
+  };
 
   return (
     <section className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20 relative overflow-hidden">
@@ -129,8 +63,19 @@ const ProjectShowcase = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-6">
-            <Star className="w-10 h-10 text-primary" />
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full">
+              <Star className="w-10 h-10 text-primary" />
+            </div>
+            {isAdmin && (
+              <Button 
+                onClick={() => setIsCreateModalOpen(true)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Nytt projekt
+              </Button>
+            )}
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -160,7 +105,7 @@ const ProjectShowcase = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {projects.map((project, index) => (
+          {displayedProjects.map((project, index) => (
             <Card 
               key={project.id} 
               className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 animate-fade-in bg-card/80 backdrop-blur-sm ${
@@ -173,7 +118,7 @@ const ProjectShowcase = () => {
               {/* Project Image */}
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={project.images[0]}
+                  src={project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
@@ -187,12 +132,26 @@ const ProjectShowcase = () => {
                   {project.category}
                 </Badge>
 
-                {/* ROT Savings Badge */}
+                {/* ROT/RUT Savings Badge */}
                 <Badge className="absolute top-4 right-4 bg-green-600 text-white shadow-lg">
-                  ROT: -{project.rotSaving}
+                  {project.rot_saving_amount > 0 && `ROT: -${project.rot_saving_amount.toLocaleString('sv-SE')} kr`}
+                  {project.rut_saving_amount > 0 && `RUT: -${project.rut_saving_amount.toLocaleString('sv-SE')} kr`}
+                  {project.rot_saving_amount === 0 && project.rut_saving_amount === 0 && 'Projekt'}
                 </Badge>
 
-                {/* View Details Button - appears on hover */}
+                {/* Admin Edit Button */}
+                {isAdmin && (
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    onClick={() => setEditingProject(project)}
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                )}
+
+                {/* View Details Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Button 
                     size="sm" 
@@ -252,18 +211,18 @@ const ProjectShowcase = () => {
                 <div className="flex justify-between items-center pt-4 border-t border-border">
                   <div>
                     <p className="text-sm text-muted-foreground">Totalpris</p>
-                    <p className="font-bold text-primary">{project.price}</p>
+                    <p className="font-bold text-primary">{project.price_amount.toLocaleString('sv-SE')} kr</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-muted-foreground">Klient</p>
-                    <p className="font-semibold">{project.clientInitials}</p>
+                    <p className="font-semibold">{project.client_initials}</p>
                   </div>
                 </div>
 
                 {/* Completion Date */}
                 <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3" />
-                  Färdigställt {new Date(project.completedDate).toLocaleDateString('sv-SE')}
+                  Färdigställt {new Date(project.completed_date).toLocaleDateString('sv-SE')}
                 </div>
               </CardContent>
 
@@ -290,13 +249,15 @@ const ProjectShowcase = () => {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button size="lg" variant="outline">
-                Se fler projekt
+                <Link to="/referenser" className="flex items-center">
+                  Se fler projekt
+                </Link>
               </Button>
             </div>
 
             <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
               <div className="text-center">
-                <p className="text-2xl font-bold text-primary">50+</p>
+                <p className="text-2xl font-bold text-primary">{projects.length}</p>
                 <p className="text-sm text-muted-foreground">Projekt 2024</p>
               </div>
               <div className="text-center">
@@ -311,6 +272,23 @@ const ProjectShowcase = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <ProjectEditModal
+        project={editingProject}
+        isOpen={!!editingProject}
+        onClose={() => setEditingProject(null)}
+        onSave={handleSaveProject}
+      />
+
+      {/* Create Modal */}
+      <ProjectEditModal
+        project={null}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleSaveProject}
+        isCreating={true}
+      />
     </section>
   );
 };

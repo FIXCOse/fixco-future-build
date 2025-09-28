@@ -213,6 +213,8 @@ const App = () => {
                     <Route path="om-oss" element={<AboutUs />} />
                     <Route path="boka-hembesok" element={<BookVisit />} />
                     <Route path="rot-info" element={<ROTInfo />} />
+                    <Route path="cookies" element={<Cookies />} />
+                    <Route path="ansvar-forsakring" element={<Insurance />} />
                     <Route path="rot" element={<ROTInfo />} />
                     <Route path="rut" element={<RUT />} />
                     <Route path="referenser" element={<Referenser />} />
