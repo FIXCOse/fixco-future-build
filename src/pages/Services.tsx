@@ -9,7 +9,7 @@ import TrustChips from "@/components/TrustChips";
 import { Project3DVisualizer } from "@/components/Project3DVisualizer";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
-import { AIProjectAssistant } from "@/components/AIProjectAssistant";
+
 import { Link } from "react-router-dom";
 import { useCopy } from "@/copy/CopyProvider";
 
@@ -112,18 +112,6 @@ const Services = () => {
         </div>
       </section>
 
-      {/* AI Project Assistant */}
-      <section className="py-16 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{t('services.ai_assistant')}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('services.ai_description')}
-            </p>
-          </div>
-          <AIProjectAssistant />
-        </div>
-      </section>
 
       {/* ROT Info Section */}
       <section className="py-20 relative">
