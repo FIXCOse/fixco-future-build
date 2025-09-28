@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Edit3, Eye, MousePointer2, Save, Sparkles } from 'lucide-react';
+import { Edit3, Eye, MousePointer2, Save, Sparkles, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { useRoleGate } from '@/hooks/useRoleGate';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export const EditModeIndicator: React.FC = () => {
-  const { isEditMode } = useEditMode();
+  const { isEditMode, toggleEditMode } = useEditMode();
   const { isAdmin, isOwner } = useRoleGate();
   const [showTip, setShowTip] = useState(false);
 
@@ -18,6 +20,14 @@ export const EditModeIndicator: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [isEditMode]);
+
+  const handleSave = () => {
+    toggleEditMode();
+    toast.success('Alla ändringar sparade!', {
+      description: 'Redigeringsläget har avslutats',
+      duration: 3000,
+    });
+  };
 
   // Only show for admin/owner - conditional return AFTER all hooks
   if (!isAdmin && !isOwner) {
@@ -51,6 +61,16 @@ export const EditModeIndicator: React.FC = () => {
                 <Sparkles className="h-3 w-3 mr-1" />
                 ADMIN
               </Badge>
+
+              <Button 
+                onClick={handleSave}
+                variant="secondary"
+                size="sm"
+                className="ml-2 bg-green-500 hover:bg-green-600 text-white"
+              >
+                <Save className="h-3 w-3 mr-1" />
+                SPARA
+              </Button>
             </div>
           </div>
 

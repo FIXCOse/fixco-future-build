@@ -35,7 +35,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             </main>
             <GlobalFooter locale={locale} />
             <AIChat />
-            <EditModeToggle />
             <GlobalContentEditor />
             <EditModeIndicator />
             <ContentLoadingIndicator />
