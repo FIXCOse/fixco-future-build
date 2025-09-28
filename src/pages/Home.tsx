@@ -5,7 +5,7 @@ import HeroUltra from "@/components/HeroUltra";
 import TrustBar from "@/components/TrustBar";
 import ComparisonUltra from "@/components/ComparisonUltra";
 import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
-import TestimonialCarousel from "@/components/TestimonialCarousel";
+import ProjectShowcase from "@/components/ProjectShowcase";
 import FAQTeaser from "@/components/FAQTeaser";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
@@ -34,8 +34,8 @@ const Home = () => {
       {/* Service Teaser Grid */}
       <ServiceTeaserGrid />
 
-      {/* Testimonials Carousel */}
-      <TestimonialCarousel />
+      {/* Project Showcase */}
+      <ProjectShowcase />
 
       {/* FAQ Teaser */}
       <FAQTeaser />
