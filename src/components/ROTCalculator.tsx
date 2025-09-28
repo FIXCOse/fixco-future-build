@@ -7,12 +7,23 @@ const ROTCalculator = () => {
   const [projectCost, setProjectCost] = useState(80000);
   const [householdSize, setHouseholdSize] = useState(2);
 
+  // Step-by-step calculation to ensure correctness
   const maxRotDeductionPerPerson = 50000;
-  // Ensure correct calculation: 1 person = 50k, 2 = 100k, 3 = 150k, 4 = 200k
-  const maxTotalRotDeduction = maxRotDeductionPerPerson * householdSize;
+  const maxTotalRotDeduction = householdSize * maxRotDeductionPerPerson; // 1=50k, 2=100k, 3=150k, 4=200k
   const rotPercentage = 50;
-  const actualDeduction = Math.min(projectCost * (rotPercentage / 100), maxTotalRotDeduction);
+  const calculatedDeduction = (projectCost * rotPercentage) / 100;
+  const actualDeduction = Math.min(calculatedDeduction, maxTotalRotDeduction);
   const finalCost = projectCost - actualDeduction;
+
+  // Debug log to verify calculations
+  console.log('Debug ROT Calculator:', {
+    householdSize,
+    maxTotalRotDeduction,
+    projectCost,
+    calculatedDeduction,
+    actualDeduction,
+    finalCost
+  });
 
   const examples = [
     {
@@ -116,7 +127,7 @@ const ROTCalculator = () => {
                     
                     <p className="text-sm text-muted-foreground">
                       Max avdrag: {maxTotalRotDeduction.toLocaleString('sv-SE')} kr 
-                      ({householdSize} × 50 000 kr)
+                      ({householdSize} × 50 000 kr = {(householdSize * 50000).toLocaleString('sv-SE')} kr)
                     </p>
                   </div>
                 </div>
