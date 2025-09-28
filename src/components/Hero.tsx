@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-construction.jpg";
 import { useCopy } from "@/copy/CopyProvider";
@@ -49,7 +49,6 @@ const Hero = () => {
                   className="w-full sm:w-auto"
                 >
                   {t('hero.cta_request_quote')}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>
               <Link to="/tjanster" className="w-full sm:w-auto">
@@ -59,7 +58,6 @@ const Hero = () => {
                   className="w-full sm:w-auto"
                 >
                   {t('hero.cta_see_services')}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </Link>
             </div>

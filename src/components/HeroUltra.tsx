@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, Phone, Award, Users, MapPin, Star } from "lucide-react";
+import { Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
@@ -238,12 +238,11 @@ const HeroUltra = () => {
               {t('home.hero.subtitle')}
             </p>
 
-            {/* Static CTA Buttons */}
+            {/* CTA Buttons - NO ARROWS */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
               <Link to="/kontakt">
                 <MagneticButton className="bg-primary text-primary-foreground text-lg px-8 py-4">
                   {t('home.hero.primaryCta')}
-                  <ArrowRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
               <Link to="/tjanster">
@@ -252,35 +251,36 @@ const HeroUltra = () => {
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"
                 >
                   {t('common.services')}
-                  <ChevronRight className="ml-2 h-5 w-5" />
                 </MagneticButton>
               </Link>
             </div>
 
-            {/* Trust Indicators - Horizontal Layout */}
-            <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 lg:gap-12 max-w-6xl mx-auto mb-8 px-4">
+            {/* Trust Indicators - 4 Column Grid */}
+            <div className="grid gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch max-w-6xl mx-auto mb-8 px-4">
               {trustIndicators.map((item, index) => {
                 return (
                   <div
                     key={item.title}
-                    className="card-service p-6 text-center border-primary/20"
+                    className="h-full"
                   >
-                    <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                      {item.icon === "image" ? (
-                        <img 
-                          src={item.src} 
-                          alt="Fixco Brand" 
-                          className="h-8 w-8 object-contain opacity-90"
-                        />
-                      ) : (
-                        (() => {
-                          const IconComponent = item.icon as any;
-                          return <IconComponent className="h-6 w-6 text-primary" />;
-                        })()
-                      )}
+                    <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
+                      <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                        {item.icon === "image" ? (
+                          <img 
+                            src={item.src} 
+                            alt="Fixco Brand" 
+                            className="h-8 w-8 object-contain opacity-90"
+                          />
+                        ) : (
+                          (() => {
+                            const IconComponent = item.icon as any;
+                            return <IconComponent className="h-6 w-6 text-primary" />;
+                          })()
+                        )}
+                      </div>
+                      <h3 className="font-bold text-sm mb-2">{item.title}</h3>
+                      <p className="text-xs text-muted-foreground">{item.description}</p>
                     </div>
-                    <h3 className="font-bold text-sm mb-2">{item.title}</h3>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
                   </div>
                 );
               })}
