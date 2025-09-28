@@ -28,10 +28,10 @@ export const EditModeIndicator: React.FC = () => {
     <AnimatePresence>
       {isEditMode && (
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 50 }}
+          className="fixed bottom-6 right-6 z-50"
         >
           <div className="bg-primary text-primary-foreground px-6 py-3 rounded-full shadow-xl border-2 border-primary-foreground/20">
             <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ export const EditModeIndicator: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-background border rounded-lg shadow-lg p-4 max-w-sm text-center"
+                className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-background border rounded-lg shadow-lg p-4 max-w-sm text-center"
               >
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MousePointer2 className="h-4 w-4 text-primary" />
