@@ -10,6 +10,7 @@ import { useAllReferenceProjects, useUpdateReferenceProject, useCreateReferenceP
 import { useAuth } from '@/hooks/useAuth';
 import { useRole } from '@/hooks/useRole';
 import ProjectEditModal from '@/components/admin/ProjectEditModal';
+import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
 import { useState } from 'react';
 
 const Referenser = () => {
@@ -17,6 +18,7 @@ const Referenser = () => {
   const { isEditMode } = useEditMode();
   const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
   
   const { data: projects = [], isLoading } = useAllReferenceProjects();
   const { user } = useAuth();
@@ -122,7 +124,11 @@ const Referenser = () => {
           ) : (
             <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
               {projects.map((project, index) => (
-                <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                <Card 
+                  key={project.id} 
+                  className="overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                  onClick={() => setSelectedProject(project)}
+                >
                   {/* Project Image */}
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -138,19 +144,36 @@ const Referenser = () => {
                         <Button
                           size="sm"
                           variant="secondary"
-                          onClick={() => setEditingProject(project)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingProject(project);
+                          }}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="destructive"
-                          onClick={() => handleDeleteProject(project.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteProject(project.id);
+                          }}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     )}
+                    
+                    {/* View Details Overlay */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <Button 
+                        size="sm" 
+                        className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg backdrop-blur-sm border-2 border-white/20"
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        Se alla bilder
+                      </Button>
+                    </div>
                     
                     <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground shadow-lg">
                       {project.category}
@@ -253,6 +276,13 @@ const Referenser = () => {
         onClose={() => setIsCreateModalOpen(false)}
         onSave={handleSaveProject}
         isCreating={true}
+      />
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
       />
     </div>
   );

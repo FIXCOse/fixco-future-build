@@ -8,11 +8,13 @@ import { useReferenceProjects, useUpdateReferenceProject, useCreateReferenceProj
 import { useAuth } from '@/hooks/useAuth';
 import { useRole } from '@/hooks/useRole';
 import ProjectEditModal from '@/components/admin/ProjectEditModal';
+import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
 
 const ProjectShowcase = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
   
   const { data: projects = [], isLoading } = useReferenceProjects();
   const { user } = useAuth();
@@ -155,7 +157,8 @@ const ProjectShowcase = () => {
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Button 
                     size="sm" 
-                    className="bg-white/90 text-primary hover:bg-white/100 shadow-lg backdrop-blur-sm"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg backdrop-blur-sm border-2 border-white/20"
+                    onClick={() => setSelectedProject(project)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
                     Se detaljer
@@ -288,6 +291,13 @@ const ProjectShowcase = () => {
         onClose={() => setIsCreateModalOpen(false)}
         onSave={handleSaveProject}
         isCreating={true}
+      />
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
       />
     </section>
   );
