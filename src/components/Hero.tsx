@@ -10,7 +10,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 hero-background">
-        <div className="absolute inset-0 bg-gradient-primary opacity-5 animate-gradient" />
+        <div className="absolute inset-0 bg-gradient-primary opacity-5" />
       </div>
       
       {/* Hero image with overlay */}
@@ -32,7 +32,7 @@ const Hero = () => {
               <span className="gradient-text">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
               <br />
               <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-              <span className="gradient-text animate-float">{t('hero.everything')}</span>
+              <span className="gradient-text">{t('hero.everything')}</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
@@ -67,15 +67,15 @@ const Hero = () => {
             {/* Trust indicators */}
             <div className="flex flex-col sm:flex-row gap-8 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>{t('hero.trust_rot')} <span className="text-primary font-semibold">{t('hero.trust_rot_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>{t('hero.trust_coverage')} <span className="text-primary font-semibold">{t('hero.trust_coverage_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-glow" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>{t('hero.trust_start')} <span className="text-primary font-semibold">{t('hero.trust_start_desc')}</span></span>
               </div>
             </div>
@@ -83,10 +83,10 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Floating elements */}
-      <div className="absolute top-20 right-20 w-20 h-20 bg-primary/10 rounded-full animate-float" style={{ animationDelay: '1s' }} />
-      <div className="absolute bottom-32 left-20 w-16 h-16 bg-accent/10 rounded-full animate-float" style={{ animationDelay: '2s' }} />
-      <div className="absolute top-1/2 right-10 w-12 h-12 bg-primary/5 rounded-full animate-float" style={{ animationDelay: '0.5s' }} />
+      {/* Static floating elements */}
+      <div className="absolute top-20 right-20 w-20 h-20 bg-primary/10 rounded-full" />
+      <div className="absolute bottom-32 left-20 w-16 h-16 bg-accent/10 rounded-full" />
+      <div className="absolute top-1/2 right-10 w-12 h-12 bg-primary/5 rounded-full" />
     </section>
   );
 };
