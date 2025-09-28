@@ -64,7 +64,7 @@ const CaseSwitcher = ({ selectedCase, onCaseChange, disabled }: CaseSwitcherProp
               className={`
                 relative p-6 rounded-xl border-2 transition-all duration-300 text-left
                 ${isSelected 
-                  ? 'border-primary bg-primary/5 shadow-glow' 
+                  ? 'border-primary bg-primary/5' 
                   : 'border-border hover:border-primary/50 hover:bg-muted/50'
                 }
                 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}

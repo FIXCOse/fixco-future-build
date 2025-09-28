@@ -78,7 +78,7 @@ function SortableReference({ reference: ref, onEdit, onDelete }: SortableReferen
     >
       <Card className={`
         overflow-hidden transition-all duration-300 relative group
-        ${isDragging ? 'shadow-glow border-2 border-primary' : 'hover:shadow-premium'}
+        ${isDragging ? 'border-2 border-primary' : ''}
       `}>
         {/* Edit Controls */}
         <div className="absolute top-2 left-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-1">

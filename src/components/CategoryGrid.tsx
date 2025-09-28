@@ -38,7 +38,7 @@ const CategoryGrid = () => {
             className="group"
           >
             <div 
-              className="card-service p-6 text-center h-full hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale"
+              className="card-service p-6 text-center h-full transition-all duration-300 animate-fade-in-up hover-scale"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {/* F Brand Badge - Bottom Right, Larger & More Visible */}
@@ -51,8 +51,8 @@ const CategoryGrid = () => {
               </div>
 
               {/* Icon */}
-              <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
-                <IconComponent className="h-6 w-6 text-primary-foreground drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+              <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>
+                <IconComponent className="h-6 w-6 text-primary-foreground group-hover:scale-110 transition-transform duration-300" />
               </div>
               
               {/* Title */}

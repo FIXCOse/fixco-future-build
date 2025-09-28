@@ -27,17 +27,17 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl">
           <div>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="text-primary">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
-              <span className="text-primary">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-foreground">
+              <span className="text-foreground">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
+              <span className="text-foreground">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
               <br />
               <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-              <span className="text-primary">{t('hero.everything')}</span>
+              <span className="text-foreground">{t('hero.everything')}</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
               {t('hero.subtitle')} 
-              <span className="text-primary font-semibold"> {t('timing.start_within_5_days')}.</span>
+              <span className="text-foreground font-semibold"> {t('timing.start_within_5_days')}.</span>
             </p>
 
             {/* CTA Buttons */}

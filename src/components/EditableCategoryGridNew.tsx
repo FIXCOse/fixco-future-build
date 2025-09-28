@@ -105,7 +105,7 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
         className="block"
       >
         <div 
-          className="card-service p-6 text-center h-full hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale border-2 border-dashed border-primary/30 group-hover:border-primary/50"
+          className="card-service p-6 text-center h-full transition-all duration-300 animate-fade-in-up hover-scale border-2 border-dashed border-primary/30 group-hover:border-primary/50"
           style={{ animationDelay: `${index * 0.05}s` }}
         >
           <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
@@ -116,8 +116,8 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
             />
           </div>
 
-          <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
-             <IconComponent className="h-6 w-6 text-primary-foreground drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+          <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>
+             <IconComponent className="h-6 w-6 text-primary-foreground group-hover:scale-110 transition-transform duration-300" />
           </div>
           
           <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
@@ -180,7 +180,7 @@ const EditableCategoryGridNew = () => {
               className="group"
             >
               <div 
-                className="card-service p-6 text-center h-full hover:shadow-glow transition-all duration-300 animate-fade-in-up hover-scale"
+                className="card-service p-6 text-center h-full transition-all duration-300 animate-fade-in-up hover-scale"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
@@ -191,8 +191,8 @@ const EditableCategoryGridNew = () => {
                   />
                 </div>
 
-                <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 group-hover:shadow-glow transition-all duration-300 ${getGradientForService(service.slug)}`}>
-                  <IconComponent className="h-6 w-6 text-primary-foreground drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+                <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>
+                  <IconComponent className="h-6 w-6 text-primary-foreground group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 
                 <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
