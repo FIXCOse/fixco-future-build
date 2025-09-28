@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
+import { EditableSection } from "@/components/EditableSection";
+import { EditableText } from "@/components/EditableText";
 
 const Contact = () => {
   const { t } = useCopy();
@@ -90,50 +92,91 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              {t('pages.contact.title')}
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('pages.contact.subtitle')}
-            </p>
+      <EditableSection id="contact-hero" title="Kontakt Hero">
+        <section className="pt-32 pb-20 hero-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <EditableText 
+                id="contact-title"
+                initialContent={t('pages.contact.title')}
+                type="heading"
+                as="h1"
+                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+              />
+              <EditableText 
+                id="contact-subtitle"
+                initialContent={t('pages.contact.subtitle')}
+                as="p"
+                className="text-xl md:text-2xl text-muted-foreground mb-8"
+              />
             
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              <div className="card-premium p-6">
-                <Clock className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">{t('pages.contact.quickResponse')}</div>
-                <div className="text-sm text-muted-foreground">{t('pages.contact.quickResponseDesc')}</div>
-              </div>
-              <div className="card-premium p-6">
-                <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-4" />
-                <div className="font-bold">{t('pages.contact.freeQuote')}</div>
-                <div className="text-sm text-muted-foreground">{t('pages.contact.freeQuoteDesc')}</div>
-              </div>
-              <div className="card-premium p-6">
-                <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />
-                <div className="font-bold">{t('pages.contact.localService')}</div>
-                <div className="text-sm text-muted-foreground">{t('pages.contact.localServiceDesc')}</div>
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div className="card-premium p-6">
+                  <Clock className="h-8 w-8 text-primary mx-auto mb-4" />
+                  <EditableText 
+                    id="contact-quick-response"
+                    initialContent={t('pages.contact.quickResponse')}
+                    className="font-bold"
+                  />
+                  <EditableText 
+                    id="contact-quick-response-desc"
+                    initialContent={t('pages.contact.quickResponseDesc')}
+                    className="text-sm text-muted-foreground"
+                  />
+                </div>
+                <div className="card-premium p-6">
+                  <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-4" />
+                  <EditableText 
+                    id="contact-free-quote"
+                    initialContent={t('pages.contact.freeQuote')}
+                    className="font-bold"
+                  />
+                  <EditableText 
+                    id="contact-free-quote-desc"
+                    initialContent={t('pages.contact.freeQuoteDesc')}
+                    className="text-sm text-muted-foreground"
+                  />
+                </div>
+                <div className="card-premium p-6">
+                  <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />
+                  <EditableText 
+                    id="contact-local-service"
+                    initialContent={t('pages.contact.localService')}
+                    className="font-bold"
+                  />
+                  <EditableText 
+                    id="contact-local-service-desc"
+                    initialContent={t('pages.contact.localServiceDesc')}
+                    className="text-sm text-muted-foreground"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* Contact Form & Info */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            
-            {/* Contact Form */}
-            <div className="card-premium p-8">
-              <h2 className="text-3xl font-bold mb-6">
-                {t('pages.contact.requestQuote')}
-              </h2>
-              <p className="text-muted-foreground mb-8">
-                {t('pages.contact.formDescription')}
-              </p>
+      <EditableSection id="contact-form" title="Kontaktformulär">
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+              
+              {/* Contact Form */}
+              <div className="card-premium p-8">
+                <EditableText 
+                  id="contact-form-title"
+                  initialContent={t('pages.contact.requestQuote')}
+                  type="heading"
+                  as="h2"
+                  className="text-3xl font-bold mb-6"
+                />
+                <EditableText 
+                  id="contact-form-description"
+                  initialContent={t('pages.contact.formDescription')}
+                  as="p"
+                  className="text-muted-foreground mb-8"
+                />
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -333,9 +376,10 @@ const Contact = () => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
     </div>
   );
 };

@@ -3,6 +3,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from '@/copy/CopyProvider';
+import { useEditMode } from '@/contexts/EditModeContext';
+import { EditableSection } from '@/components/EditableSection';
+import { EditableText } from '@/components/EditableText';
 import { 
   CheckCircle,
   Home,
@@ -46,6 +49,7 @@ const getIconForCategory = (category: string) => {
 
 export const SmartHome = () => {
   const { t } = useCopy();
+  const { isEditMode } = useEditMode();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popularity');
 
@@ -118,7 +122,8 @@ export const SmartHome = () => {
 
   return (
     <main className="pt-16">
-                  {/* Hero Section */}
+      {/* Hero Section */}
+      <EditableSection id="smart-home-hero" title="Smart Hem Hero">
         <section className="relative py-24 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/5" />
           
@@ -140,12 +145,19 @@ export const SmartHome = () => {
 
           <div className="container mx-auto max-w-6xl relative">
             <div className="text-center mb-16">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                {t('smartHome.title')}
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                {t('smartHome.subtitle')}
-              </p>
+              <EditableText 
+                id="smart-home-title"
+                initialContent={t('smartHome.title')}
+                type="heading"
+                as="h1"
+                className="text-4xl md:text-6xl font-bold mb-6"
+              />
+              <EditableText 
+                id="smart-home-subtitle"
+                initialContent={t('smartHome.subtitle')}
+                as="p"
+                className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
+              />
               
               {/* Key Benefits */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
@@ -153,59 +165,86 @@ export const SmartHome = () => {
                   <div className="text-3xl font-bold gradient-text mb-2">
                     -30%
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {t('smartHome.energy_reduction')}
-                  </div>
+                  <EditableText 
+                    id="smart-home-energy-reduction"
+                    initialContent={t('smartHome.energy_reduction')}
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold gradient-text mb-2">
                     50+
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {t('smartHome.connected_devices')}
-                  </div>
+                  <EditableText 
+                    id="smart-home-connected-devices"
+                    initialContent={t('smartHome.connected_devices')}
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold gradient-text mb-2">
                     24/7
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {t('smartHome.automation')}
-                  </div>
+                  <EditableText 
+                    id="smart-home-automation"
+                    initialContent={t('smartHome.automation')}
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold gradient-text mb-2">
                     50%
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {t('smartHome.savings')}
-                  </div>
+                  <EditableText 
+                    id="smart-home-savings"
+                    initialContent={t('smartHome.savings')}
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button size="lg" className="gradient-primary text-primary-foreground">
-                  {t('cta.book_installation')}
+                  <EditableText 
+                    id="smart-home-cta-book"
+                    initialContent={t('cta.book_installation')}
+                  >
+                    {t('cta.book_installation')}
+                  </EditableText>
                 </Button>
                 <Button size="lg" variant="outline">
-                  {t('cta.free_consultation')}
+                  <EditableText 
+                    id="smart-home-cta-consultation"
+                    initialContent={t('cta.free_consultation')}
+                  >
+                    {t('cta.free_consultation')}
+                  </EditableText>
                 </Button>
               </div>
             </div>
           </div>
         </section>
+      </EditableSection>
 
         {/* Detailed Hero */}
-        <section className="py-16 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {t('smartHome.products_title')}
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
-                {t('smartHome.products_subtitle')}
-              </p>
-            </div>
+        <EditableSection id="smart-home-products" title="Produkter sektion">
+          <section className="py-16 px-4">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-16">
+                <EditableText 
+                  id="smart-home-products-title"
+                  initialContent={t('smartHome.products_title')}
+                  type="heading"
+                  as="h2"
+                  className="text-3xl md:text-4xl font-bold mb-6"
+                />
+                <EditableText 
+                  id="smart-home-products-subtitle"
+                  initialContent={t('smartHome.products_subtitle')}
+                  as="p"
+                  className="text-xl text-muted-foreground max-w-4xl mx-auto"
+                />
+              </div>
 
             {/* Trust Features */}
             <div className="grid md:grid-cols-4 gap-8 mb-16">
@@ -213,53 +252,98 @@ export const SmartHome = () => {
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">{t('smartHome.market_leaders')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  Endast #1 märken globalt
-                </p>
+                <EditableText 
+                  id="smart-home-market-leaders"
+                  initialContent={t('smartHome.market_leaders')}
+                  type="heading"
+                  as="h3"
+                  className="font-bold mb-2"
+                />
+                <EditableText 
+                  id="smart-home-market-leaders-desc"
+                  initialContent="Endast #1 märken globalt"
+                  as="p"
+                  className="text-sm text-muted-foreground"
+                />
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">{t('smartHome.full_warranty')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('smartHome.years_warranty')}
-                </p>
+                <EditableText 
+                  id="smart-home-warranty"
+                  initialContent={t('smartHome.full_warranty')}
+                  type="heading"
+                  as="h3"
+                  className="font-bold mb-2"
+                />
+                <EditableText 
+                  id="smart-home-warranty-desc"
+                  initialContent={t('smartHome.years_warranty')}
+                  as="p"
+                  className="text-sm text-muted-foreground"
+                />
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Settings className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">{t('smartHome.professional_install')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  Certifierade installatörer
-                </p>
+                <EditableText 
+                  id="smart-home-professional"
+                  initialContent={t('smartHome.professional_install')}
+                  type="heading"
+                  as="h3"
+                  className="font-bold mb-2"
+                />
+                <EditableText 
+                  id="smart-home-professional-desc"
+                  initialContent="Certifierade installatörer"
+                  as="p"
+                  className="text-sm text-muted-foreground"
+                />
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Brain className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">{t('smartHome.ai_optimized')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  Intelligent automatisering
-                </p>
+                <EditableText 
+                  id="smart-home-ai-optimized"
+                  initialContent={t('smartHome.ai_optimized')}
+                  type="heading"
+                  as="h3"
+                  className="font-bold mb-2"
+                />
+                <EditableText 
+                  id="smart-home-ai-desc"
+                  initialContent="Intelligent automatisering"
+                  as="p"
+                  className="text-sm text-muted-foreground"
+                />
               </div>
             </div>
           </div>
         </section>
+      </EditableSection>
 
         {/* Category Selection */}
-        <section className="py-16 px-4 bg-gradient-primary-subtle">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">
-                {t('smartHome.choose_category')}
-              </h2>
-              <p className="text-muted-foreground">
-                Klicka på en kategori för att se alla produkter inom det området
-              </p>
-            </div>
+        <EditableSection id="smart-home-categories" title="Kategorier val">
+          <section className="py-16 px-4 bg-gradient-primary-subtle">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-12">
+                <EditableText 
+                  id="smart-home-choose-category"
+                  initialContent={t('smartHome.choose_category')}
+                  type="heading"
+                  as="h2"
+                  className="text-3xl font-bold mb-4"
+                />
+                <EditableText 
+                  id="smart-home-category-desc"
+                  initialContent="Klicka på en kategori för att se alla produkter inom det området"
+                  as="p"
+                  className="text-muted-foreground"
+                />
+              </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
               {categories.map((category) => {
@@ -295,20 +379,26 @@ export const SmartHome = () => {
             </div>
           </div>
         </section>
+      </EditableSection>
 
         {/* Products Section */}
-        <section className="py-16 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold">
-                {t('smartHome.all_products')}
-              </h2>
-              <SmartProductSortFilter 
-                sortBy={sortBy} 
-                onSortChange={setSortBy} 
-                productCount={products.length}
-              />
-            </div>
+        <EditableSection id="smart-home-products-list" title="Produktlista">
+          <section className="py-16 px-4">
+            <div className="container mx-auto max-w-6xl">
+              <div className="flex justify-between items-center mb-8">
+                <EditableText 
+                  id="smart-home-all-products"
+                  initialContent={t('smartHome.all_products')}
+                  type="heading"
+                  as="h2"
+                  className="text-2xl font-bold"
+                />
+                <SmartProductSortFilter 
+                  sortBy={sortBy} 
+                  onSortChange={setSortBy} 
+                  productCount={products.length}
+                />
+              </div>
 
             {isLoading ? (
               <div className="text-center py-12">
@@ -544,7 +634,8 @@ export const SmartHome = () => {
             </div>
           </div>
         </section>
-      </main>
+      </EditableSection>
+    </main>
   );
 };
 

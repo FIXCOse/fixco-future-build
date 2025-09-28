@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
+import { EditableSection } from "@/components/EditableSection";
+import { EditableText } from "@/components/EditableText";
 
 const FAQ = () => {
   const { t } = useCopy();
@@ -79,49 +81,69 @@ const FAQ = () => {
   return (
     <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="pt-32 pb-20 hero-background relative">
-          {/* F Watermark Background Elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
-              style={{ animationDuration: '5s' }}
-            />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
-              style={{ animationDuration: '4s', animationDelay: '2s' }}
-            />
-          </div>
+        <EditableSection id="faq-hero" title="FAQ Hero">
+          <section className="pt-32 pb-20 hero-background relative">
+            {/* F Watermark Background Elements */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+              <img 
+                src="/assets/fixco-f-icon-new.png"
+                alt="" 
+                className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
+                style={{ animationDuration: '5s' }}
+              />
+              <img 
+                src="/assets/fixco-f-icon-new.png"
+                alt="" 
+                className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
+                style={{ animationDuration: '4s', animationDelay: '2s' }}
+              />
+            </div>
 
-          <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              {t('pages.faq.title')}
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('pages.faq.subtitle')}
-            </p>
+            <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <EditableText 
+                id="faq-title"
+                initialContent={t('pages.faq.title')}
+                type="heading"
+                as="h1"
+                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+              />
+              <EditableText 
+                id="faq-subtitle"
+                initialContent={t('pages.faq.subtitle')}
+                as="p"
+                className="text-xl md:text-2xl text-muted-foreground mb-8"
+              />
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to={isEnglish ? "/en/contact" : "/kontakt"}>
-                <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  {t('pages.faq.askQuestion')}
-                  <Phone className="ml-2 h-5 w-5" />
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to={isEnglish ? "/en/contact" : "/kontakt"}>
+                  <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
+                    <EditableText 
+                      id="faq-ask-question"
+                      initialContent={t('pages.faq.askQuestion')}
+                    >
+                      {t('pages.faq.askQuestion')}
+                    </EditableText>
+                    <Phone className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
+                  <EditableText 
+                    id="faq-call-us"
+                    initialContent={t('pages.faq.callUs')}
+                  >
+                    {t('pages.faq.callUs')}
+                  </EditableText>
                 </Button>
-              </Link>
-              <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                {t('pages.faq.callUs')}
-              </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* FAQ Categories */}
-      <section className="py-20">
+      <EditableSection id="faq-categories" title="FAQ kategorier">
+        <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl">
           {faqCategories.map((category, categoryIndex) => {
             const CategoryIcon = category.icon;
@@ -177,7 +199,8 @@ const FAQ = () => {
             );
           })}
         </div>
-      </section>
+        </section>
+      </EditableSection>
 
         {/* Contact CTA */}
         <section className="py-20 gradient-primary-subtle relative">

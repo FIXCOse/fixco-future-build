@@ -3,6 +3,8 @@ import { CheckCircle, Star, Users, Award, Clock, MapPin, Phone, ArrowRight } fro
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
+import { EditableSection } from "@/components/EditableSection";
+import { EditableText } from "@/components/EditableText";
 
 const AboutUs = () => {
   const { t } = useCopy();
@@ -12,43 +14,66 @@ const AboutUs = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              {t('pages.about.title')}
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {t('pages.about.subtitle')}
-            </p>
+      <EditableSection id="about-hero" title="Om oss Hero">
+        <section className="pt-32 pb-20 hero-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <EditableText 
+                id="about-title"
+                initialContent={t('pages.about.title')}
+                type="heading"
+                as="h1"
+                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+              />
+              <EditableText 
+                id="about-subtitle"
+                initialContent={t('pages.about.subtitle')}
+                as="p"
+                className="text-xl md:text-2xl text-muted-foreground mb-8"
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* Company Story */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl font-bold mb-6">
-                {t('pages.about.history_title')}
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                {t('pages.about.history_text')}
-              </p>
-              <p className="text-lg text-muted-foreground mb-6">
-                {isEnglish ? 
-                  "We specialize in combining traditional craftsmanship with modern technology and smart solutions. Our team consists of experienced craftsmen who are passionate about quality and customer satisfaction." :
-                  "Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet."
-                }
-              </p>
-              <p className="text-lg text-muted-foreground">
-                {isEnglish ?
-                  "Over the years, we have helped hundreds of families and businesses realize their projects – from small repairs to major renovations. We are proud of our high customer satisfaction and our reputation as a reliable partner." :
-                  "Genom åren har vi hjälpt hundratals familjer och företag att förverkliga sina projekt – från små reparationer till stora renoveringar. Vi är stolta över vår höga kundnöjdhet och vårt rykte som en pålitlig partner."
-                }
-              </p>
-            </div>
+      <EditableSection id="about-story" title="Företagshistoria">
+        <section className="py-20">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <EditableText 
+                  id="about-history-title"
+                  initialContent={t('pages.about.history_title')}
+                  type="heading"
+                  as="h2"
+                  className="text-4xl font-bold mb-6"
+                />
+                <EditableText 
+                  id="about-history-text"
+                  initialContent={t('pages.about.history_text')}
+                  as="p"
+                  className="text-lg text-muted-foreground mb-6"
+                />
+                <EditableText 
+                  id="about-history-craftsmanship"
+                  initialContent={isEnglish ? 
+                    "We specialize in combining traditional craftsmanship with modern technology and smart solutions. Our team consists of experienced craftsmen who are passionate about quality and customer satisfaction." :
+                    "Vi specialiserar oss på att kombinera traditionellt hantverk med modern teknik och smarta lösningar. Vårt team består av erfarna hantverkare som brinner för kvalitet och kundnöjdhet."
+                  }
+                  as="p"
+                  className="text-lg text-muted-foreground mb-6"
+                />
+                <EditableText 
+                  id="about-history-experience"
+                  initialContent={isEnglish ?
+                    "Over the years, we have helped hundreds of families and businesses realize their projects – from small repairs to major renovations. We are proud of our high customer satisfaction and our reputation as a reliable partner." :
+                    "Genom åren har vi hjälpt hundratals familjer och företag att förverkliga sina projekt – från små reparationer till stora renoveringar. Vi är stolta över vår höga kundnöjdhet och vårt rykte som en pålitlig partner."
+                  }
+                  as="p"
+                  className="text-lg text-muted-foreground"
+                />
+              </div>
             
             <div className="grid grid-cols-2 gap-6">
               <div className="card-premium p-6">
@@ -78,16 +103,22 @@ const AboutUs = () => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
 
       {/* Values */}
-      <section className="py-20 gradient-primary-subtle">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            {t('pages.about.values')}
-          </h2>
+      <EditableSection id="about-values" title="Våra värderingar">
+        <section className="py-20 gradient-primary-subtle">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <EditableText 
+              id="about-values-title"
+              initialContent={t('pages.about.values')}
+              type="heading"
+              as="h2"
+              className="text-4xl font-bold text-center mb-16"
+            />
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -120,8 +151,9 @@ const AboutUs = () => {
               );
             })}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </EditableSection>
 
       {/* Coverage Area */}
       <section className="py-20">
