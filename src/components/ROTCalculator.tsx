@@ -5,10 +5,12 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const ROTCalculator = () => {
   const [projectCost, setProjectCost] = useState(80000);
+  const [householdSize, setHouseholdSize] = useState(2);
 
-  const maxRotDeduction = 50000;
+  const maxRotDeductionPerPerson = 50000;
+  const maxTotalRotDeduction = maxRotDeductionPerPerson * householdSize;
   const rotPercentage = 50;
-  const actualDeduction = Math.min(projectCost * (rotPercentage / 100), maxRotDeduction);
+  const actualDeduction = Math.min(projectCost * (rotPercentage / 100), maxTotalRotDeduction);
   const finalCost = projectCost - actualDeduction;
 
   const examples = [
@@ -59,17 +61,24 @@ const ROTCalculator = () => {
                   </div>
 
                   <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Calculator className="h-4 w-4 text-primary" />
+                      </div>
+                      <h4 className="font-medium">Projektets totalkostnad</h4>
+                    </div>
+
                     <div className="relative">
                       <input
                         type="range"
                         min="10000"
-                        max="200000"
+                        max="300000"
                         step="5000"
                         value={projectCost}
                         onChange={(e) => setProjectCost(Number(e.target.value))}
                         className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 200000) * 100}%, hsl(var(--muted)) ${(projectCost / 200000) * 100}%, hsl(var(--muted)) 100%)`
+                          background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${(projectCost / 300000) * 100}%, hsl(var(--muted)) ${(projectCost / 300000) * 100}%, hsl(var(--muted)) 100%)`
                         }}
                       />
                     </div>
@@ -79,8 +88,42 @@ const ROTCalculator = () => {
                       <span className="font-semibold text-foreground text-lg">
                         {projectCost.toLocaleString('sv-SE')} kr
                       </span>
-                      <span>200 000 kr</span>
+                      <span>300 000 kr</span>
                     </div>
+                  </div>
+
+                  {/* Household Size Selector */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Home className="h-4 w-4 text-primary" />
+                      </div>
+                      <h4 className="font-medium">Antal personer i hushållet</h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-4 gap-2">
+                      {[1, 2, 3, 4].map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => setHouseholdSize(size)}
+                          className={`p-3 rounded-lg border transition-colors ${
+                            householdSize === size
+                              ? 'border-primary bg-primary text-primary-foreground'
+                              : 'border-border bg-background hover:bg-muted'
+                          }`}
+                        >
+                          <div className="text-lg font-semibold">{size}</div>
+                          <div className="text-xs opacity-80">
+                            {size === 1 ? 'person' : 'personer'}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground">
+                      Max avdrag: {maxTotalRotDeduction.toLocaleString('sv-SE')} kr 
+                      ({householdSize} × 50 000 kr)
+                    </p>
                   </div>
                 </div>
 
@@ -111,10 +154,10 @@ const ROTCalculator = () => {
                       </div>
                     </div>
                     
-                    {actualDeduction >= maxRotDeduction && (
+                    {actualDeduction >= maxTotalRotDeduction && (
                       <div className="bg-primary/10 border border-primary/20 rounded-md p-3">
                         <p className="text-sm text-primary font-medium">
-                          Maximal ROT-besparing uppnådd (50 000 kr per person)
+                          Maximal ROT-besparing uppnådd ({maxTotalRotDeduction.toLocaleString('sv-SE')} kr för {householdSize} {householdSize === 1 ? 'person' : 'personer'})
                         </p>
                       </div>
                     )}
@@ -139,7 +182,7 @@ const ROTCalculator = () => {
 
             <div className="grid md:grid-cols-3 gap-6">
               {examples.map((example, index) => {
-                const exampleDeduction = Math.min(example.originalCost * 0.5, maxRotDeduction);
+                const exampleDeduction = Math.min(example.originalCost * 0.5, maxTotalRotDeduction);
                 const exampleFinalCost = example.originalCost - exampleDeduction;
                 const IconComponent = example.icon;
                 
