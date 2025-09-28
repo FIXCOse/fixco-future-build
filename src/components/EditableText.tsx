@@ -69,8 +69,12 @@ export const EditableText: React.FC<EditableTextProps> = ({
   };
 
   const handleDoubleClick = () => {
+    console.log('Double click detected on:', id);
     if (isEditMode) {
+      console.log('Opening advanced editor for:', id);
       setShowAdvancedEditor(true);
+    } else {
+      console.log('Edit mode is not active');
     }
   };
 
@@ -93,7 +97,9 @@ export const EditableText: React.FC<EditableTextProps> = ({
     textDecoration: textStyles.textDecoration as any,
     textTransform: textStyles.textTransform as any,
     fontStyle: textStyles.fontStyle as any,
-    cursor: isEditMode ? 'pointer' : 'default'
+    cursor: isEditMode ? 'pointer' : 'default',
+    outline: isEditMode ? '2px dashed rgba(59, 130, 246, 0.3)' : 'none',
+    padding: isEditMode ? '4px' : '0'
   };
 
   if (children) {

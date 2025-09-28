@@ -15,11 +15,18 @@ export const EditModeToggle: React.FC = () => {
   }
 
   const handleToggle = () => {
+    console.log('Edit mode toggled:', !isEditMode);
     toggleEditMode();
     if (!isEditMode) {
-      toast.info('Redigeringsläge aktiverat - dra och släpp för att ordna om innehåll');
+      toast.info('Redigeringsläge aktiverat - dubbelklicka på text för att redigera', {
+        description: 'Textelement som kan redigeras visas med en prickad blå ram',
+        duration: 4000,
+      });
     } else {
-      toast.success('Ändringar sparade');
+      toast.success('Redigeringsläge avslutat', {
+        description: 'Alla ändringar har sparats automatiskt',
+        duration: 2000,
+      });
     }
   };
 

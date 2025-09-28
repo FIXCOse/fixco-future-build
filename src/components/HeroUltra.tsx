@@ -6,6 +6,7 @@ import MagneticButton from "@/components/MagneticButton";
 import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import { useCopy } from "@/copy/CopyProvider";
+import { EditableText } from "@/components/EditableText";
 
 interface ParticleSystemProps {
   count?: number;
@@ -230,13 +231,23 @@ const HeroUltra = () => {
       <div className="container mx-auto px-4 relative z-10 w-full">
         <div className="max-w-4xl mx-auto text-center">
           <div>
-            <h1 className="text-2xl sm:text-3xl md:text-6xl xl:text-7xl font-bold leading-tight mb-6 px-2 text-foreground">
-              {t('home.hero.title')}
-            </h1>
+            <EditableText
+              id="hero-title"
+              initialContent={t('home.hero.title')}
+              type="heading"
+              as="h1"
+              className="text-2xl sm:text-3xl md:text-6xl xl:text-7xl font-bold leading-tight mb-6 px-2 text-foreground"
+              placeholder="Klicka för att redigera rubrik"
+            />
             
-            <p className="text-base md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4">
-              {t('home.hero.subtitle')}
-            </p>
+            <EditableText
+              id="hero-subtitle"
+              initialContent={t('home.hero.subtitle')}
+              type="text"
+              as="p"
+              className="text-base md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4"
+              placeholder="Klicka för att redigera undertext"
+            />
 
             {/* CTA Buttons - NO ARROWS */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
@@ -278,8 +289,22 @@ const HeroUltra = () => {
                           })()
                         )}
                       </div>
-                      <h3 className="font-bold text-sm mb-2">{item.title}</h3>
-                      <p className="text-xs text-muted-foreground">{item.description}</p>
+                      <EditableText
+                        id={`trust-${index}-title`}
+                        initialContent={item.title}
+                        type="heading"
+                        as="h3"
+                        className="font-bold text-sm mb-2"
+                        placeholder="Redigera titel"
+                      />
+                      <EditableText
+                        id={`trust-${index}-desc`}
+                        initialContent={item.description}
+                        type="text"
+                        as="p"
+                        className="text-xs text-muted-foreground"
+                        placeholder="Redigera beskrivning"
+                      />
                     </div>
                   </div>
                 );

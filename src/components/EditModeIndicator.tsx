@@ -1,26 +1,78 @@
-import React from 'react';
-import { Edit, Settings, Palette, Type } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Edit3, Eye, MousePointer2, Save, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { useRoleGate } from '@/hooks/useRoleGate';
+import { Badge } from '@/components/ui/badge';
 
 export const EditModeIndicator: React.FC = () => {
   const { isEditMode } = useEditMode();
   const { isAdmin, isOwner } = useRoleGate();
+  const [showTip, setShowTip] = useState(false);
 
-  if (!isEditMode || (!isAdmin && !isOwner)) {
+  // Only show for admin/owner
+  if (!isAdmin && !isOwner) {
     return null;
   }
 
+  // Show tip when entering edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      setShowTip(true);
+      const timer = setTimeout(() => setShowTip(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isEditMode]);
+
   return (
-    <div className="fixed top-20 right-4 z-40 bg-primary text-primary-foreground px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-sm">
-      <Edit className="h-4 w-4" />
-      <span>Redigeringsläge aktivt</span>
-      <div className="flex gap-1 ml-2">
-        <div className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse" />
-        <div className="w-2 h-2 bg-primary-foreground/70 rounded-full animate-pulse delay-75" />
-        <div className="w-2 h-2 bg-primary-foreground/50 rounded-full animate-pulse delay-150" />
-      </div>
-    </div>
+    <AnimatePresence>
+      {isEditMode && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
+        >
+          <div className="bg-primary text-primary-foreground px-6 py-3 rounded-full shadow-xl border-2 border-primary-foreground/20">
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              >
+                <Edit3 className="h-5 w-5" />
+              </motion.div>
+              
+              <div className="flex flex-col">
+                <span className="font-semibold text-sm">REDIGERINGSLÄGE AKTIVT</span>
+                <span className="text-xs opacity-90">Dubbelklicka på text för att redigera</span>
+              </div>
+
+              <Badge variant="secondary" className="ml-2">
+                <Sparkles className="h-3 w-3 mr-1" />
+                ADMIN
+              </Badge>
+            </div>
+          </div>
+
+          {/* Tip for first time users */}
+          <AnimatePresence>
+            {showTip && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-background border rounded-lg shadow-lg p-4 max-w-sm text-center"
+              >
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MousePointer2 className="h-4 w-4 text-primary" />
+                  <span>Textelement har en prickad blå ram när de kan redigeras</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
