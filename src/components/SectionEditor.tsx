@@ -50,15 +50,20 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({
     customCss: mergedData.customCss || '',
   });
 
-  const handleSave = () => {
-    // Save to store
-    updateSection(sectionId, formData);
-    
-    // Call parent callback
-    onSave(formData);
-    
-    toast.success('Sektion uppdaterad och sparad!');
-    onClose();
+  const handleSave = async () => {
+    try {
+      // Save to store and database
+      await updateSection(sectionId, formData);
+      
+      // Call parent callback
+      onSave(formData);
+      
+      toast.success('Sektion uppdaterad och sparad!');
+      onClose();
+    } catch (error) {
+      console.error('Failed to save section:', error);
+      toast.error('Misslyckades att spara sektion');
+    }
   };
 
   const updateField = (field: string, value: any) => {

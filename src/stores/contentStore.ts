@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ContentItem {
   id: string;
@@ -55,17 +56,22 @@ interface ContentStore {
   content: Record<string, ContentItem>;
   sections: Record<string, SectionData>;
   globalSettings: GlobalSettings;
+  isLoading: boolean;
   
   // Content methods
-  updateContent: (id: string, data: Partial<ContentItem>) => void;
+  updateContent: (id: string, data: Partial<ContentItem>) => Promise<void>;
   getContent: (id: string) => ContentItem | undefined;
   
   // Section methods
-  updateSection: (id: string, data: Partial<SectionData>) => void;
+  updateSection: (id: string, data: Partial<SectionData>) => Promise<void>;
   getSection: (id: string) => SectionData | undefined;
   
   // Global settings methods
-  updateGlobalSettings: (data: Partial<GlobalSettings>) => void;
+  updateGlobalSettings: (data: Partial<GlobalSettings>) => Promise<void>;
+  
+  // Database sync methods
+  loadContent: () => Promise<void>;
+  saveContentToDatabase: (id: string, data: ContentItem) => Promise<void>;
   
   // Utility methods
   reset: () => void;
@@ -94,48 +100,155 @@ export const useContentStore = create<ContentStore>()(
       content: {},
       sections: {},
       globalSettings: initialGlobalSettings,
+      isLoading: false,
       
-      updateContent: (id: string, data: Partial<ContentItem>) => {
+      updateContent: async (id: string, data: Partial<ContentItem>) => {
+        const contentItem: ContentItem = {
+          ...get().content[id],
+          ...data,
+          id
+        };
+
+        // Update local state immediately for responsive UI
         set((state) => ({
           content: {
             ...state.content,
-            [id]: {
-              ...state.content[id],
-              ...data,
-              id
-            }
+            [id]: contentItem
           }
         }));
+
+        // Save to database
+        await get().saveContentToDatabase(id, contentItem);
       },
       
       getContent: (id: string) => {
         return get().content[id];
       },
       
-      updateSection: (id: string, data: Partial<SectionData>) => {
+      updateSection: async (id: string, data: Partial<SectionData>) => {
+        const sectionData: SectionData = {
+          ...get().sections[id],
+          ...data,
+          id
+        };
+
+        // Update local state immediately
         set((state) => ({
           sections: {
             ...state.sections,
-            [id]: {
-              ...state.sections[id],
-              ...data,
-              id
-            }
+            [id]: sectionData
           }
         }));
+
+        // Save section as content to database
+        await get().saveContentToDatabase(`section_${id}`, {
+          id: `section_${id}`,
+          type: 'section' as any,
+          value: JSON.stringify(sectionData),
+          styles: {}
+        });
       },
       
       getSection: (id: string) => {
         return get().sections[id];
       },
       
-      updateGlobalSettings: (data: Partial<GlobalSettings>) => {
+      updateGlobalSettings: async (data: Partial<GlobalSettings>) => {
+        const newSettings = {
+          ...get().globalSettings,
+          ...data
+        };
+
+        // Update local state immediately
         set((state) => ({
-          globalSettings: {
-            ...state.globalSettings,
-            ...data
-          }
+          globalSettings: newSettings
         }));
+
+        // Save global settings to database
+        await get().saveContentToDatabase('global_settings', {
+          id: 'global_settings',
+          type: 'settings' as any,
+          value: JSON.stringify(newSettings),
+          styles: {}
+        });
+      },
+
+      loadContent: async () => {
+        try {
+          set({ isLoading: true });
+          
+          const { data: contentData, error } = await supabase
+            .from('site_content')
+            .select('*');
+
+          if (error) {
+            console.error('Error loading content:', error);
+            return;
+          }
+
+          const content: Record<string, ContentItem> = {};
+          const sections: Record<string, SectionData> = {};
+          let globalSettings = initialGlobalSettings;
+
+          contentData?.forEach((item) => {
+            if (item.content_id === 'global_settings') {
+              try {
+                globalSettings = JSON.parse(item.value as string);
+              } catch (error) {
+                console.error('Error parsing global settings:', error);
+              }
+            } else if (item.content_id.startsWith('section_')) {
+              const sectionId = item.content_id.replace('section_', '');
+              try {
+                sections[sectionId] = JSON.parse(item.value as string);
+              } catch (error) {
+                console.error('Error parsing section data:', error);
+              }
+            } else {
+              content[item.content_id] = {
+                id: item.content_id,
+                type: item.content_type as any,
+                value: typeof item.value === 'string' ? item.value : JSON.stringify(item.value),
+                styles: (item.styles as any) || {}
+              };
+            }
+          });
+
+          set({
+            content,
+            sections,
+            globalSettings,
+            isLoading: false
+          });
+        } catch (error) {
+          console.error('Failed to load content from database:', error);
+          set({ isLoading: false });
+        }
+      },
+
+      saveContentToDatabase: async (id: string, data: ContentItem) => {
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert({
+              content_id: id,
+              content_type: data.type,
+              value: data.value,
+              styles: data.styles
+            }, {
+              onConflict: 'content_id'
+            });
+
+          if (error) {
+            console.error('Error saving content to database:', error);
+            throw error;
+          }
+
+          console.log('Content saved successfully:', id);
+        } catch (error) {
+          console.error('Failed to save content to database:', error);
+          throw error;
+        }
       },
       
       reset: () => {

@@ -1780,6 +1780,39 @@ export type Database = {
         }
         Relationships: []
       }
+      site_content: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          styles: Json | null
+          updated_at: string
+          updated_by: string | null
+          value: Json | null
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          styles?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json | null
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          styles?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json | null
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           category: string

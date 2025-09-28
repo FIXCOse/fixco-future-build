@@ -8,9 +8,11 @@ import AIChat from '../AIChat';
 import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
 import EditModeIndicator from '../EditModeIndicator';
+import { ContentLoadingIndicator } from '../ContentLoadingIndicator';
 import { ModalHost } from '../ActionWizard';
 import { Locale } from '@/i18n/context';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import { useContentLoader } from '@/hooks/useContentLoader';
 import GlobalFooter from '../layout/GlobalFooter';
 
 interface AppLayoutProps {
@@ -18,8 +20,9 @@ interface AppLayoutProps {
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
-  // Initialize language persistence
+  // Initialize language persistence and content loading
   useLanguagePersistence();
+  useContentLoader();
   
   return (
     <LocaleProvider locale={locale}>
@@ -35,6 +38,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ locale = 'sv' }) => {
             <EditModeToggle />
             <GlobalContentEditor />
             <EditModeIndicator />
+            <ContentLoadingIndicator />
             <ModalHost />
           </div>
         </EditModeProvider>

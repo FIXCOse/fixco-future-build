@@ -38,16 +38,21 @@ export const GlobalContentEditor: React.FC = () => {
     return null;
   }
 
-  const handleSave = () => {
-    // Save to store
-    updateGlobalSettings(settings);
-    
-    toast.success('Globala inställningar sparade!');
-    setIsOpen(false);
-    
-    // Apply settings immediately if needed
-    if (settings.primaryColor) {
-      document.documentElement.style.setProperty('--primary', settings.primaryColor);
+  const handleSave = async () => {
+    try {
+      // Save to store and database
+      await updateGlobalSettings(settings);
+      
+      toast.success('Globala inställningar sparade!');
+      setIsOpen(false);
+      
+      // Apply settings immediately if needed
+      if (settings.primaryColor) {
+        document.documentElement.style.setProperty('--primary', settings.primaryColor);
+      }
+    } catch (error) {
+      console.error('Failed to save global settings:', error);
+      toast.error('Misslyckades att spara inställningar');
     }
   };
 

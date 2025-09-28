@@ -35,33 +35,45 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const displayContent = savedContent?.value as string || content;
   const textStyles = savedContent?.styles || {};
 
-  const handleSave = (newContent: any) => {
+  const handleSave = async (newContent: any) => {
     const newText = typeof newContent === 'string' ? newContent : newContent.value;
     setContent(newText);
     
-    // Save to store
-    updateContent(id, {
-      id,
-      type,
-      value: newText,
-      styles: textStyles
-    });
+    try {
+      // Save to store and database
+      await updateContent(id, {
+        id,
+        type,
+        value: newText,
+        styles: textStyles
+      });
+      
+      console.log('Content saved successfully to database:', id);
+    } catch (error) {
+      console.error('Failed to save content:', error);
+    }
     
     if (onSave) {
       onSave(newText);
     }
   };
 
-  const handleAdvancedSave = (text: string, styles: any) => {
+  const handleAdvancedSave = async (text: string, styles: any) => {
     setContent(text);
     
-    // Save to store with styles
-    updateContent(id, {
-      id,
-      type,
-      value: text,
-      styles
-    });
+    try {
+      // Save to store and database with styles
+      await updateContent(id, {
+        id,
+        type,
+        value: text,
+        styles
+      });
+      
+      console.log('Advanced content saved successfully to database:', id);
+    } catch (error) {
+      console.error('Failed to save advanced content:', error);
+    }
     
     if (onSave) {
       onSave(text);
