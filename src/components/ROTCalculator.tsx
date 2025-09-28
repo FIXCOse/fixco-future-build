@@ -8,6 +8,7 @@ const ROTCalculator = () => {
   const [householdSize, setHouseholdSize] = useState(2);
 
   const maxRotDeductionPerPerson = 50000;
+  // Ensure correct calculation: 1 person = 50k, 2 = 100k, 3 = 150k, 4 = 200k
   const maxTotalRotDeduction = maxRotDeductionPerPerson * householdSize;
   const rotPercentage = 50;
   const actualDeduction = Math.min(projectCost * (rotPercentage / 100), maxTotalRotDeduction);
