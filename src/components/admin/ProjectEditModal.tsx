@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { X, Plus, Upload, Trash2, Star, Calendar } from 'lucide-react';
+import { X, Plus, Upload, Trash2, Star, Calendar, Loader2 } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProjectEditModalProps {
   project: ReferenceProject | null;
@@ -59,6 +61,9 @@ export default function ProjectEditModal({
 
   const [newFeature, setNewFeature] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [uploadingImages, setUploadingImages] = useState<Set<string>>(new Set());
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (project) {
@@ -134,6 +139,81 @@ export default function ProjectEditModal({
       ...prev,
       images: prev.images?.filter(img => img !== imageToRemove) || []
     }));
+  };
+
+  const handleFileUpload = async (files: FileList) => {
+    if (!files || files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileId = `${Date.now()}-${i}`;
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Ogiltigt filformat",
+          description: "Endast bildfiler är tillåtna.",
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Filen är för stor",
+          description: "Maximal filstorlek är 5MB.",
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      setUploadingImages(prev => new Set(prev).add(fileId));
+
+      try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const filePath = `projects/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('reference-projects')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('reference-projects')
+          .getPublicUrl(filePath);
+
+        setFormData(prev => ({
+          ...prev,
+          images: [...(prev.images || []), publicUrl]
+        }));
+
+        toast({
+          title: "Bild uppladdad",
+          description: "Bilden har laddats upp framgångsrikt.",
+        });
+
+      } catch (error) {
+        console.error('Upload error:', error);
+        toast({
+          title: "Uppladdning misslyckades",
+          description: "Kunde inte ladda upp bilden. Försök igen.",
+          variant: "destructive",
+        });
+      } finally {
+        setUploadingImages(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(fileId);
+          return newSet;
+        });
+      }
+    }
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
   };
 
   const handleSave = () => {
@@ -361,11 +441,43 @@ export default function ProjectEditModal({
             {/* Images Management */}
             <div>
               <Label>Projektbilder</Label>
+              
+              {/* File Upload */}
+              <div className="mb-3">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
+                  className="hidden"
+                />
+                <Button 
+                  onClick={triggerFileUpload} 
+                  variant="outline" 
+                  className="w-full"
+                  disabled={uploadingImages.size > 0}
+                >
+                  {uploadingImages.size > 0 ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Laddar upp bilder...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Ladda upp bilder från enhet
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* URL Input */}
               <div className="flex gap-2 mb-2">
                 <Input
                   value={newImageUrl}
                   onChange={(e) => setNewImageUrl(e.target.value)}
-                  placeholder="Bildlänk (URL)..."
+                  placeholder="Eller ange bildlänk (URL)..."
                   onKeyPress={(e) => e.key === 'Enter' && handleAddImage()}
                 />
                 <Button onClick={handleAddImage} size="sm">
