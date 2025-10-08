@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
-import AIChat from '../AIChat';
+
 import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
 import EditModeIndicator from '../EditModeIndicator';
@@ -44,7 +44,6 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
             <Outlet key={`${locale}-${location.pathname}`} />
           </main>
           <GlobalFooter locale={locale} />
-          <AIChat />
           <EditModeToggle />
           <GlobalContentEditor />
           <EditModeIndicator />

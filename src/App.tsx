@@ -26,7 +26,7 @@ import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Insurance from "./pages/Insurance";
 import ScrollToTop from "./components/ScrollToTop";
-import AIChat from "./components/AIChat";
+
 import SecurityWrapper from "./components/SecurityWrapper";
 import { ModalHost } from "./components/ActionWizard";
 import AppLayout from "./components/layouts/AppLayout";
@@ -277,7 +277,6 @@ const App = () => {
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-                <AIChat />
                 <ModalHost />
               </BrowserRouter>
             </div>
