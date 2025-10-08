@@ -130,14 +130,14 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
-            <nav className="flex items-center space-x-8">
+          <div className="hidden lg:flex items-center justify-center flex-1 max-w-3xl mx-12">
+            <nav className="flex items-center gap-x-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                    "inline-flex items-center px-3 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
                     "text-foreground hover:text-primary hover:bg-primary/10",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     isActive(item.href) && "text-primary bg-primary/10 font-semibold",
@@ -151,10 +151,10 @@ export default function Navigation() {
           </div>
 
           {/* Right: Actions with Proper Spacing */}
-          <div className="flex items-center space-x-2 lg:space-x-4">
+          <div className="flex items-center gap-x-3 lg:gap-x-5">
             
             {/* Language & Theme Switchers */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               <LanguageSwitcher />
               <ThemeSwitcher />
             </div>
@@ -162,7 +162,7 @@ export default function Navigation() {
             {/* Contact - Desktop Only */}
             <a 
               href="tel:+46812345678" 
-              className="hidden lg:inline-flex items-center space-x-2 px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
+              className="hidden lg:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
               <Phone className="h-4 w-4" />
               <span className="hidden xl:inline font-medium">08-123 456 78</span>
