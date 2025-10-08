@@ -77,9 +77,16 @@ Tools:
         "create_lead"
       ]);
       
+      console.log('AI Widget - Full response:', result);
+      
+      // Extract the actual message content from the response
+      const content = result.messages?.[0]?.content || result.content || "Hur kan jag hjälpa dig?";
+      
+      console.log('AI Widget - Extracted content:', content);
+      
       const assistantMessage: AiMessage = {
         role: "assistant",
-        content: result.response || result.message || "Tack för din fråga!"
+        content: content
       };
       
       setMessages(prev => [...prev, assistantMessage]);
