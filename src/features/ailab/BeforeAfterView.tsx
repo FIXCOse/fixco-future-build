@@ -28,10 +28,10 @@ export function BeforeAfterView({
             <img
               src={beforeImage}
               alt={t('ailab.before_title')}
-              className="w-full h-64 object-cover rounded-lg border border-border"
+              className="w-full h-80 object-cover rounded-lg border border-border"
             />
           ) : (
-            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
+            <div className="w-full h-80 bg-muted rounded-lg flex items-center justify-center border border-border">
               <p className="text-muted-foreground">Ladda upp en bild för att börja</p>
             </div>
           )}
@@ -47,10 +47,10 @@ export function BeforeAfterView({
             <img
               src={afterImage}
               alt={t('ailab.after_title')}
-              className="w-full h-64 object-cover rounded-lg border border-border"
+              className="w-full h-80 object-cover rounded-lg border border-border"
             />
           ) : (
-            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
+            <div className="w-full h-80 bg-muted rounded-lg flex items-center justify-center border border-border">
               {beforeImage ? (
                 <p className="text-muted-foreground">Välj en åtgärd och klicka på Visualisera</p>
               ) : (
@@ -67,7 +67,7 @@ export function BeforeAfterView({
             <CardTitle className="text-foreground">{t('ailab.variants_title')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {variants.map((url, idx) => (
                 <button
                   key={idx}
@@ -80,7 +80,7 @@ export function BeforeAfterView({
                   <img
                     src={url}
                     alt={`Variant ${idx + 1}`}
-                    className="w-full h-24 object-cover"
+                    className="w-full h-32 object-cover"
                   />
                 </button>
               ))}

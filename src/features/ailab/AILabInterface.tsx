@@ -123,7 +123,7 @@ export function AILabInterface() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* Left: Upload & Actions */}
-      <div className="lg:col-span-4 space-y-6">
+      <div className="lg:col-span-3 space-y-6">
         <ImageUploadZone onImageUpload={handleImageUpload} />
         <ActionCards
           selectedAction={selectedAction}
@@ -135,8 +135,8 @@ export function AILabInterface() {
         />
       </div>
 
-      {/* Middle: Before/After View */}
-      <div className="lg:col-span-5">
+      {/* Middle: Before/After View - LARGER */}
+      <div className="lg:col-span-6">
         <BeforeAfterView
           beforeImage={originalImage}
           afterImage={generatedImage}
