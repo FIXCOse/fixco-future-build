@@ -40,6 +40,15 @@ export type CopyKey =
   | 'smartHome.choose_category' | 'smartHome.main_features' | 'smartHome.smart_features'
   | 'smartHome.installation_setup' | 'smartHome.years_warranty' | 'smartHome.contact_for_info'
   
+  // Projects / References
+  | 'projects.latest_title' | 'projects.latest_subtitle' | 'projects.satisfied_customers'
+  | 'projects.on_time_budget' | 'projects.all_stockholm' | 'projects.completed'
+  | 'projects.cta_title' | 'projects.cta_subtitle' | 'projects.request_quote'
+  | 'projects.see_more' | 'projects.new_project'
+  
+  // FAQ Teaser
+  | 'faq.no_answer_title' | 'faq.contact_response' | 'faq.call_us_with_phone' | 'faq.tell_project'
+  
   // Categories
   | 'categories.all' | 'categories.security' | 'categories.lighting' | 'categories.climate'
   | 'categories.cleaning' | 'categories.garden' | 'categories.entertainment'

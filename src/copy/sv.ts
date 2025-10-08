@@ -100,6 +100,25 @@ export const sv: Record<CopyKey, string> = {
   'smartHome.years_warranty': '2 års fullgaranti',
   'smartHome.contact_for_info': 'Kontakta oss för installation och mer information!',
   
+  // Projects / References
+  'projects.latest_title': 'Se våra senaste projekt',
+  'projects.latest_subtitle': 'Från drömkök till lyxiga badrum - våra senaste projekt visar kvaliteten och kreativiteten som våra kunder får. Alla med garanterat ROT-avdrag.',
+  'projects.satisfied_customers': '100% nöjda kunder',
+  'projects.on_time_budget': 'I tid & budget',
+  'projects.all_stockholm': 'Hela Stockholm',
+  'projects.completed': 'Färdigställt',
+  'projects.cta_title': 'Vill du se ditt hem här?',
+  'projects.cta_subtitle': 'Vi skapar drömhemmet du alltid velat ha. Från första skissen till färdigt resultat - vi finns med dig hela vägen. Alla projekt inkluderar ROT-avdrag för maximal besparing.',
+  'projects.request_quote': 'Begär kostnadsfri offert',
+  'projects.see_more': 'Se fler projekt',
+  'projects.new_project': 'Nytt projekt',
+  
+  // FAQ Teaser
+  'faq.no_answer_title': 'Hittar du inte svar på din fråga?',
+  'faq.contact_response': 'Kontakta oss direkt så svarar vi inom 30 minuter',
+  'faq.call_us_with_phone': 'Ring oss: 08-123 456 78',
+  'faq.tell_project': 'Berätta om ditt projekt',
+  
   // Categories
   'categories.all': 'Alla Produkter',
   'categories.security': 'Säkerhet & Lås',

@@ -100,6 +100,25 @@ export const en: Record<CopyKey, string> = {
   'smartHome.years_warranty': '2 years full warranty',
   'smartHome.contact_for_info': 'Contact us for installation and more information!',
   
+  // Projects / References
+  'projects.latest_title': 'See our latest projects',
+  'projects.latest_subtitle': 'From dream kitchens to luxurious bathrooms - our latest projects showcase the quality and creativity our customers receive. All with guaranteed ROT deduction.',
+  'projects.satisfied_customers': '100% satisfied customers',
+  'projects.on_time_budget': 'On time & budget',
+  'projects.all_stockholm': 'All of Stockholm',
+  'projects.completed': 'Completed',
+  'projects.cta_title': 'Want to see your home here?',
+  'projects.cta_subtitle': 'We create the dream home you\'ve always wanted. From first sketch to finished result - we\'re with you all the way. All projects include ROT deduction for maximum savings.',
+  'projects.request_quote': 'Request free quote',
+  'projects.see_more': 'See more projects',
+  'projects.new_project': 'New project',
+  
+  // FAQ Teaser
+  'faq.no_answer_title': 'Can\'t find the answer to your question?',
+  'faq.contact_response': 'Contact us directly and we\'ll respond within 30 minutes',
+  'faq.call_us_with_phone': 'Call us: 08-123 456 78',
+  'faq.tell_project': 'Tell us about your project',
+  
   // Categories
   'categories.all': 'All Products',
   'categories.security': 'Security & Locks',

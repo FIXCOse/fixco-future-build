@@ -83,26 +83,26 @@ const ProjectShowcase = () => {
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Se våra <span className="gradient-text">senaste projekt</span>
+            {t('projects.latest_title').split(' ').slice(0, 2).join(' ')}{' '}
+            <span className="gradient-text">{t('projects.latest_title').split(' ').slice(2).join(' ')}</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Från drömkök till lyxiga badrum - våra senaste projekt visar kvaliteten och kreativiteten 
-            som våra kunder får. Alla med garanterat ROT-avdrag.
+            {t('projects.latest_subtitle')}
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             <Badge variant="secondary" className="px-4 py-2">
               <Star className="w-4 h-4 mr-1" />
-              100% nöjda kunder
+              {t('projects.satisfied_customers')}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <Clock className="w-4 h-4 mr-1" />
-              I tid & budget
+              {t('projects.on_time_budget')}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
               <MapPin className="w-4 h-4 mr-1" />
-              Hela Stockholm
+              {t('projects.all_stockholm')}
             </Badge>
           </div>
         </div>

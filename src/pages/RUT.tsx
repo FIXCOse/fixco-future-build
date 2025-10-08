@@ -7,9 +7,8 @@ import { Helmet } from 'react-helmet-async';
 import RUTCalculator from "@/components/RUTCalculator";
 
 const RUT = () => {
-  const { t } = useCopy();
-  const location = useLocation();
-  const isEnglish = location.pathname.startsWith('/en');
+  const { t, locale } = useCopy();
+  const isEnglish = locale === 'en';
   
   const bookingPath = isEnglish ? '/en/book-visit' : '/boka-hembesok';
   const contactPath = isEnglish ? '/en/contact' : '/kontakt';

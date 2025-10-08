@@ -119,10 +119,10 @@ const FAQTeaser = () => {
             <div className="mt-16 text-center">
               <div className="card-premium p-8 relative">
                 <h3 className="text-2xl font-bold mb-4">
-                Hittar du inte svar på din fråga?
+                  {t('faq.no_answer_title')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Kontakta oss direkt så svarar vi inom 30 minuter
+                {t('faq.contact_response')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -131,7 +131,7 @@ const FAQTeaser = () => {
                   className="group"
                   onClick={() => window.open('tel:08-123-456-78')}
                 >
-                  Ring oss: 08-123 456 78
+                  {t('faq.call_us_with_phone')}
                 </Button>
                 <Button
                   variant="cta-secondary"
@@ -140,7 +140,7 @@ const FAQTeaser = () => {
                   asChild
                 >
                   <Link to={locale === 'en' ? '/en/contact' : '/kontakt'}>
-                    {locale === 'en' ? 'Tell us about your project' : 'Berätta om ditt projekt'}
+                    {t('faq.tell_project')}
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>

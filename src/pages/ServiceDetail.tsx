@@ -24,13 +24,13 @@ import {
 const ServiceDetail = () => {
   const { slug } = useParams();
   const location = useLocation();
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
 
   // Determine if we're on English site
-  const isEnglish = location.pathname.startsWith('/en');
+  const isEnglish = locale === 'en';
   
   const service = servicesDataNew.find(s => s.slug === slug);
 

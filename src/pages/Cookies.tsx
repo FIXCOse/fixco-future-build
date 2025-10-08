@@ -3,9 +3,8 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 
 export default function Cookies() {
-  const { t } = useCopy();
-  const location = useLocation();
-  const isEnglish = location.pathname.startsWith('/en');
+  const { t, locale } = useCopy();
+  const isEnglish = locale === 'en';
 
   return (
     <div className="min-h-screen">

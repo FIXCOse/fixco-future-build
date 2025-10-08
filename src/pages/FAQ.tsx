@@ -8,10 +8,9 @@ import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
 
 const FAQ = () => {
-  const { t } = useCopy();
-  const location = useLocation();
-  const isEnglish = location.pathname.startsWith('/en');
+  const { t, locale } = useCopy();
   const [openItems, setOpenItems] = useState<number[]>([0]); // First item open by default
+  const isEnglish = locale === 'en';
 
   const toggleItem = (index: number) => {
     setOpenItems(prev => 

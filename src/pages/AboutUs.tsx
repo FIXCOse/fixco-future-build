@@ -7,9 +7,8 @@ import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
 
 const AboutUs = () => {
-  const { t } = useCopy();
-  const location = useLocation();
-  const isEnglish = location.pathname.startsWith('/en');
+  const { t, locale } = useCopy();
+  const isEnglish = locale === 'en';
   
   return (
     <div className="min-h-screen">
