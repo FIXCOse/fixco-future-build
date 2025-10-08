@@ -21,6 +21,7 @@ export function FloatingAIWidget() {
   const [file, setFile] = useState<File | null>(null);
   const [instruction, setInstruction] = useState("");
   const [resultUrl, setResultUrl] = useState<string>("");
+  const [variants, setVariants] = useState<string[]>([]);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -93,11 +94,18 @@ export function FloatingAIWidget() {
 
     setBusy(true);
     try {
-      const url = await aiEditImage(file, instruction);
-      setResultUrl(url);
+      // Generate 3 variants with slight variations
+      const mainVariant = await aiEditImage(file, instruction);
+      const variant2 = await aiEditImage(file, instruction + ' - variant med ljusare toner');
+      const variant3 = await aiEditImage(file, instruction + ' - variant med mörkare toner');
+      
+      const allVariants = [mainVariant, variant2, variant3];
+      setVariants(allVariants);
+      setResultUrl(mainVariant);
+      
       toast({
-        title: "Visualisering skapad!",
-        description: "Öppna i full AI för fler alternativ"
+        title: "3 visualiseringar skapade!",
+        description: "Välj den du gillar bäst nedan"
       });
     } catch (error) {
       console.error("Image generation error:", error);
@@ -255,11 +263,39 @@ export function FloatingAIWidget() {
 
             {resultUrl && (
               <div className="space-y-3 mt-4">
-                <img
-                  src={resultUrl}
-                  alt={t('ailab.after_title')}
-                  className="w-full rounded-lg border-2"
-                />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Vald visualisering</label>
+                  <img
+                    src={resultUrl}
+                    alt={t('ailab.after_title')}
+                    className="w-full rounded-lg border-2 border-primary"
+                  />
+                </div>
+
+                {variants.length > 0 && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Välj variant</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {variants.map((url, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setResultUrl(url)}
+                          className={`
+                            rounded-lg overflow-hidden border-2 transition-all
+                            ${resultUrl === url ? 'border-primary' : 'border-border hover:border-primary/50'}
+                          `}
+                        >
+                          <img
+                            src={url}
+                            alt={`Variant ${idx + 1}`}
+                            className="w-full h-24 object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <a
                   href="/ai"
                   className="block text-center text-sm text-primary hover:underline font-medium"
