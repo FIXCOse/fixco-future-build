@@ -2,39 +2,47 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useCopy } from "@/copy/CopyProvider";
 import { useToast } from "@/hooks/use-toast";
-import { aiEditImage, callAiChat, type AiMessage } from "@/features/ai/lib/ai";
+import { aiEditImage, callAiChat, createLead, type AiMessage } from "@/features/ai/lib/ai";
+import { FIXCO_SYSTEM_CONTEXT } from "@/features/ai/context/fixco-context";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
+import { useNavigate } from "react-router-dom";
+
+// Tjänst-mappning för snabblänkar
+const SERVICE_LINKS: Record<string, string> = {
+  "bygga-altan": "/tjanster/altan",
+  "akustikpanel": "/tjanster/akustikpaneler",
+  "byt-golv": "/tjanster/golv",
+  "platsbyggd-bokhylla": "/tjanster/platsbyggd-bokhylla",
+  "platsbyggd-garderob": "/tjanster/platsbyggd-garderob",
+  "led-installation": "/tjanster/led-installation",
+  "malning": "/tjanster/malning",
+};
+
+// Detektera tjänst från användarens meddelande
+function detectServiceSlug(text: string): string | null {
+  const t = text.toLowerCase();
+  if (/(altan|trall|uteplats)/.test(t)) return "bygga-altan";
+  if (/(akustikpanel|ljudpanel|panel)/.test(t)) return "akustikpanel";
+  if (/(golv|parkett|laminat|vinylgolv)/.test(t)) return "byt-golv";
+  if (/(bokhylla|hyllor)/.test(t)) return "platsbyggd-bokhylla";
+  if (/(garderob|förvaring|klädförvaring)/.test(t)) return "platsbyggd-garderob";
+  if (/(led|belysning|lampor)/.test(t)) return "led-installation";
+  if (/(målning|måla|tapetsera)/.test(t)) return "malning";
+  return null;
+}
 
 export function FloatingAIWidget() {
   const { t } = useCopy();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"chat" | "image">("chat");
   const [messages, setMessages] = useState<AiMessage[]>([
     { 
       role: "system", 
-      content: `Du är Fixco AI-assistent - en expert på hemrenovering, byggservice och ROT/RUT-avdrag i Sverige.
-
-Dina specialområden:
-- Alla typer av renoveringsprojekt (bad, kök, måling, golv, etc.)
-- ROT-avdrag: 30% på arbetskostnad (max 50 000 kr/person/år)
-- RUT-avdrag: 50% på hushållsnära tjänster (max 75 000 kr/person/år)
-- Kostnaduppskattningar baserat på svenska marknadsläget
-- Projektplanering och tidåtgång
-- Material- och hantverksråd
-
-Svara alltid:
-- Koncist och vänligt på svenska
-- Med konkreta siffror när du uppskattar kostnader
-- Inkludera ROT/RUT-beräkningar när relevant
-- Förklara vad som ingår i priset (arbetskostnad + material + moms)
-
-Tools:
-- get_services: Hämta alla våra tjänster och priser
-- estimate_quote: Beräkna offert med ROT-avdrag
-- create_lead: Spara kundintresse för uppföljning` 
+      content: FIXCO_SYSTEM_CONTEXT
     }
   ]);
   const [input, setInput] = useState("");
@@ -44,6 +52,17 @@ Tools:
   const [instruction, setInstruction] = useState("");
   const [resultUrl, setResultUrl] = useState<string>("");
   const [variants, setVariants] = useState<string[]>([]);
+
+  // CTA & offert-modal state
+  const [detectedSlug, setDetectedSlug] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadAddress, setLeadAddress] = useState("");
+  const [leadMsg, setLeadMsg] = useState("");
+  const [leadBusy, setLeadBusy] = useState(false);
+  const [leadDone, setLeadDone] = useState(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -66,6 +85,8 @@ Tools:
     if (!input.trim() || busy) return;
     
     const userMessage: AiMessage = { role: "user", content: input };
+    const slug = detectServiceSlug(input);
+    setDetectedSlug(slug);
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setBusy(true);
@@ -77,16 +98,14 @@ Tools:
         "create_lead"
       ]);
       
-      console.log('AI Widget - Full response:', result);
-      
-      // Extract the actual message content from the response
       const content = result.messages?.[0]?.content || result.content || "Hur kan jag hjälpa dig?";
       
-      console.log('AI Widget - Extracted content:', content);
+      // Trunkera extremt långa svar för widget
+      const truncated = content.length > 600 ? content.slice(0, 600) + "..." : content;
       
       const assistantMessage: AiMessage = {
         role: "assistant",
-        content: content
+        content: truncated
       };
       
       setMessages(prev => [...prev, assistantMessage]);
@@ -94,20 +113,79 @@ Tools:
       console.error("Chat error:", error);
       setMessages(prev => [...prev, { 
         role: "assistant", 
-        content: t('ai_widget.error')
+        content: "Något gick fel. Försök igen eller begär offert direkt."
       }]);
     } finally {
       setBusy(false);
     }
   }
 
+  function navigateToService(slug: string) {
+    const url = SERVICE_LINKS[slug];
+    if (url) {
+      navigate(url);
+      setOpen(false);
+    }
+  }
+
+  function openOfferModal(prefillMsg?: string) {
+    if (prefillMsg) setLeadMsg(prefillMsg);
+    setShowModal(true);
+  }
+
+  async function submitLead() {
+    if (!leadName || !leadEmail) {
+      toast({
+        title: "Fyll i namn och e-post",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLeadBusy(true);
+    try {
+      await createLead({
+        name: leadName,
+        email: leadEmail,
+        phone: leadPhone,
+        address: leadAddress,
+        message: leadMsg,
+        serviceInterest: detectedSlug || undefined,
+        images: resultUrl ? [resultUrl] : []
+      });
+      
+      setLeadDone(true);
+      toast({
+        title: "Tack! Vi återkommer så snart som möjligt.",
+      });
+      
+      // Reset form
+      setTimeout(() => {
+        setLeadName("");
+        setLeadEmail("");
+        setLeadPhone("");
+        setLeadAddress("");
+        setLeadMsg("");
+        setLeadDone(false);
+        setShowModal(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Lead submission error:", error);
+      toast({
+        title: "Kunde inte skicka. Försök igen.",
+        variant: "destructive"
+      });
+    } finally {
+      setLeadBusy(false);
+    }
+  }
+
   async function onGenerate() {
     if (!file || !instruction.trim() || busy) return;
     
-    // Validate file
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
       toast({
-        title: t('ailab.error_file_type'),
+        title: "Endast JPG, PNG eller WEBP tillåtna",
         variant: 'destructive'
       });
       return;
@@ -115,7 +193,7 @@ Tools:
 
     if (file.size > 15 * 1024 * 1024) {
       toast({
-        title: t('ailab.error_file_size'),
+        title: "Max 15 MB per bild",
         variant: 'destructive'
       });
       return;
@@ -123,7 +201,6 @@ Tools:
 
     setBusy(true);
     try {
-      // Generate 3 variants with slight variations
       const mainVariant = await aiEditImage(file, instruction);
       const variant2 = await aiEditImage(file, instruction + ' - variant med ljusare toner');
       const variant3 = await aiEditImage(file, instruction + ' - variant med mörkare toner');
@@ -134,12 +211,12 @@ Tools:
       
       toast({
         title: "3 visualiseringar skapade!",
-        description: "Välj den du gillar bäst nedan"
+        description: "Välj den du gillar bäst"
       });
     } catch (error) {
       console.error("Image generation error:", error);
       toast({
-        title: t('ai_widget.error'),
+        title: "Något gick fel. Försök igen.",
         variant: 'destructive'
       });
     } finally {
@@ -212,7 +289,7 @@ Tools:
             <div className="flex-1 overflow-auto px-4 py-3 space-y-3">
               {messages.filter(m => m.role !== "system").length === 0 && (
                 <div className="text-sm text-muted-foreground">
-                  {t('ai_widget.greeting')}
+                  Hej! Ladda upp en bild i <strong>Bild & Förslag</strong> eller ställ en fråga här.
                 </div>
               )}
               {messages
@@ -233,6 +310,32 @@ Tools:
                     </div>
                   </div>
                 ))}
+              
+              {/* CTA-kort om tjänst upptäcktes */}
+              {detectedSlug && (
+                <div className="mt-3 p-3 border rounded-xl bg-muted/30 text-sm space-y-2">
+                  <div className="font-medium">Snabba val</div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => navigateToService(detectedSlug)}
+                    >
+                      Visa tjänst
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => openOfferModal(`Intresserad av: ${detectedSlug.replace(/-/g, " ")}`)}
+                    >
+                      Begär offert
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Inga priser i chatten – vi återkommer med offert.
+                  </p>
+                </div>
+              )}
+              
               <div ref={messagesEndRef} />
             </div>
 
@@ -241,30 +344,33 @@ Tools:
               <div className="flex gap-2">
                 <Input
                   className="flex-1"
-                  placeholder={t('ai_widget.chat_placeholder')}
+                  placeholder="Skriv din fråga..."
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && !e.shiftKey && onSend()}
                   disabled={busy}
                 />
                 <Button onClick={onSend} disabled={busy || !input.trim()}>
-                  {t('ai_widget.send')}
+                  Skicka
                 </Button>
               </div>
               <div className="flex justify-between text-xs">
                 <a href="/ai" className="text-primary hover:underline">
-                  {t('ai_widget.open_full')}
+                  Öppna full AI
                 </a>
-                <a href="/ai" className="text-primary hover:underline">
-                  {t('ai_widget.create_offer')}
-                </a>
+                <button 
+                  className="text-primary hover:underline"
+                  onClick={() => openOfferModal()}
+                >
+                  Begär offert
+                </button>
               </div>
             </div>
           </div>
         ) : (
           <div className="p-4 space-y-3 h-[440px] overflow-auto">
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t('ai_widget.upload_file')}</label>
+              <label className="text-sm font-medium">Ladda upp bild</label>
               <Input
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
@@ -273,10 +379,10 @@ Tools:
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t('ailab.custom_instruction')}</label>
+              <label className="text-sm font-medium">Beskriv önskad förändring</label>
               <Textarea
                 rows={3}
-                placeholder={t('ai_widget.image_instruction_placeholder')}
+                placeholder="Ex: Lägg akustikpanel i mörk ek på väggen bakom TV:n"
                 value={instruction}
                 onChange={e => setInstruction(e.target.value)}
               />
@@ -287,7 +393,7 @@ Tools:
               disabled={busy || !file || !instruction.trim()}
               className="w-full"
             >
-              {busy ? t('ailab.visualizing') : t('ai_widget.generate')}
+              {busy ? "Genererar..." : "Generera efter-bild"}
             </Button>
 
             {resultUrl && (
@@ -296,7 +402,7 @@ Tools:
                   <label className="text-sm font-medium">Vald visualisering</label>
                   <img
                     src={resultUrl}
-                    alt={t('ailab.after_title')}
+                    alt="Efter-bild"
                     className="w-full rounded-lg border-2 border-primary"
                   />
                 </div>
@@ -329,15 +435,119 @@ Tools:
                   href="/ai"
                   className="block text-center text-sm text-primary hover:underline font-medium"
                 >
-                  {t('ai_widget.open_full')}
+                  Öppna i full AI
                 </a>
                 <p className="text-xs text-muted-foreground">
-                  {t('ailab.disclaimer')}
+                  Visualisering – färg/struktur kan avvika från verkligt material.
                 </p>
               </div>
             )}
           </div>
         )}
+        </div>
+      )}
+
+      {/* Offert-modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-[10000] flex items-end md:items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
+          <div className="relative w-full md:w-[560px] bg-background rounded-t-2xl md:rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Begär offert</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="p-1 rounded hover:bg-muted transition-colors"
+                aria-label="Stäng"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {leadDone ? (
+              <div className="text-center py-6 space-y-4">
+                <div className="text-lg font-medium">Tack! Vi återkommer så snart som möjligt.</div>
+                <Button onClick={() => { setShowModal(false); setLeadDone(false); }}>
+                  Stäng
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Namn *</label>
+                    <Input
+                      placeholder="Ditt namn"
+                      value={leadName}
+                      onChange={e => setLeadName(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">E-post *</label>
+                    <Input
+                      type="email"
+                      placeholder="din@email.com"
+                      value={leadEmail}
+                      onChange={e => setLeadEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Telefon</label>
+                    <Input
+                      type="tel"
+                      placeholder="070-123 45 67"
+                      value={leadPhone}
+                      onChange={e => setLeadPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Adress</label>
+                    <Input
+                      placeholder="Gatuadress"
+                      value={leadAddress}
+                      onChange={e => setLeadAddress(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Kort beskrivning</label>
+                  <Textarea
+                    rows={4}
+                    placeholder="Beskriv vad du behöver hjälp med..."
+                    value={leadMsg}
+                    onChange={e => setLeadMsg(e.target.value)}
+                  />
+                </div>
+
+                {resultUrl && (
+                  <div className="p-3 bg-muted/30 rounded-lg">
+                    <p className="text-sm text-muted-foreground mb-2">Din visualisering inkluderas i förfrågan</p>
+                    <img src={resultUrl} alt="Din visualisering" className="w-32 h-32 object-cover rounded border" />
+                  </div>
+                )}
+
+                <p className="text-xs text-muted-foreground">
+                  Vi ger inga priser i chatten. Offerten bekräftas efter platsbesök. Eventuellt ROT-avdrag är indikativt.
+                </p>
+
+                <div className="flex justify-end gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowModal(false)}
+                    disabled={leadBusy}
+                  >
+                    Avbryt
+                  </Button>
+                  <Button
+                    onClick={submitLead}
+                    disabled={leadBusy || !leadName || !leadEmail}
+                  >
+                    {leadBusy ? "Skickar..." : "Skicka"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </>
