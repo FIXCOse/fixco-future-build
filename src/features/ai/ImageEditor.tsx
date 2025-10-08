@@ -53,9 +53,10 @@ export function ImageEditor() {
       });
     } catch (error) {
       console.error("Image edit error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Försök igen eller kontakta support";
       toast({
         title: "Fel vid bildbearbetning",
-        description: "Försök igen eller kontakta support",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

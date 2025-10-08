@@ -74,10 +74,13 @@ serve(async (req) => {
     }
 
     const data = await response.json();
+    console.log('AI response:', JSON.stringify(data));
+    
     const generatedImage = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
     if (!generatedImage) {
-      throw new Error('No image generated');
+      console.error('No image in response. Full data:', JSON.stringify(data));
+      throw new Error('AI kunde inte generera bild. Försök med en enklare beskrivning eller en annan bild.');
     }
 
     // Upload to Supabase Storage
