@@ -93,10 +93,14 @@ const ServiceDetail = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
 
-  // Related services (other services user might be interested in)
-  const relatedServices = servicesDataNew
-    .filter(s => s.slug !== slug)
-    .slice(0, 3);
+  // Related services (other services from different categories)
+  const relatedServices = useMemo(() => {
+    if (!dbServices || !categoryName) return [];
+    // Get services from other categories
+    return dbServices
+      .filter(s => s.category !== categoryName)
+      .slice(0, 3);
+  }, [dbServices, categoryName]);
 
   return (
     <div className="min-h-screen">
@@ -293,33 +297,17 @@ const ServiceDetail = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedServices.map((relatedService) => {
-              const RelatedIcon = relatedService.icon;
-              
-              // Create ServicePricing object for related service
-              const relatedServiceForPricing = {
-                id: relatedService.slug,
-                title: relatedService.title,
-                basePrice: parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0,
-                priceUnit: 'kr/h' as 'kr/h' | 'kr' | 'från',
-                eligible: { 
-                  rot: relatedService.eligible.rot, 
-                  rut: relatedService.eligible.rut 
-                },
-                laborShare: 1.0
-              };
-              
-              const relatedPricing = calcDisplayPrice(relatedServiceForPricing, mode);
-              
               return (
                 <ServiceCardV3
-                  key={relatedService.slug}
+                  key={relatedService.id}
                   title={relatedService.title}
-                  category={t('serviceDetail.relatedService')}
+                  category={relatedService.category}
                   description={relatedService.description}
-                  pricingType="hourly"
-                  priceIncl={parseInt(String(relatedService.basePrice).replace(/[^\d]/g, '')) || 0}
-                  eligible={relatedService.eligible}
-                  serviceSlug={relatedService.slug}
+                  pricingType={relatedService.price_type === 'quote' ? 'quote' : 
+                               relatedService.price_unit.includes('/h') ? 'hourly' : 'fixed'}
+                  priceIncl={relatedService.base_price}
+                  eligible={{ rot: relatedService.rot_eligible, rut: relatedService.rut_eligible }}
+                  serviceSlug={relatedService.id}
                   onBook={() => {
                     // Handle booking
                   }}
