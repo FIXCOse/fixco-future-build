@@ -21,19 +21,23 @@ export default function ServiceRequestModal() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    console.log("[ServiceRequestModal] Component mounted, setting up listener");
+    
     const onOpen = (e: Event) => {
+      console.log("[ServiceRequestModal] ========== EVENT RECEIVED ==========");
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
       
-      console.log("[ServiceRequestModal] Event received:", { slug, prefill });
+      console.log("[ServiceRequestModal] Event details:", { slug, prefill, fullDetail: ce.detail });
       
       // Try to find predefined config
       let svc = slug ? getServiceBySlug(slug) : null;
+      console.log("[ServiceRequestModal] Found service config:", svc);
       
       // FALLBACK: If no config found, create a generic one for ANY service
       if (!svc && slug) {
-        console.log("[ServiceRequestModal] No config found for", slug, "- using fallback");
+        console.log("[ServiceRequestModal] No config found for", slug, "- creating fallback");
         svc = {
           slug: slug,
           name: prefill.service_name || slug.replace(/-/g, ' '),
@@ -44,16 +48,25 @@ export default function ServiceRequestModal() {
             { kind: "file" as const, key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
           ]
         };
+        console.log("[ServiceRequestModal] Created fallback config:", svc);
       }
       
+      console.log("[ServiceRequestModal] Setting state - service:", svc, "open: true");
       setService(svc ?? null);
       setValues(prefill);
       setFiles({});
       setDone(false);
       setOpen(true);
+      console.log("[ServiceRequestModal] State updated, modal should open");
     };
+    
     window.addEventListener("openServiceRequestModal", onOpen);
-    return () => window.removeEventListener("openServiceRequestModal", onOpen);
+    console.log("[ServiceRequestModal] Event listener registered");
+    
+    return () => {
+      console.log("[ServiceRequestModal] Cleaning up listener");
+      window.removeEventListener("openServiceRequestModal", onOpen);
+    };
   }, []);
 
   function onChange(key: string, val: any) {
@@ -169,12 +182,13 @@ export default function ServiceRequestModal() {
     }
   }
 
+  console.log("[ServiceRequestModal] Render check - open:", open, "service:", service);
+  
   if (!open) {
-    console.log("[ServiceRequestModal] Not rendering - open is false");
     return null;
   }
   
-  console.log("[ServiceRequestModal] Rendering modal with service:", service);
+  console.log("[ServiceRequestModal] RENDERING MODAL NOW!");
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center">

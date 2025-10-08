@@ -53,18 +53,39 @@ const ServiceCardV3 = ({
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    console.log("========== BOOKING BUTTON CLICKED ==========");
     const slug = serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
     console.log("[ServiceCard] handleBookingClick called");
     console.log("[ServiceCard] - serviceSlug:", serviceSlug);
     console.log("[ServiceCard] - serviceId:", serviceId);
     console.log("[ServiceCard] - computed slug:", slug);
     console.log("[ServiceCard] - title:", translatedTitle);
+    console.log("[ServiceCard] - onBook exists?", !!onBook);
     
     if (onBook) {
       console.log("[ServiceCard] Calling onBook callback");
       onBook();
     } else {
-      console.log("[ServiceCard] Opening modal with:", { slug, prefill: { service_name: translatedTitle, base_price: priceIncl } });
+      console.log("[ServiceCard] NO onBook callback - dispatching custom event");
+      console.log("[ServiceCard] Event detail:", { slug, prefill: { service_name: translatedTitle, base_price: priceIncl } });
+      
+      // Dispatch the custom event
+      const event = new CustomEvent("openServiceRequestModal", {
+        detail: {
+          serviceSlug: slug,
+          prefill: {
+            service_name: translatedTitle,
+            base_price: priceIncl
+          }
+        }
+      });
+      
+      console.log("[ServiceCard] Dispatching event:", event);
+      window.dispatchEvent(event);
+      console.log("[ServiceCard] Event dispatched successfully!");
+      
+      // Also call the function directly as backup
       openServiceRequestModal({
         serviceSlug: slug,
         prefill: {
@@ -72,30 +93,52 @@ const ServiceCardV3 = ({
           base_price: priceIncl
         }
       });
+      console.log("[ServiceCard] Direct function call completed!");
     }
   };
 
   const handleQuoteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    console.log("========== QUOTE BUTTON CLICKED ==========");
     const slug = serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
     console.log("[ServiceCard] handleQuoteClick called");
     console.log("[ServiceCard] - serviceSlug:", serviceSlug);
     console.log("[ServiceCard] - serviceId:", serviceId);
     console.log("[ServiceCard] - computed slug:", slug);
     console.log("[ServiceCard] - title:", translatedTitle);
+    console.log("[ServiceCard] - onQuote exists?", !!onQuote);
     
     if (onQuote) {
       console.log("[ServiceCard] Calling onQuote callback");
       onQuote();
     } else {
-      console.log("[ServiceCard] Opening modal with:", { slug, prefill: { service_name: translatedTitle } });
+      console.log("[ServiceCard] NO onQuote callback - dispatching custom event");
+      console.log("[ServiceCard] Event detail:", { slug, prefill: { service_name: translatedTitle } });
+      
+      // Dispatch the custom event
+      const event = new CustomEvent("openServiceRequestModal", {
+        detail: {
+          serviceSlug: slug,
+          prefill: {
+            service_name: translatedTitle
+          }
+        }
+      });
+      
+      console.log("[ServiceCard] Dispatching event:", event);
+      window.dispatchEvent(event);
+      console.log("[ServiceCard] Event dispatched successfully!");
+      
+      // Also call the function directly as backup
       openServiceRequestModal({
         serviceSlug: slug,
         prefill: {
           service_name: translatedTitle
         }
       });
+      console.log("[ServiceCard] Direct function call completed!");
     }
   };
   
