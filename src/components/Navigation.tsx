@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, User, LogOut, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, User, LogOut, Phone, ChevronDown, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,6 +45,7 @@ export default function Navigation() {
     { href: "/admin/customers", label: "Kunder" },
     { href: "/admin/users", label: "Användare" },
     { href: "/admin/staff", label: "Personal" },
+    { href: "/admin/leads", label: "AI Leads" },
     { href: "/admin/translations", label: "Översättningar" },
     { href: "/admin/reports", label: "Rapporter" },
     { href: "/admin/database", label: "Databas" },
@@ -78,13 +79,15 @@ export default function Navigation() {
       smartHome: '/en/smart-home', 
       references: '/en/references',
       about: '/en/about',
-      contact: '/en/contact'
+      contact: '/en/contact',
+      ai: '/en/ai'
     } : {
       services: '/tjanster',
       smartHome: '/smart-hem',
       references: '/referenser', 
       about: '/om-oss',
-      contact: '/kontakt'
+      contact: '/kontakt',
+      ai: '/ai'
     };
     
     // Base navigation items for everyone (no admin dropdown here anymore)
@@ -93,6 +96,7 @@ export default function Navigation() {
       { href: paths.services, label: t('nav.services') },
       { href: paths.smartHome, label: t('nav.smartHome') },
       { href: paths.references, label: t('nav.references') },
+      { href: paths.ai, label: <span className="flex items-center gap-1"><Bot className="h-3.5 w-3.5" />AI</span>, highlight: true },
       { href: paths.about, label: t('nav.about') },
       { href: paths.contact, label: t('nav.contact') },
     ];
@@ -136,7 +140,8 @@ export default function Navigation() {
                     "inline-flex items-center px-4 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
                     "text-foreground hover:text-primary hover:bg-primary/10",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    isActive(item.href) && "text-primary bg-primary/10 font-semibold"
+                    isActive(item.href) && "text-primary bg-primary/10 font-semibold",
+                    (item as any).highlight && "bg-primary/5 border border-primary/20"
                   )}
                 >
                   {item.label}

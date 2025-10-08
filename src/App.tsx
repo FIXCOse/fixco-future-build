@@ -17,6 +17,7 @@ import RUT from "./pages/RUT";
 import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import AI from "./pages/AI";
 import AuthCallback from "./pages/AuthCallback";
 import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
@@ -69,6 +70,7 @@ import AdminJobs from "./pages/admin/AdminJobs";
 import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 import AdminServices from "./pages/admin/AdminServices";
+import AdminLeads from "./pages/admin/AdminLeads";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -170,6 +172,7 @@ const App = () => {
                     <Route path="jobs" element={<AdminJobs />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                     <Route path="translations" element={<AdminTranslations />} />
+                    <Route path="leads" element={<AdminLeads />} />
                   </Route>
 
                   {/* Worker Routes */}
@@ -218,6 +221,7 @@ const App = () => {
                     <Route path="rot" element={<ROTInfo />} />
                     <Route path="rut" element={<RUT />} />
                     <Route path="referenser" element={<Referenser />} />
+                    <Route path="ai" element={<AI />} />
                     <Route path="smart-hem" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
@@ -253,6 +257,7 @@ const App = () => {
                     <Route path="rot" element={<ROTInfo />} />
                     <Route path="rut" element={<RUT />} />
                     <Route path="book-visit" element={<BookVisit />} />
+                    <Route path="ai" element={<AI />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">

@@ -918,6 +918,60 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string | null
+          email: string | null
+          estimated_quote: Json | null
+          id: string
+          images: Json | null
+          message: string | null
+          name: string | null
+          phone: string | null
+          postal_code: string | null
+          service_interest: string | null
+          source: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          estimated_quote?: Json | null
+          id?: string
+          images?: Json | null
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          service_interest?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          estimated_quote?: Json | null
+          id?: string
+          images?: Json | null
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          service_interest?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       loyalty_transactions: {
         Row: {
           booking_id: string | null
