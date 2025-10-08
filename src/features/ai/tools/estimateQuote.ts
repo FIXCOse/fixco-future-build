@@ -61,6 +61,9 @@ export function estimateQuote(input: EstimateInput, serviceBaseSek?: number): Es
 /**
  * Formaterar priser enligt svensk standard: 12 345 kr
  */
-export function formatPrice(amount: number): string {
+export function formatPrice(amount: number | undefined | null): string {
+  if (amount === undefined || amount === null || isNaN(amount)) {
+    return '0 kr';
+  }
   return `${amount.toLocaleString('sv-SE')} kr`;
 }
