@@ -116,7 +116,7 @@ export function FloatingAIWidget() {
       <button
         aria-label={t('ai_widget.launcher')}
         onClick={() => setOpen(!open)}
-        className="fixed left-4 bottom-4 z-[9999] rounded-full px-5 py-3 shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 font-semibold"
+        className="fixed right-4 bottom-4 z-[9999] rounded-full px-5 py-3 shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 font-semibold"
       >
         {t('ai_widget.launcher')}
       </button>
@@ -127,7 +127,7 @@ export function FloatingAIWidget() {
       {open && (
         <div
           ref={panelRef}
-          className="fixed left-4 bottom-20 z-[9999] w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
+          className="fixed right-4 bottom-20 z-[9999] w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
           role="dialog"
           aria-modal="true"
           aria-label={t('ai_widget.title')}
