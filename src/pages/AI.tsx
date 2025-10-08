@@ -3,15 +3,18 @@ import { Chat } from "@/features/ai/Chat";
 import { ImageEditor } from "@/features/ai/ImageEditor";
 import { QuotePreview } from "@/features/ai/QuotePreview";
 import { Bot, Sparkles } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 export default function AI() {
+  const { t } = useCopy();
+  
   return (
     <>
       <Helmet>
-        <title>Fixco AI Concierge - Smarta hemtjänster med AI</title>
+        <title>{t('ai.page_title')}</title>
         <meta 
           name="description" 
-          content="Chatta med Fixco AI, få visualiseringar på dina bilder, och få snabba offert-estimat med ROT-avdrag. Uppsala & Stockholm." 
+          content={t('ai.page_subtitle')}
         />
       </Helmet>
 
@@ -21,13 +24,13 @@ export default function AI() {
           <div className="text-center mb-12 space-y-4">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
               <Sparkles className="h-4 w-4" />
-              <span className="text-sm font-medium">Powered by AI</span>
+              <span className="text-sm font-medium">{t('ai.powered_by')}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-              Fixco AI Concierge
+              {t('ai.hero_title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Din smarta assistent för hemrenoveringar. Få råd, visualiseringar och offerter direkt.
+              {t('ai.hero_subtitle')}
             </p>
           </div>
 
@@ -49,23 +52,23 @@ export default function AI() {
           <div className="mt-12 grid md:grid-cols-3 gap-6">
             <div className="text-center p-6 rounded-lg bg-card border">
               <Bot className="h-8 w-8 mx-auto mb-3 text-primary" />
-              <h3 className="font-semibold mb-2">Expertråd 24/7</h3>
+              <h3 className="font-semibold mb-2">{t('ai.feature1_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Få professionella råd om byggnation, renovering och inredning när du behöver det
+                {t('ai.feature1_desc')}
               </p>
             </div>
             <div className="text-center p-6 rounded-lg bg-card border">
               <Sparkles className="h-8 w-8 mx-auto mb-3 text-primary" />
-              <h3 className="font-semibold mb-2">AI-visualiseringar</h3>
+              <h3 className="font-semibold mb-2">{t('ai.feature2_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Se hur ditt hem kan se ut efter renoveringen - direkt på dina egna bilder
+                {t('ai.feature2_desc')}
               </p>
             </div>
             <div className="text-center p-6 rounded-lg bg-card border">
               <Bot className="h-8 w-8 mx-auto mb-3 text-primary" />
-              <h3 className="font-semibold mb-2">Snabba offerter</h3>
+              <h3 className="font-semibold mb-2">{t('ai.feature3_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Få preliminära offerter med ROT-beräkning på några sekunder
+                {t('ai.feature3_desc')}
               </p>
             </div>
           </div>
@@ -73,9 +76,7 @@ export default function AI() {
           {/* Disclaimer */}
           <div className="mt-8 p-4 rounded-lg bg-muted/50 text-center">
             <p className="text-sm text-muted-foreground">
-              <strong>OBS:</strong> Fixco AI är en assistent som ger preliminära råd och visualiseringar. 
-              Slutliga offerter och bedömningar görs alltid av våra professionella hantverkare. 
-              ROT-avdrag bedöms slutligt av Skatteverket.
+              <strong>{t('ai.disclaimer_title')}</strong> {t('ai.disclaimer_text')}
             </p>
           </div>
         </div>

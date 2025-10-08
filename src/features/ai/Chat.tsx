@@ -6,12 +6,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, User, Send, Loader2 } from "lucide-react";
 import { FIXCO_SYSTEM_CONTEXT } from "./context/fixco-context";
 import { callAiChat, AiMessage } from "./lib/ai";
+import { useCopy } from "@/copy/CopyProvider";
 
 export function Chat() {
+  const { t } = useCopy();
   const [messages, setMessages] = useState<AiMessage[]>([
     { 
       role: "assistant", 
-      content: "Hej! Jag är Fixco AI Concierge. Hur kan jag hjälpa dig idag? Jag kan svara på frågor om våra tjänster, hjälpa dig visualisera förändringar i ditt hem, eller ta fram en preliminär offert." 
+      content: t('ai.chat_greeting')
     }
   ]);
   const [input, setInput] = useState("");
@@ -57,7 +59,7 @@ export function Chat() {
         ...prev, 
         { 
           role: "assistant", 
-          content: "Förlåt, något gick fel. Försök igen eller kontakta oss direkt på 08-123 456 78." 
+          content: t('ai.chat_error')
         }
       ]);
     } finally {
@@ -77,7 +79,7 @@ export function Chat() {
       <CardHeader className="border-b">
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-5 w-5" />
-          Chatta med Fixco AI
+          {t('ai.chat_title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0">
@@ -126,7 +128,7 @@ export function Chat() {
         <div className="border-t p-4">
           <div className="flex gap-2">
             <Input
-              placeholder="Skriv ditt meddelande..."
+              placeholder={t('ai.chat_placeholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}

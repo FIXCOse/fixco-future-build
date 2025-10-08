@@ -5,8 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Upload, Wand2, Download } from "lucide-react";
 import { aiEditImage } from "./lib/ai";
 import { useToast } from "@/hooks/use-toast";
+import { useCopy } from "@/copy/CopyProvider";
 
 export function ImageEditor() {
+  const { t } = useCopy();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
   const [instruction, setInstruction] = useState("");
@@ -19,8 +21,8 @@ export function ImageEditor() {
     if (selectedFile) {
       if (selectedFile.size > 15 * 1024 * 1024) {
         toast({
-          title: "Filen är för stor",
-          description: "Max 15 MB tillåtet",
+          title: t('ai.image_file_too_large'),
+          description: t('ai.image_max_size'),
           variant: "destructive"
         });
         return;
@@ -36,8 +38,8 @@ export function ImageEditor() {
   const handleProcess = async () => {
     if (!file || !instruction.trim()) {
       toast({
-        title: "Saknas information",
-        description: "Ladda upp en bild och beskriv önskad förändring",
+        title: t('ai.image_missing_info'),
+        description: t('ai.image_missing_desc'),
         variant: "destructive"
       });
       return;
@@ -48,14 +50,14 @@ export function ImageEditor() {
       const url = await aiEditImage(file, instruction);
       setResultUrl(url);
       toast({
-        title: "Visualisering klar!",
-        description: "Din efter-bild har genererats"
+        title: t('ai.image_complete'),
+        description: t('ai.image_complete_desc')
       });
     } catch (error) {
       console.error("Image edit error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Försök igen eller kontakta support";
+      const errorMessage = error instanceof Error ? error.message : t('ai.quote_pdf_error_desc');
       toast({
-        title: "Fel vid bildbearbetning",
+        title: t('ai.image_error'),
         description: errorMessage,
         variant: "destructive"
       });
@@ -69,16 +71,16 @@ export function ImageEditor() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Wand2 className="h-5 w-5" />
-          Bild & Förslag
+          {t('ai.image_title')}
         </CardTitle>
         <CardDescription>
-          Ladda upp en bild av ditt rum eller utrymme och beskriv vad du vill se
+          {t('ai.image_subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <label htmlFor="image-upload" className="block text-sm font-medium">
-            Välj bild (max 15 MB)
+            {t('ai.image_upload')} ({t('ai.image_max_size')})
           </label>
           <div className="flex items-center gap-2">
             <Button
@@ -87,7 +89,7 @@ export function ImageEditor() {
               onClick={() => document.getElementById('image-upload')?.click()}
             >
               <Upload className="h-4 w-4 mr-2" />
-              {file ? file.name : "Välj bild"}
+              {file ? file.name : t('ai.image_choose')}
             </Button>
             <input
               id="image-upload"
@@ -101,12 +103,12 @@ export function ImageEditor() {
 
         {preview && (
           <div className="rounded-lg overflow-hidden border">
-            <img src={preview} alt="Uppladdad bild" className="w-full h-48 object-cover" />
+            <img src={preview} alt={t('ai.image_upload')} className="w-full h-48 object-cover" />
           </div>
         )}
 
         <Textarea
-          placeholder='Ex: "Lägg akustikpanel i mörk ek på väggen bakom TV:n, vertikala ribbor"'
+          placeholder={t('ai.image_instruction_placeholder')}
           value={instruction}
           onChange={(e) => setInstruction(e.target.value)}
           rows={3}
@@ -119,30 +121,30 @@ export function ImageEditor() {
           className="w-full"
         >
           <Wand2 className="h-4 w-4 mr-2" />
-          {isProcessing ? "Genererar..." : "Generera efter-bild"}
+          {isProcessing ? t('ai.image_generating') : t('ai.image_generate')}
         </Button>
 
         {resultUrl && (
           <div className="space-y-2">
-            <p className="text-sm font-medium">Resultat:</p>
+            <p className="text-sm font-medium">{t('ai.image_result')}</p>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <p className="text-xs text-muted-foreground mb-1">Före</p>
-                <img src={preview} alt="Före" className="w-full rounded-lg border" />
+                <p className="text-xs text-muted-foreground mb-1">{t('ai.image_before')}</p>
+                <img src={preview} alt={t('ai.image_before')} className="w-full rounded-lg border" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground mb-1">Efter</p>
-                <img src={resultUrl} alt="Efter" className="w-full rounded-lg border" />
+                <p className="text-xs text-muted-foreground mb-1">{t('ai.image_after')}</p>
+                <img src={resultUrl} alt={t('ai.image_after')} className="w-full rounded-lg border" />
               </div>
             </div>
             <Button variant="outline" size="sm" className="w-full" asChild>
               <a href={resultUrl} download="fixco-visualisering.png">
                 <Download className="h-4 w-4 mr-2" />
-                Ladda ner
+                {t('ai.image_download')}
               </a>
             </Button>
             <p className="text-xs text-muted-foreground">
-              OBS: Visualisering är indikativ - färg och struktur kan avvika från verkligt material.
+              {t('ai.image_disclaimer')}
             </p>
           </div>
         )}
@@ -150,3 +152,4 @@ export function ImageEditor() {
     </Card>
   );
 }
+

@@ -8,8 +8,10 @@ import { FileText, Send } from "lucide-react";
 import { estimateQuote, formatPrice, EstimateInput } from "./tools/estimateQuote";
 import { getServices, generatePdf, sendQuoteEmail } from "./lib/ai";
 import { useToast } from "@/hooks/use-toast";
+import { useCopy } from "@/copy/CopyProvider";
 
 export function QuotePreview() {
+  const { t } = useCopy();
   const [services, setServices] = useState<any[]>([]);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [quantity, setQuantity] = useState(8);
@@ -58,14 +60,14 @@ export function QuotePreview() {
       
       window.open(pdfUrl, '_blank');
       toast({
-        title: "PDF skapad!",
-        description: "Öppnar offerten i nytt fönster"
+        title: t('ai.quote_pdf_created'),
+        description: t('ai.quote_pdf_desc')
       });
     } catch (error) {
       console.error("PDF generation error:", error);
       toast({
-        title: "Fel vid PDF-generering",
-        description: "Försök igen eller kontakta support",
+        title: t('ai.quote_pdf_error'),
+        description: t('ai.quote_pdf_error_desc'),
         variant: "destructive"
       });
     } finally {
@@ -76,8 +78,8 @@ export function QuotePreview() {
   const handleSendEmail = async () => {
     if (!estimate || !email || !selectedService) {
       toast({
-        title: "Saknas information",
-        description: "Fyll i e-postadress",
+        title: t('ai.quote_missing_email'),
+        description: t('ai.quote_fill_email'),
         variant: "destructive"
       });
       return;
@@ -98,15 +100,15 @@ export function QuotePreview() {
       });
       
       toast({
-        title: "Offert skickad!",
-        description: `PDF-offert skickad till ${email}`
+        title: t('ai.quote_sent'),
+        description: `${t('ai.quote_sent_desc')} ${email}`
       });
       setEmail("");
     } catch (error) {
       console.error("Email send error:", error);
       toast({
-        title: "Fel vid e-postsändning",
-        description: "Försök igen eller kontakta support",
+        title: t('ai.quote_email_error'),
+        description: t('ai.quote_email_error_desc'),
         variant: "destructive"
       });
     } finally {
@@ -119,15 +121,15 @@ export function QuotePreview() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
-          Offert
+          {t('ai.quote_title')}
         </CardTitle>
         <CardDescription>
-          Beräkna preliminär offert med ROT-avdrag
+          {t('ai.quote_subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="service">Tjänst</Label>
+          <Label htmlFor="service">{t('ai.quote_service')}</Label>
           <Select
             value={selectedService?.id}
             onValueChange={(id) => {
@@ -136,7 +138,7 @@ export function QuotePreview() {
             }}
           >
             <SelectTrigger id="service">
-              <SelectValue placeholder="Välj tjänst" />
+              <SelectValue placeholder={t('ai.quote_choose_service')} />
             </SelectTrigger>
             <SelectContent>
               {services.map((service) => (
@@ -150,7 +152,7 @@ export function QuotePreview() {
 
         <div className="space-y-2">
           <Label htmlFor="quantity">
-            Omfattning ({selectedService?.unit || 'timmar'})
+            {t('ai.quote_quantity')} ({selectedService?.unit || 'timmar'})
           </Label>
           <Input
             id="quantity"
@@ -163,7 +165,7 @@ export function QuotePreview() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="material">Material (kr)</Label>
+          <Label htmlFor="material">{t('ai.quote_material')}</Label>
           <Input
             id="material"
             type="number"
@@ -176,33 +178,33 @@ export function QuotePreview() {
         {estimate && (
           <div className="rounded-lg bg-muted p-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span>Arbete:</span>
+              <span>{t('ai.quote_work')}</span>
               <span className="font-medium">{formatPrice(estimate.workSek)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Material:</span>
+              <span>{t('ai.quote_material')}:</span>
               <span className="font-medium">{formatPrice(estimate.materialSek)}</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
-              <span>Delsumma:</span>
+              <span>{t('ai.quote_subtotal')}</span>
               <span>{formatPrice(estimate.subtotalSek)}</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
-              <span>Moms (25%):</span>
+              <span>{t('ai.quote_vat')}</span>
               <span>{formatPrice(estimate.vatSek)}</span>
             </div>
             <div className="flex justify-between border-t pt-2">
-              <span>Totalt inkl. moms:</span>
+              <span>{t('ai.quote_total_incl_vat')}</span>
               <span className="font-semibold">{formatPrice(estimate.totalInclVatSek)}</span>
             </div>
             {estimate.rotEligible && estimate.rotDeductionSek > 0 && (
               <>
                 <div className="flex justify-between text-green-600">
-                  <span>Indikativt ROT-avdrag (30% på arbete):</span>
+                  <span>{t('ai.quote_rot_deduction')}</span>
                   <span className="font-medium">−{formatPrice(estimate.rotDeductionSek)}</span>
                 </div>
                 <div className="flex justify-between border-t pt-2 text-lg">
-                  <span className="font-semibold">Efter ROT:</span>
+                  <span className="font-semibold">{t('ai.quote_after_rot')}</span>
                   <span className="font-bold text-primary">{formatPrice(estimate.totalAfterRotSek)}</span>
                 </div>
               </>
@@ -218,13 +220,13 @@ export function QuotePreview() {
             variant="outline"
           >
             <FileText className="h-4 w-4 mr-2" />
-            {isGenerating ? "Genererar..." : "Skapa PDF"}
+            {isGenerating ? t('ai.quote_generating') : t('ai.quote_create_pdf')}
           </Button>
 
           <div className="flex gap-2">
             <Input
               type="email"
-              placeholder="E-postadress"
+              placeholder={t('ai.quote_email_placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -239,8 +241,7 @@ export function QuotePreview() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          OBS: Detta är en preliminär beräkning. Slutligt pris kan variera beroende på projektets komplexitet.
-          ROT-avdraget bedöms slutligt av Skatteverket.
+          {t('ai.quote_disclaimer')}
         </p>
       </CardContent>
     </Card>

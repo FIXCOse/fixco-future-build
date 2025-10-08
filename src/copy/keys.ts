@@ -294,4 +294,22 @@ export type CopyKey =
    | 'comparison.rut_handling_desc' | 'comparison.project_completion' | 'comparison.project_completion_desc'
    | 'comparison.wins_all' | 'comparison.market_leader' | 'comparison.start_time_label'
    | 'comparison.satisfied_customers' | 'comparison.support' | 'comparison.request_quote'
+   
+   // AI Page
+   | 'ai.page_title' | 'ai.page_subtitle' | 'ai.powered_by' | 'ai.hero_title' | 'ai.hero_subtitle'
+   | 'ai.chat_title' | 'ai.chat_greeting' | 'ai.chat_error' | 'ai.chat_placeholder' | 'ai.chat_send'
+   | 'ai.image_title' | 'ai.image_subtitle' | 'ai.image_upload' | 'ai.image_choose' | 'ai.image_max_size'
+   | 'ai.image_instruction_placeholder' | 'ai.image_generate' | 'ai.image_generating' | 'ai.image_result'
+   | 'ai.image_before' | 'ai.image_after' | 'ai.image_download' | 'ai.image_disclaimer'
+   | 'ai.image_file_too_large' | 'ai.image_missing_info' | 'ai.image_missing_desc' | 'ai.image_complete'
+   | 'ai.image_complete_desc' | 'ai.image_error' | 'ai.quote_title' | 'ai.quote_subtitle'
+   | 'ai.quote_service' | 'ai.quote_choose_service' | 'ai.quote_quantity' | 'ai.quote_material'
+   | 'ai.quote_work' | 'ai.quote_subtotal' | 'ai.quote_vat' | 'ai.quote_total_incl_vat'
+   | 'ai.quote_rot_deduction' | 'ai.quote_after_rot' | 'ai.quote_create_pdf' | 'ai.quote_generating'
+   | 'ai.quote_email_placeholder' | 'ai.quote_send' | 'ai.quote_disclaimer' | 'ai.quote_pdf_created'
+   | 'ai.quote_pdf_desc' | 'ai.quote_sent' | 'ai.quote_sent_desc' | 'ai.quote_missing_email'
+   | 'ai.quote_fill_email' | 'ai.quote_pdf_error' | 'ai.quote_pdf_error_desc' | 'ai.quote_email_error'
+   | 'ai.quote_email_error_desc' | 'ai.feature1_title' | 'ai.feature1_desc' | 'ai.feature2_title'
+   | 'ai.feature2_desc' | 'ai.feature3_title' | 'ai.feature3_desc' | 'ai.disclaimer_title'
+   | 'ai.disclaimer_text'
    | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';
