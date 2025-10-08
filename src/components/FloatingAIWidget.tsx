@@ -110,37 +110,28 @@ export function FloatingAIWidget() {
     }
   }
 
-  if (!open) {
-    return (
-      <button
-        aria-label={t('ai_widget.launcher')}
-        onClick={() => setOpen(true)}
-        className="fixed left-4 bottom-4 z-50 rounded-full px-5 py-3 shadow-2xl border-2 bg-background hover:bg-muted transition-all hover:scale-105 font-semibold"
-      >
-        {t('ai_widget.launcher')}
-      </button>
-    );
-  }
-
   return (
     <>
-      {/* Launcher button (minimized state) */}
+      {/* Launcher button */}
       <button
         aria-label={t('ai_widget.launcher')}
         onClick={() => setOpen(!open)}
-        className="fixed left-4 bottom-4 z-50 rounded-full px-5 py-3 shadow-2xl border-2 bg-background hover:bg-muted transition-all hover:scale-105 font-semibold"
+        className="fixed left-4 bottom-4 z-[9999] rounded-full px-5 py-3 shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 font-semibold"
       >
         {t('ai_widget.launcher')}
       </button>
 
+      {!open && null}
+
       {/* Panel */}
-      <div
-        ref={panelRef}
-        className="fixed left-4 bottom-20 z-50 w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
-        role="dialog"
-        aria-modal="true"
-        aria-label={t('ai_widget.title')}
-      >
+      {open && (
+        <div
+          ref={panelRef}
+          className="fixed left-4 bottom-20 z-[9999] w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('ai_widget.title')}
+        >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
           <div className="font-bold text-lg">{t('ai_widget.title')}</div>
@@ -282,7 +273,8 @@ export function FloatingAIWidget() {
             )}
           </div>
         )}
-      </div>
+        </div>
+      )}
     </>
   );
 }

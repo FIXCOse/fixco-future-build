@@ -45,10 +45,10 @@ export function AILabInterface() {
       return;
     }
 
-    if (!selectedAction && !customInstruction.trim()) {
+    if (!customInstruction.trim()) {
       toast({
         title: t('ailab.error_missing_image'),
-        description: 'Välj en åtgärd eller skriv en instruktion',
+        description: 'Skriv en instruktion för vad du vill se',
         variant: 'destructive'
       });
       return;
@@ -56,7 +56,7 @@ export function AILabInterface() {
 
     setIsProcessing(true);
     try {
-      const instruction = customInstruction.trim() || getActionInstruction(selectedAction);
+      const instruction = customInstruction.trim();
       const resultUrl = await aiEditImage(originalFile, instruction);
       setGeneratedImage(resultUrl);
       
@@ -65,8 +65,8 @@ export function AILabInterface() {
       const variant2 = await aiEditImage(originalFile, instruction + ' - variant med mörkare toner');
       setVariants([resultUrl, variant1, variant2]);
 
-      // Generate estimate based on selected action
-      const estimateData = generateEstimate(selectedAction, instruction);
+      // Generate estimate based on instruction
+      const estimateData = generateEstimate('custom', instruction);
       setEstimate(estimateData);
 
       toast({

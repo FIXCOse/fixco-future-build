@@ -36,37 +36,16 @@ export function ActionCards({
     <Card className="bg-card border-border">
       <CardHeader>
         <CardTitle className="text-foreground">{t('ailab.action_cards_title')}</CardTitle>
-        <CardDescription>Klicka för att välja eller skriv egen instruktion</CardDescription>
+        <CardDescription>Beskriv vad du vill se</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-3 gap-2">
-          {actions.map((action) => (
-            <button
-              key={action.id}
-              onClick={() => onSelectAction(action.id)}
-              className={`
-                p-4 rounded-lg border-2 transition-all text-center
-                ${selectedAction === action.id 
-                  ? 'border-primary bg-primary/10 text-foreground' 
-                  : 'border-border hover:border-primary/50 text-foreground'
-                }
-              `}
-            >
-              <div className="text-3xl mb-1">{action.icon}</div>
-              <div className="text-xs font-medium">
-                {t(`ailab.action_${action.id}` as any)}
-              </div>
-            </button>
-          ))}
-        </div>
-
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">{t('ailab.custom_instruction')}</label>
           <Textarea
             value={customInstruction}
             onChange={(e) => onCustomInstructionChange(e.target.value)}
             placeholder={t('ailab.custom_placeholder')}
-            rows={3}
+            rows={6}
             className="resize-none"
           />
         </div>
