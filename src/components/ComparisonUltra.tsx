@@ -24,7 +24,7 @@ interface ComparisonMetric {
 const ComparisonUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const { pricingMode, rotEnabled } = useGlobalPricing();
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Robust once-only counters
@@ -299,9 +299,9 @@ const ComparisonUltra = () => {
                   </p>
                 </div>
                 
-                {/* Right: CTAs - Arrow Removed */}
+                {/* Right: CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end items-center">
-                  <Link to="/kontakt" className="w-full sm:w-auto">
+                  <Link to={locale === 'en' ? '/en/contact' : '/kontakt'} className="w-full sm:w-auto">
                     <Button
                       variant="cta-primary"
                       size="cta"
@@ -311,7 +311,7 @@ const ComparisonUltra = () => {
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
-                  <Link to="/tjanster" className="w-full sm:w-auto">
+                  <Link to={locale === 'en' ? '/en/services' : '/tjanster'} className="w-full sm:w-auto">
                     <Button
                       variant="cta-secondary"
                       size="cta"

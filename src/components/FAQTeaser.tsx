@@ -3,9 +3,11 @@ import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { useCopy } from '@/copy/CopyProvider';
 
 const FAQTeaser = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { t, locale } = useCopy();
 
   const faqs = [
     {
@@ -137,8 +139,8 @@ const FAQTeaser = () => {
                   className="group"
                   asChild
                 >
-                  <Link to="/kontakt">
-                    Berätta om ditt projekt
+                  <Link to={locale === 'en' ? '/en/contact' : '/kontakt'}>
+                    {locale === 'en' ? 'Tell us about your project' : 'Berätta om ditt projekt'}
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>

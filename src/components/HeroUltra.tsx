@@ -249,14 +249,14 @@ const HeroUltra = () => {
               placeholder="Klicka för att redigera undertext"
             />
 
-            {/* CTA Buttons - NO ARROWS */}
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
-              <Link to="/kontakt">
+              <Link to={t('nav.home') === 'Home' ? '/en/contact' : '/kontakt'}>
                 <MagneticButton className="bg-primary text-primary-foreground text-lg px-8 py-4">
                   {t('home.hero.primaryCta')}
                 </MagneticButton>
               </Link>
-              <Link to="/tjanster">
+              <Link to={t('nav.home') === 'Home' ? '/en/services' : '/tjanster'}>
                 <MagneticButton
                   variant="outline"
                   className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"

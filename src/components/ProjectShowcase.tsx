@@ -9,10 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRole } from '@/hooks/useRole';
 import ProjectEditModal from '@/components/admin/ProjectEditModal';
 import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
+import { useCopy } from '@/copy/CopyProvider';
 
 const ProjectShowcase = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
+  const { t, locale } = useCopy();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
   
@@ -252,8 +254,8 @@ const ProjectShowcase = () => {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button size="lg" variant="outline">
-                <Link to="/referenser" className="flex items-center">
-                  Se fler projekt
+                <Link to={locale === 'en' ? '/en/references' : '/referenser'} className="flex items-center">
+                  {locale === 'en' ? 'See more projects' : 'Se fler projekt'}
                 </Link>
               </Button>
             </div>
