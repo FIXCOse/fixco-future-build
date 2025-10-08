@@ -33,9 +33,9 @@ export function ActionCards({
   const { t } = useCopy();
 
   return (
-    <Card>
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle>{t('ailab.action_cards_title')}</CardTitle>
+        <CardTitle className="text-foreground">{t('ailab.action_cards_title')}</CardTitle>
         <CardDescription>Klicka för att välja eller skriv egen instruktion</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -47,8 +47,8 @@ export function ActionCards({
               className={`
                 p-4 rounded-lg border-2 transition-all text-center
                 ${selectedAction === action.id 
-                  ? 'border-primary bg-primary/10' 
-                  : 'border-muted hover:border-primary/50'
+                  ? 'border-primary bg-primary/10 text-foreground' 
+                  : 'border-border hover:border-primary/50 text-foreground'
                 }
               `}
             >
@@ -61,7 +61,7 @@ export function ActionCards({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('ailab.custom_instruction')}</label>
+          <label className="text-sm font-medium text-foreground">{t('ailab.custom_instruction')}</label>
           <Textarea
             value={customInstruction}
             onChange={(e) => onCustomInstructionChange(e.target.value)}

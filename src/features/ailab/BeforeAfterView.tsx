@@ -19,38 +19,38 @@ export function BeforeAfterView({
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle>{beforeImage ? t('ailab.before_title') : 'Väntar på bild'}</CardTitle>
+          <CardTitle className="text-foreground">{beforeImage ? t('ailab.before_title') : 'Väntar på bild'}</CardTitle>
         </CardHeader>
         <CardContent>
           {beforeImage ? (
             <img
               src={beforeImage}
               alt={t('ailab.before_title')}
-              className="w-full h-64 object-cover rounded-lg"
+              className="w-full h-64 object-cover rounded-lg border border-border"
             />
           ) : (
-            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
+            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
               <p className="text-muted-foreground">Ladda upp en bild för att börja</p>
             </div>
           )}
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle>{t('ailab.after_title')}</CardTitle>
+          <CardTitle className="text-foreground">{t('ailab.after_title')}</CardTitle>
         </CardHeader>
         <CardContent>
           {afterImage ? (
             <img
               src={afterImage}
               alt={t('ailab.after_title')}
-              className="w-full h-64 object-cover rounded-lg"
+              className="w-full h-64 object-cover rounded-lg border border-border"
             />
           ) : (
-            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
+            <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center border border-border">
               {beforeImage ? (
                 <p className="text-muted-foreground">Välj en åtgärd och klicka på Visualisera</p>
               ) : (
@@ -62,9 +62,9 @@ export function BeforeAfterView({
       </Card>
 
       {variants.length > 0 && (
-        <Card>
+        <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle>{t('ailab.variants_title')}</CardTitle>
+            <CardTitle className="text-foreground">{t('ailab.variants_title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-2">
@@ -74,7 +74,7 @@ export function BeforeAfterView({
                   onClick={() => onSelectVariant(url)}
                   className={`
                     rounded-lg overflow-hidden border-2 transition-all
-                    ${afterImage === url ? 'border-primary' : 'border-transparent hover:border-primary/50'}
+                    ${afterImage === url ? 'border-primary' : 'border-border hover:border-primary/50'}
                   `}
                 >
                   <img

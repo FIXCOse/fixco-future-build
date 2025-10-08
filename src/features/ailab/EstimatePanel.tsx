@@ -31,19 +31,19 @@ export function EstimatePanel({
   return (
     <div className="space-y-6">
       {estimate && (
-        <Card>
+        <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle>{t('ailab.estimate_title')}</CardTitle>
+            <CardTitle className="text-foreground">{t('ailab.estimate_title')}</CardTitle>
             <CardDescription>{t('ailab.estimate_subtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('ailab.labor')}</span>
-              <span className="font-medium">{formatPrice(estimate.workSek)}</span>
+              <span className="font-medium text-foreground">{formatPrice(estimate.workSek)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('ailab.material')}</span>
-              <span className="font-medium">{formatPrice(estimate.materialSek)}</span>
+              <span className="font-medium text-foreground">{formatPrice(estimate.materialSek)}</span>
             </div>
             <div className="flex justify-between text-xs text-muted-foreground border-t pt-2">
               <span>{t('ailab.subtotal')}</span>
@@ -53,7 +53,7 @@ export function EstimatePanel({
               <span>{t('ailab.vat')}</span>
               <span>{formatPrice(estimate.vatSek)}</span>
             </div>
-            <div className="flex justify-between font-semibold border-t pt-2">
+            <div className="flex justify-between font-semibold border-t pt-2 text-foreground">
               <span>{t('ailab.total_incl_vat')}</span>
               <span>{formatPrice(estimate.totalInclVatSek)}</span>
             </div>
@@ -77,14 +77,14 @@ export function EstimatePanel({
         </Card>
       )}
 
-      <Card>
+      <Card className="bg-card border-border">
         <CardHeader>
-          <CardTitle>{t('ailab.contact_title')}</CardTitle>
+          <CardTitle className="text-foreground">{t('ailab.contact_title')}</CardTitle>
           <CardDescription>{t('ailab.contact_subtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">{t('ailab.name_label')}</Label>
+            <Label htmlFor="name" className="text-foreground">{t('ailab.name_label')}</Label>
             <Input
               id="name"
               value={contactInfo.name}
@@ -94,7 +94,7 @@ export function EstimatePanel({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email">{t('ailab.email_label')}</Label>
+            <Label htmlFor="email" className="text-foreground">{t('ailab.email_label')}</Label>
             <Input
               id="email"
               type="email"
@@ -105,7 +105,7 @@ export function EstimatePanel({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="phone">{t('ailab.phone_label')}</Label>
+            <Label htmlFor="phone" className="text-foreground">{t('ailab.phone_label')}</Label>
             <Input
               id="phone"
               type="tel"
@@ -116,7 +116,7 @@ export function EstimatePanel({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="address">{t('ailab.address_label')}</Label>
+            <Label htmlFor="address" className="text-foreground">{t('ailab.address_label')}</Label>
             <Input
               id="address"
               value={contactInfo.address}

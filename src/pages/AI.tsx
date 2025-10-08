@@ -12,10 +12,10 @@ export default function AI() {
         <meta name="description" content={t('ailab.subtitle')} />
       </Helmet>
 
-      <main className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <main className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               {t('ailab.title')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

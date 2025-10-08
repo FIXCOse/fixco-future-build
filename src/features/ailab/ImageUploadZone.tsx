@@ -51,20 +51,20 @@ export function ImageUploadZone({ onImageUpload }: ImageUploadZoneProps) {
   }, [handleFile]);
 
   return (
-    <Card>
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle>{t('ailab.upload_title')}</CardTitle>
+        <CardTitle className="text-foreground">{t('ailab.upload_title')}</CardTitle>
         <CardDescription>{t('ailab.upload_subtitle')}</CardDescription>
       </CardHeader>
       <CardContent>
         <label
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:border-primary/50 transition-colors bg-muted/10"
+          className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors bg-muted"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4 text-center">
             <Upload className="w-10 h-10 mb-3 text-muted-foreground" />
-            <p className="mb-2 text-sm">
+            <p className="mb-2 text-sm text-foreground">
               <span className="font-semibold">{t('ailab.drag_drop')}</span>
             </p>
             <p className="text-xs text-muted-foreground">{t('ailab.or_click')}</p>
