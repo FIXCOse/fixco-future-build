@@ -30,6 +30,14 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const { updateContent, getContent } = useContentStore();
 
+  // Update content when initialContent changes (for translations)
+  React.useEffect(() => {
+    const savedContent = getContent(id);
+    if (!savedContent) {
+      setContent(initialContent);
+    }
+  }, [initialContent, id, getContent]);
+
   // Load saved content and styles
   const savedContent = getContent(id);
   const displayContent = savedContent?.value as string || content;

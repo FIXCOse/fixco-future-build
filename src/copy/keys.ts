@@ -39,6 +39,13 @@ export type CopyKey =
   | 'smartHome.full_warranty' | 'smartHome.professional_install' | 'smartHome.ai_optimized'
   | 'smartHome.choose_category' | 'smartHome.main_features' | 'smartHome.smart_features'
   | 'smartHome.installation_setup' | 'smartHome.years_warranty' | 'smartHome.contact_for_info'
+  | 'smartHome.market_leaders_desc' | 'smartHome.professional_desc' | 'smartHome.ai_desc'
+  | 'smartHome.compatibility_title' | 'smartHome.compatibility_desc'
+  | 'smartHome.easy_support_title' | 'smartHome.easy_support_desc'
+  | 'smartHome.future_proof_title' | 'smartHome.future_proof_desc'
+  | 'smartHome.ready_for_install_title' | 'smartHome.ready_for_install_desc'
+  | 'smartHome.book_installation' | 'smartHome.why_these_brands'
+  | 'smartHome.market_leaders_title' | 'smartHome.market_leaders_long_desc'
   
   // Projects / References
   | 'projects.latest_title' | 'projects.latest_subtitle' | 'projects.satisfied_customers'

@@ -32,12 +32,12 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   }, [locale, location.pathname]);
   
   return (
-    <CopyProvider locale={locale}>
+    <CopyProvider locale={locale} key={locale}>
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
           <Navigation />
           <main className="min-h-[60vh]">
-            <Outlet />
+            <Outlet key={`${locale}-${location.pathname}`} />
           </main>
           <GlobalFooter locale={locale} />
           <AIChat />

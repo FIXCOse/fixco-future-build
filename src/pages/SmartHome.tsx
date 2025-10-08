@@ -261,7 +261,7 @@ export const SmartHome = () => {
                 />
                 <EditableText 
                   id="smart-home-market-leaders-desc"
-                  initialContent="Endast #1 märken globalt"
+                  initialContent={t('smartHome.market_leaders_desc')}
                   as="p"
                   className="text-sm text-muted-foreground"
                 />
@@ -297,7 +297,7 @@ export const SmartHome = () => {
                 />
                 <EditableText 
                   id="smart-home-professional-desc"
-                  initialContent="Certifierade installatörer"
+                  initialContent={t('smartHome.professional_desc')}
                   as="p"
                   className="text-sm text-muted-foreground"
                 />
@@ -315,7 +315,7 @@ export const SmartHome = () => {
                 />
                 <EditableText 
                   id="smart-home-ai-desc"
-                  initialContent="Intelligent automatisering"
+                  initialContent={t('smartHome.ai_desc')}
                   as="p"
                   className="text-sm text-muted-foreground"
                 />
@@ -557,7 +557,7 @@ export const SmartHome = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-6">
-                Varför Vi Valt Dessa Märken
+                {t('smartHome.why_these_brands')}
               </h2>
             </div>
 
@@ -566,36 +566,36 @@ export const SmartHome = () => {
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Marknadsledare</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.market_leaders_title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Alla märken är #1 eller #2 i sina kategorier globalt. Beprövad teknik med miljontals installationer.
+                  {t('smartHome.market_leaders_long_desc')}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Säker Integration</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.compatibility_title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Alla produkter fungerar tillsammans och har säkra protokoll som Zigbee 3.0 och WiFi 6.
+                  {t('smartHome.compatibility_desc')}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Phone className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Enkel Support</h3>
-                <p className="text-sm text-muted-foregrund">
-                  Vi är certifierade installatörer för alla märken. En kontakt för alla dina smart hem-behov.
+                <h3 className="font-bold mb-2">{t('smartHome.easy_support_title')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('smartHome.easy_support_desc')}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 gradient-primary-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-bold mb-2">Framtidssäkert</h3>
+                <h3 className="font-bold mb-2">{t('smartHome.future_proof_title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Alla produkter får regelbundna uppdateringar med nya funktioner. Din investering växer över tid.
+                  {t('smartHome.future_proof_desc')}
                 </p>
               </div>
             </div>
@@ -616,19 +616,18 @@ export const SmartHome = () => {
               </div>
 
               <h2 className="text-3xl font-bold mb-4">
-                Redo för Professionell Smart Hem-Installation?
+                {t('smartHome.ready_for_install_title')}
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Boka en kostnadsfri hemkonsultation idag. Vi kommer hem till dig med produkterna, 
-                visar hur de fungerar och ger dig en exakt offert på installationen.
+                {t('smartHome.ready_for_install_desc')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="gradient-primary text-primary-foreground">
-                  Boka Installation
+                  {t('smartHome.book_installation')}
                 </Button>
                 <Button size="lg" variant="outline">
-                  Boka Hemkonsultation
+                  {t('cta.free_consultation')}
                 </Button>
               </div>
             </div>

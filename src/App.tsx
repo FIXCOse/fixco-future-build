@@ -238,7 +238,7 @@ const App = () => {
                     <Route path="ansvar-forsakring" element={<Insurance />} />
                   </Route>
                   
-                  <Route path="/en/*" element={<AppLayout locale="en" />}>
+                  <Route path="/en/*" element={<AppLayout />}>
                     <Route index element={<Home />} />
                     <Route path="services" element={<Services />} />
                     <Route path="services/:slug" element={<ServiceDetail />} />
