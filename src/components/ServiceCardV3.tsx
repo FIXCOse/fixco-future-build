@@ -53,13 +53,20 @@ const ServiceCardV3 = ({
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("[ServiceCard] handleBookingClick called for:", serviceSlug || serviceId);
+    const slug = serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    console.log("[ServiceCard] handleBookingClick called");
+    console.log("[ServiceCard] - serviceSlug:", serviceSlug);
+    console.log("[ServiceCard] - serviceId:", serviceId);
+    console.log("[ServiceCard] - computed slug:", slug);
+    console.log("[ServiceCard] - title:", translatedTitle);
     
     if (onBook) {
+      console.log("[ServiceCard] Calling onBook callback");
       onBook();
     } else {
+      console.log("[ServiceCard] Opening modal with:", { slug, prefill: { service_name: translatedTitle, base_price: priceIncl } });
       openServiceRequestModal({
-        serviceSlug: serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        serviceSlug: slug,
         prefill: {
           service_name: translatedTitle,
           base_price: priceIncl
@@ -71,13 +78,20 @@ const ServiceCardV3 = ({
   const handleQuoteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("[ServiceCard] handleQuoteClick called for:", serviceSlug || serviceId);
+    const slug = serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    console.log("[ServiceCard] handleQuoteClick called");
+    console.log("[ServiceCard] - serviceSlug:", serviceSlug);
+    console.log("[ServiceCard] - serviceId:", serviceId);
+    console.log("[ServiceCard] - computed slug:", slug);
+    console.log("[ServiceCard] - title:", translatedTitle);
     
     if (onQuote) {
+      console.log("[ServiceCard] Calling onQuote callback");
       onQuote();
     } else {
+      console.log("[ServiceCard] Opening modal with:", { slug, prefill: { service_name: translatedTitle } });
       openServiceRequestModal({
-        serviceSlug: serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        serviceSlug: slug,
         prefill: {
           service_name: translatedTitle
         }

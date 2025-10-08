@@ -24,9 +24,30 @@ export default function ServiceRequestModal() {
     const onOpen = (e: Event) => {
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
-      const svc = slug ? getServiceBySlug(slug) : null;
+      const prefill = ce.detail?.prefill ?? {};
+      
+      console.log("[ServiceRequestModal] Event received:", { slug, prefill });
+      
+      // Try to find predefined config
+      let svc = slug ? getServiceBySlug(slug) : null;
+      
+      // FALLBACK: If no config found, create a generic one for ANY service
+      if (!svc && slug) {
+        console.log("[ServiceRequestModal] No config found for", slug, "- using fallback");
+        svc = {
+          slug: slug,
+          name: prefill.service_name || slug.replace(/-/g, ' '),
+          pricingMode: "quote" as const,
+          rotEligible: true,
+          fields: [
+            { kind: "textarea" as const, key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Berätta vad du vill ha gjort..." },
+            { kind: "file" as const, key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+          ]
+        };
+      }
+      
       setService(svc ?? null);
-      setValues(ce.detail?.prefill ?? {});
+      setValues(prefill);
       setFiles({});
       setDone(false);
       setOpen(true);
@@ -62,12 +83,16 @@ export default function ServiceRequestModal() {
   }, [service, values, isUnit, isFixed]);
 
   async function onSubmit() {
-    if (!service) return;
+    if (!service) {
+      console.error("[ServiceRequestModal] No service set");
+      return;
+    }
     if (!values.name || !values.email) {
       toast.error("Namn och e-post krävs");
       return;
     }
 
+    console.log("[ServiceRequestModal] Submitting:", { service, values });
     setBusy(true);
     try {
       const type = isQuote ? "quote_request" : "booking";
@@ -108,10 +133,11 @@ export default function ServiceRequestModal() {
           rot_eligible: service.rotEligible,
           attachments: fileUrls,
           status: 'pending',
-          source: 'ai_widget'
+          source: 'service_page'
         });
 
         if (error) throw error;
+        console.log("[ServiceRequestModal] Booking created successfully");
       } else {
         const { error } = await supabase.from('quote_requests').insert({
           service_id: service.slug,
@@ -123,10 +149,11 @@ export default function ServiceRequestModal() {
           message: JSON.stringify(values),
           attachments: fileUrls,
           status: 'new',
-          source: 'ai_widget'
+          source: 'service_page'
         });
 
         if (error) throw error;
+        console.log("[ServiceRequestModal] Quote request created successfully");
       }
 
       toast.success("Tack! Vi återkommer så snart som möjligt.");
@@ -135,14 +162,19 @@ export default function ServiceRequestModal() {
         setOpen(false);
       }, 1500);
     } catch (e) {
-      console.error(e);
+      console.error("[ServiceRequestModal] Submit error:", e);
       toast.error("Kunde inte skicka. Försök igen.");
     } finally {
       setBusy(false);
     }
   }
 
-  if (!open) return null;
+  if (!open) {
+    console.log("[ServiceRequestModal] Not rendering - open is false");
+    return null;
+  }
+  
+  console.log("[ServiceRequestModal] Rendering modal with service:", service);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center">
