@@ -11,6 +11,7 @@ import { ContentLoadingIndicator } from '../ContentLoadingIndicator';
 import { ModalHost } from '../ActionWizard';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useContentLoader } from '@/hooks/useContentLoader';
+import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 
@@ -25,6 +26,9 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   // Initialize language persistence and content loading
   useLanguagePersistence();
   useContentLoader();
+  
+  // Automatically translate services when on English locale
+  useAutoTranslate(locale);
   
   // Debug logging
   useEffect(() => {

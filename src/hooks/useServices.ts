@@ -54,15 +54,6 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
         const title = locale === 'en' && service.title_en ? service.title_en : service.title_sv;
         const description = locale === 'en' && service.description_en ? service.description_en : service.description_sv;
         
-        // Warn if English translation is missing
-        if (locale === 'en' && (!service.title_en || !service.description_en)) {
-          console.warn(`Service ${service.id} missing EN translation:`, {
-            title_sv: service.title_sv,
-            title_en: service.title_en || 'MISSING',
-            description_en: service.description_en ? 'present' : 'MISSING'
-          });
-        }
-        
         return {
           ...service,
           title,
