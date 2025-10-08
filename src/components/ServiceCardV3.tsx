@@ -2,9 +2,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
-import { useActionWizard } from "@/stores/actionWizardStore";
 import { useCopy } from "@/copy/CopyProvider";
 import { type CopyKey } from "@/copy/keys";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -44,7 +44,6 @@ const ServiceCardV3 = ({
   showFullWidth = false
 }: ServiceCardV3Props) => {
   const { mode } = usePriceStore();
-  const open = useActionWizard((s) => s.open);
   const { t } = useCopy();
 
   // Use database data directly - no need for copy system lookup for services
@@ -54,16 +53,17 @@ const ServiceCardV3 = ({
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("[ServiceCard] handleBookingClick called");
+    console.log("[ServiceCard] handleBookingClick called for:", serviceSlug || serviceId);
     
     if (onBook) {
       onBook();
     } else {
-      open({
-        mode: "book",
-        serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
-        serviceName: translatedTitle,
-        defaults: { priceType: "hourly", hourlyRate: priceIncl }
+      openServiceRequestModal({
+        serviceSlug: serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        prefill: {
+          service_name: translatedTitle,
+          base_price: priceIncl
+        }
       });
     }
   };
@@ -71,16 +71,16 @@ const ServiceCardV3 = ({
   const handleQuoteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("[ServiceCard] handleQuoteClick called");
+    console.log("[ServiceCard] handleQuoteClick called for:", serviceSlug || serviceId);
     
     if (onQuote) {
       onQuote();
     } else {
-      open({
-        mode: "quote",
-        serviceId: serviceSlug || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
-        serviceName: translatedTitle,
-        defaults: { priceType: "quote" }
+      openServiceRequestModal({
+        serviceSlug: serviceSlug || serviceId || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, ''),
+        prefill: {
+          service_name: translatedTitle
+        }
       });
     }
   };

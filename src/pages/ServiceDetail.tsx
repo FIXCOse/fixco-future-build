@@ -229,24 +229,18 @@ const ServiceDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginatedSubServices.map((dbService) => {
              return (
-               <ServiceCardV3
-                 key={dbService.id}
-                 title={dbService.title}
-                 category={dbService.category}
-                 description={dbService.description}
-                 pricingType={dbService.price_type === 'quote' ? 'quote' : 
-                              dbService.price_unit.includes('/h') ? 'hourly' : 'fixed'}
-                 priceIncl={dbService.base_price}
-                 eligible={{ rot: dbService.rot_eligible, rut: dbService.rut_eligible }}
-                 serviceSlug={dbService.id}
-                 serviceId={dbService.id}
-                 onBook={() => {
-                   // Handle booking
-                 }}
-                 onQuote={() => {
-                   // Handle quote request
-                 }}
-               />
+                <ServiceCardV3
+                  key={dbService.id}
+                  title={dbService.title}
+                  category={dbService.category}
+                  description={dbService.description}
+                  pricingType={dbService.price_type === 'quote' ? 'quote' : 
+                               dbService.price_unit.includes('/h') ? 'hourly' : 'fixed'}
+                  priceIncl={dbService.base_price}
+                  eligible={{ rot: dbService.rot_eligible, rut: dbService.rut_eligible }}
+                  serviceSlug={dbService.id}
+                  serviceId={dbService.id}
+                />
              );
             })}
           </div>
@@ -308,12 +302,6 @@ const ServiceDetail = () => {
                   priceIncl={relatedService.base_price}
                   eligible={{ rot: relatedService.rot_eligible, rut: relatedService.rut_eligible }}
                   serviceSlug={relatedService.id}
-                  onBook={() => {
-                    // Handle booking
-                  }}
-                  onQuote={() => {
-                    // Handle quote request
-                  }}
                 />
               );
             })}
