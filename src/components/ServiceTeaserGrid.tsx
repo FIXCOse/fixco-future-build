@@ -158,12 +158,6 @@ const ServiceTeaserGrid = () => {
                 priceIncl={service.basePrice}
                 eligible={service.eligible}
                 serviceSlug={service.slug}
-                onBook={() => {
-                  // Handle booking
-                }}
-                onQuote={() => {
-                  // Handle quote request
-                }}
               />
             </Link>
           ))}
