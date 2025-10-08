@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from '@tanstack/react-query';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -33,12 +34,25 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   const { t, locale } = useCopy();
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode } = usePriceStore();
+  const queryClient = useQueryClient();
+  
+  // Invalidate services query when locale changes
+  useEffect(() => {
+    console.log('[EditableServiceFilter] Locale changed, invalidating services cache');
+    queryClient.invalidateQueries({ queryKey: ['services'] });
+  }, [locale, queryClient]);
   
   // Get services from database
   const { data: servicesFromDB = [], isLoading, refetch } = useServices(locale);
   const updateService = useUpdateService();
   const addService = useAddService();
   const deleteService = useDeleteService();
+  
+  // Debug log for services
+  useEffect(() => {
+    console.log('[EditableServiceFilter] Locale:', locale);
+    console.log('[EditableServiceFilter] Services count:', servicesFromDB.length);
+  }, [locale, servicesFromDB]);
   
   // Convert database services to the expected format
   const allServices = useMemo(() => {

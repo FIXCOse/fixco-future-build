@@ -50,18 +50,35 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
       console.log('Services fetched:', data?.length || 0);
 
       // Add localized title and description
-      return data.map(service => ({
-        ...service,
-        title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
-        description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
-        price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
-        location: service.location as 'inomhus' | 'utomhus' | 'båda',
-        translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
-      }));
+      const translatedServices = data.map(service => {
+        const title = locale === 'en' && service.title_en ? service.title_en : service.title_sv;
+        const description = locale === 'en' && service.description_en ? service.description_en : service.description_sv;
+        
+        // Warn if English translation is missing
+        if (locale === 'en' && (!service.title_en || !service.description_en)) {
+          console.warn(`Service ${service.id} missing EN translation:`, {
+            title_sv: service.title_sv,
+            title_en: service.title_en || 'MISSING',
+            description_en: service.description_en ? 'present' : 'MISSING'
+          });
+        }
+        
+        return {
+          ...service,
+          title,
+          description,
+          price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
+          location: service.location as 'inomhus' | 'utomhus' | 'båda',
+          translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
+        };
+      });
+      
+      return translatedServices;
     },
-    staleTime: 0, // Always refetch to get latest data
-    refetchOnWindowFocus: true, // Refetch when window gets focus
-    refetchInterval: 30000, // Refetch every 30 seconds to ensure data is fresh
+    staleTime: 0, // Always consider data stale
+    gcTime: 0, // Don't cache data
+    refetchOnWindowFocus: true,
+    refetchOnMount: true, // Always refetch on mount
   });
 };
 

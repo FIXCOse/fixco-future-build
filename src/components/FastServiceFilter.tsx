@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useCopy } from '@/copy/CopyProvider';
 import { useServices } from '@/hooks/useServices';
 import { serviceCategories } from '@/data/servicesDataNew';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -27,9 +28,29 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
   const { t, locale } = useCopy();
   const [searchParams, setSearchParams] = useSearchParams();
   const { mode } = usePriceStore();
+  const queryClient = useQueryClient();
   
-  // Get services from database
+  // Invalidate services query when locale changes
+  useEffect(() => {
+    console.log('[FastServiceFilter] Locale changed, invalidating services cache');
+    queryClient.invalidateQueries({ queryKey: ['services'] });
+  }, [locale, queryClient]);
+  
+  // Get services from database with current locale
   const { data: servicesFromDB = [], isLoading } = useServices(locale);
+  
+  // Debug log for services
+  useEffect(() => {
+    console.log('[FastServiceFilter] Locale:', locale);
+    console.log('[FastServiceFilter] Services count:', servicesFromDB.length);
+    if (servicesFromDB.length > 0) {
+      console.log('[FastServiceFilter] Sample service:', {
+        id: servicesFromDB[0].id,
+        title: servicesFromDB[0].title,
+        description: servicesFromDB[0].description?.substring(0, 50)
+      });
+    }
+  }, [locale, servicesFromDB]);
   
   // Convert database services to the expected format
   const allServices = useMemo(() => {
