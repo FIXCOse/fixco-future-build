@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useCopy } from "@/copy/CopyProvider";
 import { useToast } from "@/hooks/use-toast";
-import { aiEditImage, callAiChat, createLead, type AiMessage } from "@/features/ai/lib/ai";
+import { aiEditImage, callAiChat } from "@/features/ai/lib/ai";
 import { FIXCO_SYSTEM_CONTEXT } from "@/features/ai/context/fixco-context";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { useNavigate } from "react-router-dom";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 // Tjänst-mappning för snabblänkar
 const SERVICE_LINKS: Record<string, string> = {
@@ -16,6 +17,8 @@ const SERVICE_LINKS: Record<string, string> = {
   "byt-golv": "/tjanster/golv",
   "platsbyggd-bokhylla": "/tjanster/platsbyggd-bokhylla",
   "platsbyggd-garderob": "/tjanster/platsbyggd-garderob",
+  "byta-eluttag": "/tjanster/byta-eluttag",
+  "installera-spotlights": "/tjanster/installera-spotlights",
   "led-installation": "/tjanster/led-installation",
   "malning": "/tjanster/malning",
 };
@@ -23,23 +26,28 @@ const SERVICE_LINKS: Record<string, string> = {
 // Detektera tjänst från användarens meddelande
 function detectServiceSlug(text: string): string | null {
   const t = text.toLowerCase();
-  if (/(altan|trall|uteplats)/.test(t)) return "bygga-altan";
+  if (/(altan|trall|trädäck|uteplats)/.test(t)) return "bygga-altan";
   if (/(akustikpanel|ljudpanel|panel)/.test(t)) return "akustikpanel";
   if (/(golv|parkett|laminat|vinylgolv)/.test(t)) return "byt-golv";
   if (/(bokhylla|hyllor)/.test(t)) return "platsbyggd-bokhylla";
-  if (/(garderob|förvaring|klädförvaring)/.test(t)) return "platsbyggd-garderob";
+  if (/(garderob|förvaring|klädförvaring|skåp)/.test(t)) return "platsbyggd-garderob";
+  if (/(eluttag|uttag)/.test(t)) return "byta-eluttag";
+  if (/(spotlight|spot|taklampa)/.test(t)) return "installera-spotlights";
   if (/(led|belysning|lampor)/.test(t)) return "led-installation";
   if (/(målning|måla|tapetsera)/.test(t)) return "malning";
   return null;
 }
 
+type ChatMessage = { role: "user" | "assistant" | "system"; content: string };
+
 export function FloatingAIWidget() {
+  const navigate = useNavigate();
   const { t } = useCopy();
   const { toast } = useToast();
-  const navigate = useNavigate();
+  
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"chat" | "image">("chat");
-  const [messages, setMessages] = useState<AiMessage[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { 
       role: "system", 
       content: FIXCO_SYSTEM_CONTEXT
@@ -53,16 +61,8 @@ export function FloatingAIWidget() {
   const [resultUrl, setResultUrl] = useState<string>("");
   const [variants, setVariants] = useState<string[]>([]);
 
-  // CTA & offert-modal state
+  // Detekterad tjänst för CTA-kort
   const [detectedSlug, setDetectedSlug] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [leadName, setLeadName] = useState("");
-  const [leadEmail, setLeadEmail] = useState("");
-  const [leadPhone, setLeadPhone] = useState("");
-  const [leadAddress, setLeadAddress] = useState("");
-  const [leadMsg, setLeadMsg] = useState("");
-  const [leadBusy, setLeadBusy] = useState(false);
-  const [leadDone, setLeadDone] = useState(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,7 @@ export function FloatingAIWidget() {
   async function onSend() {
     if (!input.trim() || busy) return;
     
-    const userMessage: AiMessage = { role: "user", content: input };
+    const userMessage: ChatMessage = { role: "user", content: input };
     const slug = detectServiceSlug(input);
     setDetectedSlug(slug);
     setMessages(prev => [...prev, userMessage]);
@@ -103,7 +103,7 @@ export function FloatingAIWidget() {
       // Trunkera extremt långa svar för widget
       const truncated = content.length > 600 ? content.slice(0, 600) + "..." : content;
       
-      const assistantMessage: AiMessage = {
+      const assistantMessage: ChatMessage = {
         role: "assistant",
         content: truncated
       };
@@ -129,55 +129,10 @@ export function FloatingAIWidget() {
   }
 
   function openOfferModal(prefillMsg?: string) {
-    if (prefillMsg) setLeadMsg(prefillMsg);
-    setShowModal(true);
-  }
-
-  async function submitLead() {
-    if (!leadName || !leadEmail) {
-      toast({
-        title: "Fyll i namn och e-post",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setLeadBusy(true);
-    try {
-      await createLead({
-        name: leadName,
-        email: leadEmail,
-        phone: leadPhone,
-        address: leadAddress,
-        message: leadMsg,
-        serviceInterest: detectedSlug || undefined,
-        images: resultUrl ? [resultUrl] : []
-      });
-      
-      setLeadDone(true);
-      toast({
-        title: "Tack! Vi återkommer så snart som möjligt.",
-      });
-      
-      // Reset form
-      setTimeout(() => {
-        setLeadName("");
-        setLeadEmail("");
-        setLeadPhone("");
-        setLeadAddress("");
-        setLeadMsg("");
-        setLeadDone(false);
-        setShowModal(false);
-      }, 2000);
-    } catch (error) {
-      console.error("Lead submission error:", error);
-      toast({
-        title: "Kunde inte skicka. Försök igen.",
-        variant: "destructive"
-      });
-    } finally {
-      setLeadBusy(false);
-    }
+    openServiceRequestModal({
+      serviceSlug: detectedSlug || undefined,
+      prefill: prefillMsg ? { onskemal: prefillMsg } : {}
+    });
   }
 
   async function onGenerate() {
@@ -232,10 +187,8 @@ export function FloatingAIWidget() {
         onClick={() => setOpen(!open)}
         className="fixed right-4 bottom-4 z-[9999] rounded-full px-5 py-3 shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 font-semibold"
       >
-        {t('ai_widget.launcher')}
+        💬 {t('ai_widget.launcher')}
       </button>
-
-      {!open && null}
 
       {/* Panel */}
       {open && (
@@ -289,7 +242,7 @@ export function FloatingAIWidget() {
             <div className="flex-1 overflow-auto px-4 py-3 space-y-3">
               {messages.filter(m => m.role !== "system").length === 0 && (
                 <div className="text-sm text-muted-foreground">
-                  Hej! Ladda upp en bild i <strong>Bild & Förslag</strong> eller ställ en fråga här.
+                  Hej! Ladda upp en bild i <strong>Bild</strong> eller ställ en fråga här.
                 </div>
               )}
               {messages
@@ -355,9 +308,12 @@ export function FloatingAIWidget() {
                 </Button>
               </div>
               <div className="flex justify-between text-xs">
-                <a href="/ai" className="text-primary hover:underline">
+                <button 
+                  onClick={() => navigate("/ai")}
+                  className="text-primary hover:underline"
+                >
                   Öppna full AI
-                </a>
+                </button>
                 <button 
                   className="text-primary hover:underline"
                   onClick={() => openOfferModal()}
@@ -431,12 +387,12 @@ export function FloatingAIWidget() {
                   </div>
                 )}
 
-                <a
-                  href="/ai"
-                  className="block text-center text-sm text-primary hover:underline font-medium"
+                <button
+                  onClick={() => navigate("/ai")}
+                  className="block text-center text-sm text-primary hover:underline font-medium w-full"
                 >
                   Öppna i full AI
-                </a>
+                </button>
                 <p className="text-xs text-muted-foreground">
                   Visualisering – färg/struktur kan avvika från verkligt material.
                 </p>
@@ -444,110 +400,6 @@ export function FloatingAIWidget() {
             )}
           </div>
         )}
-        </div>
-      )}
-
-      {/* Offert-modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-[10000] flex items-end md:items-center justify-center">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
-          <div className="relative w-full md:w-[560px] bg-background rounded-t-2xl md:rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Begär offert</h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="p-1 rounded hover:bg-muted transition-colors"
-                aria-label="Stäng"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {leadDone ? (
-              <div className="text-center py-6 space-y-4">
-                <div className="text-lg font-medium">Tack! Vi återkommer så snart som möjligt.</div>
-                <Button onClick={() => { setShowModal(false); setLeadDone(false); }}>
-                  Stäng
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Namn *</label>
-                    <Input
-                      placeholder="Ditt namn"
-                      value={leadName}
-                      onChange={e => setLeadName(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">E-post *</label>
-                    <Input
-                      type="email"
-                      placeholder="din@email.com"
-                      value={leadEmail}
-                      onChange={e => setLeadEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Telefon</label>
-                    <Input
-                      type="tel"
-                      placeholder="070-123 45 67"
-                      value={leadPhone}
-                      onChange={e => setLeadPhone(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Adress</label>
-                    <Input
-                      placeholder="Gatuadress"
-                      value={leadAddress}
-                      onChange={e => setLeadAddress(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Kort beskrivning</label>
-                  <Textarea
-                    rows={4}
-                    placeholder="Beskriv vad du behöver hjälp med..."
-                    value={leadMsg}
-                    onChange={e => setLeadMsg(e.target.value)}
-                  />
-                </div>
-
-                {resultUrl && (
-                  <div className="p-3 bg-muted/30 rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-2">Din visualisering inkluderas i förfrågan</p>
-                    <img src={resultUrl} alt="Din visualisering" className="w-32 h-32 object-cover rounded border" />
-                  </div>
-                )}
-
-                <p className="text-xs text-muted-foreground">
-                  Vi ger inga priser i chatten. Offerten bekräftas efter platsbesök. Eventuellt ROT-avdrag är indikativt.
-                </p>
-
-                <div className="flex justify-end gap-3 pt-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setShowModal(false)}
-                    disabled={leadBusy}
-                  >
-                    Avbryt
-                  </Button>
-                  <Button
-                    onClick={submitLead}
-                    disabled={leadBusy || !leadName || !leadEmail}
-                  >
-                    {leadBusy ? "Skickar..." : "Skicka"}
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       )}
     </>

@@ -15,6 +15,7 @@ import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 import { FloatingAIWidget } from '../FloatingAIWidget';
+import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -51,6 +52,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <ContentLoadingIndicator />
           <ModalHost />
           <FloatingAIWidget />
+          <ServiceRequestModal />
         </div>
       </EditModeProvider>
     </CopyProvider>
