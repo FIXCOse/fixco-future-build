@@ -347,6 +347,18 @@ export const en: Record<CopyKey, string> = {
   'pages.about.days_start': 'We start within < 5 days',
   'pages.about.years_exp': '5 years',
   'pages.references.title': 'References',
+  'pages.servicesOverview.title': 'Our',
+  'pages.servicesOverview.titleHighlight': 'services',
+  'pages.servicesOverview.subtitle': 'From small repairs to major construction projects – we have the expertise and experience to deliver professional solutions in all areas',
+  'pages.servicesOverview.seeMore': 'See more →',
+  'pages.servicesOverview.cantFind': 'Can\'t find the service you\'re looking for? Contact us for more information.',
+  'pages.servicesOverview.seeAll': 'See all services',
+  'pages.auth.loginFailed': 'Login failed',
+  'pages.auth.unknownError': 'Unknown error occurred',
+  'pages.auth.tryAgain': 'Try again',
+  'pages.auth.backHome': 'Back to home',
+  'pages.auth.needHelp': 'Need help?',
+  'pages.auth.contactUs': 'Contact us',
   
   // Service Detail Page
   'serviceDetail.notFound': 'Service not found',

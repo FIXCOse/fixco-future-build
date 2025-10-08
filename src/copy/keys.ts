@@ -182,6 +182,11 @@ export type CopyKey =
   | 'pages.about.title' | 'pages.about.subtitle' | 'pages.about.history_title'
   | 'pages.about.history_text' | 'pages.about.customers' | 'pages.about.days_start'
   | 'pages.about.years_exp' | 'pages.references.title'
+  | 'pages.servicesOverview.title' | 'pages.servicesOverview.titleHighlight' 
+  | 'pages.servicesOverview.subtitle' | 'pages.servicesOverview.seeMore' 
+  | 'pages.servicesOverview.cantFind' | 'pages.servicesOverview.seeAll'
+  | 'pages.auth.loginFailed' | 'pages.auth.unknownError' | 'pages.auth.tryAgain'
+  | 'pages.auth.backHome' | 'pages.auth.needHelp' | 'pages.auth.contactUs'
   
    // Contact Page Extended
    | 'pages.contact.bookVisit'

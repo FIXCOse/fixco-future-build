@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button-premium";
+import { useCopy } from "@/copy/CopyProvider";
 import { 
   Hammer, 
   Wrench, 
@@ -76,6 +77,71 @@ const services = [
 ];
 
 const ServicesOverview = () => {
+  const { t, locale } = useCopy();
+  const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
+  
+  const services = [
+    {
+      title: t('serviceCategories.snickeri'),
+      description: locale === 'en' ? 'Kitchens, bathrooms, interiors and furniture' : 'Kök, badrum, inredning och möbler',
+      icon: Hammer,
+      color: "from-blue-500 to-blue-600"
+    },
+    {
+      title: t('serviceCategories.vvs'),
+      description: locale === 'en' ? 'Pipes, heating and sanitary installation' : 'Rör, värme och sanitär installation',
+      icon: Wrench,
+      color: "from-cyan-500 to-cyan-600"
+    },
+    {
+      title: t('serviceCategories.montering'),
+      description: locale === 'en' ? 'Furniture, machinery and technical equipment' : 'Möbler, maskiner och teknisk utrustning', 
+      icon: Package,
+      color: "from-green-500 to-green-600"
+    },
+    {
+      title: t('serviceCategories.tradgard'),
+      description: locale === 'en' ? 'Construction, maintenance and care' : 'Anläggning, skötsel och underhåll',
+      icon: TreePine,
+      color: "from-emerald-500 to-emerald-600"
+    },
+    {
+      title: t('serviceCategories.stadning'),
+      description: locale === 'en' ? 'Construction cleaning, moving cleaning and regular cleaning' : 'Byggstäd, flyttstäd och regelbunden städning',
+      icon: Sparkles,
+      color: "from-purple-500 to-purple-600"
+    },
+    {
+      title: locale === 'en' ? 'Project Management' : 'Projektledning',
+      description: locale === 'en' ? 'Complete solutions from start to finish' : 'Helhetslösningar från start till mål',
+      icon: ClipboardList,
+      color: "from-orange-500 to-orange-600"
+    },
+    {
+      title: t('serviceCategories.markarbeten'),
+      description: locale === 'en' ? 'Excavation, drainage and construction' : 'Grävning, dränering och anläggning',
+      icon: Mountain,
+      color: "from-amber-500 to-amber-600"
+    },
+    {
+      title: t('serviceCategories.tekniska-installationer'),
+      description: locale === 'en' ? 'Automation, security and smart solutions' : 'Automation, säkerhet och smarta lösningar',
+      icon: Cpu,
+      color: "from-indigo-500 to-indigo-600"
+    },
+    {
+      title: t('serviceCategories.el'),
+      description: locale === 'en' ? 'Installation, repair and maintenance' : 'Installation, reparation och underhåll',
+      icon: Zap,
+      color: "from-yellow-500 to-yellow-600"
+    },
+    {
+      title: locale === 'en' ? 'Property Maintenance' : 'Fastighetsskötsel',
+      description: locale === 'en' ? 'Ongoing maintenance and service' : 'Löpande underhåll och service',
+      icon: Building,
+      color: "from-red-500 to-red-600"
+    }
+  ];
   
   return (
     <section className="py-20 relative">
@@ -106,11 +172,10 @@ const ServicesOverview = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Våra <span className="gradient-text">tjänster</span>
+            {t('pages.servicesOverview.title')} <span className="gradient-text">{t('pages.servicesOverview.titleHighlight')}</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Från små reparationer till stora byggnationer – vi har expertisen och erfarenheten 
-            för att leverera professionella lösningar inom alla områden
+            {t('pages.servicesOverview.subtitle')}
           </p>
         </div>
 
@@ -153,7 +218,7 @@ const ServicesOverview = () => {
                     
                     {/* Hover indicator */}
                     <div className="mt-4 text-primary text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-                      Se mer →
+                      {t('pages.servicesOverview.seeMore')}
                     </div>
                   </div>
                 </div>
@@ -165,11 +230,11 @@ const ServicesOverview = () => {
         {/* CTA */}
         <div className="text-center">
           <p className="text-lg text-muted-foreground mb-6">
-            Hittar du inte den tjänst du söker? Kontakta oss för mer information.
+            {t('pages.servicesOverview.cantFind')}
           </p>
-          <Link to="/tjanster">
+          <Link to={servicesPath}>
             <Button variant="premium" size="lg">
-              Se alla tjänster
+              {t('pages.servicesOverview.seeAll')}
             </Button>
           </Link>
         </div>

@@ -1,11 +1,18 @@
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, Home, RotateCcw } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { useCopy } from '@/copy/CopyProvider';
+import { getLanguageFromPath } from '@/utils/routeMapping';
 
 export default function AuthError() {
   const [searchParams] = useSearchParams();
-  const reason = searchParams.get('reason') || 'Okänt fel uppstod';
+  const location = useLocation();
+  const locale = getLanguageFromPath(location.pathname);
+  const { t } = useCopy();
+  
+  const reason = searchParams.get('reason') || t('pages.auth.unknownError');
+  const contactPath = locale === 'en' ? '/en/contact' : '/kontakt';
 
   return (
     <>
@@ -23,7 +30,7 @@ export default function AuthError() {
           </div>
           
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold text-foreground">Inloggning misslyckades</h1>
+            <h1 className="text-2xl font-semibold text-foreground">{t('pages.auth.loginFailed')}</h1>
             <p className="text-muted-foreground">{reason}</p>
           </div>
 
@@ -31,20 +38,20 @@ export default function AuthError() {
             <Button asChild className="w-full">
               <Link to="/auth">
                 <RotateCcw className="mr-2 h-4 w-4" />
-                Försök igen
+                {t('pages.auth.tryAgain')}
               </Link>
             </Button>
             
             <Button variant="outline" asChild className="w-full">
-              <Link to="/">
+              <Link to={locale === 'en' ? '/en' : '/'}>
                 <Home className="mr-2 h-4 w-4" />
-                Tillbaka till startsidan
+                {t('pages.auth.backHome')}
               </Link>
             </Button>
           </div>
 
           <div className="text-sm text-muted-foreground">
-            <p>Behöver du hjälp? <Link to="/kontakt" className="text-primary hover:underline">Kontakta oss</Link></p>
+            <p>{t('pages.auth.needHelp')} <Link to={contactPath} className="text-primary hover:underline">{t('pages.auth.contactUs')}</Link></p>
           </div>
         </div>
       </div>

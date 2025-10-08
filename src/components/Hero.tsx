@@ -5,7 +5,9 @@ import heroImage from "@/assets/hero-construction.jpg";
 import { useCopy } from "@/copy/CopyProvider";
 
 const Hero = () => {
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
+  const contactPath = locale === 'en' ? '/en/contact' : '/kontakt';
+  const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Static background */}
@@ -42,7 +44,7 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link to="/kontakt" className="w-full sm:w-auto">
+              <Link to={contactPath} className="w-full sm:w-auto">
                 <Button
                   variant="cta-primary"
                   size="cta"
@@ -51,7 +53,7 @@ const Hero = () => {
                   {t('hero.cta_request_quote')}
                 </Button>
               </Link>
-              <Link to="/tjanster" className="w-full sm:w-auto">
+              <Link to={servicesPath} className="w-full sm:w-auto">
                 <Button
                   variant="cta-secondary"
                   size="cta"

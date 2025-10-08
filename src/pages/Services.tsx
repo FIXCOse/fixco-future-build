@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { useCopy } from "@/copy/CopyProvider";
 
 const Services = () => {
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   const { isEditMode } = useEditMode();
   
   return (
@@ -148,7 +148,7 @@ const Services = () => {
                 </div>
               </div>
               
-              <Link to="/kontakt">
+              <Link to={locale === 'en' ? '/en/contact' : '/kontakt'}>
                 <button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
                   <EditableText 
                     id="services-rot-cta"

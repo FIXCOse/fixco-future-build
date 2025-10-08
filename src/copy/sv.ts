@@ -347,6 +347,18 @@ export const sv: Record<CopyKey, string> = {
   'pages.about.days_start': 'Vi startar på < 5 dagar',
   'pages.about.years_exp': '5 år',
   'pages.references.title': 'Referenser',
+  'pages.servicesOverview.title': 'Våra',
+  'pages.servicesOverview.titleHighlight': 'tjänster',
+  'pages.servicesOverview.subtitle': 'Från små reparationer till stora byggnationer – vi har expertisen och erfarenheten för att leverera professionella lösningar inom alla områden',
+  'pages.servicesOverview.seeMore': 'Se mer →',
+  'pages.servicesOverview.cantFind': 'Hittar du inte den tjänst du söker? Kontakta oss för mer information.',
+  'pages.servicesOverview.seeAll': 'Se alla tjänster',
+  'pages.auth.loginFailed': 'Inloggning misslyckades',
+  'pages.auth.unknownError': 'Okänt fel uppstod',
+  'pages.auth.tryAgain': 'Försök igen',
+  'pages.auth.backHome': 'Tillbaka till startsidan',
+  'pages.auth.needHelp': 'Behöver du hjälp?',
+  'pages.auth.contactUs': 'Kontakta oss',
   
   // Service Detail Page
   'serviceDetail.notFound': 'Tjänsten hittades inte',
