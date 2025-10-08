@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
 import { Button } from "@/components/ui/button-premium";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
+import { useServices } from "@/hooks/useServices";
 import PriceSummary from '@/components/PriceSummary';
 import ServiceCardV3 from '@/components/ServiceCardV3';
 import { Badge } from '@/components/ui/badge';
@@ -32,7 +33,32 @@ const ServiceDetail = () => {
   // Determine if we're on English site
   const isEnglish = locale === 'en';
   
+  // Get static service category info for UI
   const service = servicesDataNew.find(s => s.slug === slug);
+  
+  // Fetch database services with translations based on locale
+  const { data: dbServices, isLoading } = useServices(locale);
+  
+  // Map slug to category name for filtering
+  const categoryMap: Record<string, string> = {
+    'el': 'El',
+    'vvs': 'VVS',
+    'snickeri': 'Snickeri',
+    'montering': 'Montering',
+    'tradgard': 'Trädgård',
+    'stadning': 'Städning',
+    'flytt': 'Flytt',
+    'markarbeten': 'Markarbeten',
+    'tekniska-installationer': 'Tekniska installationer'
+  };
+  
+  const categoryName = slug ? categoryMap[slug] : undefined;
+  
+  // Filter services by category from database
+  const filteredSubServices = useMemo(() => {
+    if (!dbServices || !categoryName) return [];
+    return dbServices.filter(s => s.category === categoryName);
+  }, [dbServices, categoryName]);
 
   if (!service) {
     return (
@@ -48,11 +74,20 @@ const ServiceDetail = () => {
       </div>
     );
   }
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <div className="container mx-auto px-4 py-20">
+          <div className="text-center">
+            <div className="animate-pulse">Loading...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const IconComponent = service.icon;
-
-  // Show all sub-services without filtering on category pages
-  const filteredSubServices = service.subServices;
   
   const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -188,36 +223,19 @@ const ServiceDetail = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginatedSubServices.map((subService, index) => {
-            // Create a ServicePricing object for calculation
-            const serviceForPricing = {
-              id: subService.id,
-              title: subService.title,
-              basePrice: subService.basePrice,
-              priceUnit: subService.priceUnit as 'kr/h' | 'kr' | 'från',
-              eligible: { 
-                rot: subService.eligible.rot, 
-                rut: subService.eligible.rut 
-              },
-              laborShare: 1.0,
-              fixedPrice: subService.priceType === 'quote'
-            };
-
-            const pricing = calcDisplayPrice(serviceForPricing, mode);
-            const eligible = isEligibleForMode(serviceForPricing, mode);
-
+            {paginatedSubServices.map((dbService) => {
              return (
                <ServiceCardV3
-                 key={subService.id}
-                 title={subService.title}
-                 category={subService.category}
-                 description={subService.description}
-                 pricingType={subService.priceType === 'quote' ? 'quote' : 
-                              subService.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
-                 priceIncl={subService.basePrice}
-                 eligible={subService.eligible}
-                 serviceSlug={subService.id}
-                 serviceId={subService.id}
+                 key={dbService.id}
+                 title={dbService.title}
+                 category={dbService.category}
+                 description={dbService.description}
+                 pricingType={dbService.price_type === 'quote' ? 'quote' : 
+                              dbService.price_unit.includes('/h') ? 'hourly' : 'fixed'}
+                 priceIncl={dbService.base_price}
+                 eligible={{ rot: dbService.rot_eligible, rut: dbService.rut_eligible }}
+                 serviceSlug={dbService.id}
+                 serviceId={dbService.id}
                  onBook={() => {
                    // Handle booking
                  }}
