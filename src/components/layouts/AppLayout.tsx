@@ -14,6 +14,7 @@ import { useContentLoader } from '@/hooks/useContentLoader';
 import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
+import { FloatingAIWidget } from '../FloatingAIWidget';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -49,6 +50,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <EditModeIndicator />
           <ContentLoadingIndicator />
           <ModalHost />
+          <FloatingAIWidget />
         </div>
       </EditModeProvider>
     </CopyProvider>

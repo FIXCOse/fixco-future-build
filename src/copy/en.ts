@@ -728,8 +728,24 @@ export const en: Record<CopyKey, string> = {
   'ai.disclaimer_title': 'NOTE:',
   'ai.disclaimer_text': 'Fixco AI is an assistant that provides preliminary advice and visualizations. Final quotes and assessments are always made by our professional craftsmen. ROT deduction is finally assessed by the Tax Agency.',
   
-  // AI Lab page
+  // AI Lab page (now main AI page)
   'ailab.title': 'AI Lab',
+  
+  // Floating AI Widget
+  'ai_widget.launcher': 'AI',
+  'ai_widget.title': 'Fixco AI',
+  'ai_widget.tab_chat': 'Chat',
+  'ai_widget.tab_image': 'Image & Suggestions',
+  'ai_widget.close': 'Close',
+  'ai_widget.chat_placeholder': 'Type your question…',
+  'ai_widget.send': 'Send',
+  'ai_widget.open_full': 'Open full AI',
+  'ai_widget.create_offer': 'Create quote',
+  'ai_widget.greeting': 'Hi! Upload an image in the Image & Suggestions tab or ask a question here.',
+  'ai_widget.image_instruction_placeholder': 'E.g.: Add dark oak acoustic panels on the wall behind the TV',
+  'ai_widget.generate': 'Generate after image',
+  'ai_widget.error': 'Something went wrong. Please try again.',
+  'ai_widget.upload_file': 'Choose image',
   'ailab.subtitle': 'Visualize your project and get instant price estimates',
   'ailab.upload_title': 'Upload Image',
   'ailab.upload_subtitle': 'Start by uploading an image of the room or area',

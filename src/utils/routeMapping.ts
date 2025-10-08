@@ -28,7 +28,6 @@ export const svToEnRoutes: Record<string, string> = {
   '/cookies': '/en/cookies',
   '/ansvar-forsakring': '/en/insurance',
   '/ai': '/en/ai',
-  '/ai2': '/en/ai2'
 };
 
 export const enToSvRoutes: Record<string, string> = Object.fromEntries(

@@ -5,8 +5,8 @@ import { ActionCards } from './ActionCards';
 import { BeforeAfterView } from './BeforeAfterView';
 import { EstimatePanel } from './EstimatePanel';
 import { useToast } from '@/hooks/use-toast';
-import { aiEditImage, createLead } from '@/features/ai/lib/ai';
-import { estimateQuote, EstimateResult } from '@/features/ai/tools/estimateQuote';
+import { aiEditImage, createLead } from '../ai/lib/ai';
+import { estimateQuote, EstimateResult } from '../ai/tools/estimateQuote';
 
 export function AILabInterface() {
   const { t } = useCopy();

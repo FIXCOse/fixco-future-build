@@ -15,7 +15,7 @@ export const svToEnRoutes: Record<string, string> = {
   '/om-oss': '/en/about',
   '/referenser': '/en/references',
   '/smart-hem': '/en/smart-home',
-  '/ai2': '/en/ai2',
+  '/ai': '/en/ai',
   '/boka-hembesok': '/en/book-visit',
   '/rot-info': '/en/rot-info',
   '/rut': '/en/rut',

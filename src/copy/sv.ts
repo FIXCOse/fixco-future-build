@@ -728,8 +728,24 @@ export const sv: Record<CopyKey, string> = {
   'ai.disclaimer_title': 'OBS:',
   'ai.disclaimer_text': 'Fixco AI är en assistent som ger preliminära råd och visualiseringar. Slutliga offerter och bedömningar görs alltid av våra professionella hantverkare. ROT-avdrag bedöms slutligt av Skatteverket.',
   
-  // AI Lab page
+  // AI Lab page (now main AI page)
   'ailab.title': 'AI Lab',
+  
+  // Floating AI Widget
+  'ai_widget.launcher': 'AI',
+  'ai_widget.title': 'Fixco AI',
+  'ai_widget.tab_chat': 'Chatta',
+  'ai_widget.tab_image': 'Bild & Förslag',
+  'ai_widget.close': 'Stäng',
+  'ai_widget.chat_placeholder': 'Skriv din fråga…',
+  'ai_widget.send': 'Skicka',
+  'ai_widget.open_full': 'Öppna full AI',
+  'ai_widget.create_offer': 'Skapa offert',
+  'ai_widget.greeting': 'Hej! Ladda upp en bild i fliken Bild & Förslag eller ställ en fråga här.',
+  'ai_widget.image_instruction_placeholder': 'Ex: Lägg akustikpanel i mörk ek på väggen bakom TV:n',
+  'ai_widget.generate': 'Generera efter-bild',
+  'ai_widget.error': 'Något gick fel. Försök igen.',
+  'ai_widget.upload_file': 'Välj bild',
   'ailab.subtitle': 'Visualisera ditt projekt och få prisuppskattning direkt',
   'ailab.upload_title': 'Ladda upp bild',
   'ailab.upload_subtitle': 'Börja med att ladda upp en bild av rummet eller ytan',

@@ -327,7 +327,15 @@ export type CopyKey =
    | 'ailab.email_label' | 'ailab.phone_label' | 'ailab.address_label'
    | 'ailab.create_pdf' | 'ailab.send_email' | 'ailab.sending'
    | 'ailab.pdf_created' | 'ailab.email_sent' | 'ailab.lead_saved'
-   | 'ailab.error_upload' | 'ailab.error_file_size' | 'ailab.error_file_type'
-   | 'ailab.error_visualization' | 'ailab.error_missing_image' | 'ailab.error_missing_contact'
-   | 'ailab.disclaimer' | 'ailab.policy'
-   | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';
+    | 'ailab.error_upload' | 'ailab.error_file_size' | 'ailab.error_file_type'
+    | 'ailab.error_visualization' | 'ailab.error_missing_image' | 'ailab.error_missing_contact'
+    | 'ailab.disclaimer' | 'ailab.policy'
+    
+    // Floating AI Widget
+    | 'ai_widget.launcher' | 'ai_widget.title' | 'ai_widget.tab_chat' | 'ai_widget.tab_image'
+    | 'ai_widget.close' | 'ai_widget.chat_placeholder' | 'ai_widget.send'
+    | 'ai_widget.open_full' | 'ai_widget.create_offer' | 'ai_widget.greeting'
+    | 'ai_widget.image_instruction_placeholder' | 'ai_widget.generate' | 'ai_widget.error'
+    | 'ai_widget.upload_file'
+    
+    | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';
