@@ -18,6 +18,7 @@ import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AI from "./pages/AI";
+import AILab from "./pages/AILab";
 import AuthCallback from "./pages/AuthCallback";
 import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
@@ -222,6 +223,7 @@ const App = () => {
                     <Route path="rut" element={<RUT />} />
                     <Route path="referenser" element={<Referenser />} />
                     <Route path="ai" element={<AI />} />
+                    <Route path="ai2" element={<AILab />} />
                     <Route path="smart-hem" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
@@ -258,6 +260,7 @@ const App = () => {
                     <Route path="rut" element={<RUT />} />
                     <Route path="book-visit" element={<BookVisit />} />
                     <Route path="ai" element={<AI />} />
+                    <Route path="ai2" element={<AILab />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">

@@ -312,4 +312,22 @@ export type CopyKey =
    | 'ai.quote_email_error_desc' | 'ai.feature1_title' | 'ai.feature1_desc' | 'ai.feature2_title'
    | 'ai.feature2_desc' | 'ai.feature3_title' | 'ai.feature3_desc' | 'ai.disclaimer_title'
    | 'ai.disclaimer_text'
+   
+   // AI Lab Page
+   | 'ailab.title' | 'ailab.subtitle' | 'ailab.upload_title' | 'ailab.upload_subtitle'
+   | 'ailab.drag_drop' | 'ailab.or_click' | 'ailab.action_cards_title'
+   | 'ailab.action_acoustic' | 'ailab.action_deck' | 'ailab.action_floor'
+   | 'ailab.action_bookshelf' | 'ailab.action_wardrobe' | 'ailab.action_led'
+   | 'ailab.custom_instruction' | 'ailab.custom_placeholder'
+   | 'ailab.visualize_btn' | 'ailab.visualizing' | 'ailab.before_title' | 'ailab.after_title'
+   | 'ailab.variants_title' | 'ailab.estimate_title' | 'ailab.estimate_subtitle'
+   | 'ailab.labor' | 'ailab.material' | 'ailab.subtotal' | 'ailab.vat'
+   | 'ailab.total_incl_vat' | 'ailab.rot_deduction' | 'ailab.rot_info' | 'ailab.final_price'
+   | 'ailab.contact_title' | 'ailab.contact_subtitle' | 'ailab.name_label'
+   | 'ailab.email_label' | 'ailab.phone_label' | 'ailab.address_label'
+   | 'ailab.create_pdf' | 'ailab.send_email' | 'ailab.sending'
+   | 'ailab.pdf_created' | 'ailab.email_sent' | 'ailab.lead_saved'
+   | 'ailab.error_upload' | 'ailab.error_file_size' | 'ailab.error_file_type'
+   | 'ailab.error_visualization' | 'ailab.error_missing_image' | 'ailab.error_missing_contact'
+   | 'ailab.disclaimer' | 'ailab.policy'
    | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';
