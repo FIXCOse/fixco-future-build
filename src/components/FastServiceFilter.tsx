@@ -455,20 +455,6 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
                   }}
                   serviceSlug={service.id}
                   serviceId={service.id}
-                  onBook={() => {
-                    if (onServiceSelect) {
-                      onServiceSelect(service);
-                    } else {
-                      toast.success(`${t('service_text.booking_for')} ${service.title} ${t('service_text.started')}`);
-                    }
-                  }}
-                  onQuote={() => {
-                    if (onServiceSelect) {
-                      onServiceSelect(service);
-                    } else {
-                      toast.success(`${t('service_text.quote_for')} ${service.title} ${t('service_text.sent')}`);
-                    }
-                  }}
                 />
               ))}
             </div>

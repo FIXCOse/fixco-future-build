@@ -651,20 +651,6 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
                     }}
                     serviceSlug={service.id}
                     serviceId={service.id}
-                    onBook={() => {
-                      if (onServiceSelect) {
-                        onServiceSelect(service);
-                      } else {
-                        toast.success(`Bokning för ${service.title} startad`);
-                      }
-                    }}
-                    onQuote={() => {
-                      if (onServiceSelect) {
-                        onServiceSelect(service);
-                      } else {
-                        toast.success(`Offert för ${service.title} skickad`);
-                      }
-                    }}
                   />
                 </div>
               ))}
