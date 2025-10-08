@@ -21,23 +21,16 @@ export default function ServiceRequestModal() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    console.log("[ServiceRequestModal] Component mounted, setting up listener");
-    
     const onOpen = (e: Event) => {
-      console.log("[ServiceRequestModal] ========== EVENT RECEIVED ==========");
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
       
-      console.log("[ServiceRequestModal] Event details:", { slug, prefill, fullDetail: ce.detail });
-      
       // Try to find predefined config
       let svc = slug ? getServiceBySlug(slug) : null;
-      console.log("[ServiceRequestModal] Found service config:", svc);
       
       // FALLBACK: If no config found, create a generic one for ANY service
       if (!svc && slug) {
-        console.log("[ServiceRequestModal] No config found for", slug, "- creating fallback");
         svc = {
           slug: slug,
           name: prefill.service_name || slug.replace(/-/g, ' '),
@@ -48,25 +41,17 @@ export default function ServiceRequestModal() {
             { kind: "file" as const, key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
           ]
         };
-        console.log("[ServiceRequestModal] Created fallback config:", svc);
       }
       
-      console.log("[ServiceRequestModal] Setting state - service:", svc, "open: true");
       setService(svc ?? null);
       setValues(prefill);
       setFiles({});
       setDone(false);
       setOpen(true);
-      console.log("[ServiceRequestModal] State updated, modal should open");
     };
     
     window.addEventListener("openServiceRequestModal", onOpen);
-    console.log("[ServiceRequestModal] Event listener registered");
-    
-    return () => {
-      console.log("[ServiceRequestModal] Cleaning up listener");
-      window.removeEventListener("openServiceRequestModal", onOpen);
-    };
+    return () => window.removeEventListener("openServiceRequestModal", onOpen);
   }, []);
 
   function onChange(key: string, val: any) {
@@ -105,7 +90,6 @@ export default function ServiceRequestModal() {
       return;
     }
 
-    console.log("[ServiceRequestModal] Submitting:", { service, values });
     setBusy(true);
     try {
       const type = isQuote ? "quote_request" : "booking";
@@ -150,7 +134,6 @@ export default function ServiceRequestModal() {
         });
 
         if (error) throw error;
-        console.log("[ServiceRequestModal] Booking created successfully");
       } else {
         const { error } = await supabase.from('quote_requests').insert({
           service_id: service.slug,
@@ -166,7 +149,6 @@ export default function ServiceRequestModal() {
         });
 
         if (error) throw error;
-        console.log("[ServiceRequestModal] Quote request created successfully");
       }
 
       toast.success("Tack! Vi återkommer så snart som möjligt.");
@@ -182,139 +164,214 @@ export default function ServiceRequestModal() {
     }
   }
 
-  console.log("[ServiceRequestModal] Render check - open:", open, "service:", service);
-  
   if (!open) {
     return null;
   }
-  
-  console.log("[ServiceRequestModal] RENDERING MODAL NOW!");
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center">
-      <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
-      <div className="relative w-full md:w-[640px] bg-card rounded-t-2xl md:rounded-2xl shadow-xl p-4">
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-lg font-semibold text-foreground">
-            {service?.name ?? "Begär offert / boka"}
+    <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center animate-fade-in">
+      {/* Backdrop with blur */}
+      <div 
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
+        onClick={() => setOpen(false)} 
+      />
+      
+      {/* Modal */}
+      <div className="relative w-full md:w-[680px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
+        {/* Header */}
+        <div className="relative border-b border-border/50 p-6 pb-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-foreground mb-1">
+                {service?.name ?? "Begär offert"}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {isQuote ? "Vi återkommer med offert inom 24h" : "Bekräftelse skickas direkt till din e-post"}
+              </p>
+            </div>
+            <button
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors group"
+              aria-label="Stäng"
+            >
+              <svg className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={() => setOpen(false)}
-            className="px-2 py-1 rounded hover:bg-muted"
-            aria-label="Stäng"
-          >
-            ✕
-          </button>
         </div>
 
-        {done ? (
-          <div className="p-3 text-sm text-foreground">
-            Tack! Vi återkommer så snart som möjligt.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            <input
-              className="border border-border rounded px-3 py-2 bg-background text-foreground"
-              placeholder="Namn"
-              value={values.name || ""}
-              onChange={e => onChange("name", e.target.value)}
-            />
-            <input
-              className="border border-border rounded px-3 py-2 bg-background text-foreground"
-              placeholder="E-post"
-              type="email"
-              value={values.email || ""}
-              onChange={e => onChange("email", e.target.value)}
-            />
-            <input
-              className="border border-border rounded px-3 py-2 bg-background text-foreground"
-              placeholder="Telefon"
-              value={values.phone || ""}
-              onChange={e => onChange("phone", e.target.value)}
-            />
-            <input
-              className="border border-border rounded px-3 py-2 bg-background text-foreground"
-              placeholder="Adress"
-              value={values.address || ""}
-              onChange={e => onChange("address", e.target.value)}
-            />
+        {/* Content */}
+        <div className="p-6 max-h-[60vh] overflow-y-auto">
+          {done ? (
+            <div className="text-center py-8 animate-scale-in">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
+              <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Kontaktinformation */}
+              <div>
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Kontaktuppgifter
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Ditt namn *"
+                    value={values.name || ""}
+                    onChange={e => onChange("name", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="E-post *"
+                    type="email"
+                    value={values.email || ""}
+                    onChange={e => onChange("email", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Telefon"
+                    value={values.phone || ""}
+                    onChange={e => onChange("phone", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Adress"
+                    value={values.address || ""}
+                    onChange={e => onChange("address", e.target.value)}
+                  />
+                </div>
+              </div>
 
-            {service?.fields.map((f, idx) => {
-              if (f.kind === "text")
-                return (
-                  <input
-                    key={idx}
-                    className="border border-border rounded px-3 py-2 bg-background text-foreground"
-                    placeholder={f.label}
-                    value={values[f.key] || ""}
-                    onChange={e => onChange(f.key, e.target.value)}
-                  />
-                );
-              if (f.kind === "number")
-                return (
-                  <input
-                    key={idx}
-                    type="number"
-                    className="border border-border rounded px-3 py-2 bg-background text-foreground"
-                    placeholder={f.label}
-                    min={f.min}
-                    max={f.max}
-                    value={values[f.key] || ""}
-                    onChange={e => onChange(f.key, e.target.value)}
-                  />
-                );
-              if (f.kind === "textarea")
-                return (
-                  <textarea
-                    key={idx}
-                    className="md:col-span-2 border border-border rounded px-3 py-2 bg-background text-foreground"
-                    rows={3}
-                    placeholder={f.placeholder ?? f.label}
-                    value={values[f.key] || ""}
-                    onChange={e => onChange(f.key, e.target.value)}
-                  />
-                );
-              if (f.kind === "file")
-                return (
-                  <div key={idx} className="md:col-span-2">
-                    <label className="text-xs text-muted-foreground">{f.label}</label>
-                    <input
-                      type="file"
-                      accept={f.accept ?? "*/*"}
-                      multiple={f.multiple}
-                      onChange={e => onFiles(f.key, e.target.files)}
-                      className="w-full"
-                    />
+              {/* Projektdetaljer */}
+              {service?.fields && service.fields.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Projektdetaljer
+                  </h4>
+                  <div className="space-y-3">
+                    {service.fields.map((f, idx) => {
+                      if (f.kind === "text")
+                        return (
+                          <input
+                            key={idx}
+                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            placeholder={f.label}
+                            value={values[f.key] || ""}
+                            onChange={e => onChange(f.key, e.target.value)}
+                          />
+                        );
+                      if (f.kind === "number")
+                        return (
+                          <input
+                            key={idx}
+                            type="number"
+                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            placeholder={f.label}
+                            min={f.min}
+                            max={f.max}
+                            value={values[f.key] || ""}
+                            onChange={e => onChange(f.key, e.target.value)}
+                          />
+                        );
+                      if (f.kind === "textarea")
+                        return (
+                          <textarea
+                            key={idx}
+                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+                            rows={4}
+                            placeholder={f.placeholder ?? f.label}
+                            value={values[f.key] || ""}
+                            onChange={e => onChange(f.key, e.target.value)}
+                          />
+                        );
+                      if (f.kind === "file")
+                        return (
+                          <div key={idx} className="space-y-2">
+                            <label className="text-xs font-medium text-muted-foreground">{f.label}</label>
+                            <div className="relative">
+                              <input
+                                type="file"
+                                accept={f.accept ?? "*/*"}
+                                multiple={f.multiple}
+                                onChange={e => onFiles(f.key, e.target.files)}
+                                className="w-full px-4 py-3 rounded-xl border-2 border-dashed border-border/50 bg-background/50 text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 transition-all cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                        );
+                      return null;
+                    })}
                   </div>
-                );
-              return null;
-            })}
-
-            <div className="md:col-span-2 text-sm">
-              {!isQuote && pricePreview && (
-                <div className="mb-1 text-foreground">
-                  Uppskattat totalpris: <strong>{pricePreview}</strong> (inkl. moms)
                 </div>
               )}
-              <div className="text-[11px] text-muted-foreground">
-                Priser i chatten visas inte. Offert/pris bekräftas efter platsbesök. ROT kan
-                vara aktuellt (indikativt på arbete).
+
+              {/* Pris & Policy */}
+              <div className="rounded-xl bg-muted/30 border border-border/30 p-4 space-y-2">
+                {!isQuote && pricePreview && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Uppskattat totalpris:</span>
+                    <span className="text-lg font-bold text-primary">{pricePreview}</span>
+                  </div>
+                )}
+                <div className="flex items-start gap-2 text-xs text-muted-foreground">
+                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p>
+                    {isQuote 
+                      ? "Vi skickar offert inom 24h. Pris bekräftas efter platsbesök. ROT-avdrag kan vara aktuellt."
+                      : "Bokning bekräftas via e-post. Pris bekräftas efter platsbesök. ROT-avdrag kan vara aktuellt."}
+                  </p>
+                </div>
               </div>
             </div>
+          )}
+        </div>
 
-            <div className="md:col-span-2 flex justify-end gap-2 mt-1">
+        {/* Footer med knappar */}
+        {!done && (
+          <div className="border-t border-border/50 p-6 pt-4 bg-muted/10">
+            <div className="flex justify-end gap-3">
               <button
-                className="px-3 py-2 rounded border border-border hover:bg-muted"
+                className="px-6 py-2.5 rounded-xl border border-border hover:bg-muted transition-colors font-medium text-foreground"
                 onClick={() => setOpen(false)}
               >
                 Avbryt
               </button>
               <button
-                className="px-3 py-2 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-                disabled={busy}
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all font-semibold flex items-center gap-2"
+                disabled={busy || !values.name || !values.email}
                 onClick={onSubmit}
               >
-                {busy ? "Skickar…" : isQuote ? "Skicka offertförfrågan" : "Skicka bokning"}
+                {busy ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Skickar…
+                  </>
+                ) : (
+                  <>
+                    {isQuote ? "Skicka offertförfrågan" : "Skicka bokning"}
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </>
+                )}
               </button>
             </div>
           </div>
