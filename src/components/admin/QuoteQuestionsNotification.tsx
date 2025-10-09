@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
@@ -58,7 +58,7 @@ export default function QuoteQuestionsNotification() {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0">
-          <Bell className="h-5 w-5" />
+          <MessageCircle className="h-5 w-5" />
           {unansweredCount > 0 && (
             <Badge 
               variant="destructive" 
