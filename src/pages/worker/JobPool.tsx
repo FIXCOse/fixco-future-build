@@ -210,15 +210,17 @@ const JobPool = () => {
                     {job.admin_set_price && (
                       <div className="flex items-center text-green-600 font-medium">
                         <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>{job.admin_set_price} kr (fast ersättning)</span>
+                        <span>Ersättning: {job.admin_set_price} kr</span>
                       </div>
                     )}
                     
                     {/* Visa bonus om det finns */}
                     {job.bonus_amount && job.bonus_amount > 0 && (
-                      <div className="flex items-center text-yellow-600 font-semibold">
-                        <Gift className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>Extra bonus: +{job.bonus_amount} kr 🎁</span>
+                      <div className="flex items-center gap-2 bg-yellow-50 border-2 border-yellow-400 rounded-lg px-3 py-2">
+                        <Gift className="w-5 h-5 text-yellow-600 flex-shrink-0" />
+                        <span className="font-bold text-yellow-700">
+                          EXTRA BONUS: +{job.bonus_amount} kr
+                        </span>
                       </div>
                     )}
                   </div>

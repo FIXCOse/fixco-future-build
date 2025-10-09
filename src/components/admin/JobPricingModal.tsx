@@ -21,18 +21,18 @@ interface JobPricingModalProps {
 export const JobPricingModal = ({ job, open, onOpenChange, onSuccess }: JobPricingModalProps) => {
   const { toast } = useToast();
   const [adminSetPrice, setAdminSetPrice] = useState<string>('');
-  const [bonusAmount, setBonusAmount] = useState<string>('0');
+  const [bonusAmount, setBonusAmount] = useState<string>('');
   const [saving, setSaving] = useState(false);
 
   // Sync state when job changes
   useEffect(() => {
     if (job) {
       setAdminSetPrice(job.admin_set_price?.toString() || '');
-      setBonusAmount(job.bonus_amount?.toString() || '0');
+      setBonusAmount(job.bonus_amount && job.bonus_amount > 0 ? job.bonus_amount.toString() : '');
     } else {
       // Reset when job is cleared
       setAdminSetPrice('');
-      setBonusAmount('0');
+      setBonusAmount('');
     }
   }, [job]);
 
@@ -97,14 +97,14 @@ export const JobPricingModal = ({ job, open, onOpenChange, onSuccess }: JobPrici
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bonus_amount">Bonus (kr)</Label>
+            <Label htmlFor="bonus_amount">Extra bonus (kr)</Label>
             <Input
               id="bonus_amount"
               type="number"
               step="0.01"
               value={bonusAmount}
               onChange={(e) => setBonusAmount(e.target.value)}
-              placeholder="0"
+              placeholder="Lämna tomt om ingen bonus"
             />
             <p className="text-xs text-muted-foreground">
               Extra bonus för att locka workers till detta jobb
