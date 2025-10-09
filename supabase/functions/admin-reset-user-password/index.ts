@@ -80,7 +80,7 @@ serve(async (req) => {
 
     // Send email with Resend
     const emailResponse = await resend.emails.send({
-      from: 'Fixco <onboarding@resend.dev>',
+      from: 'Fixco <noreply@fixco.se>',
       to: [email],
       subject: 'Återställ ditt lösenord - Fixco',
       html: `
