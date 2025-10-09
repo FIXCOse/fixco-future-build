@@ -24,6 +24,9 @@ export async function createCustomer(customerData: {
   email: string;
   phone?: string;
   address?: string;
+  personnummer?: string;
+  postalCode?: string;
+  city?: string;
 }) {
   const { data, error } = await supabase
     .from('customers')

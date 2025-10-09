@@ -33,7 +33,15 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>('');
   const [showNewCustomer, setShowNewCustomer] = useState(false);
-  const [newCustomer, setNewCustomer] = useState({ name: '', email: '', phone: '', address: '' });
+  const [newCustomer, setNewCustomer] = useState({ 
+    name: '', 
+    email: '', 
+    phone: '', 
+    address: '',
+    personnummer: '',
+    postalCode: '',
+    city: ''
+  });
   
   const [title, setTitle] = useState('');
   const [items, setItems] = useState<LineItem[]>([{ type: 'work', description: '', quantity: 1, unit: 'tim', price: 0 }]);
@@ -115,7 +123,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
     setCustomVat(false);
     setCustomVatRate(25);
     setShowNewCustomer(false);
-    setNewCustomer({ name: '', email: '', phone: '', address: '' });
+    setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
   };
 
   const addItem = () => {
@@ -196,8 +204,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
   };
 
   const handleCreateCustomer = async () => {
-    if (!newCustomer.name || !newCustomer.email) {
-      toast.error('Namn och e-post krävs');
+    if (!newCustomer.name || !newCustomer.email || !newCustomer.personnummer || !newCustomer.postalCode || !newCustomer.city) {
+      toast.error('Namn, e-post, personnummer, postnummer och postort krävs');
       return;
     }
 
@@ -206,7 +214,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
       setCustomers([...customers, created]);
       setSelectedCustomerId(created.id);
       setShowNewCustomer(false);
-      setNewCustomer({ name: '', email: '', phone: '', address: '' });
+      setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
       toast.success('Kund skapad');
     } catch (error) {
       console.error('Error creating customer:', error);
@@ -327,14 +335,31 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                       onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
                     />
                     <Input
+                      placeholder="Personnummer *"
+                      value={newCustomer.personnummer}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, personnummer: e.target.value })}
+                    />
+                    <Input
                       placeholder="Telefon"
                       value={newCustomer.phone}
                       onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
                     />
+                    <div className="col-span-2">
+                      <Input
+                        placeholder="Adress"
+                        value={newCustomer.address}
+                        onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
+                      />
+                    </div>
                     <Input
-                      placeholder="Adress"
-                      value={newCustomer.address}
-                      onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
+                      placeholder="Postnummer *"
+                      value={newCustomer.postalCode}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, postalCode: e.target.value })}
+                    />
+                    <Input
+                      placeholder="Postort *"
+                      value={newCustomer.city}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, city: e.target.value })}
                     />
                   </div>
                   <Button onClick={handleCreateCustomer} className="w-full">
@@ -485,10 +510,10 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                     
                     {enableRot && (
                       <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
-                        <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                        <div className="p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                           <div className="flex items-center justify-between mb-2">
                             <Label className="text-sm font-semibold">Avdragssats</Label>
-                            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                            <span className="text-2xl font-bold text-green-400">
                               {rotRate}%
                             </span>
                           </div>
@@ -501,18 +526,18 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                             onChange={(e) => setRotRate(parseFloat(e.target.value))}
                             className="w-full"
                           />
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                          <div className="flex justify-between text-xs text-foreground/60 mt-1">
                             <span>0%</span>
                             <span>50%</span>
                           </div>
                         </div>
                         
-                        <div className="p-4 bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-900/10 rounded-xl border-2 border-green-200 dark:border-green-800">
-                          <p className="text-xs text-muted-foreground mb-1">Kundens besparing:</p>
-                          <p className="text-3xl font-bold text-green-700 dark:text-green-400">
+                        <div className="p-4 bg-green-500/10 rounded-xl border-2 border-green-500/30">
+                          <p className="text-xs text-foreground/70 mb-1">Kundens besparing:</p>
+                          <p className="text-3xl font-bold text-green-400">
                             {Math.round(calculateSubtotalWork() * (rotRate / 100)).toLocaleString()} kr
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1">
+                          <p className="text-xs text-foreground/60 mt-1">
                             av {calculateSubtotalWork().toLocaleString()} kr arbetskostnad
                           </p>
                         </div>
@@ -553,10 +578,10 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                     
                     {enableRut && (
                       <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
-                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <div className="p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
                           <div className="flex items-center justify-between mb-2">
                             <Label className="text-sm font-semibold">Avdragssats</Label>
-                            <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                            <span className="text-2xl font-bold text-blue-400">
                               {rutRate}%
                             </span>
                           </div>
@@ -569,18 +594,18 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                             onChange={(e) => setRutRate(parseFloat(e.target.value))}
                             className="w-full"
                           />
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                          <div className="flex justify-between text-xs text-foreground/60 mt-1">
                             <span>0%</span>
                             <span>50%</span>
                           </div>
                         </div>
                         
-                        <div className="p-4 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/10 rounded-xl border-2 border-blue-200 dark:border-blue-800">
-                          <p className="text-xs text-muted-foreground mb-1">Kundens besparing:</p>
-                          <p className="text-3xl font-bold text-blue-700 dark:text-blue-400">
+                        <div className="p-4 bg-blue-500/10 rounded-xl border-2 border-blue-500/30">
+                          <p className="text-xs text-foreground/70 mb-1">Kundens besparing:</p>
+                          <p className="text-3xl font-bold text-blue-400">
                             {Math.round(calculateSubtotalWork() * (rutRate / 100)).toLocaleString()} kr
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1">
+                          <p className="text-xs text-foreground/60 mt-1">
                             av {calculateSubtotalWork().toLocaleString()} kr arbetskostnad
                           </p>
                         </div>
