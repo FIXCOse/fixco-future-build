@@ -48,7 +48,7 @@ const MyFixcoLayout = () => {
   const [loading, setLoading] = useState(true);
   const { show, acknowledge } = useOwnerCongrats();
   const { role, loading: authLoading } = useAuthProfile();
-  const { shouldUseAdminLayout } = useRoleGate();
+  const { shouldUseAdminLayout, shouldUseWorkerLayout } = useRoleGate();
   const location = useLocation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguagePersistence();
@@ -85,13 +85,16 @@ const MyFixcoLayout = () => {
 
   // Check if user is admin/owner 
   const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
+  const isWorker = profile?.role === 'worker';
 
-  // Redirect admin/owner users to the admin dashboard (run only when profile changes)
+  // Redirect admin/owner users to the admin dashboard, workers to worker dashboard
   useEffect(() => {
     if (profile && isAdmin && location.pathname === '/mitt-fixco') {
       navigate('/admin', { replace: true });
+    } else if (profile && isWorker && location.pathname === '/mitt-fixco') {
+      navigate('/worker', { replace: true });
     }
-  }, [profile, isAdmin]); // Removed location.pathname and navigate to prevent loops
+  }, [profile, isAdmin, isWorker]); // Removed location.pathname and navigate to prevent loops
 
   if (loading || authLoading) {
     return <PageSkeleton />;
