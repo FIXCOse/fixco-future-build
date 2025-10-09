@@ -55,6 +55,13 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Hämta frågor och svar
+    const { data: questions } = await supabase
+      .from('quote_questions')
+      .select('*')
+      .eq('quote_id', quote.id)
+      .order('asked_at', { ascending: true });
+
     // Kontrollera om offerten är raderad
     if (quote.deleted_at) {
       return new Response(
@@ -91,7 +98,8 @@ Deno.serve(async (req) => {
       pdf_url: quote.pdf_url,
       valid_until: quote.valid_until,
       customer_name: quote.customer?.name || 'Okänd kund',
-      customer_email: quote.customer?.email || ''
+      customer_email: quote.customer?.email || '',
+      questions: questions || []
     };
 
     return new Response(

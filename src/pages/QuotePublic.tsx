@@ -17,6 +17,17 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+type QuoteQuestion = {
+  id: string;
+  question: string;
+  customer_name: string;
+  customer_email: string;
+  asked_at: string;
+  answered: boolean;
+  answer?: string;
+  answered_at?: string;
+};
+
 type PublicQuote = {
   number: string;
   title: string;
@@ -30,6 +41,7 @@ type PublicQuote = {
   valid_until?: string;
   customer_name: string;
   customer_email: string;
+  questions: QuoteQuestion[];
 };
 
 export default function QuotePublic() {
@@ -985,6 +997,80 @@ export default function QuotePublic() {
               )}
             </CardContent>
           </Card>
+
+          {/* Q&A Section - visa frågor och svar */}
+          {quote && quote.questions && quote.questions.length > 0 && (
+            <Card className="border-primary/20 bg-card">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5 text-primary" />
+                  Frågor & Svar
+                </CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Har du ställt frågor om offerten kan du se våra svar här
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {quote.questions.map((q) => (
+                  <div key={q.id} className="border border-border rounded-lg p-4 space-y-3">
+                    {/* Frågan */}
+                    <div className="space-y-1">
+                      <div className="flex items-start gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <MessageCircle className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-sm text-muted-foreground">
+                            {q.customer_name}
+                          </p>
+                          <p className="text-sm text-foreground mt-1">{q.question}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {new Date(q.asked_at).toLocaleDateString('sv-SE', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Svaret (om det finns) */}
+                    {q.answered && q.answer ? (
+                      <div className="ml-10 pl-4 border-l-2 border-primary/30 space-y-1">
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1">
+                            <p className="font-medium text-sm text-primary">
+                              Svar från Fixco
+                            </p>
+                            <p className="text-sm text-foreground mt-1">{q.answer}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {new Date(q.answered_at!).toLocaleDateString('sv-SE', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="ml-10 pl-4 border-l-2 border-border">
+                        <Badge variant="secondary" className="text-xs">
+                          <Clock className="h-3 w-3 mr-1" />
+                          Väntar på svar
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Footer */}
           <div className="text-center text-xs text-muted-foreground space-y-1">
