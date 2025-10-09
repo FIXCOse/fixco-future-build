@@ -205,8 +205,13 @@ const AdminJobs = () => {
                 </div>
               )}
 
-              <div className="text-sm">
-                <p><strong>Prissättning:</strong> {job.pricing_mode === 'hourly' ? `${job.hourly_rate || 0} kr/h` : `Fast pris: ${job.fixed_price || 0} kr`}</p>
+              <div className="text-sm space-y-1">
+                {job.pricing_mode === 'hourly' && job.hourly_rate && job.hourly_rate > 0 && (
+                  <p><strong>Timpris:</strong> {job.hourly_rate} kr/h</p>
+                )}
+                {job.pricing_mode === 'fixed' && job.fixed_price && job.fixed_price > 0 && (
+                  <p><strong>Fast pris:</strong> {job.fixed_price} kr</p>
+                )}
                 {job.assigned_worker_id && (
                   <p><strong>Arbetare:</strong> {workers.find(w => w.id === job.assigned_worker_id)?.first_name || 'Okänd'}</p>
                 )}

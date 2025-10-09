@@ -198,9 +198,12 @@ const MyJobs = () => {
 
                     {/* Worker Compensation Display */}
                     {job.admin_set_price && job.admin_set_price > 0 && (
-                      <div className="flex items-center text-green-600 font-medium">
-                        <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>Ersättning: {job.admin_set_price} kr</span>
+                      <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                        <Clock className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-green-800 uppercase">Worker ersättning</p>
+                          <p className="text-lg font-bold text-green-900">{job.admin_set_price} kr</p>
+                        </div>
                       </div>
                     )}
                   </div>
