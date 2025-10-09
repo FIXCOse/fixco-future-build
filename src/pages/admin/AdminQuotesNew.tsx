@@ -58,9 +58,10 @@ export default function AdminQuotesNew() {
         setQuote(existingQuote as any);
       } else {
         // Call DB function to create draft quote
-        const { data: quoteId, error } = await (supabase.rpc as any)('create_draft_quote_for_booking', {
-          p_booking_id: bookingId
-        });
+        const { data: quoteId, error } = await supabase
+          .rpc('create_draft_quote_for_booking', {
+            booking_id: bookingId
+          });
 
         if (error) throw error;
         

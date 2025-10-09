@@ -18,8 +18,13 @@ import { toast } from "sonner";
 import { Trash2, Eye, FileText } from "lucide-react";
 import type { BookingRow } from "@/lib/api/bookings";
 
+type BookingWithQuote = BookingRow & {
+  hasQuote?: boolean;
+  quoteId?: string;
+};
+
 export default function AdminBookings() {
-  const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [bookings, setBookings] = useState<BookingWithQuote[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -38,7 +43,25 @@ export default function AdminBookings() {
       console.log('Loaded bookings:', data?.length || 0, 'bookings');
       // Filter out deleted bookings
       const activeBookings = (data || []).filter((b: any) => !b.deleted_at);
-      setBookings(activeBookings as any);
+      
+      // Check if each booking has a quote
+      const bookingsWithQuotes = await Promise.all(
+        activeBookings.map(async (booking) => {
+          const { data: quote } = await supabase
+            .from('quotes_new')
+            .select('id')
+            .eq('request_id', booking.id)
+            .maybeSingle();
+          
+          return {
+            ...booking,
+            hasQuote: !!quote,
+            quoteId: quote?.id
+          } as BookingWithQuote;
+        })
+      );
+      
+      setBookings(bookingsWithQuotes);
     } catch (error) {
       console.error("Error loading bookings:", error);
     } finally {
@@ -294,10 +317,21 @@ export default function AdminBookings() {
                         <Eye className="h-4 w-4 mr-1" />
                         Visa detaljer
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleCreateQuote(booking)}>
-                        <FileText className="h-4 w-4 mr-1" />
-                        Skapa offert
-                      </Button>
+                      {booking.hasQuote ? (
+                        <Button 
+                          size="sm" 
+                          variant="default" 
+                          onClick={() => navigate(`/admin/quotes/new?request=${booking.id}`)}
+                        >
+                          <FileText className="h-4 w-4 mr-1" />
+                          Visa offert
+                        </Button>
+                      ) : (
+                        <Button size="sm" variant="outline" onClick={() => handleCreateQuote(booking)}>
+                          <FileText className="h-4 w-4 mr-1" />
+                          Skapa offert
+                        </Button>
+                      )}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="destructive">
