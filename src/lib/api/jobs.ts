@@ -74,9 +74,20 @@ export async function fetchJobs(params?: {
 }) {
   console.log('fetchJobs called with params:', params);
   
-  // Verify auth first
+  // Verify session and auth first
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  console.log('fetchJobs - Session exists:', !!session, 'Session error:', sessionError);
+  
+  if (!session) {
+    throw new Error('Ingen aktiv session. Vänligen logga in igen.');
+  }
+  
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-  console.log('Current auth user:', user?.id, user?.email, 'authError:', authError);
+  console.log('fetchJobs - Current auth user:', user?.id, user?.email, 'authError:', authError);
+  
+  if (!user) {
+    throw new Error('Kunde inte hämta användarinformation. Vänligen logga in igen.');
+  }
 
   let query = supabase
     .from('jobs')
@@ -88,9 +99,7 @@ export async function fetchJobs(params?: {
   }
 
   if (params?.assigned_to_me) {
-    if (user) {
-      query = query.eq('assigned_worker_id', user.id);
-    }
+    query = query.eq('assigned_worker_id', user.id);
   }
 
   if (params?.pool_only) {

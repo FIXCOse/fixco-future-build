@@ -23,15 +23,51 @@ const JobPool = () => {
       setLoading(true);
       console.log('JobPool - Fetching pool jobs...');
       
+      // Check auth session first
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      console.log('JobPool - Session:', session ? 'EXISTS' : 'MISSING', 'Error:', sessionError);
+      
+      if (!session) {
+        toast({
+          title: "Inte inloggad",
+          description: "Du måste vara inloggad som worker för att se jobbpoolen. Logga in igen.",
+          variant: "destructive"
+        });
+        setLoading(false);
+        navigate('/auth');
+        return;
+      }
+      
       const { data: { user } } = await supabase.auth.getUser();
       console.log('JobPool - Current user:', user?.id, user?.email);
+      
+      if (!user) {
+        toast({
+          title: "Session problem",
+          description: "Kunde inte hämta användarinformation. Logga in igen.",
+          variant: "destructive"
+        });
+        setLoading(false);
+        navigate('/auth');
+        return;
+      }
       
       const { data: profile } = await supabase
         .from('profiles')
         .select('role')
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single();
       console.log('JobPool - User role:', profile?.role);
+      
+      if (!profile || !['worker', 'technician'].includes(profile.role)) {
+        toast({
+          title: "Åtkomst nekad",
+          description: "Du måste ha worker-rollen för att komma åt jobbpoolen",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
       
       const data = await fetchJobs({ pool_only: true });
       console.log('JobPool - Loaded jobs:', data?.length, 'jobs', data);
@@ -40,7 +76,7 @@ const JobPool = () => {
       console.error('Error loading jobs:', error);
       toast({
         title: "Fel",
-        description: "Kunde inte ladda jobb från poolen",
+        description: error instanceof Error ? error.message : "Kunde inte ladda jobb från poolen",
         variant: "destructive"
       });
     } finally {
