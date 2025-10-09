@@ -134,10 +134,12 @@ export default function ServiceRequestModal() {
         body: jsonPayload,
       });
 
-      if (error) throw error;
-      const booking = { id: data.bookingId };
+      console.log('[ServiceRequestModal] Edge function response:', { data, error });
 
       if (error) throw error;
+      if (!data?.ok) throw new Error(data?.error || 'Unknown error');
+
+      const booking = { id: data.bookingId };
 
       toast.success("Tack! Vi återkommer så snart som möjligt.");
       setDone(true);
