@@ -51,13 +51,37 @@ serve(async (req) => {
       return json({ error: `customers.upsert: ${custErr.message}` }, 400);
     }
 
-    // --- 2) Insert i bookings (whitelist fält som vi vet finns) ---
+    // --- 2) Get authenticated user (if any) ---
+    const authHeader = req.headers.get("authorization");
+    let userId: string | null = null;
+    
+    if (authHeader) {
+      try {
+        const userClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!, {
+          global: { headers: { authorization: authHeader } },
+          auth: { persistSession: false }
+        });
+        const { data: { user } } = await userClient.auth.getUser();
+        userId = user?.id ?? null;
+      } catch (e) {
+        console.warn("Could not get user from auth:", e);
+      }
+    }
+
+    // --- 3) Insert i bookings (customer_id ska vara user ID från auth, inte customers.id) ---
     const bookingRow = {
-      customer_id: customer.id,
+      customer_id: userId, // User ID from auth.users (can be null for guests)
       service_slug,
       mode,
       status: "new",
-      payload: fields ?? {},
+      payload: {
+        ...fields,
+        // Store customer details in payload for reference
+        customer_email: email,
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+      },
       file_urls: fileUrls ?? [],
     };
     const { data: booking, error: bookErr } = await admin
@@ -70,7 +94,7 @@ serve(async (req) => {
       return json({ error: `bookings.insert: ${bookErr.message}` }, 400);
     }
 
-    // --- 3) Skapa draft-offert kopplad till booking ---
+    // --- 4) Skapa draft-offert kopplad till booking ---
     let quoteId: string | null = null;
     if (mode === "quote") {
       const { data: rpcRes, error: rpcErr } = await admin
@@ -91,7 +115,7 @@ serve(async (req) => {
           .insert({
             number: genNumber || `Q-${Date.now()}`, // fallback if RPC fails
             public_token: genToken || crypto.randomUUID(),
-            customer_id: booking.customer_id,
+            customer_id: customer.id, // Use customer ID from customers table for quotes
             request_id: booking.id,
             title: `Offert – ${service_slug}`,
             items: [],
