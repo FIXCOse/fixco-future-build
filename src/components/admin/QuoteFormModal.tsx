@@ -470,19 +470,19 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
           </Card>
 
           {/* ROT/RUT - Prominent Section */}
-          <Card className="border-2 border-primary/20 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20">
-              <CardTitle className="text-xl flex items-center gap-2">
+          <div className="border-2 border-primary/20 rounded-lg shadow-lg bg-card">
+            <div className="p-6 bg-gradient-to-r from-green-950/10 to-blue-950/10 rounded-t-lg">
+              <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center text-white font-bold">
                   %
                 </div>
-                ROT & RUT Skatteavdrag
-              </CardTitle>
-              <p className="text-sm text-muted-foreground mt-2">
+                <h3 className="text-xl font-semibold">ROT & RUT Skatteavdrag</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
                 Aktivera skattelättnader för att ge kunden upp till 50% rabatt på arbetskostnaden
               </p>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
+            </div>
+            <div className="p-6 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 {/* ROT */}
                 <div className={`p-6 rounded-lg border transition-all ${enableRot ? 'ring-2 ring-green-500 shadow-lg border-green-500/50' : 'opacity-60 border-border'}`}>
@@ -640,8 +640,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Options */}
           <Card>
