@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Clock, ArrowRight, FileText } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, FileText, Gift } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { fetchJobs } from '@/lib/api/jobs';
 import { useJobsRealtime } from '@/hooks/useJobsRealtime';
@@ -170,12 +170,37 @@ const MyJobs = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {/* EXTRA BONUS DISPLAY */}
+                  {job.bonus_amount && job.bonus_amount > 0 && (
+                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-4 shadow-lg">
+                      <div className="flex items-center gap-3">
+                        <Gift className="w-8 h-8 text-yellow-600 animate-pulse" />
+                        <div>
+                          <p className="text-xs font-semibold text-yellow-800 uppercase tracking-wide">
+                            🎉 Extra Bonus Till Detta Jobb
+                          </p>
+                          <p className="text-2xl font-black text-yellow-900">
+                            +{job.bonus_amount} kr
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Job Details */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                     {job.address && (
                       <div className="flex items-center text-muted-foreground">
                         <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span className="truncate">{job.address}, {job.city}</span>
+                      </div>
+                    )}
+
+                    {/* Worker Compensation Display */}
+                    {job.admin_set_price && job.admin_set_price > 0 && (
+                      <div className="flex items-center text-green-600 font-medium">
+                        <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span>Ersättning: {job.admin_set_price} kr</span>
                       </div>
                     )}
                   </div>
