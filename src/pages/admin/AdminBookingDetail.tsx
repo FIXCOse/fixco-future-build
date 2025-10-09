@@ -16,6 +16,8 @@ export default function AdminBookingDetail() {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (!id) {
@@ -127,6 +129,23 @@ export default function AdminBookingDetail() {
       cancelled: 'Avbokad'
     };
     return statusMap[status] || status;
+  };
+
+  const openLightbox = (index: number) => {
+    setCurrentImageIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const nextImage = () => {
+    if (booking?.images) {
+      setCurrentImageIndex((prev) => (prev + 1) % booking.images.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (booking?.images) {
+      setCurrentImageIndex((prev) => (prev - 1 + booking.images.length) % booking.images.length);
+    }
   };
 
   if (loading) {
@@ -301,12 +320,10 @@ export default function AdminBookingDetail() {
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {booking.images.map((imageUrl: string, index: number) => (
-                  <a
+                  <button
                     key={index}
-                    href={imageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors"
+                    onClick={() => openLightbox(index)}
+                    className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors cursor-pointer"
                   >
                     <img
                       src={imageUrl}
@@ -319,7 +336,7 @@ export default function AdminBookingDetail() {
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <ImageIcon className="h-8 w-8 text-white" />
                     </div>
-                  </a>
+                  </button>
                 ))}
               </div>
             </CardContent>
@@ -369,6 +386,69 @@ export default function AdminBookingDetail() {
           Redigera bokning
         </Button>
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && booking?.images && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center animate-fade-in"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+          >
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {booking.images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage();
+                }}
+                className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
+              >
+                <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage();
+                }}
+                className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
+              >
+                <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          <div 
+            className="max-w-7xl max-h-[90vh] p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={booking.images[currentImageIndex]}
+              alt={`Bild ${currentImageIndex + 1}`}
+              className="max-w-full max-h-[85vh] object-contain animate-scale-in"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/placeholder.svg';
+              }}
+            />
+            {booking.images.length > 1 && (
+              <p className="text-white text-center mt-4">
+                {currentImageIndex + 1} / {booking.images.length}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
