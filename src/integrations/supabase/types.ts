@@ -194,8 +194,10 @@ export type Database = {
           internal_notes: string | null
           labor_share: number | null
           materials: number | null
+          mode: string | null
           name: string | null
           organization_id: string | null
+          payload: Json | null
           phone: string | null
           photos: string[] | null
           postal_code: string | null
@@ -209,6 +211,7 @@ export type Database = {
           scheduled_time_start: string | null
           service_id: string
           service_name: string
+          service_slug: string | null
           service_variant: string | null
           source: string | null
           status: Database["public"]["Enums"]["booking_status"] | null
@@ -239,8 +242,10 @@ export type Database = {
           internal_notes?: string | null
           labor_share?: number | null
           materials?: number | null
+          mode?: string | null
           name?: string | null
           organization_id?: string | null
+          payload?: Json | null
           phone?: string | null
           photos?: string[] | null
           postal_code?: string | null
@@ -254,6 +259,7 @@ export type Database = {
           scheduled_time_start?: string | null
           service_id: string
           service_name: string
+          service_slug?: string | null
           service_variant?: string | null
           source?: string | null
           status?: Database["public"]["Enums"]["booking_status"] | null
@@ -284,8 +290,10 @@ export type Database = {
           internal_notes?: string | null
           labor_share?: number | null
           materials?: number | null
+          mode?: string | null
           name?: string | null
           organization_id?: string | null
+          payload?: Json | null
           phone?: string | null
           photos?: string[] | null
           postal_code?: string | null
@@ -299,6 +307,7 @@ export type Database = {
           scheduled_time_start?: string | null
           service_id?: string
           service_name?: string
+          service_slug?: string | null
           service_variant?: string | null
           source?: string | null
           status?: Database["public"]["Enums"]["booking_status"] | null
@@ -1530,96 +1539,6 @@ export type Database = {
           },
         ]
       }
-      quote_requests: {
-        Row: {
-          address: string | null
-          attachments: Json | null
-          city: string | null
-          contact_email: string | null
-          contact_name: string | null
-          contact_phone: string | null
-          created_at: string | null
-          created_by: string | null
-          created_by_type: string | null
-          customer_id: string | null
-          deleted_at: string | null
-          description: string | null
-          email: string | null
-          estimated_hours: number | null
-          hourly_rate: number | null
-          id: string
-          message: string | null
-          name: string | null
-          phone: string | null
-          postal_code: string | null
-          price_type: string | null
-          rot_rut_type: string | null
-          service_id: string
-          service_name: string | null
-          source: string | null
-          status: string
-          updated_at: string | null
-        }
-        Insert: {
-          address?: string | null
-          attachments?: Json | null
-          city?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
-          contact_phone?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          created_by_type?: string | null
-          customer_id?: string | null
-          deleted_at?: string | null
-          description?: string | null
-          email?: string | null
-          estimated_hours?: number | null
-          hourly_rate?: number | null
-          id?: string
-          message?: string | null
-          name?: string | null
-          phone?: string | null
-          postal_code?: string | null
-          price_type?: string | null
-          rot_rut_type?: string | null
-          service_id: string
-          service_name?: string | null
-          source?: string | null
-          status?: string
-          updated_at?: string | null
-        }
-        Update: {
-          address?: string | null
-          attachments?: Json | null
-          city?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
-          contact_phone?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          created_by_type?: string | null
-          customer_id?: string | null
-          deleted_at?: string | null
-          description?: string | null
-          email?: string | null
-          estimated_hours?: number | null
-          hourly_rate?: number | null
-          id?: string
-          message?: string | null
-          name?: string | null
-          phone?: string | null
-          postal_code?: string | null
-          price_type?: string | null
-          rot_rut_type?: string | null
-          service_id?: string
-          service_name?: string | null
-          source?: string | null
-          status?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       quotes: {
         Row: {
           accepted_at: string | null
@@ -1744,13 +1663,6 @@ export type Database = {
             columns: ["source_booking_id"]
             isOneToOne: false
             referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_quotes_source_quote_request"
-            columns: ["source_quote_request_id"]
-            isOneToOne: false
-            referencedRelation: "quote_requests"
             referencedColumns: ["id"]
           },
           {
@@ -2818,6 +2730,10 @@ export type Database = {
         Args: { p: Json }
         Returns: string
       }
+      create_draft_quote_for_booking: {
+        Args: { p_booking_id: string }
+        Returns: string
+      }
       create_expense_entry: {
         Args: { p: Json }
         Returns: string
@@ -3023,6 +2939,12 @@ export type Database = {
         | "in_progress"
         | "completed"
         | "cancelled"
+        | "new"
+        | "in_review"
+        | "quoted"
+        | "scheduled"
+        | "done"
+        | "canceled"
       invoice_status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
       loyalty_tier: "bronze" | "silver" | "gold" | "platinum"
       property_type:
@@ -3184,6 +3106,12 @@ export const Constants = {
         "in_progress",
         "completed",
         "cancelled",
+        "new",
+        "in_review",
+        "quoted",
+        "scheduled",
+        "done",
+        "canceled",
       ],
       invoice_status: ["draft", "sent", "paid", "overdue", "cancelled"],
       loyalty_tier: ["bronze", "silver", "gold", "platinum"],
