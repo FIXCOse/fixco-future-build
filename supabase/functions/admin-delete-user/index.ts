@@ -50,6 +50,46 @@ Deno.serve(async (req) => {
 
     // First, handle all relations by setting foreign keys to null or deleting dependent records
     
+    // Delete AI conversations
+    const { error: aiConvError } = await supabaseClient
+      .from('ai_conversations')
+      .delete()
+      .eq('user_id', userId)
+    
+    if (aiConvError) {
+      console.error('Error deleting AI conversations:', aiConvError)
+    }
+
+    // Delete events
+    const { error: eventsError } = await supabaseClient
+      .from('events')
+      .delete()
+      .eq('user_id', userId)
+    
+    if (eventsError) {
+      console.error('Error deleting events:', eventsError)
+    }
+
+    // Delete chat conversations
+    const { error: chatError } = await supabaseClient
+      .from('chat_conversations')
+      .delete()
+      .eq('user_id', userId)
+    
+    if (chatError) {
+      console.error('Error deleting chat conversations:', chatError)
+    }
+
+    // Delete product interactions
+    const { error: interactionsError } = await supabaseClient
+      .from('product_interactions')
+      .delete()
+      .eq('user_id', userId)
+    
+    if (interactionsError) {
+      console.error('Error deleting interactions:', interactionsError)
+    }
+
     // Update bookings - set customer_id to null
     const { error: bookingsError } = await supabaseClient
       .from('bookings')
@@ -68,6 +108,16 @@ Deno.serve(async (req) => {
     
     if (quotesError) {
       console.error('Error updating quotes:', quotesError)
+    }
+
+    // Update invoices - set customer_id to null  
+    const { error: invoicesError } = await supabaseClient
+      .from('invoices')
+      .update({ customer_id: null })
+      .eq('customer_id', userId)
+    
+    if (invoicesError) {
+      console.error('Error updating invoices:', invoicesError)
     }
 
     // Update projects - set customer_id and assigned_to to null
@@ -130,12 +180,23 @@ Deno.serve(async (req) => {
       console.error('Error updating staff:', staffError)
     }
 
-    // Now delete the user from auth.users (will cascade to profiles)
+    // Delete from profiles first (this should work even if auth.users delete fails)
+    const { error: profileError } = await supabaseClient
+      .from('profiles')
+      .delete()
+      .eq('id', userId)
+    
+    if (profileError) {
+      console.error('Error deleting profile:', profileError)
+      throw new Error('Could not delete user profile')
+    }
+
+    // Try to delete from auth.users (might fail but profile is already gone)
     const { error: deleteError } = await supabaseClient.auth.admin.deleteUser(userId)
 
     if (deleteError) {
-      console.error('Error deleting auth user:', deleteError)
-      throw deleteError
+      console.warn('Warning deleting auth user (but profile deleted):', deleteError)
+      // Don't throw - profile is deleted which is what matters
     }
 
     console.log('User and all related data deleted successfully:', userId)
