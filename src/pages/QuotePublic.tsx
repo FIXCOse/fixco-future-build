@@ -184,71 +184,81 @@ export default function QuotePublic() {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        {/* Header with gradient */}
-        <div className="gradient-primary-subtle border-b border-border">
-          <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
-                <FileText className="h-6 w-6 text-primary-foreground" />
+        {/* Hero Header */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 gradient-primary-subtle opacity-50"></div>
+          <div className="relative max-w-5xl mx-auto px-4 py-12 md:py-16">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl shadow-lg mb-4">
+                <FileText className="h-8 w-8 text-primary-foreground" />
               </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground">Offert {quote.number}</h1>
-                <p className="text-muted-foreground text-sm md:text-base">Från Fixco AB</p>
-              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
+                Offert {quote.number}
+              </h1>
+              <p className="text-muted-foreground text-lg">Från Fixco AB</p>
             </div>
-            <h2 className="text-xl md:text-2xl text-foreground font-semibold">{quote.title}</h2>
-            
-            {/* Status badges */}
-            <div className="flex flex-wrap gap-2 mt-4">
-              {isDeleted ? (
-                <Badge variant="destructive" className="flex items-center gap-1">
-                  <AlertCircle className="h-3 w-3" />
-                  Raderad
-                </Badge>
-              ) : accepted ? (
-                <Badge className="bg-green-600 hover:bg-green-700 flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3" />
-                  Accepterad
-                </Badge>
-              ) : isExpired ? (
-                <Badge variant="destructive" className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  Utgången
-                </Badge>
-              ) : (
-                <Badge variant="secondary" className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  Väntar på svar
-                </Badge>
-              )}
-              {quote.valid_until && !isExpired && !accepted && !isDeleted && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  Giltig t.o.m. {new Date(quote.valid_until).toLocaleDateString('sv-SE')}
-                </Badge>
-              )}
+
+            <div className="max-w-2xl mx-auto">
+              <Card className="border-border bg-surface/95 backdrop-blur-sm shadow-xl">
+                <CardContent className="pt-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-6">
+                    {quote.title}
+                  </h2>
+                  
+                  {/* Status badges */}
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {isDeleted ? (
+                      <Badge variant="destructive" className="text-base px-4 py-2">
+                        <AlertCircle className="h-4 w-4 mr-2" />
+                        Raderad
+                      </Badge>
+                    ) : accepted ? (
+                      <Badge className="bg-green-600 hover:bg-green-700 text-base px-4 py-2">
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        Accepterad
+                      </Badge>
+                    ) : isExpired ? (
+                      <Badge variant="destructive" className="text-base px-4 py-2">
+                        <Clock className="h-4 w-4 mr-2" />
+                        Utgången
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="text-base px-4 py-2">
+                        <Clock className="h-4 w-4 mr-2" />
+                        Väntar på svar
+                      </Badge>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
 
         {/* Main content */}
-        <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-6">
-          {/* Customer info card */}
-          <Card className="border-border bg-surface">
+        <div className="max-w-5xl mx-auto px-4 pb-12 space-y-6 -mt-6">
+          {/* Customer & Validity Info */}
+          <Card className="border-border bg-surface shadow-lg">
             <CardContent className="pt-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Till</p>
-                  <p className="text-lg font-semibold text-foreground">{quote.customer_name}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
-                    Giltig t.o.m.
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold">
+                    Mottagare
                   </p>
-                  <p className="text-lg font-semibold text-foreground">
+                  <p className="text-2xl font-bold text-foreground">{quote.customer_name}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Giltig till
+                  </p>
+                  <p className="text-2xl font-bold text-foreground">
                     {quote.valid_until 
-                      ? new Date(quote.valid_until).toLocaleDateString('sv-SE')
+                      ? new Date(quote.valid_until).toLocaleDateString('sv-SE', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })
                       : '—'}
                   </p>
                 </div>
@@ -256,103 +266,151 @@ export default function QuotePublic() {
             </CardContent>
           </Card>
 
-          {/* Price breakdown card */}
-          <Card className="border-border bg-surface">
-            <CardHeader>
-              <CardTitle className="text-xl">Kostnadsöversikt</CardTitle>
+          {/* Price breakdown */}
+          <Card className="border-border bg-surface shadow-lg">
+            <CardHeader className="border-b border-border">
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <span className="text-primary font-bold text-lg">kr</span>
+                </div>
+                Kostnadsspecifikation
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Arbete</span>
-                  <span className="text-lg font-semibold">{quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</span>
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-4 border-b border-border">
+                  <span className="text-lg text-muted-foreground">Arbetskostnad</span>
+                  <span className="text-2xl font-bold text-foreground">
+                    {quote.subtotal_work_sek.toLocaleString('sv-SE')} kr
+                  </span>
                 </div>
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Material</span>
-                  <span className="text-lg font-semibold">{quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
+                <div className="flex justify-between items-center py-4 border-b border-border">
+                  <span className="text-lg text-muted-foreground">Materialkostnad</span>
+                  <span className="text-2xl font-bold text-foreground">
+                    {quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr
+                  </span>
                 </div>
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Moms (25%)</span>
-                  <span className="text-lg font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
+                <div className="flex justify-between items-center py-4 border-b border-border">
+                  <span className="text-lg text-muted-foreground">Moms (25%)</span>
+                  <span className="text-2xl font-bold text-foreground">
+                    {quote.vat_sek.toLocaleString('sv-SE')} kr
+                  </span>
                 </div>
                 {quote.rot_deduction_sek > 0 && (
-                  <div className="flex justify-between items-center py-3 border-b border-border">
-                    <span className="text-green-600 dark:text-green-400 font-medium">ROT-avdrag</span>
-                    <span className="text-lg font-semibold text-green-600 dark:text-green-400">
+                  <div className="flex justify-between items-center py-4 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-6 px-6 rounded-lg">
+                    <span className="text-lg font-semibold text-green-700 dark:text-green-400">
+                      ROT-avdrag (30%)
+                    </span>
+                    <span className="text-2xl font-bold text-green-700 dark:text-green-400">
                       −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
                     </span>
                   </div>
                 )}
               </div>
               
-              {/* Total */}
-              <div className="gradient-primary-subtle rounded-xl p-6 mt-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-xl font-bold text-foreground">Totalt att betala</span>
-                  <span className="text-3xl font-bold text-primary">{quote.total_sek.toLocaleString('sv-SE')} kr</span>
+              {/* Total - Highlighted */}
+              <div className="mt-8 gradient-primary rounded-2xl p-8 shadow-lg">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <span className="text-2xl md:text-3xl font-bold text-primary-foreground">
+                    Totalt att betala
+                  </span>
+                  <span className="text-4xl md:text-5xl font-bold text-primary-foreground">
+                    {quote.total_sek.toLocaleString('sv-SE')} kr
+                  </span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* PDF download card */}
+          {/* PDF Download - Prominent */}
           {quote.pdf_url && (
-            <Card className="border-primary/30 bg-surface-2">
+            <Card className="border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10 shadow-lg">
               <CardContent className="pt-6">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                  onClick={() => window.open(quote.pdf_url, '_blank')}
-                >
-                  <Download className="h-5 w-5 mr-2" />
-                  Ladda ner PDF
-                </Button>
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
+                    <Download className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Ladda ner offert</h3>
+                    <p className="text-muted-foreground">
+                      Spara offertutkastet som PDF för dina arkiv
+                    </p>
+                  </div>
+                  <Button
+                    size="lg"
+                    className="w-full md:w-auto gradient-primary hover:brightness-110 transition-all shadow-lg text-lg px-8 py-6"
+                    onClick={() => window.open(quote.pdf_url, '_blank')}
+                  >
+                    <Download className="h-6 w-6 mr-3" />
+                    Ladda ner PDF
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Action buttons */}
+          {/* Action buttons / Status messages */}
           {isDeleted ? (
-            <Card className="border-destructive/50 bg-destructive/10">
-              <CardContent className="pt-6 text-center">
-                <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-                <p className="text-destructive font-semibold text-lg">
-                  Denna offert har raderats och kan inte längre accepteras eller ändras
-                </p>
+            <Card className="border-destructive/50 bg-destructive/5 shadow-lg">
+              <CardContent className="pt-8 pb-8 text-center">
+                <div className="max-w-md mx-auto space-y-4">
+                  <div className="w-16 h-16 bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
+                    <AlertCircle className="h-8 w-8 text-destructive" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-destructive">Offert raderad</h3>
+                  <p className="text-muted-foreground text-lg">
+                    Denna offert har raderats och kan inte längre accepteras eller ändras
+                  </p>
+                </div>
               </CardContent>
             </Card>
           ) : accepted ? (
-            <Card className="border-green-600/50 bg-green-600/10">
-              <CardContent className="pt-6 text-center">
-                <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
-                <p className="text-green-600 dark:text-green-300 font-semibold text-lg">
-                  Tack! Offerten är accepterad.
-                </p>
-                <p className="text-muted-foreground mt-2">Vi kommer att kontakta dig inom kort.</p>
+            <Card className="border-green-600/50 bg-green-50 dark:bg-green-900/10 shadow-lg">
+              <CardContent className="pt-8 pb-8 text-center">
+                <div className="max-w-md mx-auto space-y-4">
+                  <div className="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-green-700 dark:text-green-300">
+                    Offert accepterad!
+                  </h3>
+                  <p className="text-muted-foreground text-lg">
+                    Tack för ditt förtroende. Vi kommer att kontakta dig inom kort för att boka in arbetet.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           ) : (
-            <Card className="border-border bg-surface">
-              <CardContent className="pt-6 space-y-4">
+            <Card className="border-border bg-surface shadow-lg">
+              <CardHeader className="border-b border-border">
+                <CardTitle className="text-2xl text-center">Vad vill du göra?</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
                 {isExpired && (
-                  <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 mb-4">
-                    <p className="text-destructive text-center font-medium flex items-center justify-center gap-2">
-                      <Clock className="h-5 w-5" />
+                  <div className="bg-destructive/10 border-2 border-destructive/30 rounded-xl p-6 mb-6">
+                    <p className="text-destructive text-center font-semibold text-lg flex items-center justify-center gap-3">
+                      <Clock className="h-6 w-6" />
                       Denna offert har tyvärr gått ut
                     </p>
                   </div>
                 )}
                 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-6">
                   <Button 
                     size="lg"
-                    className="w-full gradient-primary hover:brightness-110 transition-all shadow-lg"
+                    className="w-full h-auto py-6 gradient-primary hover:brightness-110 transition-all shadow-lg flex flex-col items-center gap-3"
                     onClick={handleAccept}
                     disabled={accepting || isExpired}
                   >
-                    <CheckCircle2 className="h-5 w-5 mr-2" />
-                    {accepting ? 'Accepterar...' : 'Acceptera offert'}
+                    <CheckCircle2 className="h-8 w-8" />
+                    <div className="text-center">
+                      <div className="text-xl font-bold">
+                        {accepting ? 'Accepterar...' : 'Acceptera offert'}
+                      </div>
+                      <div className="text-sm opacity-90 mt-1">
+                        Jag godkänner alla villkor
+                      </div>
+                    </div>
                   </Button>
                   
                   <Dialog open={changeRequestOpen} onOpenChange={setChangeRequestOpen}>
@@ -360,31 +418,43 @@ export default function QuotePublic() {
                       <Button 
                         variant="outline" 
                         size="lg"
-                        className="w-full border-primary/30 hover:bg-primary/5"
+                        className="w-full h-auto py-6 border-2 border-primary/30 hover:bg-primary/5 flex flex-col items-center gap-3"
                         disabled={isExpired}
                       >
-                        <ExternalLink className="h-5 w-5 mr-2" />
-                        Begär ändring
+                        <ExternalLink className="h-8 w-8" />
+                        <div className="text-center">
+                          <div className="text-xl font-bold">Begär ändring</div>
+                          <div className="text-sm opacity-70 mt-1">
+                            Jag vill justera offerten
+                          </div>
+                        </div>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px]">
+                    <DialogContent className="sm:max-w-[550px]">
                       <DialogHeader>
-                        <DialogTitle>Begär ändring av offert</DialogTitle>
+                        <DialogTitle className="text-2xl">Begär ändring av offert</DialogTitle>
+                        <p className="text-muted-foreground mt-2">
+                          Beskriv vilka ändringar du önskar så återkommer vi med en uppdaterad offert.
+                        </p>
                       </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="message">Beskriv önskade ändringar *</Label>
+                      <div className="space-y-6 py-4">
+                        <div className="space-y-3">
+                          <Label htmlFor="message" className="text-base font-semibold">
+                            Beskriv önskade ändringar *
+                          </Label>
                           <Textarea
                             id="message"
                             value={changeMessage}
                             onChange={(e) => setChangeMessage(e.target.value)}
                             placeholder="T.ex. 'Jag skulle vilja ändra materialval till...' eller 'Kan ni ta bort arbete på balkong?'"
-                            rows={5}
-                            className="resize-none"
+                            rows={6}
+                            className="resize-none text-base"
                           />
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="files">Bifoga filer (valfritt)</Label>
+                        <div className="space-y-3">
+                          <Label htmlFor="files" className="text-base font-semibold">
+                            Bifoga filer (valfritt)
+                          </Label>
                           <Input
                             id="files"
                             type="file"
@@ -392,18 +462,20 @@ export default function QuotePublic() {
                             onChange={(e) => setChangeFiles(Array.from(e.target.files || []))}
                             className="cursor-pointer"
                           />
-                          <p className="text-xs text-muted-foreground">
-                            Du kan bifoga bilder, dokument eller andra filer som kan hjälpa oss förstå dina önskemål.
+                          <p className="text-sm text-muted-foreground">
+                            Du kan bifoga bilder, dokument eller andra filer som kan hjälpa oss förstå dina önskemål bättre.
                           </p>
                         </div>
-                        <div className="flex justify-end gap-3 pt-4">
+                        <div className="flex justify-end gap-4 pt-4 border-t">
                           <Button 
                             variant="outline" 
+                            size="lg"
                             onClick={() => setChangeRequestOpen(false)}
                           >
                             Avbryt
                           </Button>
                           <Button 
+                            size="lg"
                             onClick={handleChangeRequest} 
                             disabled={submitting || !changeMessage.trim()}
                             className="gradient-primary"
@@ -419,10 +491,24 @@ export default function QuotePublic() {
             </Card>
           )}
 
-          {/* Footer info */}
-          <div className="text-center text-sm text-muted-foreground py-8">
-            <p>Har du frågor? Kontakta oss på info@fixco.se eller ring 08-123 456 78</p>
-          </div>
+          {/* Footer */}
+          <Card className="border-border bg-surface/50">
+            <CardContent className="pt-6 text-center">
+              <div className="space-y-3">
+                <p className="text-lg font-semibold text-foreground">Har du frågor?</p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-muted-foreground">
+                  <a href="mailto:info@fixco.se" className="hover:text-primary transition-colors flex items-center gap-2">
+                    <ExternalLink className="h-4 w-4" />
+                    info@fixco.se
+                  </a>
+                  <span className="hidden sm:inline">•</span>
+                  <a href="tel:081234567" className="hover:text-primary transition-colors">
+                    08-123 456 78
+                  </a>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
