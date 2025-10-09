@@ -87,6 +87,11 @@ const QuoteWizard = () => {
 
         console.log('Loaded bookings:', bookings?.length, 'bookings');
         console.log('Loaded quote requests:', quoteRequests?.length, 'requests');
+        
+        // Debug: Log first quote request to see actual data
+        if (quoteRequests && quoteRequests.length > 0) {
+          console.log('First quote request data:', quoteRequests[0]);
+        }
 
         // Combine and format data
         const combinedData: BookingOrRequest[] = [
@@ -115,12 +120,14 @@ const QuoteWizard = () => {
             hourly_rate: request.hourly_rate,
             type: 'quote_request' as const,
             customer_id: request.customer_id,
-            name: request.contact_name || request.name,
-            email: request.contact_email || request.email,
+            // Prioritize contact_* fields first, then fallback to direct fields
+            name: request.contact_name || request.name || 'Ej angivet',
+            email: request.contact_email || request.email || 'Ej angivet',
+            phone: request.contact_phone || request.phone || 'Ej angivet',
             address: request.address,
             city: request.city,
             postal_code: request.postal_code,
-            description: request.description,
+            description: request.description || request.message,
             customer: null // Will be handled separately if needed
           }))
         ];
@@ -574,24 +581,24 @@ const QuoteWizard = () => {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <Label className="text-xs text-muted-foreground">Kund</Label>
-                  <p>
+                  <p className="font-medium">
                     {selectedItem.customer 
                       ? `${selectedItem.customer.first_name} ${selectedItem.customer.last_name}`
-                      : selectedItem.name || 'Okänd kund'
+                      : selectedItem.name && selectedItem.name !== 'Ej angivet' ? selectedItem.name : 'Okänd kund'
                     }
                   </p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">Tjänst</Label>
-                  <p>{selectedItem.service_name}</p>
+                  <p className="font-medium">{selectedItem.service_name}</p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">E-post</Label>
-                  <p>{selectedItem.customer?.email || selectedItem.email || 'Ej angiven'}</p>
+                  <p className="font-medium">{selectedItem.customer?.email || selectedItem.email || 'Ej angiven'}</p>
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground">Typ</Label>
-                  <p>{selectedItem.type === 'booking' ? 'Bokning' : 'Offertförfrågan'}</p>
+                  <Label className="text-xs text-muted-foreground">Ort</Label>
+                  <p className="font-medium">{selectedItem.city || 'Ej angiven'}</p>
                 </div>
               </div>
               {selectedItem.description && (
