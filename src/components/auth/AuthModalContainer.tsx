@@ -118,12 +118,32 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           });
         }
       } else {
-        toast({
-          title: "Välkommen tillbaka! 🎉",
-          description: "Du är nu inloggad"
-        });
-        handleClose();
-        navigate('/mitt-fixco');
+        // Get current user ID
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          // Get user profile to determine role
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+          toast({
+            title: "Välkommen tillbaka! 🎉",
+            description: "Du är nu inloggad"
+          });
+          handleClose();
+          
+          // Redirect based on role
+          if (profileData?.role === 'worker') {
+            navigate('/worker');
+          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+            navigate('/admin');
+          } else {
+            navigate('/mitt-fixco');
+          }
+        }
       }
     } catch (error) {
       toast({
@@ -245,12 +265,27 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           });
           handleClose();
         } else if (data.session) {
+          // Get user profile to determine role
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', data.user.id)
+            .single();
+
           toast({
             title: "Välkommen till Fixco! 🎉",
             description: "Ditt konto är nu aktivt"
           });
           handleClose();
-          navigate('/mitt-fixco');
+          
+          // Redirect based on role
+          if (profileData?.role === 'worker') {
+            navigate('/worker');
+          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+            navigate('/admin');
+          } else {
+            navigate('/mitt-fixco');
+          }
         }
       }
     } catch (error) {

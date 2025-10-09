@@ -52,13 +52,26 @@ export default function AuthCallback() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session) {
+          // Get user profile to determine role
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
           toast({
             title: "Välkommen!",
             description: "Du är nu inloggad"
           });
           
-          // Redirect to dashboard
-          navigate('/mitt-fixco', { replace: true });
+          // Redirect based on role
+          if (profileData?.role === 'worker') {
+            navigate('/worker', { replace: true });
+          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+            navigate('/admin', { replace: true });
+          } else {
+            navigate('/mitt-fixco', { replace: true });
+          }
         } else {
           // No session after callback - redirect to auth
           navigate('/auth', { replace: true });

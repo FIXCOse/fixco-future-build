@@ -28,7 +28,7 @@ export default function Navigation() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const location = useLocation();
-  const { isAdmin, isOwner } = useRole();
+  const { isAdmin, isOwner, isWorker } = useRole();
   const { t } = useCopy();
   const { currentLanguage } = useLanguagePersistence();
   const { theme } = useTheme();
@@ -236,6 +236,17 @@ export default function Navigation() {
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
+                ) : isWorker ? (
+                  <Link to="/worker">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-9 px-3 inline-flex items-center space-x-2"
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="hidden xl:inline">Arbetare</span>
+                    </Button>
+                  </Link>
                 ) : (
                   <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"}>
                     <Button 
@@ -351,6 +362,17 @@ export default function Navigation() {
                           </Link>
                         ))}
                       </>
+                    ) : isWorker ? (
+                      <Link to="/worker" onClick={() => setIsMenuOpen(false)}>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full justify-start gap-x-2"
+                        >
+                          <User className="h-4 w-4" />
+                          <span>Arbetare</span>
+                        </Button>
+                      </Link>
                     ) : (
                       <Link to={currentLanguage === 'en' ? "/en/admin" : "/mitt-fixco"} onClick={() => setIsMenuOpen(false)}>
                         <Button 
