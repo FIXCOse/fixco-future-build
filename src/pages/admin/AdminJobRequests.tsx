@@ -365,7 +365,7 @@ const AdminJobRequests = () => {
                   {jobRequests.map((request) => (
                     <div key={request.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
                       <div className="flex items-start justify-between mb-3">
-                        <div className="space-y-1">
+                        <div className="space-y-1 flex-1">
                           <div className="flex items-center gap-2">
                             <h3 className="font-medium">{request.jobs?.title}</h3>
                             {getJobStatusBadge(request.jobs?.status)}
@@ -373,8 +373,29 @@ const AdminJobRequests = () => {
                           </div>
                           <p className="text-sm text-muted-foreground">{request.jobs?.description}</p>
                         </div>
-                        <div className="text-right text-sm text-muted-foreground">
-                          {new Date(request.requested_at).toLocaleDateString('sv-SE')}
+                        <div className="flex items-center gap-3">
+                          <div className="text-right text-sm text-muted-foreground">
+                            {new Date(request.requested_at).toLocaleDateString('sv-SE')}
+                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button size="sm" variant="ghost">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                className="text-destructive focus:text-destructive"
+                                onClick={() => {
+                                  setRequestToDelete(request);
+                                  setDeleteConfirmOpen(true);
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Radera
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </div>
 
@@ -424,28 +445,6 @@ const AdminJobRequests = () => {
                           Förfaller: {new Date(request.expires_at).toLocaleString('sv-SE')}
                         </div>
                       )}
-
-                      <div className="flex justify-end">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="ghost">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              className="text-destructive focus:text-destructive"
-                              onClick={() => {
-                                setRequestToDelete(request);
-                                setDeleteConfirmOpen(true);
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Radera
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
                     </div>
                   ))}
                 </div>
