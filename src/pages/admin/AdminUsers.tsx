@@ -10,11 +10,14 @@ import { Search, User, Mail, Phone, Shield, Building, Users as UsersIcon, Filter
 import AdminBack from '@/components/admin/AdminBack';
 import { fetchAllUsers, type UserProfile } from '@/lib/api/users';
 import { useUsersRealtime } from '@/hooks/useUsersRealtime';
+import { UserProfileModal } from '@/components/admin/UserProfileModal';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [userTypeFilter, setUserTypeFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const { data: usersData, isLoading, refetch } = useQuery({
     queryKey: ['admin-users', searchTerm, userTypeFilter, roleFilter],
@@ -267,14 +270,16 @@ const AdminUsers = () => {
                           <p className="font-medium">{user.loyalty_points || 0} poäng</p>
                           <p className="text-muted-foreground">{user.total_spent?.toLocaleString() || 0} SEK</p>
                         </div>
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setProfileModalOpen(true);
+                          }}
+                        >
                           Visa profil
                         </Button>
-                        {user.role !== 'owner' && (
-                          <Button variant="ghost" size="sm">
-                            <Shield className="h-4 w-4" />
-                          </Button>
-                        )}
                       </div>
                     </div>
                   ))}
@@ -293,6 +298,12 @@ const AdminUsers = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <UserProfileModal 
+        user={selectedUser}
+        open={profileModalOpen}
+        onOpenChange={setProfileModalOpen}
+      />
     </div>
   );
 };
