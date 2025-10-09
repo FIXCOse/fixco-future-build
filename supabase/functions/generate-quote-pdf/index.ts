@@ -12,11 +12,16 @@ serve(async (req) => {
   }
 
   try {
-    const { quoteId } = await req.json();
+    const body = await req.json();
+    console.log('Received request body:', JSON.stringify(body));
+    
+    const { quoteId } = body;
     
     if (!quoteId) {
       throw new Error('Quote ID is required');
     }
+
+    console.log('Fetching quote with ID:', quoteId);
 
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -34,8 +39,16 @@ serve(async (req) => {
       .eq('id', quoteId)
       .single();
 
-    if (quoteError) throw quoteError;
-    if (!quote) throw new Error('Quote not found');
+    if (quoteError) {
+      console.error('Error fetching quote:', quoteError);
+      throw quoteError;
+    }
+    if (!quote) {
+      console.error('Quote not found with ID:', quoteId);
+      throw new Error('Quote not found');
+    }
+
+    console.log('Quote fetched successfully:', quote.quote_number);
 
     // Parse description if it's JSON
     let description = quote.description || '';
