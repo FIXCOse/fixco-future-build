@@ -134,12 +134,24 @@ export default function AdminQuotes() {
 
   const handleDownloadPDF = async (quote: QuoteRow) => {
     try {
-      toast.info('PDF-generering startar...');
-      // TODO: Implement PDF generation
-      console.log('Downloading PDF for quote:', quote.id);
-    } catch (error) {
+      toast.info('Genererar PDF...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-quote-pdf', {
+        body: { quoteId: quote.id }
+      });
+
+      if (error) throw error;
+      
+      if (data?.pdfUrl) {
+        // Open the PDF in a new tab
+        window.open(data.pdfUrl, '_blank');
+        toast.success('PDF genererad!');
+      } else {
+        throw new Error(data?.error || 'Kunde inte generera PDF');
+      }
+    } catch (error: any) {
       console.error('Error downloading PDF:', error);
-      toast.error('Kunde inte ladda ner PDF');
+      toast.error(error.message || 'Kunde inte generera PDF');
     }
   };
 
