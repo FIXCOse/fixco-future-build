@@ -178,14 +178,6 @@ const MyJobs = () => {
                         <span className="truncate">{job.address}, {job.city}</span>
                       </div>
                     )}
-                    
-                    {/* Workers ska bara se fast pris om det är satt av admin */}
-                    {job.pricing_mode === 'fixed' && job.fixed_price && (
-                      <div className="flex items-center text-primary font-medium">
-                        <span className="font-semibold">{job.fixed_price} kr</span>
-                        <span className="text-muted-foreground ml-1">(fast pris)</span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Action Button */}
