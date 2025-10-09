@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText, Trash2, X } from 'lucide-react';
+import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText, Trash2, X, Gift, Clock } from 'lucide-react';
 import { useJobsData } from '@/hooks/useJobsData';
 import { useUsersData } from '@/hooks/useUsersData';
 import { createJobFromBooking, createJobFromQuote, assignJobToWorker, updateJobStatus, prepareInvoiceFromJob } from '@/lib/api/jobs';
@@ -182,6 +182,28 @@ const AdminJobs = () => {
                 <p>Skapad: {new Date(job.created_at).toLocaleDateString('sv-SE')}</p>
                 {job.due_date && <p>Förfaller: {new Date(job.due_date).toLocaleDateString('sv-SE')}</p>}
               </div>
+
+              {/* Worker Compensation Display */}
+              {job.admin_set_price && job.admin_set_price > 0 && (
+                <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                  <Clock className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-green-800 uppercase">Worker ersättning</p>
+                    <p className="text-lg font-bold text-green-900">{job.admin_set_price} kr</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Bonus Display */}
+              {job.bonus_amount && job.bonus_amount > 0 && (
+                <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-500 rounded-lg px-3 py-2">
+                  <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-yellow-800 uppercase">🎉 Extra Bonus</p>
+                    <p className="text-xl font-black text-yellow-900">+{job.bonus_amount} kr</p>
+                  </div>
+                </div>
+              )}
 
               <div className="text-sm">
                 <p><strong>Prissättning:</strong> {job.pricing_mode === 'hourly' ? `${job.hourly_rate || 0} kr/h` : `Fast pris: ${job.fixed_price || 0} kr`}</p>
