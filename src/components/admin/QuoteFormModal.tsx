@@ -5,10 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Trash2 } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plus, Trash2, Info, Calculator } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 type LineItem = {
   type: 'work' | 'material';
@@ -32,13 +36,27 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
   const [newCustomer, setNewCustomer] = useState({ name: '', email: '', phone: '', address: '' });
   
   const [title, setTitle] = useState('');
-  const [items, setItems] = useState<LineItem[]>([{ type: 'work', description: '', quantity: 1, unit: 'st', price: 0 }]);
+  const [items, setItems] = useState<LineItem[]>([{ type: 'work', description: '', quantity: 1, unit: 'tim', price: 0 }]);
   const [pdfUrl, setPdfUrl] = useState('');
   const [validUntil, setValidUntil] = useState('');
-  const [manualVat, setManualVat] = useState(false);
-  const [manualVatAmount, setManualVatAmount] = useState(0);
-  const [manualRot, setManualRot] = useState(false);
-  const [manualRotAmount, setManualRotAmount] = useState(0);
+  const [notes, setNotes] = useState('');
+  
+  // ROT/RUT settings
+  const [enableRot, setEnableRot] = useState(false);
+  const [rotRate, setRotRate] = useState(30); // Default 30% för ROT
+  const [enableRut, setEnableRut] = useState(false);
+  const [rutRate, setRutRate] = useState(50); // Default 50% för RUT
+  
+  // Discount settings
+  const [discountType, setDiscountType] = useState<'none' | 'percent' | 'amount'>('none');
+  const [discountValue, setDiscountValue] = useState(0);
+  
+  // Material options
+  const [materialIncluded, setMaterialIncluded] = useState(true);
+  
+  // VAT settings
+  const [customVat, setCustomVat] = useState(false);
+  const [customVatRate, setCustomVatRate] = useState(25);
   
   const [loading, setLoading] = useState(false);
 
@@ -62,14 +80,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         console.error('Failed to parse items:', e);
       }
       
-      if (quote.vat_sek !== calculateAutoVat()) {
-        setManualVat(true);
-        setManualVatAmount(quote.vat_sek);
-      }
-      
       if (quote.rot_deduction_sek > 0) {
-        setManualRot(true);
-        setManualRotAmount(quote.rot_deduction_sek);
+        setEnableRot(true);
       }
     } else {
       resetForm();
@@ -89,13 +101,19 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
   const resetForm = () => {
     setTitle('');
     setSelectedCustomerId('');
-    setItems([{ type: 'work', description: '', quantity: 1, unit: 'st', price: 0 }]);
+    setItems([{ type: 'work', description: '', quantity: 1, unit: 'tim', price: 0 }]);
     setPdfUrl('');
     setValidUntil('');
-    setManualVat(false);
-    setManualVatAmount(0);
-    setManualRot(false);
-    setManualRotAmount(0);
+    setNotes('');
+    setEnableRot(false);
+    setRotRate(30);
+    setEnableRut(false);
+    setRutRate(50);
+    setDiscountType('none');
+    setDiscountValue(0);
+    setMaterialIncluded(true);
+    setCustomVat(false);
+    setCustomVatRate(25);
     setShowNewCustomer(false);
     setNewCustomer({ name: '', email: '', phone: '', address: '' });
   };
@@ -125,25 +143,56 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
   };
 
   const calculateSubtotalMaterial = () => {
+    if (!materialIncluded) return 0;
     return items
       .filter(item => item.type === 'material')
       .reduce((sum, item) => sum + (item.quantity * item.price), 0);
   };
 
-  const calculateAutoVat = () => {
-    return Math.round((calculateSubtotalWork() + calculateSubtotalMaterial()) * 0.25);
+  const calculateSubtotal = () => {
+    return calculateSubtotalWork() + calculateSubtotalMaterial();
   };
 
-  const calculateAutoRot = () => {
-    return Math.round(calculateSubtotalWork() * 0.3);
+  const calculateDiscount = () => {
+    const subtotal = calculateSubtotal();
+    if (discountType === 'percent') {
+      return Math.round(subtotal * (discountValue / 100));
+    } else if (discountType === 'amount') {
+      return discountValue;
+    }
+    return 0;
+  };
+
+  const calculateSubtotalAfterDiscount = () => {
+    return calculateSubtotal() - calculateDiscount();
+  };
+
+  const calculateVat = () => {
+    const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
+    const vatRate = customVat ? customVatRate : 25;
+    return Math.round(subtotalAfterDiscount * (vatRate / 100));
+  };
+
+  const calculateRotRutDeduction = () => {
+    const workCost = calculateSubtotalWork();
+    let deduction = 0;
+    
+    if (enableRot) {
+      deduction += Math.round(workCost * (rotRate / 100));
+    }
+    
+    if (enableRut) {
+      deduction += Math.round(workCost * (rutRate / 100));
+    }
+    
+    return deduction;
   };
 
   const calculateTotal = () => {
-    const work = calculateSubtotalWork();
-    const material = calculateSubtotalMaterial();
-    const vat = manualVat ? manualVatAmount : calculateAutoVat();
-    const rot = manualRot ? manualRotAmount : 0;
-    return work + material + vat - rot;
+    const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
+    const vat = calculateVat();
+    const rotRutDeduction = calculateRotRutDeduction();
+    return subtotalAfterDiscount + vat - rotRutDeduction;
   };
 
   const handleCreateCustomer = async () => {
@@ -177,8 +226,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
     }
 
     const total = calculateTotal();
-    if (total === 0) {
-      toast.error('Total summa kan inte vara 0');
+    if (total <= 0) {
+      toast.error('Total summa måste vara större än 0');
       return;
     }
 
@@ -191,8 +240,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         items: items,
         subtotal_work_sek: Math.round(calculateSubtotalWork()),
         subtotal_mat_sek: Math.round(calculateSubtotalMaterial()),
-        vat_sek: Math.round(manualVat ? manualVatAmount : calculateAutoVat()),
-        rot_deduction_sek: Math.round(manualRot ? manualRotAmount : 0),
+        vat_sek: Math.round(calculateVat()),
+        rot_deduction_sek: Math.round(calculateRotRutDeduction()),
         total_sek: Math.round(total),
         pdf_url: pdfUrl.trim() || undefined,
         valid_until: validUntil || undefined,
@@ -220,238 +269,427 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{quote ? 'Redigera offert' : 'Ny offert'}</DialogTitle>
+          <DialogTitle className="text-2xl flex items-center gap-2">
+            <Calculator className="h-6 w-6" />
+            {quote ? 'Redigera offert' : 'Ny offert'}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
           {/* Customer Selection */}
-          <div className="space-y-2">
-            <Label>Kund *</Label>
-            {!showNewCustomer ? (
-              <div className="flex gap-2">
-                <Select value={selectedCustomerId} onValueChange={setSelectedCustomerId}>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="Välj kund" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {customers.map(c => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name} ({c.email})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button type="button" variant="outline" onClick={() => setShowNewCustomer(true)}>
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-2 p-4 border rounded-lg">
-                <h4 className="font-medium">Ny kund</h4>
-                <Input
-                  placeholder="Namn *"
-                  value={newCustomer.name}
-                  onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                />
-                <Input
-                  placeholder="E-post *"
-                  type="email"
-                  value={newCustomer.email}
-                  onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
-                />
-                <Input
-                  placeholder="Telefon"
-                  value={newCustomer.phone}
-                  onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Adress"
-                  value={newCustomer.address}
-                  onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
-                />
-                <div className="flex gap-2">
-                  <Button onClick={handleCreateCustomer}>Skapa kund</Button>
-                  <Button variant="outline" onClick={() => setShowNewCustomer(false)}>Avbryt</Button>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Kundinformation</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {!showNewCustomer ? (
+                <div className="space-y-2">
+                  <Label>Kund *</Label>
+                  <div className="flex gap-2">
+                    <Select value={selectedCustomerId} onValueChange={setSelectedCustomerId}>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Välj kund" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {customers.map(c => (
+                          <SelectItem key={c.id} value={c.id}>
+                            {c.name} ({c.email})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button type="button" variant="outline" onClick={() => setShowNewCustomer(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Ny kund
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="space-y-3 p-4 border rounded-lg bg-muted/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold">Skapa ny kund</h4>
+                    <Button size="sm" variant="ghost" onClick={() => setShowNewCustomer(false)}>
+                      Avbryt
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input
+                      placeholder="Namn *"
+                      value={newCustomer.name}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
+                    />
+                    <Input
+                      placeholder="E-post *"
+                      type="email"
+                      value={newCustomer.email}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
+                    />
+                    <Input
+                      placeholder="Telefon"
+                      value={newCustomer.phone}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
+                    />
+                    <Input
+                      placeholder="Adress"
+                      value={newCustomer.address}
+                      onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
+                    />
+                  </div>
+                  <Button onClick={handleCreateCustomer} className="w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Skapa kund
+                  </Button>
+                </div>
+              )}
 
-          {/* Title */}
-          <div className="space-y-2">
-            <Label>Titel *</Label>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="T.ex. Renovering badrum"
-            />
-          </div>
+              <div className="space-y-2">
+                <Label>Offerttitel *</Label>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="T.ex. Renovering badrum"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Giltig till</Label>
+                <Input
+                  type="date"
+                  value={validUntil}
+                  onChange={(e) => setValidUntil(e.target.value)}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Line Items */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Rader</Label>
-              <Button type="button" size="sm" variant="outline" onClick={addItem}>
-                <Plus className="h-4 w-4 mr-1" />
-                Lägg till rad
-              </Button>
-            </div>
-            <div className="space-y-2">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Radposter</CardTitle>
+                <Button type="button" size="sm" onClick={addItem}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Lägg till rad
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
               {items.map((item, index) => (
-                <div key={index} className="flex gap-2 p-3 border rounded-lg">
-                  <Select
-                    value={item.type}
-                    onValueChange={(value: any) => updateItem(index, 'type', value)}
-                  >
-                    <SelectTrigger className="w-32">
+                <div key={index} className="grid grid-cols-12 gap-2 p-3 border rounded-lg bg-muted/20">
+                  <div className="col-span-2">
+                    <Select
+                      value={item.type}
+                      onValueChange={(value: any) => updateItem(index, 'type', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="work">Arbete</SelectItem>
+                        <SelectItem value="material">Material</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-4">
+                    <Input
+                      placeholder="Beskrivning"
+                      value={item.description}
+                      onChange={(e) => updateItem(index, 'description', e.target.value)}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      placeholder="Antal"
+                      value={item.quantity}
+                      onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <Input
+                      placeholder="Enh"
+                      value={item.unit || ''}
+                      onChange={(e) => updateItem(index, 'unit', e.target.value)}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Input
+                      type="number"
+                      min="0"
+                      placeholder="À-pris"
+                      value={item.price}
+                      onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+                  <div className="col-span-1 flex items-center justify-between gap-2">
+                    <span className="font-semibold text-sm whitespace-nowrap">
+                      {Math.round(item.quantity * item.price).toLocaleString()} kr
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => removeItem(index)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Options */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Tillval och avdrag</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Material Options */}
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="space-y-1">
+                  <Label>Materialkostnad ingår</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {materialIncluded ? 'Material ingår i offerten' : 'Material tillkommer (faktureras separat)'}
+                  </p>
+                </div>
+                <Switch
+                  checked={materialIncluded}
+                  onCheckedChange={setMaterialIncluded}
+                />
+              </div>
+
+              {/* Discount */}
+              <div className="space-y-3 p-3 border rounded-lg">
+                <Label>Rabatt</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Select value={discountType} onValueChange={(value: any) => setDiscountType(value)}>
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="work">Arbete</SelectItem>
-                      <SelectItem value="material">Material</SelectItem>
+                      <SelectItem value="none">Ingen rabatt</SelectItem>
+                      <SelectItem value="percent">Procent (%)</SelectItem>
+                      <SelectItem value="amount">Belopp (kr)</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Input
-                    className="flex-1"
-                    placeholder="Beskrivning"
-                    value={item.description}
-                    onChange={(e) => updateItem(index, 'description', e.target.value)}
-                  />
-                  <Input
-                    className="w-20"
-                    type="number"
-                    min="0"
-                    step="0.1"
-                    placeholder="Antal"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
-                  />
-                  <Input
-                    className="w-20"
-                    placeholder="Enhet"
-                    value={item.unit || ''}
-                    onChange={(e) => updateItem(index, 'unit', e.target.value)}
-                  />
-                  <Input
-                    className="w-32"
-                    type="number"
-                    min="0"
-                    placeholder="à-pris (kr)"
-                    value={item.price}
-                    onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
-                  />
-                  <div className="w-32 flex items-center justify-end font-medium">
-                    {Math.round(item.quantity * item.price).toLocaleString()} kr
-                  </div>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => removeItem(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  {discountType !== 'none' && (
+                    <>
+                      <Input
+                        type="number"
+                        min="0"
+                        step={discountType === 'percent' ? '1' : '100'}
+                        max={discountType === 'percent' ? '100' : undefined}
+                        value={discountValue}
+                        onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
+                        placeholder={discountType === 'percent' ? '0-100' : 'Belopp'}
+                      />
+                      <div className="flex items-center">
+                        <span className="text-sm font-medium">
+                          = {calculateDiscount().toLocaleString()} kr
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+
+              {/* ROT/RUT */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* ROT */}
+                <div className="space-y-3 p-3 border rounded-lg bg-green-50 dark:bg-green-900/10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Label>ROT-avdrag</Label>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="h-4 w-4 text-muted-foreground" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-xs">ROT-avdrag för renovering, ombyggnad och tillbyggnad</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <Switch checked={enableRot} onCheckedChange={setEnableRot} />
+                  </div>
+                  {enableRot && (
+                    <div className="space-y-2">
+                      <Label className="text-sm">Procentsats (%)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={rotRate}
+                        onChange={(e) => setRotRate(parseFloat(e.target.value) || 30)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Avdrag: {Math.round(calculateSubtotalWork() * (rotRate / 100)).toLocaleString()} kr
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* RUT */}
+                <div className="space-y-3 p-3 border rounded-lg bg-blue-50 dark:bg-blue-900/10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Label>RUT-avdrag</Label>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="h-4 w-4 text-muted-foreground" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-xs">RUT-avdrag för reparation, underhåll och städning</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <Switch checked={enableRut} onCheckedChange={setEnableRut} />
+                  </div>
+                  {enableRut && (
+                    <div className="space-y-2">
+                      <Label className="text-sm">Procentsats (%)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={rutRate}
+                        onChange={(e) => setRutRate(parseFloat(e.target.value) || 50)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Avdrag: {Math.round(calculateSubtotalWork() * (rutRate / 100)).toLocaleString()} kr
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Custom VAT */}
+              <div className="space-y-3 p-3 border rounded-lg">
+                <div className="flex items-center justify-between">
+                  <Label>Anpassad moms</Label>
+                  <Switch checked={customVat} onCheckedChange={setCustomVat} />
+                </div>
+                {customVat && (
+                  <div className="space-y-2">
+                    <Label className="text-sm">Momssats (%)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={customVatRate}
+                      onChange={(e) => setCustomVatRate(parseFloat(e.target.value) || 25)}
+                    />
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Summary */}
-          <div className="space-y-2 p-4 bg-muted rounded-lg">
-            <div className="flex justify-between">
-              <span>Arbete:</span>
-              <span className="font-medium">{calculateSubtotalWork().toLocaleString()} kr</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Material:</span>
-              <span className="font-medium">{calculateSubtotalMaterial().toLocaleString()} kr</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span>Moms (kr):</span>
-                <input
-                  type="checkbox"
-                  checked={manualVat}
-                  onChange={(e) => setManualVat(e.target.checked)}
-                  className="rounded"
-                />
-                <span className="text-sm text-muted-foreground">Manuell</span>
+          <Card className="border-primary/50">
+            <CardHeader>
+              <CardTitle className="text-lg">Sammanfattning</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Arbetskostnad:</span>
+                  <span className="font-medium">{calculateSubtotalWork().toLocaleString()} kr</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    Materialkostnad{!materialIncluded && ' (tillkommer)'}:
+                  </span>
+                  <span className="font-medium">
+                    {materialIncluded ? calculateSubtotalMaterial().toLocaleString() : '—'} kr
+                  </span>
+                </div>
+                <Separator />
+                <div className="flex justify-between">
+                  <span className="font-medium">Delsumma:</span>
+                  <span className="font-semibold">{calculateSubtotal().toLocaleString()} kr</span>
+                </div>
+                
+                {discountType !== 'none' && (
+                  <div className="flex justify-between text-sm text-red-600 dark:text-red-400">
+                    <span>
+                      Rabatt ({discountType === 'percent' ? `${discountValue}%` : `${discountValue} kr`}):
+                    </span>
+                    <span className="font-medium">−{calculateDiscount().toLocaleString()} kr</span>
+                  </div>
+                )}
+                
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Moms ({customVat ? customVatRate : 25}%):</span>
+                  <span className="font-medium">+{calculateVat().toLocaleString()} kr</span>
+                </div>
+                
+                {(enableRot || enableRut) && (
+                  <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                    <span>
+                      {enableRot && enableRut ? 'ROT/RUT-avdrag' : enableRot ? 'ROT-avdrag' : 'RUT-avdrag'}:
+                    </span>
+                    <span className="font-medium">−{calculateRotRutDeduction().toLocaleString()} kr</span>
+                  </div>
+                )}
+                
+                <Separator />
+                <div className="flex justify-between pt-2">
+                  <span className="text-xl font-bold">Totalt att betala:</span>
+                  <span className="text-2xl font-bold text-primary">
+                    {calculateTotal().toLocaleString()} kr
+                  </span>
+                </div>
               </div>
-              {manualVat ? (
-                <Input
-                  type="number"
-                  min="0"
-                  className="w-32"
-                  value={manualVatAmount}
-                  onChange={(e) => setManualVatAmount(parseFloat(e.target.value) || 0)}
+            </CardContent>
+          </Card>
+
+          {/* Additional Info */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Ytterligare information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Anteckningar (valfritt)</Label>
+                <Textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Interna anteckningar eller kommentarer..."
+                  rows={3}
                 />
-              ) : (
-                <span className="font-medium">{calculateAutoVat().toLocaleString()} kr</span>
-              )}
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span>ROT-avdrag (kr):</span>
-                <input
-                  type="checkbox"
-                  checked={manualRot}
-                  onChange={(e) => {
-                    setManualRot(e.target.checked);
-                    if (e.target.checked && !manualRotAmount) {
-                      setManualRotAmount(calculateAutoRot());
-                    }
-                  }}
-                  className="rounded"
-                />
-                <span className="text-sm text-muted-foreground">ROT möjligt</span>
               </div>
-              {manualRot ? (
+
+              <div className="space-y-2">
+                <Label>PDF-URL (valfritt)</Label>
                 <Input
-                  type="number"
-                  min="0"
-                  className="w-32"
-                  value={manualRotAmount}
-                  onChange={(e) => setManualRotAmount(parseFloat(e.target.value) || 0)}
+                  value={pdfUrl}
+                  onChange={(e) => setPdfUrl(e.target.value)}
+                  placeholder="https://..."
                 />
-              ) : (
-                <span className="font-medium">0 kr</span>
-              )}
-            </div>
-            <div className="flex justify-between pt-2 border-t">
-              <span className="font-bold">Total:</span>
-              <span className="font-bold text-lg">{calculateTotal().toLocaleString()} kr</span>
-            </div>
-          </div>
-
-          {/* PDF URL */}
-          <div className="space-y-2">
-            <Label>PDF-URL (valfritt)</Label>
-            <Input
-              value={pdfUrl}
-              onChange={(e) => setPdfUrl(e.target.value)}
-              placeholder="https://..."
-            />
-          </div>
-
-          {/* Valid Until */}
-          <div className="space-y-2">
-            <Label>Giltig till</Label>
-            <Input
-              type="date"
-              value={validUntil}
-              onChange={(e) => setValidUntil(e.target.value)}
-            />
-          </div>
+                <p className="text-xs text-muted-foreground">
+                  Länk till extern PDF om sådan finns
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
             Avbryt
           </Button>
-          <Button onClick={handleSubmit} disabled={loading}>
-            {loading ? 'Sparar...' : quote ? 'Uppdatera' : 'Skapa'}
+          <Button onClick={handleSubmit} disabled={loading} className="min-w-32">
+            {loading ? 'Sparar...' : quote ? 'Uppdatera offert' : 'Skapa offert'}
           </Button>
         </DialogFooter>
       </DialogContent>

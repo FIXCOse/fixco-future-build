@@ -208,10 +208,16 @@ export default function AdminQuotes() {
               Hantera alla offerter från systemet
             </p>
           </div>
-          <Button variant="outline" onClick={() => navigate('/admin/quotes/trash')}>
-            <Trash2 className="h-4 w-4 mr-2" />
-            Papperskorg
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={handleNewQuote}>
+              <Plus className="h-4 w-4 mr-2" />
+              Skapa offert
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/admin/quotes/trash')}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Papperskorg
+            </Button>
+          </div>
         </div>
       </div>
 
