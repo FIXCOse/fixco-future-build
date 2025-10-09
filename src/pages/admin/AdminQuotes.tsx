@@ -362,7 +362,16 @@ export default function AdminQuotes() {
                     {quote.description && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
                         <p className="font-medium text-sm">Beskrivning:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{quote.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
+                          {(() => {
+                            try {
+                              const parsed = JSON.parse(quote.description);
+                              return parsed.beskrivning || parsed.description || quote.description;
+                            } catch {
+                              return quote.description;
+                            }
+                          })()}
+                        </p>
                       </div>
                     )}
 
