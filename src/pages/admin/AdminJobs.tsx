@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText } from 'lucide-react';
+import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText, Trash2 } from 'lucide-react';
 import { useJobsData } from '@/hooks/useJobsData';
 import { useUsersData } from '@/hooks/useUsersData';
 import { createJobFromBooking, createJobFromQuote, assignJobToWorker, updateJobStatus, prepareInvoiceFromJob } from '@/lib/api/jobs';
@@ -48,7 +48,8 @@ const AdminJobs = () => {
     const matchesSearch = job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          job.address?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || job.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const isNotDeleted = !job.deleted_at;
+    return matchesSearch && matchesStatus && isNotDeleted;
   });
 
   const getStatusColor = (status: string) => {
@@ -105,6 +106,10 @@ const AdminJobs = () => {
           <h1 className="text-3xl font-bold">Jobb Administration</h1>
           <p className="text-muted-foreground">Hantera alla jobb och tilldelningar</p>
         </div>
+        <Button variant="outline" onClick={() => window.location.href = '/admin/jobs/trash'}>
+          <Trash2 className="h-4 w-4 mr-2" />
+          Papperskorg
+        </Button>
       </div>
 
       {/* Filters */}

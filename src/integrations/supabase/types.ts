@@ -183,6 +183,7 @@ export type Database = {
           created_by: string | null
           created_by_type: string | null
           customer_id: string | null
+          deleted_at: string | null
           description: string | null
           discount_percent: number | null
           email: string | null
@@ -227,6 +228,7 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           discount_percent?: number | null
           email?: string | null
@@ -271,6 +273,7 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           discount_percent?: number | null
           email?: string | null
@@ -854,6 +857,7 @@ export type Database = {
           city: string | null
           created_at: string
           customer_id: string | null
+          deleted_at: string | null
           description: string | null
           due_date: string | null
           fixed_price: number | null
@@ -877,6 +881,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           due_date?: string | null
           fixed_price?: number | null
@@ -900,6 +905,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           due_date?: string | null
           fixed_price?: number | null
@@ -1391,6 +1397,7 @@ export type Database = {
           created_by: string | null
           created_by_type: string | null
           customer_id: string | null
+          deleted_at: string | null
           description: string | null
           email: string | null
           estimated_hours: number | null
@@ -1419,6 +1426,7 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           email?: string | null
           estimated_hours?: number | null
@@ -1447,6 +1455,7 @@ export type Database = {
           created_by?: string | null
           created_by_type?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           description?: string | null
           email?: string | null
           estimated_hours?: number | null
@@ -2542,6 +2551,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_old_deleted_records: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       complete_job: {
         Args: { p_job_id: string }
         Returns: boolean
@@ -2651,8 +2664,20 @@ export type Database = {
         Args: { org_uuid: string }
         Returns: boolean
       }
+      permanently_delete_booking: {
+        Args: { p_booking_id: string }
+        Returns: boolean
+      }
+      permanently_delete_job: {
+        Args: { p_job_id: string }
+        Returns: boolean
+      }
       permanently_delete_quote: {
         Args: { p_quote_id: string }
+        Returns: boolean
+      }
+      permanently_delete_quote_request: {
+        Args: { p_quote_request_id: string }
         Returns: boolean
       }
       prepare_invoice_from_job: {
@@ -2663,8 +2688,20 @@ export type Database = {
         Args: { _service_updates: Json }
         Returns: undefined
       }
+      restore_booking: {
+        Args: { p_booking_id: string }
+        Returns: boolean
+      }
+      restore_job: {
+        Args: { p_job_id: string }
+        Returns: boolean
+      }
       restore_quote: {
         Args: { p_quote_id: string }
+        Returns: boolean
+      }
+      restore_quote_request: {
+        Args: { p_quote_request_id: string }
         Returns: boolean
       }
       rpc_acquire_lock: {

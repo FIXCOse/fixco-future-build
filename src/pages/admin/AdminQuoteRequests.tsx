@@ -36,7 +36,9 @@ export default function AdminQuoteRequests() {
       }
       const { data } = await fetchQuoteRequests(params);
       console.log('Loaded quote requests:', data?.length || 0, 'requests');
-      setQuoteRequests(data as any);
+      // Filter out deleted quote requests
+      const activeRequests = (data || []).filter((q: any) => !q.deleted_at);
+      setQuoteRequests(activeRequests as any);
     } catch (error) {
       console.error("Error loading quote requests:", error);
     } finally {
@@ -79,12 +81,12 @@ export default function AdminQuoteRequests() {
     try {
       const { error } = await supabase
         .from('quote_requests')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
       
-      toast.success('Offertförfrågning borttagen');
+      toast.success('Offertförfrågning flyttad till papperskorgen');
       loadQuoteRequests();
     } catch (error) {
       console.error('Error deleting quote request:', error);
@@ -157,10 +159,18 @@ export default function AdminQuoteRequests() {
       <AdminBack />
       
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Offertförfrågningar</h1>
-        <p className="text-muted-foreground mt-2">
-          Hantera alla offertförfrågningar från kunder
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Offertförfrågningar</h1>
+            <p className="text-muted-foreground mt-2">
+              Hantera alla offertförfrågningar från kunder
+            </p>
+          </div>
+          <Button variant="outline" onClick={() => navigate('/admin/quote-requests/trash')}>
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
+          </Button>
+        </div>
       </div>
 
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>

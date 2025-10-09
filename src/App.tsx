@@ -49,6 +49,9 @@ import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import AdminQuoteEdit from "./pages/admin/AdminQuoteEdit";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
+import AdminQuoteRequestsTrash from "./pages/admin/AdminQuoteRequestsTrash";
+import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
+import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminInvoices from "./pages/admin/AdminInvoices";
@@ -160,15 +163,19 @@ const App = () => {
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quotes/:id/edit" element={<AdminQuoteEdit />} />
                     <Route path="quote-requests" element={<AdminQuoteRequests />} />
+                    <Route path="quote-requests/trash" element={<AdminQuoteRequestsTrash />} />
                     <Route path="quotes/new" element={<QuoteWizard />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />
+                    <Route path="bookings/trash" element={<AdminBookingsTrash />} />
                     <Route path="bookings/:id" element={<AdminBookingDetail />} />
                     <Route path="customers" element={<AdminCustomers />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="database" element={<AdminDatabase />} />
                     <Route path="reports" element={<AdminReports />} />
+                    <Route path="jobs" element={<AdminJobs />} />
+                    <Route path="jobs/trash" element={<AdminJobsTrash />} />
                     <Route path="settings" element={<AdminSettings />} />
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />

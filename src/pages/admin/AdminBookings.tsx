@@ -36,7 +36,9 @@ export default function AdminBookings() {
       }
       const { data } = await fetchBookings(params);
       console.log('Loaded bookings:', data?.length || 0, 'bookings');
-      setBookings(data as any);
+      // Filter out deleted bookings
+      const activeBookings = (data || []).filter((b: any) => !b.deleted_at);
+      setBookings(activeBookings as any);
     } catch (error) {
       console.error("Error loading bookings:", error);
     } finally {
@@ -82,12 +84,12 @@ export default function AdminBookings() {
     try {
       const { error } = await supabase
         .from('bookings')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
       
-      toast.success('Bokning borttagen');
+      toast.success('Bokning flyttad till papperskorgen');
       loadBookings();
     } catch (error) {
       console.error('Error deleting booking:', error);
@@ -150,10 +152,18 @@ export default function AdminBookings() {
       <AdminBack />
       
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Bokningar</h1>
-        <p className="text-muted-foreground mt-2">
-          Hantera alla bokningar från kunder
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Bokningar</h1>
+            <p className="text-muted-foreground mt-2">
+              Hantera alla bokningar från kunder
+            </p>
+          </div>
+          <Button variant="outline" onClick={() => navigate('/admin/bookings/trash')}>
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
+          </Button>
+        </div>
       </div>
 
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>

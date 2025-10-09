@@ -25,11 +25,17 @@ export type BookingRow = {
   created_by?: string | null;
   created_at: string;
   updated_at?: string | null;
+  deleted_at?: string | null;
+  contact_name?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
   customer?: {
     first_name?: string;
     last_name?: string;
     email?: string;
   } | null;
+  base_price?: number;
+  final_price?: number;
 };
 
 export async function fetchBookings(params?: {
