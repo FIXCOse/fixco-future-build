@@ -94,7 +94,7 @@ export async function fetchQuotes(params?: {
 }
 
 export async function createQuote(quoteData: {
-  customer_id: string;
+  customer_id: string | null;
   property_id?: string | null;
   title: string;
   description?: string;

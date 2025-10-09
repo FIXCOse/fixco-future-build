@@ -245,6 +245,12 @@ export default function ServiceRequestModal() {
                   />
                   <input
                     className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Personnummer"
+                    value={values.personnummer || ""}
+                    onChange={e => onChange("personnummer", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                     placeholder="E-post *"
                     type="email"
                     value={values.email || ""}
@@ -257,10 +263,22 @@ export default function ServiceRequestModal() {
                     onChange={e => onChange("phone", e.target.value)}
                   />
                   <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all md:col-span-2"
                     placeholder="Adress"
                     value={values.address || ""}
                     onChange={e => onChange("address", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Postnummer"
+                    value={values.postal_code || ""}
+                    onChange={e => onChange("postal_code", e.target.value)}
+                  />
+                  <input
+                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    placeholder="Ort"
+                    value={values.city || ""}
+                    onChange={e => onChange("city", e.target.value)}
                   />
                 </div>
               </div>

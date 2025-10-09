@@ -261,8 +261,9 @@ const QuoteWizard = () => {
     try {
       const totals = calculateTotals();
 
-      // Ensure we have a valid customer_id (quotes.customer_id is NOT NULL)
+      // Try to find existing customer by email if available
       let customerId = selectedItem.customer_id || selectedItem.customer?.id || null;
+      
       if (!customerId) {
         const emailToMatch = selectedItem.customer?.email || selectedItem.email || '';
         if (emailToMatch) {
@@ -277,37 +278,14 @@ const QuoteWizard = () => {
           
           if (profile) {
             customerId = profile.id;
-          } else {
-            // Create a new customer via edge function
-            const names = (selectedItem.name || '').split(' ');
-            const firstName = names[0] || 'Okänd';
-            const lastName = names.slice(1).join(' ') || 'Kund';
-            
-            const { data: customerData, error: createError } = await supabase.functions.invoke('create-customer-profile', {
-              body: {
-                email: emailToMatch,
-                firstName,
-                lastName,
-                phone: (selectedItem as any).phone || (selectedItem as any).contact_phone || null
-              }
-            });
-            
-            if (createError) throw createError;
-            customerId = customerData.customer_id;
-            
-            toast.success('Ny kund skapad automatiskt');
           }
+          // If no existing customer found, we'll create quote without customer_id (guest)
+          // The denormalized customer fields will still contain all the contact information
         }
-      }
-
-      if (!customerId) {
-        toast.error('Ingen kontaktinformation tillgänglig. Kan inte skapa offert.');
-        setLoading(false);
-        return;
       }
       
       await createQuote({
-        customer_id: customerId,
+        customer_id: customerId || null,
         property_id: null,
         title: `Offert för ${selectedItem.service_name}`,
         description: quoteData.notes || selectedItem.description || `Offert baserad på ${selectedItem.type === 'booking' ? 'bokning' : 'offertförfrågan'} ${selectedItem.id}`,
@@ -589,12 +567,20 @@ const QuoteWizard = () => {
                   </p>
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground">Tjänst</Label>
-                  <p className="font-medium">{selectedItem.service_name}</p>
+                  <Label className="text-xs text-muted-foreground">Telefon</Label>
+                  <p className="font-medium">{(selectedItem as any).phone || (selectedItem as any).contact_phone || 'Ej angiven'}</p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">E-post</Label>
                   <p className="font-medium">{selectedItem.customer?.email || selectedItem.email || 'Ej angiven'}</p>
+                </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">Adress</Label>
+                  <p className="font-medium">{selectedItem.address || 'Ej angiven'}</p>
+                </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">Postnummer</Label>
+                  <p className="font-medium">{selectedItem.postal_code || 'Ej angiven'}</p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">Ort</Label>
