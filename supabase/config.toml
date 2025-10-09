@@ -83,5 +83,8 @@ verify_jwt = false
 [functions.generate-quote-pdf]
 verify_jwt = false
 
+[functions.cleanup-deleted-quotes]
+verify_jwt = true
+
 [functions.create-customer-profile]
 verify_jwt = true

@@ -1478,6 +1478,7 @@ export type Database = {
           customer_name: string | null
           customer_phone: string | null
           customer_postal_code: string | null
+          deleted_at: string | null
           description: string | null
           discount_amount: number | null
           discount_percent: number | null
@@ -1516,6 +1517,7 @@ export type Database = {
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
+          deleted_at?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percent?: number | null
@@ -1554,6 +1556,7 @@ export type Database = {
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
+          deleted_at?: string | null
           description?: string | null
           discount_amount?: number | null
           discount_percent?: number | null
@@ -2535,6 +2538,10 @@ export type Database = {
         Args: { p_job_id: string }
         Returns: boolean
       }
+      cleanup_old_deleted_quotes: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       complete_job: {
         Args: { p_job_id: string }
         Returns: boolean
@@ -2644,6 +2651,10 @@ export type Database = {
         Args: { org_uuid: string }
         Returns: boolean
       }
+      permanently_delete_quote: {
+        Args: { p_quote_id: string }
+        Returns: boolean
+      }
       prepare_invoice_from_job: {
         Args: { p_job_id: string }
         Returns: Json
@@ -2651,6 +2662,10 @@ export type Database = {
       reorder_services: {
         Args: { _service_updates: Json }
         Returns: undefined
+      }
+      restore_quote: {
+        Args: { p_quote_id: string }
+        Returns: boolean
       }
       rpc_acquire_lock: {
         Args: { p_scope: string }

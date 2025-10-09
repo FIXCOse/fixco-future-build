@@ -10,6 +10,7 @@ export type QuoteRow = {
   updated_at?: string;
   accepted_at?: string | null;
   valid_until?: string | null;
+  deleted_at?: string | null;
   customer_id: string;
   property_id: string | null;
   organization_id?: string | null;

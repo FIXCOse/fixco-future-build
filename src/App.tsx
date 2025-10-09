@@ -48,6 +48,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import AdminQuoteEdit from "./pages/admin/AdminQuoteEdit";
+import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
 import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminInvoices from "./pages/admin/AdminInvoices";
@@ -155,6 +156,7 @@ const App = () => {
                     <Route index element={<AdminDashboard />} />
                     <Route path="services" element={<AdminServices />} />
                     <Route path="quotes" element={<AdminQuotes />} />
+                    <Route path="quotes/trash" element={<AdminQuotesTrash />} />
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quotes/:id/edit" element={<AdminQuoteEdit />} />
                     <Route path="quote-requests" element={<AdminQuoteRequests />} />

@@ -36,7 +36,9 @@ export default function AdminQuotes() {
       }
       const { data } = await fetchQuotes(params);
       console.log('Loaded quotes:', data?.length || 0, 'quotes');
-      setQuotes(data as any);
+      // Filter out deleted quotes
+      const activeQuotes = (data || []).filter((q: any) => !q.deleted_at);
+      setQuotes(activeQuotes as any);
     } catch (error) {
       console.error("Error loading quotes:", error);
     } finally {
@@ -94,12 +96,12 @@ export default function AdminQuotes() {
     try {
       const { error } = await supabase
         .from('quotes')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
       
-      toast.success('Offert borttagen');
+      toast.success('Offert flyttad till papperskorgen');
       loadQuotes();
     } catch (error) {
       console.error('Error deleting quote:', error);
@@ -300,10 +302,16 @@ export default function AdminQuotes() {
               Hantera alla offerter från systemet
             </p>
           </div>
-          <Button onClick={() => navigate('/admin/quotes/new')}>
-            <Plus className="h-4 w-4 mr-2" />
-            Ny offert
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/admin/quotes/trash')}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Papperskorg
+            </Button>
+            <Button onClick={() => navigate('/admin/quotes/new')}>
+              <Plus className="h-4 w-4 mr-2" />
+              Ny offert
+            </Button>
+          </div>
         </div>
       </div>
 
