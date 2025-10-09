@@ -183,33 +183,33 @@ const AdminJobs = () => {
                 {job.due_date && <p>Förfaller: {new Date(job.due_date).toLocaleDateString('sv-SE')}</p>}
               </div>
 
-              {/* Worker Compensation Display */}
-              {job.admin_set_price && job.admin_set_price > 0 && (
-                <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                  <Clock className="w-5 h-5 text-green-600 flex-shrink-0" />
+              {/* Worker Compensation - Show as EXTRA BONUS */}
+              {Number(job.admin_set_price) > 0 && (
+                <div className="flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-100 border-2 border-green-500 rounded-lg px-3 py-2">
+                  <Gift className="w-6 h-6 text-green-600 animate-pulse flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-green-800 uppercase">Worker ersättning</p>
-                    <p className="text-lg font-bold text-green-900">{job.admin_set_price} kr</p>
+                    <p className="text-xs font-semibold text-green-800 uppercase">EXTRA BONUS</p>
+                    <p className="text-xl font-black text-green-900">+{job.admin_set_price} kr</p>
                   </div>
                 </div>
               )}
 
               {/* Bonus Display */}
-              {job.bonus_amount && job.bonus_amount > 0 && (
-                <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-500 rounded-lg px-3 py-2">
-                  <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
+              {Number(job.bonus_amount) > 0 && (
+                <div className="flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-100 border-2 border-green-500 rounded-lg px-3 py-2">
+                  <Gift className="w-6 h-6 text-green-600 animate-pulse flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-yellow-800 uppercase">EXTRA BONUS</p>
-                    <p className="text-xl font-black text-yellow-900">+{job.bonus_amount} kr</p>
+                    <p className="text-xs font-semibold text-green-800 uppercase">EXTRA BONUS</p>
+                    <p className="text-xl font-black text-green-900">+{job.bonus_amount} kr</p>
                   </div>
                 </div>
               )}
 
               <div className="text-sm space-y-1">
-                {job.pricing_mode === 'hourly' && job.hourly_rate && job.hourly_rate > 0 && (
+                {job.pricing_mode === 'hourly' && Number(job.hourly_rate) > 0 && (
                   <p><strong>Timpris:</strong> {job.hourly_rate} kr/h</p>
                 )}
-                {job.pricing_mode === 'fixed' && job.fixed_price && job.fixed_price > 0 && (
+                {job.pricing_mode === 'fixed' && Number(job.fixed_price) > 0 && (
                   <p><strong>Fast pris:</strong> {job.fixed_price} kr</p>
                 )}
                 {job.assigned_worker_id && (
