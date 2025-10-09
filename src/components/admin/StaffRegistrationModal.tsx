@@ -1,16 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
-import { X, Send } from 'lucide-react';
+import { Send, Check } from 'lucide-react';
 
 interface StaffRegistrationModalProps {
   open: boolean;
@@ -23,21 +21,56 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
   const queryClient = useQueryClient();
   
   const [formData, setFormData] = useState({
-    name: editingStaff?.name || '',
-    email: editingStaff?.email || '',
-    phone: editingStaff?.phone || '',
-    address: editingStaff?.address || '',
-    postal_code: editingStaff?.postal_code || '',
-    city: editingStaff?.city || '',
-    date_of_birth: editingStaff?.date_of_birth || '',
-    role: editingStaff?.role || 'technician',
-    hourly_rate: editingStaff?.hourly_rate || 0,
-    emergency_contact_name: editingStaff?.emergency_contact_name || '',
-    emergency_contact_phone: editingStaff?.emergency_contact_phone || '',
-    selectedSkills: editingStaff?.staff_skills?.map((ss: any) => ss.skill_id) || []
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    postal_code: '',
+    city: '',
+    date_of_birth: '',
+    role: 'technician',
+    hourly_rate: 0,
+    emergency_contact_name: '',
+    emergency_contact_phone: '',
+    selectedSkills: [] as string[]
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update form when editingStaff changes
+  useEffect(() => {
+    if (editingStaff) {
+      setFormData({
+        name: editingStaff.name || '',
+        email: editingStaff.email || '',
+        phone: editingStaff.phone || '',
+        address: editingStaff.address || '',
+        postal_code: editingStaff.postal_code || '',
+        city: editingStaff.city || '',
+        date_of_birth: editingStaff.date_of_birth || '',
+        role: editingStaff.role || 'technician',
+        hourly_rate: editingStaff.hourly_rate || 0,
+        emergency_contact_name: editingStaff.emergency_contact_name || '',
+        emergency_contact_phone: editingStaff.emergency_contact_phone || '',
+        selectedSkills: editingStaff.staff_skills?.map((ss: any) => ss.skill_id) || []
+      });
+    } else {
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        postal_code: '',
+        city: '',
+        date_of_birth: '',
+        role: 'technician',
+        hourly_rate: 0,
+        emergency_contact_name: '',
+        emergency_contact_phone: '',
+        selectedSkills: []
+      });
+    }
+  }, [editingStaff, open]);
 
   // Fetch available skills
   const { data: skills = [] } = useQuery({
@@ -144,24 +177,6 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
 
       queryClient.invalidateQueries({ queryKey: ['admin-staff'] });
       onOpenChange(false);
-      
-      // Reset form if creating new staff
-      if (!editingStaff) {
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          address: '',
-          postal_code: '',
-          city: '',
-          date_of_birth: '',
-          role: 'technician',
-          hourly_rate: 0,
-          emergency_contact_name: '',
-          emergency_contact_phone: '',
-          selectedSkills: []
-        });
-      }
 
     } catch (error) {
       console.error('Error saving staff:', error);
@@ -352,26 +367,29 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
             </div>
           </div>
 
-          {/* Skills */}
+          {/* Skills - Simplified Badge Selection */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Kompetenser</h3>
+            <p className="text-sm text-muted-foreground">Klicka på kompetenserna för att välja/avvälja</p>
             <div className="space-y-4">
               {Object.entries(skillsByCategory).map(([category, categorySkills]: [string, any]) => (
                 <div key={category} className="space-y-2">
-                  <h4 className="font-medium capitalize">{category}</h4>
+                  <h4 className="font-medium capitalize text-sm text-muted-foreground">{category}</h4>
                   <div className="flex flex-wrap gap-2">
-                    {categorySkills.map((skill: any) => (
-                      <div key={skill.id} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={skill.id}
-                          checked={formData.selectedSkills.includes(skill.id)}
-                          onCheckedChange={() => handleSkillToggle(skill.id)}
-                        />
-                        <Label htmlFor={skill.id} className="text-sm cursor-pointer">
+                    {categorySkills.map((skill: any) => {
+                      const isSelected = formData.selectedSkills.includes(skill.id);
+                      return (
+                        <Badge
+                          key={skill.id}
+                          variant={isSelected ? "default" : "outline"}
+                          className="cursor-pointer hover:scale-105 transition-transform px-4 py-2 text-sm"
+                          onClick={() => handleSkillToggle(skill.id)}
+                        >
+                          {isSelected && <Check className="h-3 w-3 mr-1" />}
                           {skill.name}
-                        </Label>
-                      </div>
-                    ))}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
