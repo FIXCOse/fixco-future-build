@@ -259,18 +259,42 @@ const QuoteWizard = () => {
       if (!customerId) {
         const emailToMatch = selectedItem.customer?.email || selectedItem.email || '';
         if (emailToMatch) {
+          // Try to find existing profile by email
           const { data: profile, error: profileError } = await supabase
             .from('profiles')
-            .select('id')
+            .select('id, email')
             .eq('email', emailToMatch)
             .maybeSingle();
-          if (profileError) throw profileError;
-          customerId = profile?.id || null;
+          
+          if (profileError && profileError.code !== 'PGRST116') throw profileError;
+          
+          if (profile) {
+            customerId = profile.id;
+          } else {
+            // Create a new customer via edge function
+            const names = (selectedItem.name || '').split(' ');
+            const firstName = names[0] || 'Okänd';
+            const lastName = names.slice(1).join(' ') || 'Kund';
+            
+            const { data: customerData, error: createError } = await supabase.functions.invoke('create-customer-profile', {
+              body: {
+                email: emailToMatch,
+                firstName,
+                lastName,
+                phone: (selectedItem as any).phone || (selectedItem as any).contact_phone || null
+              }
+            });
+            
+            if (createError) throw createError;
+            customerId = customerData.customer_id;
+            
+            toast.success('Ny kund skapad automatiskt');
+          }
         }
       }
 
       if (!customerId) {
-        toast.error('Ingen kund kopplad till förfrågan. Välj en bokning/förfrågan med kund eller skapa/länka kund först.');
+        toast.error('Ingen kontaktinformation tillgänglig. Kan inte skapa offert.');
         setLoading(false);
         return;
       }

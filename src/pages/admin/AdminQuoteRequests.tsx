@@ -241,31 +241,25 @@ export default function AdminQuoteRequests() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm mb-4">
-                      <div>
-                        <p className="font-medium">Adress</p>
+                    <div className="space-y-2 text-sm mb-4">
+                      {request.address && (
                         <p className="text-muted-foreground">
-                          {request.address ? `${request.address}, ${request.postal_code} ${request.city}` : 'Ej angiven'}
+                          📍 {request.address}, {request.postal_code} {request.city}
                         </p>
-                      </div>
-                      <div>
-                        <p className="font-medium">ROT/RUT</p>
+                      )}
+                      {request.rot_rut_type && (
                         <p className="text-muted-foreground">
-                          {request.rot_rut_type || 'Ej angivet'}
+                          💰 {request.rot_rut_type}
                         </p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Skapad</p>
-                        <p className="text-muted-foreground">
-                          {format(new Date(request.created_at), 'PPP', { locale: sv })}
-                        </p>
-                      </div>
+                      )}
+                      <p className="text-muted-foreground">
+                        📅 {format(new Date(request.created_at), 'PPP', { locale: sv })}
+                      </p>
                     </div>
                     
                     {(request.description || request.message) && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="font-medium text-sm">Projektbeskrivning:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{request.description || request.message}</p>
+                        <p className="text-sm">{request.description || request.message}</p>
                       </div>
                     )}
 

@@ -235,37 +235,25 @@ export default function AdminBookings() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <p className="font-medium">Adress</p>
+                    <div className="space-y-2 text-sm mb-4">
+                      {booking.address && (
                         <p className="text-muted-foreground">
-                          {booking.address ? `${booking.address}, ${booking.postal_code} ${booking.city}` : 'Ej angiven'}
+                          📍 {booking.address}, {booking.postal_code} {booking.city}
                         </p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Pristyp</p>
+                      )}
+                      {booking.hourly_rate && (
                         <p className="text-muted-foreground">
-                          {booking.price_type === 'hourly' ? 'Per timme' : booking.price_type === 'fixed' ? 'Fast pris' : booking.price_type}
+                          💵 {booking.price_type === 'hourly' ? `${booking.hourly_rate} kr/h` : `${booking.hourly_rate} kr`}
                         </p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Pris</p>
-                        <p className="text-muted-foreground">
-                          {booking.hourly_rate ? `${booking.hourly_rate} kr/h` : 'Ej angivet'}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Skapad</p>
-                        <p className="text-muted-foreground">
-                          {format(new Date(booking.created_at), 'PPP', { locale: sv })}
-                        </p>
-                      </div>
+                      )}
+                      <p className="text-muted-foreground">
+                        📅 {format(new Date(booking.created_at), 'PPP', { locale: sv })}
+                      </p>
                     </div>
                     
                     {booking.description && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="font-medium text-sm">Beskrivning av tjänst:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{booking.description}</p>
+                        <p className="text-sm">{booking.description}</p>
                       </div>
                     )}
 
