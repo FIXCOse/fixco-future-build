@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     // Hitta offert via token
     const { data: quote, error: quoteError } = await supabase
       .from('quotes_new')
-      .select('id')
+      .select('id, deleted_at')
       .eq('public_token', token)
       .single();
 
@@ -38,6 +38,14 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Offert hittades inte' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Kontrollera om offerten är raderad
+    if ((quote as any).deleted_at) {
+      return new Response(
+        JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats och kan inte ändras' }),
+        { status: 410, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 

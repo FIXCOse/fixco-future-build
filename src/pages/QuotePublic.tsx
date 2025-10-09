@@ -35,6 +35,7 @@ export default function QuotePublic() {
   const [changeMessage, setChangeMessage] = useState('');
   const [changeFiles, setChangeFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -47,7 +48,15 @@ export default function QuotePublic() {
       try {
         const { data, error } = await supabase.functions.invoke(`get-quote-public/${token}`);
 
-        if (error) throw error;
+        if (error) {
+          // Check if quote is deleted
+          if (error.message?.includes('deleted') || data?.error === 'deleted') {
+            setIsDeleted(true);
+            setError('Denna offert har raderats');
+            return;
+          }
+          throw error;
+        }
         if (!data) throw new Error('Ingen data returnerad');
 
         setQuote(data);
@@ -73,6 +82,12 @@ export default function QuotePublic() {
       
       if (data.error === 'expired') {
         alert('Offerten har tyvärr gått ut');
+        return;
+      }
+
+      if (data.error === 'deleted') {
+        alert('Denna offert har raderats och kan inte accepteras');
+        setIsDeleted(true);
         return;
       }
 
@@ -106,6 +121,12 @@ export default function QuotePublic() {
       });
 
       if (error) throw error;
+
+      if (data?.error === 'deleted') {
+        alert('Denna offert har raderats och kan inte ändras');
+        setIsDeleted(true);
+        return;
+      }
 
       alert('Din begäran är mottagen!');
       setChangeRequestOpen(false);
@@ -235,7 +256,13 @@ export default function QuotePublic() {
               )}
 
               {/* Accept/Ändring knappar */}
-              {accepted ? (
+              {isDeleted ? (
+                <div className="pt-4 text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                  <p className="text-red-700 dark:text-red-300 font-semibold">
+                    ⚠️ Denna offert har raderats och kan inte längre accepteras eller ändras
+                  </p>
+                </div>
+              ) : accepted ? (
                 <div className="pt-4 text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <p className="text-green-700 dark:text-green-300 font-semibold">
                     ✓ Tack! Offerten är accepterad.

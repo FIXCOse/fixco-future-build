@@ -41,6 +41,7 @@ Deno.serve(async (req) => {
         pdf_url,
         valid_until,
         status,
+        deleted_at,
         customer:customers(name)
       `)
       .eq('public_token', token)
@@ -51,6 +52,14 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Offert hittades inte' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Kontrollera om offerten är raderad
+    if (quote.deleted_at) {
+      return new Response(
+        JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats' }),
+        { status: 410, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 

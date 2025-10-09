@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     // Hämta offert
     const { data: quote, error: fetchError } = await supabase
       .from('quotes_new')
-      .select('id, status, valid_until, customer_id, title, accepted_at')
+      .select('id, status, valid_until, customer_id, title, accepted_at, deleted_at')
       .eq('public_token', token)
       .single();
 
@@ -37,6 +37,14 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Offert hittades inte' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Kontrollera om offerten är raderad
+    if ((quote as any).deleted_at) {
+      return new Response(
+        JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats och kan inte accepteras' }),
+        { status: 410, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
