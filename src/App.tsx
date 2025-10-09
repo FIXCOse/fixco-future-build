@@ -49,8 +49,6 @@ import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import AdminQuoteEdit from "./pages/admin/AdminQuoteEdit";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
-import QuotesNew from "./pages/admin/QuotesNew";
-import QuotePublic from "./pages/QuotePublic";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
 import QuoteWizard from "./pages/admin/QuoteWizard";
@@ -163,7 +161,6 @@ const App = () => {
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quotes/:id/edit" element={<AdminQuoteEdit />} />
                     <Route path="quotes/new" element={<QuoteWizard />} />
-                    <Route path="quotes-new" element={<QuotesNew />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />
@@ -215,9 +212,6 @@ const App = () => {
                       <TestBooking />
                     </Suspense>
                   } />
-                  
-                  {/* Public Quote View */}
-                  <Route path="/q/:token" element={<QuotePublic />} />
                   
                   {/* Main Swedish Routes */}
                   <Route path="/" element={<AppLayout />}>
