@@ -47,6 +47,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
+import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
 import AdminInvoices from "./pages/admin/AdminInvoices";
@@ -157,6 +158,7 @@ const App = () => {
                     <Route path="services" element={<AdminServices />} />
                     <Route path="quotes" element={<AdminQuotes />} />
                     <Route path="quotes/new" element={<AdminQuotesNew />} />
+                    <Route path="quotes/trash" element={<AdminQuotesTrash />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />

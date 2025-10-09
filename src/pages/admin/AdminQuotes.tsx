@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from "react";
 import { fetchQuotesNew, deleteQuoteNew, type QuoteNewRow } from "@/lib/api/quotes-new";
 import { useQuotesRealtime } from "@/hooks/useQuotesRealtime";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ export default function AdminQuotes() {
   const [messages, setMessages] = useState<any[]>([]);
   const [searchParams] = useSearchParams();
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -207,9 +208,9 @@ export default function AdminQuotes() {
               Hantera alla offerter från systemet
             </p>
           </div>
-          <Button onClick={handleNewQuote}>
-            <Plus className="h-4 w-4 mr-2" />
-            Ny offert
+          <Button variant="outline" onClick={() => navigate('/admin/quotes/trash')}>
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
           </Button>
         </div>
       </div>

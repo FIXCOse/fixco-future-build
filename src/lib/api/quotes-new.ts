@@ -36,6 +36,7 @@ export async function fetchQuotesNew(params?: {
   q?: string;
   limit?: number;
   offset?: number;
+  includeDeleted?: boolean;
 }) {
   let query = supabase
     .from('quotes_new')
@@ -44,6 +45,11 @@ export async function fetchQuotesNew(params?: {
       customer:customers(id, name, email, phone, address)
     `, { count: 'exact' })
     .order('created_at', { ascending: false });
+
+  // Filter out deleted quotes by default
+  if (!params?.includeDeleted) {
+    query = query.is('deleted_at', null);
+  }
 
   if (params?.status?.length) {
     query = query.in('status', params.status);
@@ -142,10 +148,34 @@ export async function updateQuoteNew(id: string, quoteData: Partial<QuoteNewRow>
 }
 
 export async function deleteQuoteNew(id: string) {
+  // Soft delete - set deleted_at
   const { error } = await supabase
     .from('quotes_new')
-    .delete()
+    .update({ deleted_at: new Date().toISOString() })
     .eq('id', id);
 
   if (error) throw error;
+}
+
+export async function restoreQuoteNew(id: string) {
+  const { error } = await supabase.rpc('restore_quote_new', {
+    p_quote_id: id
+  });
+
+  if (error) throw error;
+}
+
+export async function permanentlyDeleteQuoteNew(id: string) {
+  const { error } = await supabase.rpc('permanently_delete_quote_new', {
+    p_quote_id: id
+  });
+
+  if (error) throw error;
+}
+
+export async function emptyQuotesTrash() {
+  const { data, error } = await supabase.rpc('empty_quotes_new_trash');
+
+  if (error) throw error;
+  return data as number;
 }

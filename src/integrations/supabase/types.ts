@@ -1539,6 +1539,7 @@ export type Database = {
           created_at: string | null
           customer_id: string | null
           declined_at: string | null
+          deleted_at: string | null
           id: string
           items: Json | null
           number: string
@@ -1562,6 +1563,7 @@ export type Database = {
           created_at?: string | null
           customer_id?: string | null
           declined_at?: string | null
+          deleted_at?: string | null
           id?: string
           items?: Json | null
           number: string
@@ -1585,6 +1587,7 @@ export type Database = {
           created_at?: string | null
           customer_id?: string | null
           declined_at?: string | null
+          deleted_at?: string | null
           id?: string
           items?: Json | null
           number?: string
@@ -2600,6 +2603,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      empty_quotes_new_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       empty_quotes_trash: {
         Args: Record<PropertyKey, never>
         Returns: number
@@ -2701,6 +2708,10 @@ export type Database = {
         Args: { p_quote_id: string }
         Returns: boolean
       }
+      permanently_delete_quote_new: {
+        Args: { p_quote_id: string }
+        Returns: boolean
+      }
       permanently_delete_quote_request: {
         Args: { p_quote_request_id: string }
         Returns: boolean
@@ -2722,6 +2733,10 @@ export type Database = {
         Returns: boolean
       }
       restore_quote: {
+        Args: { p_quote_id: string }
+        Returns: boolean
+      }
+      restore_quote_new: {
         Args: { p_quote_id: string }
         Returns: boolean
       }
