@@ -177,7 +177,7 @@ const MyJobs = () => {
                         <Gift className="w-8 h-8 text-yellow-600 animate-pulse" />
                         <div>
                           <p className="text-xs font-semibold text-yellow-800 uppercase tracking-wide">
-                            🎉 Extra Bonus Till Detta Jobb
+                            EXTRA BONUS
                           </p>
                           <p className="text-2xl font-black text-yellow-900">
                             +{job.bonus_amount} kr

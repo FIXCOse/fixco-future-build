@@ -199,7 +199,7 @@ const AdminJobs = () => {
                 <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-500 rounded-lg px-3 py-2">
                   <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-yellow-800 uppercase">🎉 Extra Bonus</p>
+                    <p className="text-xs font-semibold text-yellow-800 uppercase">EXTRA BONUS</p>
                     <p className="text-xl font-black text-yellow-900">+{job.bonus_amount} kr</p>
                   </div>
                 </div>

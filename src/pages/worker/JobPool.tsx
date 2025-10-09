@@ -205,14 +205,14 @@ const JobPool = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* EXTRA BONUS DISPLAY - HÖGST UPP OCH TYDLIGT */}
+                  {/* EXTRA BONUS DISPLAY */}
                   {job.bonus_amount && job.bonus_amount > 0 && (
                     <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-4 shadow-lg">
                       <div className="flex items-center gap-3">
                         <Gift className="w-8 h-8 text-yellow-600 animate-pulse" />
                         <div>
                           <p className="text-xs font-semibold text-yellow-800 uppercase tracking-wide">
-                            🎉 Extra Bonus Till Detta Jobb
+                            EXTRA BONUS
                           </p>
                           <p className="text-2xl font-black text-yellow-900">
                             +{job.bonus_amount} kr
