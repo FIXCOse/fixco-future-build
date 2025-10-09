@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MapPin, Clock, Euro, Search, Hand, Users } from 'lucide-react';
+import { MapPin, Clock, Search, Hand, Users, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchJobs, claimJob } from '@/lib/api/jobs';
 import { useJobsRealtime } from '@/hooks/useJobsRealtime';
@@ -209,16 +209,16 @@ const JobPool = () => {
                     {/* Workers ska bara se fast pris om admin explicit har satt det */}
                     {job.admin_set_price && (
                       <div className="flex items-center text-green-600 font-medium">
-                        <Euro className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>{job.admin_set_price} kr (fast ersättning)</span>
                       </div>
                     )}
                     
                     {/* Visa bonus om det finns */}
                     {job.bonus_amount && job.bonus_amount > 0 && (
-                      <div className="flex items-center text-yellow-500 font-medium">
-                        <Euro className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>+{job.bonus_amount} kr bonus 🎁</span>
+                      <div className="flex items-center text-yellow-600 font-semibold">
+                        <Gift className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span>Extra bonus: +{job.bonus_amount} kr 🎁</span>
                       </div>
                     )}
                   </div>
