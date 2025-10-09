@@ -201,15 +201,7 @@ export type Database = {
           service_slug?: string | null
           status?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "bookings_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       chat_conversations: {
         Row: {
