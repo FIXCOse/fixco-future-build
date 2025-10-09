@@ -28,16 +28,16 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch quote data from database
+    // Fetch quote data from database (customer can be null for migrated quote_requests)
     const { data: quote, error: quoteError } = await supabase
       .from('quotes')
       .select(`
         *,
-        customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
+        customer:profiles(first_name, last_name, email),
         property:properties(address, city, postal_code)
       `)
       .eq('id', quoteId)
-      .single();
+      .maybeSingle();
 
     if (quoteError) {
       console.error('Error fetching quote:', quoteError);

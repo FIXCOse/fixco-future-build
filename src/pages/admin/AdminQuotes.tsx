@@ -222,8 +222,8 @@ export default function AdminQuotes() {
 
   const handleSendQuote = async (quote: QuoteRow) => {
     try {
-      const customerEmail = quote.customer?.email;
-      const customerName = `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim();
+      const customerEmail = quote.customer_email || quote.customer?.email;
+      const customerName = quote.customer_name || `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim();
 
       if (!customerEmail) {
         toast.error('Ingen e-postadress finns för kunden');
@@ -374,7 +374,8 @@ export default function AdminQuotes() {
                           {quote.title}
                         </CardTitle>
                         <CardDescription>
-                          Kund: {quote.customer?.first_name} {quote.customer?.last_name} ({quote.customer?.email})
+                          Kund: {quote.customer_name || `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim() || 'Okänd'} 
+                          {(quote.customer_email || quote.customer?.email) && ` (${quote.customer_email || quote.customer?.email})`}
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
