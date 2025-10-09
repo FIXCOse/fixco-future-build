@@ -444,16 +444,190 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
             </CardContent>
           </Card>
 
+          {/* ROT/RUT - Prominent Section */}
+          <Card className="border-2 border-primary/20 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20">
+              <CardTitle className="text-xl flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                  %
+                </div>
+                ROT & RUT Skatteavdrag
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">
+                Aktivera skattelättnader för att ge kunden upp till 50% rabatt på arbetskostnaden
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* ROT */}
+                <Card className={`transition-all ${enableRot ? 'ring-2 ring-green-500 shadow-lg' : 'opacity-60'}`}>
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white font-bold text-sm">
+                            R
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-lg">ROT-avdrag</h3>
+                            <p className="text-xs text-muted-foreground">
+                              Renovering, Ombyggnad, Tillbyggnad
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <Switch 
+                        checked={enableRot} 
+                        onCheckedChange={setEnableRot}
+                        className="data-[state=checked]:bg-green-500"
+                      />
+                    </div>
+                    
+                    {enableRot && (
+                      <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
+                        <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <Label className="text-sm font-semibold">Avdragssats</Label>
+                            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                              {rotRate}%
+                            </span>
+                          </div>
+                          <Input
+                            type="range"
+                            min="0"
+                            max="50"
+                            step="5"
+                            value={rotRate}
+                            onChange={(e) => setRotRate(parseFloat(e.target.value))}
+                            className="w-full"
+                          />
+                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                            <span>0%</span>
+                            <span>50%</span>
+                          </div>
+                        </div>
+                        
+                        <div className="p-4 bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-900/10 rounded-xl border-2 border-green-200 dark:border-green-800">
+                          <p className="text-xs text-muted-foreground mb-1">Kundens besparing:</p>
+                          <p className="text-3xl font-bold text-green-700 dark:text-green-400">
+                            {Math.round(calculateSubtotalWork() * (rotRate / 100)).toLocaleString()} kr
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            av {calculateSubtotalWork().toLocaleString()} kr arbetskostnad
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!enableRot && (
+                      <div className="text-center py-4 text-muted-foreground text-sm">
+                        Aktivera för att tillämpa ROT-avdrag
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* RUT */}
+                <Card className={`transition-all ${enableRut ? 'ring-2 ring-blue-500 shadow-lg' : 'opacity-60'}`}>
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+                            R
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-lg">RUT-avdrag</h3>
+                            <p className="text-xs text-muted-foreground">
+                              Reparation, Underhåll, Tvätt/Städ
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <Switch 
+                        checked={enableRut} 
+                        onCheckedChange={setEnableRut}
+                        className="data-[state=checked]:bg-blue-500"
+                      />
+                    </div>
+                    
+                    {enableRut && (
+                      <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
+                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <Label className="text-sm font-semibold">Avdragssats</Label>
+                            <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                              {rutRate}%
+                            </span>
+                          </div>
+                          <Input
+                            type="range"
+                            min="0"
+                            max="50"
+                            step="5"
+                            value={rutRate}
+                            onChange={(e) => setRutRate(parseFloat(e.target.value))}
+                            className="w-full"
+                          />
+                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                            <span>0%</span>
+                            <span>50%</span>
+                          </div>
+                        </div>
+                        
+                        <div className="p-4 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/10 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+                          <p className="text-xs text-muted-foreground mb-1">Kundens besparing:</p>
+                          <p className="text-3xl font-bold text-blue-700 dark:text-blue-400">
+                            {Math.round(calculateSubtotalWork() * (rutRate / 100)).toLocaleString()} kr
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            av {calculateSubtotalWork().toLocaleString()} kr arbetskostnad
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!enableRut && (
+                      <div className="text-center py-4 text-muted-foreground text-sm">
+                        Aktivera för att tillämpa RUT-avdrag
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Combined Savings Highlight */}
+              {(enableRot || enableRut) && (
+                <div className="p-6 bg-gradient-to-r from-green-500/10 via-blue-500/10 to-green-500/10 rounded-xl border-2 border-dashed border-primary animate-in fade-in zoom-in">
+                  <div className="text-center space-y-2">
+                    <p className="text-sm font-semibold text-muted-foreground">
+                      Total skattereduktion för kunden
+                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-5xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                        {calculateRotRutDeduction().toLocaleString()}
+                      </span>
+                      <span className="text-2xl font-bold text-muted-foreground">kr</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {enableRot && enableRut ? 'ROT + RUT kombinerat' : enableRot ? 'ROT-avdrag' : 'RUT-avdrag'}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Options */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tillval och avdrag</CardTitle>
+              <CardTitle className="text-lg">Övriga tillval</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Material Options */}
-              <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
                 <div className="space-y-1">
-                  <Label>Materialkostnad ingår</Label>
+                  <Label className="text-base font-semibold">Materialkostnad ingår</Label>
                   <p className="text-sm text-muted-foreground">
                     {materialIncluded ? 'Material ingår i offerten' : 'Material tillkommer (faktureras separat)'}
                   </p>
@@ -465,9 +639,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
               </div>
 
               {/* Discount */}
-              <div className="space-y-3 p-3 border rounded-lg">
-                <Label>Rabatt</Label>
-                <div className="grid grid-cols-3 gap-2">
+              <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
+                <Label className="text-base font-semibold">Rabatt</Label>
+                <div className="grid grid-cols-3 gap-3">
                   <Select value={discountType} onValueChange={(value: any) => setDiscountType(value)}>
                     <SelectTrigger>
                       <SelectValue />
@@ -489,93 +663,18 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                         onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
                         placeholder={discountType === 'percent' ? '0-100' : 'Belopp'}
                       />
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium">
-                          = {calculateDiscount().toLocaleString()} kr
-                        </span>
+                      <div className="flex items-center font-semibold text-lg">
+                        −{calculateDiscount().toLocaleString()} kr
                       </div>
                     </>
                   )}
                 </div>
               </div>
 
-              {/* ROT/RUT */}
-              <div className="grid md:grid-cols-2 gap-4">
-                {/* ROT */}
-                <div className="space-y-3 p-3 border rounded-lg bg-green-50 dark:bg-green-900/10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Label>ROT-avdrag</Label>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Info className="h-4 w-4 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="max-w-xs">ROT-avdrag för renovering, ombyggnad och tillbyggnad</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <Switch checked={enableRot} onCheckedChange={setEnableRot} />
-                  </div>
-                  {enableRot && (
-                    <div className="space-y-2">
-                      <Label className="text-sm">Procentsats (%)</Label>
-                      <Input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={rotRate}
-                        onChange={(e) => setRotRate(parseFloat(e.target.value) || 30)}
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Avdrag: {Math.round(calculateSubtotalWork() * (rotRate / 100)).toLocaleString()} kr
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* RUT */}
-                <div className="space-y-3 p-3 border rounded-lg bg-blue-50 dark:bg-blue-900/10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Label>RUT-avdrag</Label>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Info className="h-4 w-4 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="max-w-xs">RUT-avdrag för reparation, underhåll och städning</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <Switch checked={enableRut} onCheckedChange={setEnableRut} />
-                  </div>
-                  {enableRut && (
-                    <div className="space-y-2">
-                      <Label className="text-sm">Procentsats (%)</Label>
-                      <Input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={rutRate}
-                        onChange={(e) => setRutRate(parseFloat(e.target.value) || 50)}
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Avdrag: {Math.round(calculateSubtotalWork() * (rutRate / 100)).toLocaleString()} kr
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Custom VAT */}
-              <div className="space-y-3 p-3 border rounded-lg">
+              <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
                 <div className="flex items-center justify-between">
-                  <Label>Anpassad moms</Label>
+                  <Label className="text-base font-semibold">Anpassad momssats</Label>
                   <Switch checked={customVat} onCheckedChange={setCustomVat} />
                 </div>
                 {customVat && (
