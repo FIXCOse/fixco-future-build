@@ -281,15 +281,42 @@ export default function AdminBookings() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <CardTitle className="text-lg">
-                          {booking.service_name || booking.service_id}
+                          {(() => {
+                            const payload = (booking.payload || {}) as Record<string, any>;
+                            return payload.service_name || payload.serviceName || booking.service_slug || 'Okänd tjänst';
+                          })()}
                         </CardTitle>
                         <CardDescription>
-                          Kund: {booking.name} ({booking.email})
-                          {(booking as any).mode && (
-                            <Badge variant="outline" className="ml-2">
-                              {(booking as any).mode === 'book' ? 'Bokning' : 'Offertförfrågan'}
-                            </Badge>
-                          )}
+                          {(() => {
+                            const payload = (booking.payload || {}) as Record<string, any>;
+                            const name = payload.name || payload.contact_name || 'Okänd kund';
+                            const email = payload.email || payload.contact_email || '';
+                            const phone = payload.phone || payload.contact_phone || '';
+                            
+                            return (
+                              <div className="space-y-1">
+                                <div>
+                                  <span className="font-medium">Kund:</span> {name}
+                                  {email && <span className="text-muted-foreground"> ({email})</span>}
+                                </div>
+                                {phone && (
+                                  <div className="text-sm">
+                                    <span className="font-medium">Tel:</span> {phone}
+                                  </div>
+                                )}
+                                <div className="flex items-center gap-2 mt-1">
+                                  {booking.mode && (
+                                    <Badge variant="outline">
+                                      {booking.mode === 'book' ? 'Bokning' : 'Offertförfrågan'}
+                                    </Badge>
+                                  )}
+                                  <Badge variant={getStatusBadgeVariant(booking.status || 'pending')}>
+                                    {getStatusDisplayName(booking.status || 'pending')}
+                                  </Badge>
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
@@ -310,35 +337,42 @@ export default function AdminBookings() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm mb-4">
-                      {booking.address && (
-                        <p className="text-muted-foreground">
-                          📍 {booking.address}, {booking.postal_code} {booking.city}
-                        </p>
-                      )}
-                      {booking.hourly_rate && (
-                        <p className="text-muted-foreground">
-                          💵 {booking.price_type === 'hourly' ? `${booking.hourly_rate} kr/h` : `${booking.hourly_rate} kr`}
-                        </p>
-                      )}
-                      <p className="text-muted-foreground">
-                        📅 {format(new Date(booking.created_at), 'PPP', { locale: sv })}
-                      </p>
+                      {(() => {
+                        const payload = (booking.payload || {}) as Record<string, any>;
+                        const address = payload.address || payload.street_address || '';
+                        const postalCode = payload.postal_code || payload.postalCode || '';
+                        const city = payload.city || '';
+                        const priceType = payload.price_type || payload.priceType || '';
+                        const hourlyRate = payload.hourly_rate || payload.hourlyRate || null;
+                        const hoursEstimated = payload.hours_estimated || payload.hoursEstimated || null;
+                        const description = payload.description || payload.beskrivning || '';
+                        
+                        return (
+                          <>
+                            {address && (
+                              <p className="text-muted-foreground">
+                                📍 {address}{postalCode && `, ${postalCode}`}{city && ` ${city}`}
+                              </p>
+                            )}
+                            {hourlyRate && (
+                              <p className="text-muted-foreground">
+                                💵 {priceType === 'hourly' ? `${hourlyRate} kr/h` : `${hourlyRate} kr`}
+                                {hoursEstimated && ` • ${hoursEstimated}h beräknat`}
+                              </p>
+                            )}
+                            <p className="text-muted-foreground">
+                              📅 {format(new Date(booking.created_at), 'PPP', { locale: sv })}
+                            </p>
+                            {description && (
+                              <div className="mt-3 p-3 bg-muted rounded-lg">
+                                <p className="text-sm font-medium mb-1">Beskrivning:</p>
+                                <p className="text-sm whitespace-pre-wrap">{description}</p>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
-                    
-                    {booking.description && (
-                      <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="text-sm whitespace-pre-wrap">
-                          {(() => {
-                            try {
-                              const parsed = JSON.parse(booking.description);
-                              return parsed.beskrivning || parsed.description || booking.description;
-                            } catch {
-                              return booking.description;
-                            }
-                          })()}
-                        </p>
-                      </div>
-                    )}
 
                     {booking.internal_notes && (
                       <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
