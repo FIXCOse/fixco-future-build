@@ -485,8 +485,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
             <CardContent className="space-y-4 pt-6">
               <div className="grid md:grid-cols-2 gap-4">
                 {/* ROT */}
-                <Card className={`transition-all ${enableRot ? 'ring-2 ring-green-500 shadow-lg' : 'opacity-60'}`}>
-                  <CardContent className="pt-6 space-y-4">
+                <div className={`p-6 rounded-lg border transition-all ${enableRot ? 'ring-2 ring-green-500 shadow-lg border-green-500/50' : 'opacity-60 border-border'}`}>
+                  <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
@@ -549,12 +549,12 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                         Aktivera för att tillämpa ROT-avdrag
                       </div>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
 
                 {/* RUT */}
-                <Card className={`transition-all ${enableRut ? 'ring-2 ring-blue-500 shadow-lg' : 'opacity-60'}`}>
-                  <CardContent className="pt-6 space-y-4">
+                <div className={`p-6 rounded-lg border transition-all ${enableRut ? 'ring-2 ring-blue-500 shadow-lg border-blue-500/50' : 'opacity-60 border-border'}`}>
+                  <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div className="space-y-2 flex-1">
                         <div className="flex items-center gap-2">
@@ -617,8 +617,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
                         Aktivera för att tillämpa RUT-avdrag
                       </div>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
 
               {/* Combined Savings Highlight */}
