@@ -81,7 +81,7 @@ export default function TestBooking() {
           </div>
           
           <p className="text-sm text-muted-foreground">
-            Efter du testat, kolla /admin/bookings och /admin/quote-requests för att se om data visas.
+            Efter du testat, kolla /admin/bookings för att se om data visas.
           </p>
         </div>
       ) : (

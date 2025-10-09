@@ -111,21 +111,13 @@ function ActionWizardInner({
 
       console.log("[WIZARD] Prepared payload:", base);
 
-      if (mode === "book") {
-        console.log("[WIZARD] RPC create_booking_secure...");
-        const { data, error } = await supabase.rpc('create_booking_secure', { p: base });
-        console.log("[BOOKING][RPC] Result:", { data, error });
-        if (error) throw error;
-        console.log("[BOOKING] Success! ID:", data);
-        alert(`Bokning skickad! ID: ${String(data).slice(0, 8)}`);
-      } else {
-        console.log("[WIZARD] RPC create_quote_request_secure...");
-        const { data, error } = await supabase.rpc('create_quote_request_secure', { p: base });
-        console.log("[QUOTE][RPC] Result:", { data, error });
-        if (error) throw error;
-        console.log("[QUOTE] Success! ID:", data);
-        alert(`Offertförfrågan skickad! ID: ${String(data).slice(0, 8)}`);
-      }
+      // ALLT skapas som bokningar, oavsett mode
+      console.log("[WIZARD] RPC create_booking_secure...");
+      const { data, error } = await supabase.rpc('create_booking_secure', { p: base });
+      console.log("[BOOKING][RPC] Result:", { data, error });
+      if (error) throw error;
+      console.log("[BOOKING] Success! ID:", data);
+      alert(`${mode === "book" ? "Bokning" : "Offertförfrågan"} skickad! ID: ${String(data).slice(0, 8)}`);
 
       onClose();
     } catch (err: any) {
