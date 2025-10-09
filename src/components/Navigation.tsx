@@ -36,7 +36,6 @@ export default function Navigation() {
     { href: "/admin", label: "Översikt" },
     { href: "/admin/services", label: "Tjänster" },
     { href: "/admin/quotes", label: "Offerter" },
-    { href: "/admin/quote-requests", label: "Offertförfrågningar" },
     { href: "/admin/bookings", label: "Bokningar" },
     { href: "/admin/jobs", label: "Arbetsordrar" },
     { href: "/admin/job-requests", label: "Jobbförfrågningar" },

@@ -49,10 +49,8 @@ import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
 import AdminQuoteEdit from "./pages/admin/AdminQuoteEdit";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
-import AdminQuoteRequestsTrash from "./pages/admin/AdminQuoteRequestsTrash";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
-import AdminQuoteRequests from "./pages/admin/AdminQuoteRequests";
 import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
@@ -162,8 +160,6 @@ const App = () => {
                     <Route path="quotes/trash" element={<AdminQuotesTrash />} />
                     <Route path="quotes/:id" element={<AdminQuoteDetail />} />
                     <Route path="quotes/:id/edit" element={<AdminQuoteEdit />} />
-                    <Route path="quote-requests" element={<AdminQuoteRequests />} />
-                    <Route path="quote-requests/trash" element={<AdminQuoteRequestsTrash />} />
                     <Route path="quotes/new" element={<QuoteWizard />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
