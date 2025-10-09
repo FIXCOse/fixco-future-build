@@ -81,9 +81,16 @@ serve(async (req) => {
       } else {
         // Fallback: direkt INSERT i quotes_new
         console.warn("RPC fallback (create_draft_quote_for_booking):", rpcErr?.message);
+        
+        // Generate number and token via RPC calls
+        const { data: genNumber } = await admin.rpc('generate_quote_number_new');
+        const { data: genToken } = await admin.rpc('generate_public_token');
+        
         const { data: qInsert, error: qErr } = await admin
           .from("quotes_new")
           .insert({
+            number: genNumber || `Q-${Date.now()}`, // fallback if RPC fails
+            public_token: genToken || crypto.randomUUID(),
             customer_id: booking.customer_id,
             request_id: booking.id,
             title: `Offert – ${service_slug}`,
