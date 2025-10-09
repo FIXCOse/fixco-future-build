@@ -16,40 +16,46 @@ import {
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { useJobsData } from '@/hooks/useJobsData';
+import { useJobsRealtime } from '@/hooks/useJobsRealtime';
+import { supabase } from '@/integrations/supabase/client';
 
 const WorkerDashboard = () => {
   const [activeTimer, setActiveTimer] = useState<string | null>(null);
+  const { jobs, loading } = useJobsData();
+  const [userId, setUserId] = useState<string | null>(null);
 
-  // Mock data for demo
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUserId(user?.id || null);
+    };
+    getUser();
+  }, []);
+
+  // Filter jobs assigned to current user
+  const myJobs = jobs.filter(job => job.assigned_worker_id === userId);
+  const activeJobs = myJobs.filter(job => 
+    job.status === 'assigned' || job.status === 'in_progress' || job.status === 'paused'
+  );
+  
+  // Calculate stats
+  const today = new Date().toDateString();
+  const completedToday = myJobs.filter(job => 
+    job.status === 'completed' && 
+    new Date(job.created_at).toDateString() === today
+  ).length;
+
   const mockStats = {
-    activeJobs: 2,
-    completedToday: 1,
-    hoursToday: 6.5,
-    earnings: 3250
+    activeJobs: activeJobs.length,
+    completedToday,
+    hoursToday: 0, // Would need time_logs data
+    earnings: 0 // Would need time_logs data
   };
 
-  const mockJobs = [
-    {
-      id: '1',
-      title: 'Elinstallation villa',
-      status: 'in_progress',
-      address: 'Storgatan 12',
-      city: 'Stockholm',
-      pricing_mode: 'hourly',
-      hourly_rate: 650,
-      created_at: '2024-01-15T08:00:00Z'
-    },
-    {
-      id: '2',
-      title: 'Lampinstallation kontor',
-      status: 'assigned',
-      address: 'Kungsgatan 45',
-      city: 'Stockholm',
-      pricing_mode: 'fixed',
-      fixed_price: 4500,
-      created_at: '2024-01-14T14:30:00Z'
-    }
-  ];
+  useJobsRealtime(() => {
+    // Trigger re-fetch if needed
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -143,7 +149,14 @@ const WorkerDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {mockJobs.map((job) => (
+            {loading ? (
+              <p className="text-center text-muted-foreground py-8">Laddar...</p>
+            ) : activeJobs.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">
+                Du har inga aktiva jobb. Kolla jobbpoolen för tillgängliga jobb!
+              </p>
+            ) : (
+              activeJobs.map((job) => (
               <div
                 key={job.id}
                 className="border rounded-lg p-4 hover:bg-accent/50 transition-colors active:scale-[0.98]"
@@ -194,7 +207,8 @@ const WorkerDashboard = () => {
                   </div>
                 </div>
               </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
