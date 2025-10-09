@@ -15,13 +15,24 @@ import QuoteQuestionsNotification from './QuoteQuestionsNotification';
 const AdminLayout = () => {
   const { currentLanguage } = useLanguagePersistence();
   const [notifications, setNotifications] = useState<any>({ counts: { total: 0 }, notifications: [] });
+  const [viewedNotifications, setViewedNotifications] = useState<Set<string>>(() => {
+    const stored = localStorage.getItem('viewedNotifications');
+    return stored ? new Set(JSON.parse(stored)) : new Set();
+  });
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const { data } = await supabase.functions.invoke('get-admin-notifications');
         if (data) {
-          setNotifications(data);
+          // Filter out viewed notifications
+          const filteredNotifications = data.notifications.filter(
+            (notif: any) => !viewedNotifications.has(notif.id)
+          );
+          setNotifications({
+            ...data,
+            notifications: filteredNotifications
+          });
         }
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
@@ -31,7 +42,14 @@ const AdminLayout = () => {
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [viewedNotifications]);
+
+  const markAsViewed = (notificationId: string) => {
+    const newViewed = new Set(viewedNotifications);
+    newViewed.add(notificationId);
+    setViewedNotifications(newViewed);
+    localStorage.setItem('viewedNotifications', JSON.stringify(Array.from(newViewed)));
+  };
   
   return (
     <LocaleProvider locale={currentLanguage}>
@@ -82,6 +100,7 @@ const AdminLayout = () => {
                             <Link 
                               key={idx} 
                               to={notif.link}
+                              onClick={() => markAsViewed(notif.id)}
                               className="block p-4 hover:bg-muted border-b last:border-b-0"
                             >
                               <p className="text-sm font-medium">{notif.title}</p>
