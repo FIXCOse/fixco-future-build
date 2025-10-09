@@ -54,8 +54,8 @@ const AdminOngoingProjects = () => {
     queryKey: ['workers'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('workers')
-        .select('*')
+        .from('staff')
+        .select('id, name, active')
         .eq('active', true)
         .order('name');
       
