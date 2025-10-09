@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,23 +11,25 @@ import { sv } from 'date-fns/locale';
 import { fetchCustomers, fetchCustomerWithDetails, type Customer } from '@/lib/api/customers';
 import { CustomerDetailModal } from '@/components/admin/CustomerDetailModal';
 import { supabase } from '@/integrations/supabase/client';
+import { useBookingsRealtime } from '@/hooks/useBookingsRealtime';
+import { useQuotesRealtime } from '@/hooks/useQuotesRealtime';
 
 const AdminCustomers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
-  const { data: customers, isLoading } = useQuery({
+  const { data: customers, isLoading, refetch: refetchCustomers } = useQuery({
     queryKey: ['admin-customers'],
     queryFn: fetchCustomers,
   });
 
-  const { data: customerDetails } = useQuery({
+  const { data: customerDetails, refetch: refetchCustomerDetails } = useQuery({
     queryKey: ['customer-details', selectedCustomerId],
     queryFn: () => selectedCustomerId ? fetchCustomerWithDetails(selectedCustomerId) : null,
     enabled: !!selectedCustomerId,
   });
 
-  const { data: stats } = useQuery({
+  const { data: stats, refetch: refetchStats } = useQuery({
     queryKey: ['customer-stats'],
     queryFn: async () => {
       const [customersCount, bookingsCount, quotesCount, revenueData] = await Promise.all([
@@ -47,6 +49,18 @@ const AdminCustomers = () => {
       };
     }
   });
+
+  // Realtime updates
+  const handleRealtimeUpdate = useCallback(() => {
+    refetchCustomers();
+    refetchStats();
+    if (selectedCustomerId) {
+      refetchCustomerDetails();
+    }
+  }, [refetchCustomers, refetchStats, refetchCustomerDetails, selectedCustomerId]);
+
+  useBookingsRealtime(handleRealtimeUpdate);
+  useQuotesRealtime(handleRealtimeUpdate);
 
   const filteredCustomers = customers?.filter(customer => {
     if (!searchTerm) return true;

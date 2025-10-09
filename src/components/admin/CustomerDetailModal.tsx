@@ -1,10 +1,16 @@
+import * as React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Mail, Phone, MapPin, Calendar, FileText, Receipt, CreditCard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { User, Mail, Phone, MapPin, Calendar, FileText, Receipt, CreditCard, ExternalLink } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { useNavigate } from 'react-router-dom';
+import { useBookingsRealtime } from '@/hooks/useBookingsRealtime';
+import { useQuotesRealtime } from '@/hooks/useQuotesRealtime';
+import { fetchCustomerWithDetails } from '@/lib/api/customers';
 import type { Customer } from '@/lib/api/customers';
 
 type CustomerDetailModalProps = {
@@ -18,10 +24,39 @@ type CustomerDetailModalProps = {
 export function CustomerDetailModal({ 
   open, 
   onOpenChange, 
-  customer, 
-  bookings, 
-  quotes 
+  customer: initialCustomer, 
+  bookings: initialBookings, 
+  quotes: initialQuotes 
 }: CustomerDetailModalProps) {
+  const navigate = useNavigate();
+  const [customer, setCustomer] = React.useState(initialCustomer);
+  const [bookings, setBookings] = React.useState(initialBookings);
+  const [quotes, setQuotes] = React.useState(initialQuotes);
+  
+  // Realtime updates
+  const reloadCustomerData = React.useCallback(async () => {
+    if (!customer?.id) return;
+    
+    try {
+      const data = await fetchCustomerWithDetails(customer.id);
+      setCustomer(data.customer);
+      setBookings(data.bookings);
+      setQuotes(data.quotes);
+    } catch (error) {
+      console.error('Error reloading customer data:', error);
+    }
+  }, [customer?.id]);
+
+  useBookingsRealtime(reloadCustomerData);
+  useQuotesRealtime(reloadCustomerData);
+  
+  // Update state when props change
+  React.useEffect(() => {
+    setCustomer(initialCustomer);
+    setBookings(initialBookings);
+    setQuotes(initialQuotes);
+  }, [initialCustomer, initialBookings, initialQuotes]);
+  
   if (!customer) return null;
 
   const getStatusBadge = (status: string) => {
@@ -157,15 +192,22 @@ export function CustomerDetailModal({
                 bookings.map((booking) => {
                   const status = getStatusBadge(booking.status || 'pending');
                   return (
-                    <Card key={booking.id}>
+                    <Card 
+                      key={booking.id}
+                      className="cursor-pointer hover:border-primary transition-colors"
+                      onClick={() => {
+                        window.open(`/admin/bookings/${booking.id}`, '_blank');
+                      }}
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
-                          <div className="space-y-2">
+                          <div className="space-y-2 flex-1">
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold">
                                 {booking.service_name || booking.service_slug || 'Bokning'}
                               </h4>
                               <Badge variant={status.variant}>{status.label}</Badge>
+                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
                             </div>
                             <p className="text-sm text-muted-foreground">
                               {new Date(booking.created_at).toLocaleDateString('sv-SE', {
@@ -198,13 +240,20 @@ export function CustomerDetailModal({
                 quotes.map((quote) => {
                   const status = getStatusBadge(quote.status || 'draft');
                   return (
-                    <Card key={quote.id}>
+                    <Card 
+                      key={quote.id}
+                      className="cursor-pointer hover:border-primary transition-colors"
+                      onClick={() => {
+                        window.open(`/admin/quotes/new?id=${quote.id}`, '_blank');
+                      }}
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
-                          <div className="space-y-2">
+                          <div className="space-y-2 flex-1">
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold">{quote.title}</h4>
                               <Badge variant={status.variant}>{status.label}</Badge>
+                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
                             </div>
                             <p className="text-sm text-muted-foreground">
                               Offert {quote.number} • {new Date(quote.created_at).toLocaleDateString('sv-SE')}
