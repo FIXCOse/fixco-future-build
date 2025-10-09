@@ -26,13 +26,40 @@ export default function AdminBookingDetail() {
           .from('bookings')
           .select(`
             *,
-            customer:profiles(first_name, last_name, email)
+            customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
           `)
           .eq('id', id)
           .maybeSingle();
 
         if (error) throw error;
-        setBooking(data as any);
+        
+        if (!data) {
+          toast.error('Bokning hittades inte');
+          navigate('/admin/bookings');
+          return;
+        }
+
+        // Extract data from payload and merge with top-level fields
+        const payload = (data.payload || {}) as Record<string, any>;
+        const enrichedData = {
+          ...data,
+          service_name: payload.service_name || payload.serviceName || data.service_slug,
+          service_id: payload.service_id || data.service_slug,
+          description: payload.description || payload.beskrivning || '',
+          address: payload.address || payload.adress || '',
+          city: payload.city || payload.stad || '',
+          postal_code: payload.postal_code || payload.postnummer || '',
+          name: payload.name || payload.namn || payload.contact_name || '',
+          email: payload.email || payload.epost || payload.contact_email || '',
+          phone: payload.phone || payload.telefon || payload.contact_phone || '',
+          price_type: payload.price_type || payload.priceType || 'hourly',
+          hourly_rate: payload.hourly_rate || payload.hourlyRate || 0,
+          hours_estimated: payload.hours_estimated || payload.hoursEstimated || 0,
+          rot_rut_type: payload.rot_rut_type || payload.rotRutType || '',
+          internal_notes: payload.internal_notes || payload.internalNotes || '',
+        };
+        
+        setBooking(enrichedData as any);
       } catch (error) {
         console.error('Error fetching booking:', error);
         toast.error('Kunde inte ladda bokning');
