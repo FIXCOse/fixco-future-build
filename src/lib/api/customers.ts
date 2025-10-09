@@ -6,6 +6,13 @@ export type Customer = {
   email: string;
   phone?: string | null;
   address?: string | null;
+  personnummer?: string | null;
+  postal_code?: string | null;
+  city?: string | null;
+  booking_count?: number;
+  last_booking_at?: string | null;
+  total_spent?: number;
+  notes?: string | null;
   created_at: string;
 };
 
@@ -13,10 +20,38 @@ export async function fetchCustomers() {
   const { data, error } = await supabase
     .from('customers')
     .select('*')
-    .order('name', { ascending: true });
+    .order('created_at', { ascending: false });
 
   if (error) throw error;
   return data || [];
+}
+
+export async function fetchCustomerWithDetails(customerId: string) {
+  const [customerRes, bookingsRes, quotesRes] = await Promise.all([
+    supabase
+      .from('customers')
+      .select('*')
+      .eq('id', customerId)
+      .single(),
+    supabase
+      .from('bookings')
+      .select('*')
+      .eq('customer_id', customerId)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('quotes_new')
+      .select('*')
+      .eq('customer_id', customerId)
+      .order('created_at', { ascending: false })
+  ]);
+
+  if (customerRes.error) throw customerRes.error;
+  
+  return {
+    customer: customerRes.data,
+    bookings: bookingsRes.data || [],
+    quotes: quotesRes.data || []
+  };
 }
 
 export async function createCustomer(customerData: {
@@ -30,7 +65,15 @@ export async function createCustomer(customerData: {
 }) {
   const { data, error } = await supabase
     .from('customers')
-    .insert(customerData)
+    .insert({
+      name: customerData.name,
+      email: customerData.email,
+      phone: customerData.phone,
+      address: customerData.address,
+      personnummer: customerData.personnummer,
+      postal_code: customerData.postalCode,
+      city: customerData.city
+    })
     .select()
     .single();
 

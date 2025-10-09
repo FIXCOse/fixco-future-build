@@ -1,68 +1,63 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Users, Eye, Mail, Phone, MapPin, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Search, Users, Eye, Mail, Phone, MapPin, Calendar, TrendingUp } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { fetchCustomers, fetchCustomerWithDetails, type Customer } from '@/lib/api/customers';
+import { CustomerDetailModal } from '@/components/admin/CustomerDetailModal';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminCustomers = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
   const { data: customers, isLoading } = useQuery({
-    queryKey: ['admin-customers', searchTerm],
-    queryFn: async () => {
-      let query = supabase
-        .from('profiles')
-        .select(`
-          *,
-          bookings(count),
-          invoices(count)
-        `)
-        .neq('role', 'owner')
-        .neq('role', 'admin')
-        .order('created_at', { ascending: false });
-
-      if (searchTerm) {
-        query = query.or(`first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,phone.ilike.%${searchTerm}%`);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
-    },
+    queryKey: ['admin-customers'],
+    queryFn: fetchCustomers,
   });
 
-  const { data: customerStats } = useQuery({
+  const { data: customerDetails } = useQuery({
+    queryKey: ['customer-details', selectedCustomerId],
+    queryFn: () => selectedCustomerId ? fetchCustomerWithDetails(selectedCustomerId) : null,
+    enabled: !!selectedCustomerId,
+  });
+
+  const { data: stats } = useQuery({
     queryKey: ['customer-stats'],
     queryFn: async () => {
-      const [totalBookings, totalRevenue] = await Promise.all([
+      const [customersCount, bookingsCount, quotesCount, revenueData] = await Promise.all([
+        supabase.from('customers').select('*', { count: 'exact', head: true }),
         supabase.from('bookings').select('*', { count: 'exact', head: true }),
-        supabase.from('invoices').select('total_amount').eq('status', 'paid'),
+        supabase.from('quotes_new').select('*', { count: 'exact', head: true }),
+        supabase.from('customers').select('total_spent')
       ]);
 
-      const revenue = totalRevenue.data?.reduce((sum, invoice) => sum + (invoice.total_amount || 0), 0) || 0;
+      const totalRevenue = revenueData.data?.reduce((sum, c) => sum + (c.total_spent || 0), 0) || 0;
 
       return {
-        totalCustomers: customers?.length || 0,
-        totalBookings: totalBookings.count || 0,
-        totalRevenue: revenue,
+        totalCustomers: customersCount.count || 0,
+        totalBookings: bookingsCount.count || 0,
+        totalQuotes: quotesCount.count || 0,
+        totalRevenue
       };
-    },
-    enabled: !!customers,
+    }
   });
 
-  const getUserTypeBadge = (userType: string) => {
-    switch (userType) {
-      case 'company': return { variant: 'secondary' as const, label: 'Företag' };
-      case 'brf': return { variant: 'default' as const, label: 'BRF' };
-      default: return { variant: 'outline' as const, label: 'Privat' };
-    }
-  };
+  const filteredCustomers = customers?.filter(customer => {
+    if (!searchTerm) return true;
+    const search = searchTerm.toLowerCase();
+    return (
+      customer.name?.toLowerCase().includes(search) ||
+      customer.email?.toLowerCase().includes(search) ||
+      customer.phone?.toLowerCase().includes(search) ||
+      customer.city?.toLowerCase().includes(search)
+    );
+  });
 
   return (
     <div className="space-y-6">
@@ -71,20 +66,20 @@ const AdminCustomers = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Kunder</h1>
-          <p className="text-muted-foreground">Hantera alla kunder i systemet</p>
+          <p className="text-muted-foreground">Alla kunder som någonsin bokat en tjänst</p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-blue-100">
-                <Users className="h-6 w-6 text-blue-600" />
+              <div className="p-3 rounded-lg bg-blue-500/10">
+                <Users className="h-6 w-6 text-blue-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{customerStats?.totalCustomers || 0}</p>
+                <p className="text-2xl font-bold">{stats?.totalCustomers || 0}</p>
                 <p className="text-sm text-muted-foreground">Totala kunder</p>
               </div>
             </div>
@@ -93,12 +88,12 @@ const AdminCustomers = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-green-100">
-                <Calendar className="h-6 w-6 text-green-600" />
+              <div className="p-3 rounded-lg bg-green-500/10">
+                <Calendar className="h-6 w-6 text-green-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{customerStats?.totalBookings || 0}</p>
-                <p className="text-sm text-muted-foreground">Totala bokningar</p>
+                <p className="text-2xl font-bold">{stats?.totalBookings || 0}</p>
+                <p className="text-sm text-muted-foreground">Bokningar</p>
               </div>
             </div>
           </CardContent>
@@ -106,11 +101,24 @@ const AdminCustomers = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-purple-100">
-                <Mail className="h-6 w-6 text-purple-600" />
+              <div className="p-3 rounded-lg bg-purple-500/10">
+                <Mail className="h-6 w-6 text-purple-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{customerStats?.totalRevenue?.toLocaleString() || 0} SEK</p>
+                <p className="text-2xl font-bold">{stats?.totalQuotes || 0}</p>
+                <p className="text-sm text-muted-foreground">Offerter</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-lg bg-orange-500/10">
+                <TrendingUp className="h-6 w-6 text-orange-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{(stats?.totalRevenue || 0).toLocaleString()} kr</p>
                 <p className="text-sm text-muted-foreground">Total omsättning</p>
               </div>
             </div>
@@ -123,12 +131,12 @@ const AdminCustomers = () => {
           <div className="flex items-center gap-4">
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5" />
-              Kunder
+              Kundlista
             </CardTitle>
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Sök namn, e-post, telefon..."
+                placeholder="Sök namn, e-post, telefon, stad..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -139,7 +147,7 @@ const AdminCustomers = () => {
         <CardContent>
           {isLoading ? (
             <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="flex items-center gap-4 p-4 border rounded-lg animate-pulse">
                   <div className="w-12 h-12 bg-muted rounded-full" />
                   <div className="flex-1 space-y-2">
@@ -149,77 +157,90 @@ const AdminCustomers = () => {
                 </div>
               ))}
             </div>
-          ) : customers && customers.length > 0 ? (
-            <div className="space-y-4">
-              {customers.map((customer) => {
-                const userTypeBadge = getUserTypeBadge(customer.user_type || 'private');
-                return (
-                  <div key={customer.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="h-6 w-6 text-primary" />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-medium">
-                          {customer.first_name && customer.last_name
-                            ? `${customer.first_name} ${customer.last_name}`
-                            : customer.company_name || customer.email || 'Okänt namn'
-                          }
-                        </h3>
-                        <Badge variant={userTypeBadge.variant}>
-                          {userTypeBadge.label}
+          ) : filteredCustomers && filteredCustomers.length > 0 ? (
+            <div className="space-y-3">
+              {filteredCustomers.map((customer) => (
+                <div 
+                  key={customer.id} 
+                  className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                  onClick={() => setSelectedCustomerId(customer.id)}
+                >
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold">{customer.name}</h3>
+                      {customer.booking_count && customer.booking_count > 0 && (
+                        <Badge variant="secondary">
+                          {customer.booking_count} {customer.booking_count === 1 ? 'bokning' : 'bokningar'}
                         </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Mail className="h-3 w-3" />
+                        {customer.email}
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        {customer.email && (
-                          <div className="flex items-center gap-1">
-                            <Mail className="h-4 w-4" />
-                            {customer.email}
-                          </div>
-                        )}
-                        {customer.phone && (
-                          <div className="flex items-center gap-1">
-                            <Phone className="h-4 w-4" />
-                            {customer.phone}
-                          </div>
-                        )}
-                        {customer.city && (
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {customer.city}
-                          </div>
-                        )}
-                        <span>
-                          Medlem {formatDistanceToNow(new Date(customer.created_at), { 
+                      {customer.phone && (
+                        <div className="flex items-center gap-1">
+                          <Phone className="h-3 w-3" />
+                          {customer.phone}
+                        </div>
+                      )}
+                      {customer.city && (
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {customer.city}
+                        </div>
+                      )}
+                      {customer.last_booking_at && (
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          Senaste bokning {formatDistanceToNow(new Date(customer.last_booking_at), { 
                             addSuffix: true, 
                             locale: sv 
                           })}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-right text-sm">
-                        <p className="font-medium">{customer.loyalty_points || 0} poäng</p>
-                        <p className="text-muted-foreground">{customer.total_spent?.toLocaleString() || 0} SEK</p>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                );
-              })}
+                  <div className="text-right">
+                    <p className="text-lg font-bold">{(customer.total_spent || 0).toLocaleString()} kr</p>
+                    <p className="text-xs text-muted-foreground">
+                      Kund sedan {new Date(customer.created_at).toLocaleDateString('sv-SE')}
+                    </p>
+                  </div>
+                  <Button variant="ghost" size="sm">
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="text-center py-8">
+            <div className="text-center py-12">
               <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">
-                {searchTerm ? 'Inga kunder hittades' : 'Inga kunder att visa'}
+              <p className="text-lg font-medium">
+                {searchTerm ? 'Inga kunder hittades' : 'Inga kunder än'}
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                {searchTerm 
+                  ? 'Försök med en annan sökterm' 
+                  : 'Kunder skapas automatiskt när någon bokar en tjänst'
+                }
               </p>
             </div>
           )}
         </CardContent>
       </Card>
+
+      <CustomerDetailModal
+        open={!!selectedCustomerId}
+        onOpenChange={(open) => !open && setSelectedCustomerId(null)}
+        customer={customerDetails?.customer || null}
+        bookings={customerDetails?.bookings || []}
+        quotes={customerDetails?.quotes || []}
+      />
     </div>
   );
 };
