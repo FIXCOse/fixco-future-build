@@ -153,16 +153,7 @@ export default function AdminBookingDetail() {
             {booking.description && (
               <div>
                 <p className="font-medium">Beskrivning</p>
-                <p className="text-muted-foreground">
-                  {(() => {
-                    try {
-                      const parsed = JSON.parse(booking.description);
-                      return parsed.beskrivning || parsed.description || parsed.message || booking.description;
-                    } catch {
-                      return booking.description;
-                    }
-                  })()}
-                </p>
+                <p className="text-muted-foreground">{booking.description}</p>
               </div>
             )}
 

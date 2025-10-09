@@ -302,14 +302,7 @@ const AdminOngoingProjects = () => {
                     {/* Description if available */}
                     {project.description && (
                       <div className="text-sm text-muted-foreground bg-muted/30 p-2 rounded text-xs line-clamp-2">
-                        {(() => {
-                          try {
-                            const parsed = JSON.parse(project.description);
-                            return parsed.beskrivning || parsed.description || parsed.message || project.description;
-                          } catch {
-                            return project.description;
-                          }
-                        })()}
+                        {project.description}
                       </div>
                     )}
                   </div>
@@ -411,16 +404,7 @@ const AdminOngoingProjects = () => {
                           {project.description && (
                             <div>
                               <span className="text-muted-foreground text-sm">Beskrivning:</span>
-                              <p className="mt-1">
-                                {(() => {
-                                  try {
-                                    const parsed = JSON.parse(project.description);
-                                    return parsed.beskrivning || parsed.description || parsed.message || project.description;
-                                  } catch {
-                                    return project.description;
-                                  }
-                                })()}
-                              </p>
+                              <p className="mt-1">{project.description}</p>
                             </div>
                           )}
 

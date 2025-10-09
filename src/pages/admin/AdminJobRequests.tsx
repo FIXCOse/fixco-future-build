@@ -331,18 +331,7 @@ const AdminJobRequests = () => {
                             {getJobStatusBadge(request.jobs?.status)}
                             {getStatusBadge(request.status)}
                           </div>
-                          <p className="text-sm text-muted-foreground">
-                            {(() => {
-                              const desc = request.jobs?.description;
-                              if (!desc) return '';
-                              try {
-                                const parsed = JSON.parse(desc);
-                                return parsed.beskrivning || parsed.description || parsed.message || desc;
-                              } catch {
-                                return desc;
-                              }
-                            })()}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{request.jobs?.description}</p>
                         </div>
                         <div className="text-right text-sm text-muted-foreground">
                           {new Date(request.requested_at).toLocaleDateString('sv-SE')}
@@ -458,18 +447,7 @@ const AdminJobRequests = () => {
                             )}
                           </div>
                           
-                          <p className="text-sm text-muted-foreground">
-                            {(() => {
-                              const desc = job.description;
-                              if (!desc) return '';
-                              try {
-                                const parsed = JSON.parse(desc);
-                                return parsed.beskrivning || parsed.description || parsed.message || desc;
-                              } catch {
-                                return desc;
-                              }
-                            })()}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{job.description}</p>
                           
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
