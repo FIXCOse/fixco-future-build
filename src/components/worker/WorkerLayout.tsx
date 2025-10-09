@@ -14,19 +14,28 @@ import {
   Phone
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const WorkerLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
 
-  // Mock profile for demo
-  const mockProfile = {
-    first_name: 'Demo',
-    last_name: 'Worker',
-    role: 'worker'
-  };
+  useEffect(() => {
+    const getProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('first_name, last_name, role')
+          .eq('id', user.id)
+          .single();
+        setProfile(data);
+      }
+    };
+    getProfile();
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -63,13 +72,8 @@ const WorkerLayout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
-      {/* Demo banner */}
-      <div className="bg-yellow-500 text-yellow-900 text-center py-2 text-sm font-medium z-50">
-        🚧 DEMO MODE - No authentication required
-      </div>
-
       {/* Mobile Header */}
-      <nav className="bg-card/95 backdrop-blur-sm border-b border-border/50 sticky top-8 z-50">
+      <nav className="bg-card/95 backdrop-blur-sm border-b border-border/50 sticky top-0 z-50">
         <div className="px-4">
           <div className="flex justify-between items-center h-14">
             {/* Logo and current page */}
@@ -96,9 +100,11 @@ const WorkerLayout = () => {
               </Button>
               
               {/* Profile badge */}
-              <Badge variant="outline" className="hidden sm:flex">
-                {mockProfile?.first_name?.[0]}{mockProfile?.last_name?.[0]}
-              </Badge>
+              {profile && (
+                <Badge variant="outline" className="hidden sm:flex">
+                  {profile?.first_name?.[0]}{profile?.last_name?.[0]}
+                </Badge>
+              )}
               
               {/* Mobile menu trigger */}
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -110,15 +116,17 @@ const WorkerLayout = () => {
                 <SheetContent side="right" className="w-72">
                   <div className="flex flex-col space-y-6 pt-6">
                     {/* Profile section */}
-                    <div className="text-center pb-4 border-b">
-                      <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span className="text-primary-foreground font-bold text-xl">
-                          {mockProfile?.first_name?.[0]}{mockProfile?.last_name?.[0]}
-                        </span>
+                    {profile && (
+                      <div className="text-center pb-4 border-b">
+                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                          <span className="text-primary-foreground font-bold text-xl">
+                            {profile?.first_name?.[0]}{profile?.last_name?.[0]}
+                          </span>
+                        </div>
+                        <h3 className="font-medium">{profile?.first_name} {profile?.last_name}</h3>
+                        <Badge variant="secondary" className="mt-1">Arbetare</Badge>
                       </div>
-                      <h3 className="font-medium">{mockProfile?.first_name} {mockProfile?.last_name}</h3>
-                      <Badge variant="secondary" className="mt-1">Arbetare</Badge>
-                    </div>
+                    )}
                     
                     {/* Navigation */}
                     <div className="grid grid-cols-2 gap-3">
