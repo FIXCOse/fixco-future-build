@@ -382,16 +382,26 @@ export default function AdminBookings() {
                         </Link>
                       </Button>
                       {booking.hasQuote && booking.quoteId ? (
-                        <Button 
-                          size="sm" 
-                          variant="default" 
-                          onClick={() => navigate(`/admin/quotes/new?id=${booking.quoteId}`)}
-                        >
-                          <FileText className="h-4 w-4 mr-1" />
-                          Visa offert
-                        </Button>
+                        <>
+                          <Button 
+                            size="sm" 
+                            variant="default" 
+                            onClick={() => navigate(`/admin/quotes/new?id=${booking.quoteId}`)}
+                          >
+                            <FileText className="h-4 w-4 mr-1" />
+                            Hantera offert
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => handleCreateQuote(booking)}
+                          >
+                            <FileText className="h-4 w-4 mr-1" />
+                            Skapa ny offert
+                          </Button>
+                        </>
                       ) : (
-                        <Button size="sm" variant="outline" onClick={() => handleCreateQuote(booking)}>
+                        <Button size="sm" variant="default" onClick={() => handleCreateQuote(booking)}>
                           <FileText className="h-4 w-4 mr-1" />
                           Skapa offert
                         </Button>
