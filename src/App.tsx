@@ -50,6 +50,8 @@ import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
+import AdminProjectsTrash from "./pages/admin/AdminProjectsTrash";
+import AdminJobRequestsTrash from "./pages/admin/AdminJobRequestsTrash";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
 import AdminBookings from "./pages/admin/AdminBookings";
@@ -163,6 +165,7 @@ const App = () => {
                     <Route path="quote-questions" element={<AdminQuoteQuestions />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
+                    <Route path="projects/trash" element={<AdminProjectsTrash />} />
                     <Route path="bookings" element={<AdminBookings />} />
                     <Route path="bookings/trash" element={<AdminBookingsTrash />} />
                     <Route path="bookings/:id" element={<AdminBookingDetail />} />
@@ -176,6 +179,7 @@ const App = () => {
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
                     <Route path="job-requests" element={<AdminJobRequests />} />
+                    <Route path="job-requests-trash" element={<AdminJobRequestsTrash />} />
                     <Route path="jobs" element={<AdminJobs />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                     <Route path="translations" element={<AdminTranslations />} />

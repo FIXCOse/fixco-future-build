@@ -712,6 +712,7 @@ export type Database = {
       }
       job_requests: {
         Row: {
+          deleted_at: string | null
           expires_at: string | null
           id: string
           job_id: string
@@ -724,6 +725,7 @@ export type Database = {
           status: string
         }
         Insert: {
+          deleted_at?: string | null
           expires_at?: string | null
           id?: string
           job_id: string
@@ -736,6 +738,7 @@ export type Database = {
           status?: string
         }
         Update: {
+          deleted_at?: string | null
           expires_at?: string | null
           id?: string
           job_id?: string
@@ -1264,6 +1267,7 @@ export type Database = {
           assigned_to: string | null
           created_at: string | null
           customer_id: string | null
+          deleted_at: string | null
           id: string
           quote_id: string | null
           start_date: string | null
@@ -1274,6 +1278,7 @@ export type Database = {
           assigned_to?: string | null
           created_at?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           id?: string
           quote_id?: string | null
           start_date?: string | null
@@ -1284,6 +1289,7 @@ export type Database = {
           assigned_to?: string | null
           created_at?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           id?: string
           quote_id?: string | null
           start_date?: string | null
@@ -2745,7 +2751,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      empty_job_requests_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       empty_jobs_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      empty_projects_trash: {
         Args: Record<PropertyKey, never>
         Returns: number
       }
@@ -2854,6 +2868,14 @@ export type Database = {
         Args: { p_job_id: string }
         Returns: boolean
       }
+      permanently_delete_job_request: {
+        Args: { p_request_id: string }
+        Returns: boolean
+      }
+      permanently_delete_project: {
+        Args: { p_project_id: string }
+        Returns: boolean
+      }
       permanently_delete_quote: {
         Args: { p_quote_id: string }
         Returns: boolean
@@ -2880,6 +2902,14 @@ export type Database = {
       }
       restore_job: {
         Args: { p_job_id: string }
+        Returns: boolean
+      }
+      restore_job_request: {
+        Args: { p_request_id: string }
+        Returns: boolean
+      }
+      restore_project: {
+        Args: { p_project_id: string }
         Returns: boolean
       }
       restore_quote: {

@@ -12,8 +12,11 @@ import AdminBack from '@/components/admin/AdminBack';
 import { JobRequestModal } from '@/components/admin/JobRequestModal';
 import { 
   Search, Send, Clock, CheckCircle, XCircle, 
-  User, MapPin, Briefcase, Filter 
+  User, MapPin, Briefcase, Filter, Trash2, MoreVertical 
 } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Link } from 'react-router-dom';
 
 const AdminJobRequests = () => {
   const { toast } = useToast();
@@ -22,6 +25,8 @@ const AdminJobRequests = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [isJobRequestModalOpen, setIsJobRequestModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [requestToDelete, setRequestToDelete] = useState<any>(null);
 
   // Fetch all jobs and accepted quotes for manual assignment
   const { data: allJobs, isLoading: jobsLoading } = useQuery({
@@ -132,7 +137,7 @@ const AdminJobRequests = () => {
   });
 
   // Fetch job requests with staff and job details
-  const { data: jobRequests, isLoading: requestsLoading } = useQuery({
+  const { data: jobRequests, isLoading: requestsLoading, refetch } = useQuery({
     queryKey: ['job-requests', statusFilter, searchTerm],
     queryFn: async () => {
       let query = supabase
@@ -159,6 +164,7 @@ const AdminJobRequests = () => {
             fixed_price
           )
         `)
+        .is('deleted_at', null)
         .order('requested_at', { ascending: false });
 
       if (statusFilter !== 'all') {
@@ -226,6 +232,34 @@ const AdminJobRequests = () => {
     }
   };
 
+  const handleDeleteRequest = async () => {
+    if (!requestToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from('job_requests')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', requestToDelete.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Jobbförfrågan raderad",
+        description: "Flyttat till papperskorgen",
+      });
+      refetch();
+      setDeleteConfirmOpen(false);
+      setRequestToDelete(null);
+    } catch (error: any) {
+      console.error('Error deleting job request:', error);
+      toast({
+        title: "Fel",
+        description: "Kunde inte radera jobbförfrågan",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
@@ -267,6 +301,12 @@ const AdminJobRequests = () => {
           <h1 className="text-2xl font-bold">Jobbförfrågningar</h1>
           <p className="text-muted-foreground">Skicka och hantera jobbförfrågningar till personal</p>
         </div>
+        <Link to="/admin/job-requests-trash">
+          <Button variant="outline">
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
+          </Button>
+        </Link>
       </div>
 
       <Tabs defaultValue="requests" className="space-y-6">
@@ -384,6 +424,28 @@ const AdminJobRequests = () => {
                           Förfaller: {new Date(request.expires_at).toLocaleString('sv-SE')}
                         </div>
                       )}
+
+                      <div className="flex justify-end">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="ghost">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              className="text-destructive focus:text-destructive"
+                              onClick={() => {
+                                setRequestToDelete(request);
+                                setDeleteConfirmOpen(true);
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Radera
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -585,6 +647,24 @@ const AdminJobRequests = () => {
         }}
         job={selectedJob}
       />
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Radera jobbförfrågan?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Jobbförfrågan kommer att flyttas till papperskorgen och kan återställas senare.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteRequest} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Radera
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

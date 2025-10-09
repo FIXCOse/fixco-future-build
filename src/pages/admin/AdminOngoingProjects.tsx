@@ -9,11 +9,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, Play, FileText, User, Send } from 'lucide-react';
+import { Search, Play, FileText, User, Send, Trash2, MoreVertical } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import AdminBack from '@/components/admin/AdminBack';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 const AdminOngoingProjects = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,6 +26,8 @@ const AdminOngoingProjects = () => {
   const [dispatchStrategy, setDispatchStrategy] = useState<'pool' | 'manual'>('pool');
   const [selectedWorker, setSelectedWorker] = useState<string>('');
   const [dispatchNotes, setDispatchNotes] = useState('');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<any>(null);
 
   const { data: projects, isLoading, refetch } = useQuery({
     queryKey: ['ongoing-projects', searchTerm, statusFilter],
@@ -34,6 +39,7 @@ const AdminOngoingProjects = () => {
           quote:quotes_new!projects_quote_id_fkey(number, title),
           customer:customers!projects_customer_id_fkey(name, email)
         `)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
       if (searchTerm) {
@@ -115,6 +121,27 @@ const AdminOngoingProjects = () => {
     }
   };
 
+  const handleDeleteProject = async () => {
+    if (!projectToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', projectToDelete.id);
+
+      if (error) throw error;
+
+      toast.success('Projekt flyttat till papperskorgen');
+      refetch();
+      setDeleteConfirmOpen(false);
+      setProjectToDelete(null);
+    } catch (error: any) {
+      console.error('Error deleting project:', error);
+      toast.error('Kunde inte radera projekt');
+    }
+  };
+
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case 'scheduled': return 'default' as const;
@@ -148,6 +175,12 @@ const AdminOngoingProjects = () => {
           <h1 className="text-2xl font-bold">Pågående uppdrag</h1>
           <p className="text-muted-foreground">Hantera alla projekt</p>
         </div>
+        <Link to="/admin/projects/trash">
+          <Button variant="outline">
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
+          </Button>
+        </Link>
       </div>
 
       {/* Filter Tabs */}
@@ -248,6 +281,25 @@ const AdminOngoingProjects = () => {
                         </Button>
                       </>
                     )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button size="sm" variant="ghost">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => {
+                            setProjectToDelete(project);
+                            setDeleteConfirmOpen(true);
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Radera
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               ))}
@@ -322,6 +374,24 @@ const AdminOngoingProjects = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Radera projekt?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Projektet kommer att flyttas till papperskorgen och kan återställas senare.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteProject} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Radera
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
