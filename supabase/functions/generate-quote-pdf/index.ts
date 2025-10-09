@@ -12,9 +12,44 @@ serve(async (req) => {
   }
 
   try {
-    const { service, estimate, quantity, material } = await req.json();
+    const { quoteId } = await req.json();
     
-    // Generate simple HTML for PDF
+    if (!quoteId) {
+      throw new Error('Quote ID is required');
+    }
+
+    // Initialize Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Fetch quote data from database
+    const { data: quote, error: quoteError } = await supabase
+      .from('quotes')
+      .select(`
+        *,
+        customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
+        property:properties(address, city, postal_code)
+      `)
+      .eq('id', quoteId)
+      .single();
+
+    if (quoteError) throw quoteError;
+    if (!quote) throw new Error('Quote not found');
+
+    // Parse description if it's JSON
+    let description = quote.description || '';
+    try {
+      const parsed = JSON.parse(description);
+      description = parsed.beskrivning || parsed.description || description;
+    } catch {
+      // Keep as is if not JSON
+    }
+
+    // Parse line items
+    const lineItems = Array.isArray(quote.line_items) ? quote.line_items : [];
+    
+    // Generate HTML for PDF
     const html = `
       <!DOCTYPE html>
       <html lang="sv">
@@ -25,11 +60,13 @@ serve(async (req) => {
           h1 { color: #1a1a1a; }
           .header { border-bottom: 3px solid #0066cc; padding-bottom: 20px; margin-bottom: 30px; }
           .company { font-size: 24px; font-weight: bold; color: #0066cc; }
-          .quote-details { margin: 30px 0; }
+          .quote-info { margin: 30px 0; }
+          .customer-info { background: #f8f9fa; padding: 20px; margin: 20px 0; }
           table { width: 100%; border-collapse: collapse; margin: 20px 0; }
           th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
           th { background-color: #f8f9fa; font-weight: bold; }
-          .total { font-size: 18px; font-weight: bold; }
+          .amount { text-align: right; }
+          .total-row { font-size: 18px; font-weight: bold; background: #f8f9fa; }
           .rot-highlight { color: #28a745; font-weight: bold; }
           .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
         </style>
@@ -40,67 +77,94 @@ serve(async (req) => {
           <p>Uppsala & Stockholm<br>Telefon: 08-123 456 78<br>info@fixco.se</p>
         </div>
         
-        <h1>Preliminär Offert</h1>
-        <p><strong>Datum:</strong> ${new Date().toLocaleDateString('sv-SE')}</p>
+        <h1>Offert</h1>
+        <div class="quote-info">
+          <p><strong>Offertnummer:</strong> ${quote.quote_number}</p>
+          <p><strong>Datum:</strong> ${new Date(quote.created_at).toLocaleDateString('sv-SE')}</p>
+          ${quote.valid_until ? `<p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
+        </div>
+
+        ${quote.customer_name || quote.customer ? `
+        <div class="customer-info">
+          <h3>Kund</h3>
+          <p><strong>${quote.customer_name || (quote.customer ? `${quote.customer.first_name || ''} ${quote.customer.last_name || ''}`.trim() : '')}</strong></p>
+          ${quote.customer_email ? `<p>Email: ${quote.customer_email}</p>` : ''}
+          ${quote.customer_phone ? `<p>Telefon: ${quote.customer_phone}</p>` : ''}
+          ${quote.customer_address ? `<p>${quote.customer_address}${quote.customer_postal_code ? `, ${quote.customer_postal_code}` : ''}${quote.customer_city ? ` ${quote.customer_city}` : ''}</p>` : ''}
+        </div>
+        ` : ''}
+
+        <div>
+          <h2>${quote.title}</h2>
+          ${description ? `<p>${description}</p>` : ''}
+        </div>
         
-        <div class="quote-details">
-          <h2>${service.name}</h2>
-          <p>${service.description}</p>
-          
-          <table>
+        <table>
+          <thead>
             <tr>
               <th>Beskrivning</th>
-              <th>Antal</th>
-              <th>Á-pris</th>
-              <th>Totalt</th>
+              <th class="amount">Antal</th>
+              <th class="amount">Á-pris</th>
+              <th class="amount">Totalt</th>
             </tr>
+          </thead>
+          <tbody>
+            ${lineItems.map(item => `
+              <tr>
+                <td>${item.description || item.name || ''}</td>
+                <td class="amount">${item.quantity || 1}</td>
+                <td class="amount">${(item.unit_price || 0).toLocaleString('sv-SE')} kr</td>
+                <td class="amount">${((item.quantity || 1) * (item.unit_price || 0)).toLocaleString('sv-SE')} kr</td>
+              </tr>
+            `).join('')}
             <tr>
-              <td>Arbete</td>
-              <td>${quantity} ${service.unit}</td>
-              <td>${service.base_price_sek.toLocaleString('sv-SE')} kr</td>
-              <td>${estimate.workSek.toLocaleString('sv-SE')} kr</td>
+              <td colspan="3"><strong>Delsumma</strong></td>
+              <td class="amount"><strong>${(quote.subtotal || 0).toLocaleString('sv-SE')} kr</strong></td>
             </tr>
-            ${material > 0 ? `
+            ${quote.discount_amount > 0 ? `
             <tr>
-              <td>Material</td>
-              <td>-</td>
-              <td>-</td>
-              <td>${estimate.materialSek.toLocaleString('sv-SE')} kr</td>
+              <td colspan="3">Rabatt ${quote.discount_percent ? `(${quote.discount_percent}%)` : ''}</td>
+              <td class="amount">−${(quote.discount_amount || 0).toLocaleString('sv-SE')} kr</td>
             </tr>
             ` : ''}
-            <tr>
-              <td colspan="3"><strong>Delsumma (exkl. moms)</strong></td>
-              <td><strong>${estimate.subtotalSek.toLocaleString('sv-SE')} kr</strong></td>
-            </tr>
             <tr>
               <td colspan="3">Moms (25%)</td>
-              <td>${estimate.vatSek.toLocaleString('sv-SE')} kr</td>
+              <td class="amount">${(quote.vat_amount || 0).toLocaleString('sv-SE')} kr</td>
             </tr>
-            <tr>
-              <td colspan="3"><strong>Totalt inkl. moms</strong></td>
-              <td><strong>${estimate.totalInclVatSek.toLocaleString('sv-SE')} kr</strong></td>
+            <tr class="total-row">
+              <td colspan="3">Totalt inkl. moms</td>
+              <td class="amount">${(quote.total_amount || 0).toLocaleString('sv-SE')} kr</td>
             </tr>
-            ${estimate.rotEligible && estimate.rotDeductionSek > 0 ? `
+            ${quote.rot_amount > 0 ? `
             <tr class="rot-highlight">
-              <td colspan="3"><strong>Indikativt ROT-avdrag (30% på arbete)</strong></td>
-              <td><strong>−${estimate.rotDeductionSek.toLocaleString('sv-SE')} kr</strong></td>
+              <td colspan="3"><strong>ROT-avdrag (30%)</strong></td>
+              <td class="amount"><strong>−${(quote.rot_amount || 0).toLocaleString('sv-SE')} kr</strong></td>
             </tr>
-            <tr class="total">
+            <tr class="total-row rot-highlight">
               <td colspan="3"><strong>Ditt pris efter ROT</strong></td>
-              <td><strong>${estimate.totalAfterRotSek.toLocaleString('sv-SE')} kr</strong></td>
+              <td class="amount"><strong>${((quote.total_amount || 0) - (quote.rot_amount || 0)).toLocaleString('sv-SE')} kr</strong></td>
             </tr>
             ` : ''}
-          </table>
-        </div>
+            ${quote.rut_amount > 0 ? `
+            <tr class="rot-highlight">
+              <td colspan="3"><strong>RUT-avdrag (50%)</strong></td>
+              <td class="amount"><strong>−${(quote.rut_amount || 0).toLocaleString('sv-SE')} kr</strong></td>
+            </tr>
+            <tr class="total-row rot-highlight">
+              <td colspan="3"><strong>Ditt pris efter RUT</strong></td>
+              <td class="amount"><strong>${((quote.total_amount || 0) - (quote.rut_amount || 0)).toLocaleString('sv-SE')} kr</strong></td>
+            </tr>
+            ` : ''}
+          </tbody>
+        </table>
         
         <div class="footer">
           <p><strong>Viktiga upplysningar:</strong></p>
           <ul>
-            <li>Detta är en preliminär offert baserad på uppgiven information</li>
-            <li>Slutligt pris fastställs efter en kostnadsfri platsbesiktning</li>
-            <li>ROT-avdrag görs direkt på fakturan enligt Skatteverkets regler</li>
-            <li>Priset inkluderar arbetskostnad, ej ställning eller specialverktyg</li>
-            <li>Offertenär giltig i 30 dagar</li>
+            <li>Priset inkluderar arbetskostnad och material enligt specifikation</li>
+            <li>Eventuella tillkommande kostnader redovisas separat</li>
+            ${quote.rot_amount > 0 || quote.rut_amount > 0 ? '<li>ROT/RUT-avdrag görs direkt på fakturan enligt Skatteverkets regler</li>' : ''}
+            <li>Betalningsvillkor: 30 dagar netto</li>
           </ul>
           <p style="margin-top: 20px;">
             <strong>Fixco AB</strong><br>
@@ -112,17 +176,9 @@ serve(async (req) => {
       </html>
     `;
 
-    // In a real implementation, you'd use a PDF generation service
-    // For now, we'll return the HTML and suggest using a browser print-to-PDF
-    // or integrate with a service like PDFShift, DocRaptor, or similar
-
     // Store HTML in Supabase Storage
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const fileName = `quote-${Date.now()}.html`;
-    const { data: uploadData, error: uploadError } = await supabase
+    const fileName = `quote-${quote.quote_number}-${Date.now()}.html`;
+    const { error: uploadError } = await supabase
       .storage
       .from('invoices')
       .upload(fileName, html, {
@@ -136,6 +192,8 @@ serve(async (req) => {
       .storage
       .from('invoices')
       .getPublicUrl(fileName);
+
+    console.log('PDF generated successfully:', publicUrl);
 
     return new Response(JSON.stringify({ 
       pdfUrl: publicUrl,
