@@ -20,7 +20,11 @@ export default function QuoteQuestionsNotification() {
         .select('*', { count: 'exact', head: true })
         .eq('answered', false);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching unanswered questions:', error);
+        throw error;
+      }
+      console.log('🔔 Unanswered questions count:', count);
       return count || 0;
     },
     refetchInterval: 30000, // Uppdatera var 30:e sekund
@@ -37,16 +41,19 @@ export default function QuoteQuestionsNotification() {
         .order('asked_at', { ascending: false })
         .limit(5);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching recent questions:', error);
+        throw error;
+      }
+      console.log('📋 Recent unanswered questions:', data);
       return data || [];
     },
     refetchInterval: 30000,
   });
 
-  if (unansweredCount === 0) {
-    return null;
-  }
+  console.log('🔔 QuoteQuestionsNotification rendered, count:', unansweredCount);
 
+  // Visa alltid klockan, även om count är 0
   return (
     <Popover>
       <PopoverTrigger asChild>

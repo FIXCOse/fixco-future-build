@@ -32,7 +32,17 @@ const AdminDashboardContent = () => {
     },
   });
 
-  const adminSections = [
+  type AdminSection = {
+    title: string;
+    description: string;
+    icon: any;
+    href: string;
+    color: string;
+    bgColor: string;
+    badge?: number;
+  };
+
+  const adminSections: AdminSection[] = [
     {
       title: 'Användarhantering',
       description: 'Hantera användare, roller och behörigheter',
