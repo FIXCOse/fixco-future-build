@@ -91,3 +91,21 @@ verify_jwt = true
 
 [functions.get-quote-public]
 verify_jwt = false
+
+[functions.accept-quote-public]
+verify_jwt = false
+
+[functions.request-change-quote-public]
+verify_jwt = false
+
+[functions.project-start]
+verify_jwt = true
+
+[functions.project-dispatch]
+verify_jwt = true
+
+[functions.get-admin-notifications]
+verify_jwt = true
+
+[functions.send-quote-email-new]
+verify_jwt = true

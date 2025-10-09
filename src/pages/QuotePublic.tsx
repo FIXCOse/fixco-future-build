@@ -4,6 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import { FileText, Calendar, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 
 type PublicQuote = {
@@ -25,6 +29,12 @@ export default function QuotePublic() {
   const [quote, setQuote] = useState<PublicQuote | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [accepting, setAccepting] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [changeRequestOpen, setChangeRequestOpen] = useState(false);
+  const [changeMessage, setChangeMessage] = useState('');
+  const [changeFiles, setChangeFiles] = useState<File[]>([]);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -51,6 +61,65 @@ export default function QuotePublic() {
 
     fetchQuote();
   }, [token]);
+
+  const handleAccept = async () => {
+    if (!token) return;
+    
+    setAccepting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke(`accept-quote-public/${token}`);
+
+      if (error) throw error;
+      
+      if (data.error === 'expired') {
+        alert('Offerten har tyvärr gått ut');
+        return;
+      }
+
+      setAccepted(true);
+    } catch (err: any) {
+      console.error('Fel vid accept:', err);
+      alert(err.message || 'Kunde inte acceptera offerten');
+    } finally {
+      setAccepting(false);
+    }
+  };
+
+  const handleChangeRequest = async () => {
+    if (!token || !changeMessage.trim()) {
+      alert('Ange ett meddelande');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append('token', token);
+      formData.append('message', changeMessage);
+      
+      changeFiles.forEach((file) => {
+        formData.append('files', file);
+      });
+
+      const { data, error } = await supabase.functions.invoke('request-change-quote-public', {
+        body: formData
+      });
+
+      if (error) throw error;
+
+      alert('Din begäran är mottagen!');
+      setChangeRequestOpen(false);
+      setChangeMessage('');
+      setChangeFiles([]);
+    } catch (err: any) {
+      console.error('Fel vid ändringsbegäran:', err);
+      alert(err.message || 'Kunde inte skicka begäran');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const isExpired = quote?.valid_until && new Date(quote.valid_until) < new Date();
 
   if (loading) {
     return (
@@ -165,15 +234,71 @@ export default function QuotePublic() {
                 </div>
               )}
 
-              {/* Placeholder-knappar */}
-              <div className="grid md:grid-cols-2 gap-4 pt-4">
-                <Button disabled variant="default" className="w-full">
-                  Acceptera offert
-                </Button>
-                <Button disabled variant="outline" className="w-full">
-                  Begär ändring
-                </Button>
-              </div>
+              {/* Accept/Ändring knappar */}
+              {accepted ? (
+                <div className="pt-4 text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                  <p className="text-green-700 dark:text-green-300 font-semibold">
+                    ✓ Tack! Offerten är accepterad.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-4 pt-4">
+                  <Button 
+                    variant="default" 
+                    className="w-full"
+                    onClick={handleAccept}
+                    disabled={accepting || isExpired}
+                  >
+                    {accepting ? 'Accepterar...' : 'Acceptera offert'}
+                  </Button>
+                  <Dialog open={changeRequestOpen} onOpenChange={setChangeRequestOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full" disabled={isExpired}>
+                        Begär ändring
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Begär ändring</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="message">Meddelande</Label>
+                          <Textarea
+                            id="message"
+                            value={changeMessage}
+                            onChange={(e) => setChangeMessage(e.target.value)}
+                            placeholder="Beskriv de ändringar du önskar..."
+                            rows={4}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="files">Bifoga filer (valfritt)</Label>
+                          <Input
+                            id="files"
+                            type="file"
+                            multiple
+                            onChange={(e) => setChangeFiles(Array.from(e.target.files || []))}
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" onClick={() => setChangeRequestOpen(false)}>
+                            Avbryt
+                          </Button>
+                          <Button onClick={handleChangeRequest} disabled={submitting}>
+                            {submitting ? 'Skickar...' : 'Skicka'}
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
+              {isExpired && (
+                <p className="text-sm text-red-600 text-center mt-2">
+                  Denna offert har gått ut
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>

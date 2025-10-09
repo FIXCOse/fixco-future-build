@@ -1,14 +1,36 @@
 import { Outlet, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { LocaleProvider } from '@/components/LocaleProvider';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminLayout = () => {
   const { currentLanguage } = useLanguagePersistence();
+  const [notifications, setNotifications] = useState<any>({ counts: { total: 0 }, notifications: [] });
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const { data } = await supabase.functions.invoke('get-admin-notifications');
+        if (data) {
+          setNotifications(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 15000);
+    return () => clearInterval(interval);
+  }, []);
   
   return (
     <LocaleProvider locale={currentLanguage}>
@@ -17,14 +39,55 @@ const AdminLayout = () => {
           <Navigation />
           <div className="pt-[calc(64px+1.5rem)] md:pt-[calc(64px+1.5rem)]">
             <div className="container mx-auto px-4 py-6 max-w-7xl">
-              {/* Back to Overview Button */}
-              <div className="mb-4">
+              {/* Back and Notifications */}
+              <div className="mb-4 flex items-center justify-between">
                 <Link to="/mitt-fixco">
                   <Button variant="ghost" size="sm" className="flex items-center gap-2">
                     <ArrowLeft className="h-4 w-4" />
                     Till Admin-översikt
                   </Button>
                 </Link>
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="ghost" size="sm" className="relative">
+                      <Bell className="h-5 w-5" />
+                      {notifications.counts.total > 0 && (
+                        <Badge 
+                          variant="destructive" 
+                          className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                        >
+                          {notifications.counts.total}
+                        </Badge>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 p-0">
+                    <div className="p-4 border-b">
+                      <h3 className="font-semibold">Notifikationer</h3>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.notifications.length === 0 ? (
+                        <div className="p-4 text-center text-muted-foreground">
+                          Inga notifikationer
+                        </div>
+                      ) : (
+                        notifications.notifications.map((notif: any, idx: number) => (
+                          <Link 
+                            key={idx} 
+                            to={notif.link}
+                            className="block p-4 hover:bg-muted border-b last:border-b-0"
+                          >
+                            <p className="text-sm font-medium">{notif.title}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {notif.number} • {new Date(notif.timestamp).toLocaleDateString('sv-SE')}
+                            </p>
+                          </Link>
+                        ))
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
               
               {/* Breadcrumbs */}

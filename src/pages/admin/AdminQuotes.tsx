@@ -5,13 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { toast } from "sonner";
-import { Trash2, Edit, Plus, Link as LinkIcon, Copy } from "lucide-react";
+import { Trash2, Edit, Plus, Copy, Mail, MessageSquare } from "lucide-react";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function AdminQuotes() {
   const [quotes, setQuotes] = useState<QuoteNewRow[]>([]);
@@ -20,6 +22,8 @@ export default function AdminQuotes() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<QuoteNewRow | null>(null);
+  const [messagesModalOpen, setMessagesModalOpen] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -103,6 +107,45 @@ export default function AdminQuotes() {
     const url = `${window.location.origin}/q/${token}`;
     navigator.clipboard.writeText(url);
     toast.success('Publik länk kopierad!');
+  };
+
+  const handleSendQuote = async (quote: QuoteNewRow) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-quote-email-new', {
+        body: {
+          quoteId: quote.id,
+          customerEmail: quote.customer?.email,
+          customerName: quote.customer?.name
+        }
+      });
+
+      if (error) throw error;
+
+      toast.success('Offert skickad!');
+      loadQuotes();
+    } catch (error: any) {
+      console.error('Error sending quote:', error);
+      toast.error(error.message || 'Kunde inte skicka offert');
+    }
+  };
+
+  const handleViewMessages = async (quote: QuoteNewRow) => {
+    try {
+      const { data, error } = await supabase
+        .from('quote_messages')
+        .select('*')
+        .eq('quote_id', quote.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setMessages(data || []);
+      setSelectedQuote(quote);
+      setMessagesModalOpen(true);
+    } catch (error: any) {
+      console.error('Error loading messages:', error);
+      toast.error('Kunde inte ladda meddelanden');
+    }
   };
 
 
@@ -239,10 +282,25 @@ export default function AdminQuotes() {
                         <Edit className="h-4 w-4 mr-1" />
                         Redigera
                       </Button>
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        onClick={() => handleSendQuote(quote)}
+                        disabled={quote.status !== 'draft'}
+                      >
+                        <Mail className="h-4 w-4 mr-1" />
+                        Skicka
+                      </Button>
                       <Button size="sm" variant="outline" onClick={() => handleCopyPublicLink(quote.public_token)}>
                         <Copy className="h-4 w-4 mr-1" />
                         Kopiera publik länk
                       </Button>
+                      {quote.status === 'change_requested' && (
+                        <Button size="sm" variant="secondary" onClick={() => handleViewMessages(quote)}>
+                          <MessageSquare className="h-4 w-4 mr-1" />
+                          Meddelanden
+                        </Button>
+                      )}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="destructive">
@@ -280,6 +338,44 @@ export default function AdminQuotes() {
         quote={selectedQuote}
         onSuccess={loadQuotes}
       />
+
+      <Dialog open={messagesModalOpen} onOpenChange={setMessagesModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Meddelanden från kund</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            {messages.length === 0 ? (
+              <p className="text-muted-foreground text-center py-8">Inga meddelanden</p>
+            ) : (
+              messages.map((msg) => (
+                <Card key={msg.id}>
+                  <CardContent className="pt-4">
+                    <p className="text-sm mb-2">{msg.message}</p>
+                    {msg.files && msg.files.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {msg.files.map((fileUrl: string, idx: number) => (
+                          <Button
+                            key={idx}
+                            size="sm"
+                            variant="outline"
+                            onClick={() => window.open(fileUrl, '_blank')}
+                          >
+                            Bilaga {idx + 1}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {format(new Date(msg.created_at), 'PPP HH:mm', { locale: sv })}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
