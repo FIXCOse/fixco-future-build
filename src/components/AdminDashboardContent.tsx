@@ -10,11 +10,28 @@ import {
   Database, 
   UserCog,
   Activity,
-  ArrowRight
+  ArrowRight,
+  MessageCircle
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminDashboardContent = () => {
+  // Hämta antal obesvarade offertfrågor
+  const { data: unansweredCount = 0 } = useQuery({
+    queryKey: ['unanswered-questions-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('quote_questions')
+        .select('*', { count: 'exact', head: true })
+        .eq('answered', false);
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
   const adminSections = [
     {
       title: 'Användarhantering',
@@ -23,6 +40,15 @@ const AdminDashboardContent = () => {
       href: '/admin/users',
       color: 'text-blue-600',
       bgColor: 'bg-blue-100'
+    },
+    {
+      title: 'Offertfrågor',
+      description: 'Hantera kundfrågor om offerter',
+      icon: MessageCircle,
+      href: '/admin/quote-questions',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100',
+      badge: unansweredCount > 0 ? unansweredCount : undefined
     },
     {
       title: 'Inställningar',
@@ -105,8 +131,15 @@ const AdminDashboardContent = () => {
                 <div className={`p-2 rounded-lg ${section.bgColor}`}>
                   <section.icon className={`h-5 w-5 ${section.color}`} />
                 </div>
-                <div>
-                  <CardTitle className="text-lg">{section.title}</CardTitle>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">{section.title}</CardTitle>
+                    {section.badge && (
+                      <Badge variant="destructive" className="ml-2">
+                        {section.badge}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
               <CardDescription className="mt-2">

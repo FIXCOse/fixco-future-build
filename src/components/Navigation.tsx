@@ -12,6 +12,7 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 import { useTheme } from "@/theme/useTheme";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import QuoteQuestionsNotification from './admin/QuoteQuestionsNotification';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +37,7 @@ export default function Navigation() {
     { href: "/admin", label: "Översikt" },
     { href: "/admin/services", label: "Tjänster" },
     { href: "/admin/quotes", label: "Offerter" },
+    { href: "/admin/quote-questions", label: "Offertfrågor" },
     { href: "/admin/bookings", label: "Bokningar" },
     { href: "/admin/jobs", label: "Arbetsordrar" },
     { href: "/admin/job-requests", label: "Jobbförfrågningar" },
@@ -170,6 +172,9 @@ export default function Navigation() {
             {/* User Actions - Desktop */}
             {user ? (
               <div className="hidden lg:flex items-center space-x-2">
+                {/* Notifikation för offertfrågor (endast för admin) */}
+                {(isAdmin || isOwner) && <QuoteQuestionsNotification />}
+                
                 {(isAdmin || isOwner) ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
