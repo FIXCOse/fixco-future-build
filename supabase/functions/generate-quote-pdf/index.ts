@@ -189,28 +189,13 @@ serve(async (req) => {
       </html>
     `;
 
-    // Store HTML in Supabase Storage
-    const fileName = `quote-${quote.quote_number}-${Date.now()}.html`;
-    const { error: uploadError } = await supabase
-      .storage
-      .from('invoices')
-      .upload(fileName, html, {
-        contentType: 'text/html',
-        upsert: false
-      });
-
-    if (uploadError) throw uploadError;
-
-    const { data: { publicUrl } } = supabase
-      .storage
-      .from('invoices')
-      .getPublicUrl(fileName);
-
-    console.log('PDF generated successfully:', publicUrl);
+    // Return HTML directly instead of storing
+    console.log('Quote PDF HTML generated successfully for:', quote.quote_number);
 
     return new Response(JSON.stringify({ 
-      pdfUrl: publicUrl,
-      html 
+      success: true,
+      html,
+      quote_number: quote.quote_number
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

@@ -142,10 +142,18 @@ export default function AdminQuotes() {
 
       if (error) throw error;
       
-      if (data?.pdfUrl) {
-        // Open the PDF in a new tab
-        window.open(data.pdfUrl, '_blank');
-        toast.success('PDF genererad!');
+      if (data?.success && data?.html) {
+        // Open the HTML in a new window
+        const win = window.open('', '_blank');
+        if (win) {
+          win.document.write(data.html);
+          win.document.close();
+          // Trigger print dialog after a short delay
+          setTimeout(() => {
+            win.print();
+          }, 500);
+        }
+        toast.success('PDF-förhandsgranskning öppnad!');
       } else {
         throw new Error(data?.error || 'Kunde inte generera PDF');
       }
