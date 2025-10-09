@@ -169,28 +169,24 @@ export default function AdminQuotes() {
       if (error) throw error;
       
       if (data?.success && data?.html) {
-        // Create a temporary iframe to print
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
+        // Create a blob from the HTML
+        const blob = new Blob([data.html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
         
-        const iframeDoc = iframe.contentWindow?.document;
-        if (iframeDoc) {
-          iframeDoc.open();
-          iframeDoc.write(data.html);
-          iframeDoc.close();
-          
-          // Wait for content to load then trigger print
-          setTimeout(() => {
-            iframe.contentWindow?.print();
-            // Clean up after print dialog closes
-            setTimeout(() => {
-              document.body.removeChild(iframe);
-            }, 1000);
-          }, 500);
-        }
+        // Create a download link and trigger it
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Offert_${quote.quote_number}_${quote.customer?.first_name || 'kund'}.html`;
+        document.body.appendChild(a);
+        a.click();
         
-        toast.success('PDF-nedladdning startad!');
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+        toast.success('PDF-fil nedladdad!');
       } else {
         throw new Error(data?.error || 'Kunde inte generera PDF');
       }
