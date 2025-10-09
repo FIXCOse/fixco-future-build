@@ -106,10 +106,10 @@ export async function fetchJobById(jobId: string) {
     .from('jobs')
     .select('*')
     .eq('id', jobId)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
-  return data as Job;
+  return data as Job | null;
 }
 
 export async function claimJob(jobId: string) {

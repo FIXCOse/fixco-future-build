@@ -157,12 +157,8 @@ const JobPool = () => {
                       <span className="truncate">{job.address}, {job.city}</span>
                     </div>
                     
-                    {job.pricing_mode === 'hourly' ? (
-                      <div className="flex items-center text-green-600 font-medium">
-                        <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>{job.hourly_rate} kr/h</span>
-                      </div>
-                    ) : (
+                    {/* Workers ska bara se fast pris om det är satt, inte offererat pris från hourly_rate */}
+                    {job.pricing_mode === 'fixed' && job.fixed_price && (
                       <div className="flex items-center text-green-600 font-medium">
                         <Euro className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>{job.fixed_price} kr (fast pris)</span>
