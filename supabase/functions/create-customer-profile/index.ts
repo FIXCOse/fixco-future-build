@@ -32,7 +32,7 @@ serve(async (req) => {
       );
     }
 
-    // Check if user already exists
+    // Check if user already exists in profiles
     const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
       .select('id, email')
@@ -46,7 +46,19 @@ serve(async (req) => {
       );
     }
 
-    // Create new auth user
+    // Check if auth user exists but profile doesn't
+    const { data: existingAuthUser } = await supabaseAdmin.auth.admin.listUsers();
+    const authUserExists = existingAuthUser?.users?.find(u => u.email === email);
+
+    if (authUserExists) {
+      console.log('Auth user exists but no profile, returning user ID:', authUserExists.id);
+      return new Response(
+        JSON.stringify({ customer_id: authUserExists.id }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create new auth user (only if doesn't exist)
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       email_confirm: true,

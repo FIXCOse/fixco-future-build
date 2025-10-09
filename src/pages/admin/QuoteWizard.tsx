@@ -604,7 +604,16 @@ const QuoteWizard = () => {
               {selectedItem.description && (
                 <div className="mt-4">
                   <Label className="text-xs text-muted-foreground">Beskrivning</Label>
-                  <p className="text-sm">{selectedItem.description}</p>
+                  <p className="text-sm whitespace-pre-wrap">
+                    {(() => {
+                      try {
+                        const parsed = JSON.parse(selectedItem.description);
+                        return parsed.beskrivning || parsed.description || selectedItem.description;
+                      } catch {
+                        return selectedItem.description;
+                      }
+                    })()}
+                  </p>
                 </div>
               )}
             </CardContent>
