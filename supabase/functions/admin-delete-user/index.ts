@@ -100,6 +100,16 @@ Deno.serve(async (req) => {
       console.error('Error updating bookings:', bookingsError)
     }
 
+    // Update quotes (old table) - set customer_id to null
+    const { error: quotesOldError } = await supabaseClient
+      .from('quotes')
+      .update({ customer_id: null })
+      .eq('customer_id', userId)
+    
+    if (quotesOldError) {
+      console.error('Error updating old quotes:', quotesOldError)
+    }
+
     // Update quotes_new - set customer_id to null
     const { error: quotesError } = await supabaseClient
       .from('quotes_new')
@@ -107,7 +117,7 @@ Deno.serve(async (req) => {
       .eq('customer_id', userId)
     
     if (quotesError) {
-      console.error('Error updating quotes:', quotesError)
+      console.error('Error updating quotes_new:', quotesError)
     }
 
     // Update invoices - set customer_id to null  
