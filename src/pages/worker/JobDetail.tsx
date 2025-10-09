@@ -233,6 +233,15 @@ const JobDetail = () => {
                     </a>
                   </p>
                 </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Adress</p>
+                  <p className="mt-1 text-foreground">
+                    {job.address || 'Ej angivet'}
+                  </p>
+                  <p className="text-foreground">
+                    {job.postal_code && job.city ? `${job.postal_code} ${job.city}` : ''}
+                  </p>
+                </div>
               </>
             )}
             {!job.customer && (
