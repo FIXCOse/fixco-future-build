@@ -206,11 +206,19 @@ const JobPool = () => {
                       <span className="truncate">{job.address}, {job.city}</span>
                     </div>
                     
-                    {/* Workers ska bara se fast pris om det är satt, inte offererat pris från hourly_rate */}
-                    {job.pricing_mode === 'fixed' && job.fixed_price && (
+                    {/* Workers ska bara se fast pris om admin explicit har satt det */}
+                    {job.admin_set_price && (
                       <div className="flex items-center text-green-600 font-medium">
                         <Euro className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>{job.fixed_price} kr (fast pris)</span>
+                        <span>{job.admin_set_price} kr (fast ersättning)</span>
+                      </div>
+                    )}
+                    
+                    {/* Visa bonus om det finns */}
+                    {job.bonus_amount && job.bonus_amount > 0 && (
+                      <div className="flex items-center text-yellow-500 font-medium">
+                        <Euro className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span>+{job.bonus_amount} kr bonus 🎁</span>
                       </div>
                     )}
                   </div>

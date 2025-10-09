@@ -14,6 +14,7 @@ import { createJobFromBooking, createJobFromQuote, assignJobToWorker, updateJobS
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { JobPricingModal } from '@/components/admin/JobPricingModal';
 
 interface Job {
   id: string;
@@ -24,6 +25,8 @@ interface Job {
   pricing_mode: string;
   hourly_rate: number | null;
   fixed_price: number | null;
+  admin_set_price?: number;
+  bonus_amount?: number;
   address: string;
   created_at: string;
   due_date: string | null;
@@ -36,6 +39,8 @@ const AdminJobs = () => {
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState('');
   const [invoiceData, setInvoiceData] = useState<any>(null);
+  const [pricingModalOpen, setPricingModalOpen] = useState(false);
+  const [jobForPricing, setJobForPricing] = useState<Job | null>(null);
   const { jobs, loading } = useJobsData();
   const { users } = useUsersData();
   const { toast } = useToast();
@@ -186,6 +191,18 @@ const AdminJobs = () => {
               </div>
 
               <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setJobForPricing(job);
+                    setPricingModalOpen(true);
+                  }}
+                >
+                  <DollarSign className="h-4 w-4 mr-1" />
+                  Ersättning & Bonus
+                </Button>
+
                 {!job.assigned_worker_id && (
                   <Button
                     size="sm"
@@ -309,6 +326,17 @@ const AdminJobs = () => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Job Pricing Modal */}
+      <JobPricingModal
+        job={jobForPricing}
+        open={pricingModalOpen}
+        onOpenChange={setPricingModalOpen}
+        onSuccess={() => {
+          // Reload jobs to show updated pricing
+          window.location.reload();
+        }}
+      />
     </div>
   );
 };

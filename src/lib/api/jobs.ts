@@ -15,6 +15,8 @@ export type Job = {
   pricing_mode: 'hourly' | 'fixed';
   hourly_rate?: number;
   fixed_price?: number;
+  admin_set_price?: number;
+  bonus_amount?: number;
   rot_rut: any;
   status: 'pool' | 'assigned' | 'in_progress' | 'paused' | 'completed' | 'approved' | 'invoiced' | 'cancelled';
   pool_enabled: boolean;

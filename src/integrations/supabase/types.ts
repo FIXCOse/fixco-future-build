@@ -800,8 +800,10 @@ export type Database = {
       jobs: {
         Row: {
           address: string | null
+          admin_set_price: number | null
           assigned_at: string | null
           assigned_worker_id: string | null
+          bonus_amount: number | null
           city: string | null
           created_at: string
           customer_id: string | null
@@ -824,8 +826,10 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          admin_set_price?: number | null
           assigned_at?: string | null
           assigned_worker_id?: string | null
+          bonus_amount?: number | null
           city?: string | null
           created_at?: string
           customer_id?: string | null
@@ -848,8 +852,10 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          admin_set_price?: number | null
           assigned_at?: string | null
           assigned_worker_id?: string | null
+          bonus_amount?: number | null
           city?: string | null
           created_at?: string
           customer_id?: string | null
