@@ -132,7 +132,7 @@ export default function AdminQuotes() {
     navigate(`/admin/quotes/${quote.id}/edit`);
   };
 
-  const handleDownloadPDF = async (quote: QuoteRow) => {
+  const handleViewPDF = async (quote: QuoteRow) => {
     try {
       toast.info('Genererar PDF...');
       
@@ -143,23 +143,60 @@ export default function AdminQuotes() {
       if (error) throw error;
       
       if (data?.success && data?.html) {
-        // Open the HTML in a new window
         const win = window.open('', '_blank');
         if (win) {
           win.document.write(data.html);
           win.document.close();
-          // Trigger print dialog after a short delay
+        }
+        toast.success('PDF öppnad i nytt fönster!');
+      } else {
+        throw new Error(data?.error || 'Kunde inte generera PDF');
+      }
+    } catch (error: any) {
+      console.error('Error viewing PDF:', error);
+      toast.error(error.message || 'Kunde inte visa PDF');
+    }
+  };
+
+  const handleDownloadPDF = async (quote: QuoteRow) => {
+    try {
+      toast.info('Laddar ner PDF...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-quote-pdf', {
+        body: { quoteId: quote.id }
+      });
+
+      if (error) throw error;
+      
+      if (data?.success && data?.html) {
+        // Create a temporary iframe to print
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        
+        const iframeDoc = iframe.contentWindow?.document;
+        if (iframeDoc) {
+          iframeDoc.open();
+          iframeDoc.write(data.html);
+          iframeDoc.close();
+          
+          // Wait for content to load then trigger print
           setTimeout(() => {
-            win.print();
+            iframe.contentWindow?.print();
+            // Clean up after print dialog closes
+            setTimeout(() => {
+              document.body.removeChild(iframe);
+            }, 1000);
           }, 500);
         }
-        toast.success('PDF-förhandsgranskning öppnad!');
+        
+        toast.success('PDF-nedladdning startad!');
       } else {
         throw new Error(data?.error || 'Kunde inte generera PDF');
       }
     } catch (error: any) {
       console.error('Error downloading PDF:', error);
-      toast.error(error.message || 'Kunde inte generera PDF');
+      toast.error(error.message || 'Kunde inte ladda ner PDF');
     }
   };
 
@@ -403,6 +440,10 @@ export default function AdminQuotes() {
                       <Button size="sm" variant="outline" onClick={() => handleEditQuote(quote)}>
                         <Edit className="h-4 w-4 mr-1" />
                         Redigera
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => handleViewPDF(quote)}>
+                        <Eye className="h-4 w-4 mr-1" />
+                        Visa PDF
                       </Button>
                       <Button size="sm" variant="outline" onClick={() => handleDownloadPDF(quote)}>
                         <Download className="h-4 w-4 mr-1" />
