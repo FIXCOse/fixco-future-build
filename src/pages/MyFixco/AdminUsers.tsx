@@ -4,15 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Users, Search, Download, Edit, RefreshCw, Mail, Shield } from 'lucide-react';
+import { Users, Search, Download, Edit, RefreshCw, Mail, Shield, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import AdminBack from '@/components/admin/AdminBack';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const AdminUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [userToDelete, setUserToDelete] = useState<any>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -98,6 +100,34 @@ const AdminUsers = () => {
       toast({
         title: 'Fel',
         description: 'Kunde inte skicka återställningslänk',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const { error } = await supabase.functions.invoke('admin-delete-user', {
+        body: { userId: userToDelete.id }
+      });
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      
+      toast({
+        title: 'Raderad',
+        description: 'Användaren har tagits bort'
+      });
+      
+      setUserToDelete(null);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: 'Fel',
+        description: 'Kunde inte radera användaren',
         variant: 'destructive'
       });
     }
@@ -236,6 +266,15 @@ const AdminUsers = () => {
                     >
                       <Mail className="h-4 w-4" />
                     </Button>
+
+                    <Button
+                      onClick={() => setUserToDelete(user)}
+                      variant="outline"
+                      size="sm"
+                      title="Radera användare"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -249,6 +288,24 @@ const AdminUsers = () => {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!userToDelete} onOpenChange={() => setUserToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Är du säker?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Detta kommer permanent radera användaren <strong>{userToDelete?.email}</strong> och all relaterad data. 
+              Denna åtgärd kan inte ångras.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Radera
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
