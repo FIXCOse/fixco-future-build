@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { fetchJobs, claimJob } from '@/lib/api/jobs';
 import { useJobsRealtime } from '@/hooks/useJobsRealtime';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const JobPool = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,9 +21,21 @@ const JobPool = () => {
   const loadJobs = async () => {
     try {
       setLoading(true);
+      console.log('JobPool - Fetching pool jobs...');
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('JobPool - Current user:', user?.id, user?.email);
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user?.id)
+        .single();
+      console.log('JobPool - User role:', profile?.role);
+      
       const data = await fetchJobs({ pool_only: true });
+      console.log('JobPool - Loaded jobs:', data?.length, 'jobs', data);
       setJobs(data);
-      console.log('JobPool - Loaded jobs:', data);
     } catch (error) {
       console.error('Error loading jobs:', error);
       toast({
