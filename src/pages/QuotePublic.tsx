@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FileText, Calendar, ExternalLink } from 'lucide-react';
+import { FileText, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 
 type PublicQuote = {
@@ -182,152 +183,246 @@ export default function QuotePublic() {
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      <div className="min-h-screen bg-background p-4 md:p-8">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Huvudkort */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-3xl">Offert {quote.number}</CardTitle>
-                  <p className="text-muted-foreground mt-2">{quote.title}</p>
-                </div>
-                <FileText className="h-12 w-12 text-primary" />
+      <div className="min-h-screen bg-background">
+        {/* Header with gradient */}
+        <div className="gradient-primary-subtle border-b border-border">
+          <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+                <FileText className="h-6 w-6 text-primary-foreground" />
               </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Kund och giltighetstid */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">Offert {quote.number}</h1>
+                <p className="text-muted-foreground text-sm md:text-base">Från Fixco AB</p>
+              </div>
+            </div>
+            <h2 className="text-xl md:text-2xl text-foreground font-semibold">{quote.title}</h2>
+            
+            {/* Status badges */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              {isDeleted ? (
+                <Badge variant="destructive" className="flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  Raderad
+                </Badge>
+              ) : accepted ? (
+                <Badge className="bg-green-600 hover:bg-green-700 flex items-center gap-1">
+                  <CheckCircle2 className="h-3 w-3" />
+                  Accepterad
+                </Badge>
+              ) : isExpired ? (
+                <Badge variant="destructive" className="flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  Utgången
+                </Badge>
+              ) : (
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  Väntar på svar
+                </Badge>
+              )}
+              {quote.valid_until && !isExpired && !accepted && !isDeleted && (
+                <Badge variant="outline" className="flex items-center gap-1">
+                  <Calendar className="h-3 w-3" />
+                  Giltig t.o.m. {new Date(quote.valid_until).toLocaleDateString('sv-SE')}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-6">
+          {/* Customer info card */}
+          <Card className="border-border bg-surface">
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-sm text-muted-foreground">Till</p>
-                  <p className="font-semibold">{quote.customer_name}</p>
+                  <p className="text-sm text-muted-foreground mb-1">Till</p>
+                  <p className="text-lg font-semibold text-foreground">{quote.customer_name}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                  <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
                     Giltig t.o.m.
                   </p>
-                  <p className="font-semibold">
+                  <p className="text-lg font-semibold text-foreground">
                     {quote.valid_until 
                       ? new Date(quote.valid_until).toLocaleDateString('sv-SE')
                       : '—'}
                   </p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              {/* Summering */}
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between text-sm">
+          {/* Price breakdown card */}
+          <Card className="border-border bg-surface">
+            <CardHeader>
+              <CardTitle className="text-xl">Kostnadsöversikt</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-muted-foreground">Arbete</span>
-                  <span>{quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</span>
+                  <span className="text-lg font-semibold">{quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between items-center py-3 border-b border-border">
                   <span className="text-muted-foreground">Material</span>
-                  <span>{quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
+                  <span className="text-lg font-semibold">{quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Moms</span>
-                  <span>{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
+                <div className="flex justify-between items-center py-3 border-b border-border">
+                  <span className="text-muted-foreground">Moms (25%)</span>
+                  <span className="text-lg font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
                 </div>
                 {quote.rot_deduction_sek > 0 && (
-                  <div className="flex justify-between text-sm text-green-600">
-                    <span>ROT-avdrag</span>
-                    <span>−{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</span>
+                  <div className="flex justify-between items-center py-3 border-b border-border">
+                    <span className="text-green-600 dark:text-green-400 font-medium">ROT-avdrag</span>
+                    <span className="text-lg font-semibold text-green-600 dark:text-green-400">
+                      −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
+                    </span>
                   </div>
                 )}
-                <div className="flex justify-between text-xl font-bold border-t pt-2">
-                  <span>Totalt att betala</span>
-                  <span>{quote.total_sek.toLocaleString('sv-SE')} kr</span>
+              </div>
+              
+              {/* Total */}
+              <div className="gradient-primary-subtle rounded-xl p-6 mt-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-xl font-bold text-foreground">Totalt att betala</span>
+                  <span className="text-3xl font-bold text-primary">{quote.total_sek.toLocaleString('sv-SE')} kr</span>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              {/* PDF-länk */}
-              {quote.pdf_url && (
-                <div className="pt-4">
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => window.open(quote.pdf_url, '_blank')}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Visa PDF
-                  </Button>
-                </div>
-              )}
+          {/* PDF download card */}
+          {quote.pdf_url && (
+            <Card className="border-primary/30 bg-surface-2">
+              <CardContent className="pt-6">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => window.open(quote.pdf_url, '_blank')}
+                >
+                  <Download className="h-5 w-5 mr-2" />
+                  Ladda ner PDF
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-              {/* Accept/Ändring knappar */}
-              {isDeleted ? (
-                <div className="pt-4 text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <p className="text-red-700 dark:text-red-300 font-semibold">
-                    ⚠️ Denna offert har raderats och kan inte längre accepteras eller ändras
-                  </p>
-                </div>
-              ) : accepted ? (
-                <div className="pt-4 text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <p className="text-green-700 dark:text-green-300 font-semibold">
-                    ✓ Tack! Offerten är accepterad.
-                  </p>
-                </div>
-              ) : (
-                <div className="grid md:grid-cols-2 gap-4 pt-4">
+          {/* Action buttons */}
+          {isDeleted ? (
+            <Card className="border-destructive/50 bg-destructive/10">
+              <CardContent className="pt-6 text-center">
+                <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+                <p className="text-destructive font-semibold text-lg">
+                  Denna offert har raderats och kan inte längre accepteras eller ändras
+                </p>
+              </CardContent>
+            </Card>
+          ) : accepted ? (
+            <Card className="border-green-600/50 bg-green-600/10">
+              <CardContent className="pt-6 text-center">
+                <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
+                <p className="text-green-600 dark:text-green-300 font-semibold text-lg">
+                  Tack! Offerten är accepterad.
+                </p>
+                <p className="text-muted-foreground mt-2">Vi kommer att kontakta dig inom kort.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="border-border bg-surface">
+              <CardContent className="pt-6 space-y-4">
+                {isExpired && (
+                  <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 mb-4">
+                    <p className="text-destructive text-center font-medium flex items-center justify-center gap-2">
+                      <Clock className="h-5 w-5" />
+                      Denna offert har tyvärr gått ut
+                    </p>
+                  </div>
+                )}
+                
+                <div className="grid md:grid-cols-2 gap-4">
                   <Button 
-                    variant="default" 
-                    className="w-full"
+                    size="lg"
+                    className="w-full gradient-primary hover:brightness-110 transition-all shadow-lg"
                     onClick={handleAccept}
                     disabled={accepting || isExpired}
                   >
+                    <CheckCircle2 className="h-5 w-5 mr-2" />
                     {accepting ? 'Accepterar...' : 'Acceptera offert'}
                   </Button>
+                  
                   <Dialog open={changeRequestOpen} onOpenChange={setChangeRequestOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" className="w-full" disabled={isExpired}>
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        className="w-full border-primary/30 hover:bg-primary/5"
+                        disabled={isExpired}
+                      >
+                        <ExternalLink className="h-5 w-5 mr-2" />
                         Begär ändring
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="sm:max-w-[500px]">
                       <DialogHeader>
-                        <DialogTitle>Begär ändring</DialogTitle>
+                        <DialogTitle>Begär ändring av offert</DialogTitle>
                       </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="message">Meddelande</Label>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="message">Beskriv önskade ändringar *</Label>
                           <Textarea
                             id="message"
                             value={changeMessage}
                             onChange={(e) => setChangeMessage(e.target.value)}
-                            placeholder="Beskriv de ändringar du önskar..."
-                            rows={4}
+                            placeholder="T.ex. 'Jag skulle vilja ändra materialval till...' eller 'Kan ni ta bort arbete på balkong?'"
+                            rows={5}
+                            className="resize-none"
                           />
                         </div>
-                        <div>
+                        <div className="space-y-2">
                           <Label htmlFor="files">Bifoga filer (valfritt)</Label>
                           <Input
                             id="files"
                             type="file"
                             multiple
                             onChange={(e) => setChangeFiles(Array.from(e.target.files || []))}
+                            className="cursor-pointer"
                           />
+                          <p className="text-xs text-muted-foreground">
+                            Du kan bifoga bilder, dokument eller andra filer som kan hjälpa oss förstå dina önskemål.
+                          </p>
                         </div>
-                        <div className="flex justify-end gap-2">
-                          <Button variant="outline" onClick={() => setChangeRequestOpen(false)}>
+                        <div className="flex justify-end gap-3 pt-4">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => setChangeRequestOpen(false)}
+                          >
                             Avbryt
                           </Button>
-                          <Button onClick={handleChangeRequest} disabled={submitting}>
-                            {submitting ? 'Skickar...' : 'Skicka'}
+                          <Button 
+                            onClick={handleChangeRequest} 
+                            disabled={submitting || !changeMessage.trim()}
+                            className="gradient-primary"
+                          >
+                            {submitting ? 'Skickar...' : 'Skicka begäran'}
                           </Button>
                         </div>
                       </div>
                     </DialogContent>
                   </Dialog>
                 </div>
-              )}
-              {isExpired && (
-                <p className="text-sm text-red-600 text-center mt-2">
-                  Denna offert har gått ut
-                </p>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Footer info */}
+          <div className="text-center text-sm text-muted-foreground py-8">
+            <p>Har du frågor? Kontakta oss på info@fixco.se eller ring 08-123 456 78</p>
+          </div>
         </div>
       </div>
     </>
