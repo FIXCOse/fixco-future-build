@@ -348,7 +348,11 @@ export default function AdminBookings() {
                     )}
 
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" onClick={() => navigate(`/admin/bookings/${booking.id}`)}>
+                      <Button size="sm" onClick={() => {
+                        console.log('Navigating to booking:', booking.id);
+                        console.log('Full path:', `/admin/bookings/${booking.id}`);
+                        navigate(`/admin/bookings/${booking.id}`);
+                      }}>
                         <Eye className="h-4 w-4 mr-1" />
                         Visa detaljer
                       </Button>
