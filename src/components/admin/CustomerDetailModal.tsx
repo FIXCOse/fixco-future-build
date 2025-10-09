@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { User, Mail, Phone, MapPin, Calendar, FileText, Receipt, CreditCard, ExternalLink } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useBookingsRealtime } from '@/hooks/useBookingsRealtime';
 import { useQuotesRealtime } from '@/hooks/useQuotesRealtime';
 import { fetchCustomerWithDetails } from '@/lib/api/customers';
@@ -28,7 +28,6 @@ export function CustomerDetailModal({
   bookings: initialBookings, 
   quotes: initialQuotes 
 }: CustomerDetailModalProps) {
-  const navigate = useNavigate();
   const [customer, setCustomer] = React.useState(initialCustomer);
   const [bookings, setBookings] = React.useState(initialBookings);
   const [quotes, setQuotes] = React.useState(initialQuotes);
@@ -192,42 +191,43 @@ export function CustomerDetailModal({
                 bookings.map((booking) => {
                   const status = getStatusBadge(booking.status || 'pending');
                   return (
-                    <Card 
+                    <Link 
                       key={booking.id}
-                      className="cursor-pointer hover:border-primary transition-colors"
-                      onClick={() => {
-                        window.open(`/admin/bookings/${booking.id}`, '_blank');
-                      }}
+                      to={`/admin/bookings/${booking.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-2 flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold">
-                                {booking.service_name || booking.service_slug || 'Bokning'}
-                              </h4>
-                              <Badge variant={status.variant}>{status.label}</Badge>
-                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                      <Card className="cursor-pointer hover:border-primary transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold">
+                                  {booking.service_name || booking.service_slug || 'Bokning'}
+                                </h4>
+                                <Badge variant={status.variant}>{status.label}</Badge>
+                                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {new Date(booking.created_at).toLocaleDateString('sv-SE', {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric'
+                                })}
+                              </p>
+                              {booking.payload?.description && (
+                                <p className="text-sm mt-2">{booking.payload.description}</p>
+                              )}
                             </div>
-                            <p className="text-sm text-muted-foreground">
-                              {new Date(booking.created_at).toLocaleDateString('sv-SE', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                              })}
-                            </p>
-                            {booking.payload?.description && (
-                              <p className="text-sm mt-2">{booking.payload.description}</p>
+                            {booking.payload?.final_price && (
+                              <div className="text-right">
+                                <p className="text-lg font-bold">{booking.payload.final_price.toLocaleString()} kr</p>
+                              </div>
                             )}
                           </div>
-                          {booking.payload?.final_price && (
-                            <div className="text-right">
-                              <p className="text-lg font-bold">{booking.payload.final_price.toLocaleString()} kr</p>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   );
                 })
               ) : (
@@ -240,41 +240,42 @@ export function CustomerDetailModal({
                 quotes.map((quote) => {
                   const status = getStatusBadge(quote.status || 'draft');
                   return (
-                    <Card 
+                    <Link 
                       key={quote.id}
-                      className="cursor-pointer hover:border-primary transition-colors"
-                      onClick={() => {
-                        window.open(`/admin/quotes/new?id=${quote.id}`, '_blank');
-                      }}
+                      to={`/admin/quotes/new?id=${quote.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-2 flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold">{quote.title}</h4>
-                              <Badge variant={status.variant}>{status.label}</Badge>
-                              <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                              Offert {quote.number} • {new Date(quote.created_at).toLocaleDateString('sv-SE')}
-                            </p>
-                            {quote.valid_until && (
+                      <Card className="cursor-pointer hover:border-primary transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold">{quote.title}</h4>
+                                <Badge variant={status.variant}>{status.label}</Badge>
+                                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                              </div>
                               <p className="text-sm text-muted-foreground">
-                                Giltig till: {new Date(quote.valid_until).toLocaleDateString('sv-SE')}
+                                Offert {quote.number} • {new Date(quote.created_at).toLocaleDateString('sv-SE')}
                               </p>
-                            )}
+                              {quote.valid_until && (
+                                <p className="text-sm text-muted-foreground">
+                                  Giltig till: {new Date(quote.valid_until).toLocaleDateString('sv-SE')}
+                                </p>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <p className="text-lg font-bold">{quote.total_sek.toLocaleString()} kr</p>
+                              {quote.rot_deduction_sek > 0 && (
+                                <p className="text-sm text-green-600">
+                                  ROT/RUT: -{quote.rot_deduction_sek.toLocaleString()} kr
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-lg font-bold">{quote.total_sek.toLocaleString()} kr</p>
-                            {quote.rot_deduction_sek > 0 && (
-                              <p className="text-sm text-green-600">
-                                ROT/RUT: -{quote.rot_deduction_sek.toLocaleString()} kr
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   );
                 })
               ) : (
