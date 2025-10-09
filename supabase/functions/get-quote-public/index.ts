@@ -56,11 +56,17 @@ Deno.serve(async (req) => {
     }
 
     // Hämta frågor och svar
-    const { data: questions } = await supabase
+    const { data: questions, error: questionsError } = await supabase
       .from('quote_questions')
       .select('*')
       .eq('quote_id', quote.id)
       .order('asked_at', { ascending: true });
+    
+    console.log('📋 Quote ID:', quote.id);
+    console.log('❓ Questions fetched:', questions?.length || 0, questions);
+    if (questionsError) {
+      console.error('❌ Error fetching questions:', questionsError);
+    }
 
     // Kontrollera om offerten är raderad
     if (quote.deleted_at) {
