@@ -88,3 +88,6 @@ verify_jwt = true
 
 [functions.create-customer-profile]
 verify_jwt = true
+
+[functions.get-quote-public]
+verify_jwt = false

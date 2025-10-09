@@ -74,6 +74,7 @@ import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminLeads from "./pages/admin/AdminLeads";
+import QuotePublic from "./pages/QuotePublic";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -135,6 +136,9 @@ const App = () => {
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
                   <Route path="/dashboard" element={<Dashboard />} />
+                  
+                  {/* Public Quote View */}
+                  <Route path="/q/:token" element={<QuotePublic />} />
 
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={
