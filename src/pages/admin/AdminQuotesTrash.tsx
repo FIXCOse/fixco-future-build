@@ -77,14 +77,11 @@ export default function AdminQuotesTrash() {
 
   const handleEmptyTrash = async () => {
     try {
-      const { error } = await supabase
-        .from('quotes')
-        .delete()
-        .not('deleted_at', 'is', null);
+      const { data, error } = await supabase.rpc('empty_quotes_trash');
 
       if (error) throw error;
       
-      toast.success('Papperskorgen tömd');
+      toast.success(`${data || 0} offerter permanent raderade`);
       loadDeletedQuotes();
     } catch (error) {
       console.error('Error emptying trash:', error);

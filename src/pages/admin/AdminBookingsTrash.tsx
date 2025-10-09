@@ -76,14 +76,11 @@ export default function AdminBookingsTrash() {
 
   const handleEmptyTrash = async () => {
     try {
-      const { error } = await supabase
-        .from('bookings')
-        .delete()
-        .not('deleted_at', 'is', null);
+      const { data, error } = await supabase.rpc('empty_bookings_trash');
 
       if (error) throw error;
       
-      toast.success('Papperskorgen tömd');
+      toast.success(`${data || 0} bokningar permanent raderade`);
       loadDeletedBookings();
     } catch (error) {
       console.error('Error emptying trash:', error);

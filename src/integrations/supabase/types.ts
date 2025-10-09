@@ -2587,6 +2587,22 @@ export type Database = {
         Args: { p: Json }
         Returns: string
       }
+      empty_bookings_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      empty_jobs_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      empty_quote_requests_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      empty_quotes_trash: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       generate_invoice_number: {
         Args: Record<PropertyKey, never>
         Returns: string

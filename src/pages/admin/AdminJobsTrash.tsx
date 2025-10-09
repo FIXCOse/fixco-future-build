@@ -87,14 +87,11 @@ export default function AdminJobsTrash() {
 
   const handleEmptyTrash = async () => {
     try {
-      const { error } = await supabase
-        .from('jobs')
-        .delete()
-        .not('deleted_at', 'is', null);
+      const { data, error } = await supabase.rpc('empty_jobs_trash');
 
       if (error) throw error;
       
-      toast.success('Papperskorgen tömd');
+      toast.success(`${data || 0} arbetsordrar permanent raderade`);
       loadDeletedJobs();
     } catch (error) {
       console.error('Error emptying trash:', error);

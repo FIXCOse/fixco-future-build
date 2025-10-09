@@ -76,14 +76,11 @@ export default function AdminQuoteRequestsTrash() {
 
   const handleEmptyTrash = async () => {
     try {
-      const { error } = await supabase
-        .from('quote_requests')
-        .delete()
-        .not('deleted_at', 'is', null);
+      const { data, error } = await supabase.rpc('empty_quote_requests_trash');
 
       if (error) throw error;
       
-      toast.success('Papperskorgen tömd');
+      toast.success(`${data || 0} offertförfrågningar permanent raderade`);
       loadDeletedQuoteRequests();
     } catch (error) {
       console.error('Error emptying trash:', error);
