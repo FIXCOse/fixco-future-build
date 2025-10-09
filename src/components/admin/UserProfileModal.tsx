@@ -56,14 +56,8 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
-      if (data?.link) {
-        // Copy link to clipboard
-        navigator.clipboard.writeText(data.link);
-        toast.success('Återställningslänk kopierad till urklipp');
-      } else {
-        toast.success('Återställningslänk skickad till användaren');
-      }
+    onSuccess: () => {
+      toast.success('Återställningslänk har skickats till användarens e-post');
     },
     onError: (error) => {
       toast.error('Kunde inte skicka återställningslänk');
