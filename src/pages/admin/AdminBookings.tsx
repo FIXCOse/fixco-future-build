@@ -140,15 +140,15 @@ export default function AdminBookings() {
 
   const handleDeleteBooking = async (id: string) => {
     try {
-      // New bookings table doesn't have deleted_at, so we just delete
+      // Soft delete: set deleted_at timestamp
       const { error } = await supabase
         .from('bookings')
-        .delete()
+        .update({ deleted_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
       
-      toast.success('Bokning raderad');
+      toast.success('Bokning flyttad till papperskorgen');
       loadBookings();
     } catch (error) {
       console.error('Error deleting booking:', error);

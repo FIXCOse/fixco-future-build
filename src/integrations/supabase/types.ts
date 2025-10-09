@@ -174,6 +174,7 @@ export type Database = {
         Row: {
           created_at: string | null
           customer_id: string | null
+          deleted_at: string | null
           file_urls: string[] | null
           id: string
           mode: string | null
@@ -184,6 +185,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           file_urls?: string[] | null
           id?: string
           mode?: string | null
@@ -194,6 +196,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           customer_id?: string | null
+          deleted_at?: string | null
           file_urls?: string[] | null
           id?: string
           mode?: string | null
