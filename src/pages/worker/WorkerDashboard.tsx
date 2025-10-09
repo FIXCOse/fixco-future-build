@@ -191,14 +191,14 @@ const WorkerDashboard = () => {
                 <div className="flex flex-col gap-4">
                   {/* EXTRA BONUS - Highest priority */}
                   {job.bonus_amount && job.bonus_amount > 0 && (
-                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-3">
+                    <div className="bg-gradient-to-r from-green-100 to-green-100 border-3 border-green-500 rounded-lg p-3">
                       <div className="flex items-center gap-2">
-                        <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
+                        <Gift className="w-6 h-6 text-green-600 animate-pulse flex-shrink-0" />
                         <div>
-                          <p className="text-xs font-semibold text-yellow-800 uppercase">
+                          <p className="text-xs font-semibold text-green-800 uppercase">
                             EXTRA BONUS
                           </p>
-                          <p className="text-xl font-black text-yellow-900">
+                          <p className="text-xl font-black text-green-900">
                             +{job.bonus_amount} kr
                           </p>
                         </div>
@@ -208,12 +208,12 @@ const WorkerDashboard = () => {
 
                   {/* Worker Compensation - Show as EXTRA BONUS */}
                   {job.admin_set_price && job.admin_set_price > 0 && (
-                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-3">
+                    <div className="bg-gradient-to-r from-green-100 to-green-100 border-3 border-green-500 rounded-lg p-3">
                       <div className="flex items-center gap-2">
-                        <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
+                        <Gift className="w-6 h-6 text-green-600 animate-pulse flex-shrink-0" />
                         <div>
-                          <p className="text-xs font-semibold text-yellow-800 uppercase">EXTRA BONUS</p>
-                          <p className="text-xl font-black text-yellow-900">+{job.admin_set_price} kr</p>
+                          <p className="text-xs font-semibold text-green-800 uppercase">EXTRA BONUS</p>
+                          <p className="text-xl font-black text-green-900">+{job.admin_set_price} kr</p>
                         </div>
                       </div>
                     </div>
