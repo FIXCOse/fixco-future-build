@@ -12,7 +12,7 @@ import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Trash2, Eye, FileText } from "lucide-react";
@@ -348,13 +348,11 @@ export default function AdminBookings() {
                     )}
 
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" onClick={() => {
-                        console.log('Navigating to booking:', booking.id);
-                        console.log('Full path:', `/admin/bookings/${booking.id}`);
-                        navigate(`/admin/bookings/${booking.id}`);
-                      }}>
-                        <Eye className="h-4 w-4 mr-1" />
-                        Visa detaljer
+                      <Button size="sm" asChild>
+                        <Link to={`/admin/bookings/${booking.id}`}>
+                          <Eye className="h-4 w-4 mr-1" />
+                          Visa detaljer
+                        </Link>
                       </Button>
                       {booking.hasQuote ? (
                         <Button 
