@@ -18,10 +18,16 @@ export default function AdminBookingDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      console.log('[BookingDetail] No ID provided');
+      return;
+    }
+
+    console.log('[BookingDetail] Fetching booking:', id);
 
     const fetchBooking = async () => {
       try {
+        console.log('[BookingDetail] Starting fetch...');
         const { data, error } = await supabase
           .from('bookings')
           .select(`
@@ -31,13 +37,22 @@ export default function AdminBookingDetail() {
           .eq('id', id)
           .maybeSingle();
 
-        if (error) throw error;
+        console.log('[BookingDetail] Query result:', { data, error });
+
+        if (error) {
+          console.error('[BookingDetail] Query error:', error);
+          throw error;
+        }
         
         if (!data) {
+          console.warn('[BookingDetail] No booking found');
           toast.error('Bokning hittades inte');
           navigate('/admin/bookings');
           return;
         }
+
+        console.log('[BookingDetail] Raw booking data:', data);
+        console.log('[BookingDetail] Payload:', data.payload);
 
         // Extract data from payload and merge with top-level fields
         const payload = (data.payload || {}) as Record<string, any>;
@@ -59,9 +74,10 @@ export default function AdminBookingDetail() {
           internal_notes: payload.internal_notes || payload.internalNotes || '',
         };
         
+        console.log('[BookingDetail] Enriched data:', enrichedData);
         setBooking(enrichedData as any);
       } catch (error) {
-        console.error('Error fetching booking:', error);
+        console.error('[BookingDetail] Fetch error:', error);
         toast.error('Kunde inte ladda bokning');
         navigate('/admin/bookings');
       } finally {
@@ -128,6 +144,9 @@ export default function AdminBookingDetail() {
             <Skeleton className="h-4 w-3/4" />
           </CardContent>
         </Card>
+        <div className="mt-4 p-4 bg-blue-100 rounded">
+          <p className="text-sm">Laddar bokning ID: {id}</p>
+        </div>
       </div>
     );
   }
@@ -135,7 +154,15 @@ export default function AdminBookingDetail() {
   if (!booking) {
     return (
       <div className="container py-6">
-        <p>Bokning hittades inte</p>
+        <Card>
+          <CardContent className="p-8 text-center">
+            <p className="text-lg font-semibold mb-2">Bokning hittades inte</p>
+            <p className="text-sm text-muted-foreground mb-4">ID: {id}</p>
+            <Button onClick={() => navigate('/admin/bookings')}>
+              Tillbaka till bokningar
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
