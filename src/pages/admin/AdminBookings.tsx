@@ -388,11 +388,11 @@ export default function AdminBookings() {
                           Visa detaljer
                         </Link>
                       </Button>
-                      {booking.hasQuote ? (
+                      {booking.hasQuote && booking.quoteId ? (
                         <Button 
                           size="sm" 
                           variant="default" 
-                          onClick={() => navigate(`/admin/quotes/new?request=${booking.id}`)}
+                          onClick={() => navigate(`/admin/quotes/new?id=${booking.quoteId}`)}
                         >
                           <FileText className="h-4 w-4 mr-1" />
                           Visa offert

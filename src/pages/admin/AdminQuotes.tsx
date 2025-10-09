@@ -33,12 +33,8 @@ export default function AdminQuotes() {
     try {
       const params: any = {};
       
-      // VIKTIGT: Filtrera alltid bort draft - de ska bara synas i /admin/quotes/new
       if (statusFilter !== "all") {
         params.status = [statusFilter];
-      } else {
-        // När "all" väljs, visa allt UTOM draft
-        params.status = ['sent', 'viewed', 'change_requested', 'accepted', 'declined', 'expired'];
       }
       
       if (searchTerm) {
