@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Users, Plus, User, Phone, Mail, Send, Edit2, UserX, UserCheck } from 'lucide-react';
+import { Search, Users, Plus, User, Phone, Mail, Send, Edit2, UserX, UserCheck, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AdminBack from '@/components/admin/AdminBack';
 import { StaffRegistrationModal } from '@/components/admin/StaffRegistrationModal';
@@ -120,6 +120,36 @@ const AdminStaff = () => {
       toast({
         title: "Fel",
         description: "Kunde inte skicka inbjudan",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteStaff = async (staffId: string, staffName: string) => {
+    if (!confirm(`Är du säker på att du vill radera ${staffName}? Detta går inte att ångra.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('staff')
+        .delete()
+        .eq('id', staffId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Personal raderad",
+        description: `${staffName} har tagits bort från systemet`
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['admin-staff'] });
+
+    } catch (error) {
+      console.error('Error deleting staff:', error);
+      toast({
+        title: "Fel",
+        description: "Kunde inte radera personal",
         variant: "destructive"
       });
     }
@@ -250,7 +280,6 @@ const AdminStaff = () => {
                           onClick={() => handleEdit(member)}
                         >
                           <Edit2 className="h-3 w-3" />
-                          Redigera
                         </Button>
                         
                         <Button 
@@ -259,16 +288,19 @@ const AdminStaff = () => {
                           onClick={() => toggleActive(member.id, member.active)}
                         >
                           {member.active ? (
-                            <>
-                              <UserX className="h-3 w-3" />
-                              Inaktivera
-                            </>
+                            <UserX className="h-3 w-3" />
                           ) : (
-                            <>
-                              <UserCheck className="h-3 w-3" />
-                              Aktivera
-                            </>
+                            <UserCheck className="h-3 w-3" />
                           )}
+                        </Button>
+
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => deleteStaff(member.id, member.name)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
