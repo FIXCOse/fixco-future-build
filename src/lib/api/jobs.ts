@@ -22,6 +22,11 @@ export type Job = {
   assigned_at?: string;
   start_scheduled_at?: string;
   due_date?: string;
+  customer?: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
 };
 
 export type TimeLog = {
@@ -102,14 +107,28 @@ export async function fetchJobs(params?: {
 }
 
 export async function fetchJobById(jobId: string) {
-  const { data, error } = await supabase
+  const { data: job, error } = await supabase
     .from('jobs')
     .select('*')
     .eq('id', jobId)
     .maybeSingle();
 
   if (error) throw error;
-  return data as Job | null;
+  if (!job) return null;
+
+  // Fetch customer info if customer_id exists
+  let customer = null;
+  if (job.customer_id) {
+    const { data: customerData } = await supabase
+      .from('customers')
+      .select('name, email, phone')
+      .eq('id', job.customer_id)
+      .maybeSingle();
+    
+    customer = customerData;
+  }
+
+  return { ...job, customer } as Job;
 }
 
 export async function claimJob(jobId: string) {

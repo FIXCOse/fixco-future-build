@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, MapPin, Clock, Euro, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -206,6 +206,43 @@ const JobDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-3">
+            <CardTitle className="text-base">Kundinformation</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            {job.customer && (
+              <>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Namn</p>
+                  <p className="mt-1 text-foreground font-medium">
+                    {job.customer.name}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Telefon</p>
+                  <p className="mt-1 text-foreground">
+                    <a href={`tel:${job.customer.phone}`} className="text-primary hover:underline">
+                      {job.customer.phone || 'Ej angivet'}
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">E-post</p>
+                  <p className="mt-1 text-foreground">
+                    <a href={`mailto:${job.customer.email}`} className="text-primary hover:underline truncate block">
+                      {job.customer.email}
+                    </a>
+                  </p>
+                </div>
+              </>
+            )}
+            {!job.customer && (
+              <p className="text-muted-foreground">Kundinformation saknas</p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
             <CardTitle className="text-base">Jobbinfo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
@@ -215,15 +252,6 @@ const JobDetail = () => {
                 {job.description || 'Ingen beskrivning'}
               </p>
             </div>
-            {/* Workers ska bara se fast pris om det är satt, inte offererat pris */}
-            {job.pricing_mode === 'fixed' && job.fixed_price && (
-              <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Fast pris</p>
-                <p className="mt-1 text-lg font-bold text-primary">
-                  {job.fixed_price} kr
-                </p>
-              </div>
-            )}
             {job.start_scheduled_at && (
               <div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Planerad start</p>
@@ -237,30 +265,22 @@ const JobDetail = () => {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Tid & Timmar</CardTitle>
+            <CardTitle className="text-base">Registrerat arbete</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totala timmar</p>
-              <p className="text-2xl font-bold text-blue-600 mt-1">{totalHours.toFixed(1)}h</p>
+            <div className="flex justify-between items-center">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Timmar</p>
+              <p className="text-2xl font-bold text-blue-600">{totalHours.toFixed(1)}h</p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Kostnader</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center pt-2 border-t">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Material</p>
               <p className="font-semibold">{totalMaterialCost.toFixed(0)} kr</p>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Utlägg</p>
               <p className="font-semibold">{totalExpenses.toFixed(0)} kr</p>
             </div>
-            <div className="flex justify-between pt-2 border-t">
+            <div className="flex justify-between items-center pt-2 border-t">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totalt extra</p>
               <p className="text-lg font-bold text-orange-600">
                 {(totalMaterialCost + totalExpenses).toFixed(0)} kr
