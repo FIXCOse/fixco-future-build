@@ -77,9 +77,7 @@ import QuotePublic from "./pages/QuotePublic";
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
 const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
 const SmartHome = lazy(() => import('./pages/SmartHome'));
-const TestBooking = lazy(() => import('./pages/TestBooking'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
-const QuoteRequestWizard = lazy(() => import('./pages/QuoteRequestWizard'));
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Suspense fallback component
@@ -194,20 +192,10 @@ const App = () => {
                     <Route path="settings" element={<WorkerSettings />} />
                   </Route>
 
-                  {/* Booking and Quote Request Routes */}
+                  {/* Booking Route */}
                   <Route path="/boka/:slug" element={
                     <Suspense fallback={<SuspenseFallback />}>
                       <BookingWizard />
-                    </Suspense>
-                  } />
-                  <Route path="/offert/:slug" element={
-                    <Suspense fallback={<SuspenseFallback />}>
-                      <QuoteRequestWizard />
-                    </Suspense>
-                  } />
-                  <Route path="/test-booking" element={
-                    <Suspense fallback={<SuspenseFallback />}>
-                      <TestBooking />
                     </Suspense>
                   } />
                   

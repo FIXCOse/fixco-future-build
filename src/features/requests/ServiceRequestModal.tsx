@@ -92,7 +92,7 @@ export default function ServiceRequestModal() {
 
     setBusy(true);
     try {
-      const type = isQuote ? "quote_request" : "booking";
+      const mode = isQuote ? "quote" : "book";
       
       // Upload files first if any
       const fileUrls: string[] = [];
@@ -112,57 +112,36 @@ export default function ServiceRequestModal() {
         }
       }
 
-      // Create the request based on type
-      if (type === "booking") {
-        const { error } = await supabase.from('bookings').insert({
-          service_id: service.slug,
-          service_name: service.name,
-          // Save in both contact_* and direct fields for compatibility
-          contact_name: values.name,
-          contact_email: values.email,
-          contact_phone: values.phone,
-          name: values.name,
-          email: values.email,
-          phone: values.phone,
-          address: values.address,
-          city: values.city,
-          postal_code: values.postal_code,
-          description: JSON.stringify(values),
-          price_type: service.pricingMode === 'unit' ? 'unit' : 'fixed',
-          base_price: service.unitPriceSek || service.fixedPriceSek || 0,
-          final_price: isUnit && values.antal 
-            ? (Number(values.antal) * (service.unitPriceSek || 0))
-            : (service.fixedPriceSek || 0),
-          rot_eligible: service.rotEligible,
-          attachments: fileUrls,
-          status: 'pending',
-          source: 'service_page'
-        });
+      // Create booking (all requests go to bookings table now)
+      const bookingData: any = {
+        service_id: service.slug,
+        service_name: service.name,
+        mode,
+        status: mode === 'book' ? 'pending' : 'new',
+        contact_name: values.name,
+        contact_email: values.email,
+        contact_phone: values.phone,
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        city: values.city,
+        postal_code: values.postal_code,
+        description: values.beskrivning || '',
+        price_type: service.pricingMode === 'unit' ? 'unit' : 'fixed',
+        base_price: service.unitPriceSek || service.fixedPriceSek || 0,
+        final_price: isUnit && values.antal 
+          ? (Number(values.antal) * (service.unitPriceSek || 0))
+          : (service.fixedPriceSek || 0),
+        rot_eligible: service.rotEligible,
+        payload: values,
+        file_urls: fileUrls,
+        source: 'service_page'
+      };
 
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from('quote_requests').insert({
-          service_id: service.slug,
-          service_name: service.name,
-          // Save in both contact_* and direct fields for compatibility
-          contact_name: values.name,
-          contact_email: values.email,
-          contact_phone: values.phone,
-          name: values.name,
-          email: values.email,
-          phone: values.phone,
-          address: values.address,
-          city: values.city,
-          postal_code: values.postal_code,
-          description: JSON.stringify(values),
-          message: JSON.stringify(values),
-          attachments: fileUrls,
-          status: 'new',
-          source: 'service_page'
-        });
+      const { data: booking, error } = await supabase.from('bookings').insert(bookingData).select().single();
 
-        if (error) throw error;
-      }
+      if (error) throw error;
 
       toast.success("Tack! Vi återkommer så snart som möjligt.");
       setDone(true);

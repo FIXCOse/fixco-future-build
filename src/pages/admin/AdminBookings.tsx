@@ -226,6 +226,11 @@ export default function AdminBookings() {
                         </CardTitle>
                         <CardDescription>
                           Kund: {booking.name} ({booking.email})
+                          {(booking as any).mode && (
+                            <Badge variant="outline" className="ml-2">
+                              {(booking as any).mode === 'book' ? 'Bokning' : 'Offertförfrågan'}
+                            </Badge>
+                          )}
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
