@@ -1,5 +1,7 @@
 import { useCallback, useState, useEffect } from "react";
 import { fetchQuotesNew, deleteQuoteNew, type QuoteNewRow } from "@/lib/api/quotes-new";
+import { useQuotesRealtime } from "@/hooks/useQuotesRealtime";
+import { useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,6 +26,8 @@ export default function AdminQuotes() {
   const [selectedQuote, setSelectedQuote] = useState<QuoteNewRow | null>(null);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
+  const [searchParams] = useSearchParams();
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -47,6 +51,24 @@ export default function AdminQuotes() {
   useEffect(() => {
     loadQuotes();
   }, [loadQuotes]);
+
+  // Realtime updates
+  useQuotesRealtime(() => {
+    loadQuotes();
+  });
+
+  // Handle new quote highlight
+  useEffect(() => {
+    const newId = searchParams.get('new');
+    if (newId && quotes.some(q => q.id === newId)) {
+      setHighlightedId(newId);
+      setTimeout(() => {
+        const element = document.getElementById(`quote-${newId}`);
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+      setTimeout(() => setHighlightedId(null), 3000);
+    }
+  }, [searchParams, quotes]);
 
   const getStatusDisplayName = (status: string) => {
     const statusMap: Record<string, string> = {
@@ -234,7 +256,11 @@ export default function AdminQuotes() {
           ) : (
             <div className="grid gap-4">
               {filteredQuotes.map((quote) => (
-                <Card key={quote.id}>
+                <Card 
+                  key={quote.id}
+                  id={`quote-${quote.id}`}
+                  className={highlightedId === quote.id ? 'ring-2 ring-primary' : ''}
+                >
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -336,7 +362,7 @@ export default function AdminQuotes() {
         open={modalOpen}
         onOpenChange={setModalOpen}
         quote={selectedQuote}
-        onSuccess={loadQuotes}
+        onSuccess={() => loadQuotes()}
       />
 
       <Dialog open={messagesModalOpen} onOpenChange={setMessagesModalOpen}>

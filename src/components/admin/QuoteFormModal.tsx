@@ -22,7 +22,7 @@ type QuoteFormModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   quote?: QuoteNewRow | null;
-  onSuccess: () => void;
+  onSuccess: (created?: QuoteNewRow) => void;
 };
 
 export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFormModalProps) {
@@ -198,15 +198,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         valid_until: validUntil || undefined,
       };
 
+      let result;
       if (quote) {
-        await updateQuoteNew(quote.id, quoteData);
+        result = await updateQuoteNew(quote.id, quoteData);
         toast.success('Offert uppdaterad');
       } else {
-        await createQuoteNew(quoteData);
+        result = await createQuoteNew(quoteData);
         toast.success('Offert skapad');
       }
 
-      onSuccess();
+      onSuccess(result);
       onOpenChange(false);
       resetForm();
     } catch (error: any) {

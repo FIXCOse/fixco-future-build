@@ -46,12 +46,9 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminQuotes from "./pages/admin/AdminQuotes";
-import AdminQuoteDetail from "./pages/admin/AdminQuoteDetail";
-import AdminQuoteEdit from "./pages/admin/AdminQuoteEdit";
-import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
+import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
-import QuoteWizard from "./pages/admin/QuoteWizard";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
 import AdminBookings from "./pages/admin/AdminBookings";
@@ -161,10 +158,7 @@ const App = () => {
                     <Route index element={<AdminDashboard />} />
                     <Route path="services" element={<AdminServices />} />
                     <Route path="quotes" element={<AdminQuotes />} />
-                    <Route path="quotes/trash" element={<AdminQuotesTrash />} />
-                    <Route path="quotes/:id" element={<AdminQuoteDetail />} />
-                    <Route path="quotes/:id/edit" element={<AdminQuoteEdit />} />
-                    <Route path="quotes/new" element={<QuoteWizard />} />
+                    <Route path="quotes/new" element={<AdminQuotesNew />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />
