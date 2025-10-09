@@ -78,9 +78,9 @@ serve(async (req) => {
 
     console.log('Password reset link generated for:', email);
 
-    // TEMPORARY: Send to offert@fixco.se until domain is verified
+    // TEMPORARY: Send to imedashviliomar@gmail.com until domain is verified
     // In production, this will send to the actual user email
-    const recipientEmail = 'offert@fixco.se';
+    const recipientEmail = 'imedashviliomar@gmail.com';
     const isTestMode = recipientEmail !== email;
 
     // Send email with Resend
