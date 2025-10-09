@@ -3,7 +3,7 @@ import { useAdmin } from '@/hooks/useAdmin';
 import { Navigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight } from 'lucide-react';
+import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight, Briefcase } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const AdminPage = () => {
@@ -159,6 +159,24 @@ const AdminPage = () => {
             </Card>
           </Link>
         )}
+
+        {/* Jobs Management */}
+        <Link to="/admin/jobs" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="h-5 w-5" />
+                  Jobb Administration
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Hantera alla jobb, tilldelningar och ersättningar
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         {/* System Status */}
         <Link to="/admin/status" className="block group">
