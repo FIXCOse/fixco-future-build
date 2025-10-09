@@ -25,7 +25,7 @@ const AdminProjectsTrash = () => {
         .select(`
           *,
           quote:quotes_new!projects_quote_id_fkey(number, title),
-          customer:customers!projects_customer_id_fkey(name, email)
+          customer:profiles!projects_customer_id_fkey(id, full_name, first_name, last_name, email)
         `)
         .not('deleted_at', 'is', null)
         .order('deleted_at', { ascending: false });
@@ -147,7 +147,7 @@ const AdminProjectsTrash = () => {
                       {project.customer && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <User className="h-3 w-3" />
-                          <span>{project.customer.name}</span>
+                          <span>{project.customer.full_name || `${project.customer.first_name || ''} ${project.customer.last_name || ''}`.trim() || project.customer.email}</span>
                         </div>
                       )}
 

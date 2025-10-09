@@ -37,7 +37,7 @@ const AdminOngoingProjects = () => {
         .select(`
           *,
           quote:quotes_new!projects_quote_id_fkey(number, title),
-          customer:customers!projects_customer_id_fkey(name, email)
+          customer:profiles!projects_customer_id_fkey(id, full_name, first_name, last_name, email)
         `)
         .is('deleted_at', null)
         .order('created_at', { ascending: false });
@@ -258,7 +258,7 @@ const AdminOngoingProjects = () => {
                       {project.customer && (
                         <div className="flex items-center gap-1">
                           <User className="h-3 w-3" />
-                          {project.customer.name}
+                          {project.customer.full_name || `${project.customer.first_name || ''} ${project.customer.last_name || ''}`.trim() || project.customer.email}
                         </div>
                       )}
                       {project.start_date && (
