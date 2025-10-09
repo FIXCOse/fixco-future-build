@@ -13,6 +13,10 @@ Deno.serve(async (req) => {
   try {
     const url = new URL(req.url);
     const token = url.pathname.split('/').pop();
+    
+    // Get body for signature
+    const body = req.method === 'POST' ? await req.json() : {};
+    const { signature_name, terms_accepted } = body;
 
     if (!token) {
       return new Response(
@@ -70,13 +74,24 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Sätt status accepterad
+    // Sätt status accepterad med signatur och villkor
+    const updateData: any = {
+      status: 'accepted',
+      accepted_at: new Date().toISOString()
+    };
+
+    if (signature_name) {
+      updateData.signature_name = signature_name;
+      updateData.signature_date = new Date().toISOString();
+    }
+    
+    if (terms_accepted !== undefined) {
+      updateData.terms_accepted = terms_accepted;
+    }
+
     const { error: updateError } = await supabase
       .from('quotes_new')
-      .update({
-        status: 'accepted',
-        accepted_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('id', quote.id);
 
     if (updateError) {

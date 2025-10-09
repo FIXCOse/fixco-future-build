@@ -1411,6 +1411,126 @@ export type Database = {
           },
         ]
       }
+      quote_questions: {
+        Row: {
+          answer: string | null
+          answered: boolean | null
+          answered_at: string | null
+          asked_at: string
+          customer_email: string | null
+          customer_name: string
+          id: string
+          question: string
+          quote_id: string
+        }
+        Insert: {
+          answer?: string | null
+          answered?: boolean | null
+          answered_at?: string | null
+          asked_at?: string
+          customer_email?: string | null
+          customer_name: string
+          id?: string
+          question: string
+          quote_id: string
+        }
+        Update: {
+          answer?: string | null
+          answered?: boolean | null
+          answered_at?: string | null
+          asked_at?: string
+          customer_email?: string | null
+          customer_name?: string
+          id?: string
+          question?: string
+          quote_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_questions_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_rejections: {
+        Row: {
+          customer_email: string | null
+          customer_name: string | null
+          id: string
+          quote_id: string
+          reason: string
+          reason_text: string | null
+          rejected_at: string
+        }
+        Insert: {
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          quote_id: string
+          reason: string
+          reason_text?: string | null
+          rejected_at?: string
+        }
+        Update: {
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          quote_id?: string
+          reason?: string
+          reason_text?: string | null
+          rejected_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_rejections_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_reminders: {
+        Row: {
+          created_at: string
+          customer_email: string
+          id: string
+          quote_id: string
+          remind_at: string
+          sent: boolean | null
+          sent_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          id?: string
+          quote_id: string
+          remind_at: string
+          sent?: boolean | null
+          sent_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          id?: string
+          quote_id?: string
+          remind_at?: string
+          sent?: boolean | null
+          sent_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_reminders_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quotes: {
         Row: {
           accepted_at: string | null
@@ -1569,9 +1689,12 @@ export type Database = {
           request_id: string | null
           rot_deduction_sek: number | null
           sent_at: string | null
+          signature_date: string | null
+          signature_name: string | null
           status: string | null
           subtotal_mat_sek: number | null
           subtotal_work_sek: number | null
+          terms_accepted: boolean | null
           title: string
           total_sek: number
           valid_until: string | null
@@ -1593,9 +1716,12 @@ export type Database = {
           request_id?: string | null
           rot_deduction_sek?: number | null
           sent_at?: string | null
+          signature_date?: string | null
+          signature_name?: string | null
           status?: string | null
           subtotal_mat_sek?: number | null
           subtotal_work_sek?: number | null
+          terms_accepted?: boolean | null
           title: string
           total_sek: number
           valid_until?: string | null
@@ -1617,9 +1743,12 @@ export type Database = {
           request_id?: string | null
           rot_deduction_sek?: number | null
           sent_at?: string | null
+          signature_date?: string | null
+          signature_name?: string | null
           status?: string | null
           subtotal_mat_sek?: number | null
           subtotal_work_sek?: number | null
+          terms_accepted?: boolean | null
           title?: string
           total_sek?: number
           valid_until?: string | null
