@@ -125,27 +125,31 @@ const WorkerDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium text-purple-700">Timmar</CardTitle>
-            <Clock className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl md:text-2xl font-bold text-purple-900">{stats.hoursToday}h</div>
-            <p className="text-xs text-purple-600">idag</p>
-          </CardContent>
-        </Card>
+        {stats.hoursToday > 0 && (
+          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs md:text-sm font-medium text-purple-700">Timmar</CardTitle>
+              <Clock className="h-4 w-4 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl md:text-2xl font-bold text-purple-900">{stats.hoursToday}h</div>
+              <p className="text-xs text-purple-600">idag</p>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs md:text-sm font-medium text-orange-700">Intäkt</CardTitle>
-            <TrendingUp className="h-4 w-4 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-lg md:text-2xl font-bold text-orange-900">{stats.earnings.toLocaleString('sv-SE')} kr</div>
-            <p className="text-xs text-orange-600">idag</p>
-          </CardContent>
-        </Card>
+        {stats.earnings > 0 && (
+          <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs md:text-sm font-medium text-orange-700">Intäkt</CardTitle>
+              <TrendingUp className="h-4 w-4 text-orange-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-lg md:text-2xl font-bold text-orange-900">{stats.earnings.toLocaleString('sv-SE')} kr</div>
+              <p className="text-xs text-orange-600">idag</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Active Jobs - Mobile optimized */}

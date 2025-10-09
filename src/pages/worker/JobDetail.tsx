@@ -419,20 +419,26 @@ const JobDetail = () => {
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Timmar</p>
               <p className="text-2xl font-bold text-blue-600">{totalHours.toFixed(1)}h</p>
             </div>
-            <div className="flex justify-between items-center pt-2 border-t">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Material</p>
-              <p className="font-semibold">{totalMaterialCost.toFixed(0)} kr</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Utlägg</p>
-              <p className="font-semibold">{totalExpenses.toFixed(0)} kr</p>
-            </div>
-            <div className="flex justify-between items-center pt-2 border-t">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totalt extra</p>
-              <p className="text-lg font-bold text-orange-600">
-                {(totalMaterialCost + totalExpenses).toFixed(0)} kr
-              </p>
-            </div>
+            {totalMaterialCost > 0 && (
+              <div className="flex justify-between items-center pt-2 border-t">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Material</p>
+                <p className="font-semibold">{totalMaterialCost.toFixed(0)} kr</p>
+              </div>
+            )}
+            {totalExpenses > 0 && (
+              <div className="flex justify-between items-center">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Utlägg</p>
+                <p className="font-semibold">{totalExpenses.toFixed(0)} kr</p>
+              </div>
+            )}
+            {(totalMaterialCost > 0 || totalExpenses > 0) && (
+              <div className="flex justify-between items-center pt-2 border-t">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Totalt extra</p>
+                <p className="text-lg font-bold text-orange-600">
+                  {(totalMaterialCost + totalExpenses).toFixed(0)} kr
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
