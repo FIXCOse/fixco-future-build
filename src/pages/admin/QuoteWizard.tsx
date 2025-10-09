@@ -502,10 +502,17 @@ const QuoteWizard = () => {
                           </div>
                           {item.description && (
                             <p className="text-sm text-muted-foreground mt-2">
-                              {item.description.length > 100 
-                                ? `${item.description.substring(0, 100)}...`
-                                : item.description
-                              }
+                              {(() => {
+                                try {
+                                  const parsed = JSON.parse(item.description);
+                                  const text = parsed.beskrivning || parsed.description || parsed.message || item.description;
+                                  return text.length > 100 ? `${text.substring(0, 100)}...` : text;
+                                } catch {
+                                  return item.description.length > 100 
+                                    ? `${item.description.substring(0, 100)}...`
+                                    : item.description;
+                                }
+                              })()}
                             </p>
                           )}
                         </div>
