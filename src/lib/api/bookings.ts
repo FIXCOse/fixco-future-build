@@ -53,10 +53,7 @@ export async function fetchBookings(params?: {
 }) {
   let query = supabase
     .from('bookings')
-    .select(`
-      *,
-      customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
-    `, { count: 'exact' })
+    .select('*', { count: 'exact' })
     .order('created_at', { ascending: false });
 
   if (params?.status?.length) {

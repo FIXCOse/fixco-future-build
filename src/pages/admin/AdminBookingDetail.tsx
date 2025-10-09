@@ -30,10 +30,7 @@ export default function AdminBookingDetail() {
         console.log('[BookingDetail] Starting fetch...');
         const { data, error } = await supabase
           .from('bookings')
-          .select(`
-            *,
-            customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
-          `)
+          .select('*')
           .eq('id', id)
           .maybeSingle();
 
