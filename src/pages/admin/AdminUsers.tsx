@@ -6,11 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, User, Mail, Phone, Shield, Building, Users as UsersIcon, Filter } from 'lucide-react';
+import { Search, User, Mail, Phone, Shield, Building, Users as UsersIcon, Filter, Trash2 } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { fetchAllUsers, type UserProfile } from '@/lib/api/users';
 import { useUsersRealtime } from '@/hooks/useUsersRealtime';
 import { UserProfileModal } from '@/components/admin/UserProfileModal';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,6 +21,9 @@ const AdminUsers = () => {
   const [roleFilter, setRoleFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<UserProfile | null>(null);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: usersData, isLoading, refetch } = useQuery({
     queryKey: ['admin-users', searchTerm, userTypeFilter, roleFilter],
@@ -39,6 +45,35 @@ const AdminUsers = () => {
   }, [refetch]);
 
   useUsersRealtime(handleUsersChange);
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const { error } = await supabase.functions.invoke('admin-delete-user', {
+        body: { userId: userToDelete.id }
+      });
+
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      refetch();
+      
+      toast({
+        title: 'Raderad',
+        description: 'Användaren har tagits bort'
+      });
+      
+      setUserToDelete(null);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: 'Fel',
+        description: 'Kunde inte radera användaren',
+        variant: 'destructive'
+      });
+    }
+  };
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
@@ -280,6 +315,14 @@ const AdminUsers = () => {
                         >
                           Visa profil
                         </Button>
+                        <Button
+                          onClick={() => setUserToDelete(user)}
+                          variant="outline"
+                          size="sm"
+                          title="Radera användare"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -304,6 +347,24 @@ const AdminUsers = () => {
         open={profileModalOpen}
         onOpenChange={setProfileModalOpen}
       />
+
+      <AlertDialog open={!!userToDelete} onOpenChange={() => setUserToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Är du säker?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Detta kommer permanent radera användaren <strong>{userToDelete?.email}</strong> och all relaterad data. 
+              Denna åtgärd kan inte ångras.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Radera
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
