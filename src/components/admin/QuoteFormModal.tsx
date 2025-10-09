@@ -88,8 +88,21 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         console.error('Failed to parse items:', e);
       }
       
+      // Load ROT/RUT settings from quote
       if (quote.rot_deduction_sek > 0) {
         setEnableRot(true);
+        setRotRate(quote.rot_percentage || 30);
+      }
+      
+      if (quote.rut_percentage && quote.rut_percentage > 0) {
+        setEnableRut(true);
+        setRutRate(quote.rut_percentage);
+      }
+      
+      // Load discount settings from quote
+      if (quote.discount_type && quote.discount_type !== 'none') {
+        setDiscountType(quote.discount_type as any);
+        setDiscountValue(quote.discount_value || 0);
       }
     } else {
       resetForm();
@@ -250,6 +263,11 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         subtotal_mat_sek: Math.round(calculateSubtotalMaterial()),
         vat_sek: Math.round(calculateVat()),
         rot_deduction_sek: Math.round(calculateRotRutDeduction()),
+        rot_percentage: enableRot ? rotRate : 0,
+        rut_percentage: enableRut ? rutRate : 0,
+        discount_type: discountType,
+        discount_value: discountValue,
+        discount_amount_sek: Math.round(calculateDiscount()),
         total_sek: Math.round(total),
         pdf_url: pdfUrl.trim() || undefined,
         valid_until: validUntil || undefined,

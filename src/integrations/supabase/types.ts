@@ -1697,6 +1697,9 @@ export type Database = {
           customer_id: string | null
           declined_at: string | null
           deleted_at: string | null
+          discount_amount_sek: number | null
+          discount_type: string | null
+          discount_value: number | null
           id: string
           items: Json | null
           number: string
@@ -1704,6 +1707,8 @@ export type Database = {
           public_token: string
           request_id: string | null
           rot_deduction_sek: number | null
+          rot_percentage: number | null
+          rut_percentage: number | null
           sent_at: string | null
           signature_date: string | null
           signature_name: string | null
@@ -1724,6 +1729,9 @@ export type Database = {
           customer_id?: string | null
           declined_at?: string | null
           deleted_at?: string | null
+          discount_amount_sek?: number | null
+          discount_type?: string | null
+          discount_value?: number | null
           id?: string
           items?: Json | null
           number: string
@@ -1731,6 +1739,8 @@ export type Database = {
           public_token: string
           request_id?: string | null
           rot_deduction_sek?: number | null
+          rot_percentage?: number | null
+          rut_percentage?: number | null
           sent_at?: string | null
           signature_date?: string | null
           signature_name?: string | null
@@ -1751,6 +1761,9 @@ export type Database = {
           customer_id?: string | null
           declined_at?: string | null
           deleted_at?: string | null
+          discount_amount_sek?: number | null
+          discount_type?: string | null
+          discount_value?: number | null
           id?: string
           items?: Json | null
           number?: string
@@ -1758,6 +1771,8 @@ export type Database = {
           public_token?: string
           request_id?: string | null
           rot_deduction_sek?: number | null
+          rot_percentage?: number | null
+          rut_percentage?: number | null
           sent_at?: string | null
           signature_date?: string | null
           signature_name?: string | null

@@ -175,14 +175,22 @@ export default function AdminQuotesNew() {
                   <span>Material:</span>
                   <span>{quote.subtotal_mat_sek.toLocaleString()} kr</span>
                 </div>
+                {quote.discount_amount_sek > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Rabatt:</span>
+                    <span>-{quote.discount_amount_sek.toLocaleString()} kr</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Moms:</span>
                   <span>{quote.vat_sek.toLocaleString()} kr</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>ROT-avdrag:</span>
-                  <span className="text-green-600">-{quote.rot_deduction_sek.toLocaleString()} kr</span>
-                </div>
+                {quote.rot_deduction_sek > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>ROT-avdrag ({quote.rot_percentage}%):</span>
+                    <span>-{quote.rot_deduction_sek.toLocaleString()} kr</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-lg font-bold pt-2 border-t">
                   <span>Totalt:</span>
                   <span>{quote.total_sek.toLocaleString()} kr</span>

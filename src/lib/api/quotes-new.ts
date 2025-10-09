@@ -11,6 +11,11 @@ export type QuoteNewRow = {
   subtotal_mat_sek: number;
   vat_sek: number;
   rot_deduction_sek: number;
+  rot_percentage?: number;
+  rut_percentage?: number;
+  discount_type?: string;
+  discount_value?: number;
+  discount_amount_sek?: number;
   total_sek: number;
   pdf_url?: string | null;
   status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired';
@@ -98,6 +103,11 @@ export async function createQuoteNew(quoteData: {
   subtotal_mat_sek: number;
   vat_sek: number;
   rot_deduction_sek: number;
+  rot_percentage?: number;
+  rut_percentage?: number;
+  discount_type?: string;
+  discount_value?: number;
+  discount_amount_sek?: number;
   total_sek: number;
   pdf_url?: string;
   valid_until?: string;

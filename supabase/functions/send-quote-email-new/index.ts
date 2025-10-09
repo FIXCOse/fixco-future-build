@@ -68,7 +68,15 @@ const handler = async (req: Request): Promise<Response> => {
             
             <p><strong>${quote.title}</strong></p>
             
-            <p><strong>Totalt belopp:</strong> ${quote.total_sek.toLocaleString('sv-SE')} kr (inkl. moms)</p>
+            <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin: 16px 0;">
+              <p style="margin: 4px 0;"><strong>Arbete:</strong> ${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</p>
+              <p style="margin: 4px 0;"><strong>Material:</strong> ${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</p>
+              ${quote.discount_amount_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>Rabatt:</strong> -${quote.discount_amount_sek.toLocaleString('sv-SE')} kr</p>` : ''}
+              <p style="margin: 4px 0;"><strong>Moms (25%):</strong> ${quote.vat_sek.toLocaleString('sv-SE')} kr</p>
+              ${quote.rot_deduction_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>ROT-avdrag (${quote.rot_percentage}%):</strong> -${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</p>` : ''}
+              <p style="margin: 12px 0 4px; font-size: 18px; font-weight: 700;"><strong>Totalt att betala:</strong> ${quote.total_sek.toLocaleString('sv-SE')} kr</p>
+            </div>
+            
             ${quote.valid_until ? `<p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
             
             <div style="text-align: center; margin-top: 24px;">
