@@ -29,9 +29,11 @@ const WorkerDashboard = () => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUserId(user?.id || null);
+      console.log('Worker Dashboard - User ID:', user?.id);
+      console.log('Worker Dashboard - All jobs:', jobs);
     };
     getUser();
-  }, []);
+  }, [jobs]);
 
   // Filter jobs assigned to current user
   const myJobs = jobs.filter(job => job.assigned_worker_id === userId);
@@ -39,6 +41,10 @@ const WorkerDashboard = () => {
     job.status === 'assigned' || job.status === 'in_progress' || job.status === 'paused'
   );
   
+  console.log('Worker Dashboard - My jobs:', myJobs);
+  console.log('Worker Dashboard - Active jobs:', activeJobs);
+  console.log('Worker Dashboard - Total jobs from DB:', jobs.length);
+
   // Calculate stats
   const today = new Date().toDateString();
   const completedToday = myJobs.filter(job => 
@@ -46,7 +52,7 @@ const WorkerDashboard = () => {
     new Date(job.created_at).toDateString() === today
   ).length;
 
-  const mockStats = {
+  const stats = {
     activeJobs: activeJobs.length,
     completedToday,
     hoursToday: 0, // Would need time_logs data
@@ -54,7 +60,7 @@ const WorkerDashboard = () => {
   };
 
   useJobsRealtime(() => {
-    // Trigger re-fetch if needed
+    console.log('Worker Dashboard - Realtime update triggered');
   });
 
   const getStatusColor = (status: string) => {
@@ -77,6 +83,14 @@ const WorkerDashboard = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-muted-foreground">Laddar dashboard...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Header */}
@@ -95,7 +109,7 @@ const WorkerDashboard = () => {
             <AlertCircle className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-xl md:text-2xl font-bold text-blue-900">{mockStats.activeJobs}</div>
+            <div className="text-xl md:text-2xl font-bold text-blue-900">{stats.activeJobs}</div>
             <p className="text-xs text-blue-600">pågående</p>
           </CardContent>
         </Card>
@@ -106,7 +120,7 @@ const WorkerDashboard = () => {
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-xl md:text-2xl font-bold text-green-900">{mockStats.completedToday}</div>
+            <div className="text-xl md:text-2xl font-bold text-green-900">{stats.completedToday}</div>
             <p className="text-xs text-green-600">idag</p>
           </CardContent>
         </Card>
@@ -117,7 +131,7 @@ const WorkerDashboard = () => {
             <Clock className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-xl md:text-2xl font-bold text-purple-900">{mockStats.hoursToday}h</div>
+            <div className="text-xl md:text-2xl font-bold text-purple-900">{stats.hoursToday}h</div>
             <p className="text-xs text-purple-600">idag</p>
           </CardContent>
         </Card>
@@ -128,7 +142,7 @@ const WorkerDashboard = () => {
             <TrendingUp className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold text-orange-900">{mockStats.earnings.toLocaleString('sv-SE')} kr</div>
+            <div className="text-lg md:text-2xl font-bold text-orange-900">{stats.earnings.toLocaleString('sv-SE')} kr</div>
             <p className="text-xs text-orange-600">idag</p>
           </CardContent>
         </Card>
@@ -149,12 +163,20 @@ const WorkerDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {loading ? (
-              <p className="text-center text-muted-foreground py-8">Laddar...</p>
-            ) : activeJobs.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">
-                Du har inga aktiva jobb. Kolla jobbpoolen för tillgängliga jobb!
-              </p>
+            {activeJobs.length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
+                <p className="text-lg font-medium mb-2">Inga aktiva jobb</p>
+                <p className="text-muted-foreground mb-6">
+                  Du har inga tilldelade jobb för tillfället. Kolla jobbpoolen för att hitta lediga jobb!
+                </p>
+                <Link to="/worker/pool">
+                  <Button size="lg">
+                    <Users className="w-4 h-4 mr-2" />
+                    Gå till jobbpoolen
+                  </Button>
+                </Link>
+              </div>
             ) : (
               activeJobs.map((job) => (
               <div
