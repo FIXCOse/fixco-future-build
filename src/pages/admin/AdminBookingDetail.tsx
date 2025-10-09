@@ -69,7 +69,7 @@ export default function AdminBookingDetail() {
           hours_estimated: payload.hours_estimated || payload.hoursEstimated || 0,
           rot_rut_type: payload.rot_rut_type || payload.rotRutType || '',
           internal_notes: payload.internal_notes || payload.internalNotes || '',
-          images: payload.images || [],
+          images: data.file_urls || payload.images || [],
         };
         
         console.log('[BookingDetail] Enriched data:', enrichedData);
