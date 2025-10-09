@@ -43,6 +43,17 @@ export default function ServiceRequestModal() {
         };
       }
       
+      // ALWAYS add file upload field if not present
+      if (svc && !svc.fields.some(f => f.kind === "file")) {
+        svc.fields.push({
+          kind: "file" as const,
+          key: "bilder",
+          label: "Ladda upp bilder (valfritt)",
+          accept: "image/*",
+          multiple: true
+        });
+      }
+      
       setService(svc ?? null);
       setValues(prefill);
       setFiles({});

@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { fetchJobById, fetchTimeLogs, fetchMaterialLogs, fetchExpenseLogs, updateJobStatus, completeJob, createTimeEntry, createMaterialEntry, createExpenseEntry } from '@/lib/api/jobs';
 import type { Job, TimeLog, MaterialLog, ExpenseLog } from '@/lib/api/jobs';
+import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -20,6 +21,7 @@ const JobDetail = () => {
   const navigate = useNavigate();
   
   const [job, setJob] = useState<Job | null>(null);
+  const [jobImages, setJobImages] = useState<string[]>([]);
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([]);
   const [materialLogs, setMaterialLogs] = useState<MaterialLog[]>([]);
   const [expenseLogs, setExpenseLogs] = useState<ExpenseLog[]>([]);
@@ -56,6 +58,19 @@ const JobDetail = () => {
         setTimeLogs(timeData);
         setMaterialLogs(materialData);
         setExpenseLogs(expenseData);
+        
+        // Fetch images from source booking if job comes from booking
+        if (jobData.source_type === 'booking' && jobData.source_id) {
+          const { data: booking } = await supabase
+            .from('bookings')
+            .select('file_urls')
+            .eq('id', jobData.source_id)
+            .maybeSingle();
+          
+          if (booking && booking.file_urls) {
+            setJobImages(booking.file_urls);
+          }
+        }
       } catch (error) {
         console.error('Error loading job:', error);
         toast.error('Kunde inte ladda jobbinformation');
@@ -700,12 +715,43 @@ const JobDetail = () => {
 
         <TabsContent value="photos">
           <Card>
-            <CardContent className="p-8 text-center">
-              <Camera className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-semibold mb-2">Fotofunktion</h3>
-              <p className="text-muted-foreground">
-                Funktionen för att ladda upp foton kommer snart.
-              </p>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ImageIcon className="h-5 w-5" />
+                Bilder från bokning
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {jobImages.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {jobImages.map((imageUrl: string, index: number) => (
+                    <a
+                      key={index}
+                      href={imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors"
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={`Jobbild ${index + 1}`}
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/placeholder.svg';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <ImageIcon className="h-8 w-8 text-white" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Camera className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <p className="text-muted-foreground">Inga bilder bifogade i bokningen</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
