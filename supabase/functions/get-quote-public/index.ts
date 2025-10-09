@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
         valid_until,
         status,
         deleted_at,
-        customer:customers(name)
+        customer:customers(name, email)
       `)
       .eq('public_token', token)
       .single();
@@ -90,7 +90,8 @@ Deno.serve(async (req) => {
       total_sek: quote.total_sek,
       pdf_url: quote.pdf_url,
       valid_until: quote.valid_until,
-      customer_name: quote.customer?.name || 'Okänd kund'
+      customer_name: quote.customer?.name || 'Okänd kund',
+      customer_email: quote.customer?.email || ''
     };
 
     return new Response(

@@ -29,6 +29,7 @@ type PublicQuote = {
   pdf_url?: string;
   valid_until?: string;
   customer_name: string;
+  customer_email: string;
 };
 
 export default function QuotePublic() {
@@ -837,7 +838,17 @@ export default function QuotePublic() {
                     </Dialog>
 
                     {/* Ask Question */}
-                    <Dialog open={questionModalOpen} onOpenChange={setQuestionModalOpen}>
+                    <Dialog 
+                      open={questionModalOpen} 
+                      onOpenChange={(open) => {
+                        setQuestionModalOpen(open);
+                        if (open && quote) {
+                          // Auto-fylla namn och email från offerten
+                          setQuestionName(quote.customer_name || '');
+                          setQuestionEmail(quote.customer_email || '');
+                        }
+                      }}
+                    >
                       <DialogTrigger asChild>
                         <Button 
                           variant="outline"

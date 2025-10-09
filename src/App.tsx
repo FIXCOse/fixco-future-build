@@ -72,6 +72,7 @@ import AdminJobRequests from "./pages/admin/AdminJobRequests";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminLeads from "./pages/admin/AdminLeads";
+import AdminQuoteQuestions from "./pages/admin/AdminQuoteQuestions";
 import QuotePublic from "./pages/QuotePublic";
 
 // Lazy load components for better performance with Suspense fallbacks
@@ -159,6 +160,7 @@ const App = () => {
                     <Route path="quotes" element={<AdminQuotes />} />
                     <Route path="quotes/new" element={<AdminQuotesNew />} />
                     <Route path="quotes/trash" element={<AdminQuotesTrash />} />
+                    <Route path="quote-questions" element={<AdminQuoteQuestions />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="bookings" element={<AdminBookings />} />

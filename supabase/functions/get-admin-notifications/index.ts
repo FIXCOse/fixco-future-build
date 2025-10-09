@@ -37,6 +37,12 @@ Deno.serve(async (req) => {
       .select('*', { count: 'exact', head: true })
       .eq('status', 'scheduled');
 
+    // Räkna obesvarade frågor
+    const { count: unansweredQuestionsCount } = await supabase
+      .from('quote_questions')
+      .select('*', { count: 'exact', head: true })
+      .eq('answered', false);
+
     // Hämta senaste 10 notifications
     const { data: changeRequests } = await supabase
       .from('quotes_new')
@@ -50,6 +56,14 @@ Deno.serve(async (req) => {
       .select('id, number, title, accepted_at')
       .eq('status', 'accepted')
       .order('accepted_at', { ascending: false })
+      .limit(5);
+
+    // Hämta senaste obesvarade frågor
+    const { data: unansweredQuestions } = await supabase
+      .from('quote_questions')
+      .select('id, question, customer_name, asked_at, quote:quotes_new!inner(number)')
+      .eq('answered', false)
+      .order('asked_at', { ascending: false })
       .limit(5);
 
     const notifications = [
@@ -68,6 +82,14 @@ Deno.serve(async (req) => {
         number: q.number,
         timestamp: q.accepted_at,
         link: `/admin/ongoing-projects`
+      })),
+      ...(unansweredQuestions || []).map(q => ({
+        type: 'question',
+        id: q.id,
+        title: `Ny fråga om offert`,
+        number: q.quote?.number || 'Okänd',
+        timestamp: q.asked_at,
+        link: `/admin/quote-questions`
       }))
     ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, 10);
@@ -77,8 +99,9 @@ Deno.serve(async (req) => {
       acceptedQuotes: acceptedQuotesCount || 0,
       pendingProjects: pendingProjectsCount || 0,
       scheduledProjects: scheduledProjectsCount || 0,
+      unansweredQuestions: unansweredQuestionsCount || 0,
       total: (changeRequestedCount || 0) + (acceptedQuotesCount || 0) + 
-             (pendingProjectsCount || 0) + (scheduledProjectsCount || 0)
+             (pendingProjectsCount || 0) + (scheduledProjectsCount || 0) + (unansweredQuestionsCount || 0)
     };
 
     return new Response(

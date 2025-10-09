@@ -112,3 +112,16 @@ verify_jwt = false
 
 [functions.send-quote-email-new]
 verify_jwt = true
+
+[functions.reject-quote-public]
+verify_jwt = false
+
+[functions.ask-question-quote]
+verify_jwt = false
+
+[functions.set-reminder-quote]
+verify_jwt = false
+
+[functions.answer-quote-question]
+verify_jwt = true
+
