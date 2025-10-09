@@ -187,14 +187,18 @@ const MyJobs = () => {
                     </div>
                   )}
 
-                  {/* Worker Compensation */}
+                  {/* Worker Compensation - Show as EXTRA BONUS */}
                   {job.admin_set_price && job.admin_set_price > 0 && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-4 shadow-lg">
+                      <div className="flex items-center gap-3">
+                        <Gift className="w-8 h-8 text-yellow-600 animate-pulse" />
                         <div>
-                          <p className="text-xs font-semibold text-green-800 uppercase">Worker ersättning</p>
-                          <p className="text-lg font-bold text-green-900">{job.admin_set_price} kr</p>
+                          <p className="text-xs font-semibold text-yellow-800 uppercase tracking-wide">
+                            EXTRA BONUS
+                          </p>
+                          <p className="text-2xl font-black text-yellow-900">
+                            +{job.admin_set_price} kr
+                          </p>
                         </div>
                       </div>
                     </div>
