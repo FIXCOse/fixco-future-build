@@ -1,16 +1,33 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages, Wrench
+  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages, Wrench, MessageCircle
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRole } from '@/hooks/useRole';
 import { LiveActivityFeed } from './LiveActivityFeed';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminDashboard = () => {
   const { isOwner } = useRole();
+
+  // Hämta antal obesvarade offertfrågor
+  const { data: unansweredQuestionsCount = 0 } = useQuery({
+    queryKey: ['unanswered-questions-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('quote_questions')
+        .select('*', { count: 'exact', head: true })
+        .eq('answered', false);
+      
+      if (error) throw error;
+      return count || 0;
+    },
+    refetchInterval: 30000,
+  });
 
   const quickActions = [
     {
@@ -19,6 +36,14 @@ const AdminDashboard = () => {
       href: '/admin/quotes/new',
       icon: Plus,
       variant: 'cta-primary' as const
+    },
+    {
+      title: 'Offertfrågor',
+      description: 'Hantera kundfrågor om offerter',
+      href: '/admin/quote-questions',
+      icon: MessageCircle,
+      variant: 'outline' as const,
+      badge: unansweredQuestionsCount > 0 ? unansweredQuestionsCount : undefined
     },
     {
       title: 'Personalhantering',
@@ -153,11 +178,21 @@ const AdminDashboard = () => {
                 <Card className="hover:shadow-md transition-shadow cursor-pointer">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-primary/10">
+                      <div className="p-2 rounded-lg bg-primary/10 relative">
                         <action.icon className="h-5 w-5 text-primary" />
+                        {action.badge && (
+                          <Badge 
+                            variant="destructive" 
+                            className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                          >
+                            {action.badge > 9 ? '9+' : action.badge}
+                          </Badge>
+                        )}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-medium">{action.title}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium">{action.title}</h3>
+                        </div>
                         <p className="text-sm text-muted-foreground">{action.description}</p>
                       </div>
                     </div>
