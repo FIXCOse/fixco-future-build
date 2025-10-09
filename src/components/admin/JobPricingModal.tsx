@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,9 +20,21 @@ interface JobPricingModalProps {
 
 export const JobPricingModal = ({ job, open, onOpenChange, onSuccess }: JobPricingModalProps) => {
   const { toast } = useToast();
-  const [adminSetPrice, setAdminSetPrice] = useState<string>(job?.admin_set_price?.toString() || '');
-  const [bonusAmount, setBonusAmount] = useState<string>(job?.bonus_amount?.toString() || '0');
+  const [adminSetPrice, setAdminSetPrice] = useState<string>('');
+  const [bonusAmount, setBonusAmount] = useState<string>('0');
   const [saving, setSaving] = useState(false);
+
+  // Sync state when job changes
+  useEffect(() => {
+    if (job) {
+      setAdminSetPrice(job.admin_set_price?.toString() || '');
+      setBonusAmount(job.bonus_amount?.toString() || '0');
+    } else {
+      // Reset when job is cleared
+      setAdminSetPrice('');
+      setBonusAmount('0');
+    }
+  }, [job]);
 
   const handleSave = async () => {
     if (!job) return;

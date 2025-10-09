@@ -333,8 +333,9 @@ const AdminJobs = () => {
         open={pricingModalOpen}
         onOpenChange={setPricingModalOpen}
         onSuccess={() => {
-          // Reload jobs to show updated pricing
-          window.location.reload();
+          // Jobs will auto-refresh via realtime subscription
+          setPricingModalOpen(false);
+          setJobForPricing(null);
         }}
       />
     </div>
