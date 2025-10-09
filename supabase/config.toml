@@ -107,5 +107,8 @@ verify_jwt = true
 [functions.get-admin-notifications]
 verify_jwt = true
 
+[functions.create-booking-with-quote]
+verify_jwt = false
+
 [functions.send-quote-email-new]
 verify_jwt = true

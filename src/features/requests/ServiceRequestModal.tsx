@@ -112,7 +112,7 @@ export default function ServiceRequestModal() {
         }
       }
 
-      // Create booking (all requests go to bookings table now)
+      // Create booking via edge function (bypasses schema cache issues)
       const bookingData: any = {
         service_id: service.slug,
         service_name: service.name,
@@ -136,12 +136,17 @@ export default function ServiceRequestModal() {
         rot_eligible: service.rotEligible,
         payload: {
           ...values,
-          uploaded_files: fileUrls // Store files in payload instead
+          uploaded_files: fileUrls
         },
         source: 'service_page'
       };
 
-      const { data: booking, error } = await supabase.from('bookings').insert(bookingData).select().single();
+      const { data, error } = await supabase.functions.invoke('create-booking-with-quote', {
+        body: bookingData
+      });
+
+      if (error) throw error;
+      const booking = { id: data.bookingId };
 
       if (error) throw error;
 
