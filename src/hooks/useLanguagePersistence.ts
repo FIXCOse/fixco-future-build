@@ -51,18 +51,11 @@ export const useLanguagePersistence = () => {
     navigate(targetPath, { replace: false });
   };
 
-  // Effect to store current language preference (but don't auto-redirect)
+  // Effect to store current language preference on mount only
   useEffect(() => {
     const currentLang = getCurrentLanguage();
-    const storedLang = getStoredLanguage();
-    
-    // Only store if user explicitly changed language via switcher
-    // Don't auto-redirect on every route change
-    if (storedLang !== currentLang) {
-      console.log('[useLanguagePersistence] Language changed from', storedLang, 'to', currentLang);
-      setStoredLanguage(currentLang);
-    }
-  }, [location.pathname]);
+    setStoredLanguage(currentLang);
+  }, []); // Run only once on mount
 
   return {
     currentLanguage: getCurrentLanguage(),

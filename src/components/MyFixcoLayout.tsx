@@ -86,12 +86,12 @@ const MyFixcoLayout = () => {
   // Check if user is admin/owner 
   const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
 
-  // Redirect admin/owner users to the admin dashboard 
+  // Redirect admin/owner users to the admin dashboard (run only when profile changes)
   useEffect(() => {
     if (profile && isAdmin && location.pathname === '/mitt-fixco') {
       navigate('/admin', { replace: true });
     }
-  }, [profile, isAdmin, location.pathname, navigate]);
+  }, [profile, isAdmin]); // Removed location.pathname and navigate to prevent loops
 
   if (loading || authLoading) {
     return <PageSkeleton />;
