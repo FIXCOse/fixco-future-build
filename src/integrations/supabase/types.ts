@@ -462,6 +462,68 @@ export type Database = {
         }
         Relationships: []
       }
+      customers: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          phone: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      dispatch_queue: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          project_id: string | null
+          status: string | null
+          strategy: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          project_id?: string | null
+          status?: string | null
+          strategy?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          project_id?: string | null
+          status?: string | null
+          strategy?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_queue_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       edit_locks: {
         Row: {
           expires_at: string
@@ -1316,6 +1378,54 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          assigned_to: string | null
+          created_at: string | null
+          customer_id: string | null
+          id: string
+          quote_id: string | null
+          start_date: string | null
+          status: string | null
+          title: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          quote_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          title?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          quote_id?: string | null
+          start_date?: string | null
+          status?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       properties: {
         Row: {
           address: string
@@ -1381,6 +1491,41 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_messages: {
+        Row: {
+          author: string
+          created_at: string | null
+          files: string[] | null
+          id: string
+          message: string
+          quote_id: string
+        }
+        Insert: {
+          author: string
+          created_at?: string | null
+          files?: string[] | null
+          id?: string
+          message: string
+          quote_id: string
+        }
+        Update: {
+          author?: string
+          created_at?: string | null
+          files?: string[] | null
+          id?: string
+          message?: string
+          quote_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_messages_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
             referencedColumns: ["id"]
           },
         ]
@@ -1627,6 +1772,86 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes_new: {
+        Row: {
+          accepted_at: string | null
+          change_req_at: string | null
+          created_at: string | null
+          customer_id: string | null
+          declined_at: string | null
+          id: string
+          items: Json | null
+          number: string
+          pdf_url: string | null
+          public_token: string
+          request_id: string | null
+          rot_deduction_sek: number | null
+          sent_at: string | null
+          status: string | null
+          subtotal_mat_sek: number | null
+          subtotal_work_sek: number | null
+          title: string
+          total_sek: number
+          valid_until: string | null
+          vat_sek: number | null
+          viewed_at: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          change_req_at?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          declined_at?: string | null
+          id?: string
+          items?: Json | null
+          number: string
+          pdf_url?: string | null
+          public_token: string
+          request_id?: string | null
+          rot_deduction_sek?: number | null
+          sent_at?: string | null
+          status?: string | null
+          subtotal_mat_sek?: number | null
+          subtotal_work_sek?: number | null
+          title: string
+          total_sek: number
+          valid_until?: string | null
+          vat_sek?: number | null
+          viewed_at?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          change_req_at?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          declined_at?: string | null
+          id?: string
+          items?: Json | null
+          number?: string
+          pdf_url?: string | null
+          public_token?: string
+          request_id?: string | null
+          rot_deduction_sek?: number | null
+          sent_at?: string | null
+          status?: string | null
+          subtotal_mat_sek?: number | null
+          subtotal_work_sek?: number | null
+          title?: string
+          total_sek?: number
+          valid_until?: string | null
+          vat_sek?: number | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_new_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
         ]
@@ -2534,6 +2759,36 @@ export type Database = {
         }
         Relationships: []
       }
+      workers: {
+        Row: {
+          active: boolean | null
+          email: string | null
+          id: string
+          name: string | null
+          phone: string | null
+          region: string | null
+          skills: Json | null
+        }
+        Insert: {
+          active?: boolean | null
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          region?: string | null
+          skills?: Json | null
+        }
+        Update: {
+          active?: boolean | null
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          region?: string | null
+          skills?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -2607,7 +2862,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      generate_public_token: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       generate_quote_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_quote_number_new: {
         Args: Record<PropertyKey, never>
         Returns: string
       }
