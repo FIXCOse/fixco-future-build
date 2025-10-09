@@ -47,20 +47,20 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
     enabled: open
   });
 
-  // Get required skills for the job (based on service_id if available)
+  // Get required skills for the job (based on service_slug if available)
   const { data: requiredSkills = [] } = useQuery({
     queryKey: ['job-required-skills', job?.source_id],
     queryFn: async () => {
       if (!job?.source_id) return [];
       
-      // First try to get from bookings service_id
+      // First try to get from bookings service_slug
       const { data: booking } = await supabase
         .from('bookings')
-        .select('service_id')
+        .select('service_slug')
         .eq('id', job.source_id)
         .single();
 
-      if (booking?.service_id) {
+      if (booking?.service_slug) {
         const { data, error } = await supabase
           .from('service_skills')
           .select(`
@@ -68,7 +68,7 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
             required,
             skills (name, category)
           `)
-          .eq('service_id', booking.service_id);
+          .eq('service_id', booking.service_slug);
         
         if (error) throw error;
         return data || [];

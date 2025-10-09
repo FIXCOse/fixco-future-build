@@ -103,8 +103,8 @@ const AdminReports = () => {
       ...(reportData?.bookings.map(b => [
         new Date(b.created_at).toLocaleDateString('sv-SE'),
         'Bokning',
-        b.service_name,
-        b.base_price
+        b.service_slug,
+        (b.payload as any)?.base_price || 0
       ]) || []),
       ...(reportData?.invoices.map(i => [
         new Date(i.created_at).toLocaleDateString('sv-SE'),
@@ -197,7 +197,7 @@ const AdminReports = () => {
                 {reportData.bookings.slice(0, 5).map((booking) => (
                   <div key={booking.id} className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{booking.service_name}</p>
+                      <p className="font-medium">{(booking.payload as any)?.service_name || booking.service_slug}</p>
                       <p className="text-sm text-muted-foreground">
                         {formatDistanceToNow(new Date(booking.created_at), { 
                           addSuffix: true, 

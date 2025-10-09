@@ -73,11 +73,11 @@ const SalesOverview = () => {
         .gte('issue_date', monthAgo)
         .eq('status', 'paid');
 
-      // Today's bookings
+      // Today's bookings (by created_at since scheduled_date doesn't exist anymore)
       const { data: todayBookings } = await supabase
         .from('bookings')
         .select('id')
-        .eq('scheduled_date', today);
+        .gte('created_at', today);
 
       // Total users
       const { data: totalUsers } = await supabase

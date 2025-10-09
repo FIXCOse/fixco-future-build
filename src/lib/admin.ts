@@ -195,21 +195,24 @@ export async function getRevenueMonthly() {
 export async function getROTRUTSavings() {
   const { data, error } = await supabase
     .from('bookings')
-    .select('created_at, final_price, labor_share, rot_eligible, rut_eligible')
-    .or('rot_eligible.eq.true,rut_eligible.eq.true')
+    .select('created_at, payload')
     .gte('created_at', new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000).toISOString());
   
   if (error) throw error;
   
-  // Calculate savings and group by month
+  // Calculate savings and group by month (from payload data)
   const grouped = data.reduce((acc: Record<string, number>, booking) => {
     const month = new Date(booking.created_at).toISOString().substring(0, 7);
     let savings = 0;
     
-    if (booking.rot_eligible) {
-      savings = (booking.final_price || 0) * (booking.labor_share || 0) * 0.30;
-    } else if (booking.rut_eligible) {
-      savings = (booking.final_price || 0) * (booking.labor_share || 0) * 0.50;
+    const payload = booking.payload as any || {};
+    const finalPrice = Number(payload.final_price) || 0;
+    const laborShare = Number(payload.labor_share) || 0.7;
+    
+    if (payload.rot_eligible) {
+      savings = finalPrice * laborShare * 0.30;
+    } else if (payload.rut_eligible) {
+      savings = finalPrice * laborShare * 0.50;
     }
     
     acc[month] = (acc[month] || 0) + savings;
@@ -222,7 +225,7 @@ export async function getROTRUTSavings() {
 export async function getTopServices() {
   const { data, error } = await supabase
     .from('bookings')
-    .select('service_id, service_name')
+    .select('service_slug, payload')
     .order('created_at', { ascending: false })
     .limit(1000);
   
@@ -230,9 +233,11 @@ export async function getTopServices() {
   
   // Count services
   const grouped = data.reduce((acc: Record<string, { name: string; count: number }>, booking) => {
-    const key = booking.service_id || 'Unknown';
+    const key = booking.service_slug || 'Unknown';
     if (!acc[key]) {
-      acc[key] = { name: booking.service_name || 'Unknown Service', count: 0 };
+    const payload = booking.payload as any || {};
+    const serviceName = String(payload.service_name || booking.service_slug || 'Unknown Service');
+    acc[key] = { name: serviceName, count: 0 };
     }
     acc[key].count++;
     return acc;

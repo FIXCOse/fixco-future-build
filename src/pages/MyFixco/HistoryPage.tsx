@@ -86,23 +86,9 @@ const HistoryPage = () => {
 
       if (error) throw error;
 
-      // Load property details for each booking
-      const bookingsWithProperties = await Promise.all(
-        (data || []).map(async (booking) => {
-          if (booking.property_id) {
-            const { data: property } = await supabase
-              .from('properties')
-              .select('name, address, city')
-              .eq('id', booking.property_id)
-              .single();
-            
-            return { ...booking, property };
-          }
-          return booking;
-        })
-      );
-
-      setBookings(bookingsWithProperties);
+      // Note: New bookings structure doesn't have property_id directly
+      // It's stored in payload if needed
+      setBookings(data as any || []);
     } catch (error) {
       console.error('Error loading booking history:', error);
       toast({

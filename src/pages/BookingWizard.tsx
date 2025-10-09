@@ -71,21 +71,22 @@ export default function BookingWizard() {
       });
       
       const result = await createBooking({
-        service_id: slug,
-        service_name: slug || 'Unknown Service',
-        customer_id: user.id,
-        price_type: priceType,
-        hours_estimated: hours ? parseFloat(hours) : undefined,
-        hourly_rate: hourlyRate ? parseFloat(hourlyRate) : undefined,
-        materials: materials ? parseFloat(materials) : undefined,
-        rot_rut_type: rotRut === "none" ? "" : rotRut,
-        contact_name: name,
-        contact_phone: phone,
-        contact_email: email,
-        address: address,
-        postal_code: postalCode,
-        city: city,
-        notes: notes || undefined,
+        service_slug: slug,
+        mode: 'book',
+        fields: {
+          service_name: slug || 'Unknown Service',
+          hours: hours ? parseFloat(hours) : undefined,
+          hourly_rate: hourlyRate ? parseFloat(hourlyRate) : undefined,
+          materials: materials ? parseFloat(materials) : undefined,
+          rot_rut_type: rotRut === "none" ? "" : rotRut,
+          contact_name: name,
+          contact_phone: phone,
+          contact_email: email,
+          address: address,
+          postal_code: postalCode,
+          city: city,
+          notes: notes || undefined,
+        }
       });
 
       console.log('Booking created successfully:', result);

@@ -26,13 +26,13 @@ export default function AdminBookingDetail() {
           .from('bookings')
           .select(`
             *,
-            customer:profiles!bookings_customer_id_fkey(first_name, last_name, email)
+            customer:profiles(first_name, last_name, email)
           `)
           .eq('id', id)
           .single();
 
         if (error) throw error;
-        setBooking(data as BookingRow);
+        setBooking(data as any);
       } catch (error) {
         console.error('Error fetching booking:', error);
         toast.error('Kunde inte ladda bokning');
