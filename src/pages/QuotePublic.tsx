@@ -36,6 +36,10 @@ type PublicQuote = {
   subtotal_mat_sek: number;
   vat_sek: number;
   rot_deduction_sek: number;
+  rot_percentage?: number;
+  discount_amount_sek?: number;
+  discount_type?: string;
+  discount_value?: number;
   total_sek: number;
   pdf_url?: string;
   valid_until?: string;
@@ -507,13 +511,25 @@ export default function QuotePublic() {
                     <span className="text-muted-foreground">Materialkostnad</span>
                     <span className="font-semibold">{quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
                   </div>
+                  {quote.discount_amount_sek && quote.discount_amount_sek > 0 && (
+                    <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
+                      <span className="font-medium text-green-700 dark:text-green-400">
+                        Rabatt {quote.discount_type === 'percentage' ? `(${quote.discount_value}%)` : ''}
+                      </span>
+                      <span className="font-semibold text-green-700 dark:text-green-400">
+                        −{quote.discount_amount_sek.toLocaleString('sv-SE')} kr
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between py-2 border-b border-border">
                     <span className="text-muted-foreground">Moms (25%)</span>
                     <span className="font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
                   </div>
                   {quote.rot_deduction_sek > 0 && (
                     <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
-                      <span className="font-medium text-green-700 dark:text-green-400">ROT-avdrag (30%)</span>
+                      <span className="font-medium text-green-700 dark:text-green-400">
+                        ROT-avdrag ({quote.rot_percentage || 30}%)
+                      </span>
                       <span className="font-semibold text-green-700 dark:text-green-400">
                         −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
                       </span>
