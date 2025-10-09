@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
   FileText, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Download,
-  XCircle, MessageCircle, Share2, Bell, CreditCard, List, Shield, Copy, Mail, Phone
+  XCircle, MessageCircle, Bell, CreditCard, List, Shield, Copy, Mail, Phone
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -363,27 +363,6 @@ export default function QuotePublic() {
     }
   };
 
-  const handleShare = async () => {
-    const url = window.location.href;
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Offert ${quote?.number}`,
-          text: `Se offert från Fixco`,
-          url: url
-        });
-      } catch (err) {
-        // User cancelled or error
-      }
-    } else {
-      navigator.clipboard.writeText(url);
-      toast({
-        title: 'Länk kopierad!',
-        description: 'Länken har kopierats till urklipp',
-      });
-    }
-  };
 
   const isExpired = quote?.valid_until && new Date(quote.valid_until) < new Date();
   const daysLeft = quote?.valid_until 
@@ -430,17 +409,17 @@ export default function QuotePublic() {
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      <div className="min-h-screen bg-background py-6">
-        <div className="max-w-4xl mx-auto px-4 space-y-4">
+      <div className="min-h-screen bg-background py-4">
+        <div className="max-w-3xl mx-auto px-4 space-y-3">
           {/* Header */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-xl shadow-lg mb-3">
-              <FileText className="h-6 w-6 text-primary-foreground" />
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-primary rounded-xl shadow-lg mb-2">
+              <FileText className="h-5 w-5 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold text-foreground mb-1">
+            <h1 className="text-2xl font-bold text-foreground mb-1">
               Offert {quote.number}
             </h1>
-            <p className="text-sm text-muted-foreground">Från Fixco AB</p>
+            <p className="text-xs text-muted-foreground">Från Fixco AB</p>
             
             {/* Status & Timer */}
             <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
@@ -485,7 +464,7 @@ export default function QuotePublic() {
 
           {/* Main Card */}
           <Card className="border-border bg-surface shadow-xl">
-            <CardContent className="p-6 space-y-5">
+            <CardContent className="p-4 space-y-4">
               {/* Title */}
               <div className="text-center pb-4 border-b border-border">
                 <h2 className="text-xl font-bold text-foreground">{quote.title}</h2>
@@ -553,27 +532,17 @@ export default function QuotePublic() {
                 </div>
               </div>
 
-              {/* PDF Download & Share */}
-              <div className="grid grid-cols-2 gap-3">
-                {quote.pdf_url && (
-                  <Button
-                    variant="outline"
-                    className="border-primary/30 hover:bg-primary/5"
-                    onClick={() => window.open(quote.pdf_url, '_blank')}
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Ladda ner PDF
-                  </Button>
-                )}
+              {/* PDF Download */}
+              {quote.pdf_url && (
                 <Button
                   variant="outline"
-                  className="border-primary/30 hover:bg-primary/5"
-                  onClick={handleShare}
+                  className="border-primary/30 hover:bg-primary/5 w-full"
+                  onClick={() => window.open(quote.pdf_url, '_blank')}
                 >
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Dela
+                  <Download className="h-4 w-4 mr-2" />
+                  Ladda ner PDF
                 </Button>
-              </div>
+              )}
 
               {/* Next Steps Info */}
               {!isDeleted && !accepted && !declined && !isExpired && (
