@@ -27,17 +27,19 @@ const AdminJobRequests = () => {
   const [selectedJob, setSelectedJob] = useState<any>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState<any>(null);
+  const [jobToDelete, setJobToDelete] = useState<any>(null);
 
   // Fetch all jobs and accepted quotes for manual assignment
   const { data: allJobs, isLoading: jobsLoading } = useQuery({
     queryKey: ['all-jobs-for-requests', searchTerm],
     queryFn: async () => {
-      // Fetch existing jobs
+      // Fetch existing jobs (excluding soft-deleted ones)
       let jobsQuery = supabase
         .from('jobs')
         .select(`
           *
         `)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
       // Fetch accepted quotes that aren't jobs yet
@@ -255,6 +257,34 @@ const AdminJobRequests = () => {
       toast({
         title: "Fel",
         description: "Kunde inte radera jobbförfrågan",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteJob = async () => {
+    if (!jobToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from('jobs')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', jobToDelete.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Jobb raderat",
+        description: "Flyttat till papperskorgen",
+      });
+      queryClient.invalidateQueries({ queryKey: ['all-jobs-for-requests'] });
+      setDeleteConfirmOpen(false);
+      setJobToDelete(null);
+    } catch (error: any) {
+      console.error('Error deleting job:', error);
+      toast({
+        title: "Fel",
+        description: "Kunde inte radera jobbet",
         variant: "destructive",
       });
     }
@@ -540,35 +570,58 @@ const AdminJobRequests = () => {
                           )}
                         </div>
                         
-                        {job.status === 'accepted-quote' ? (
-                          <div className="flex gap-2">
-                            <Button
-                              variant="default"
-                              onClick={() => handleCreateJobFromQuote(job)}
-                              className="flex items-center gap-2"
-                            >
-                              <Briefcase className="h-4 w-4" />
-                              Skapa Jobb
-                            </Button>
-                            <Button
-                              variant="outline"
-                              onClick={() => handleJobAssignment(job)}
-                              className="flex items-center gap-2"
-                            >
-                              <Send className="h-4 w-4" />
-                              Skicka Förfrågan
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            onClick={() => handleJobAssignment(job)}
-                            className="flex items-center gap-2"
-                          >
-                            <Send className="h-4 w-4" />
-                            Skicka Förfrågan
-                          </Button>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {job.status === 'accepted-quote' ? (
+                            <>
+                              <Button
+                                variant="default"
+                                onClick={() => handleCreateJobFromQuote(job)}
+                                className="flex items-center gap-2"
+                              >
+                                <Briefcase className="h-4 w-4" />
+                                Skapa Jobb
+                              </Button>
+                              <Button
+                                variant="outline"
+                                onClick={() => handleJobAssignment(job)}
+                                className="flex items-center gap-2"
+                              >
+                                <Send className="h-4 w-4" />
+                                Skicka Förfrågan
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button
+                                variant="outline"
+                                onClick={() => handleJobAssignment(job)}
+                                className="flex items-center gap-2"
+                              >
+                                <Send className="h-4 w-4" />
+                                Skicka Förfrågan
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button size="sm" variant="ghost">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => {
+                                      setJobToDelete(job);
+                                      setDeleteConfirmOpen(true);
+                                    }}
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Radera
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -651,14 +704,25 @@ const AdminJobRequests = () => {
       <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Radera jobbförfrågan?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {requestToDelete ? 'Radera jobbförfrågan?' : 'Radera jobb?'}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Jobbförfrågan kommer att flyttas till papperskorgen och kan återställas senare.
+              {requestToDelete 
+                ? 'Jobbförfrågan kommer att flyttas till papperskorgen och kan återställas senare.'
+                : 'Jobbet kommer att flyttas till papperskorgen och kan återställas senare.'
+              }
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteRequest} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogCancel onClick={() => {
+              setRequestToDelete(null);
+              setJobToDelete(null);
+            }}>Avbryt</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={requestToDelete ? handleDeleteRequest : handleDeleteJob} 
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Radera
             </AlertDialogAction>
           </AlertDialogFooter>
