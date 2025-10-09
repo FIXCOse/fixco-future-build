@@ -103,8 +103,6 @@ export default function QuotePublic() {
         }
         if (!data) throw new Error('Ingen data returnerad');
 
-        console.log('📋 Quote data loaded:', data);
-        console.log('❓ Questions found:', data.questions?.length || 0, data.questions);
         setQuote(data);
       } catch (err: any) {
         console.error('Fel vid hämtning av offert:', err);
@@ -1002,9 +1000,7 @@ export default function QuotePublic() {
 
           {/* Q&A Section - visa frågor och svar */}
           {quote && quote.questions && quote.questions.length > 0 && (
-            <>
-              {console.log('🎨 Rendering Q&A section:', quote.questions.length)}
-              <Card className="border-primary/20 bg-card">
+            <Card className="border-primary/20 bg-card">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5 text-primary" />
@@ -1074,7 +1070,6 @@ export default function QuotePublic() {
                 ))}
               </CardContent>
             </Card>
-            </>
           )}
 
           {/* Footer */}
