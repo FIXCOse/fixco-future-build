@@ -10,6 +10,7 @@ import { CopyProvider } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import QuoteQuestionsNotification from './QuoteQuestionsNotification';
 
 const AdminLayout = () => {
   const { currentLanguage } = useLanguagePersistence();
@@ -48,46 +49,52 @@ const AdminLayout = () => {
                   </Button>
                 </Link>
                 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" size="sm" className="relative">
-                      <Bell className="h-5 w-5" />
-                      {notifications.counts.total > 0 && (
-                        <Badge 
-                          variant="destructive" 
-                          className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                        >
-                          {notifications.counts.total}
-                        </Badge>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80 p-0">
-                    <div className="p-4 border-b">
-                      <h3 className="font-semibold">Notifikationer</h3>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {notifications.notifications.length === 0 ? (
-                        <div className="p-4 text-center text-muted-foreground">
-                          Inga notifikationer
-                        </div>
-                      ) : (
-                        notifications.notifications.map((notif: any, idx: number) => (
-                          <Link 
-                            key={idx} 
-                            to={notif.link}
-                            className="block p-4 hover:bg-muted border-b last:border-b-0"
+                <div className="flex items-center gap-2">
+                  {/* Offertfrågor notifikation */}
+                  <QuoteQuestionsNotification />
+                  
+                  {/* Accepterade offerter/projekt notifikation */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="sm" className="relative">
+                        <Bell className="h-5 w-5" />
+                        {notifications.counts.total > 0 && (
+                          <Badge 
+                            variant="destructive" 
+                            className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
                           >
-                            <p className="text-sm font-medium">{notif.title}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {notif.number} • {new Date(notif.timestamp).toLocaleDateString('sv-SE')}
-                            </p>
-                          </Link>
-                        ))
-                      )}
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                            {notifications.counts.total}
+                          </Badge>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-0">
+                      <div className="p-4 border-b">
+                        <h3 className="font-semibold">Notifikationer</h3>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {notifications.notifications.length === 0 ? (
+                          <div className="p-4 text-center text-muted-foreground">
+                            Inga notifikationer
+                          </div>
+                        ) : (
+                          notifications.notifications.map((notif: any, idx: number) => (
+                            <Link 
+                              key={idx} 
+                              to={notif.link}
+                              className="block p-4 hover:bg-muted border-b last:border-b-0"
+                            >
+                              <p className="text-sm font-medium">{notif.title}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {notif.number} • {new Date(notif.timestamp).toLocaleDateString('sv-SE')}
+                              </p>
+                            </Link>
+                          ))
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
               </div>
               
               {/* Breadcrumbs */}
