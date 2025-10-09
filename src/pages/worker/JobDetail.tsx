@@ -34,7 +34,10 @@ const JobDetail = () => {
   // Form data states
   const [timeFormData, setTimeFormData] = useState({ hours: '', note: '' });
   const [materialFormData, setMaterialFormData] = useState({ name: '', qty: '', unit_price: '', supplier: '' });
-  const [expenseFormData, setExpenseFormData] = useState({ category: '', amount: '', note: '' });
+  const [expenseFormData, setExpenseFormData] = useState({ category: '', amount: '', note: '', km: '' });
+  
+  // Constants
+  const MILEAGE_RATE = 18.50; // kr per 10 km (mil)
 
   useEffect(() => {
     if (!jobId) return;
@@ -166,17 +169,39 @@ const JobDetail = () => {
   };
 
   const handleAddExpenseLog = async () => {
-    if (!job || !expenseFormData.category || !expenseFormData.amount) {
-      toast.error('Ange kategori och belopp');
+    if (!job || !expenseFormData.category) {
+      toast.error('Ange kategori');
       return;
     }
     
+    // For mileage, calculate from km, otherwise use amount
+    const isMileage = expenseFormData.category.toLowerCase() === 'milersättning';
+    let finalAmount = 0;
+    
+    if (isMileage) {
+      if (!expenseFormData.km) {
+        toast.error('Ange antal mil');
+        return;
+      }
+      finalAmount = parseFloat(expenseFormData.km) * MILEAGE_RATE;
+    } else {
+      if (!expenseFormData.amount) {
+        toast.error('Ange belopp');
+        return;
+      }
+      finalAmount = parseFloat(expenseFormData.amount);
+    }
+    
     try {
+      const note = isMileage 
+        ? `${expenseFormData.km} mil @ ${MILEAGE_RATE} kr/mil${expenseFormData.note ? ` - ${expenseFormData.note}` : ''}`
+        : expenseFormData.note;
+        
       await createExpenseEntry({
         job_id: job.id,
         category: expenseFormData.category,
-        amount: parseFloat(expenseFormData.amount),
-        note: expenseFormData.note
+        amount: finalAmount,
+        note: note
       });
       
       // Refresh expense logs
@@ -184,7 +209,7 @@ const JobDetail = () => {
       setExpenseLogs(updatedLogs);
       
       // Reset form
-      setExpenseFormData({ category: '', amount: '', note: '' });
+      setExpenseFormData({ category: '', amount: '', note: '', km: '' });
       setShowExpenseForm(false);
       toast.success('Utlägg registrerat!');
     } catch (error) {
@@ -588,24 +613,54 @@ const JobDetail = () => {
                 <div className="border rounded-lg p-4 mb-4 space-y-4 bg-muted/50">
                   <div className="space-y-2">
                     <Label htmlFor="category">Kategori *</Label>
-                    <Input
+                    <select
                       id="category"
-                      placeholder="Ex: Bensin, Parkering, Övrigt"
+                      className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       value={expenseFormData.category}
                       onChange={(e) => setExpenseFormData({ ...expenseFormData, category: e.target.value })}
-                    />
+                    >
+                      <option value="">Välj kategori...</option>
+                      <option value="Milersättning">Milersättning</option>
+                      <option value="Bensin">Bensin</option>
+                      <option value="Parkering">Parkering</option>
+                      <option value="Material">Material</option>
+                      <option value="Övrigt">Övrigt</option>
+                    </select>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="amount">Belopp (kr) *</Label>
-                    <Input
-                      id="amount"
-                      type="number"
-                      step="0.01"
-                      placeholder="Ex: 250"
-                      value={expenseFormData.amount}
-                      onChange={(e) => setExpenseFormData({ ...expenseFormData, amount: e.target.value })}
-                    />
-                  </div>
+                  
+                  {expenseFormData.category.toLowerCase() === 'milersättning' ? (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="km">Antal mil *</Label>
+                        <Input
+                          id="km"
+                          type="number"
+                          step="1"
+                          placeholder="Ex: 25"
+                          value={expenseFormData.km}
+                          onChange={(e) => setExpenseFormData({ ...expenseFormData, km: e.target.value })}
+                        />
+                        {expenseFormData.km && (
+                          <p className="text-sm text-muted-foreground">
+                            = {(parseFloat(expenseFormData.km) * MILEAGE_RATE).toFixed(2)} kr ({MILEAGE_RATE} kr/mil)
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="space-y-2">
+                      <Label htmlFor="amount">Belopp (kr) *</Label>
+                      <Input
+                        id="amount"
+                        type="number"
+                        step="0.01"
+                        placeholder="Ex: 250"
+                        value={expenseFormData.amount}
+                        onChange={(e) => setExpenseFormData({ ...expenseFormData, amount: e.target.value })}
+                      />
+                    </div>
+                  )}
+                  
                   <div className="space-y-2">
                     <Label htmlFor="expense-note">Notering</Label>
                     <Textarea
