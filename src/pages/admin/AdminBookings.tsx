@@ -157,14 +157,7 @@ export default function AdminBookings() {
   };
 
   const handleCreateQuote = (booking: BookingRow) => {
-    navigate('/admin/quotes/new', { 
-      state: { 
-        fromBooking: {
-          ...booking,
-          type: 'booking'
-        }
-      }
-    });
+    navigate(`/admin/quotes/new?request=${booking.id}`);
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
