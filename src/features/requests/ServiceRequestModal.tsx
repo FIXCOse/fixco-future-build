@@ -112,37 +112,26 @@ export default function ServiceRequestModal() {
         }
       }
 
-      // Create booking via edge function (bypasses schema cache issues)
-      const bookingData: any = {
-        service_id: service.slug,
-        service_name: service.name,
-        mode,
-        status: mode === 'book' ? 'pending' : 'new',
-        contact_name: values.name,
-        contact_email: values.email,
-        contact_phone: values.phone,
+      // Send simple JSON payload to edge function
+      const jsonPayload = {
         name: values.name,
         email: values.email,
         phone: values.phone,
         address: values.address,
-        city: values.city,
-        postal_code: values.postal_code,
-        description: values.beskrivning || '',
-        price_type: service.pricingMode === 'unit' ? 'unit' : 'fixed',
-        base_price: service.unitPriceSek || service.fixedPriceSek || 0,
-        final_price: isUnit && values.antal 
-          ? (Number(values.antal) * (service.unitPriceSek || 0))
-          : (service.fixedPriceSek || 0),
-        rot_eligible: service.rotEligible,
-        payload: {
+        service_slug: service.slug,
+        mode,
+        fields: {
           ...values,
+          service_name: service.name,
           uploaded_files: fileUrls
         },
-        source: 'service_page'
+        fileUrls,
       };
 
+      console.log('[ServiceRequestModal] Sending JSON:', jsonPayload);
+
       const { data, error } = await supabase.functions.invoke('create-booking-with-quote', {
-        body: bookingData
+        body: jsonPayload,
       });
 
       if (error) throw error;

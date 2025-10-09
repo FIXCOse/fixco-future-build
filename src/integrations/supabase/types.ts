@@ -172,176 +172,41 @@ export type Database = {
       }
       bookings: {
         Row: {
-          address: string | null
-          attachments: string[] | null
-          base_price: number
-          city: string | null
-          contact_email: string | null
-          contact_name: string | null
-          contact_phone: string | null
           created_at: string | null
-          created_by: string | null
-          created_by_type: string | null
           customer_id: string | null
-          deleted_at: string | null
-          description: string | null
-          discount_percent: number | null
-          email: string | null
-          final_price: number
-          hourly_rate: number | null
-          hours_estimated: number | null
+          file_urls: string[] | null
           id: string
-          internal_notes: string | null
-          labor_share: number | null
-          materials: number | null
           mode: string | null
-          name: string | null
-          organization_id: string | null
           payload: Json | null
-          phone: string | null
-          photos: string[] | null
-          postal_code: string | null
-          price_type: string | null
-          property_id: string | null
-          rot_eligible: boolean | null
-          rot_rut_type: string | null
-          rut_eligible: boolean | null
-          scheduled_date: string | null
-          scheduled_time_end: string | null
-          scheduled_time_start: string | null
-          service_id: string
-          service_name: string
           service_slug: string | null
-          service_variant: string | null
-          source: string | null
-          status: Database["public"]["Enums"]["booking_status"] | null
-          technician_id: string | null
-          updated_at: string | null
-          vat_percent: number | null
+          status: string | null
         }
         Insert: {
-          address?: string | null
-          attachments?: string[] | null
-          base_price: number
-          city?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
-          contact_phone?: string | null
           created_at?: string | null
-          created_by?: string | null
-          created_by_type?: string | null
           customer_id?: string | null
-          deleted_at?: string | null
-          description?: string | null
-          discount_percent?: number | null
-          email?: string | null
-          final_price: number
-          hourly_rate?: number | null
-          hours_estimated?: number | null
+          file_urls?: string[] | null
           id?: string
-          internal_notes?: string | null
-          labor_share?: number | null
-          materials?: number | null
           mode?: string | null
-          name?: string | null
-          organization_id?: string | null
           payload?: Json | null
-          phone?: string | null
-          photos?: string[] | null
-          postal_code?: string | null
-          price_type?: string | null
-          property_id?: string | null
-          rot_eligible?: boolean | null
-          rot_rut_type?: string | null
-          rut_eligible?: boolean | null
-          scheduled_date?: string | null
-          scheduled_time_end?: string | null
-          scheduled_time_start?: string | null
-          service_id: string
-          service_name: string
           service_slug?: string | null
-          service_variant?: string | null
-          source?: string | null
-          status?: Database["public"]["Enums"]["booking_status"] | null
-          technician_id?: string | null
-          updated_at?: string | null
-          vat_percent?: number | null
+          status?: string | null
         }
         Update: {
-          address?: string | null
-          attachments?: string[] | null
-          base_price?: number
-          city?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
-          contact_phone?: string | null
           created_at?: string | null
-          created_by?: string | null
-          created_by_type?: string | null
           customer_id?: string | null
-          deleted_at?: string | null
-          description?: string | null
-          discount_percent?: number | null
-          email?: string | null
-          final_price?: number
-          hourly_rate?: number | null
-          hours_estimated?: number | null
+          file_urls?: string[] | null
           id?: string
-          internal_notes?: string | null
-          labor_share?: number | null
-          materials?: number | null
           mode?: string | null
-          name?: string | null
-          organization_id?: string | null
           payload?: Json | null
-          phone?: string | null
-          photos?: string[] | null
-          postal_code?: string | null
-          price_type?: string | null
-          property_id?: string | null
-          rot_eligible?: boolean | null
-          rot_rut_type?: string | null
-          rut_eligible?: boolean | null
-          scheduled_date?: string | null
-          scheduled_time_end?: string | null
-          scheduled_time_start?: string | null
-          service_id?: string
-          service_name?: string
           service_slug?: string | null
-          service_variant?: string | null
-          source?: string | null
-          status?: Database["public"]["Enums"]["booking_status"] | null
-          technician_id?: string | null
-          updated_at?: string | null
-          vat_percent?: number | null
+          status?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "bookings_customer_id_fkey"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_technician_id_fkey"
-            columns: ["technician_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
         ]
@@ -732,13 +597,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "invoices_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "invoices_customer_id_fkey"
             columns: ["customer_id"]
             isOneToOne: false
@@ -1078,13 +936,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "loyalty_transactions_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "loyalty_transactions_invoice_id_fkey"
             columns: ["invoice_id"]
@@ -1658,13 +1509,6 @@ export type Database = {
           vat_amount?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "fk_quotes_source_booking"
-            columns: ["source_booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "quotes_customer_id_fkey"
             columns: ["customer_id"]
@@ -2464,13 +2308,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "voucher_usage_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "voucher_usage_quote_id_fkey"
             columns: ["quote_id"]
             isOneToOne: false
@@ -2593,13 +2430,6 @@ export type Database = {
           status?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "work_orders_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "work_orders_staff_id_fkey"
             columns: ["staff_id"]
@@ -2731,7 +2561,7 @@ export type Database = {
         Returns: string
       }
       create_draft_quote_for_booking: {
-        Args: { p_booking_id: string }
+        Args: { booking_id: string }
         Returns: string
       }
       create_expense_entry: {
