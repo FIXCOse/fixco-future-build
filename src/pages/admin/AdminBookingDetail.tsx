@@ -29,7 +29,7 @@ export default function AdminBookingDetail() {
             customer:profiles(first_name, last_name, email)
           `)
           .eq('id', id)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         setBooking(data as any);
