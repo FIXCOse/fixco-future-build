@@ -38,7 +38,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const displayName = customerName || 'Kund';
-    const publicUrl = `${Deno.env.get('SUPABASE_URL')}/q/${quote.public_token}`.replace('/rest/v1', '');
+    const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
+    const publicUrl = `${frontendUrl}/quote/${quote.public_token}`;
 
     const emailHtml = `
       <!DOCTYPE html>
