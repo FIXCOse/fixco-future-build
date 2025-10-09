@@ -2757,6 +2757,10 @@ export type Database = {
         Args: { p_quote_id: string }
         Returns: string
       }
+      create_job_from_quote_new: {
+        Args: { p_quote_id: string }
+        Returns: string
+      }
       create_material_entry: {
         Args: { p: Json }
         Returns: string
