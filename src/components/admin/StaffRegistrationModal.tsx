@@ -368,30 +368,28 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
           </div>
 
           {/* Skills - Simplified Badge Selection */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Kompetenser</h3>
-            <p className="text-sm text-muted-foreground">Klicka på kompetenserna för att välja/avvälja</p>
-            <div className="space-y-4">
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold">Kompetenser</h3>
+              <p className="text-sm text-muted-foreground">Klicka på kompetenserna för att välja/avvälja</p>
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
               {Object.entries(skillsByCategory).map(([category, categorySkills]: [string, any]) => (
-                <div key={category} className="space-y-2">
-                  <h4 className="font-medium capitalize text-sm text-muted-foreground">{category}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {categorySkills.map((skill: any) => {
-                      const isSelected = formData.selectedSkills.includes(skill.id);
-                      return (
-                        <Badge
-                          key={skill.id}
-                          variant={isSelected ? "default" : "outline"}
-                          className="cursor-pointer hover:scale-105 transition-transform px-4 py-2 text-sm"
-                          onClick={() => handleSkillToggle(skill.id)}
-                        >
-                          {isSelected && <Check className="h-3 w-3 mr-1" />}
-                          {skill.name}
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                </div>
+                categorySkills.map((skill: any) => {
+                  const isSelected = formData.selectedSkills.includes(skill.id);
+                  return (
+                    <Badge
+                      key={skill.id}
+                      variant={isSelected ? "default" : "outline"}
+                      className="cursor-pointer hover:scale-105 transition-transform px-3 py-1.5 text-sm"
+                      onClick={() => handleSkillToggle(skill.id)}
+                    >
+                      {isSelected && <Check className="h-3 w-3 mr-1" />}
+                      {skill.name}
+                    </Badge>
+                  );
+                })
               ))}
             </div>
           </div>
