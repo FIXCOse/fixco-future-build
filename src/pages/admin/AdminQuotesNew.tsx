@@ -26,10 +26,10 @@ export default function AdminQuotesNew() {
       // Find or create draft quote for booking
       loadQuoteForBooking(requestId);
     } else {
-      // New quote
-      setModalOpen(true);
+      // Redirect to quotes list if no ID provided
+      navigate('/admin/quotes');
     }
-  }, [quoteId, requestId]);
+  }, [quoteId, requestId, navigate]);
 
   const loadQuote = async (id: string) => {
     setLoading(true);
@@ -129,9 +129,6 @@ export default function AdminQuotesNew() {
     );
   }
 
-  if (!quote && !modalOpen) {
-    setModalOpen(true);
-  }
 
   return (
     <div className="container py-6">
