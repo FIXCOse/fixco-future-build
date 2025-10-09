@@ -154,7 +154,16 @@ export default function AdminQuoteDetail() {
             {quote.description && (
               <div>
                 <p className="font-medium">Beskrivning</p>
-                <p className="text-muted-foreground">{quote.description}</p>
+                <p className="text-muted-foreground whitespace-pre-wrap">
+                  {(() => {
+                    try {
+                      const parsed = JSON.parse(quote.description);
+                      return parsed.beskrivning || parsed.description || quote.description;
+                    } catch {
+                      return quote.description;
+                    }
+                  })()}
+                </p>
               </div>
             )}
 
