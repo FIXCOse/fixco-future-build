@@ -1,29 +1,25 @@
 import { useCallback, useState, useEffect } from "react";
-import { fetchQuotes } from "@/lib/api/quotes";
-import { useQuotesRealtime } from "@/hooks/useQuotesRealtime";
+import { fetchQuotesNew, deleteQuoteNew, type QuoteNewRow } from "@/lib/api/quotes-new";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminBack from "@/components/admin/AdminBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Trash2, Eye, Edit, Download, Send, Plus, Receipt } from "lucide-react";
-import type { QuoteRow } from "@/lib/api/quotes";
+import { Trash2, Edit, Plus, Link as LinkIcon, Copy } from "lucide-react";
+import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
 
 export default function AdminQuotes() {
-  const [quotes, setQuotes] = useState<QuoteRow[]>([]);
+  const [quotes, setQuotes] = useState<QuoteNewRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedQuote, setSelectedQuote] = useState<QuoteNewRow | null>(null);
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -34,45 +30,29 @@ export default function AdminQuotes() {
       if (searchTerm) {
         params.q = searchTerm;
       }
-      const { data } = await fetchQuotes(params);
-      console.log('Loaded quotes:', data?.length || 0, 'quotes');
-      // Filter out deleted quotes
-      const activeQuotes = (data || []).filter((q: any) => !q.deleted_at);
-      setQuotes(activeQuotes as any);
+      const { data } = await fetchQuotesNew(params);
+      setQuotes(data || []);
     } catch (error) {
       console.error("Error loading quotes:", error);
+      toast.error('Kunde inte ladda offerter');
     } finally {
       setLoading(false);
     }
   }, [statusFilter, searchTerm]);
-
-  useQuotesRealtime(loadQuotes);
   
   useEffect(() => {
     loadQuotes();
   }, [loadQuotes]);
 
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'draft':
-        return 'secondary';
-      case 'sent':
-        return 'default';
-      case 'accepted':
-        return 'default';
-      case 'rejected':
-        return 'destructive';
-      default:
-        return 'secondary';
-    }
-  };
-
   const getStatusDisplayName = (status: string) => {
     const statusMap: Record<string, string> = {
       draft: 'Utkast',
       sent: 'Skickad',
+      viewed: 'Visad',
+      change_requested: 'Ändring begärd',
       accepted: 'Accepterad',
-      rejected: 'Avvisad'
+      declined: 'Avvisad',
+      expired: 'Utgången'
     };
     return statusMap[status] || status;
   };
@@ -83,10 +63,16 @@ export default function AdminQuotes() {
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
       case 'sent':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-300';
+      case 'viewed':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-300';
+      case 'change_requested':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-300';
       case 'accepted':
         return 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-300';
-      case 'rejected':
+      case 'declined':
         return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300';
+      case 'expired':
+        return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
     }
@@ -94,14 +80,8 @@ export default function AdminQuotes() {
 
   const handleDeleteQuote = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('quotes')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', id);
-
-      if (error) throw error;
-      
-      toast.success('Offert flyttad till papperskorgen');
+      await deleteQuoteNew(id);
+      toast.success('Offert raderad');
       loadQuotes();
     } catch (error) {
       console.error('Error deleting quote:', error);
@@ -109,175 +89,30 @@ export default function AdminQuotes() {
     }
   };
 
-  const handleStatusChange = async (id: string, newStatus: string) => {
-    try {
-      const { error } = await supabase
-        .from('quotes')
-        .update({ status: newStatus as any })
-        .eq('id', id);
-
-      if (error) throw error;
-      
-      toast.success('Status uppdaterad');
-      loadQuotes();
-    } catch (error) {
-      console.error('Error updating status:', error);
-      toast.error('Kunde inte uppdatera status');
-    }
+  const handleEditQuote = (quote: QuoteNewRow) => {
+    setSelectedQuote(quote);
+    setModalOpen(true);
   };
 
-  const handleViewQuote = (quote: QuoteRow) => {
-    navigate(`/admin/quotes/${quote.id}`);
+  const handleNewQuote = () => {
+    setSelectedQuote(null);
+    setModalOpen(true);
   };
 
-  const handleEditQuote = (quote: QuoteRow) => {
-    navigate(`/admin/quotes/${quote.id}/edit`);
+  const handleCopyPublicLink = (token: string) => {
+    const url = `${window.location.origin}/q/${token}`;
+    navigator.clipboard.writeText(url);
+    toast.success('Publik länk kopierad!');
   };
 
-  const handleViewPDF = async (quote: QuoteRow) => {
-    try {
-      toast.info('Genererar PDF...');
-      
-      const { data, error } = await supabase.functions.invoke('generate-quote-pdf', {
-        body: { quoteId: quote.id }
-      });
-
-      if (error) throw error;
-      
-      if (data?.success && data?.html) {
-        const win = window.open('', '_blank');
-        if (win) {
-          win.document.write(data.html);
-          win.document.close();
-        }
-        toast.success('PDF öppnad i nytt fönster!');
-      } else {
-        throw new Error(data?.error || 'Kunde inte generera PDF');
-      }
-    } catch (error: any) {
-      console.error('Error viewing PDF:', error);
-      toast.error(error.message || 'Kunde inte visa PDF');
-    }
-  };
-
-  const handleDownloadPDF = async (quote: QuoteRow) => {
-    try {
-      toast.info('Laddar ner PDF...');
-      
-      const { data, error } = await supabase.functions.invoke('generate-quote-pdf', {
-        body: { quoteId: quote.id }
-      });
-
-      if (error) throw error;
-      
-      if (data?.success && data?.html) {
-        // Create a blob from the HTML
-        const blob = new Blob([data.html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        
-        // Create a download link and trigger it
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Offert_${quote.quote_number}_${quote.customer?.first_name || 'kund'}.html`;
-        document.body.appendChild(a);
-        a.click();
-        
-        // Clean up
-        setTimeout(() => {
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        }, 100);
-        
-        toast.success('PDF-fil nedladdad!');
-      } else {
-        throw new Error(data?.error || 'Kunde inte generera PDF');
-      }
-    } catch (error: any) {
-      console.error('Error downloading PDF:', error);
-      toast.error(error.message || 'Kunde inte ladda ner PDF');
-    }
-  };
-
-  const handleCreateInvoice = async (quote: QuoteRow) => {
-    try {
-      toast.info('Skapar faktura...');
-      
-      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
-        body: { quoteId: quote.id }
-      });
-
-      if (error) throw error;
-      
-      if (data?.success) {
-        toast.success('Faktura skapad framgångsrikt!');
-        navigate('/admin/invoices');
-      } else {
-        throw new Error(data?.error || 'Kunde inte skapa faktura');
-      }
-    } catch (error: any) {
-      console.error('Error creating invoice:', error);
-      toast.error(error.message || 'Kunde inte skapa faktura');
-    }
-  };
-
-  const handleSendQuote = async (quote: QuoteRow) => {
-    try {
-      const customerEmail = quote.customer_email || quote.customer?.email;
-      const customerName = quote.customer_name || `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim();
-
-      if (!customerEmail) {
-        toast.error('Ingen e-postadress finns för kunden');
-        return;
-      }
-
-      toast.info('Skickar e-post...');
-
-      const logoPath = '/lovable-uploads/d3f251ab-0fc2-4c53-8ba9-e68d78dca329.png';
-      const siteUrl = window.location.origin;
-
-      const { data, error } = await supabase.functions.invoke('send-quote-email', {
-        body: {
-          quoteId: quote.id,
-          customerEmail,
-          customerName: customerName || undefined,
-          logoUrl: `${siteUrl}${logoPath}`,
-          siteUrl
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.success) {
-        toast.success('Offert skickad via e-post!');
-        loadQuotes();
-        return;
-      }
-
-      // Preview fallback if email couldn't be sent (e.g., domain not verified yet)
-      if (data && data.previewHtml) {
-        const win = window.open('', '_blank');
-        if (win) {
-          win.document.write(String(data.previewHtml));
-          win.document.close();
-        }
-        toast.warning('Domän ej verifierad – förhandsvisning öppnad. Verifiera domän för riktiga utskick.');
-      } else {
-        toast.error(data?.error || 'Kunde inte skicka offert');
-      }
-    } catch (error: any) {
-      console.error('Error sending quote:', error);
-      toast.error(error.message || 'Kunde inte skicka offert');
-    }
-  };
 
   const filteredQuotes = quotes.filter(quote => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
     return (
       quote.title?.toLowerCase().includes(searchLower) ||
-      quote.quote_number?.toLowerCase().includes(searchLower) ||
-      quote.customer?.first_name?.toLowerCase().includes(searchLower) ||
-      quote.customer?.last_name?.toLowerCase().includes(searchLower) ||
+      quote.number?.toLowerCase().includes(searchLower) ||
+      quote.customer?.name?.toLowerCase().includes(searchLower) ||
       quote.customer?.email?.toLowerCase().includes(searchLower)
     );
   });
@@ -286,8 +121,11 @@ export default function AdminQuotes() {
     all: quotes.length,
     draft: quotes.filter(q => q.status === 'draft').length,
     sent: quotes.filter(q => q.status === 'sent').length,
+    viewed: quotes.filter(q => q.status === 'viewed').length,
+    change_requested: quotes.filter(q => q.status === 'change_requested').length,
     accepted: quotes.filter(q => q.status === 'accepted').length,
-    rejected: quotes.filter(q => q.status === 'rejected').length,
+    declined: quotes.filter(q => q.status === 'declined').length,
+    expired: quotes.filter(q => q.status === 'expired').length,
   };
 
   return (
@@ -302,36 +140,23 @@ export default function AdminQuotes() {
               Hantera alla offerter från systemet
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate('/admin/quotes/trash')}>
-              <Trash2 className="h-4 w-4 mr-2" />
-              Papperskorg
-            </Button>
-            <Button onClick={() => navigate('/admin/quotes/new')}>
-              <Plus className="h-4 w-4 mr-2" />
-              Ny offert
-            </Button>
-          </div>
+          <Button onClick={handleNewQuote}>
+            <Plus className="h-4 w-4 mr-2" />
+            Ny offert
+          </Button>
         </div>
       </div>
 
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all">
-            Alla ({quoteCounts.all})
-          </TabsTrigger>
-          <TabsTrigger value="draft">
-            Utkast ({quoteCounts.draft})
-          </TabsTrigger>
-          <TabsTrigger value="sent">
-            Skickade ({quoteCounts.sent})
-          </TabsTrigger>
-          <TabsTrigger value="accepted">
-            Accepterade ({quoteCounts.accepted})
-          </TabsTrigger>
-          <TabsTrigger value="rejected">
-            Avvisade ({quoteCounts.rejected})
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-6 lg:grid-cols-8">
+          <TabsTrigger value="all">Alla ({quoteCounts.all})</TabsTrigger>
+          <TabsTrigger value="draft">Utkast ({quoteCounts.draft})</TabsTrigger>
+          <TabsTrigger value="sent">Skickade ({quoteCounts.sent})</TabsTrigger>
+          <TabsTrigger value="viewed">Visade ({quoteCounts.viewed})</TabsTrigger>
+          <TabsTrigger value="change_requested">Ändring ({quoteCounts.change_requested})</TabsTrigger>
+          <TabsTrigger value="accepted">Accepterade ({quoteCounts.accepted})</TabsTrigger>
+          <TabsTrigger value="declined">Avvisade ({quoteCounts.declined})</TabsTrigger>
+          <TabsTrigger value="expired">Utgångna ({quoteCounts.expired})</TabsTrigger>
         </TabsList>
 
         <div className="mt-4 mb-6">
@@ -374,22 +199,12 @@ export default function AdminQuotes() {
                           {quote.title}
                         </CardTitle>
                         <CardDescription>
-                          Kund: {quote.customer_name || `${quote.customer?.first_name || ''} ${quote.customer?.last_name || ''}`.trim() || 'Okänd'} 
-                          {(quote.customer_email || quote.customer?.email) && ` (${quote.customer_email || quote.customer?.email})`}
+                          Kund: {quote.customer?.name || 'Okänd'} 
+                          {quote.customer?.email && ` (${quote.customer.email})`}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Select value={quote.status} onValueChange={(value) => handleStatusChange(quote.id, value)}>
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="draft">Utkast</SelectItem>
-                            <SelectItem value="sent">Skickad</SelectItem>
-                            <SelectItem value="accepted">Accepterad</SelectItem>
-                            <SelectItem value="rejected">Avvisad</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(quote.status)}`}>
+                        {getStatusDisplayName(quote.status)}
                       </div>
                     </div>
                   </CardHeader>
@@ -397,20 +212,18 @@ export default function AdminQuotes() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="font-medium">Offertnummer</p>
-                        <p className="text-muted-foreground">
-                          {quote.quote_number}
-                        </p>
+                        <p className="text-muted-foreground">{quote.number}</p>
                       </div>
                       <div>
                         <p className="font-medium">Totalt belopp</p>
                         <p className="text-muted-foreground">
-                          {quote.total_amount ? `${quote.total_amount.toLocaleString()} SEK` : 'Ej angivet'}
+                          {quote.total_sek.toLocaleString()} kr
                         </p>
                       </div>
                       <div>
                         <p className="font-medium">Giltig till</p>
                         <p className="text-muted-foreground">
-                          {quote.valid_until ? format(new Date(quote.valid_until), 'PPP', { locale: sv }) : 'Ej angivet'}
+                          {quote.valid_until ? format(new Date(quote.valid_until), 'PPP', { locale: sv }) : '—'}
                         </p>
                       </div>
                       <div>
@@ -420,52 +233,16 @@ export default function AdminQuotes() {
                         </p>
                       </div>
                     </div>
-                    
-                    {quote.description && (
-                      <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="font-medium text-sm">Beskrivning:</p>
-                        <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
-                          {(() => {
-                            try {
-                              const parsed = JSON.parse(quote.description);
-                              return parsed.beskrivning || parsed.description || quote.description;
-                            } catch {
-                              return quote.description;
-                            }
-                          })()}
-                        </p>
-                      </div>
-                    )}
 
                     <div className="flex flex-wrap gap-2 mt-4">
-                      <Button size="sm" onClick={() => handleViewQuote(quote)}>
-                        <Eye className="h-4 w-4 mr-1" />
-                        Visa detaljer
-                      </Button>
                       <Button size="sm" variant="outline" onClick={() => handleEditQuote(quote)}>
                         <Edit className="h-4 w-4 mr-1" />
                         Redigera
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleViewPDF(quote)}>
-                        <Eye className="h-4 w-4 mr-1" />
-                        Visa PDF
+                      <Button size="sm" variant="outline" onClick={() => handleCopyPublicLink(quote.public_token)}>
+                        <Copy className="h-4 w-4 mr-1" />
+                        Kopiera publik länk
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleDownloadPDF(quote)}>
-                        <Download className="h-4 w-4 mr-1" />
-                        Ladda ner PDF
-                      </Button>
-                      {quote.status === 'draft' && (
-                        <Button size="sm" onClick={() => handleSendQuote(quote)}>
-                          <Send className="h-4 w-4 mr-1" />
-                          Skicka offert
-                        </Button>
-                      )}
-                      {quote.status === 'accepted' && (
-                        <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => handleCreateInvoice(quote)}>
-                          <Receipt className="h-4 w-4 mr-1" />
-                          Skapa faktura
-                        </Button>
-                      )}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="destructive">
@@ -496,6 +273,13 @@ export default function AdminQuotes() {
           )}
         </TabsContent>
       </Tabs>
+
+      <QuoteFormModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        quote={selectedQuote}
+        onSuccess={loadQuotes}
+      />
     </div>
   );
 }
