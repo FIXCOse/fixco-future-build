@@ -72,6 +72,12 @@ export async function fetchJobs(params?: {
   limit?: number;
   offset?: number;
 }) {
+  console.log('fetchJobs called with params:', params);
+  
+  // Verify auth first
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  console.log('Current auth user:', user?.id, user?.email, 'authError:', authError);
+
   let query = supabase
     .from('jobs')
     .select('*')
@@ -82,13 +88,13 @@ export async function fetchJobs(params?: {
   }
 
   if (params?.assigned_to_me) {
-    const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       query = query.eq('assigned_worker_id', user.id);
     }
   }
 
   if (params?.pool_only) {
+    console.log('Fetching pool jobs: status=pool, pool_enabled=true');
     query = query.eq('status', 'pool').eq('pool_enabled', true);
   }
 
@@ -101,7 +107,17 @@ export async function fetchJobs(params?: {
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  console.log('fetchJobs result:', { 
+    dataCount: data?.length, 
+    error: error?.message,
+    errorDetails: error,
+    firstJob: data?.[0]
+  });
+  
+  if (error) {
+    console.error('fetchJobs error:', error);
+    throw error;
+  }
 
   return data as Job[];
 }
