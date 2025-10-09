@@ -6,7 +6,7 @@ const Dashboard = () => {
   
   useEffect(() => {
     navigate('/mitt-fixco', { replace: true });
-  }, [navigate]);
+  }, []); // Empty array - only run once on mount
 
   return null;
 };
