@@ -134,8 +134,10 @@ export default function ServiceRequestModal() {
           ? (Number(values.antal) * (service.unitPriceSek || 0))
           : (service.fixedPriceSek || 0),
         rot_eligible: service.rotEligible,
-        payload: values,
-        file_urls: fileUrls,
+        payload: {
+          ...values,
+          uploaded_files: fileUrls // Store files in payload instead
+        },
         source: 'service_page'
       };
 
