@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText, Trash2 } from 'lucide-react';
+import { Search, Plus, Eye, Edit, UserPlus, DollarSign, FileText, Trash2, X } from 'lucide-react';
 import { useJobsData } from '@/hooks/useJobsData';
 import { useUsersData } from '@/hooks/useUsersData';
 import { createJobFromBooking, createJobFromQuote, assignJobToWorker, updateJobStatus, prepareInvoiceFromJob } from '@/lib/api/jobs';
@@ -92,6 +92,21 @@ const AdminJobs = () => {
       toast({ title: "Faktura förberedd", description: "Fakturadata har hämtats från jobbet." });
     } catch (error) {
       toast({ title: "Fel", description: "Kunde inte förbereda faktura.", variant: "destructive" });
+    }
+  };
+
+  const handleSoftDeleteJob = async (jobId: string) => {
+    try {
+      const { error } = await supabase
+        .from('jobs')
+        .update({ deleted_at: new Date().toISOString() })
+        .eq('id', jobId);
+      
+      if (error) throw error;
+      
+      toast({ title: "Jobb borttaget", description: "Jobbet har flyttats till papperskorgen." });
+    } catch (error) {
+      toast({ title: "Fel", description: "Kunde inte ta bort jobbet.", variant: "destructive" });
     }
   };
 
@@ -209,6 +224,15 @@ const AdminJobs = () => {
                     <SelectItem value="cancelled">Avbruten</SelectItem>
                   </SelectContent>
                 </Select>
+
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => handleSoftDeleteJob(job.id)}
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Ta bort
+                </Button>
               </div>
             </CardContent>
           </Card>
