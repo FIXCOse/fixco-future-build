@@ -1,6 +1,8 @@
 import { useCallback, useState, useEffect } from "react";
 import { fetchBookings } from "@/lib/api/bookings";
+import { fetchQuoteRequests } from "@/lib/api/quote-requests";
 import { useBookingsRealtime } from "@/hooks/useBookingsRealtime";
+import { useQuoteRequestsRealtime } from "@/hooks/useQuoteRequestsRealtime";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -15,17 +17,21 @@ import { sv } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Trash2, Eye, FileText } from "lucide-react";
+import { Trash2, Eye, FileText, Filter } from "lucide-react";
 import type { BookingRow } from "@/lib/api/bookings";
+import type { QuoteRequestRow } from "@/lib/api/quote-requests";
+
+type CombinedItem = (BookingRow | QuoteRequestRow) & { item_type: 'booking' | 'quote_request' };
 
 export default function AdminBookings() {
-  const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [items, setItems] = useState<CombinedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
   const navigate = useNavigate();
 
-  const loadBookings = useCallback(async () => {
+  const loadData = useCallback(async () => {
     try {
       const params: any = {};
       if (statusFilter !== "all") {
@@ -34,23 +40,41 @@ export default function AdminBookings() {
       if (searchTerm) {
         params.q = searchTerm;
       }
-      const { data } = await fetchBookings(params);
-      console.log('Loaded bookings:', data?.length || 0, 'bookings');
-      // Filter out deleted bookings
-      const activeBookings = (data || []).filter((b: any) => !b.deleted_at);
-      setBookings(activeBookings as any);
+
+      const combined: CombinedItem[] = [];
+
+      // Load bookings if type filter allows
+      if (typeFilter === "all" || typeFilter === "booking") {
+        const { data: bookingsData } = await fetchBookings(params);
+        const activeBookings = (bookingsData || []).filter((b: any) => !b.deleted_at);
+        combined.push(...activeBookings.map((b: any) => ({ ...b, item_type: 'booking' as const })));
+      }
+
+      // Load quote requests if type filter allows
+      if (typeFilter === "all" || typeFilter === "quote_request") {
+        const { data: quoteRequestsData } = await fetchQuoteRequests(params);
+        const activeQuoteRequests = (quoteRequestsData || []).filter((q: any) => !q.deleted_at);
+        combined.push(...activeQuoteRequests.map((q: any) => ({ ...q, item_type: 'quote_request' as const })));
+      }
+
+      // Sort by created_at descending
+      combined.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      console.log('Loaded items:', combined.length, 'items (bookings + quote requests)');
+      setItems(combined);
     } catch (error) {
-      console.error("Error loading bookings:", error);
+      console.error("Error loading data:", error);
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, searchTerm]);
+  }, [statusFilter, searchTerm, typeFilter]);
 
-  useBookingsRealtime(loadBookings);
+  useBookingsRealtime(loadData);
+  useQuoteRequestsRealtime(loadData);
   
   useEffect(() => {
-    loadBookings();
-  }, [loadBookings]);
+    loadData();
+  }, [loadData]);
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -80,71 +104,81 @@ export default function AdminBookings() {
     return statusMap[status] || status;
   };
 
-  const handleDeleteBooking = async (id: string) => {
+  const handleDelete = async (id: string, type: 'booking' | 'quote_request') => {
     try {
+      const table = type === 'booking' ? 'bookings' : 'quote_requests';
       const { error } = await supabase
-        .from('bookings')
+        .from(table)
         .update({ deleted_at: new Date().toISOString() })
         .eq('id', id);
 
       if (error) throw error;
       
-      toast.success('Bokning flyttad till papperskorgen');
-      loadBookings();
+      toast.success(`${type === 'booking' ? 'Bokning' : 'Offertförfrågan'} flyttad till papperskorgen`);
+      loadData();
     } catch (error) {
-      console.error('Error deleting booking:', error);
-      toast.error('Kunde inte ta bort bokning');
+      console.error('Error deleting item:', error);
+      toast.error('Kunde inte ta bort');
     }
   };
 
-  const handleCreateQuote = (booking: BookingRow) => {
+  const handleCreateQuote = (item: CombinedItem) => {
     navigate('/admin/quotes/new', { 
       state: { 
         fromBooking: {
-          ...booking,
-          type: 'booking'
+          ...item,
+          type: item.item_type
         }
       }
     });
   };
 
-  const handleStatusChange = async (id: string, newStatus: string) => {
+  const handleStatusChange = async (id: string, newStatus: string, type: 'booking' | 'quote_request') => {
     try {
+      const table = type === 'booking' ? 'bookings' : 'quote_requests';
       const { error } = await supabase
-        .from('bookings')
+        .from(table)
         .update({ status: newStatus as any })
         .eq('id', id);
 
       if (error) throw error;
       
       toast.success('Status uppdaterad');
-      loadBookings();
+      loadData();
     } catch (error) {
       console.error('Error updating status:', error);
       toast.error('Kunde inte uppdatera status');
     }
   };
 
-  const filteredBookings = bookings.filter(booking => {
+  const filteredItems = items.filter(item => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
     return (
-      booking.service_id?.toLowerCase().includes(searchLower) ||
-      booking.service_name?.toLowerCase().includes(searchLower) ||
-      booking.description?.toLowerCase().includes(searchLower) ||
-      booking.name?.toLowerCase().includes(searchLower) ||
-      booking.email?.toLowerCase().includes(searchLower) ||
-      booking.customer?.first_name?.toLowerCase().includes(searchLower) ||
-      booking.customer?.last_name?.toLowerCase().includes(searchLower)
+      item.service_id?.toLowerCase().includes(searchLower) ||
+      item.service_name?.toLowerCase().includes(searchLower) ||
+      item.description?.toLowerCase().includes(searchLower) ||
+      item.name?.toLowerCase().includes(searchLower) ||
+      item.email?.toLowerCase().includes(searchLower) ||
+      ('contact_name' in item && item.contact_name?.toLowerCase().includes(searchLower)) ||
+      ('contact_email' in item && item.contact_email?.toLowerCase().includes(searchLower)) ||
+      item.customer?.first_name?.toLowerCase().includes(searchLower) ||
+      item.customer?.last_name?.toLowerCase().includes(searchLower)
     );
   });
 
-  const bookingCounts = {
-    all: bookings.length,
-    pending: bookings.filter(b => b.status === 'pending').length,
-    confirmed: bookings.filter(b => b.status === 'confirmed').length,
-    in_progress: bookings.filter(b => b.status === 'in_progress').length,
-    completed: bookings.filter(b => b.status === 'completed').length,
+  const itemCounts = {
+    all: items.length,
+    pending: items.filter(b => b.status === 'pending' || b.status === 'new').length,
+    confirmed: items.filter(b => b.status === 'confirmed').length,
+    in_progress: items.filter(b => b.status === 'in_progress').length,
+    completed: items.filter(b => b.status === 'completed').length,
+  };
+
+  const typeCounts = {
+    all: items.length,
+    booking: items.filter(i => i.item_type === 'booking').length,
+    quote_request: items.filter(i => i.item_type === 'quote_request').length,
   };
 
   return (
@@ -154,9 +188,9 @@ export default function AdminBookings() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Bokningar</h1>
+            <h1 className="text-3xl font-bold">Bokningar & Offertförfrågningar</h1>
             <p className="text-muted-foreground mt-2">
-              Hantera alla bokningar från kunder
+              Hantera alla förfrågningar från kunder
             </p>
           </div>
           <Button variant="outline" onClick={() => navigate('/admin/bookings/trash')}>
@@ -166,28 +200,43 @@ export default function AdminBookings() {
         </div>
       </div>
 
+      {/* Type Filter */}
+      <div className="mb-4">
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="w-64">
+            <Filter className="h-4 w-4 mr-2" />
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla typer ({typeCounts.all})</SelectItem>
+            <SelectItem value="booking">Bokningar ({typeCounts.booking})</SelectItem>
+            <SelectItem value="quote_request">Offertförfrågningar ({typeCounts.quote_request})</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all">
-            Alla ({bookingCounts.all})
+            Alla ({itemCounts.all})
           </TabsTrigger>
           <TabsTrigger value="pending">
-            Väntande ({bookingCounts.pending})
+            Nya ({itemCounts.pending})
           </TabsTrigger>
           <TabsTrigger value="confirmed">
-            Bekräftade ({bookingCounts.confirmed})
+            Bekräftade ({itemCounts.confirmed})
           </TabsTrigger>
           <TabsTrigger value="in_progress">
-            Pågående ({bookingCounts.in_progress})
+            Pågående ({itemCounts.in_progress})
           </TabsTrigger>
           <TabsTrigger value="completed">
-            Slutförda ({bookingCounts.completed})
+            Slutförda ({itemCounts.completed})
           </TabsTrigger>
         </TabsList>
 
         <div className="mt-4 mb-6">
           <Input
-            placeholder="Sök bokningar..."
+            placeholder="Sök förfrågningar..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="max-w-sm"
@@ -206,35 +255,41 @@ export default function AdminBookings() {
                 </Card>
               ))}
             </div>
-          ) : filteredBookings.length === 0 ? (
+          ) : filteredItems.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
                 <p className="text-muted-foreground">
-                  {searchTerm ? "Inga bokningar hittades" : "Inga bokningar ännu"}
+                  {searchTerm ? "Inga förfrågningar hittades" : "Inga förfrågningar ännu"}
                 </p>
               </CardContent>
             </Card>
           ) : (
             <div className="grid gap-4">
-              {filteredBookings.map((booking) => (
-                <Card key={booking.id}>
+              {filteredItems.map((item) => (
+                <Card key={item.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-lg">
-                          {booking.service_name || booking.service_id}
-                        </CardTitle>
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-lg">
+                            {item.service_name || item.service_id}
+                          </CardTitle>
+                          <Badge variant={item.item_type === 'booking' ? 'default' : 'secondary'}>
+                            {item.item_type === 'booking' ? 'Bokning' : 'Offertförfrågan'}
+                          </Badge>
+                        </div>
                         <CardDescription>
-                          Kund: {booking.name} ({booking.email})
+                          Kund: {item.name || ('contact_name' in item && item.contact_name)} ({item.email || ('contact_email' in item && item.contact_email)})
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Select value={booking.status} onValueChange={(value) => handleStatusChange(booking.id, value)}>
+                        <Select value={item.status} onValueChange={(value) => handleStatusChange(item.id, value, item.item_type)}>
                           <SelectTrigger className="w-32">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="pending">Väntande</SelectItem>
+                            <SelectItem value="new">Ny</SelectItem>
                             <SelectItem value="confirmed">Bekräftad</SelectItem>
                             <SelectItem value="in_progress">Pågående</SelectItem>
                             <SelectItem value="completed">Slutförd</SelectItem>
@@ -246,49 +301,58 @@ export default function AdminBookings() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm mb-4">
-                      {booking.address && (
+                      {item.address && (
                         <p className="text-muted-foreground">
-                          📍 {booking.address}, {booking.postal_code} {booking.city}
+                          📍 {item.address}, {item.postal_code} {item.city}
                         </p>
                       )}
-                      {booking.hourly_rate && (
+                      {'hourly_rate' in item && item.hourly_rate && (
                         <p className="text-muted-foreground">
-                          💵 {booking.price_type === 'hourly' ? `${booking.hourly_rate} kr/h` : `${booking.hourly_rate} kr`}
+                          💵 {('price_type' in item && item.price_type === 'hourly') ? `${item.hourly_rate} kr/h` : `${item.hourly_rate} kr`}
                         </p>
                       )}
                       <p className="text-muted-foreground">
-                        📅 {format(new Date(booking.created_at), 'PPP', { locale: sv })}
+                        📅 {format(new Date(item.created_at), 'PPP', { locale: sv })}
                       </p>
                     </div>
                     
-                    {booking.description && (
+                    {item.description && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
                         <p className="text-sm whitespace-pre-wrap">
                           {(() => {
                             try {
-                              const parsed = JSON.parse(booking.description);
-                              return parsed.beskrivning || parsed.description || booking.description;
+                              const parsed = JSON.parse(item.description);
+                              return parsed.beskrivning || parsed.description || item.description;
                             } catch {
-                              return booking.description;
+                              return item.description;
                             }
                           })()}
                         </p>
                       </div>
                     )}
 
-                    {booking.internal_notes && (
+                    {'message' in item && item.message && (
+                      <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg">
+                        <p className="font-medium text-sm">Meddelande:</p>
+                        <p className="text-sm text-muted-foreground mt-1">{item.message}</p>
+                      </div>
+                    )}
+
+                    {'internal_notes' in item && item.internal_notes && (
                       <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
                         <p className="font-medium text-sm">Interna anteckningar:</p>
-                        <p className="text-sm text-muted-foreground mt-1">{booking.internal_notes}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{item.internal_notes}</p>
                       </div>
                     )}
 
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" onClick={() => navigate(`/admin/bookings/${booking.id}`)}>
-                        <Eye className="h-4 w-4 mr-1" />
-                        Visa detaljer
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleCreateQuote(booking)}>
+                      {item.item_type === 'booking' && (
+                        <Button size="sm" onClick={() => navigate(`/admin/bookings/${item.id}`)}>
+                          <Eye className="h-4 w-4 mr-1" />
+                          Visa detaljer
+                        </Button>
+                      )}
+                      <Button size="sm" variant="outline" onClick={() => handleCreateQuote(item)}>
                         <FileText className="h-4 w-4 mr-1" />
                         Skapa offert
                       </Button>
@@ -303,12 +367,12 @@ export default function AdminBookings() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Är du säker?</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Detta kommer att ta bort bokningen permanent. Denna åtgärd kan inte ångras.
+                              Detta kommer att ta bort {item.item_type === 'booking' ? 'bokningen' : 'offertförfrågan'}. Denna åtgärd kan inte ångras.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteBooking(booking.id)}>
+                            <AlertDialogAction onClick={() => handleDelete(item.id, item.item_type)}>
                               Ta bort
                             </AlertDialogAction>
                           </AlertDialogFooter>
