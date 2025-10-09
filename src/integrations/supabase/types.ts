@@ -2780,6 +2780,10 @@ export type Database = {
         Args: { p: Json }
         Returns: string
       }
+      debug_auth_context: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       empty_bookings_trash: {
         Args: Record<PropertyKey, never>
         Returns: number
