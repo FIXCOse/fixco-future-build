@@ -253,7 +253,16 @@ export default function AdminBookings() {
                     
                     {booking.description && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="text-sm">{booking.description}</p>
+                        <p className="text-sm whitespace-pre-wrap">
+                          {(() => {
+                            try {
+                              const parsed = JSON.parse(booking.description);
+                              return parsed.beskrivning || parsed.description || booking.description;
+                            } catch {
+                              return booking.description;
+                            }
+                          })()}
+                        </p>
                       </div>
                     )}
 

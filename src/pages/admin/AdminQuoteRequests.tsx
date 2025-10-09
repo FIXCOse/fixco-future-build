@@ -259,7 +259,17 @@ export default function AdminQuoteRequests() {
                     
                     {(request.description || request.message) && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <p className="text-sm">{request.description || request.message}</p>
+                        <p className="text-sm whitespace-pre-wrap">
+                          {(() => {
+                            try {
+                              const text = request.description || request.message;
+                              const parsed = JSON.parse(text);
+                              return parsed.beskrivning || parsed.description || text;
+                            } catch {
+                              return request.description || request.message;
+                            }
+                          })()}
+                        </p>
                       </div>
                     )}
 

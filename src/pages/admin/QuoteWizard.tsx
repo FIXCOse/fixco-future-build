@@ -571,6 +571,20 @@ const QuoteWizard = () => {
                   <p className="font-medium">{(selectedItem as any).phone || (selectedItem as any).contact_phone || 'Ej angiven'}</p>
                 </div>
                 <div>
+                  <Label className="text-xs text-muted-foreground">Personnummer</Label>
+                  <p className="font-medium">
+                    {(() => {
+                      try {
+                        if (selectedItem.description) {
+                          const parsed = JSON.parse(selectedItem.description);
+                          return parsed.personnummer || 'Ej angivet';
+                        }
+                      } catch {}
+                      return 'Ej angivet';
+                    })()}
+                  </p>
+                </div>
+                <div>
                   <Label className="text-xs text-muted-foreground">E-post</Label>
                   <p className="font-medium">{selectedItem.customer?.email || selectedItem.email || 'Ej angiven'}</p>
                 </div>
