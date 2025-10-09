@@ -11,7 +11,8 @@ import {
   Play,
   Pause,
   Users,
-  FileText
+  FileText,
+  Gift
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -187,49 +188,85 @@ const WorkerDashboard = () => {
                 key={job.id}
                 className="border rounded-lg p-4 hover:bg-accent/50 transition-colors active:scale-[0.98]"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start space-x-3">
-                      <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${getStatusColor(job.status)}`} />
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-medium text-sm md:text-base truncate">{job.title}</h3>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm text-muted-foreground mt-1">
-                          <span className="flex items-center">
-                            <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
-                            <span className="truncate">{job.address}, {job.city}</span>
-                          </span>
-                          <Badge variant="outline" className="w-fit">
-                            {getStatusLabel(job.status)}
-                          </Badge>
-                          <span className="text-primary font-medium">
-                            {job.pricing_mode === 'hourly' 
-                              ? `${job.hourly_rate} kr/h` 
-                              : `${job.fixed_price} kr (fast)`
-                            }
-                          </span>
+                <div className="flex flex-col gap-4">
+                  {/* EXTRA BONUS - Highest priority */}
+                  {job.bonus_amount && job.bonus_amount > 0 && (
+                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 border-3 border-yellow-500 rounded-lg p-3">
+                      <div className="flex items-center gap-2">
+                        <Gift className="w-6 h-6 text-yellow-600 animate-pulse flex-shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-yellow-800 uppercase">
+                            EXTRA BONUS
+                          </p>
+                          <p className="text-xl font-black text-yellow-900">
+                            +{job.bonus_amount} kr
+                          </p>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
-                  <div className="flex items-center space-x-2 flex-shrink-0">
-                    {job.status === 'in_progress' ? (
-                      <Button size="sm" variant="outline" className="flex-1 sm:flex-none">
-                        <Pause className="w-4 h-4 mr-2" />
-                        Pausa
-                      </Button>
-                    ) : job.status === 'assigned' ? (
-                      <Button size="sm" className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700">
-                        <Play className="w-4 h-4 mr-2" />
-                        Starta
-                      </Button>
-                    ) : null}
-                    
-                    <Link to={`/worker/jobs/${job.id}`} className="flex-1 sm:flex-none">
-                      <Button size="sm" variant="ghost" className="w-full">
-                        Öppna
-                      </Button>
-                    </Link>
+                  {/* Worker Compensation */}
+                  {job.admin_set_price && job.admin_set_price > 0 && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-green-800 uppercase">Worker ersättning</p>
+                          <p className="text-lg font-bold text-green-900">{job.admin_set_price} kr</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${getStatusColor(job.status)}`} />
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-medium text-sm md:text-base truncate">{job.title}</h3>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm text-muted-foreground mt-1">
+                            <span className="flex items-center">
+                              <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
+                              <span className="truncate">{job.address}, {job.city}</span>
+                            </span>
+                            <Badge variant="outline" className="w-fit">
+                              {getStatusLabel(job.status)}
+                            </Badge>
+                            {job.pricing_mode === 'hourly' && job.hourly_rate && job.hourly_rate > 0 && (
+                              <span className="text-primary font-medium">
+                                {job.hourly_rate} kr/h
+                              </span>
+                            )}
+                            {job.pricing_mode === 'fixed' && job.fixed_price && job.fixed_price > 0 && (
+                              <span className="text-primary font-medium">
+                                {job.fixed_price} kr (fast)
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2 flex-shrink-0">
+                      {job.status === 'in_progress' ? (
+                        <Button size="sm" variant="outline" className="flex-1 sm:flex-none">
+                          <Pause className="w-4 h-4 mr-2" />
+                          Pausa
+                        </Button>
+                      ) : job.status === 'assigned' ? (
+                        <Button size="sm" className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700">
+                          <Play className="w-4 h-4 mr-2" />
+                          Starta
+                        </Button>
+                      ) : null}
+                      
+                      <Link to={`/worker/jobs/${job.id}`} className="flex-1 sm:flex-none">
+                        <Button size="sm" variant="ghost" className="w-full">
+                          Öppna
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
