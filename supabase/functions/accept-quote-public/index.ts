@@ -68,8 +68,24 @@ Deno.serve(async (req) => {
         .eq('quote_id', quote.id)
         .single();
 
+      // Kontrollera om jobb redan finns, annars skapa ett
+      const { data: existingJob } = await supabase
+        .from('jobs')
+        .select('id')
+        .eq('source_type', 'quote')
+        .eq('source_id', quote.id)
+        .single();
+
+      let jobId = existingJob?.id;
+
+      if (!existingJob) {
+        const { data: newJobData } = await supabase
+          .rpc('create_job_from_quote', { p_quote_id: quote.id });
+        jobId = newJobData;
+      }
+
       return new Response(
-        JSON.stringify({ ok: true, already: true, projectId: existingProject?.id }),
+        JSON.stringify({ ok: true, already: true, projectId: existingProject?.id, jobId }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -116,8 +132,19 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte skapa projekt');
     }
 
+    // Skapa jobb automatiskt från offerten så det hamnar i jobbpoolen
+    const { data: jobData, error: jobError } = await supabase
+      .rpc('create_job_from_quote', { p_quote_id: quote.id });
+
+    if (jobError) {
+      console.error('Failed to create job from quote:', jobError);
+      // Vi loggar felet men failar inte hela acceptansen
+    } else {
+      console.log('Job created successfully:', jobData);
+    }
+
     return new Response(
-      JSON.stringify({ ok: true, projectId: project.id }),
+      JSON.stringify({ ok: true, projectId: project.id, jobId: jobData }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
