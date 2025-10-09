@@ -33,7 +33,7 @@ const AdminJobRequests = () => {
   const { data: allJobs, isLoading: jobsLoading } = useQuery({
     queryKey: ['all-jobs-for-requests', searchTerm],
     queryFn: async () => {
-      // Fetch existing jobs (excluding soft-deleted ones)
+      // Fetch existing jobs (excluding soft-deleted ones for display)
       let jobsQuery = supabase
         .from('jobs')
         .select(`
@@ -41,6 +41,12 @@ const AdminJobRequests = () => {
         `)
         .is('deleted_at', null)
         .order('created_at', { ascending: false });
+
+      // Fetch ALL jobs (including deleted) to check which quotes have been converted
+      const allJobsForQuoteCheck = await supabase
+        .from('jobs')
+        .select('id, source_type, source_id')
+        .eq('source_type', 'quote');
 
       // Fetch accepted quotes that aren't jobs yet
       let quotesQuery = supabase
@@ -80,14 +86,14 @@ const AdminJobRequests = () => {
               .from('bookings')
               .select('service_name, contact_name, contact_email, contact_phone')
               .eq('id', job.source_id)
-              .single();
+              .maybeSingle();
             if (booking) bookings = [booking];
           } else if (job.source_type === 'quote') {
             const { data: quote } = await supabase
               .from('quotes')
               .select('title, customer_name, customer_email, customer_phone')
               .eq('id', job.source_id)
-              .single();
+              .maybeSingle();
             if (quote) quotes = [quote];
           }
           
@@ -99,10 +105,10 @@ const AdminJobRequests = () => {
         })
       );
 
-      // Convert quotes to job-like format and filter out quotes that already have jobs
-      const existingJobQuoteIds = jobsWithDetails
-        .filter(job => job.source_type === 'quote')
-        .map(job => job.source_id);
+      // Get quote IDs from ALL jobs (including deleted ones) to prevent quotes from reappearing
+      const existingJobQuoteIds = allJobsForQuoteCheck.data
+        ?.filter(job => job.source_type === 'quote')
+        .map(job => job.source_id) || [];
 
       const quotesAsJobs = quotes
         .filter(quote => !existingJobQuoteIds.includes(quote.id))
