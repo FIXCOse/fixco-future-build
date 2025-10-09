@@ -2724,6 +2724,10 @@ export type Database = {
         Args: { p_job_id: string; p_worker_id: string }
         Returns: boolean
       }
+      check_user_is_worker: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       claim_job: {
         Args: { p_job_id: string }
         Returns: boolean
