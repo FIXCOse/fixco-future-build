@@ -44,26 +44,61 @@ export default function AdminBookings() {
       // Filter out deleted bookings
       const activeBookings = (data || []).filter((b: any) => !b.deleted_at);
       
-      // Check if each booking has a quote
+      // Check if each booking has a quote (with comprehensive error handling)
       const bookingsWithQuotes = await Promise.all(
         activeBookings.map(async (booking) => {
-          const { data: quote } = await supabase
-            .from('quotes_new')
-            .select('id')
-            .eq('request_id', booking.id)
-            .maybeSingle();
-          
-          return {
-            ...booking,
-            hasQuote: !!quote,
-            quoteId: quote?.id
-          } as BookingWithQuote;
+          try {
+            const { data: quote, error: quoteError } = await supabase
+              .from('quotes_new')
+              .select('id')
+              .eq('request_id', booking.id)
+              .maybeSingle();
+            
+            // Ignore query errors, just mark as no quote
+            if (quoteError) {
+              console.warn('Error checking quote for booking:', booking.id, quoteError.message);
+              return {
+                ...booking,
+                hasQuote: false,
+                quoteId: undefined
+              } as BookingWithQuote;
+            }
+            
+            return {
+              ...booking,
+              hasQuote: !!quote,
+              quoteId: quote?.id
+            } as BookingWithQuote;
+          } catch (err) {
+            console.warn('Exception checking quote for booking:', booking.id, err);
+            return {
+              ...booking,
+              hasQuote: false,
+              quoteId: undefined
+            } as BookingWithQuote;
+          }
         })
       );
       
       setBookings(bookingsWithQuotes);
     } catch (error) {
       console.error("Error loading bookings:", error);
+      // Fallback: try to load bookings directly from supabase without quote checking
+      try {
+        const { data: fallbackData } = await supabase
+          .from('bookings')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        const activeBookings = (fallbackData || [])
+          .filter((b: any) => !b.deleted_at)
+          .map(b => ({ ...b, hasQuote: false, quoteId: undefined } as BookingWithQuote));
+        
+        setBookings(activeBookings);
+      } catch (fallbackError) {
+        console.error("Fallback also failed:", fallbackError);
+        setBookings([]);
+      }
     } finally {
       setLoading(false);
     }
