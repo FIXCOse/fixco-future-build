@@ -8,8 +8,12 @@ import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, C
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { fetchJobById, fetchTimeLogs, fetchMaterialLogs, fetchExpenseLogs, updateJobStatus, completeJob } from '@/lib/api/jobs';
+import { fetchJobById, fetchTimeLogs, fetchMaterialLogs, fetchExpenseLogs, updateJobStatus, completeJob, createTimeEntry, createMaterialEntry, createExpenseEntry } from '@/lib/api/jobs';
 import type { Job, TimeLog, MaterialLog, ExpenseLog } from '@/lib/api/jobs';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Plus } from 'lucide-react';
 
 const JobDetail = () => {
   const { jobId } = useParams<{ jobId: string }>();
@@ -21,6 +25,16 @@ const JobDetail = () => {
   const [expenseLogs, setExpenseLogs] = useState<ExpenseLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+  
+  // Form visibility states
+  const [showTimeForm, setShowTimeForm] = useState(false);
+  const [showMaterialForm, setShowMaterialForm] = useState(false);
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+  
+  // Form data states
+  const [timeFormData, setTimeFormData] = useState({ hours: '', note: '' });
+  const [materialFormData, setMaterialFormData] = useState({ name: '', qty: '', unit_price: '', supplier: '' });
+  const [expenseFormData, setExpenseFormData] = useState({ category: '', amount: '', note: '' });
 
   useEffect(() => {
     if (!jobId) return;
@@ -92,6 +106,90 @@ const JobDetail = () => {
       toast.error('Kunde inte markera jobb som färdigt');
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  const handleAddTimeLog = async () => {
+    if (!job || !timeFormData.hours) {
+      toast.error('Ange antal timmar');
+      return;
+    }
+    
+    try {
+      await createTimeEntry({
+        job_id: job.id,
+        manual_hours: parseFloat(timeFormData.hours),
+        note: timeFormData.note
+      });
+      
+      // Refresh time logs
+      const updatedLogs = await fetchTimeLogs(job.id);
+      setTimeLogs(updatedLogs);
+      
+      // Reset form
+      setTimeFormData({ hours: '', note: '' });
+      setShowTimeForm(false);
+      toast.success('Tid registrerad!');
+    } catch (error) {
+      console.error('Error adding time log:', error);
+      toast.error('Kunde inte registrera tid');
+    }
+  };
+
+  const handleAddMaterialLog = async () => {
+    if (!job || !materialFormData.name || !materialFormData.qty) {
+      toast.error('Ange materialnamn och antal');
+      return;
+    }
+    
+    try {
+      await createMaterialEntry({
+        job_id: job.id,
+        name: materialFormData.name,
+        qty: parseFloat(materialFormData.qty),
+        unit_price: materialFormData.unit_price ? parseFloat(materialFormData.unit_price) : 0,
+        supplier: materialFormData.supplier
+      });
+      
+      // Refresh material logs
+      const updatedLogs = await fetchMaterialLogs(job.id);
+      setMaterialLogs(updatedLogs);
+      
+      // Reset form
+      setMaterialFormData({ name: '', qty: '', unit_price: '', supplier: '' });
+      setShowMaterialForm(false);
+      toast.success('Material registrerat!');
+    } catch (error) {
+      console.error('Error adding material log:', error);
+      toast.error('Kunde inte registrera material');
+    }
+  };
+
+  const handleAddExpenseLog = async () => {
+    if (!job || !expenseFormData.category || !expenseFormData.amount) {
+      toast.error('Ange kategori och belopp');
+      return;
+    }
+    
+    try {
+      await createExpenseEntry({
+        job_id: job.id,
+        category: expenseFormData.category,
+        amount: parseFloat(expenseFormData.amount),
+        note: expenseFormData.note
+      });
+      
+      // Refresh expense logs
+      const updatedLogs = await fetchExpenseLogs(job.id);
+      setExpenseLogs(updatedLogs);
+      
+      // Reset form
+      setExpenseFormData({ category: '', amount: '', note: '' });
+      setShowExpenseForm(false);
+      toast.success('Utlägg registrerat!');
+    } catch (error) {
+      console.error('Error adding expense log:', error);
+      toast.error('Kunde inte registrera utlägg');
     }
   };
 
@@ -327,9 +425,44 @@ const JobDetail = () => {
         <TabsContent value="time">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Tidslogg</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-lg">Tidslogg</CardTitle>
+                <Button onClick={() => setShowTimeForm(!showTimeForm)} size="sm">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Lägg till tid
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
+              {showTimeForm && (
+                <div className="border rounded-lg p-4 mb-4 space-y-4 bg-muted/50">
+                  <div className="space-y-2">
+                    <Label htmlFor="hours">Antal timmar *</Label>
+                    <Input
+                      id="hours"
+                      type="number"
+                      step="0.5"
+                      placeholder="Ex: 4.5"
+                      value={timeFormData.hours}
+                      onChange={(e) => setTimeFormData({ ...timeFormData, hours: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="note">Notering</Label>
+                    <Textarea
+                      id="note"
+                      placeholder="Beskriv arbetet..."
+                      value={timeFormData.note}
+                      onChange={(e) => setTimeFormData({ ...timeFormData, note: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={handleAddTimeLog} className="flex-1">Spara</Button>
+                    <Button variant="outline" onClick={() => setShowTimeForm(false)}>Avbryt</Button>
+                  </div>
+                </div>
+              )}
+              
               {timeLogs.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">Ingen tid registrerad ännu</p>
               ) : (
@@ -356,9 +489,66 @@ const JobDetail = () => {
         <TabsContent value="materials">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Material</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-lg">Material</CardTitle>
+                <Button onClick={() => setShowMaterialForm(!showMaterialForm)} size="sm">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Lägg till material
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
+              {showMaterialForm && (
+                <div className="border rounded-lg p-4 mb-4 space-y-4 bg-muted/50">
+                  <div className="space-y-2">
+                    <Label htmlFor="material-name">Materialnamn *</Label>
+                    <Input
+                      id="material-name"
+                      placeholder="Ex: Kakel 30x60"
+                      value={materialFormData.name}
+                      onChange={(e) => setMaterialFormData({ ...materialFormData, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="qty">Antal *</Label>
+                      <Input
+                        id="qty"
+                        type="number"
+                        step="1"
+                        placeholder="Ex: 15"
+                        value={materialFormData.qty}
+                        onChange={(e) => setMaterialFormData({ ...materialFormData, qty: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="unit-price">Pris/st (kr)</Label>
+                      <Input
+                        id="unit-price"
+                        type="number"
+                        step="0.01"
+                        placeholder="Ex: 125.50"
+                        value={materialFormData.unit_price}
+                        onChange={(e) => setMaterialFormData({ ...materialFormData, unit_price: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="supplier">Leverantör</Label>
+                    <Input
+                      id="supplier"
+                      placeholder="Ex: Beijer"
+                      value={materialFormData.supplier}
+                      onChange={(e) => setMaterialFormData({ ...materialFormData, supplier: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={handleAddMaterialLog} className="flex-1">Spara</Button>
+                    <Button variant="outline" onClick={() => setShowMaterialForm(false)}>Avbryt</Button>
+                  </div>
+                </div>
+              )}
+              
               {materialLogs.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">Inget material registrerat ännu</p>
               ) : (
@@ -369,7 +559,7 @@ const JobDetail = () => {
                         <div>
                           <p className="font-medium">{log.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            {log.qty} {log.sku ? `(${log.sku})` : ''}
+                            {log.qty} st {log.supplier ? `- ${log.supplier}` : ''}
                           </p>
                         </div>
                         <p className="font-semibold">{((log.qty * (log.unit_price || 0))).toFixed(0)} kr</p>
@@ -385,9 +575,53 @@ const JobDetail = () => {
         <TabsContent value="expenses">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Utlägg</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-lg">Utlägg</CardTitle>
+                <Button onClick={() => setShowExpenseForm(!showExpenseForm)} size="sm">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Lägg till utlägg
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
+              {showExpenseForm && (
+                <div className="border rounded-lg p-4 mb-4 space-y-4 bg-muted/50">
+                  <div className="space-y-2">
+                    <Label htmlFor="category">Kategori *</Label>
+                    <Input
+                      id="category"
+                      placeholder="Ex: Bensin, Parkering, Övrigt"
+                      value={expenseFormData.category}
+                      onChange={(e) => setExpenseFormData({ ...expenseFormData, category: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="amount">Belopp (kr) *</Label>
+                    <Input
+                      id="amount"
+                      type="number"
+                      step="0.01"
+                      placeholder="Ex: 250"
+                      value={expenseFormData.amount}
+                      onChange={(e) => setExpenseFormData({ ...expenseFormData, amount: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="expense-note">Notering</Label>
+                    <Textarea
+                      id="expense-note"
+                      placeholder="Beskriv utlägget..."
+                      value={expenseFormData.note}
+                      onChange={(e) => setExpenseFormData({ ...expenseFormData, note: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={handleAddExpenseLog} className="flex-1">Spara</Button>
+                    <Button variant="outline" onClick={() => setShowExpenseForm(false)}>Avbryt</Button>
+                  </div>
+                </div>
+              )}
+              
               {expenseLogs.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">Inga utlägg registrerade ännu</p>
               ) : (
