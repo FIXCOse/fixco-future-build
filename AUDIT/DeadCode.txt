@@ -1,0 +1,123 @@
+=== DEAD CODE AUDIT ===
+
+## Oanvända Filer/Exportar
+
+### 1. quotes.ts (Missing)
+File: src/lib/api/quotes.ts
+Status: Refereras till men finns inte längre
+Evidence: Search visade att filen inte existerar
+Action: Verifiera att inga imports pekar på denna fil
+
+### 2. Duplicate Route Definition
+File: src/App.tsx
+Line: 183
+Code: <Route path="jobs" element={<AdminJobs />} />
+Status: Dubblett av rad 176
+Action: Ta bort rad 183
+
+### 3. Legacy quote_requests References
+Files: 
+  - src/integrations/supabase/types.ts:2809 (RPC empty_quote_requests_trash)
+  - supabase/functions/generate-quote-pdf/index.ts:31 (comment)
+Status: Tabellen finns inte i nuvarande schema
+Action: Ta bort alla referenser till quote_requests
+
+### 4. Old Theme System (Legacy)
+File: src/index.css
+Lines: 140-177
+Class: .light-theme-legacy
+Status: Kommentaren säger "Remove dark mode overrides - now using theme-based switching"
+Action: Verifiera att denna inte används, ta sedan bort
+
+## Gamla Routes/Komponenter
+
+### 1. /admin/quotes (Old System?)
+Current: AdminQuotes.tsx använder quotes_new API
+Evidence: Inget quotes.ts API finns
+Status: Om det fanns ett gammalt system är det borttaget
+Action: Dokumentera att quotes_new är det enda systemet
+
+## Gamla Hooks/Utils
+
+### Potential Unused
+Based on search patterns, following may have duplicates or unused code:
+- Check if any old useQuotes hook exists (vs useQuotesRealtime)
+- Check if any old booking hooks exist that don't use bookings table
+
+## Gamla Endpoints/Edge Functions
+
+### Potential Legacy Functions
+Check if these are still needed:
+- generate-quote-pdf (references old quote_requests in comment)
+- Any old quote-related functions that might use quotes instead of quotes_new
+
+## Kommentarer som Tyder på Död Kod
+
+File: supabase/functions/generate-quote-pdf/index.ts
+Line: 31
+Comment: "customer can be null for migrated quote_requests"
+Implies: Migration från quote_requests är gjord, kod kanske kan rensas
+
+File: src/components/ActionWizard.tsx
+Lines: 80-125
+Comments: Mycket debug-logging "[WIZARD]", "[BOOKING]", "[RPC]"
+Status: Debug-kod som bör tas bort eller göras conditional
+
+## Oanvända npm Packages (Potential)
+
+Based on package.json analysis, verify if these are actually used:
+- canvas-confetti (^1.9.3) - used for reward animations?
+- uuid (^13.0.0) - check if gen_random_uuid() i Supabase används istället
+- @react-three/fiber, @react-three/drei - only for SmartHome page (large bundle)
+
+Action: Run `npx depcheck` to find truly unused dependencies
+
+## Gamla Komponenter (Potential)
+
+Possible old versions based on naming patterns:
+- Check if any ServiceCard v1 or v2 exists alongside ServiceCardV3
+- Check if any old Hero components exist alongside HeroMotion, HeroUltra
+
+## Test-komponenter i Production
+
+File: src/pages/worker/JobDetailDemo.tsx, JobPoolDemo.tsx, MyJobsDemo.tsx
+Status: "Demo" i namnet tyder på test-komponenter
+Action: Verifiera om dessa är för demo-syfte eller kan tas bort
+
+## Obsolete SQL Functions
+
+Based on types.ts, check if these RPC functions are still called:
+- empty_quote_requests_trash (references non-existent table)
+- translate_service_to_english (is translation_jobs table actively used?)
+
+## Duplicerade Komponenter/Utilities
+
+File: src/index.css
+Lines: 199-206 and 207-215
+Evidence: Samma utility classes definierade två gånger (.bg-background, etc)
+Action: Ta bort dubbletterna
+
+## Legacy Type Definitions
+
+File: src/lib/api/bookings.ts
+Lines: 17-42
+Evidence: "Legacy properties for backward compatibility (extract from payload)"
+Status: Dokumentation säger det är för bakåtkompatibilitet
+Action: Verifiera om någon kod faktiskt använder dessa legacy properties
+
+## Sammanfattning
+
+Total antal identifierade dead code-områden: 15+
+
+Prioriterad åtgärdsordning:
+1. Ta bort duplicate /admin/jobs route (App.tsx:183) - OMEDELBART
+2. Rensa quote_requests-referenser - KRITISKT
+3. Ta bort debug console.logs - KRITISKT (se Findings.json)
+4. Verifiera och ta bort oanvända npm packages - MEDIUM
+5. Rensa legacy theme classes - LOW
+6. Ta bort demo-komponenter om ej behövda - LOW
+
+Estimerad tidsvinst efter cleanup: 
+- Mindre bundle size (-5-10%)
+- Färre rader kod att underhålla (-500-1000 rader)
+- Tydligare struktur för nya utvecklare

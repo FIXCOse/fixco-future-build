@@ -1,0 +1,107 @@
+Path,Type,Status,File,Line,Notes
+/,route,OK,src/App.tsx,211,Swedish home
+/en,route,OK,src/App.tsx,246,English home
+/tjanster,route,OK,src/App.tsx,213,Services list (Swedish)
+/tjanster/:slug,route,OK,src/App.tsx,214,Service detail (Swedish)
+/en/services,route,OK,src/App.tsx,248,Services list (English)
+/en/services/:slug,route,OK,src/App.tsx,249,Service detail (English)
+/kontakt,route,OK,src/App.tsx,215,Contact (Swedish)
+/en/contact,route,OK,src/App.tsx,250,Contact (English)
+/faq,route,OK,src/App.tsx,216,FAQ (Swedish)
+/en/faq,route,OK,src/App.tsx,251,FAQ (English)
+/om-oss,route,OK,src/App.tsx,217,About (Swedish)
+/en/about,route,OK,src/App.tsx,252,About (English)
+/boka-hembesok,route,OK,src/App.tsx,218,Book visit (Swedish)
+/en/book-visit,route,OK,src/App.tsx,260,Book visit (English)
+/rot-info,route,OK,src/App.tsx,219,ROT info (Swedish)
+/en/rot,route,OK,src/App.tsx,258,ROT info (English)
+/rot,route,OK,src/App.tsx,222,ROT redirect (Swedish)
+/rut,route,OK,src/App.tsx,223,RUT (Swedish)
+/en/rut,route,OK,src/App.tsx,259,RUT (English)
+/referenser,route,OK,src/App.tsx,224,References (Swedish)
+/en/references,route,OK,src/App.tsx,253,References (English)
+/ai,route,OK,src/App.tsx,225,AI page (Swedish)
+/en/ai,route,OK,src/App.tsx,261,AI page (English)
+/smart-hem,route,OK,src/App.tsx,226-239,Smart home (Swedish) with lazy loading
+/en/smart-home,route,OK,src/App.tsx,262-275,Smart home (English) with lazy loading
+/terms,route,OK,src/App.tsx,240,Terms (Swedish)
+/en/terms,route,OK,src/App.tsx,254,Terms (English)
+/privacy,route,OK,src/App.tsx,241,Privacy (Swedish)
+/en/privacy,route,OK,src/App.tsx,255,Privacy (English)
+/cookies,route,DUPLICATE,src/App.tsx,"220, 242",Cookies defined twice under Swedish routes
+/en/cookies,route,OK,src/App.tsx,256,Cookies (English)
+/ansvar-forsakring,route,DUPLICATE,src/App.tsx,"221, 243",Insurance defined twice under Swedish routes
+/en/insurance,route,OK,src/App.tsx,257,Insurance (English)
+/auth,route,OK,src/App.tsx,134,Auth page
+/auth/callback,route,OK,src/App.tsx,135,Auth callback
+/auth/error,route,OK,src/App.tsx,136,Auth error
+/dashboard,route,OK,src/App.tsx,137,General dashboard
+/q/:token,route,OK,src/App.tsx,140,Public quote view
+/mitt-fixco,route,OK,src/App.tsx,143-156,MyFixco layout with nested routes
+/mitt-fixco/properties,route,OK,src/App.tsx,149,Properties page
+/mitt-fixco/invoices,route,OK,src/App.tsx,150,Invoices page
+/mitt-fixco/history,route,OK,src/App.tsx,151,History page
+/mitt-fixco/activity,route,OK,src/App.tsx,152,Activity page
+/mitt-fixco/rot-rut,route,OK,src/App.tsx,153,ROT/RUT page
+/mitt-fixco/settings,route,OK,src/App.tsx,154,Account settings
+/mitt-fixco/staff,route,OK,src/App.tsx,155,Staff management
+/admin,route,OK,src/App.tsx,159-187,Admin layout
+/admin/services,route,OK,src/App.tsx,161,Service management
+/admin/quotes,route,OK,src/App.tsx,162,Quotes list
+/admin/quotes/new,route,OK,src/App.tsx,163,Create/edit quote
+/admin/quotes/trash,route,OK,src/App.tsx,164,Quotes trash
+/admin/quote-questions,route,OK,src/App.tsx,165,Quote questions
+/admin/invoices,route,OK,src/App.tsx,166,Invoices
+/admin/ongoing-projects,route,OK,src/App.tsx,167,Ongoing projects
+/admin/projects/trash,route,OK,src/App.tsx,168,Projects trash
+/admin/bookings,route,OK,src/App.tsx,169,Bookings list
+/admin/bookings/trash,route,OK,src/App.tsx,170,Bookings trash
+/admin/bookings/:id,route,OK,src/App.tsx,171,Booking detail
+/admin/customers,route,OK,src/App.tsx,172,Customers
+/admin/users,route,OK,src/App.tsx,173,Users
+/admin/database,route,OK,src/App.tsx,174,Database admin
+/admin/reports,route,OK,src/App.tsx,175,Reports
+/admin/jobs,route,DUPLICATE,src/App.tsx,"176, 183",Jobs defined TWICE - remove line 183
+/admin/jobs/trash,route,OK,src/App.tsx,177,Jobs trash
+/admin/settings,route,OK,src/App.tsx,178,Admin settings
+/admin/security,route,OK,src/App.tsx,179,Security
+/admin/staff,route,OK,src/App.tsx,180,Staff admin
+/admin/job-requests,route,OK,src/App.tsx,181,Job requests
+/admin/job-requests-trash,route,OK,src/App.tsx,182,Job requests trash
+/admin/analytics/detailed,route,OK,src/App.tsx,184,Detailed analytics
+/admin/translations,route,OK,src/App.tsx,185,Translations
+/admin/leads,route,OK,src/App.tsx,186,Leads
+/worker,route,OK,src/App.tsx,190-201,Worker layout
+/worker/pool,route,OK,src/App.tsx,196,Job pool
+/worker/jobs,route,OK,src/App.tsx,197,My jobs
+/worker/jobs/:jobId,route,OK,src/App.tsx,198,Job detail
+/worker/timesheet,route,OK,src/App.tsx,199,Timesheet
+/worker/settings,route,OK,src/App.tsx,200,Worker settings
+/boka/:slug,route,OK,src/App.tsx,204-208,Booking wizard with lazy loading
+/*,route,OK,src/App.tsx,279,Catch-all (404)
+/quote/:token,hardcoded,404_RISK,supabase/functions/send-quote-email-new/index.ts,42,WRONG URL - should be /q/:token
+${window.location.origin}/q/${token},dynamic,OK,src/pages/admin/AdminQuotesNew.tsx,83,Correct public quote URL
+${window.location.origin}/q/${token},dynamic,OK,src/pages/admin/AdminQuotes.tsx,132,Correct public quote URL
+https://fixco.se,fallback,OK,supabase/functions/send-quote-email-new/index.ts,41,Fallback FRONTEND_URL
+https://ai.gateway.lovable.dev/v1/chat/completions,external,OK,supabase/functions/ai-chat/index.ts,83,Lovable AI API
+/offert/standard,modal,POTENTIAL_404,src/App.tsx,115,Opened via data-wizard but no route defined
+/boka/standard,modal,POTENTIAL_404,src/App.tsx,112,Opened via data-wizard but no route defined
+
+Summary:
+- Total routes defined: 70+
+- Duplicates found: 3 (/cookies, /ansvar-forsakring, /admin/jobs)
+- 404 risks: 3 (/quote/:token email link, /offert/standard, /boka/standard)
+- External API calls: 1 (Lovable AI)
+- Dynamic URLs: Multiple (quote tokens, job IDs, service slugs)
+
+Critical Issues:
+1. /quote/:token in email MUST be changed to /q/:token
+2. /admin/jobs duplicate route on line 183 should be removed
+3. Verify /offert/standard and /boka/standard are handled by BookingWizard dynamic route or need separate routes
+4. /cookies and /ansvar-forsakring defined twice under Swedish routes (lines 220+242, 221+243)
+
+Recommendations:
+- Add route validation tests to catch duplicates
+- Document all dynamic routes (:slug, :token, :id) in a central place
+- Consider using react-router-sitemap for automatic sitemap generation
+- Implement route-based code splitting more aggressively for admin routes

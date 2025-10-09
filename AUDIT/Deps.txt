@@ -1,0 +1,214 @@
+=== DEPENDENCY AUDIT ===
+
+## Installerade Paket (från package.json)
+
+Total dependencies: 49
+Total devDependencies: 14
+Total packages: 63
+
+## Potential Oanvända Paket
+
+### 1. canvas-confetti (^1.9.3)
+Usage: Sannolikt för OwnerCongrats eller RewardSystem komponenter
+Recommendation: Verifiera användning med: grep -r "canvas-confetti" src/
+Status: VERIFY
+Size impact: ~50KB
+Action: Behåll om används i reward/achievement system, annars ta bort
+
+### 2. uuid (^13.0.0)
+Usage: Check om gen_random_uuid() från Supabase används istället
+Evidence: Supabase har native UUID generation
+Recommendation: 
+  grep -r "import.*uuid" src/
+  grep -r "from 'uuid'" src/
+Status: POTENTIALLY_UNUSED
+Size impact: ~30KB
+Action: Om gen_random_uuid() används överallt, ta bort uuid package
+
+### 3. @react-three/fiber + @react-three/drei (^8.18.0 + ^9.122.0)
+Usage: Endast för SmartHome page (3D visualizations)
+Evidence: Lazy loaded i App.tsx:226-239
+Impact: Large bundle size (~400KB combined)
+Status: USED_BUT_HEAVY
+Recommendation: Korrekt lazy-loadad, men överväg alternativ eller feature flag
+Action: Keep if SmartHome is critical feature, otherwise make optional
+
+### 4. input-otp (^1.4.2)
+Usage: OTP input component
+Recommendation: grep -r "input-otp" src/
+Status: VERIFY
+Action: Verifiera om används i auth-flöde
+
+### 5. @tanstack/react-query (^5.83.0)
+Usage: För data fetching/caching
+Evidence: QueryClient i App.tsx:94
+Status: USED
+Action: Keep - essential för modern data fetching
+
+### 6. react-resizable-panels (^2.1.9)
+Usage: För resizable UI panels
+Recommendation: grep -r "resizable-panels" src/
+Status: VERIFY
+Action: Kontrollera om används i admin dashboard
+
+### 7. cmdk (^1.1.1)
+Usage: Command palette component
+Recommendation: grep -r "cmdk" src/
+Status: VERIFY
+Action: Om command palette inte implementerad, ta bort
+
+## Saknade Paket (Import utan package)
+
+Based on search patterns, inga uppenbara saknade imports hittades i denna omgång.
+
+Recommendations för kontroll:
+```bash
+# Kör depcheck för automatisk analys
+npx depcheck
+
+# Eller manuellt:
+# Check för imports som inte matchar package.json
+grep -rh "from ['\"]" src/ | grep -v "^//" | grep -v "@/" | sort -u
+```
+
+## Duplicerade/Överlappande Funktionalitet
+
+### 1. date-fns (^3.6.0) 
+Status: USED
+Evidence: format, sv locale used in multiple files
+Keep: Yes - standard för datum-formatering
+
+### 2. next-themes (^0.3.0)
+Usage: Theme switching (dark/light/ocean)
+Evidence: ThemeSwitcher component
+Status: USED
+Keep: Yes
+
+### 3. react-helmet-async (^2.0.5)
+Usage: SEO meta tags
+Evidence: SEOSchema component
+Status: USED
+Keep: Yes - critical för SEO
+
+### 4. zod (^4.1.1)
+Usage: Schema validation
+Evidence: Used in forms via @hookform/resolvers
+Status: USED
+Keep: Yes - essential för type-safe validation
+
+## DevDependencies
+
+All appear necessary:
+- TypeScript tooling: typescript, @types/*, typescript-eslint
+- Build: vite, @vitejs/plugin-react-swc
+- Styling: tailwindcss, autoprefixer, postcss
+- Linting: eslint, eslint plugins
+- Lovable: lovable-tagger
+
+Status: ALL_NEEDED
+Action: Keep all
+
+## Version Updates Needed
+
+Check for major version updates:
+```bash
+npx npm-check-updates -u
+```
+
+Potential candidates for update (verify breaking changes):
+- React 18.3.1 (latest stable)
+- Vite 5.4.19 (check if 6.x available)
+- TypeScript 5.8.3 (latest)
+
+## Bundle Size Optimization Recommendations
+
+### High Impact (>100KB each):
+1. **@react-three/fiber + drei** (~400KB)
+   - Action: Keep lazy-loaded as is
+   - Consider: Make SmartHome an optional feature flag
+
+2. **@tanstack/react-query** (~100KB)
+   - Action: Keep - essential
+   - Consider: Tree-shaking unused features
+
+3. **framer-motion** (~120KB)
+   - Action: Audit actual usage
+   - Consider: Replace with CSS animations where possible
+
+### Medium Impact (50-100KB each):
+1. **react-hook-form** (~70KB)
+   - Status: Essential for forms
+   - Action: Keep
+
+2. **date-fns** (~70KB with locales)
+   - Action: Import only needed functions
+   - Consider: date-fns/esm for tree-shaking
+
+3. **lucide-react** (~60KB)
+   - Action: Audit which icons actually used
+   - Consider: Import individual icons instead of whole library
+
+## Import Optimization Examples
+
+### Current (potentially importing entire library):
+```tsx
+import { format } from 'date-fns';
+import { sv } from 'date-fns/locale';
+```
+
+### Optimized:
+```tsx
+import format from 'date-fns/format';
+import sv from 'date-fns/locale/sv';
+```
+
+### Current (all lucide icons):
+```tsx
+import { Icon1, Icon2, Icon3 } from 'lucide-react';
+```
+
+### Verify tree-shaking works, otherwise:
+```tsx
+import Icon1 from 'lucide-react/dist/esm/icons/icon1';
+```
+
+## Recommended Actions
+
+### Immediate (do now):
+1. Run `npx depcheck` to find truly unused packages
+2. Remove uuid if not used (check with grep first)
+3. Verify cmdk, input-otp, canvas-confetti usage
+
+### Short-term (within 1 week):
+1. Audit framer-motion usage - can any animations be CSS instead?
+2. Check lucide-react imports - ensure tree-shaking works
+3. Optimize date-fns imports
+4. Review @react-three usage - is SmartHome feature critical?
+
+### Long-term (ongoing):
+1. Regular dependency audits (monthly)
+2. Bundle size monitoring (use webpack-bundle-analyzer or similar)
+3. Consider code-splitting more admin routes
+4. Monitor for security updates (npm audit)
+
+## Security Audit
+
+Run security check:
+```bash
+npm audit
+```
+
+As of this audit date, no critical vulnerabilities detected in console context.
+Recommendation: Run regularly and address HIGH/CRITICAL issues immediately.
+
+## Summary
+
+- Potentially unused: 3-4 packages (uuid, canvas-confetti, cmdk, input-otp)
+- Heavy but necessary: @tanstack/react-query, react-hook-form
+- Heavy and optional: @react-three/fiber+drei (only for SmartHome)
+- Optimization potential: framer-motion, date-fns, lucide-react (import strategy)
+
+Estimated bundle size reduction if removing unused packages: 100-150KB
+Estimated reduction with import optimization: 200-300KB additional
+
+Total potential savings: 300-450KB (compressed), 800KB-1.2MB (uncompressed)
