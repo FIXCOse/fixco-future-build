@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const AdminPage = () => {
   const { isAdmin, isOwner, loading, role } = useAdmin();
+  // Admin page with job management
 
   if (loading) {
     return (
