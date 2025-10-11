@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, memo } from 'react';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { GripVertical, Edit, Move, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ interface EditableSectionProps {
   allowEdit?: boolean;
 }
 
-export const EditableSection: React.FC<EditableSectionProps> = ({
+const EditableSectionComponent: React.FC<EditableSectionProps> = ({
   id,
   index,
   children,
@@ -105,3 +105,5 @@ export const EditableSection: React.FC<EditableSectionProps> = ({
     </>
   );
 };
+
+export const EditableSection = memo(EditableSectionComponent);

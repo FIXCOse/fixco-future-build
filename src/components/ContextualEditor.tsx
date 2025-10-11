@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, memo, useMemo } from 'react';
 import { Settings, Type, Palette, Save, X, Edit3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -17,23 +17,23 @@ interface ContextualEditorProps {
   type?: 'text' | 'heading' | 'button';
 }
 
-export const ContextualEditor: React.FC<ContextualEditorProps> = ({
+const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
   contentId,
   children,
   className = '',
   type = 'text'
 }) => {
   const { isEditMode } = useEditMode();
-  const { updateContent, getContent } = useContentStore();
+  const savedContent = useContentStore((state) => state.content[contentId]);
+  const updateContent = useContentStore((state) => state.updateContent);
+  
   const [isHovered, setIsHovered] = useState(false);
-  const [showQuickEdit, setShowQuickEdit] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState('');
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const savedContent = getContent(contentId);
-  const currentStyles = savedContent?.styles || {};
-  const currentValue = savedContent?.value as string || '';
+  const currentStyles = useMemo(() => savedContent?.styles || {}, [savedContent?.styles]);
+  const currentValue = useMemo(() => savedContent?.value as string || '', [savedContent?.value]);
 
   const handleQuickEdit = () => {
     setEditValue(currentValue);
@@ -94,19 +94,19 @@ export const ContextualEditor: React.FC<ContextualEditorProps> = ({
       ref={elementRef}
       className={`relative ${className}`}
       onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-    style={{
-      fontSize: currentStyles.fontSize,
-      fontWeight: currentStyles.fontWeight as any,
-      color: currentStyles.color,
-      fontFamily: currentStyles.fontFamily,
-      textAlign: currentStyles.textAlign as any,
-      lineHeight: currentStyles.lineHeight,
-      letterSpacing: currentStyles.letterSpacing,
-      textDecoration: currentStyles.textDecoration as any,
-      textTransform: currentStyles.textTransform as any,
-      fontStyle: currentStyles.fontStyle as any
-    }}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        fontSize: currentStyles.fontSize,
+        fontWeight: currentStyles.fontWeight as any,
+        color: currentStyles.color,
+        fontFamily: currentStyles.fontFamily,
+        textAlign: currentStyles.textAlign as any,
+        lineHeight: currentStyles.lineHeight,
+        letterSpacing: currentStyles.letterSpacing,
+        textDecoration: currentStyles.textDecoration as any,
+        textTransform: currentStyles.textTransform as any,
+        fontStyle: currentStyles.fontStyle as any
+      }}
     >
       {/* Content or Edit Input */}
       {isEditing ? (
@@ -227,3 +227,5 @@ export const ContextualEditor: React.FC<ContextualEditorProps> = ({
     </div>
   );
 };
+
+export const ContextualEditor = memo(ContextualEditorComponent);

@@ -14,7 +14,6 @@ import { EditableSection } from "@/components/EditableSection";
 import { ContextualEditor } from "@/components/ContextualEditor";
 
 const Home = () => {
-  console.log("Home component rendering...");
   const { t } = useCopy();
   
   // Initialize pricing store from URL/localStorage
