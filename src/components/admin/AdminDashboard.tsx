@@ -88,6 +88,13 @@ const AdminDashboard = () => {
       variant: 'outline' as const
     },
     {
+      title: 'Schema',
+      description: 'Schemalägg workers',
+      href: '/admin/schedule',
+      icon: Clock,
+      variant: 'outline' as const
+    },
+    {
       title: 'Kunder',
       description: 'Kundregister',
       href: '/admin/customers',

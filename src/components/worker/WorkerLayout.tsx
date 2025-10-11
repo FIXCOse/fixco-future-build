@@ -32,6 +32,7 @@ const WorkerLayout = () => {
     { to: '/worker', icon: Home, label: 'Hem', color: 'text-blue-600' },
     { to: '/worker/pool', icon: Users, label: 'Jobb', color: 'text-green-600' },
     { to: '/worker/jobs', icon: FileText, label: 'Mina', color: 'text-orange-600' },
+    { to: '/worker/schedule', icon: Timer, label: 'Schema', color: 'text-indigo-600' },
     { to: '/worker/timesheet', icon: Clock, label: 'Tid', color: 'text-purple-600' },
     { to: '/worker/settings', icon: Settings, label: 'Inst.', color: 'text-gray-600' }
   ];
