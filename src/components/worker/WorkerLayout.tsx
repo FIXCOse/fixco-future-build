@@ -14,28 +14,14 @@ import {
   Phone
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useAuthProfile } from '@/hooks/useAuthProfile';
 
 const WorkerLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
-
-  useEffect(() => {
-    const getProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('first_name, last_name, role')
-          .eq('id', user.id)
-          .single();
-        setProfile(data);
-      }
-    };
-    getProfile();
-  }, []);
+  const { profile } = useAuthProfile();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

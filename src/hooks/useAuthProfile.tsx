@@ -50,9 +50,12 @@ export const useAuthProfile = () => {
 
       return profileData;
     },
-    staleTime: 1000 * 60, // 1 minute instead of 5
-    refetchOnWindowFocus: true, // Refetch when window gets focus
-    retry: 3
+    staleTime: 1000 * 60 * 10, // 10 minutes - roles rarely change
+    gcTime: 1000 * 60 * 30, // 30 minutes cache
+    refetchOnMount: false, // Don't refetch if we have cached data
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnReconnect: false, // Don't refetch on reconnect
+    retry: 1 // Only retry once to avoid delays
   });
 
   return {
