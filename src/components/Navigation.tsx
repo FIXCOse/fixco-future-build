@@ -122,10 +122,14 @@ export default function Navigation() {
               className="inline-flex items-center py-2 group flex-shrink-0"
             >
               <img 
-                src={theme === 'light' ? "/assets/fixco-logo-black.png" : "/assets/fixco-logo.webp"}
+                src="/assets/fixco-logo-black.png"
                 alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
                 className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
-                style={{ minWidth: '80px', maxWidth: '140px' }}
+                style={{ 
+                  minWidth: '80px', 
+                  maxWidth: '140px',
+                  filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none'
+                }}
                 width={140}
                 height={36}
                 loading="eager"
