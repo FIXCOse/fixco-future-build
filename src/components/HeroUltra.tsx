@@ -13,14 +13,14 @@ interface ParticleSystemProps {
   speed?: number;
 }
 
-// PRO: CSS-based particle system (lightweight)
-const ParticleSystemPRO = ({ count = 50, speed = 1 }: ParticleSystemProps) => {
+// PRO: Optimized CSS-based particle system (reduced DOM nodes for performance)
+const ParticleSystemPRO = ({ count = 12, speed = 1 }: ParticleSystemProps) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {Array.from({ length: count }).map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-primary/20 rounded-full"
+          className="absolute w-1.5 h-1.5 bg-primary/30 rounded-full blur-[0.5px]"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -28,7 +28,7 @@ const ParticleSystemPRO = ({ count = 50, speed = 1 }: ParticleSystemProps) => {
           animate={{
             y: [0, -100, 0],
             opacity: [0, 1, 0],
-            scale: [0, 1, 0],
+            scale: [0, 1.5, 0],
           }}
           transition={{
             duration: 3 + Math.random() * 2,
@@ -207,7 +207,7 @@ const HeroUltra = () => {
             {ultraEnabled ? (
               <ParticleSystemULTRA count={150} speed={0.5} />
             ) : (
-              <ParticleSystemPRO count={30} speed={1} />
+              <ParticleSystemPRO count={12} speed={1} />
             )}
           </>
         )}
