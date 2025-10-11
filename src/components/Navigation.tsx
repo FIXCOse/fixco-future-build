@@ -121,19 +121,16 @@ export default function Navigation() {
               to={currentLanguage === 'en' ? "/en" : "/"} 
               className="inline-flex items-center py-2 group flex-shrink-0"
             >
-              <picture>
-                <source srcSet="/assets/fixco-logo.webp" type="image/webp" />
-                <img 
-                  src="/assets/fixco-logo-black.png" 
-                  alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
-                  className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
-                  style={{ minWidth: '80px', maxWidth: '140px', filter: theme === 'light' ? 'none' : 'invert(1) brightness(2)' }}
-                  width={140}
-                  height={36}
-                  loading="eager"
-                  fetchPriority="high"
-                />
-              </picture>
+              <img 
+                src={theme === 'light' ? "/assets/fixco-logo-black.png" : "/assets/fixco-logo.webp"}
+                alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
+                className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
+                style={{ minWidth: '80px', maxWidth: '140px' }}
+                width={140}
+                height={36}
+                loading="eager"
+                fetchPriority="high"
+              />
             </Link>
           </div>
 
