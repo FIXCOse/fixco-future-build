@@ -38,6 +38,45 @@ export type WorkerStatistic = {
   avg_job_duration_hours: number;
 };
 
+export type WorkerDetailedStatistic = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar_url?: string;
+  total_jobs: number;
+  completed_jobs: number;
+  jobs_last_30_days: number;
+  jobs_last_7_days: number;
+  jobs_today: number;
+  completion_rate_percent: number;
+  avg_job_hours: number;
+  fastest_job_hours: number;
+  longest_job_hours: number;
+  avg_start_hour: number;
+  avg_end_hour: number;
+  jobs_by_weekday: Record<string, number>;
+  current_streak_days: number;
+  last_job_at: string;
+  top_services: Array<{
+    service_name: string;
+    count: number;
+    success_rate: number;
+  }> | null;
+  total_earnings: number;
+  earnings_last_30_days: number;
+  overtime_jobs: number;
+};
+
+export type WorkerDailyStat = {
+  id: string;
+  worker_id: string;
+  date: string;
+  jobs_completed: number;
+  total_hours: number;
+  total_earnings: number;
+};
+
 export async function updateJobSchedule(
   jobId: string, 
   startTime: Date, 
@@ -112,4 +151,36 @@ export async function checkJobLocked(jobId: string): Promise<boolean> {
   
   if (error) throw error;
   return !!data;
+}
+
+export async function fetchWorkerDetailedStatistics(): Promise<WorkerDetailedStatistic[]> {
+  const { data, error } = await supabase
+    .from('worker_detailed_statistics' as any)
+    .select('*')
+    .order('total_jobs', { ascending: false });
+  
+  if (error) throw error;
+  return (data as any) || [];
+}
+
+export async function fetchWorkerDailyStats(
+  timeRange: '7d' | '30d' | '90d'
+): Promise<WorkerDailyStat[]> {
+  const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+  
+  const { data, error } = await supabase
+    .from('worker_daily_stats' as any)
+    .select('*')
+    .gte('date', startDate.toISOString().split('T')[0])
+    .order('date', { ascending: true });
+  
+  if (error) throw error;
+  return (data as any) || [];
+}
+
+export async function updateDailyStats(): Promise<void> {
+  const { error } = await supabase.rpc('update_worker_daily_stats' as any);
+  if (error) throw error;
 }

@@ -1,8 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Calendar } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { JobCalendar } from '@/components/schedule/JobCalendar';
-import { WorkerStatisticsPanel } from '@/components/admin/WorkerStatisticsPanel';
 import { JobLockDialog } from '@/components/schedule/JobLockDialog';
+import { WorkerKPICards } from '@/components/admin/statistics/WorkerKPICards';
+import { PerformanceLeaderboard } from '@/components/admin/statistics/PerformanceLeaderboard';
+import { TimeAnalysisPanel } from '@/components/admin/statistics/TimeAnalysisPanel';
+import { TrendChartsPanel } from '@/components/admin/statistics/TrendChartsPanel';
+import { WorkPatternAnalysis } from '@/components/admin/statistics/WorkPatternAnalysis';
+import { ServiceSpecializationPanel } from '@/components/admin/statistics/ServiceSpecializationPanel';
 import { useJobsData } from '@/hooks/useJobsData';
 import { useScheduleRealtime } from '@/hooks/useScheduleRealtime';
 import { 
@@ -10,8 +16,12 @@ import {
   lockJob, 
   unlockJob, 
   fetchWorkerStatistics,
+  fetchWorkerDetailedStatistics,
+  fetchWorkerDailyStats,
   checkJobLocked,
-  type WorkerStatistic 
+  type WorkerStatistic,
+  type WorkerDetailedStatistic,
+  type WorkerDailyStat 
 } from '@/lib/api/schedule';
 import { toast } from 'sonner';
 import {
@@ -26,6 +36,9 @@ export default function AdminSchedule() {
   const { jobs, loading } = useJobsData();
   const [selectedWorkerId, setSelectedWorkerId] = useState<string>('all');
   const [statistics, setStatistics] = useState<WorkerStatistic[]>([]);
+  const [detailedStats, setDetailedStats] = useState<WorkerDetailedStatistic[]>([]);
+  const [dailyStats, setDailyStats] = useState<WorkerDailyStat[]>([]);
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
   const [selectedJob, setSelectedJob] = useState<any>(null);
   const [lockDialogOpen, setLockDialogOpen] = useState(false);
   const [selectedJobLocked, setSelectedJobLocked] = useState(false);
@@ -43,7 +56,12 @@ export default function AdminSchedule() {
 
   useEffect(() => {
     fetchWorkerStatistics().then(setStatistics);
-  }, []);
+    fetchWorkerDetailedStatistics().then(setDetailedStats);
+  }, [refreshKey]);
+
+  useEffect(() => {
+    fetchWorkerDailyStats(timeRange).then(setDailyStats);
+  }, [timeRange, refreshKey]);
 
   const handleJobMove = async (jobId: string, newStart: Date, newEnd: Date) => {
     try {
@@ -124,18 +142,54 @@ export default function AdminSchedule() {
         </Select>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-card rounded-lg border p-4">
-          <JobCalendar 
-            jobs={displayedJobs}
-            onJobMove={handleJobMove}
-            onJobClick={handleJobClick}
-            isAdmin={true}
+      <WorkerKPICards statistics={detailedStats} />
+
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">📊 Översikt</TabsTrigger>
+          <TabsTrigger value="trends">📈 Trender</TabsTrigger>
+          <TabsTrigger value="patterns">🗓️ Mönster</TabsTrigger>
+          <TabsTrigger value="services">🔧 Tjänster</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <PerformanceLeaderboard statistics={detailedStats} />
+            <TimeAnalysisPanel statistics={detailedStats} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="trends">
+          <TrendChartsPanel
+            statistics={detailedStats}
+            dailyStats={dailyStats}
+            timeRange={timeRange}
+            onTimeRangeChange={setTimeRange}
           />
-        </div>
-        <div>
-          <WorkerStatisticsPanel statistics={statistics} />
-        </div>
+        </TabsContent>
+
+        <TabsContent value="patterns">
+          <WorkPatternAnalysis statistics={detailedStats} />
+        </TabsContent>
+
+        <TabsContent value="services">
+          <ServiceSpecializationPanel
+            statistics={detailedStats}
+            onServiceFilter={(workerId) => {
+              setSelectedWorkerId(workerId);
+            }}
+          />
+        </TabsContent>
+      </Tabs>
+
+      <div className="bg-card rounded-lg border p-4">
+        <h2 className="text-xl font-bold mb-4">Kalender</h2>
+        <JobCalendar 
+          jobs={displayedJobs}
+          onJobMove={handleJobMove}
+          onJobClick={handleJobClick}
+          isAdmin={true}
+        />
       </div>
 
       {selectedJob && (
