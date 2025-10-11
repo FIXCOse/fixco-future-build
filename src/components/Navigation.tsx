@@ -128,7 +128,7 @@ export default function Navigation() {
                 style={{ 
                   minWidth: '80px', 
                   maxWidth: '140px',
-                  filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none'
+                  filter: theme === 'light' ? 'none' : 'brightness(0) invert(1)'
                 }}
                 width={140}
                 height={36}
