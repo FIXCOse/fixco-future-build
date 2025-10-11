@@ -82,15 +82,57 @@ export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUpload
     return data.publicUrl;
   };
 
+  const photoCount = photos.length;
+  const hasEnoughPhotos = photoCount >= 2;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Camera className="h-5 w-5" />
-          Jobbfoton
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Camera className="h-5 w-5" />
+            Jobbfoton
+          </div>
+          <div className="flex items-center gap-2">
+            {hasEnoughPhotos ? (
+              <span className="text-sm text-green-600 font-medium flex items-center gap-1">
+                <span className="inline-block w-2 h-2 bg-green-600 rounded-full" />
+                {photoCount} foton ✓
+              </span>
+            ) : (
+              <span className="text-sm text-orange-600 font-medium flex items-center gap-1">
+                <span className="inline-block w-2 h-2 bg-orange-600 rounded-full" />
+                {photoCount}/2 foton
+              </span>
+            )}
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Warning if not enough photos */}
+        {!hasEnoughPhotos && (
+          <div className="bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3 flex items-start gap-2">
+            <Camera className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-orange-900 dark:text-orange-200">
+                Minst 2 bilder krävs
+              </p>
+              <p className="text-xs text-orange-700 dark:text-orange-300 mt-1">
+                Du måste ladda upp minst 2 bilder för att kunna markera jobbet som färdigt
+              </p>
+            </div>
+          </div>
+        )}
+        
+        {/* Success message */}
+        {hasEnoughPhotos && (
+          <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-3 flex items-start gap-2">
+            <Camera className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-green-900 dark:text-green-200">
+              ✓ Tillräckligt med bilder uppladdade ({photoCount} st)
+            </p>
+          </div>
+        )}
         {/* Upload Section */}
         <div className="space-y-4">
           <div>

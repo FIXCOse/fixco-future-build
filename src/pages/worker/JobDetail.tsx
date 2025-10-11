@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Play, Pause, CheckCircle, Package, Receipt, Camera, FileSignature, Image as ImageIcon, Send, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -15,6 +15,24 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Plus } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { JobPhotoUpload } from '@/components/JobPhotoUpload';
+
+interface JobPhoto {
+  id: string;
+  file_path: string;
+  caption: string | null;
+  created_at: string;
+}
 
 const JobDetail = () => {
   const { jobId } = useParams<{ jobId: string }>();
@@ -22,11 +40,13 @@ const JobDetail = () => {
   
   const [job, setJob] = useState<Job | null>(null);
   const [jobImages, setJobImages] = useState<string[]>([]);
+  const [jobPhotos, setJobPhotos] = useState<JobPhoto[]>([]);
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([]);
   const [materialLogs, setMaterialLogs] = useState<MaterialLog[]>([]);
   const [expenseLogs, setExpenseLogs] = useState<ExpenseLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+  const [showOnWayDialog, setShowOnWayDialog] = useState(false);
   
   // Form visibility states
   const [showTimeForm, setShowTimeForm] = useState(false);
@@ -71,6 +91,9 @@ const JobDetail = () => {
             setJobImages(booking.file_urls);
           }
         }
+        
+        // Fetch job photos uploaded by worker
+        await loadJobPhotos();
       } catch (error) {
         console.error('Error loading job:', error);
         toast.error('Kunde inte ladda jobbinformation');
@@ -81,6 +104,22 @@ const JobDetail = () => {
 
     loadJobData();
   }, [jobId]);
+
+  const loadJobPhotos = async () => {
+    if (!jobId) return;
+    try {
+      const { data, error } = await supabase
+        .from('job_photos')
+        .select('*')
+        .eq('job_id', jobId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setJobPhotos(data || []);
+    } catch (error) {
+      console.error('Error loading job photos:', error);
+    }
+  };
 
   const handleStartJob = async () => {
     if (!job) return;
@@ -112,13 +151,66 @@ const JobDetail = () => {
     }
   };
 
+  const handleOnWayConfirm = async () => {
+    if (!job) return;
+    setShowOnWayDialog(false);
+    setActionLoading(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('notify-job-status', {
+        body: { jobId: job.id, eventType: 'on_way' }
+      });
+      
+      if (error) throw error;
+      toast.success('Kunden har informerats att du är på väg!');
+    } catch (error) {
+      console.error('Error sending on-way notification:', error);
+      toast.error('Kunde inte skicka notis till kund');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleCompleteJob = async () => {
     if (!job) return;
+    
+    // Validate that at least 2 photos are uploaded
+    const { count, error: countError } = await supabase
+      .from('job_photos')
+      .select('*', { count: 'exact', head: true })
+      .eq('job_id', job.id);
+    
+    if (countError) {
+      console.error('Error checking photo count:', countError);
+      toast.error('Kunde inte verifiera foton');
+      return;
+    }
+    
+    if ((count || 0) < 2) {
+      toast.error('Du måste ladda upp minst 2 bilder innan du kan markera jobbet som färdigt', {
+        duration: 5000,
+        icon: <AlertCircle className="h-5 w-5" />
+      });
+      return;
+    }
+    
     setActionLoading(true);
     try {
+      // Mark job as complete
       await completeJob(job.id);
       setJob({ ...job, status: 'completed' });
-      toast.success('Jobb markerat som färdigt!');
+      
+      // Send completion email to customer
+      const { error: emailError } = await supabase.functions.invoke('notify-job-status', {
+        body: { jobId: job.id, eventType: 'completed' }
+      });
+      
+      if (emailError) {
+        console.error('Error sending completion email:', emailError);
+        toast.warning('Jobbet markerat som färdigt men kunde inte skicka mail till kund');
+      } else {
+        toast.success('Jobbet markerat som färdigt och kunden har informerats!');
+      }
     } catch (error) {
       console.error('Error completing job:', error);
       toast.error('Kunde inte markera jobb som färdigt');
@@ -312,14 +404,36 @@ const JobDetail = () => {
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           {job.status === 'assigned' && (
-            <Button onClick={handleStartJob} disabled={actionLoading} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
-              <Play className="w-5 h-5 mr-2" />
-              Starta jobb
-            </Button>
+            <>
+              <Button onClick={handleStartJob} disabled={actionLoading} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
+                <Play className="w-5 h-5 mr-2" />
+                Starta jobb
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowOnWayDialog(true)} 
+                disabled={actionLoading} 
+                className="w-full sm:w-auto" 
+                size="lg"
+              >
+                <Send className="w-5 h-5 mr-2" />
+                Jag är på väg
+              </Button>
+            </>
           )}
           
           {job.status === 'in_progress' && (
             <>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowOnWayDialog(true)} 
+                disabled={actionLoading} 
+                className="w-full sm:w-auto" 
+                size="lg"
+              >
+                <Send className="w-5 h-5 mr-2" />
+                Jag är på väg
+              </Button>
               <Button variant="outline" onClick={handlePauseJob} disabled={actionLoading} className="w-full sm:w-auto" size="lg">
                 <Pause className="w-5 h-5 mr-2" />
                 Pausa
@@ -332,10 +446,22 @@ const JobDetail = () => {
           )}
           
           {job.status === 'paused' && (
-            <Button onClick={handleStartJob} disabled={actionLoading} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
-              <Play className="w-5 h-5 mr-2" />
-              Fortsätt
-            </Button>
+            <>
+              <Button onClick={handleStartJob} disabled={actionLoading} className="w-full sm:w-auto bg-green-600 hover:bg-green-700" size="lg">
+                <Play className="w-5 h-5 mr-2" />
+                Fortsätt
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowOnWayDialog(true)} 
+                disabled={actionLoading} 
+                className="w-full sm:w-auto" 
+                size="lg"
+              >
+                <Send className="w-5 h-5 mr-2" />
+                Jag är på väg
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -720,46 +846,51 @@ const JobDetail = () => {
         </TabsContent>
 
         <TabsContent value="photos">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5" />
-                Bilder från bokning
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {jobImages.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {jobImages.map((imageUrl: string, index: number) => (
-                    <a
-                      key={index}
-                      href={imageUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors"
-                    >
-                      <img
-                        src={imageUrl}
-                        alt={`Jobbild ${index + 1}`}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/placeholder.svg';
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <ImageIcon className="h-8 w-8 text-white" />
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <Camera className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                  <p className="text-muted-foreground">Inga bilder bifogade i bokningen</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            {/* Worker photos - uploaded after job completion */}
+            <JobPhotoUpload 
+              jobId={job.id} 
+              photos={jobPhotos} 
+              onPhotosUpdate={loadJobPhotos}
+            />
+            
+            {/* Customer photos - from booking */}
+            {jobImages.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ImageIcon className="h-5 w-5" />
+                    Bilder från bokning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {jobImages.map((imageUrl: string, index: number) => (
+                      <a
+                        key={index}
+                        href={imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors"
+                      >
+                        <img
+                          src={imageUrl}
+                          alt={`Jobbild ${index + 1}`}
+                          className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/placeholder.svg';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <ImageIcon className="h-8 w-8 text-white" />
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </TabsContent>
 
         <TabsContent value="signatures">
@@ -774,6 +905,24 @@ const JobDetail = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* On Way Confirmation Dialog */}
+      <AlertDialog open={showOnWayDialog} onOpenChange={setShowOnWayDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Skicka notis till kund?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Kunden kommer att få ett mail som informerar att du är på väg till adressen.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleOnWayConfirm} disabled={actionLoading}>
+              Skicka notis
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
