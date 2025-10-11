@@ -68,18 +68,21 @@ const MyFixcoLayout = () => {
   const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
   const isWorker = profile?.role === 'worker';
 
-  // Redirect admin/owner users to admin dashboard, workers to worker dashboard immediately
+  // Redirect admin/owner users to admin dashboard, workers to worker dashboard
   useEffect(() => {
-    if (authLoading || !profile) return;
+    if (authLoading) return;
     
-    const currentPath = location.pathname;
+    // Only redirect from /mitt-fixco to correct dashboard
+    if (location.pathname !== '/mitt-fixco') return;
     
-    if (isAdmin && currentPath === '/mitt-fixco') {
+    if (!profile) return;
+    
+    if (isAdmin) {
       navigate('/admin', { replace: true });
-    } else if (isWorker && currentPath === '/mitt-fixco') {
+    } else if (isWorker) {
       navigate('/worker', { replace: true });
     }
-  }, [profile?.role, location.pathname, authLoading]);
+  }, [authLoading, profile, isAdmin, isWorker, location.pathname, navigate]);
 
   if (authLoading) {
     return <PageSkeleton />;

@@ -22,15 +22,20 @@ export const useAuthProfile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
+      // Optimized query - only select what we need for role check
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
         .eq('id', user.id)
-        .maybeSingle();
+        .single();
 
-      // If profile doesn't exist, create it
-      if (!profileData && !profileError) {
-        const { data: newProfile } = await supabase
+      if (profileError && profileError.code !== 'PGRST116') {
+        throw profileError;
+      }
+
+      // If profile doesn't exist, create it immediately
+      if (!profileData) {
+        const { data: newProfile, error: insertError } = await supabase
           .from('profiles')
           .insert({
             id: user.id,
@@ -45,17 +50,18 @@ export const useAuthProfile = () => {
           .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
           .single();
         
+        if (insertError) throw insertError;
         return newProfile;
       }
 
       return profileData;
     },
-    staleTime: 1000 * 60 * 10, // 10 minutes - roles rarely change
-    gcTime: 1000 * 60 * 30, // 30 minutes cache
-    refetchOnMount: false, // Don't refetch if we have cached data
-    refetchOnWindowFocus: false, // Don't refetch on window focus
-    refetchOnReconnect: false, // Don't refetch on reconnect
-    retry: 1 // Only retry once to avoid delays
+    staleTime: Infinity, // Cache until explicitly invalidated
+    gcTime: 1000 * 60 * 60, // Keep in cache for 1 hour
+    retry: 0, // No retries - fail fast
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false
   });
 
   return {
