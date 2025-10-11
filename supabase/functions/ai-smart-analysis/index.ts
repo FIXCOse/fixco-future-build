@@ -39,10 +39,10 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const openaiKey = Deno.env.get('OPENAI_API_KEY');
+    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
     
-    if (!openaiKey) {
-      throw new Error('OpenAI API key not configured');
+    if (!lovableKey) {
+      throw new Error('Lovable API key not configured');
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -81,17 +81,17 @@ serve(async (req) => {
       previousConversations || []
     );
 
-    console.log('Generated intelligent prompt for OpenAI');
+    console.log('Generated intelligent prompt for Lovable AI');
 
-    // Call OpenAI with contextual, learning-based prompt
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Call Lovable AI Gateway with contextual, learning-based prompt
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiKey}`,
+        'Authorization': `Bearer ${lovableKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'google/gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -117,25 +117,34 @@ serve(async (req) => {
             role: 'user',
             content: intelligentPrompt
           }
-        ],
-        temperature: 0.7,
-        max_tokens: 2000
+        ]
       }),
     });
 
-    if (!openAIResponse.ok) {
-      throw new Error(`OpenAI API error: ${openAIResponse.status}`);
+    if (!aiResponse.ok) {
+      const errorData = await aiResponse.json();
+      console.error('Lovable AI API error:', errorData);
+      
+      // Handle specific errors
+      if (aiResponse.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      }
+      if (aiResponse.status === 402) {
+        throw new Error('Insufficient credits. Please add funds to your Lovable AI workspace.');
+      }
+      
+      throw new Error(`Lovable AI API error: ${aiResponse.status}`);
     }
 
-    const aiResult = await openAIResponse.json();
-    let aiResponse: AIResponse;
+    const aiResult = await aiResponse.json();
+    let parsedResponse: AIResponse;
 
     try {
-      aiResponse = JSON.parse(aiResult.choices[0].message.content);
+      parsedResponse = JSON.parse(aiResult.choices[0].message.content);
     } catch (e) {
       // Fallback if JSON parsing fails
       console.error('Failed to parse AI response as JSON:', e);
-      aiResponse = {
+      parsedResponse = {
         analysis: { error: "Kunde inte tolka AI-svar", raw: aiResult.choices[0].message.content },
         recommendations: [],
         insights: ["AI-analys misslyckades"],
@@ -144,7 +153,7 @@ serve(async (req) => {
       };
     }
 
-    console.log('Generated AI response with confidence:', aiResponse.confidence);
+    console.log('Generated AI response with confidence:', parsedResponse.confidence);
 
     // Store conversation for learning
     const conversationData = {
@@ -152,7 +161,7 @@ serve(async (req) => {
       session_id: requestData.sessionId,
       conversation_type: requestData.type,
       user_input: requestData.userInput,
-      ai_response: aiResponse
+      ai_response: parsedResponse
     };
 
     const { error: storeError } = await supabase
@@ -166,14 +175,14 @@ serve(async (req) => {
     }
 
     // Update learning patterns based on this interaction
-    await updateLearningPatterns(supabase, requestData.type, requestData.userInput, aiResponse);
+    await updateLearningPatterns(supabase, requestData.type, requestData.userInput, parsedResponse);
 
     return new Response(JSON.stringify({
       success: true,
-      data: aiResponse,
+      data: parsedResponse,
       metadata: {
         sessionId: requestData.sessionId,
-        confidence: aiResponse.confidence,
+        confidence: parsedResponse.confidence,
         patternsUsed: patterns?.length || 0
       }
     }), {
