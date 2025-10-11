@@ -147,25 +147,22 @@ const ServicesOverview = () => {
     <section className="py-20 relative">
       <div className="absolute inset-0 gradient-primary-subtle opacity-30" />
       
-      {/* F Watermark Background Elements */}
+      {/* F Watermark Background Elements - CSS-based for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
-        <img 
-          src="/assets/fixco-f-icon-new.png"
-          alt="" 
-          className="absolute top-20 left-20 w-20 h-20 object-contain rotate-12 opacity-30 animate-pulse"
+        <div 
+          className="absolute top-20 left-20 w-20 h-20 bg-primary/30 rotate-12 animate-pulse rounded-sm"
           style={{ animationDuration: '4s' }}
+          aria-hidden="true"
         />
-        <img 
-          src="/assets/fixco-f-icon-new.png"
-          alt="" 
-          className="absolute bottom-20 right-20 w-16 h-16 object-contain -rotate-6 opacity-25 animate-pulse"
+        <div 
+          className="absolute bottom-20 right-20 w-16 h-16 bg-primary/25 -rotate-6 animate-pulse rounded-sm"
           style={{ animationDuration: '5s', animationDelay: '1s' }}
+          aria-hidden="true"
         />
-        <img 
-          src="/assets/fixco-f-icon-new.png"
-          alt="" 
-          className="absolute top-1/2 left-1/2 w-12 h-12 object-contain rotate-45 opacity-20 animate-pulse"
+        <div 
+          className="absolute top-1/2 left-1/2 w-12 h-12 bg-primary/20 rotate-45 animate-pulse rounded-sm"
           style={{ animationDuration: '6s', animationDelay: '2s' }}
+          aria-hidden="true"
         />
       </div>
       
