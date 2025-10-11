@@ -22,16 +22,37 @@ export const useAuthProfile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
-      const { data: profileData } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
+
+      // If profile doesn't exist, create it
+      if (!profileData && !profileError) {
+        const { data: newProfile } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email || '',
+            first_name: user.user_metadata?.first_name || user.email?.split('@')[0] || '',
+            last_name: user.user_metadata?.last_name || '',
+            role: (user.email?.toLowerCase() === 'omar@fixco.se' || user.email?.toLowerCase() === 'omar@dinadress.se') ? 'owner' : 'customer',
+            user_type: 'private',
+            loyalty_points: 0,
+            total_spent: 0
+          })
+          .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
+          .single();
+        
+        return newProfile;
+      }
 
       return profileData;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    refetchOnWindowFocus: false
+    staleTime: 1000 * 60, // 1 minute instead of 5
+    refetchOnWindowFocus: true, // Refetch when window gets focus
+    retry: 3
   });
 
   return {

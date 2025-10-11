@@ -44,11 +44,8 @@ const LoginRequired = () => <Navigate to="/auth" replace />;
 
 const MyFixcoLayout = () => {
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { show, acknowledge } = useOwnerCongrats();
-  const { role, loading: authLoading } = useAuthProfile();
-  const { shouldUseAdminLayout, shouldUseWorkerLayout } = useRoleGate();
+  const { profile, loading: authLoading } = useAuthProfile();
   const location = useLocation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguagePersistence();
@@ -56,47 +53,33 @@ const MyFixcoLayout = () => {
   useEffect(() => {
     let mounted = true;
     
-    const fetchData = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!mounted) return;
-        
-        if (session?.user) {
-          setUser(session.user);
-          const userProfile = await getOrCreateProfile();
-          if (mounted) {
-            setProfile(userProfile);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        if (mounted) {
-          // Add a small delay to prevent flashing
-          setTimeout(() => setLoading(false), 500);
-        }
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (mounted && session?.user) {
+        setUser(session.user);
       }
     };
 
-    fetchData();
-
+    checkSession();
     return () => { mounted = false; };
   }, []);
 
-  // Check if user is admin/owner 
+  // Check if user is admin/owner/worker based on profile from useAuthProfile
   const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
   const isWorker = profile?.role === 'worker';
 
-  // Redirect admin/owner users to the admin dashboard, workers to worker dashboard
+  // Redirect admin/owner users to admin dashboard, workers to worker dashboard
   useEffect(() => {
-    if (profile && isAdmin && location.pathname === '/mitt-fixco') {
+    if (!profile || authLoading) return;
+    
+    if (isAdmin && location.pathname === '/mitt-fixco') {
       navigate('/admin', { replace: true });
-    } else if (profile && isWorker && location.pathname === '/mitt-fixco') {
+    } else if (isWorker && location.pathname === '/mitt-fixco') {
       navigate('/worker', { replace: true });
     }
-  }, [profile, isAdmin, isWorker]); // Removed location.pathname and navigate to prevent loops
+  }, [profile, isAdmin, isWorker, location.pathname, navigate, authLoading]);
 
-  if (loading || authLoading) {
+  if (authLoading) {
     return <PageSkeleton />;
   }
 
