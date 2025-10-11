@@ -1,26 +1,33 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import {
+  corsHeaders,
+  errorResponse,
+  successResponse,
+  validateRequest,
+  checkRateLimit,
+  getClientIp,
+  getUserAgent,
+  sanitizeString,
+} from '../_shared/validation.ts';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
-
-interface CreateBookingRequest {
-  propertyId: string;
-  serviceId: string;
-  serviceName: string;
-  serviceVariant?: string;
-  scheduledDate: string;
-  scheduledTimeStart: string;
-  scheduledTimeEnd: string;
-  basePrice: number;
-  laborShare?: number;
-  rotEligible?: boolean;
-  rutEligible?: boolean;
-  description?: string;
-  organizationId?: string;
-}
+// Validation schema for booking creation
+const createBookingSchema = z.object({
+  propertyId: z.string().uuid('Invalid property ID'),
+  serviceId: z.string().min(1, 'Service ID required').max(100),
+  serviceName: z.string().min(1).max(200),
+  serviceVariant: z.string().max(100).optional(),
+  scheduledDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+  scheduledTimeStart: z.string().regex(/^\d{2}:\d{2}$/, 'Invalid time format'),
+  scheduledTimeEnd: z.string().regex(/^\d{2}:\d{2}$/, 'Invalid time format'),
+  basePrice: z.number().positive().max(1000000, 'Price too high'),
+  laborShare: z.number().min(0).max(1).optional(),
+  rotEligible: z.boolean().optional(),
+  rutEligible: z.boolean().optional(),
+  description: z.string().max(5000).optional(),
+  organizationId: z.string().uuid().optional(),
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -40,26 +47,45 @@ serve(async (req) => {
 
     // Get authenticated user
     const authHeader = req.headers.get("Authorization")!;
+    if (!authHeader) {
+      return errorResponse("Unauthorized", 401);
+    }
+    
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
     
     if (userError || !userData.user) {
-      throw new Error("Unauthorized");
+      return errorResponse("Unauthorized", 401);
     }
 
     const user = userData.user;
-    const requestData: CreateBookingRequest = await req.json();
+
+    // Rate limiting - max 10 bookings per hour
+    const clientIp = getClientIp(req);
+    const rateLimitKey = `${user.id}:create-booking`;
+    const isAllowed = await checkRateLimit(supabaseServiceClient, rateLimitKey, 'create-booking', 10, 60);
+    
+    if (!isAllowed) {
+      return errorResponse("Too many booking attempts. Please try again later.", 429);
+    }
+
+    // Parse and validate request
+    const rawData = await req.json();
+    const validation = validateRequest(createBookingSchema, rawData);
+    
+    if (!validation.success) {
+      return errorResponse(validation.error, 400);
+    }
+    
+    const requestData = validation.data;
+
+    // Sanitize text inputs
+    if (requestData.description) {
+      requestData.description = sanitizeString(requestData.description);
+    }
 
     console.log("Creating booking for user:", user.id);
-    console.log("Request data:", requestData);
-
-    // Validate required fields
-    if (!requestData.propertyId || !requestData.serviceId || !requestData.serviceName) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    console.log("Request data validated:", requestData);
 
     // Verify property ownership
     const { data: property, error: propertyError } = await supabaseClient
@@ -206,28 +232,28 @@ serve(async (req) => {
 
     console.log("Booking created successfully:", booking.id);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        booking: booking,
-        pointsEarned: pointsEarned,
-        message: "Bokning skapad framgångsrikt"
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
+    // Log to security audit
+    await supabaseServiceClient.rpc('log_admin_action', {
+      p_action: 'CREATE_BOOKING',
+      p_target_table: 'bookings',
+      p_target_id: booking.id,
+      p_changes: {
+        service_name: requestData.serviceName,
+        final_price: finalPrice,
+        user_id: user.id
       }
-    );
+    });
+
+    return successResponse({
+      success: true,
+      booking: booking,
+      pointsEarned: pointsEarned,
+      message: "Bokning skapad framgångsrikt"
+    });
 
   } catch (error) {
     console.error("Error in create-booking function:", error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      }
-    );
+    return errorResponse(errorMessage, 500);
   }
 });
