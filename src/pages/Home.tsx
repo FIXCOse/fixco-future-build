@@ -12,6 +12,13 @@ import { usePriceStore } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableSection } from "@/components/EditableSection";
 import { ContextualEditor } from "@/components/ContextualEditor";
+import { useSEO } from "@/hooks/useSEO";
+import { 
+  getOrganizationSchema, 
+  getWebsiteSchema, 
+  getFAQSchema,
+  getOfferCatalogSchema 
+} from "@/components/SEOSchemaEnhanced";
 
 const Home = () => {
   const { t } = useCopy();
@@ -20,6 +27,66 @@ const Home = () => {
   useEffect(() => {
     usePriceStore.getState().initFromUrlOrStorage();
   }, []);
+
+  // Comprehensive SEO setup
+  const organizationSchema = getOrganizationSchema();
+  const websiteSchema = getWebsiteSchema();
+  const faqSchema = getFAQSchema([
+    {
+      question: "Vad kostar era tjänster?",
+      answer: "Våra priser varierar från 480 kr/h med ROT-avdrag till 1300 kr/h för specialiserade tjänster. Med ROT-avdrag får du 50% rabatt på arbetskostnaden."
+    },
+    {
+      question: "Vilka områden täcker ni?",
+      answer: "Vi verkar främst i Uppsala och Stockholm län, men tar även större projekt i hela Sverige. Kontakta oss för att höra om vi kan hjälpa dig."
+    },
+    {
+      question: "Hur snabbt kan ni starta?",
+      answer: "Vi kan starta de flesta projekt inom 5 arbetsdagar efter godkänd offert. För akuta ärenden kan vi ofta komma ut samma dag."
+    },
+    {
+      question: "Hur fungerar ROT-avdraget?",
+      answer: "ROT-avdrag ger 50% rabatt på arbetskostnaden upp till 75 000 kr per person och år. Vi sköter hela administrationen åt dig så du får rabatten direkt på fakturan."
+    },
+    {
+      question: "Är ni försäkrade och F-skattsedel?",
+      answer: "Ja, vi har full ansvarsförsäkring och F-skattsedel. Alla våra hantverkare är erfarna och certifierade inom sina områden."
+    }
+  ]);
+  
+  const offerCatalogSchema = getOfferCatalogSchema([
+    { name: "Elmontörtjänster", price: 880, description: "Professionella eltjänster med ROT-avdrag" },
+    { name: "VVS-tjänster", price: 920, description: "Alla typer av VVS-arbeten med ROT-avdrag" },
+    { name: "Måleri", price: 680, description: "Målning och tapetsering med ROT-avdrag" },
+    { name: "Snickeri", price: 760, description: "Snickeri och byggnadsarbeten med ROT-avdrag" },
+    { name: "Städning", price: 480, description: "RUT-berättigad städservice" },
+    { name: "Trädgård", price: 520, description: "Trädgårdsarbeten med RUT-avdrag" }
+  ]);
+
+  // Combined schema
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema,
+      websiteSchema,
+      faqSchema,
+      offerCatalogSchema
+    ]
+  };
+
+  useSEO({
+    title: "Fixco - Professionella Bygg- & Renoveringstjänster med ROT & RUT-avdrag",
+    description: "Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 50% rabatt med ROT-avdrag. Över 15 000 nöjda kunder i Uppsala och Stockholm.",
+    keywords: "ROT-avdrag, RUT-avdrag, byggtjänster, renovering, elmontör, VVS, måleri, snickare, Uppsala, Stockholm, hemtjänster, hantverkare, byggfirma",
+    image: "https://fixco.se/assets/hero-construction.jpg",
+    type: "website",
+    schema: combinedSchema,
+    canonicalPath: "/",
+    alternateLanguages: [
+      { locale: "sv", url: "https://fixco.se/" },
+      { locale: "en", url: "https://fixco.se/en/" }
+    ]
+  });
   
   return (
     <div className="min-h-screen">
