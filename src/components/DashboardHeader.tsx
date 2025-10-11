@@ -4,7 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import { Award, TrendingUp, Calendar, FileText, Shield } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useAdmin } from '@/hooks/useAdmin';
+import { useRole } from '@/hooks/useRole';
 
 interface UserProfile {
   id: string;
@@ -31,7 +31,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ profile, stats }: DashboardHeaderProps) => {
   const location = useLocation();
-  const { isAdmin } = useAdmin();
+  const { isAdmin } = useRole();
   
   const navigation = [
     { name: 'Översikt', href: '/mitt-fixco', icon: TrendingUp },

@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
 import { useState, useEffect } from 'react';
 import { OwnerCongrats } from '@/components/OwnerCongrats';
 import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';

@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAdmin } from '@/hooks/useAdmin';
+import { useRole } from '@/hooks/useRole';
 
 const AdminGate = () => {
-  const { isAdmin, loading } = useAdmin();
+  const { isAdmin, loading } = useRole();
   
   if (loading) {
     return (

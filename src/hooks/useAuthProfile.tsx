@@ -13,6 +13,7 @@ interface UserProfile {
   created_at: string;
   loyalty_points: number;
   total_spent: number;
+  owner_welcome_at: string | null;
 }
 
 export const useAuthProfile = () => {
@@ -25,7 +26,7 @@ export const useAuthProfile = () => {
       // Optimized query - only select what we need for role check
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
+        .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
         .eq('id', user.id)
         .single();
 
@@ -47,7 +48,7 @@ export const useAuthProfile = () => {
             loyalty_points: 0,
             total_spent: 0
           })
-          .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent')
+          .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
           .single();
         
         if (insertError) throw insertError;

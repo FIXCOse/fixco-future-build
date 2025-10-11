@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAdmin } from '@/hooks/useAdmin';
+import { useRole } from '@/hooks/useRole';
 import { Navigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,7 +7,7 @@ import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight, Br
 import { Skeleton } from '@/components/ui/skeleton';
 
 const AdminPage = () => {
-  const { isAdmin, isOwner, loading, role } = useAdmin();
+  const { isAdmin, isOwner, loading, role } = useRole();
   // Admin page with job management
 
   if (loading) {

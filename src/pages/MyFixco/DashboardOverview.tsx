@@ -8,7 +8,7 @@ import { Calendar, FileText, CreditCard, TrendingUp, Plus, ChevronRight, Buildin
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
-import { getOrCreateProfile } from '@/lib/getOrCreateProfile';
+import { useAuthProfile } from '@/hooks/useAuthProfile';
 import { RewardSystem } from '@/components/RewardSystem';
 
 interface DashboardStats {
@@ -21,6 +21,7 @@ interface DashboardStats {
 }
 
 const DashboardOverview = () => {
+  const { profile: authProfile, loading: profileLoading } = useAuthProfile();
   const [profile, setProfile] = useState<any>(null);
   const [stats, setStats] = useState<DashboardStats>({
     upcomingBookings: 0,
@@ -34,32 +35,16 @@ const DashboardOverview = () => {
 
   useEffect(() => {
     let mounted = true;
-    const timer = setTimeout(() => mounted && setLoading(false), 4000); // Fail-safe timeout
+    
+    if (profileLoading) return;
+    if (!authProfile) return;
 
-    const loadData = async () => {
-      try {
-        // Always load profile first
-        const profileData = await getOrCreateProfile();
-        if (!mounted) return;
-        setProfile(profileData);
+    setProfile(authProfile);
+    loadDashboardStats(authProfile.id);
+    setLoading(false);
 
-        // Load stats in background - non-blocking
-        loadDashboardStats(profileData.id);
-      } catch (error) {
-        console.error('Error loading dashboard data:', error);
-      } finally {
-        if (mounted) setLoading(false);
-        clearTimeout(timer);
-      }
-    };
-
-    loadData();
-
-    return () => { 
-      mounted = false; 
-      clearTimeout(timer);
-    };
-  }, []);
+    return () => { mounted = false; };
+  }, [authProfile, profileLoading]);
 
   const loadDashboardStats = async (userId: string) => {
     try {
