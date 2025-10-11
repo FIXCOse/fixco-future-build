@@ -9,12 +9,15 @@
     <link rel="preload" href="/assets/fixco-logo.webp" as="image" type="image/webp" />
     <link rel="preload" href="/assets/fixco-icon.webp" as="image" type="image/webp" fetchpriority="high" />
     
-    <!-- Fonts with display=swap for better performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- Optimized Fonts - Non-blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" as="style" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all';this.onload=null;" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" /></noscript>
+    <script>
+      // Inline font loading fallback
+      !function(){"use strict";var e=function(e,t,n){var r,o=window.document,i=o.createElement("link");if(t)r=t;else{var a=(o.body||o.getElementsByTagName("head")[0]).childNodes;r=a[a.length-1]}var d=o.styleSheets;if(e.setAttribute("rel","stylesheet"),e.setAttribute("type","text/css"),e.setAttribute("media","only x"),r.parentNode.insertBefore(e,t?r:r.nextSibling),e.onloadcssdefined=function(e){for(var t,n=0;n<d.length;n++)d[n].href&&d[n].href.indexOf(e.href)>-1&&(t=!0);t?e.media=n||"all":setTimeout(function(){e.onloadcssdefined(e)})},e.onloadcssdefined(e),e.onload=function(){e.media!==n&&(e.media=n)},void 0===e.addEventListener||e.addEventListener("load",e.onload)};e.loadCSS=function(e,t,n){var r=window.document.createElement("link"),o=t||window.document.getElementsByTagName("script")[0];return r.rel="stylesheet",r.href=e,r.media="only x",o.parentNode.insertBefore(r,o),setTimeout(function(){r.media=n||"all"}),r}}();
+    </script>
     
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     
