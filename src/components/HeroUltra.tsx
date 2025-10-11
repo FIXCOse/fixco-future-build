@@ -174,57 +174,18 @@ const HeroUltra = () => {
           {/* Base gradient (always visible) */}
           <div className="absolute inset-0 hero-background" />
           
-        {/* F Watermark Background Elements - Animated */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
-          <picture>
-            <source srcSet="/assets/fixco-icon.webp" type="image/webp" />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              width={128}
-              height={128}
-              loading="lazy"
-              className="absolute top-16 left-8 w-32 h-32 object-contain rotate-12 opacity-40 animate-pulse"
-              style={{ animationDuration: '4s' }}
-            />
-          </picture>
-          <picture>
-            <source srcSet="/assets/fixco-icon.webp" type="image/webp" />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              width={96}
-              height={96}
-              loading="lazy"
-              className="absolute bottom-16 right-8 w-24 h-24 object-contain -rotate-12 opacity-30 animate-pulse"
-              style={{ animationDuration: '5s', animationDelay: '1s' }}
-            />
-          </picture>
-          <picture>
-            <source srcSet="/assets/fixco-icon.webp" type="image/webp" />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              width={112}
-              height={112}
-              loading="eager"
-              fetchPriority="high"
-              className="absolute top-1/4 right-12 w-28 h-28 object-contain rotate-45 opacity-25 animate-pulse"
-              style={{ animationDuration: '6s', animationDelay: '2s' }}
-            />
-          </picture>
-          <picture>
-            <source srcSet="/assets/fixco-icon.webp" type="image/webp" />
-            <img 
-              src="/assets/fixco-f-icon-new.png" 
-              alt="" 
-              width={80}
-              height={80}
-              loading="lazy"
-              className="absolute bottom-1/3 left-12 w-20 h-20 object-contain -rotate-6 opacity-35 animate-pulse"
-              style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
-            />
-          </picture>
+        {/* Simplified F Watermark - Using CSS for performance */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+          <div 
+            className="absolute top-1/4 right-12 w-28 h-28 bg-primary/20 rotate-45 animate-pulse hero-f-icon"
+            style={{ animationDuration: '6s', animationDelay: '2s' }}
+            aria-hidden="true"
+          />
+          <div 
+            className="absolute bottom-1/3 left-12 w-20 h-20 bg-primary/25 -rotate-6 animate-pulse hero-f-icon"
+            style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
+            aria-hidden="true"
+          />
         </div>
           
           {/* Animated gradients */}

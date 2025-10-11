@@ -132,25 +132,17 @@ const ComparisonUltra = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 hero-background" />
         
-        {/* F Watermark Background Elements - More Visible */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute top-20 left-20 w-24 h-24 object-contain rotate-12 opacity-40 animate-pulse"
+        {/* Simplified F Watermark - Reduced DOM nodes */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+          <div 
+            className="absolute top-20 left-20 w-24 h-24 bg-primary/30 rotate-12 animate-pulse hero-f-icon"
             style={{ animationDuration: '5s' }}
+            aria-hidden="true"
           />
-          <img 
-            src="/assets/fixco-f-icon-new.png"
-            alt="" 
-            className="absolute bottom-32 right-32 w-16 h-16 object-contain -rotate-12 opacity-30 animate-pulse"
-            style={{ animationDuration: '4s', animationDelay: '1.5s' }}
-          />
-          <img 
-            src="/assets/fixco-f-icon-new.png" 
-            alt="" 
-            className="absolute top-1/2 left-1/4 w-20 h-20 object-contain rotate-45 opacity-25 animate-pulse"
+          <div 
+            className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/20 rotate-45 animate-pulse hero-f-icon"
             style={{ animationDuration: '6s', animationDelay: '0.8s' }}
+            aria-hidden="true"
           />
         </div>
         
