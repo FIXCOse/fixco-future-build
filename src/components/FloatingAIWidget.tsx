@@ -185,9 +185,13 @@ export function FloatingAIWidget() {
       <button
         aria-label={t('ai_widget.launcher')}
         onClick={() => setOpen(!open)}
-        className="fixed right-4 bottom-4 z-[9999] rounded-full px-5 py-3 shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 font-semibold"
+        className="fixed right-4 bottom-4 z-[9999] w-14 h-14 rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center p-0"
       >
-        💬 {t('ai_widget.launcher')}
+        <img 
+          src="/assets/fixco-f-icon-new.png" 
+          alt="Fixco AI"
+          className="w-8 h-8 object-contain"
+        />
       </button>
 
       {/* Panel */}
