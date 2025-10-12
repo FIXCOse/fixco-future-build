@@ -42,11 +42,11 @@ const CategoryGrid = () => {
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {/* F Brand Badge - Bottom Right */}
-              <div className="absolute bottom-3 right-3 w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-primary/20 rounded-lg p-1.5">
+              <div className="absolute bottom-3 right-3 w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-white/10 rounded-lg p-2">
                 <img 
                   src="/assets/fixco-f-icon-new.png" 
                   alt="Fixco"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain opacity-60"
                 />
               </div>
 
