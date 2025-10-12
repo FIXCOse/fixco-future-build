@@ -108,11 +108,11 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
           className="card-service p-6 text-center h-full transition-all duration-300 animate-fade-in-up hover-scale border-2 border-dashed border-primary/30 group-hover:border-primary/50"
           style={{ animationDelay: `${index * 0.05}s` }}
         >
-          <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
+          <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-primary/20 rounded-lg">
             <img 
               src="/assets/fixco-f-icon-new.png" 
               alt="Fixco" 
-              className="h-6 w-6 object-contain opacity-90"
+              className="w-5 h-5 object-contain"
             />
           </div>
 
@@ -183,11 +183,11 @@ const EditableCategoryGridNew = () => {
                 className="card-service p-6 text-center h-full transition-all duration-300 animate-fade-in-up hover-scale"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10">
+                <div className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-primary/20 rounded-lg">
                   <img 
                     src="/assets/fixco-f-icon-new.png" 
                     alt="Fixco" 
-                    className="h-6 w-6 object-contain opacity-90"
+                    className="w-5 h-5 object-contain"
                   />
                 </div>
 
