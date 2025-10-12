@@ -30,7 +30,7 @@ serve(async (req) => {
         type: "function",
         function: {
           name: "get_services",
-          description: "Hämtar alla aktiva tjänster från databasen med priser och beskrivningar",
+          description: "Hämtar alla aktiva tjänster från databasen med beskrivningar (INTE priser)",
           parameters: {
             type: "object",
             properties: {},
@@ -41,39 +41,51 @@ serve(async (req) => {
       {
         type: "function",
         function: {
-          name: "estimate_quote",
-          description: "Beräknar preliminär offert med ROT-avdrag. ROT är 30% på arbetskostnad (ej material).",
+          name: "recommend_service",
+          description: "AI rekommenderar bästa tjänst baserat på kundens beskrivning",
           parameters: {
             type: "object",
             properties: {
-              serviceName: { type: "string", description: "Namn på tjänsten" },
-              quantity: { type: "number", description: "Antal timmar eller m²" },
-              unit: { type: "string", enum: ["timme", "m²", "löpmeter", "st"], description: "Enhet" },
-              materialSek: { type: "number", description: "Materialkostnad i kr" },
-              hourlySek: { type: "number", description: "Timpris eller m²-pris i kr" },
-              rotEligible: { type: "boolean", description: "Om tjänsten är ROT-berättigad" }
+              customerDescription: { type: "string", description: "Vad kunden beskrivit att de behöver" }
             },
-            required: ["serviceName", "quantity", "unit"]
+            required: ["customerDescription"]
           }
         }
       },
       {
         type: "function",
         function: {
-          name: "create_lead",
-          description: "Sparar kontaktinformation och intresse som en lead i databasen",
+          name: "collect_qualification_info",
+          description: "Samlar kvalificerande information för att skapa en offert. Spara strukturerad data som admin kan se.",
           parameters: {
             type: "object",
             properties: {
+              serviceCategory: { type: "string", description: "Typ av tjänst (kök, badrum, altan, etc)" },
+              projectScope: { type: "string", description: "Omfattning av projektet" },
+              size: { type: "string", description: "Storlek (m², antal rum, etc)" },
+              timeline: { type: "string", description: "Önskad tidplan" },
+              budget: { type: "string", description: "Budget-span (ej exakt belopp)" },
+              additionalDetails: { type: "string", description: "Övriga viktiga detaljer" },
               name: { type: "string", description: "Kundens namn" },
               email: { type: "string", description: "E-postadress" },
               phone: { type: "string", description: "Telefonnummer" },
-              address: { type: "string", description: "Adress" },
-              message: { type: "string", description: "Meddelande eller beskrivning" },
-              serviceInterest: { type: "string", description: "Vilken tjänst kunden är intresserad av" },
-              estimatedQuote: { type: "object", description: "Beräknad offert om tillgänglig" }
+              address: { type: "string", description: "Projektadress" }
             },
-            required: []
+            required: ["serviceCategory", "name", "email"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "show_reference_projects",
+          description: "Visar tidigare projekt från samma kategori. Om inga finns, returnera placeholder.",
+          parameters: {
+            type: "object",
+            properties: {
+              category: { type: "string", description: "Kategori (kök, badrum, altan, etc)" }
+            },
+            required: ["category"]
           }
         }
       }
@@ -118,7 +130,7 @@ serve(async (req) => {
           case 'get_services':
             const { data: services, error: servicesError } = await supabase
               .from('services')
-              .select('*')
+              .select('id, title_sv, description_sv, category, sub_category, location, rot_eligible, rut_eligible')
               .eq('is_active', true)
               .order('sort_order');
             
@@ -126,50 +138,91 @@ serve(async (req) => {
             result = services;
             break;
 
-          case 'estimate_quote':
-            const hourly = args.hourlySek ?? 950;
-            const work = hourly * args.quantity;
-            const material = args.materialSek ?? 0;
-            const subtotal = work + material;
-            const vat = subtotal * 0.25;
-            const totalInclVat = subtotal + vat;
-            const rotEligible = args.rotEligible ?? true;
-            const rotDeduction = rotEligible ? Math.round(work * 0.30) : 0;
-            const totalAfterRot = Math.max(0, totalInclVat - rotDeduction);
-
-            result = {
-              serviceName: args.serviceName,
-              quantity: args.quantity,
-              unit: args.unit,
-              workSek: Math.round(work),
-              materialSek: Math.round(material),
-              subtotalSek: Math.round(subtotal),
-              vatSek: Math.round(vat),
-              totalInclVatSek: Math.round(totalInclVat),
-              rotDeductionSek: rotDeduction,
-              totalAfterRotSek: Math.round(totalAfterRot),
-              rotEligible
-            };
+          case 'recommend_service':
+            // Simple keyword matching for service recommendation
+            const description = args.customerDescription.toLowerCase();
+            const { data: allServices, error: servErr } = await supabase
+              .from('services')
+              .select('id, title_sv, description_sv, category')
+              .eq('is_active', true);
+            
+            if (servErr) throw servErr;
+            
+            // Score each service based on keyword matches
+            const scored = allServices?.map(svc => {
+              const svcText = `${svc.title_sv} ${svc.description_sv} ${svc.category}`.toLowerCase();
+              let score = 0;
+              if (description.includes('kök')) score += svcText.includes('kök') ? 10 : 0;
+              if (description.includes('badrum')) score += svcText.includes('badrum') ? 10 : 0;
+              if (description.includes('altan') || description.includes('däck')) score += svcText.includes('altan') ? 10 : 0;
+              if (description.includes('golv')) score += svcText.includes('golv') ? 10 : 0;
+              if (description.includes('garderob') || description.includes('förvar')) score += svcText.includes('garderob') ? 10 : 0;
+              if (description.includes('bokhylla')) score += svcText.includes('bokhylla') ? 10 : 0;
+              if (description.includes('målning') || description.includes('måla')) score += svcText.includes('målning') ? 10 : 0;
+              if (description.includes('led') || description.includes('belysning')) score += svcText.includes('led') || svcText.includes('belysning') ? 10 : 0;
+              return { ...svc, score };
+            }).sort((a, b) => b.score - a.score) || [];
+            
+            result = { recommended: scored[0], alternatives: scored.slice(1, 3) };
             break;
 
-          case 'create_lead':
-            const { data: lead, error: leadError } = await supabase
+          case 'collect_qualification_info':
+            // Calculate lead score
+            let leadScore = 0;
+            if (args.size) leadScore += 20;
+            if (args.timeline) leadScore += 20;
+            if (args.budget) leadScore += 20;
+            if (args.phone) leadScore += 20;
+            if (args.address) leadScore += 20;
+            
+            const leadPriority = leadScore >= 80 ? 'high' : leadScore >= 50 ? 'medium' : 'low';
+            
+            const qualificationData = {
+              serviceCategory: args.serviceCategory,
+              projectScope: args.projectScope,
+              size: args.size,
+              timeline: args.timeline,
+              budget: args.budget,
+              additionalDetails: args.additionalDetails,
+              leadScore,
+              leadPriority
+            };
+
+            const { data: qualifiedLead, error: qlError } = await supabase
               .from('leads')
               .insert({
                 name: args.name,
                 email: args.email,
                 phone: args.phone,
                 address: args.address,
-                message: args.message,
-                service_interest: args.serviceInterest,
-                estimated_quote: args.estimatedQuote,
-                source: 'ai_concierge'
+                service_interest: args.serviceCategory,
+                message: JSON.stringify(qualificationData),
+                status: 'new',
+                source: 'ai_qualification'
               })
               .select()
               .single();
 
-            if (leadError) throw leadError;
-            result = { success: true, leadId: lead.id };
+            if (qlError) throw qlError;
+            result = { 
+              success: true, 
+              leadId: qualifiedLead.id,
+              priority: leadPriority,
+              message: "Tack! Vi återkommer inom 48h med en offert efter platsbesiktning."
+            };
+            break;
+
+          case 'show_reference_projects':
+            // Try to find reference projects (currently none exist)
+            const category = args.category.toLowerCase();
+            
+            // For now, return placeholder message since no projects exist yet
+            result = {
+              category: args.category,
+              projects: [],
+              message: `Vi bygger upp vår projektreferens för ${args.category}. Här är exempel på liknande arbeten vi utför. Kontakta oss för att se mer!`,
+              placeholder: true
+            };
             break;
 
           default:

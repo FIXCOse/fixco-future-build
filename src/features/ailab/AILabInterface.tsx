@@ -3,10 +3,10 @@ import { useCopy } from '@/copy/CopyProvider';
 import { ImageUploadZone } from './ImageUploadZone';
 import { ActionCards } from './ActionCards';
 import { BeforeAfterView } from './BeforeAfterView';
-import { EstimatePanel } from './EstimatePanel';
+import { QualificationForm, QualificationData } from './QualificationForm';
 import { useToast } from '@/hooks/use-toast';
-import { aiEditImage, createLead } from '../ai/lib/ai';
-import { estimateQuote, EstimateResult } from '../ai/tools/estimateQuote';
+import { aiEditImage } from '../ai/lib/ai';
+import { supabase } from '@/integrations/supabase/client';
 
 export function AILabInterface() {
   const { t } = useCopy();
@@ -19,21 +19,15 @@ export function AILabInterface() {
   const [selectedAction, setSelectedAction] = useState<string>('');
   const [customInstruction, setCustomInstruction] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [estimate, setEstimate] = useState<EstimateResult | null>(null);
-  
-  const [contactInfo, setContactInfo] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: ''
-  });
+  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   const handleImageUpload = useCallback((file: File, preview: string) => {
     setOriginalFile(file);
     setOriginalImage(preview);
     setGeneratedImage('');
     setVariants([]);
-    setEstimate(null);
+    setShowDisclaimer(false);
   }, []);
 
   const handleVisualize = useCallback(async () => {
@@ -47,16 +41,26 @@ export function AILabInterface() {
 
     if (!customInstruction.trim()) {
       toast({
-        title: t('ailab.error_missing_image'),
+        title: 'Saknar instruktion',
         description: 'Skriv en instruktion för vad du vill se',
         variant: 'destructive'
       });
       return;
     }
 
+    // Show disclaimer before generating
+    setShowDisclaimer(true);
+
     setIsProcessing(true);
     try {
       const instruction = customInstruction.trim();
+      
+      toast({
+        title: '⚠️ Observera',
+        description: 'Genererade bilder är endast illustrativa koncept. Slutresultatet beror på platsens förutsättningar.',
+        duration: 5000
+      });
+
       const resultUrl = await aiEditImage(originalFile, instruction);
       setGeneratedImage(resultUrl);
       
@@ -65,13 +69,9 @@ export function AILabInterface() {
       const variant2 = await aiEditImage(originalFile, instruction + ' - variant med mörkare toner');
       setVariants([resultUrl, variant1, variant2]);
 
-      // Generate estimate based on instruction
-      const estimateData = generateEstimate('custom', instruction);
-      setEstimate(estimateData);
-
       toast({
-        title: 'Visualisering skapad!',
-        description: 'Välj mellan olika stilar nedan'
+        title: 'Inspiration-bilder skapade!',
+        description: 'Välj mellan olika stilar. Begär offert för exakt pris.'
       });
     } catch (error) {
       console.error('Visualization error:', error);
@@ -83,42 +83,74 @@ export function AILabInterface() {
     } finally {
       setIsProcessing(false);
     }
-  }, [originalFile, selectedAction, customInstruction, t, toast]);
+  }, [originalFile, customInstruction, t, toast]);
 
-  const handleSaveLead = useCallback(async () => {
-    if (!contactInfo.email || !contactInfo.name) {
-      toast({
-        title: t('ailab.error_missing_contact'),
-        variant: 'destructive'
-      });
-      return;
-    }
-
+  const handleQualificationSubmit = useCallback(async (data: QualificationData) => {
+    setIsSubmittingLead(true);
+    
     try {
-      await createLead({
-        name: contactInfo.name,
-        email: contactInfo.email,
-        phone: contactInfo.phone,
-        address: contactInfo.address,
-        serviceInterest: selectedAction || 'Custom',
-        message: customInstruction,
-        estimatedQuote: estimate,
-        images: [originalImage, generatedImage, ...variants].filter(Boolean)
-      });
+      // Calculate lead score
+      let leadScore = 0;
+      if (data.size) leadScore += 20;
+      if (data.timeline) leadScore += 20;
+      if (data.budget) leadScore += 20;
+      if (data.phone) leadScore += 20;
+      if (data.address) leadScore += 20;
+      
+      const leadPriority = leadScore >= 80 ? 'high' : leadScore >= 50 ? 'medium' : 'low';
+      
+      const qualificationData = {
+        serviceCategory: data.serviceCategory,
+        projectScope: data.projectScope,
+        size: data.size,
+        timeline: data.timeline,
+        budget: data.budget,
+        additionalDetails: data.additionalDetails,
+        leadScore,
+        leadPriority,
+        generatedImages: [originalImage, generatedImage, ...variants].filter(Boolean)
+      };
+
+      const { error } = await supabase
+        .from('leads')
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
+          service_interest: data.serviceCategory || selectedAction || 'AI Generated',
+          message: JSON.stringify(qualificationData),
+          status: 'new',
+          source: 'ai_lab_qualification',
+          images: [originalImage, generatedImage, ...variants].filter(Boolean)
+        });
+
+      if (error) throw error;
 
       toast({
-        title: t('ailab.lead_saved'),
-        description: 'Vi kontaktar dig inom 24 timmar'
+        title: '✅ Tack för din förfrågan!',
+        description: 'Vi återkommer inom 48h med en offert efter platsbesiktning.',
+        duration: 5000
       });
+
+      // Reset form data
+      setOriginalImage('');
+      setOriginalFile(null);
+      setGeneratedImage('');
+      setVariants([]);
+      setCustomInstruction('');
+      
     } catch (error) {
-      console.error('Lead save error:', error);
+      console.error('Lead submission error:', error);
       toast({
-        title: 'Kunde inte spara projekt',
-        description: 'Försök igen',
+        title: 'Kunde inte skicka förfrågan',
+        description: 'Försök igen eller kontakta oss direkt',
         variant: 'destructive'
       });
+    } finally {
+      setIsSubmittingLead(false);
     }
-  }, [contactInfo, selectedAction, customInstruction, estimate, originalImage, generatedImage, variants, t, toast]);
+  }, [originalImage, generatedImage, variants, selectedAction, toast]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -145,51 +177,15 @@ export function AILabInterface() {
         />
       </div>
 
-      {/* Right: Estimate & Contact */}
+      {/* Right: Qualification Form */}
       <div className="lg:col-span-3">
-        <EstimatePanel
-          estimate={estimate}
-          contactInfo={contactInfo}
-          onContactInfoChange={setContactInfo}
-          onSaveLead={handleSaveLead}
-          generatedImage={generatedImage}
+        <QualificationForm
+          serviceCategory={selectedAction}
+          onSubmit={handleQualificationSubmit}
+          isSubmitting={isSubmittingLead}
         />
       </div>
     </div>
   );
 }
 
-function getActionInstruction(action: string): string {
-  const instructions: Record<string, string> = {
-    acoustic: 'Installera moderna akustikpaneler på väggen med skandinavisk design',
-    deck: 'Bygg en snygg altan i trä med räcke och trappor',
-    floor: 'Byt till moderna trägolv i ljus ek',
-    bookshelf: 'Lägg till en platsbyggd bokhylla som täcker hela väggen',
-    wardrobe: 'Installera moderna garderober med skjutdörrar',
-    led: 'Lägg till diskret LED-belysning som lyfter rummet'
-  };
-  return instructions[action] || action;
-}
-
-function generateEstimate(action: string, instruction: string): EstimateResult {
-  // Simplified estimates per action type
-  const estimates: Record<string, { hours: number; material: number }> = {
-    acoustic: { hours: 8, material: 5000 },
-    deck: { hours: 40, material: 25000 },
-    floor: { hours: 16, material: 15000 },
-    bookshelf: { hours: 20, material: 8000 },
-    wardrobe: { hours: 12, material: 12000 },
-    led: { hours: 6, material: 3000 }
-  };
-
-  const data = estimates[action] || { hours: 10, material: 5000 };
-
-  return estimateQuote({
-    serviceName: instruction.substring(0, 50),
-    quantity: data.hours,
-    unit: 'timme',
-    materialSek: data.material,
-    hourlySek: 950,
-    rotEligible: true
-  }, 950);
-}
