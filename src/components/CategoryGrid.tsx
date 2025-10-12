@@ -48,7 +48,7 @@ const CategoryGrid = () => {
 
               {/* Icon */}
               <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>
-                <IconComponent className="h-6 w-6 text-primary-foreground group-hover:scale-110 transition-transform duration-300" />
+                <IconComponent className="h-6 w-6 text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
               
               {/* Title */}
