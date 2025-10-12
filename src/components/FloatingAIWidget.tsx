@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { X, MessageCircle } from "lucide-react";
 import { useCopy } from "@/copy/CopyProvider";
 import { useToast } from "@/hooks/use-toast";
 import { aiEditImage, callAiChat } from "@/features/ai/lib/ai";
@@ -9,6 +9,12 @@ import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { useNavigate } from "react-router-dom";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Tjänst-mappning för snabblänkar
 const SERVICE_LINKS: Record<string, string> = {
@@ -63,6 +69,9 @@ export function FloatingAIWidget() {
 
   // Detekterad tjänst för CTA-kort
   const [detectedSlug, setDetectedSlug] = useState<string | null>(null);
+  
+  // Teaser för första besöket
+  const [showTeaser, setShowTeaser] = useState(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -80,6 +89,19 @@ export function FloatingAIWidget() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // Visa teaser vid första besöket
+  useEffect(() => {
+    const hasSeenTeaser = localStorage.getItem('fixco_ai_teaser_seen');
+    if (!hasSeenTeaser) {
+      setShowTeaser(true);
+      const timer = setTimeout(() => {
+        setShowTeaser(false);
+        localStorage.setItem('fixco_ai_teaser_seen', 'true');
+      }, 5000); // Visa i 5 sekunder
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   async function onSend() {
     if (!input.trim() || busy) return;
@@ -182,17 +204,45 @@ export function FloatingAIWidget() {
   return (
     <>
       {/* Launcher button */}
-      <button
-        aria-label={t('ai_widget.launcher')}
-        onClick={() => setOpen(!open)}
-        className="fixed right-4 bottom-4 z-[9999] w-14 h-14 rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center p-0"
-      >
-        <img 
-          src="/assets/fixco-f-icon-new.png" 
-          alt="Fixco AI"
-          className="w-8 h-8 object-contain"
-        />
-      </button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              aria-label="Öppna AI-chatt med Fixco"
+              onClick={() => setOpen(!open)}
+              className="group fixed right-4 bottom-4 z-[9999] rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 overflow-hidden"
+              style={{
+                padding: showTeaser ? "0.75rem 1.25rem 0.75rem 0.75rem" : "0.875rem",
+                width: showTeaser ? "auto" : "3.5rem",
+                height: "3.5rem"
+              }}
+            >
+              {/* Pulse animation bakom */}
+              <span className="absolute inset-0 animate-ping opacity-20 rounded-full bg-primary-foreground" />
+              
+              {/* Innehåll */}
+              <div className="relative flex items-center gap-2">
+                <img 
+                  src="/assets/fixco-f-icon-new.png" 
+                  alt="Fixco"
+                  className="w-7 h-7 object-contain"
+                />
+                <MessageCircle className="w-4 h-4 opacity-90" />
+              </div>
+              
+              {/* Expanderande teaser-text */}
+              {showTeaser && (
+                <span className="text-sm font-semibold whitespace-nowrap animate-in slide-in-from-left-2">
+                  Fråga mig!
+                </span>
+              )}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="left" className="font-medium">
+            Chatta med Fixco AI
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       {/* Panel */}
       {open && (
