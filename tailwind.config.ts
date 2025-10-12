@@ -91,7 +91,8 @@ export default {
 				'slide-in-right': 'slideInRight 0.6s ease-out',
 				'gradient-shift': 'gradientShift 3s ease infinite',
 				'float': 'float 6s ease-in-out infinite',
-				'glow': 'glow 2s ease-in-out infinite alternate'
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
