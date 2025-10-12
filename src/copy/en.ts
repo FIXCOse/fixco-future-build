@@ -604,7 +604,7 @@ export const en: Record<CopyKey, string> = {
   'location.national_large_projects': 'Nationwide for larger projects',
   'timing.start_within_5_days': 'Start within < 5 days',
   'timing.less_than_5_days': '< 5 days',
-  'comparison.coverage_area': 'Coverage area',
+  'comparison.coverage_area': 'Area',
   'comparison.limited': 'Limited',
   'comparison.5_10_days': '5-10 days',
   'comparison.coverage_description': 'Full coverage in Uppsala & Stockholm, larger projects nationwide',

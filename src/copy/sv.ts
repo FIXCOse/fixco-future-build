@@ -604,7 +604,7 @@ export const sv: Record<CopyKey, string> = {
   'location.national_large_projects': 'Nationellt vid större projekt',
   'timing.start_within_5_days': 'Start inom < 5 dagar',
   'timing.less_than_5_days': '< 5 dagar',
-  'comparison.coverage_area': 'Täckningsområde',
+  'comparison.coverage_area': 'Område',
   'comparison.limited': 'Begränsat',
   'comparison.5_10_days': '5-10 dagar',
   'comparison.coverage_description': 'Full täckning i Uppsala & Stockholm, större projekt nationellt',
