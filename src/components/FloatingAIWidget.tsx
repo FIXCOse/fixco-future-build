@@ -69,9 +69,6 @@ export function FloatingAIWidget() {
 
   // Detekterad tjänst för CTA-kort
   const [detectedSlug, setDetectedSlug] = useState<string | null>(null);
-  
-  // Teaser för första besöket
-  const [showTeaser, setShowTeaser] = useState(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -89,19 +86,6 @@ export function FloatingAIWidget() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
-
-  // Visa teaser vid första besöket
-  useEffect(() => {
-    const hasSeenTeaser = localStorage.getItem('fixco_ai_teaser_seen');
-    if (!hasSeenTeaser) {
-      setShowTeaser(true);
-      const timer = setTimeout(() => {
-        setShowTeaser(false);
-        localStorage.setItem('fixco_ai_teaser_seen', 'true');
-      }, 5000); // Visa i 5 sekunder
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   async function onSend() {
     if (!input.trim() || busy) return;
@@ -210,32 +194,20 @@ export function FloatingAIWidget() {
             <button
               aria-label="Öppna AI-chatt med Fixco"
               onClick={() => setOpen(!open)}
-              className="group fixed right-4 bottom-4 z-[9999] rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 overflow-hidden"
-              style={{
-                padding: showTeaser ? "0.75rem 1.25rem 0.75rem 0.75rem" : "0.875rem",
-                width: showTeaser ? "auto" : "3.5rem",
-                height: "3.5rem"
-              }}
+              className="group fixed right-4 bottom-4 z-[9999] h-14 px-3 rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2.5"
             >
               {/* Pulse animation bakom */}
               <span className="absolute inset-0 animate-ping opacity-20 rounded-full bg-primary-foreground" />
               
-              {/* Innehåll */}
+              {/* Logo och chattikon */}
               <div className="relative flex items-center gap-2">
                 <img 
                   src="/assets/fixco-f-icon-new.png" 
                   alt="Fixco"
                   className="w-7 h-7 object-contain"
                 />
-                <MessageCircle className="w-4 h-4 opacity-90" />
+                <MessageCircle className="w-5 h-5" strokeWidth={2.5} />
               </div>
-              
-              {/* Expanderande teaser-text */}
-              {showTeaser && (
-                <span className="text-sm font-semibold whitespace-nowrap animate-in slide-in-from-left-2">
-                  Fråga mig!
-                </span>
-              )}
             </button>
           </TooltipTrigger>
           <TooltipContent side="left" className="font-medium">
