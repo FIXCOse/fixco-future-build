@@ -7,6 +7,7 @@ import TrustChips from "@/components/TrustChips";
 import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableText } from "@/components/EditableText";
+import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 
 interface ParticleSystemProps {
   count?: number;
@@ -303,11 +304,7 @@ const HeroUltra = () => {
               <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
                 <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   {item.icon === "image" ? (
-                    <img 
-                      src="/assets/fixco-f-icon-black.png" 
-                      alt="Fixco Brand" 
-                      className="h-16 w-16 object-contain mix-blend-multiply"
-                    />
+                    <FixcoFIcon className="h-8 w-8 text-foreground" />
                   ) : (
                     (() => {
                       const IconComponent = item.icon as any;
