@@ -85,6 +85,7 @@ const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
 const SmartHome = lazy(() => import('./pages/SmartHome'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { CopyProvider } from '@/copy/CopyProvider';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -125,12 +126,13 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <SecurityWrapper>
-          <TooltipProvider>
-            <div className="min-h-screen bg-background font-inter">
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
+        <CopyProvider locale="sv">
+          <SecurityWrapper>
+            <TooltipProvider>
+              <div className="min-h-screen bg-background font-inter">
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
                 <ScrollToTop />
                 <Routes>
                   <Route path="/auth" element={<Auth />} />
@@ -287,6 +289,7 @@ const App = () => {
             </div>
           </TooltipProvider>
         </SecurityWrapper>
+        </CopyProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );
