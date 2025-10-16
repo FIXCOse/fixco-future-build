@@ -301,12 +301,12 @@ const HeroUltra = () => {
                     className="h-full"
                   >
               <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
-                <div className={`w-12 h-12 mx-auto ${item.icon !== "image" ? "bg-primary/10 rounded-xl" : ""} flex items-center justify-center mb-4`}>
+                <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   {item.icon === "image" ? (
                     <img 
                       src="/assets/fixco-f-icon-black.png" 
                       alt="Fixco Brand" 
-                      className="h-16 w-16 object-contain brightness-0 invert"
+                      className="h-16 w-16 object-contain mix-blend-multiply"
                     />
                   ) : (
                     (() => {
