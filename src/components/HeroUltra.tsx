@@ -201,7 +201,7 @@ const HeroUltra = () => {
   }, []);
 
   const trustIndicators = [
-    { icon: "image", src: "/assets/fixco-icon.webp", fallback: "/assets/fixco-f-icon-new.png", title: t('hero.trust_quality'), description: t('hero.trust_quality_desc') },
+    { icon: "image", src: "/assets/fixco-f-icon-new.png", fallback: "/assets/fixco-icon.webp", title: t('hero.trust_quality'), description: t('hero.trust_quality_desc') },
     { icon: Award, title: t('hero.trust_price'), description: t('hero.trust_price_desc') },
     { icon: Users, title: t('hero.trust_customers'), description: t('hero.trust_customers_desc') },
     { icon: MapPin, title: t('hero.trust_locations'), description: t('hero.trust_locations_desc') }
