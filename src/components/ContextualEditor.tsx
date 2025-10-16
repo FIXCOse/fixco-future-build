@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { useContentStore } from '@/stores/contentStore';
+import { useCopy } from '@/copy/CopyProvider';
 import { toast } from 'sonner';
 
 interface ContextualEditorProps {
@@ -24,8 +25,10 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
   type = 'text'
 }) => {
   const { isEditMode } = useEditMode();
-  const savedContent = useContentStore((state) => state.content[contentId]);
+  const { locale } = useCopy();
+  const getContent = useContentStore((state) => state.getContent);
   const updateContent = useContentStore((state) => state.updateContent);
+  const savedContent = getContent(contentId, locale);
   
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -33,7 +36,7 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
   const elementRef = useRef<HTMLDivElement>(null);
 
   const currentStyles = useMemo(() => savedContent?.styles || {}, [savedContent?.styles]);
-  const currentValue = useMemo(() => savedContent?.value as string || '', [savedContent?.value]);
+  const currentValue = useMemo(() => (savedContent?.value as string) || '', [savedContent?.value]);
 
   const handleQuickEdit = () => {
     setEditValue(currentValue);
@@ -46,7 +49,7 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
       type,
       value: editValue,
       styles: currentStyles
-    });
+    }, locale);
     setIsEditing(false);
     toast.success('Text uppdaterad!');
   };
@@ -62,7 +65,7 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
       type,
       value: currentValue,
       styles: newStyles
-    });
+    }, locale);
     
     toast.success('Stil uppdaterad!');
   };
@@ -72,16 +75,16 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
       <div 
         className={className} 
         style={{
-          fontSize: currentStyles.fontSize,
-          fontWeight: currentStyles.fontWeight as any,
-          color: currentStyles.color,
-          fontFamily: currentStyles.fontFamily,
-          textAlign: currentStyles.textAlign as any,
-          lineHeight: currentStyles.lineHeight,
-          letterSpacing: currentStyles.letterSpacing,
-          textDecoration: currentStyles.textDecoration as any,
-          textTransform: currentStyles.textTransform as any,
-          fontStyle: currentStyles.fontStyle as any
+          fontSize: (currentStyles as any).fontSize,
+          fontWeight: (currentStyles as any).fontWeight,
+          color: (currentStyles as any).color,
+          fontFamily: (currentStyles as any).fontFamily,
+          textAlign: (currentStyles as any).textAlign,
+          lineHeight: (currentStyles as any).lineHeight,
+          letterSpacing: (currentStyles as any).letterSpacing,
+          textDecoration: (currentStyles as any).textDecoration,
+          textTransform: (currentStyles as any).textTransform,
+          fontStyle: (currentStyles as any).fontStyle
         }}
       >
         {children}
@@ -96,16 +99,16 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        fontSize: currentStyles.fontSize,
-        fontWeight: currentStyles.fontWeight as any,
-        color: currentStyles.color,
-        fontFamily: currentStyles.fontFamily,
-        textAlign: currentStyles.textAlign as any,
-        lineHeight: currentStyles.lineHeight,
-        letterSpacing: currentStyles.letterSpacing,
-        textDecoration: currentStyles.textDecoration as any,
-        textTransform: currentStyles.textTransform as any,
-        fontStyle: currentStyles.fontStyle as any
+        fontSize: (currentStyles as any).fontSize,
+        fontWeight: (currentStyles as any).fontWeight,
+        color: (currentStyles as any).color,
+        fontFamily: (currentStyles as any).fontFamily,
+        textAlign: (currentStyles as any).textAlign,
+        lineHeight: (currentStyles as any).lineHeight,
+        letterSpacing: (currentStyles as any).letterSpacing,
+        textDecoration: (currentStyles as any).textDecoration,
+        textTransform: (currentStyles as any).textTransform,
+        fontStyle: (currentStyles as any).fontStyle
       }}
     >
       {/* Content or Edit Input */}
@@ -159,7 +162,7 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
                     <div>
                       <Label>Storlek</Label>
                       <Slider
-                        value={[parseInt(currentStyles.fontSize?.replace('px', '') || '16')]}
+                        value={[parseInt((currentStyles as any).fontSize?.replace('px', '') || '16')]}
                         onValueChange={([value]) => updateStyle('fontSize', value)}
                         min={8}
                         max={72}
@@ -170,7 +173,7 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
                     <div>
                       <Label>Typsnitt</Label>
                       <Select
-                        value={currentStyles.fontFamily || 'inherit'}
+                        value={(currentStyles as any).fontFamily || 'inherit'}
                         onValueChange={(value) => updateStyle('fontFamily', value)}
                       >
                         <SelectTrigger>
@@ -202,12 +205,12 @@ const ContextualEditorComponent: React.FC<ContextualEditorProps> = ({
                     <div className="flex gap-2">
                       <Input
                         type="color"
-                        value={currentStyles.color || '#000000'}
+                        value={(currentStyles as any).color || '#000000'}
                         onChange={(e) => updateStyle('color', e.target.value)}
                         className="w-12 h-8 p-1"
                       />
                       <Input
-                        value={currentStyles.color || '#000000'}
+                        value={(currentStyles as any).color || '#000000'}
                         onChange={(e) => updateStyle('color', e.target.value)}
                         placeholder="#000000"
                       />

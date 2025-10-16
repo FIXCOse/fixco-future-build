@@ -3,6 +3,7 @@ import { useEditMode } from '@/contexts/EditModeContext';
 import { ContentEditor } from './ContentEditor';
 import { AdvancedTextEditor } from './AdvancedTextEditor';
 import { useContentStore } from '@/stores/contentStore';
+import { useCopy } from '@/copy/CopyProvider';
 
 interface EditableTextProps {
   id: string;
@@ -26,20 +27,21 @@ export const EditableText: React.FC<EditableTextProps> = ({
   children
 }) => {
   const { isEditMode } = useEditMode();
+  const { locale } = useCopy();
   const [content, setContent] = useState(initialContent);
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const { updateContent, getContent } = useContentStore();
 
   // Update content when initialContent changes (for translations)
   React.useEffect(() => {
-    const savedContent = getContent(id);
+    const savedContent = getContent(id, locale);
     if (!savedContent) {
       setContent(initialContent);
     }
-  }, [initialContent, id, getContent]);
+  }, [initialContent, id, locale, getContent]);
 
-  // Load saved content and styles
-  const savedContent = getContent(id);
+  // Load saved content and styles for current locale
+  const savedContent = getContent(id, locale);
   const displayContent = savedContent?.value as string || content;
   const textStyles = savedContent?.styles || {};
 
@@ -48,15 +50,15 @@ export const EditableText: React.FC<EditableTextProps> = ({
     setContent(newText);
     
     try {
-      // Save to store and database
+      // Save to store and database with locale
       await updateContent(id, {
         id,
         type,
         value: newText,
         styles: textStyles
-      });
+      }, locale);
       
-      console.log('Content saved successfully to database:', id);
+      console.log('Content saved successfully to database:', id, 'locale:', locale);
     } catch (error) {
       console.error('Failed to save content:', error);
     }
@@ -70,15 +72,15 @@ export const EditableText: React.FC<EditableTextProps> = ({
     setContent(text);
     
     try {
-      // Save to store and database with styles
+      // Save to store and database with styles and locale
       await updateContent(id, {
         id,
         type,
         value: text,
         styles
-      });
+      }, locale);
       
-      console.log('Advanced content saved successfully to database:', id);
+      console.log('Advanced content saved successfully to database:', id, 'locale:', locale);
     } catch (error) {
       console.error('Failed to save advanced content:', error);
     }

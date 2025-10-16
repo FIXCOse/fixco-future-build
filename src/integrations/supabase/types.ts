@@ -2205,6 +2205,7 @@ export type Database = {
           content_type: string
           created_at: string
           id: string
+          locale: string | null
           styles: Json | null
           updated_at: string
           updated_by: string | null
@@ -2215,6 +2216,7 @@ export type Database = {
           content_type: string
           created_at?: string
           id?: string
+          locale?: string | null
           styles?: Json | null
           updated_at?: string
           updated_by?: string | null
@@ -2225,6 +2227,7 @@ export type Database = {
           content_type?: string
           created_at?: string
           id?: string
+          locale?: string | null
           styles?: Json | null
           updated_at?: string
           updated_by?: string | null

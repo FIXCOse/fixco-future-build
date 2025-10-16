@@ -53,14 +53,14 @@ interface GlobalSettings {
 }
 
 interface ContentStore {
-  content: Record<string, ContentItem>;
+  content: Record<string, Record<string, ContentItem>>; // locale -> id -> content
   sections: Record<string, SectionData>;
   globalSettings: GlobalSettings;
   isLoading: boolean;
   
   // Content methods
-  updateContent: (id: string, data: Partial<ContentItem>) => Promise<void>;
-  getContent: (id: string) => ContentItem | undefined;
+  updateContent: (id: string, data: Partial<ContentItem>, locale?: string) => Promise<void>;
+  getContent: (id: string, locale?: string) => ContentItem | undefined;
   
   // Section methods
   updateSection: (id: string, data: Partial<SectionData>) => Promise<void>;
@@ -71,7 +71,7 @@ interface ContentStore {
   
   // Database sync methods
   loadContent: () => Promise<void>;
-  saveContentToDatabase: (id: string, data: ContentItem) => Promise<void>;
+  saveContentToDatabase: (id: string, data: ContentItem, locale: string) => Promise<void>;
   
   // Utility methods
   reset: () => void;
@@ -97,14 +97,15 @@ const initialGlobalSettings: GlobalSettings = {
 export const useContentStore = create<ContentStore>()(
   persist(
     (set, get) => ({
-      content: {},
+      content: { sv: {}, en: {} },
       sections: {},
       globalSettings: initialGlobalSettings,
       isLoading: false,
       
-      updateContent: async (id: string, data: Partial<ContentItem>) => {
+      updateContent: async (id: string, data: Partial<ContentItem>, locale: string = 'sv') => {
+        const currentLocaleContent = get().content[locale] || {};
         const contentItem: ContentItem = {
-          ...get().content[id],
+          ...currentLocaleContent[id],
           ...data,
           id
         };
@@ -113,16 +114,61 @@ export const useContentStore = create<ContentStore>()(
         set((state) => ({
           content: {
             ...state.content,
-            [id]: contentItem
+            [locale]: {
+              ...(state.content[locale] || {}),
+              [id]: contentItem
+            }
           }
         }));
 
         // Save to database
-        await get().saveContentToDatabase(id, contentItem);
+        await get().saveContentToDatabase(id, contentItem, locale);
+
+        // If saving Swedish content, trigger automatic translation
+        if (locale === 'sv' && typeof contentItem.value === 'string') {
+          console.log('Triggering automatic translation for:', id);
+          try {
+            const { data: translationData, error } = await supabase.functions.invoke('translate-site-content', {
+              body: {
+                content_id: id,
+                sv_text: contentItem.value,
+                content_type: contentItem.type,
+                styles: contentItem.styles
+              }
+            });
+
+            if (error) {
+              console.error('Translation error:', error);
+            } else {
+              console.log('Automatic translation completed:', translationData);
+              
+              // Update English content in store
+              if (translationData?.en_text) {
+                set((state) => ({
+                  content: {
+                    ...state.content,
+                    en: {
+                      ...(state.content.en || {}),
+                      [id]: {
+                        id,
+                        type: contentItem.type,
+                        value: translationData.en_text,
+                        styles: contentItem.styles
+                      }
+                    }
+                  }
+                }));
+              }
+            }
+          } catch (error) {
+            console.error('Failed to trigger automatic translation:', error);
+          }
+        }
       },
       
-      getContent: (id: string) => {
-        return get().content[id];
+      getContent: (id: string, locale: string = 'sv') => {
+        const localeContent = get().content[locale] || {};
+        return localeContent[id];
       },
       
       updateSection: async (id: string, data: Partial<SectionData>) => {
@@ -146,7 +192,7 @@ export const useContentStore = create<ContentStore>()(
           type: 'section' as any,
           value: JSON.stringify(sectionData),
           styles: {}
-        });
+        }, 'sv');
       },
       
       getSection: (id: string) => {
@@ -170,7 +216,7 @@ export const useContentStore = create<ContentStore>()(
           type: 'settings' as any,
           value: JSON.stringify(newSettings),
           styles: {}
-        });
+        }, 'sv');
       },
 
       loadContent: async () => {
@@ -186,11 +232,13 @@ export const useContentStore = create<ContentStore>()(
             return;
           }
 
-          const content: Record<string, ContentItem> = {};
+          const content: Record<string, Record<string, ContentItem>> = { sv: {}, en: {} };
           const sections: Record<string, SectionData> = {};
           let globalSettings = initialGlobalSettings;
 
           contentData?.forEach((item) => {
+            const locale = item.locale || 'sv';
+            
             if (item.content_id === 'global_settings') {
               try {
                 globalSettings = JSON.parse(item.value as string);
@@ -205,7 +253,10 @@ export const useContentStore = create<ContentStore>()(
                 console.error('Error parsing section data:', error);
               }
             } else {
-              content[item.content_id] = {
+              if (!content[locale]) {
+                content[locale] = {};
+              }
+              content[locale][item.content_id] = {
                 id: item.content_id,
                 type: item.content_type as any,
                 value: typeof item.value === 'string' ? item.value : JSON.stringify(item.value),
@@ -226,7 +277,7 @@ export const useContentStore = create<ContentStore>()(
         }
       },
 
-      saveContentToDatabase: async (id: string, data: ContentItem) => {
+      saveContentToDatabase: async (id: string, data: ContentItem, locale: string) => {
         try {
           const { error } = await supabase
             .from('site_content')
@@ -234,9 +285,10 @@ export const useContentStore = create<ContentStore>()(
               content_id: id,
               content_type: data.type,
               value: data.value,
-              styles: data.styles
+              styles: data.styles,
+              locale: locale
             }, {
-              onConflict: 'content_id'
+              onConflict: 'content_id,locale'
             });
 
           if (error) {
@@ -244,7 +296,7 @@ export const useContentStore = create<ContentStore>()(
             throw error;
           }
 
-          console.log('Content saved successfully:', id);
+          console.log('Content saved successfully:', id, 'locale:', locale);
         } catch (error) {
           console.error('Failed to save content to database:', error);
           throw error;
@@ -253,7 +305,7 @@ export const useContentStore = create<ContentStore>()(
       
       reset: () => {
         set({
-          content: {},
+          content: { sv: {}, en: {} },
           sections: {},
           globalSettings: initialGlobalSettings
         });
