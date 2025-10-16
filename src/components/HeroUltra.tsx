@@ -300,21 +300,21 @@ const HeroUltra = () => {
                     key={item.title}
                     className="h-full"
                   >
-                    <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
-                      <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                        {item.icon === "image" ? (
-                          <img 
-                            src={item.src} 
-                            alt="Fixco Brand" 
-                            className="h-8 w-8 object-contain opacity-90"
-                          />
-                        ) : (
-                          (() => {
-                            const IconComponent = item.icon as any;
-                            return <IconComponent className="h-6 w-6 text-primary" />;
-                          })()
-                        )}
-                      </div>
+              <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
+                <div className={`w-12 h-12 mx-auto ${item.icon !== "image" ? "bg-primary/10 rounded-xl" : ""} flex items-center justify-center mb-4`}>
+                  {item.icon === "image" ? (
+                    <img 
+                      src={item.src} 
+                      alt="Fixco Brand" 
+                      className="h-16 w-16 object-contain"
+                    />
+                  ) : (
+                    (() => {
+                      const IconComponent = item.icon as any;
+                      return <IconComponent className="h-6 w-6 text-primary" />;
+                    })()
+                  )}
+                </div>
                       <EditableText
                         id={`trust-${index}-title`}
                         initialContent={item.title}
