@@ -287,6 +287,10 @@ export type CopyKey =
    | 'hero.subtitle' | 'hero.fixco_handles' | 'hero.everything'
    | 'hero.cta_request_quote' | 'hero.cta_see_services' | 'hero.trust_rot' | 'hero.trust_rot_desc'
    | 'hero.trust_coverage' | 'hero.trust_coverage_desc' | 'hero.trust_start' | 'hero.trust_start_desc'
+   | 'hero.trust_quality' | 'hero.trust_quality_desc'
+   | 'hero.trust_price' | 'hero.trust_price_desc'
+   | 'hero.trust_customers' | 'hero.trust_customers_desc'
+   | 'hero.trust_locations' | 'hero.trust_locations_desc'
    | 'comparison.price_title' | 'comparison.price_rot_desc' | 'comparison.price_no_rot_desc'
    // Additional comparison terms
    | 'comparison.customer_satisfaction' | 'comparison.customer_satisfaction_desc'
