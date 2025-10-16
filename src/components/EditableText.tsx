@@ -35,7 +35,8 @@ export const EditableText: React.FC<EditableTextProps> = ({
   // Update content when initialContent changes (for translations)
   React.useEffect(() => {
     const savedContent = getContent(id, locale);
-    if (!savedContent) {
+    // Always use initialContent if there's no explicit user edit
+    if (!savedContent || !savedContent.styles?.userEdited) {
       setContent(initialContent);
     }
   }, [initialContent, id, locale, getContent]);
@@ -50,12 +51,12 @@ export const EditableText: React.FC<EditableTextProps> = ({
     setContent(newText);
     
     try {
-      // Save to store and database with locale
+      // Save to store and database with locale and mark as user-edited
       await updateContent(id, {
         id,
         type,
         value: newText,
-        styles: textStyles
+        styles: { ...textStyles, userEdited: true }
       }, locale);
       
       console.log('Content saved successfully to database:', id, 'locale:', locale);
@@ -72,12 +73,12 @@ export const EditableText: React.FC<EditableTextProps> = ({
     setContent(text);
     
     try {
-      // Save to store and database with styles and locale
+      // Save to store and database with styles and locale, mark as user-edited
       await updateContent(id, {
         id,
         type,
         value: text,
-        styles
+        styles: { ...styles, userEdited: true }
       }, locale);
       
       console.log('Advanced content saved successfully to database:', id, 'locale:', locale);

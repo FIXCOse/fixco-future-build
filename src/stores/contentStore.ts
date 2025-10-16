@@ -17,6 +17,7 @@ interface ContentItem {
     textDecoration?: string;
     textTransform?: string;
     fontStyle?: string;
+    userEdited?: boolean;
   };
   className?: string;
 }
@@ -75,6 +76,7 @@ interface ContentStore {
   
   // Utility methods
   reset: () => void;
+  clearHeroContent: () => void;
   exportData: () => string;
   importData: (data: string) => void;
 }
@@ -304,11 +306,36 @@ export const useContentStore = create<ContentStore>()(
       },
       
       reset: () => {
+        localStorage.removeItem('fixco-content-store');
         set({
           content: { sv: {}, en: {} },
           sections: {},
           globalSettings: initialGlobalSettings
         });
+      },
+      
+      clearHeroContent: () => {
+        const store = localStorage.getItem('fixco-content-store');
+        if (store) {
+          try {
+            const parsed = JSON.parse(store);
+            if (parsed?.state?.content?.sv?.['hero-title']) {
+              delete parsed.state.content.sv['hero-title'];
+            }
+            if (parsed?.state?.content?.sv?.['hero-subtitle']) {
+              delete parsed.state.content.sv['hero-subtitle'];
+            }
+            if (parsed?.state?.content?.en?.['hero-title']) {
+              delete parsed.state.content.en['hero-title'];
+            }
+            if (parsed?.state?.content?.en?.['hero-subtitle']) {
+              delete parsed.state.content.en['hero-subtitle'];
+            }
+            localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
+          } catch (error) {
+            console.error('Failed to clear hero content:', error);
+          }
+        }
       },
       
       exportData: () => {

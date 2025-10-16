@@ -160,6 +160,46 @@ const HeroUltra = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Clear old hero content from localStorage on first load
+  useEffect(() => {
+    const hasCleared = sessionStorage.getItem('hero-content-cleared');
+    if (!hasCleared) {
+      const store = localStorage.getItem('fixco-content-store');
+      if (store) {
+        try {
+          const parsed = JSON.parse(store);
+          let needsReload = false;
+          
+          if (parsed?.state?.content?.sv?.['hero-title']) {
+            delete parsed.state.content.sv['hero-title'];
+            needsReload = true;
+          }
+          if (parsed?.state?.content?.sv?.['hero-subtitle']) {
+            delete parsed.state.content.sv['hero-subtitle'];
+            needsReload = true;
+          }
+          if (parsed?.state?.content?.en?.['hero-title']) {
+            delete parsed.state.content.en['hero-title'];
+            needsReload = true;
+          }
+          if (parsed?.state?.content?.en?.['hero-subtitle']) {
+            delete parsed.state.content.en['hero-subtitle'];
+            needsReload = true;
+          }
+          
+          if (needsReload) {
+            localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
+            sessionStorage.setItem('hero-content-cleared', 'true');
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error('Failed to clear hero content:', error);
+        }
+      }
+      sessionStorage.setItem('hero-content-cleared', 'true');
+    }
+  }, []);
+
   const trustIndicators = [
     { icon: "image", src: "/assets/fixco-icon.webp", fallback: "/assets/fixco-f-icon-new.png", title: "Fixco Kvalitet", description: "Vårt löfte till dig" },
     { icon: Award, title: "Lägst pris (ROT)", description: "480 kr/h efter ROT-avdrag" },
