@@ -304,9 +304,9 @@ const HeroUltra = () => {
                 <div className={`w-12 h-12 mx-auto ${item.icon !== "image" ? "bg-primary/10 rounded-xl" : ""} flex items-center justify-center mb-4`}>
                   {item.icon === "image" ? (
                     <img 
-                      src={item.src} 
+                      src="/assets/fixco-f-icon-black.png" 
                       alt="Fixco Brand" 
-                      className="h-16 w-16 object-contain"
+                      className="h-16 w-16 object-contain brightness-0 invert"
                     />
                   ) : (
                     (() => {
