@@ -1,17 +1,23 @@
+import { useTheme } from "@/theme/useTheme";
+
 interface FixcoFIconProps {
   className?: string;
 }
 
 export const FixcoFIcon = ({ className = "" }: FixcoFIconProps) => {
+  const { theme } = useTheme();
+  
+  // Light theme = black icon, Dark/Ocean themes = white icon
+  const filterStyle = theme === 'light' 
+    ? 'brightness(0) saturate(100%)' // Makes it black
+    : 'brightness(0) invert(1)'; // Makes it white
+  
   return (
-    <svg
-      viewBox="0 0 100 100"
-      fill="currentColor"
+    <img 
+      src="/assets/fixco-f-icon-black.png" 
+      alt="Fixco Logo" 
       className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Fixco Logo"
-    >
-      <path d="M25 15 H80 V30 H40 V42 H72 V57 H40 V85 H25 Z" />
-    </svg>
+      style={{ filter: filterStyle }}
+    />
   );
 };
