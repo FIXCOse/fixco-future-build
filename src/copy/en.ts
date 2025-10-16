@@ -579,7 +579,7 @@ export const en: Record<CopyKey, string> = {
   'home.services.subtitle': 'From small repairs to large projects – we handle everything professionally',
   'home.services.viewAll': 'View all services',
   'home.hero.title': 'Construction & property services for private, HOA & business',
-  'home.hero.subtitle': 'Expert solutions for all property needs – from electrical to painting. 15,000+ satisfied customers. Fixed pricing. ROT/RUT guaranteed. Free quote within 24h.',
+  'home.hero.subtitle': 'Expert solutions for all property needs – from electrical to painting. Fixed pricing. ROT/RUT guaranteed. Free quote within 24h.',
   'home.hero.primaryCta': 'Request free quote',
   'home.finalCta.title': 'Ready to start your project?',
   'home.finalCta.subtitle': 'Get a free quote within 24 hours and see why thousands of customers choose Fixco',

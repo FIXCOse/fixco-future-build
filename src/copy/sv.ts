@@ -579,7 +579,7 @@ export const sv: Record<CopyKey, string> = {
   'home.services.subtitle': 'Från små reparationer till stora projekt – vi hanterar allt professionellt',
   'home.services.viewAll': 'Se alla tjänster',
   'home.hero.title': 'Bygg- & fastighetstjänster för privat, BRF & företag',
-  'home.hero.subtitle': 'Expertlösningar för alla fastighetsbehov – från el till målning. 15 000+ nöjda kunder. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.',
+  'home.hero.subtitle': 'Expertlösningar för alla fastighetsbehov – från el till målning. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.',
   'home.hero.primaryCta': 'Begär kostnadsfri offert',
   'home.finalCta.title': 'Redo att starta ditt projekt?',
   'home.finalCta.subtitle': 'Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco',
