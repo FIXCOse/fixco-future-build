@@ -7,14 +7,14 @@ interface FixcoFIconProps {
 export const FixcoFIcon = ({ className = "" }: FixcoFIconProps) => {
   const { theme } = useTheme();
   
-  // Light theme = black icon, Dark/Ocean themes = white icon
+  // Light theme = make white F black, Dark/Ocean themes = keep white F
   const filterStyle = theme === 'light' 
-    ? 'brightness(0) saturate(100%)' // Makes it black
-    : 'brightness(0) invert(1)'; // Makes it white
+    ? 'brightness(0) saturate(100%)' // Makes white F black
+    : 'none'; // Keep white F as is
   
   return (
     <img 
-      src="/assets/fixco-f-icon-black.png" 
+      src="/assets/fixco-icon.webp" 
       alt="Fixco Logo" 
       className={className}
       style={{ filter: filterStyle }}
