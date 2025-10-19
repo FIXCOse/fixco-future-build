@@ -134,17 +134,17 @@ const ComparisonUltra = () => {
         <div className="absolute inset-0 hero-background" />
         
         {/* Simplified F Watermark - Reduced DOM nodes */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
-              <div className="absolute top-20 left-20 w-24 h-24 rotate-12 animate-pulse" style={{ animationDuration: '5s' }} aria-hidden="true">
-                <FixcoFIcon className="w-full h-full opacity-30" />
-              </div>
-              <div className="absolute top-1/2 left-1/4 w-20 h-20 rotate-45 animate-pulse" style={{ animationDuration: '6s', animationDelay: '0.8s' }} aria-hidden="true">
-                <FixcoFIcon className="w-full h-full opacity-20" />
-              </div>
-            </div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+          <div className="absolute top-20 left-20 w-24 h-24 rotate-12 animate-pulse" style={{ animationDuration: '5s' }} aria-hidden="true">
+            <FixcoFIcon className="w-full h-full" disableFilter={true} />
+          </div>
+          <div className="absolute top-1/2 left-1/4 w-20 h-20 rotate-45 animate-pulse" style={{ animationDuration: '6s', animationDelay: '0.8s' }} aria-hidden="true">
+            <FixcoFIcon className="w-full h-full" disableFilter={true} />
+          </div>
+        </div>
         
-        {/* ULTRA: Subtle background effects */}
-        {ultraEnabled && capabilities.prefersMotion && (
+        {/* ULTRA: Subtle background effects - Always visible */}
+        {capabilities.prefersMotion ? (
           <motion.div
             className="absolute inset-0"
             animate={{
@@ -155,6 +155,13 @@ const ComparisonUltra = () => {
               ]
             }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+        ) : (
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(circle at 50% 50%, hsl(280 100% 60% / 0.08) 0%, transparent 40%)"
+            }}
           />
         )}
       </div>
