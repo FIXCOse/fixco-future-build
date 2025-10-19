@@ -304,7 +304,7 @@ const HeroUltra = () => {
               <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
                 <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   {item.icon === "image" ? (
-                    <FixcoFIcon className="h-8 w-8 text-foreground" />
+                    <FixcoFIcon className="h-10 w-10 text-foreground" />
                   ) : (
                     (() => {
                       const IconComponent = item.icon as any;

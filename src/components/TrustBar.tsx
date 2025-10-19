@@ -1,4 +1,5 @@
 import { Shield, MapPin, Clock, Award, CheckCircle, Users } from 'lucide-react';
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 const TrustBar = () => {
   const trustItems = [
@@ -42,9 +43,7 @@ const TrustBar = () => {
                     className="flex items-center space-x-2 mx-8 whitespace-nowrap"
                   >
                     {item.icon === "image" ? (
-                 <div className="w-5 h-5 bg-primary/10 rounded-md flex items-center justify-center shrink-0">
-                   <div className="w-3 h-3 bg-primary/30 rounded-sm" aria-label="Fixco Brand" />
-                 </div>
+                      <FixcoFIcon className="h-5 w-5 shrink-0" />
                     ) : (
                       (() => {
                         const IconComponent = item.icon as any;
