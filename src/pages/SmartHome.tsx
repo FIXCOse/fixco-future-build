@@ -26,6 +26,7 @@ import {
 import { toast } from 'sonner';
 import { useSmartProducts, SortOption } from '@/hooks/useSmartProducts';
 import { SmartProductSortFilter } from '@/components/SmartProductSortFilter';
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 interface CategoryFilter {
   id: string;
@@ -129,18 +130,12 @@ export const SmartHome = () => {
           
           {/* F Watermark Background Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute top-16 right-16 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
-              style={{ animationDuration: '5s' }}
-            />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute bottom-16 left-16 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
-              style={{ animationDuration: '6s', animationDelay: '2s' }}
-            />
+            <div className="absolute top-16 right-16 w-24 h-24 rotate-12 animate-pulse" style={{ animationDuration: '5s' }}>
+              <FixcoFIcon className="w-full h-full opacity-30" />
+            </div>
+            <div className="absolute bottom-16 left-16 w-20 h-20 -rotate-6 animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }}>
+              <FixcoFIcon className="w-full h-full opacity-25" />
+            </div>
           </div>
 
           <div className="container mx-auto max-w-6xl relative">

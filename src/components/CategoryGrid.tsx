@@ -3,6 +3,7 @@ import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import type { CopyKey } from '@/copy/keys';
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -43,11 +44,7 @@ const CategoryGrid = () => {
             >
               {/* F Brand Badge - Bottom Right */}
               <div className="absolute bottom-3 right-3 w-7 h-7 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-black/10 dark:bg-black/40 rounded-md p-1">
-                <img 
-                  src="/assets/fixco-f-icon-new.png" 
-                  alt="Fixco"
-                  className="w-full h-full object-contain"
-                />
+                <FixcoFIcon className="w-full h-full" />
               </div>
 
               {/* Icon */}

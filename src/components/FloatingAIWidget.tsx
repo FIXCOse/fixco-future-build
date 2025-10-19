@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 // Tjänst-mappning för snabblänkar
 const SERVICE_LINKS: Record<string, string> = {
@@ -201,11 +202,7 @@ export function FloatingAIWidget() {
               
               {/* Logo och chattikon */}
               <div className="relative flex items-center gap-2">
-                <img 
-                  src="/assets/fixco-f-icon-new.png" 
-                  alt="Fixco"
-                  className="w-7 h-7 object-contain"
-                />
+                <FixcoFIcon className="w-7 h-7" />
                 <MessageCircle className="w-5 h-5" strokeWidth={2.5} />
               </div>
             </button>

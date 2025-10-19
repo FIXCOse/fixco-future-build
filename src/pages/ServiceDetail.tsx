@@ -21,6 +21,7 @@ import {
   MapPin,
   Star
 } from "lucide-react";
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 const ServiceDetail = () => {
   const { slug } = useParams();
@@ -112,18 +113,12 @@ const ServiceDetail = () => {
           
           {/* F Watermark Background Elements - More Visible */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute top-20 right-20 w-16 h-16 object-contain rotate-12 opacity-35 animate-pulse"
-              style={{ animationDuration: '4s' }}
-            />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute bottom-10 left-20 w-12 h-12 object-contain -rotate-12 opacity-25 animate-pulse"
-              style={{ animationDuration: '5s', animationDelay: '1s' }}
-            />
+            <div className="absolute top-20 right-20 w-16 h-16 rotate-12 animate-pulse" style={{ animationDuration: '4s' }}>
+              <FixcoFIcon className="w-full h-full opacity-35" />
+            </div>
+            <div className="absolute bottom-10 left-20 w-12 h-12 -rotate-12 animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+              <FixcoFIcon className="w-full h-full opacity-25" />
+            </div>
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
@@ -132,11 +127,7 @@ const ServiceDetail = () => {
               <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6 relative">
                 {/* F Brand Badge */}
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
-                  <img 
-                    src="/assets/fixco-f-icon-new.png" 
-                    alt="Fixco" 
-                    className="h-3 w-3 object-contain"
-                  />
+                  <FixcoFIcon className="h-3 w-3" />
                 </div>
                 <IconComponent className="h-10 w-10 text-primary" />
               </div>

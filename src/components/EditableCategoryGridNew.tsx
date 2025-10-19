@@ -25,6 +25,7 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { toast } from 'sonner';
 import type { CopyKey } from '@/copy/keys';
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -109,11 +110,7 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
           style={{ animationDelay: `${index * 0.05}s` }}
         >
           <div className="absolute bottom-3 right-3 w-7 h-7 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-black/10 dark:bg-black/40 rounded-md p-1">
-            <img 
-              src="/assets/fixco-f-icon-new.png" 
-              alt="Fixco" 
-              className="w-full h-full object-contain"
-            />
+            <FixcoFIcon className="w-full h-full" />
           </div>
 
            <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>
@@ -184,11 +181,7 @@ const EditableCategoryGridNew = () => {
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="absolute bottom-3 right-3 w-7 h-7 flex items-center justify-center hover:scale-110 transition-all duration-300 z-10 bg-black/10 dark:bg-black/40 rounded-md p-1">
-                  <img 
-                    src="/assets/fixco-f-icon-new.png" 
-                    alt="Fixco" 
-                    className="w-full h-full object-contain"
-                  />
+                  <FixcoFIcon className="w-full h-full" />
                 </div>
 
                 <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${getGradientForService(service.slug)}`}>

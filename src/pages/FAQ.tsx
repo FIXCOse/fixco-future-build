@@ -6,6 +6,7 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 const FAQ = () => {
   const { t, locale } = useCopy();
@@ -84,18 +85,12 @@ const FAQ = () => {
           <section className="pt-32 pb-20 hero-background relative">
             {/* F Watermark Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-              <img 
-                src="/assets/fixco-f-icon-new.png"
-                alt="" 
-                className="absolute top-20 right-20 w-24 h-24 object-contain rotate-12 opacity-30 animate-pulse"
-                style={{ animationDuration: '5s' }}
-              />
-              <img 
-                src="/assets/fixco-f-icon-new.png"
-                alt="" 
-                className="absolute bottom-20 left-20 w-20 h-20 object-contain -rotate-6 opacity-25 animate-pulse"
-                style={{ animationDuration: '4s', animationDelay: '2s' }}
-              />
+              <div className="absolute top-20 right-20 w-24 h-24 rotate-12 animate-pulse" style={{ animationDuration: '5s' }}>
+                <FixcoFIcon className="w-full h-full opacity-30" />
+              </div>
+              <div className="absolute bottom-20 left-20 w-20 h-20 -rotate-6 animate-pulse" style={{ animationDuration: '4s', animationDelay: '2s' }}>
+                <FixcoFIcon className="w-full h-full opacity-25" />
+              </div>
             </div>
 
             <div className="container mx-auto px-4">
@@ -153,11 +148,7 @@ const FAQ = () => {
                     <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle mr-4 relative">
                       {/* F Brand Badge on Category Headers */}
                       <div className="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center z-10">
-                        <img 
-                          src="/assets/fixco-f-icon-new.png"
-                          alt="Fixco" 
-                          className="h-6 w-6 object-contain opacity-90"
-                        />
+                        <FixcoFIcon className="h-6 w-6" />
                       </div>
                       <CategoryIcon className="h-8 w-8 text-primary" />
                     </div>
@@ -205,18 +196,12 @@ const FAQ = () => {
         <section className="py-20 gradient-primary-subtle relative">
           {/* F Watermark Background Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute top-10 left-10 w-20 h-20 object-contain rotate-12 opacity-30 animate-pulse"
-              style={{ animationDuration: '4s' }}
-            />
-            <img 
-              src="/assets/fixco-f-icon-new.png"
-              alt="" 
-              className="absolute bottom-10 right-10 w-16 h-16 object-contain -rotate-6 opacity-25 animate-pulse"
-              style={{ animationDuration: '5s', animationDelay: '1.5s' }}
-            />
+            <div className="absolute top-10 left-10 w-20 h-20 rotate-12 animate-pulse" style={{ animationDuration: '4s' }}>
+              <FixcoFIcon className="w-full h-full opacity-30" />
+            </div>
+            <div className="absolute bottom-10 right-10 w-16 h-16 -rotate-6 animate-pulse" style={{ animationDuration: '5s', animationDelay: '1.5s' }}>
+              <FixcoFIcon className="w-full h-full opacity-25" />
+            </div>
           </div>
 
           <div className="container mx-auto px-4">
@@ -233,11 +218,7 @@ const FAQ = () => {
                   <div className="relative">
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                      <img 
-                        src="/assets/fixco-f-icon-new.png"
-                        alt="Fixco" 
-                        className="h-6 w-6 object-contain opacity-90"
-                      />
+                      <FixcoFIcon className="h-6 w-6" />
                     </div>
                     <Button size="lg" className="w-full gradient-primary text-primary-foreground font-bold">
                       {t('pages.faq.sendMessage')}
@@ -248,11 +229,7 @@ const FAQ = () => {
                   <div className="relative">
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                      <img 
-                        src="/assets/fixco-f-icon-new.png" 
-                        alt="Fixco" 
-                        className="h-6 w-6 object-contain opacity-90"
-                      />
+                      <FixcoFIcon className="h-6 w-6" />
                     </div>
                     <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
                       {t('pages.faq.callUs')}

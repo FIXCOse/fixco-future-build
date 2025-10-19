@@ -8,6 +8,7 @@ import useCountUpOnce from "@/hooks/useCountUpOnce";
 import useGlobalROT from "@/hooks/useGlobalROT";
 import useGlobalPricing from "@/hooks/useGlobalPricing";
 import { useCopy } from "@/copy/CopyProvider";
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -276,11 +277,7 @@ const ComparisonUltra = () => {
                 <div className="text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                     <div className="w-10 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
-                      <img 
-                        src="/assets/fixco-f-icon-new.png"
-                        alt="Fixco" 
-                        className="h-6 w-6 object-contain opacity-90"
-                      />
+                      <FixcoFIcon className="h-6 w-6" />
                     </div>
                     <h3 className="text-lg md:text-xl font-bold gradient-text">
                       {t('comparison.wins_all')} {metrics.length}/{metrics.length}
