@@ -8,6 +8,7 @@ import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableText } from "@/components/EditableText";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
+import { AnimatedFixcoFIcon } from "@/components/icons/AnimatedFixcoFIcon";
 
 interface ParticleSystemProps {
   count?: number;
@@ -215,18 +216,22 @@ const HeroUltra = () => {
           {/* Base gradient (always visible) */}
           <div className="absolute inset-0 hero-background" />
           
-        {/* Simplified F Watermark - Using CSS for performance */}
+        {/* Simplified F Watermark - Using static F icons */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
           <div 
-            className="absolute top-1/4 right-12 w-28 h-28 bg-primary/20 rotate-45 animate-pulse hero-f-icon"
+            className="absolute top-1/4 right-12 w-28 h-28 rotate-45 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '2s' }}
             aria-hidden="true"
-          />
+          >
+            <FixcoFIcon className="w-full h-full" />
+          </div>
           <div 
-            className="absolute bottom-1/3 left-12 w-20 h-20 bg-primary/25 -rotate-6 animate-pulse hero-f-icon"
+            className="absolute bottom-1/3 left-12 w-20 h-20 -rotate-6 animate-pulse"
             style={{ animationDuration: '4.5s', animationDelay: '0.5s' }}
             aria-hidden="true"
-          />
+          >
+            <FixcoFIcon className="w-full h-full" />
+          </div>
         </div>
           
           {/* Animated gradients */}
@@ -304,7 +309,7 @@ const HeroUltra = () => {
               <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
                 <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   {item.icon === "image" ? (
-                    <FixcoFIcon className="h-10 w-10 text-foreground" />
+                    <AnimatedFixcoFIcon className="h-10 w-10" />
                   ) : (
                     (() => {
                       const IconComponent = item.icon as any;
