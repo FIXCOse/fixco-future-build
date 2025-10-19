@@ -7,17 +7,17 @@ interface FixcoFIconProps {
 export const FixcoFIcon = ({ className = "" }: FixcoFIconProps) => {
   const { theme } = useTheme();
   
-  // Light theme = make white F black, Dark/Ocean themes = keep white F
-  const filterStyle = theme === 'light' 
-    ? 'brightness(0) saturate(100%)' // Makes white F black
-    : 'none'; // Keep white F as is
+  // Light theme = black F, Dark/Ocean themes = white F
+  const fillColor = theme === 'light' ? 'currentColor' : 'currentColor';
   
   return (
-    <img 
-      src="/assets/fixco-icon.webp" 
-      alt="Fixco Logo" 
+    <svg 
+      viewBox="0 0 100 100" 
       className={className}
-      style={{ filter: filterStyle }}
-    />
+      fill={fillColor}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M20 20h60v15H35v10h35v15H35v20H20V20z" />
+    </svg>
   );
 };
