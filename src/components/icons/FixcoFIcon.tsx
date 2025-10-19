@@ -1,4 +1,6 @@
 import { useTheme } from "@/theme/useTheme";
+import { OptimizedImage } from "@/components/OptimizedImage";
+import fixcoFIcon from "@/assets/fixco-f-icon.png";
 
 interface FixcoFIconProps {
   className?: string;
@@ -7,17 +9,18 @@ interface FixcoFIconProps {
 export const FixcoFIcon = ({ className = "" }: FixcoFIconProps) => {
   const { theme } = useTheme();
   
-  // Light theme = black F, Dark/Ocean themes = white F
-  const fillColor = theme === 'light' ? 'currentColor' : 'currentColor';
+  // Light theme = make icon darker, Dark/Ocean themes = keep as is
+  const filterStyle = theme === 'light' 
+    ? 'brightness(0.3) saturate(100%)' 
+    : 'none';
   
   return (
-    <svg 
-      viewBox="0 0 100 100" 
+    <OptimizedImage
+      src={fixcoFIcon}
+      alt="Fixco Logo"
       className={className}
-      fill={fillColor}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M20 20h60v15H35v10h35v15H35v20H20V20z" />
-    </svg>
+      style={{ filter: filterStyle }}
+      priority
+    />
   );
 };
