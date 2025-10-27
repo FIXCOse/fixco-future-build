@@ -132,7 +132,7 @@ const ServiceDetail = () => {
                 <IconComponent className="h-10 w-10 text-primary" />
               </div>
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold">
+              <h1 className="text-4xl md:text-5xl font-bold gradient-text">
                 {t(`serviceCategories.${service.slug}.title` as any) || service.title}
               </h1>
             </div>
@@ -204,7 +204,7 @@ const ServiceDetail = () => {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-3xl font-bold mb-4 gradient-text">
               {t('serviceDetail.allOurServices')} {(t(`serviceCategories.${service.slug}.title` as any) || service.title).toLowerCase()} {t('services.count')}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">

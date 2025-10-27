@@ -66,7 +66,7 @@ const Referenser = () => {
                   initialContent={t('pages.references.title')}
                   type="heading"
                   as="h1"
-                  className="text-4xl md:text-5xl font-bold"
+                  className="text-4xl md:text-5xl font-bold gradient-text"
                 />
                 {isAdmin && (
                   <Button 
@@ -145,7 +145,7 @@ const Referenser = () => {
                 initialContent="Våra Referensprojekt"
                 type="heading"
                 as="h2"
-                className="text-3xl font-bold mb-4"
+                className="text-3xl font-bold mb-4 gradient-text"
               />
               <EditableText 
                 id="grid-description"

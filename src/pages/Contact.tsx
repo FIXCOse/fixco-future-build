@@ -100,7 +100,7 @@ const Contact = () => {
                 initialContent={t('pages.contact.title')}
                 type="heading"
                 as="h1"
-                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+                className="text-5xl md:text-6xl font-bold leading-tight mb-6 gradient-text"
               />
               <EditableText 
                 id="contact-subtitle"

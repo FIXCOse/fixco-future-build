@@ -145,7 +145,7 @@ export const SmartHome = () => {
                 initialContent={t('smartHome.title')}
                 type="heading"
                 as="h1"
-                className="text-4xl md:text-6xl font-bold mb-6"
+                className="text-4xl md:text-6xl font-bold mb-6 gradient-text"
               />
               <EditableText 
                 id="smart-home-subtitle"
@@ -231,7 +231,7 @@ export const SmartHome = () => {
                   initialContent={t('smartHome.products_title')}
                   type="heading"
                   as="h2"
-                  className="text-3xl md:text-4xl font-bold mb-6"
+                  className="text-3xl md:text-4xl font-bold mb-6 gradient-text"
                 />
                 <EditableText 
                   id="smart-home-products-subtitle"
@@ -330,7 +330,7 @@ export const SmartHome = () => {
                   initialContent={t('smartHome.choose_category')}
                   type="heading"
                   as="h2"
-                  className="text-3xl font-bold mb-4"
+                  className="text-3xl font-bold mb-4 gradient-text"
                 />
                 <EditableText 
                   id="smart-home-category-desc"
@@ -386,7 +386,7 @@ export const SmartHome = () => {
                   initialContent={t('smartHome.all_products')}
                   type="heading"
                   as="h2"
-                  className="text-2xl font-bold"
+                  className="text-2xl font-bold gradient-text"
                 />
                 <SmartProductSortFilter 
                   sortBy={sortBy} 

@@ -53,7 +53,7 @@ const CategoryGrid = () => {
               </div>
               
               {/* Title */}
-              <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-2">
+              <h3 className="text-base font-bold mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-rainbow-r transition-all duration-300">
                 {t(translateKey) || service.title}
               </h3>
               

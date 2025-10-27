@@ -100,7 +100,7 @@ const FAQ = () => {
                 initialContent={t('pages.faq.title')}
                 type="heading"
                 as="h1"
-                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
+                className="text-5xl md:text-6xl font-bold leading-tight mb-6 gradient-text"
               />
               <EditableText 
                 id="faq-subtitle"

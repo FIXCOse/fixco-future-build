@@ -36,7 +36,7 @@ const Services = () => {
                 initialContent={t('services.title')}
                 type="heading"
                 as="h1"
-                className="text-5xl md:text-6xl font-bold mb-6"
+                className="text-5xl md:text-6xl font-bold mb-6 gradient-text"
               />
               <EditableText 
                 id="services-subtitle"
@@ -61,7 +61,7 @@ const Services = () => {
                 initialContent={t('services.choose_category')}
                 type="heading"
                 as="h2"
-                className="text-3xl font-bold mb-4"
+                className="text-3xl font-bold mb-4 gradient-text"
               />
               <EditableText 
                 id="services-categories-description"
@@ -85,7 +85,7 @@ const Services = () => {
                 initialContent={t('services.all_services')}
                 type="heading"
                 as="h2"
-                className="text-3xl font-bold mb-4"
+                className="text-3xl font-bold mb-4 gradient-text"
               />
               <EditableText 
                 id="services-all-description"
@@ -113,7 +113,7 @@ const Services = () => {
                 initialContent={t('services.rot_section_title')}
                 type="heading"
                 as="h2"
-                className="text-4xl font-bold mb-8"
+                className="text-4xl font-bold mb-8 gradient-text"
               />
               <div className="grid md:grid-cols-2 gap-8 mb-12">
                 <div className="card-premium p-8">
@@ -122,7 +122,7 @@ const Services = () => {
                     initialContent={t('services.rot_what_title')}
                     type="heading"
                     as="h3"
-                    className="text-2xl font-bold mb-4"
+                    className="text-2xl font-bold mb-4 gradient-text"
                   />
                   <EditableText 
                     id="services-rot-what-description"
@@ -137,7 +137,7 @@ const Services = () => {
                     initialContent={t('services.rot_we_handle_title')}
                     type="heading"
                     as="h3"
-                    className="text-2xl font-bold mb-4"
+                    className="text-2xl font-bold mb-4 gradient-text"
                   />
                   <EditableText 
                     id="services-rot-handle-description"
