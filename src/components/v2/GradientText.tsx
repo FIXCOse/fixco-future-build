@@ -16,7 +16,7 @@ const gradients = {
 export const GradientText = ({ 
   children, 
   className = "", 
-  gradient = "default" 
+  gradient = "rainbow" 
 }: GradientTextProps) => {
   return (
     <span 

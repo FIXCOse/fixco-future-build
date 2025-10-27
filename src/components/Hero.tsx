@@ -29,12 +29,12 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl">
           <div>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-foreground">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
               <span className="text-foreground">{t('hero.title_large')}</span> {t('hero.title_or')}{" "}
               <span className="text-foreground">{t('hero.title_small')}</span> {t('hero.title_projects')}{" "}
               <br />
-              <span className="text-foreground">{t('hero.fixco_handles')}</span>{" "}
-              <span className="text-foreground">{t('hero.everything')}</span>
+              <span className="gradient-rainbow">{t('hero.fixco_handles')}</span>{" "}
+              <span className="gradient-rainbow">{t('hero.everything')}</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
@@ -67,16 +67,16 @@ const Hero = () => {
             {/* Trust indicators */}
             <div className="flex flex-col sm:flex-row gap-8 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full" />
-                <span>{t('hero.trust_rot')} <span className="text-primary font-semibold">{t('hero.trust_rot_desc')}</span></span>
+                <div className="w-2 h-2 rounded-full bg-gradient-rainbow" />
+                <span>{t('hero.trust_rot')} <span className="gradient-rainbow font-semibold">{t('hero.trust_rot_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full" />
-                <span>{t('hero.trust_coverage')} <span className="text-primary font-semibold">{t('hero.trust_coverage_desc')}</span></span>
+                <div className="w-2 h-2 rounded-full bg-gradient-rainbow" />
+                <span>{t('hero.trust_coverage')} <span className="gradient-rainbow font-semibold">{t('hero.trust_coverage_desc')}</span></span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full" />
-                <span>{t('hero.trust_start')} <span className="text-primary font-semibold">{t('hero.trust_start_desc')}</span></span>
+                <div className="w-2 h-2 rounded-full bg-gradient-rainbow" />
+                <span>{t('hero.trust_start')} <span className="gradient-rainbow font-semibold">{t('hero.trust_start_desc')}</span></span>
               </div>
             </div>
           </div>

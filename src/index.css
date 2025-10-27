@@ -62,10 +62,10 @@
     --card-border: hsl(var(--border));
     --good-text: var(--success);
 
-    /* Dynamic gradients based on theme - simplified to prevent flickering */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l)) 0%, hsl(var(--primary-h) var(--primary-s) 68%) 100%);
-    --gradient-primary-subtle: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1) 0%, hsl(var(--primary-h) var(--primary-s) 68% / 0.15) 100%);
-    --gradient-primary-glow: linear-gradient(135deg, hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.2) 0%, hsl(var(--primary-h) var(--primary-s) 68% / 0.15) 100%);
+    /* Dynamic gradients - Rainbow gradient from HomeV2 */
+    --gradient-primary: linear-gradient(135deg, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%));
+    --gradient-primary-subtle: linear-gradient(135deg, hsl(262, 83%, 58% / 0.1), hsl(200, 100%, 50% / 0.15), hsl(320, 100%, 65% / 0.1));
+    --gradient-primary-glow: linear-gradient(135deg, hsl(262, 83%, 58% / 0.2), hsl(200, 100%, 50% / 0.25), hsl(320, 100%, 65% / 0.2));
     
     /* Professional shadows - simplified */
     --shadow-premium: 0 4px 20px -4px hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.15);
@@ -223,6 +223,13 @@
 
   .gradient-text {
     background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-rainbow {
+    background: linear-gradient(to right, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

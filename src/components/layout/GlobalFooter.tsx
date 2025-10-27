@@ -92,10 +92,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
             {/* Brand */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">F</span>
+                <div className="w-8 h-8 bg-gradient-rainbow rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">F</span>
                 </div>
-                <span className="text-xl font-bold">Fixco</span>
+                <span className="text-xl font-bold gradient-rainbow">Fixco</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 {t('tagline')}
@@ -218,7 +218,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
               <div className="flex flex-col gap-2">
                 <Link 
                   to={`${basePath}/${isEnglish ? 'contact' : 'kontakt'}`} 
-                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity"
                 >
                   {t('ctaContact')}
                 </Link>

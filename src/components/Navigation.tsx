@@ -119,12 +119,12 @@ export default function Navigation() {
           <div className="flex items-center">
             <Link 
               to={currentLanguage === 'en' ? "/en" : "/"} 
-              className="inline-flex items-center py-2 group flex-shrink-0"
+              className="inline-flex items-center py-2 group flex-shrink-0 relative"
             >
               <img 
                 src="/assets/fixco-logo-black.png"
                 alt={currentLanguage === 'en' ? "FIXCO - Your Complete Solution" : "FIXCO - Din Helhetslösning"} 
-                className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
+                className="h-9 w-auto object-contain group-hover:scale-105 transition-all duration-300"
                 style={{ 
                   minWidth: '80px', 
                   maxWidth: '140px',
@@ -135,6 +135,7 @@ export default function Navigation() {
                 loading="eager"
                 fetchPriority="high"
               />
+              <div className="absolute inset-0 bg-gradient-rainbow opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-lg blur-xl" />
             </Link>
           </div>
 

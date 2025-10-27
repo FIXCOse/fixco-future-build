@@ -94,11 +94,14 @@ export default {
 				'glow': 'glow 2s ease-in-out infinite alternate',
 				'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			},
-			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-primary-subtle': 'var(--gradient-primary-subtle)',
-				'gradient-primary-glow': 'var(--gradient-primary-glow)',
-			},
+		backgroundImage: {
+			'gradient-primary': 'var(--gradient-primary)',
+			'gradient-primary-subtle': 'var(--gradient-primary-subtle)',
+			'gradient-primary-glow': 'var(--gradient-primary-glow)',
+			'gradient-rainbow': 'linear-gradient(135deg, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%))',
+			'gradient-rainbow-r': 'linear-gradient(to right, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%))',
+			'gradient-rainbow-subtle': 'linear-gradient(135deg, hsl(262, 83%, 58% / 0.2), hsl(200, 100%, 50% / 0.2), hsl(320, 100%, 65% / 0.2))',
+		},
 			boxShadow: {
 				'premium': 'var(--shadow-premium)',
 				'glow': 'var(--shadow-glow)',

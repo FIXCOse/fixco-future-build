@@ -156,12 +156,12 @@ const ServiceCardV3 = ({
         </h3>
           <div className="flex gap-1 flex-shrink-0">
             {eligible.rot && (
-              <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+              <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
                 ROT
               </Badge>
             )}
             {eligible.rut && (
-              <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+              <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
                 RUT
               </Badge>
             )}
@@ -267,30 +267,30 @@ const ServiceCardV3 = ({
         </h3>
         <div className="flex gap-1 flex-shrink-0">
           {mode === 'rot' && eligible.rot && (
-            <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+            <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
               ROT
             </Badge>
           )}
           {mode === 'rut' && eligible.rut && (
-            <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+            <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
               RUT
             </Badge>
           )}
           {mode === 'all' && (
             <>
               {eligible.rot && eligible.rut ? (
-                <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+                <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
                   ROT • RUT
                 </Badge>
               ) : (
                 <>
                   {eligible.rot && (
-                    <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+                    <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
                       ROT
                     </Badge>
                   )}
                   {eligible.rut && (
-                    <Badge className="text-xs rounded-full bg-primary text-primary-foreground px-2 py-1">
+                    <Badge className="text-xs rounded-full bg-gradient-rainbow text-white px-2 py-1">
                       RUT
                     </Badge>
                   )}
@@ -318,7 +318,7 @@ const ServiceCardV3 = ({
         {/* Main price */}
         <div className={cn(
           "text-lg font-semibold",
-          isDiscounted ? "text-primary" : "text-foreground"
+          isDiscounted ? "gradient-rainbow" : "text-foreground"
         )}>
           {primaryDisplay}
         </div>

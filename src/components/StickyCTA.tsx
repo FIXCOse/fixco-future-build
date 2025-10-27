@@ -69,7 +69,7 @@ const StickyCTA = () => {
               <Button
                 onClick={handleCall}
                 size="sm"
-                className="flex-1 bg-primary hover:bg-primary/90"
+                className="flex-1 bg-gradient-rainbow text-white hover:opacity-90"
               >
                 <Phone className="h-4 w-4 mr-1" />
                 Ring
