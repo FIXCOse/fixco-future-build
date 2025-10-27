@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
+import HomeV2 from "./pages/HomeV2";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Contact from "./pages/Contact";
@@ -216,6 +217,7 @@ const App = () => {
                   {/* Main Swedish Routes */}
                   <Route path="/" element={<AppLayout />}>
                     <Route index element={<Home />} />
+                    <Route path="home-v2" element={<HomeV2 />} />
                     <Route path="tjanster" element={<Services />} />
                     <Route path="tjanster/:slug" element={<ServiceDetail />} />
                     <Route path="kontakt" element={<Contact />} />
@@ -251,6 +253,7 @@ const App = () => {
                   
                   <Route path="/en/*" element={<AppLayout />}>
                     <Route index element={<Home />} />
+                    <Route path="home-v2" element={<HomeV2 />} />
                     <Route path="services" element={<Services />} />
                     <Route path="services/:slug" element={<ServiceDetail />} />
                     <Route path="contact" element={<Contact />} />
