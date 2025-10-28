@@ -282,9 +282,8 @@ export default function Navigation() {
               <div className="hidden lg:flex items-center space-x-2">
                     <Link to="/auth">
                       <Button 
-                        variant="outline" 
                         size="sm"
-                        className="h-9 px-3"
+                        className="h-9 px-3 bg-gradient-rainbow text-white hover:opacity-90 transition-opacity border-0"
                       >
                         <span className="hidden xl:inline">{t('cta.login')}</span>
                         <span className="xl:hidden">Login</span>
