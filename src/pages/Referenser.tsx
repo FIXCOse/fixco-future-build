@@ -13,6 +13,7 @@ import ProjectEditModal from '@/components/admin/ProjectEditModal';
 import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
 import { EditableSection } from '@/components/EditableSection';
 import { EditableText } from '@/components/EditableText';
+import { GradientText } from '@/components/v2/GradientText';
 import { useState } from 'react';
 
 const Referenser = () => {
@@ -61,13 +62,11 @@ const Referenser = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center max-w-4xl mx-auto">
               <div className="flex items-center justify-center gap-4 mb-6">
-                <EditableText 
-                  id="references-title"
-                  initialContent={t('pages.references.title')}
-                  type="heading"
-                  as="h1"
-                  className="text-4xl md:text-5xl font-bold gradient-text"
-                />
+                <h1 className="text-4xl md:text-5xl font-bold">
+                  <GradientText gradient="rainbow">
+                    {t('pages.references.title')}
+                  </GradientText>
+                </h1>
                 {isAdmin && (
                   <Button 
                     onClick={() => setIsCreateModalOpen(true)}
@@ -140,13 +139,11 @@ const Referenser = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <EditableText 
-                id="grid-title"
-                initialContent="Våra Referensprojekt"
-                type="heading"
-                as="h2"
-                className="text-3xl font-bold mb-4 gradient-text"
-              />
+              <h2 className="text-3xl font-bold mb-4">
+                <GradientText gradient="rainbow">
+                  Våra Referensprojekt
+                </GradientText>
+              </h2>
               <EditableText 
                 id="grid-description"
                 initialContent="Här är alla våra projekt som visar bredden och kvaliteten i vårt arbete."
