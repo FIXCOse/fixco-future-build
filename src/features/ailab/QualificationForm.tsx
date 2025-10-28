@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, Send } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { GradientText } from '@/components/v2/GradientText';
 
 interface QualificationFormProps {
   serviceCategory?: string;
@@ -74,7 +75,11 @@ export function QualificationForm({
   return (
     <Card className="p-6 space-y-6">
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Begär offert</h3>
+        <h3 className="text-lg font-semibold">
+          <GradientText gradient="rainbow">
+            Begär offert
+          </GradientText>
+        </h3>
         <p className="text-sm text-muted-foreground">
           Fyll i information så återkommer vi inom 48h med en offert
         </p>

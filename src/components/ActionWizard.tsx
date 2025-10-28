@@ -9,6 +9,7 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { X } from "lucide-react";
+import { GradientText } from "@/components/v2/GradientText";
 
 export function ModalHost() {
   const { isOpen, mode, payload, close } = useActionWizard();
@@ -137,7 +138,11 @@ function ActionWizardInner({
   return (
     <div className="space-y-5">
       <h2 className="text-xl font-semibold text-foreground">
-        {mode === "book" ? "Boka tjänst" : "Begär offert"}
+        {mode === "book" ? "Boka tjänst" : (
+          <GradientText gradient="rainbow">
+            Begär offert
+          </GradientText>
+        )}
       </h2>
       
       {payload?.serviceName && (

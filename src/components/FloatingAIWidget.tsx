@@ -16,6 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { GradientText } from '@/components/v2/GradientText';
 
 // Tjänst-mappning för snabblänkar
 const SERVICE_LINKS: Record<string, string> = {
@@ -341,7 +342,9 @@ export function FloatingAIWidget() {
                   className="text-primary hover:underline"
                   onClick={() => openOfferModal()}
                 >
-                  Begär offert
+                  <GradientText gradient="rainbow">
+                    Begär offert
+                  </GradientText>
                 </button>
               </div>
             </div>

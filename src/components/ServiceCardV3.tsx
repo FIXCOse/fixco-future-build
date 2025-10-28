@@ -5,6 +5,7 @@ import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
 import { type CopyKey } from "@/copy/keys";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import { GradientText } from "@/components/v2/GradientText";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -175,8 +176,10 @@ const ServiceCardV3 = ({
 
         {/* Price block */}
         <div className="space-y-1 mb-6">
-          <div className="text-lg font-semibold text-primary">
-            {t('cta.request_quote')}
+          <div className="text-lg font-semibold">
+            <GradientText gradient="rainbow">
+              {t('cta.request_quote')}
+            </GradientText>
           </div>
           <div className="text-xs text-muted-foreground">
             {t('services.quote_after_inspection')}

@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { usePriceStore, PriceMode } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
+import { GradientText } from "@/components/v2/GradientText";
 
 const VAT_RATE = 0.25;
 const ROT_RATE = 0.50;
@@ -40,7 +41,9 @@ const PriceSummary = ({
           size === 'md' && "text-lg", 
           size === 'lg' && "text-xl"
         )}>
-          Begär offert
+          <GradientText gradient="rainbow">
+            Begär offert
+          </GradientText>
         </div>
         <div className="text-xs text-muted-foreground">
           Prisuppgift efter besiktning
