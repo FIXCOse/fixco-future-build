@@ -44,6 +44,17 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Hämta customer för att få user_id
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select('id, user_id')
+      .eq('id', quote.customer_id)
+      .maybeSingle();
+    
+    if (customerError) {
+      console.error('Error fetching customer:', customerError);
+    }
+
     // Kontrollera om offerten är raderad
     if ((quote as any).deleted_at) {
       return new Response(
@@ -102,12 +113,12 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte uppdatera offert');
     }
 
-    // Skapa projekt
+    // Skapa projekt med korrekt customer_id (user_id från customers table)
     const { data: project, error: projectError } = await supabase
       .from('projects')
       .insert({
         quote_id: quote.id,
-        customer_id: quote.customer_id,
+        customer_id: customer?.user_id || null,
         title: quote.title,
         status: 'pending'
       })
@@ -116,7 +127,15 @@ Deno.serve(async (req) => {
 
     if (projectError) {
       console.error('Failed to create project:', projectError);
-      throw new Error('Kunde inte skapa projekt');
+      console.error('Project error details:', JSON.stringify(projectError, null, 2));
+      return new Response(
+        JSON.stringify({ 
+          error: 'project_creation_failed',
+          message: 'Offerten accepterades men projektet kunde inte skapas. Vi kontaktar dig inom kort.',
+          projectId: null
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Jobbet skapas automatiskt av trigger när status ändras till 'accepted'

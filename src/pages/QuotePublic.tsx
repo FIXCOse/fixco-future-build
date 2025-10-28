@@ -58,6 +58,7 @@ export default function QuotePublic() {
   const [accepted, setAccepted] = useState(false);
   const [declined, setDeclined] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   // Accept/Reject states
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -171,11 +172,19 @@ export default function QuotePublic() {
         return;
       }
 
+      if (data.error === 'project_creation_failed') {
+        // Offerten accepterades men projektet kunde inte skapas
+        toast({
+          title: 'Offerten är accepterad',
+          description: 'Vi kontaktar dig inom kort för att bekräfta detaljer.',
+        });
+        setAccepted(true);
+        setShowSuccessDialog(true);
+        return;
+      }
+
       setAccepted(true);
-      toast({
-        title: 'Offert accepterad!',
-        description: 'Vi kontaktar dig inom kort för att boka start',
-      });
+      setShowSuccessDialog(true);
     } catch (err: any) {
       console.error('Fel vid accept:', err);
       toast({
@@ -628,13 +637,86 @@ export default function QuotePublic() {
                   </p>
                 </div>
               ) : accepted ? (
-                <div className="bg-green-50 dark:bg-green-900/10 border border-green-600/30 rounded-lg p-4 text-center">
-                  <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
-                  <p className="text-green-700 dark:text-green-300 font-semibold">
-                    Offert accepterad!
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">Vi kontaktar dig inom kort</p>
-                </div>
+                <>
+                  <div className="bg-green-50 dark:bg-green-900/10 border border-green-600/30 rounded-lg p-4 text-center">
+                    <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                    <p className="text-green-700 dark:text-green-300 font-semibold">
+                      Offert accepterad!
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">Vi kontaktar dig inom kort</p>
+                  </div>
+
+                  {/* Success Dialog */}
+                  <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                          <CheckCircle2 className="h-10 w-10 text-green-600" />
+                        </div>
+                        <DialogTitle className="text-center text-2xl">
+                          Offert godkänd!
+                        </DialogTitle>
+                        <p className="text-center text-muted-foreground pt-2">
+                          Tack för ditt förtroende! Vi har mottagit ditt godkännande.
+                        </p>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 space-y-2">
+                          <h4 className="font-semibold text-sm flex items-center gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-600" />
+                            Vad händer nu?
+                          </h4>
+                          <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-start gap-2">
+                              <span className="text-primary font-bold">1.</span>
+                              <span>Vi kontaktar dig inom 24 timmar för att bekräfta bokningsdetaljer</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <span className="text-primary font-bold">2.</span>
+                              <span>Vi bokar in en starttid som passar dig</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <span className="text-primary font-bold">3.</span>
+                              <span>Du får en bekräftelse via email med alla detaljer</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="border-t pt-4 space-y-2">
+                          <p className="text-sm text-muted-foreground text-center">
+                            Har du frågor redan nu?
+                          </p>
+                          <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                            <a 
+                              href="mailto:info@fixco.se"
+                              className="flex items-center justify-center gap-2 text-sm hover:text-primary transition-colors"
+                            >
+                              <Mail className="h-4 w-4" />
+                              info@fixco.se
+                            </a>
+                            <span className="hidden sm:inline text-muted-foreground">•</span>
+                            <a 
+                              href="tel:+46812345678"
+                              className="flex items-center justify-center gap-2 text-sm hover:text-primary transition-colors"
+                            >
+                              <Phone className="h-4 w-4" />
+                              08-123 45 67
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center">
+                        <Button 
+                          onClick={() => setShowSuccessDialog(false)}
+                          className="w-full sm:w-auto"
+                        >
+                          Stäng
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </>
+
               ) : declined ? (
                 <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-center">
                   <XCircle className="h-8 w-8 text-destructive mx-auto mb-2" />
