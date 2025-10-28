@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export type UserRole = 'owner' | 'admin' | 'manager' | 'worker' | 'technician' | 'finance' | 'support' | 'customer';
+export type UserRole = 'owner' | 'admin' | 'worker' | 'customer';
 
 export function useRole() {
   const { data: userRoles, isLoading } = useQuery({
@@ -32,17 +32,13 @@ export function useRole() {
   const role: UserRole = 
     roles.includes('owner') ? 'owner' :
     roles.includes('admin') ? 'admin' :
-    roles.includes('manager') ? 'manager' :
-    roles.includes('technician') ? 'technician' :
-    roles.includes('finance') ? 'finance' :
-    roles.includes('support') ? 'support' :
     roles.includes('worker') ? 'worker' :
     'customer';
   
   const isAdmin = roles.includes('admin') || roles.includes('owner');
   const isOwner = roles.includes('owner');
   const isWorker = roles.includes('worker');
-  const isStaff = ['owner', 'admin', 'manager', 'technician', 'finance', 'support'].some(r => roles.includes(r));
+  const isStaff = ['owner', 'admin', 'worker'].some(r => roles.includes(r));
   
   return {
     role,

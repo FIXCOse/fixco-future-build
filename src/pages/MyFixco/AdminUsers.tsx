@@ -160,10 +160,13 @@ const AdminUsers = () => {
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
-      case 'owner': return 'destructive';
-      case 'admin': return 'secondary';
-      case 'staff': return 'default';
-      default: return 'outline';
+      case 'owner':
+      case 'admin':
+        return 'default';
+      case 'worker':
+        return 'secondary';
+      default:
+        return 'outline';
     }
   };
 
@@ -211,10 +214,10 @@ const AdminUsers = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Alla roller</SelectItem>
-                <SelectItem value="customer">Customer</SelectItem>
-                <SelectItem value="staff">Staff</SelectItem>
+                <SelectItem value="customer">Kund</SelectItem>
+                <SelectItem value="worker">Personal</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="owner">Owner</SelectItem>
+                <SelectItem value="owner">Ägare</SelectItem>
               </SelectContent>
             </Select>
             <Button onClick={() => refetch()} variant="outline" size="sm">
@@ -259,10 +262,10 @@ const AdminUsers = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="customer">Customer</SelectItem>
-                        <SelectItem value="staff">Staff</SelectItem>
+                        <SelectItem value="customer">Kund</SelectItem>
+                        <SelectItem value="worker">Personal</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="owner">Owner</SelectItem>
+                        <SelectItem value="owner">Ägare</SelectItem>
                       </SelectContent>
                     </Select>
 

@@ -246,10 +246,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="customer">Kund</SelectItem>
-                    <SelectItem value="member">Medlem</SelectItem>
-                    <SelectItem value="tekniker">Tekniker</SelectItem>
-                    <SelectItem value="beställare">Beställare</SelectItem>
-                    <SelectItem value="ekonomi">Ekonomi</SelectItem>
+                    <SelectItem value="worker">Personal</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                     <SelectItem value="owner">Ägare</SelectItem>
                   </SelectContent>
@@ -258,14 +255,11 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
             ) : (
               <Badge variant={
                 selectedRole === 'owner' || selectedRole === 'admin' ? 'default' : 
-                selectedRole === 'tekniker' || selectedRole === 'beställare' || selectedRole === 'ekonomi' ? 'secondary' : 'outline'
+                selectedRole === 'worker' ? 'secondary' : 'outline'
               }>
                 {selectedRole === 'owner' ? 'Ägare' : 
                  selectedRole === 'admin' ? 'Admin' : 
-                 selectedRole === 'tekniker' ? 'Tekniker' :
-                 selectedRole === 'beställare' ? 'Beställare' :
-                 selectedRole === 'ekonomi' ? 'Ekonomi' :
-                 selectedRole === 'member' ? 'Medlem' : 'Kund'}
+                 selectedRole === 'worker' ? 'Personal' : 'Kund'}
               </Badge>
             )}
           </div>

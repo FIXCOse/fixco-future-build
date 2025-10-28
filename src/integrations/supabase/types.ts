@@ -1217,21 +1217,18 @@ export type Database = {
           id: string
           joined_at: string | null
           organization_id: string
-          role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Insert: {
           id?: string
           joined_at?: string | null
           organization_id: string
-          role?: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Update: {
           id?: string
           joined_at?: string | null
           organization_id?: string
-          role?: Database["public"]["Enums"]["user_role"]
           user_id?: string
         }
         Relationships: [
@@ -2767,19 +2764,19 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
-          role: string
+          role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Insert: {
           created_at?: string | null
           id?: string
-          role: string
+          role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Update: {
           created_at?: string | null
           id?: string
-          role?: string
+          role?: Database["public"]["Enums"]["user_role"]
           user_id?: string
         }
         Relationships: []
@@ -3102,17 +3099,6 @@ export type Database = {
       generate_quote_number_new: { Args: never; Returns: string }
       get_invoice_statistics: { Args: never; Returns: Json }
       get_next_staff_id: { Args: never; Returns: number }
-      get_user_organizations: {
-        Args: { user_uuid: string }
-        Returns: {
-          organization_id: string
-          role: Database["public"]["Enums"]["user_role"]
-        }[]
-      }
-      get_user_role: {
-        Args: { user_uuid: string }
-        Returns: Database["public"]["Enums"]["user_role"]
-      }
       has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
       is_admin: { Args: { user_uuid?: string }; Returns: boolean }
       is_admin_or_owner: { Args: { user_uuid?: string }; Returns: boolean }
@@ -3125,7 +3111,9 @@ export type Database = {
         Returns: boolean
       }
       is_owner: { Args: { user_uuid?: string }; Returns: boolean }
-      is_worker: { Args: never; Returns: boolean }
+      is_worker:
+        | { Args: { user_uuid?: string }; Returns: boolean }
+        | { Args: never; Returns: boolean }
       kpi_today: { Args: never; Returns: Json }
       log_activity: {
         Args: {
@@ -3240,14 +3228,7 @@ export type Database = {
         | "Sommarstuga"
         | "Övrigt"
       quote_status: "draft" | "sent" | "accepted" | "rejected" | "expired"
-      user_role:
-        | "admin"
-        | "member"
-        | "ekonomi"
-        | "beställare"
-        | "tekniker"
-        | "owner"
-        | "customer"
+      user_role: "customer" | "worker" | "admin" | "owner"
       user_type: "private" | "company" | "brf"
     }
     CompositeTypes: {
@@ -3409,15 +3390,7 @@ export const Constants = {
         "Övrigt",
       ],
       quote_status: ["draft", "sent", "accepted", "rejected", "expired"],
-      user_role: [
-        "admin",
-        "member",
-        "ekonomi",
-        "beställare",
-        "tekniker",
-        "owner",
-        "customer",
-      ],
+      user_role: ["customer", "worker", "admin", "owner"],
       user_type: ["private", "company", "brf"],
     },
   },

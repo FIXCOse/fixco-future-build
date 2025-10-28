@@ -36,12 +36,8 @@ const UserListContent = ({
       case 'owner':
       case 'admin':
         return 'default' as const;
-      case 'tekniker':
-      case 'beställare':
-      case 'ekonomi':
+      case 'worker':
         return 'secondary' as const;
-      case 'member':
-        return 'outline' as const;
       default:
         return 'outline' as const;
     }
@@ -100,10 +96,7 @@ const UserListContent = ({
               <Badge variant={getRoleBadgeVariant(user.role || 'customer')}>
                 {user.role === 'owner' ? 'Ägare' : 
                  user.role === 'admin' ? 'Admin' : 
-                 user.role === 'tekniker' ? 'Tekniker' :
-                 user.role === 'beställare' ? 'Beställare' : 
-                 user.role === 'ekonomi' ? 'Ekonomi' :
-                 user.role === 'member' ? 'Medlem' : 'Kund'}
+                 user.role === 'worker' ? 'Personal' : 'Kund'}
               </Badge>
               <Badge variant="outline">
                 {user.user_type === 'company' ? 'Företag' :
@@ -235,7 +228,7 @@ const AdminUsers = () => {
     if (!users) return { customers: 0, staff: 0, admins: 0 };
     return {
       customers: users.filter(u => u.role === 'customer' || !u.role).length,
-      staff: users.filter(u => ['tekniker', 'beställare', 'ekonomi'].includes(u.role)).length,
+      staff: users.filter(u => u.role === 'worker').length,
       admins: users.filter(u => ['owner', 'admin'].includes(u.role)).length,
     };
   };
@@ -331,10 +324,7 @@ const AdminUsers = () => {
               <SelectContent>
                 <SelectItem value="all">Alla roller</SelectItem>
                 <SelectItem value="customer">Kunder</SelectItem>
-                <SelectItem value="member">Medlemmar</SelectItem>
-                <SelectItem value="tekniker">Tekniker</SelectItem>
-                <SelectItem value="beställare">Beställare</SelectItem>
-                <SelectItem value="ekonomi">Ekonomi</SelectItem>
+                <SelectItem value="worker">Personal</SelectItem>
                 <SelectItem value="admin">Admins</SelectItem>
                 <SelectItem value="owner">Ägare</SelectItem>
               </SelectContent>
@@ -428,7 +418,7 @@ const AdminUsers = () => {
           <Card>
             <CardContent className="pt-6">
               <UserListContent
-                filteredUsers={users.filter(u => ['tekniker', 'beställare', 'ekonomi', 'admin', 'owner'].includes(u.role))}
+                filteredUsers={users.filter(u => ['worker', 'admin', 'owner'].includes(u.role))}
                 isLoading={isLoading}
                 onUserSelect={(user) => {
                   setSelectedUser(user);
