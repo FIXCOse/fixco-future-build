@@ -1,5 +1,6 @@
 import { useState, useEffect, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,7 @@ interface AuthModalContainerProps {
 export default function AuthModalContainer({ isOpen, onClose }: AuthModalContainerProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -129,6 +131,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
             .eq('user_id', user.id);
 
           const roles = userRoles?.map(r => r.role) || [];
+
+          // Invalidate user-roles cache for instant role recognition
+          queryClient.invalidateQueries({ queryKey: ['user-roles'] });
 
           toast({
             title: "Välkommen tillbaka! 🎉",
@@ -273,6 +278,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
             .eq('user_id', data.user.id);
 
           const roles = userRoles?.map(r => r.role) || [];
+
+          // Invalidate user-roles cache for instant role recognition
+          queryClient.invalidateQueries({ queryKey: ['user-roles'] });
 
           toast({
             title: "Välkommen till Fixco! 🎉",

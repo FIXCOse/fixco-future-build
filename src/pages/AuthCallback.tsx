@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -9,6 +10,7 @@ export default function AuthCallback() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const handleAuthCallback = async () => {
@@ -59,6 +61,9 @@ export default function AuthCallback() {
             .eq('user_id', session.user.id);
 
           const roles = userRoles?.map(r => r.role) || [];
+
+          // Invalidate user-roles cache for instant role recognition
+          queryClient.invalidateQueries({ queryKey: ['user-roles'] });
 
           toast({
             title: "Välkommen!",

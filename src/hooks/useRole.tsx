@@ -22,7 +22,8 @@ export function useRole() {
 
       return data || [];
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 1 * 60 * 1000, // 1 minute (reduced from 5 for faster updates)
+    refetchOnMount: 'always', // Always refetch when component mounts
     retry: false
   });
 
