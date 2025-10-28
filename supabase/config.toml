@@ -75,7 +75,7 @@ verify_jwt = true
 verify_jwt = false
 
 [functions.ai-chat]
-verify_jwt = false
+verify_jwt = false  # Keep false for public AI chat, but protected by rate limiting
 
 [functions.ai-image-edit]
 verify_jwt = false

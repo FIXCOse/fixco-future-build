@@ -43,7 +43,6 @@ export const useAuthProfile = () => {
             email: user.email || '',
             first_name: user.user_metadata?.first_name || user.email?.split('@')[0] || '',
             last_name: user.user_metadata?.last_name || '',
-            role: (user.email?.toLowerCase() === 'omar@fixco.se' || user.email?.toLowerCase() === 'omar@dinadress.se') ? 'owner' : 'customer',
             user_type: 'private',
             loyalty_points: 0,
             total_spent: 0
@@ -52,6 +51,15 @@ export const useAuthProfile = () => {
           .single();
         
         if (insertError) throw insertError;
+
+        // Assign default customer role in user_roles table
+        await supabase
+          .from('user_roles')
+          .insert({
+            user_id: user.id,
+            role: 'customer'
+          });
+        
         return newProfile;
       }
 
