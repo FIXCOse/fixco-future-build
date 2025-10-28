@@ -504,7 +504,7 @@ export const useContentStore = create<ContentStore>()(
       name: 'fixco-content-store',
       version: 1,
         onRehydrateStorage: () => {
-          return (state) => {
+          return async (state) => {
             if (state) {
               // NUCLEAR OPTION v5: Reset gradient content from ALL sources (including database)
               const hasMigrated = sessionStorage.getItem('gradient-reset-v5');
@@ -517,8 +517,8 @@ export const useContentStore = create<ContentStore>()(
                 sessionStorage.removeItem('gradient-colors-cleared-v3');
                 sessionStorage.removeItem('gradient-reset-v4');
                 
-                // Run reset (including database deletion)
-                state.resetGradientContent();
+                // Run reset (including database deletion) - WAIT for completion
+                await state.resetGradientContent();
                 sessionStorage.setItem('gradient-reset-v5', 'true');
                 
                 // Force reload after giving database time to delete + localStorage to flush
