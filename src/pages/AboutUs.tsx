@@ -5,6 +5,7 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
+import { GradientText } from "@/components/v2/GradientText";
 
 const AboutUs = () => {
   const { t, locale } = useCopy();
@@ -16,14 +17,12 @@ const AboutUs = () => {
       <EditableSection id="about-hero" title="Om oss Hero">
         <section className="pt-32 pb-20 hero-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <EditableText 
-                id="about-title"
-                initialContent={t('pages.about.title')}
-                type="heading"
-                as="h1"
-                className="text-5xl md:text-6xl font-bold leading-tight mb-6"
-              />
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+              <GradientText gradient="rainbow">
+                {t('pages.about.title')}
+              </GradientText>
+            </h1>
               <EditableText 
                 id="about-subtitle"
                 initialContent={t('pages.about.subtitle')}
@@ -40,14 +39,12 @@ const AboutUs = () => {
         <section className="py-20">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <EditableText 
-                  id="about-history-title"
-                  initialContent={t('pages.about.history_title')}
-                  type="heading"
-                  as="h2"
-                  className="text-4xl font-bold mb-6"
-                />
+            <div>
+              <h2 className="text-4xl font-bold mb-6">
+                <GradientText gradient="rainbow">
+                  {t('pages.about.history_title')}
+                </GradientText>
+              </h2>
                 <EditableText 
                   id="about-history-text"
                   initialContent={t('pages.about.history_text')}
@@ -110,14 +107,12 @@ const AboutUs = () => {
       {/* Values */}
       <EditableSection id="about-values" title="Våra värderingar">
         <section className="py-20 gradient-primary-subtle">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <EditableText 
-              id="about-values-title"
-              initialContent={t('pages.about.values')}
-              type="heading"
-              as="h2"
-              className="text-4xl font-bold text-center mb-16"
-            />
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <GradientText gradient="rainbow">
+              {t('pages.about.values')}
+            </GradientText>
+          </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -158,11 +153,17 @@ const AboutUs = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-4xl font-bold mb-8">
-            {t('pages.about.coverageArea')}
+            <GradientText gradient="rainbow">
+              {t('pages.about.coverageArea')}
+            </GradientText>
           </h2>
           <div className="card-premium p-8 mb-8">
             <MapPin className="h-12 w-12 text-primary mx-auto mb-6" />
-            <h3 className="text-2xl font-bold mb-4">Uppsala & Stockholms län</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              <GradientText gradient="rainbow">
+                Uppsala & Stockholms län
+              </GradientText>
+            </h3>
             <p className="text-lg text-muted-foreground mb-6">
               {t('pages.about.coverageDesc')}
             </p>
@@ -183,7 +184,9 @@ const AboutUs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">
-              {t('pages.about.readyToStart')}
+              <GradientText gradient="rainbow">
+                {t('pages.about.readyToStart')}
+              </GradientText>
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
               {t('pages.about.contactToday')}
