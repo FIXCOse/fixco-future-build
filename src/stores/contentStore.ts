@@ -408,7 +408,7 @@ export const useContentStore = create<ContentStore>()(
         console.log('✅ Cleared gradient colors from content store');
       },
       
-      resetGradientContent: () => {
+      resetGradientContent: async () => {
         const gradientContentIds = [
           'services-title',
           'services-categories-title', 
@@ -418,6 +418,7 @@ export const useContentStore = create<ContentStore>()(
           'services-rot-handle-title'
         ];
 
+        // Step 1: Remove from localStorage
         const store = localStorage.getItem('fixco-content-store');
         if (store) {
           try {
@@ -439,13 +440,13 @@ export const useContentStore = create<ContentStore>()(
             
             // Write back to localStorage IMMEDIATELY
             localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
-            console.log('✅ RESET gradient content - will rebuild from CSS');
+            console.log('✅ RESET gradient content from localStorage');
           } catch (error) {
             console.error('Failed to reset gradient content from localStorage:', error);
           }
         }
         
-        // Also clear from current store (for this session)
+        // Step 2: Remove from current store (for this session)
         const state = get();
         ['sv', 'en'].forEach(locale => {
           const localeContent = state.content[locale];
@@ -466,7 +467,24 @@ export const useContentStore = create<ContentStore>()(
           }
         });
         
-        console.log('✅ Reset gradient content from store');
+        // Step 3: Remove from Supabase database (NEW!)
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .delete()
+            .in('content_id', gradientContentIds)
+            .in('locale', ['sv', 'en']);
+          
+          if (error) {
+            console.error('Failed to delete gradient content from database:', error);
+          } else {
+            console.log('✅ Deleted gradient content from database');
+          }
+        } catch (error) {
+          console.error('Failed to delete gradient content from database:', error);
+        }
+        
+        console.log('✅ Reset gradient content from ALL sources (localStorage + store + database)');
       },
       
       exportData: () => {
@@ -488,18 +506,26 @@ export const useContentStore = create<ContentStore>()(
         onRehydrateStorage: () => {
           return (state) => {
             if (state) {
-              // NUCLEAR OPTION: Completely reset gradient content
-              const hasMigrated = sessionStorage.getItem('gradient-reset-v4');
+              // NUCLEAR OPTION v5: Reset gradient content from ALL sources (including database)
+              const hasMigrated = sessionStorage.getItem('gradient-reset-v5');
               if (!hasMigrated) {
-                console.log('🗑️ Running NUCLEAR gradient reset...');
-                state.resetGradientContent();
-                sessionStorage.setItem('gradient-reset-v4', 'true');
+                console.log('🗑️ Running NUCLEAR gradient reset v5 (ALL sources)...');
                 
-                // Force page reload with longer delay to ensure localStorage flush
-                console.log('🔄 Reloading page in 300ms to rebuild gradient content...');
+                // Clear ALL old session flags
+                sessionStorage.removeItem('gradient-colors-cleared');
+                sessionStorage.removeItem('gradient-colors-cleared-v2');
+                sessionStorage.removeItem('gradient-colors-cleared-v3');
+                sessionStorage.removeItem('gradient-reset-v4');
+                
+                // Run reset (including database deletion)
+                state.resetGradientContent();
+                sessionStorage.setItem('gradient-reset-v5', 'true');
+                
+                // Force reload after giving database time to delete + localStorage to flush
+                console.log('🔄 Reloading page in 500ms to rebuild gradient content from CSS...');
                 setTimeout(() => {
                   window.location.reload();
-                }, 300); // Longer delay for reliable localStorage flush
+                }, 500); // Longer delay for database deletion + localStorage flush
               }
             }
           };
