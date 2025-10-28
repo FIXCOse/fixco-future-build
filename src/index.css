@@ -221,12 +221,15 @@
     background: var(--gradient-primary-subtle);
   }
 
-  .gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.gradient-text {
+  /* Use direct gradient instead of CSS variable for better compatibility */
+  background: linear-gradient(to right, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  color: transparent;
+}
 
   .gradient-rainbow {
     background: linear-gradient(to right, hsl(262, 83%, 58%), hsl(200, 100%, 50%), hsl(320, 100%, 65%));
