@@ -85,8 +85,6 @@ serve(async (req) => {
         const roles = roleMap.get(user.id) || ['customer'];
         const primaryRole = roles.includes('owner') ? 'owner' :
                            roles.includes('admin') ? 'admin' :
-                           roles.includes('manager') ? 'manager' :
-                           roles.includes('technician') ? 'technician' :
                            roles.includes('worker') ? 'worker' : 'customer';
         
         return {
