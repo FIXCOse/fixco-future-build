@@ -33,11 +33,17 @@ const UserListContent = ({
 }) => {
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
-      case 'owner': return 'default' as const;
-      case 'admin': return 'secondary' as const;
-      case 'technician': return 'default' as const;
-      case 'manager': return 'secondary' as const;
-      default: return 'outline' as const;
+      case 'owner':
+      case 'admin':
+        return 'default' as const;
+      case 'tekniker':
+      case 'beställare':
+      case 'ekonomi':
+        return 'secondary' as const;
+      case 'member':
+        return 'outline' as const;
+      default:
+        return 'outline' as const;
     }
   };
 
@@ -94,11 +100,10 @@ const UserListContent = ({
               <Badge variant={getRoleBadgeVariant(user.role || 'customer')}>
                 {user.role === 'owner' ? 'Ägare' : 
                  user.role === 'admin' ? 'Admin' : 
-                 user.role === 'technician' ? 'Tekniker' :
-                 user.role === 'manager' ? 'Chef' : 
-                 user.role === 'worker' ? 'Arbetare' :
-                 user.role === 'finance' ? 'Ekonomi' :
-                 user.role === 'support' ? 'Support' : 'Kund'}
+                 user.role === 'tekniker' ? 'Tekniker' :
+                 user.role === 'beställare' ? 'Beställare' : 
+                 user.role === 'ekonomi' ? 'Ekonomi' :
+                 user.role === 'member' ? 'Medlem' : 'Kund'}
               </Badge>
               <Badge variant="outline">
                 {user.user_type === 'company' ? 'Företag' :
@@ -230,7 +235,7 @@ const AdminUsers = () => {
     if (!users) return { customers: 0, staff: 0, admins: 0 };
     return {
       customers: users.filter(u => u.role === 'customer' || !u.role).length,
-      staff: users.filter(u => ['technician', 'manager'].includes(u.role)).length,
+      staff: users.filter(u => ['tekniker', 'beställare', 'ekonomi'].includes(u.role)).length,
       admins: users.filter(u => ['owner', 'admin'].includes(u.role)).length,
     };
   };
@@ -326,11 +331,10 @@ const AdminUsers = () => {
               <SelectContent>
                 <SelectItem value="all">Alla roller</SelectItem>
                 <SelectItem value="customer">Kunder</SelectItem>
-                <SelectItem value="worker">Arbetare</SelectItem>
-                <SelectItem value="technician">Tekniker</SelectItem>
-                <SelectItem value="manager">Chefer</SelectItem>
-                <SelectItem value="finance">Ekonomi</SelectItem>
-                <SelectItem value="support">Support</SelectItem>
+                <SelectItem value="member">Medlemmar</SelectItem>
+                <SelectItem value="tekniker">Tekniker</SelectItem>
+                <SelectItem value="beställare">Beställare</SelectItem>
+                <SelectItem value="ekonomi">Ekonomi</SelectItem>
                 <SelectItem value="admin">Admins</SelectItem>
                 <SelectItem value="owner">Ägare</SelectItem>
               </SelectContent>
@@ -424,7 +428,7 @@ const AdminUsers = () => {
           <Card>
             <CardContent className="pt-6">
               <UserListContent
-                filteredUsers={users.filter(u => ['worker', 'technician', 'manager', 'finance', 'support', 'admin', 'owner'].includes(u.role))}
+                filteredUsers={users.filter(u => ['tekniker', 'beställare', 'ekonomi', 'admin', 'owner'].includes(u.role))}
                 isLoading={isLoading}
                 onUserSelect={(user) => {
                   setSelectedUser(user);

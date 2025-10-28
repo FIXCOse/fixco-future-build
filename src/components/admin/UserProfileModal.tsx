@@ -42,9 +42,15 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       setIsEditing(false);
     },
-    onError: (error) => {
-      toast.error('Kunde inte uppdatera användare');
+    onError: (error: any) => {
       console.error('Error updating user:', error);
+      if (error.message?.includes('violates row-level security')) {
+        toast.error('Du har inte behörighet att uppdatera användare');
+      } else if (error.message?.includes('invalid input value for enum')) {
+        toast.error('Ogiltig användartyp vald');
+      } else {
+        toast.error('Kunde inte uppdatera användare');
+      }
     },
   });
 
@@ -90,19 +96,31 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       queryClient.invalidateQueries({ queryKey: ['user-roles'] });
     },
-    onError: (error) => {
-      toast.error('Kunde inte uppdatera roll');
+    onError: (error: any) => {
       console.error('Error updating role:', error);
+      if (error.message?.includes('invalid input value for enum')) {
+        toast.error('Ogiltig roll vald. Kontakta support om problemet kvarstår.');
+      } else if (error.message?.includes('violates row-level security')) {
+        toast.error('Du har inte behörighet att ändra roller');
+      } else {
+        toast.error('Kunde inte uppdatera roll');
+      }
     },
   });
 
   const handleSave = async () => {
-    // Update profile data
-    await updateUserMutation.mutateAsync(formData);
-    
-    // Update role if changed
-    if (selectedRole !== user?.role) {
-      await updateRoleMutation.mutateAsync(selectedRole);
+    try {
+      // Update profile data
+      await updateUserMutation.mutateAsync(formData);
+      
+      // Update role if changed
+      if (selectedRole !== user?.role) {
+        await updateRoleMutation.mutateAsync(selectedRole);
+      }
+      
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error saving user:', error);
     }
   };
 
@@ -228,11 +246,10 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="customer">Kund</SelectItem>
-                    <SelectItem value="worker">Arbetare</SelectItem>
-                    <SelectItem value="technician">Tekniker</SelectItem>
-                    <SelectItem value="manager">Chef</SelectItem>
-                    <SelectItem value="finance">Ekonomi</SelectItem>
-                    <SelectItem value="support">Support</SelectItem>
+                    <SelectItem value="member">Medlem</SelectItem>
+                    <SelectItem value="tekniker">Tekniker</SelectItem>
+                    <SelectItem value="beställare">Beställare</SelectItem>
+                    <SelectItem value="ekonomi">Ekonomi</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                     <SelectItem value="owner">Ägare</SelectItem>
                   </SelectContent>
@@ -241,15 +258,14 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
             ) : (
               <Badge variant={
                 selectedRole === 'owner' || selectedRole === 'admin' ? 'default' : 
-                selectedRole === 'technician' || selectedRole === 'manager' ? 'secondary' : 'outline'
+                selectedRole === 'tekniker' || selectedRole === 'beställare' || selectedRole === 'ekonomi' ? 'secondary' : 'outline'
               }>
                 {selectedRole === 'owner' ? 'Ägare' : 
                  selectedRole === 'admin' ? 'Admin' : 
-                 selectedRole === 'technician' ? 'Tekniker' :
-                 selectedRole === 'manager' ? 'Chef' :
-                 selectedRole === 'worker' ? 'Arbetare' :
-                 selectedRole === 'finance' ? 'Ekonomi' :
-                 selectedRole === 'support' ? 'Support' : 'Kund'}
+                 selectedRole === 'tekniker' ? 'Tekniker' :
+                 selectedRole === 'beställare' ? 'Beställare' :
+                 selectedRole === 'ekonomi' ? 'Ekonomi' :
+                 selectedRole === 'member' ? 'Medlem' : 'Kund'}
               </Badge>
             )}
           </div>
