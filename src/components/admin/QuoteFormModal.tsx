@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
 
 type LineItem = {
   type: 'work' | 'material';
@@ -335,18 +336,14 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                 <div className="space-y-2">
                   <Label>Kund *</Label>
                   <div className="flex gap-2">
-                    <Select value={selectedCustomerId} onValueChange={setSelectedCustomerId}>
-                      <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Välj kund" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {customers.map(c => (
-                          <SelectItem key={c.id} value={c.id}>
-                            {c.name} ({c.email})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex-1">
+                      <CustomerCombobox
+                        customers={customers}
+                        value={selectedCustomerId}
+                        onValueChange={setSelectedCustomerId}
+                        placeholder="Välj kund"
+                      />
+                    </div>
                     <Button type="button" variant="outline" onClick={() => setShowNewCustomer(true)}>
                       <Plus className="h-4 w-4 mr-2" />
                       Ny kund
