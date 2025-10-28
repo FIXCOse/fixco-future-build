@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<UserProfile>>(user || {});
+  const [selectedRole, setSelectedRole] = useState<string>(user?.role || 'customer');
 
   const updateUserMutation = useMutation({
     mutationFn: async (data: Partial<UserProfile>) => {
@@ -65,8 +66,44 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
     },
   });
 
-  const handleSave = () => {
-    updateUserMutation.mutate(formData);
+  const updateRoleMutation = useMutation({
+    mutationFn: async (newRole: string) => {
+      if (!user) return;
+      
+      // Delete all existing roles
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', user.id);
+      
+      if (deleteError) throw deleteError;
+
+      // Insert new role
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert({ user_id: user.id, role: newRole });
+      
+      if (insertError) throw insertError;
+    },
+    onSuccess: () => {
+      toast.success('Roll uppdaterad');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      queryClient.invalidateQueries({ queryKey: ['user-roles'] });
+    },
+    onError: (error) => {
+      toast.error('Kunde inte uppdatera roll');
+      console.error('Error updating role:', error);
+    },
+  });
+
+  const handleSave = async () => {
+    // Update profile data
+    await updateUserMutation.mutateAsync(formData);
+    
+    // Update role if changed
+    if (selectedRole !== user?.role) {
+      await updateRoleMutation.mutateAsync(selectedRole);
+    }
   };
 
   const handleResetPassword = () => {
@@ -76,6 +113,14 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
     }
     resetPasswordMutation.mutate(user.email);
   };
+
+  // Sync selectedRole when user changes
+  useEffect(() => {
+    if (user) {
+      setSelectedRole(user.role || 'customer');
+      setFormData(user);
+    }
+  }, [user]);
 
   if (!user) return null;
 
@@ -168,6 +213,44 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
                   <p className="font-medium">{user.phone || '-'}</p>
                 </div>
               </div>
+            )}
+          </div>
+
+          {/* Role Management */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Systemroll</h3>
+            {isEditing ? (
+              <div>
+                <Label htmlFor="role">Roll</Label>
+                <Select value={selectedRole} onValueChange={setSelectedRole}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="customer">Kund</SelectItem>
+                    <SelectItem value="worker">Arbetare</SelectItem>
+                    <SelectItem value="technician">Tekniker</SelectItem>
+                    <SelectItem value="manager">Chef</SelectItem>
+                    <SelectItem value="finance">Ekonomi</SelectItem>
+                    <SelectItem value="support">Support</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="owner">Ägare</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <Badge variant={
+                selectedRole === 'owner' || selectedRole === 'admin' ? 'default' : 
+                selectedRole === 'technician' || selectedRole === 'manager' ? 'secondary' : 'outline'
+              }>
+                {selectedRole === 'owner' ? 'Ägare' : 
+                 selectedRole === 'admin' ? 'Admin' : 
+                 selectedRole === 'technician' ? 'Tekniker' :
+                 selectedRole === 'manager' ? 'Chef' :
+                 selectedRole === 'worker' ? 'Arbetare' :
+                 selectedRole === 'finance' ? 'Ekonomi' :
+                 selectedRole === 'support' ? 'Support' : 'Kund'}
+              </Badge>
             )}
           </div>
 

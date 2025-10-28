@@ -15,9 +15,151 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+// User list content component (reusable for all tabs)
+const UserListContent = ({ 
+  filteredUsers, 
+  isLoading,
+  onUserSelect,
+  onUserDelete,
+  searchTerm,
+  roleFilter
+}: {
+  filteredUsers: UserProfile[];
+  isLoading: boolean;
+  onUserSelect: (user: UserProfile) => void;
+  onUserDelete: (user: UserProfile) => void;
+  searchTerm: string;
+  roleFilter: string;
+}) => {
+  const getRoleBadgeVariant = (role: string) => {
+    switch (role) {
+      case 'owner': return 'default' as const;
+      case 'admin': return 'secondary' as const;
+      case 'technician': return 'default' as const;
+      case 'manager': return 'secondary' as const;
+      default: return 'outline' as const;
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex items-center gap-4 p-4 border rounded-lg animate-pulse">
+            <div className="w-12 h-12 bg-muted rounded-full" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 bg-muted rounded w-1/4" />
+              <div className="h-3 bg-muted rounded w-1/3" />
+              <div className="h-3 bg-muted rounded w-1/2" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (!filteredUsers || filteredUsers.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+        <p className="text-muted-foreground">
+          {searchTerm || roleFilter !== 'all' ? 
+            'Inga användare hittades med dessa filter' : 
+            'Inga användare att visa'}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {filteredUsers.map((user) => (
+        <div key={user.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+            {user.user_type === 'company' || user.user_type === 'brf' ? 
+              <Building className="h-6 w-6 text-primary" /> : 
+              <User className="h-6 w-6 text-primary" />
+            }
+          </div>
+          <div className="flex-1 space-y-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="font-medium">
+                {user.user_type === 'company' || user.user_type === 'brf' 
+                  ? user.company_name || user.brf_name || 'Okänt företag'
+                  : user.first_name && user.last_name 
+                    ? `${user.first_name} ${user.last_name}`
+                    : user.email || 'Okänt namn'
+                }
+              </h3>
+              <Badge variant={getRoleBadgeVariant(user.role || 'customer')}>
+                {user.role === 'owner' ? 'Ägare' : 
+                 user.role === 'admin' ? 'Admin' : 
+                 user.role === 'technician' ? 'Tekniker' :
+                 user.role === 'manager' ? 'Chef' : 
+                 user.role === 'worker' ? 'Arbetare' :
+                 user.role === 'finance' ? 'Ekonomi' :
+                 user.role === 'support' ? 'Support' : 'Kund'}
+              </Badge>
+              <Badge variant="outline">
+                {user.user_type === 'company' ? 'Företag' :
+                 user.user_type === 'brf' ? 'BRF' : 'Privat'}
+              </Badge>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+              {user.email && (
+                <div className="flex items-center gap-1">
+                  <Mail className="h-4 w-4" />
+                  {user.email}
+                </div>
+              )}
+              {user.phone && (
+                <div className="flex items-center gap-1">
+                  <Phone className="h-4 w-4" />
+                  {user.phone}
+                </div>
+              )}
+              {user.org_number && (
+                <div className="flex items-center gap-1">
+                  <Building className="h-4 w-4" />
+                  Org.nr: {user.org_number}
+                </div>
+              )}
+            </div>
+            {(user.city || user.address_line) && (
+              <div className="text-sm text-muted-foreground">
+                {user.address_line && `${user.address_line}, `}{user.city} {user.postal_code}
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-right text-sm">
+              <p className="font-medium">{user.loyalty_points || 0} poäng</p>
+              <p className="text-muted-foreground">{user.total_spent?.toLocaleString() || 0} SEK</p>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => onUserSelect(user)}
+            >
+              Visa profil
+            </Button>
+            <Button
+              onClick={() => onUserDelete(user)}
+              variant="outline"
+              size="sm"
+              title="Radera användare"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [userTypeFilter, setUserTypeFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -26,11 +168,10 @@ const AdminUsers = () => {
   const { toast } = useToast();
 
   const { data: usersData, isLoading, refetch } = useQuery({
-    queryKey: ['admin-users', searchTerm, userTypeFilter, roleFilter],
+    queryKey: ['admin-users', searchTerm, roleFilter],
     queryFn: async () => {
       return fetchAllUsers({
         q: searchTerm || undefined,
-        userType: userTypeFilter !== 'all' ? userTypeFilter : undefined,
         role: roleFilter !== 'all' ? roleFilter : undefined,
         limit: 200
       });
@@ -72,16 +213,6 @@ const AdminUsers = () => {
         description: 'Kunde inte radera användaren',
         variant: 'destructive'
       });
-    }
-  };
-
-  const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
-      case 'owner': return 'default' as const;
-      case 'admin': return 'secondary' as const;
-      case 'technician': return 'default' as const;
-      case 'manager': return 'secondary' as const;
-      default: return 'outline' as const;
     }
   };
 
@@ -174,169 +305,135 @@ const AdminUsers = () => {
         </Card>
       </div>
 
+      {/* Search and filters - applies to all tabs */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Sök namn, e-post, telefon, företag, org.nr..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={roleFilter} onValueChange={setRoleFilter}>
+              <SelectTrigger className="w-40">
+                <Shield className="h-4 w-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alla roller</SelectItem>
+                <SelectItem value="customer">Kunder</SelectItem>
+                <SelectItem value="worker">Arbetare</SelectItem>
+                <SelectItem value="technician">Tekniker</SelectItem>
+                <SelectItem value="manager">Chefer</SelectItem>
+                <SelectItem value="finance">Ekonomi</SelectItem>
+                <SelectItem value="support">Support</SelectItem>
+                <SelectItem value="admin">Admins</SelectItem>
+                <SelectItem value="owner">Ägare</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardHeader>
+      </Card>
+
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>
           <TabsTrigger value="all">Alla ({userTypeStats.total})</TabsTrigger>
           <TabsTrigger value="private">Privat ({userTypeStats.private})</TabsTrigger>
           <TabsTrigger value="company">Företag ({userTypeStats.company})</TabsTrigger>
           <TabsTrigger value="brf">BRF ({userTypeStats.brf})</TabsTrigger>
-          <TabsTrigger value="staff">Personal ({roleStats.staff})</TabsTrigger>
+          <TabsTrigger value="staff">Personal ({roleStats.staff + roleStats.admins})</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="space-y-4">
+        <TabsContent value="all">
           <Card>
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <CardTitle className="flex items-center gap-2">
-                  <UsersIcon className="h-5 w-5" />
-                  Alla användare
-                </CardTitle>
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                    <Input
-                      placeholder="Sök namn, e-post, telefon, företag, org.nr..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                  <Select value={userTypeFilter} onValueChange={setUserTypeFilter}>
-                    <SelectTrigger className="w-40">
-                      <Filter className="h-4 w-4 mr-2" />
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alla typer</SelectItem>
-                      <SelectItem value="private">Privat</SelectItem>
-                      <SelectItem value="company">Företag</SelectItem>
-                      <SelectItem value="brf">BRF</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select value={roleFilter} onValueChange={setRoleFilter}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alla roller</SelectItem>
-                      <SelectItem value="customer">Kunder</SelectItem>
-                      <SelectItem value="technician">Tekniker</SelectItem>
-                      <SelectItem value="manager">Chefer</SelectItem>
-                      <SelectItem value="admin">Admins</SelectItem>
-                      <SelectItem value="owner">Ägare</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 border rounded-lg animate-pulse">
-                      <div className="w-12 h-12 bg-muted rounded-full" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-muted rounded w-1/4" />
-                        <div className="h-3 bg-muted rounded w-1/3" />
-                        <div className="h-3 bg-muted rounded w-1/2" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : users && users.length > 0 ? (
-                <div className="space-y-4">
-                  {users.map((user) => (
-                    <div key={user.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                        {user.user_type === 'company' || user.user_type === 'brf' ? 
-                          <Building className="h-6 w-6 text-primary" /> : 
-                          <User className="h-6 w-6 text-primary" />
-                        }
-                      </div>
-                      <div className="flex-1 space-y-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-medium">
-                            {user.user_type === 'company' || user.user_type === 'brf' 
-                              ? user.company_name || user.brf_name || 'Okänt företag'
-                              : user.first_name && user.last_name 
-                                ? `${user.first_name} ${user.last_name}`
-                                : user.email || 'Okänt namn'
-                            }
-                          </h3>
-                          <Badge variant={getRoleBadgeVariant(user.role || 'customer')}>
-                            {user.role === 'owner' ? 'Ägare' : 
-                             user.role === 'admin' ? 'Admin' : 
-                             user.role === 'technician' ? 'Tekniker' :
-                             user.role === 'manager' ? 'Chef' : 'Kund'}
-                          </Badge>
-                          <Badge variant="outline">
-                            {user.user_type === 'company' ? 'Företag' :
-                             user.user_type === 'brf' ? 'BRF' : 'Privat'}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                          {user.email && (
-                            <div className="flex items-center gap-1">
-                              <Mail className="h-4 w-4" />
-                              {user.email}
-                            </div>
-                          )}
-                          {user.phone && (
-                            <div className="flex items-center gap-1">
-                              <Phone className="h-4 w-4" />
-                              {user.phone}
-                            </div>
-                          )}
-                          {user.org_number && (
-                            <div className="flex items-center gap-1">
-                              <Building className="h-4 w-4" />
-                              Org.nr: {user.org_number}
-                            </div>
-                          )}
-                        </div>
-                        {(user.city || user.address_line) && (
-                          <div className="text-sm text-muted-foreground">
-                            {user.address_line && `${user.address_line}, `}{user.city} {user.postal_code}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="text-right text-sm">
-                          <p className="font-medium">{user.loyalty_points || 0} poäng</p>
-                          <p className="text-muted-foreground">{user.total_spent?.toLocaleString() || 0} SEK</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => {
-                            setSelectedUser(user);
-                            setProfileModalOpen(true);
-                          }}
-                        >
-                          Visa profil
-                        </Button>
-                        <Button
-                          onClick={() => setUserToDelete(user)}
-                          variant="outline"
-                          size="sm"
-                          title="Radera användare"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">
-                    {searchTerm || userTypeFilter !== 'all' || roleFilter !== 'all' ? 
-                      'Inga användare hittades med dessa filter' : 
-                      'Inga användare att visa'}
-                  </p>
-                </div>
-              )}
+            <CardContent className="pt-6">
+              <UserListContent
+                filteredUsers={users}
+                isLoading={isLoading}
+                onUserSelect={(user) => {
+                  setSelectedUser(user);
+                  setProfileModalOpen(true);
+                }}
+                onUserDelete={(user) => setUserToDelete(user)}
+                searchTerm={searchTerm}
+                roleFilter={roleFilter}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="private">
+          <Card>
+            <CardContent className="pt-6">
+              <UserListContent
+                filteredUsers={users.filter(u => u.user_type === 'private' || !u.user_type)}
+                isLoading={isLoading}
+                onUserSelect={(user) => {
+                  setSelectedUser(user);
+                  setProfileModalOpen(true);
+                }}
+                onUserDelete={(user) => setUserToDelete(user)}
+                searchTerm={searchTerm}
+                roleFilter={roleFilter}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="company">
+          <Card>
+            <CardContent className="pt-6">
+              <UserListContent
+                filteredUsers={users.filter(u => u.user_type === 'company')}
+                isLoading={isLoading}
+                onUserSelect={(user) => {
+                  setSelectedUser(user);
+                  setProfileModalOpen(true);
+                }}
+                onUserDelete={(user) => setUserToDelete(user)}
+                searchTerm={searchTerm}
+                roleFilter={roleFilter}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="brf">
+          <Card>
+            <CardContent className="pt-6">
+              <UserListContent
+                filteredUsers={users.filter(u => u.user_type === 'brf')}
+                isLoading={isLoading}
+                onUserSelect={(user) => {
+                  setSelectedUser(user);
+                  setProfileModalOpen(true);
+                }}
+                onUserDelete={(user) => setUserToDelete(user)}
+                searchTerm={searchTerm}
+                roleFilter={roleFilter}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="staff">
+          <Card>
+            <CardContent className="pt-6">
+              <UserListContent
+                filteredUsers={users.filter(u => ['worker', 'technician', 'manager', 'finance', 'support', 'admin', 'owner'].includes(u.role))}
+                isLoading={isLoading}
+                onUserSelect={(user) => {
+                  setSelectedUser(user);
+                  setProfileModalOpen(true);
+                }}
+                onUserDelete={(user) => setUserToDelete(user)}
+                searchTerm={searchTerm}
+                roleFilter={roleFilter}
+              />
             </CardContent>
           </Card>
         </TabsContent>
