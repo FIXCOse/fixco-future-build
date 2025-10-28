@@ -142,7 +142,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           handleClose();
           
           // Redirect based on role
-          if (roles.includes('worker') || roles.includes('technician')) {
+          if (roles.includes('worker')) {
             navigate('/worker');
           } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin');
@@ -289,7 +289,7 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           handleClose();
           
           // Redirect based on role
-          if (roles.includes('worker') || roles.includes('technician')) {
+          if (roles.includes('worker')) {
             navigate('/worker');
           } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin');

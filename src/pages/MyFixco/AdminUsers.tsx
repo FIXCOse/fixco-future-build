@@ -57,7 +57,7 @@ const AdminUsers = () => {
     };
   }, [queryClient]);
 
-  const handleRoleChange = async (userId: string, newRole: string) => {
+  const handleRoleChange = async (userId: string, newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
     try {
       // Delete existing roles
       const { error: deleteError } = await supabase
@@ -70,7 +70,7 @@ const AdminUsers = () => {
       // Insert new role
       const { error } = await supabase
         .from('user_roles')
-        .insert({ user_id: userId, role: newRole });
+        .insert([{ user_id: userId, role: newRole }]);
 
       if (error) throw error;
 
@@ -257,7 +257,7 @@ const AdminUsers = () => {
                       {user.role}
                     </Badge>
                     
-                    <Select value={user.role} onValueChange={(value) => handleRoleChange(user.id, value)}>
+                    <Select value={user.role} onValueChange={(value) => handleRoleChange(user.id, value as 'customer' | 'admin' | 'owner' | 'worker')}>
                       <SelectTrigger className="w-32">
                         <SelectValue />
                       </SelectTrigger>

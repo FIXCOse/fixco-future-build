@@ -21,7 +21,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<UserProfile>>(user || {});
-  const [selectedRole, setSelectedRole] = useState<string>(user?.role || 'customer');
+  const [selectedRole, setSelectedRole] = useState<'customer' | 'admin' | 'owner' | 'worker'>((user?.role as 'customer' | 'admin' | 'owner' | 'worker') || 'customer');
 
   const updateUserMutation = useMutation({
     mutationFn: async (data: Partial<UserProfile>) => {
@@ -73,7 +73,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
   });
 
   const updateRoleMutation = useMutation({
-    mutationFn: async (newRole: string) => {
+    mutationFn: async (newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
       if (!user) return;
       
       // Delete all existing roles
@@ -87,7 +87,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
       // Insert new role
       const { error: insertError } = await supabase
         .from('user_roles')
-        .insert({ user_id: user.id, role: newRole });
+        .insert([{ user_id: user.id, role: newRole }]);
       
       if (insertError) throw insertError;
     },
@@ -135,7 +135,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
   // Sync selectedRole when user changes
   useEffect(() => {
     if (user) {
-      setSelectedRole(user.role || 'customer');
+      setSelectedRole((user.role as 'customer' | 'admin' | 'owner' | 'worker') || 'customer');
       setFormData(user);
     }
   }, [user]);
@@ -240,7 +240,7 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
             {isEditing ? (
               <div>
                 <Label htmlFor="role">Roll</Label>
-                <Select value={selectedRole} onValueChange={setSelectedRole}>
+                <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value as 'customer' | 'admin' | 'owner' | 'worker')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

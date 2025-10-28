@@ -38,7 +38,7 @@ export function useRole() {
   const isAdmin = roles.includes('admin') || roles.includes('owner');
   const isOwner = roles.includes('owner');
   const isWorker = roles.includes('worker');
-  const isStaff = ['owner', 'admin', 'worker'].some(r => roles.includes(r));
+  const isStaff = roles.some(r => ['owner', 'admin', 'worker'].includes(r));
   
   return {
     role,

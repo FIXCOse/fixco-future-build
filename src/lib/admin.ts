@@ -17,7 +17,7 @@ export async function listUsers(searchQuery?: string) {
   return data;
 }
 
-export async function updateUserRole(userId: string, role: 'customer' | 'staff' | 'admin' | 'owner' | 'worker') {
+export async function updateUserRole(userId: string, role: 'customer' | 'admin' | 'owner' | 'worker') {
   // Delete existing roles
   const { error: deleteError } = await supabase
     .from('user_roles')
@@ -29,7 +29,7 @@ export async function updateUserRole(userId: string, role: 'customer' | 'staff' 
   // Insert new role
   const { data, error } = await supabase
     .from('user_roles')
-    .insert({ user_id: userId, role })
+    .insert([{ user_id: userId, role }])
     .select()
     .single();
   

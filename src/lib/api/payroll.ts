@@ -71,7 +71,7 @@ export async function fetchPayrollSummary(startDate: Date, endDate: Date) {
   const { data: workerRoles, error: rolesError } = await supabase
     .from('user_roles')
     .select('user_id')
-    .in('role', ['worker', 'technician']);
+    .in('role', ['worker']);
 
   if (rolesError) throw rolesError;
 

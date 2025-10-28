@@ -32,7 +32,7 @@ const AdminWorkers = () => {
   const { toast } = useToast();
 
   // Filter workers from users (users now have role from user_roles table)
-  const workers = users.filter(u => u.role === 'worker' || u.role === 'technician');
+  const workers = users.filter(u => u.role === 'worker');
 
   // Filter workers based on search
   const filteredWorkers = workers.filter(worker => {
@@ -57,7 +57,7 @@ const AdminWorkers = () => {
     setWorkerStats(stats);
   }, [workers, jobs]);
 
-  const handleUpdateUserRole = async (userId: string, newRole: string) => {
+  const handleUpdateUserRole = async (userId: string, newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
     try {
       // Delete existing roles
       const { error: deleteError } = await supabase
@@ -70,7 +70,7 @@ const AdminWorkers = () => {
       // Insert new role
       const { error } = await supabase
         .from('user_roles')
-        .insert({ user_id: userId, role: newRole });
+        .insert([{ user_id: userId, role: newRole }]);
 
       if (error) throw error;
 
@@ -238,7 +238,7 @@ const AdminWorkers = () => {
                   <Label className="text-sm font-medium">Roll</Label>
                   <Select 
                     value={selectedWorker.role} 
-                    onValueChange={(value) => handleUpdateUserRole(selectedWorker.id, value)}
+                    onValueChange={(value) => handleUpdateUserRole(selectedWorker.id, value as 'customer' | 'admin' | 'owner' | 'worker')}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue />

@@ -71,7 +71,7 @@ export default function AuthCallback() {
           });
           
           // Redirect based on role
-          if (roles.includes('worker') || roles.includes('technician')) {
+          if (roles.includes('worker')) {
             navigate('/worker', { replace: true });
           } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin', { replace: true });
