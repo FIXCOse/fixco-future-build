@@ -224,7 +224,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                 </Link>
                 <Link 
                   to={`${basePath}/${isEnglish ? 'contact' : 'kontakt'}`} 
-                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors"
+                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity"
                 >
                   {t('ctaQuote')}
                 </Link>
