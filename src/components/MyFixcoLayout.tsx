@@ -9,6 +9,7 @@ import { OwnerCongrats } from '@/components/OwnerCongrats';
 import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
 import { useAuthProfile } from '@/hooks/useAuthProfile';
 import { useRoleGate } from '@/hooks/useRoleGate';
+import { useRole } from '@/hooks/useRole';
 import AdminDashboardContent from '@/components/AdminDashboardContent';
 import SalesOverview from '@/components/SalesOverview';
 import { LocaleProvider } from '@/components/LocaleProvider';
@@ -45,6 +46,7 @@ const MyFixcoLayout = () => {
   const [user, setUser] = useState(null);
   const { show, acknowledge } = useOwnerCongrats();
   const { profile, loading: authLoading } = useAuthProfile();
+  const { isAdmin, isWorker, loading: roleLoading } = useRole();
   const location = useLocation();
   const navigate = useNavigate();
   const { currentLanguage } = useLanguagePersistence();
@@ -63,13 +65,9 @@ const MyFixcoLayout = () => {
     return () => { mounted = false; };
   }, []);
 
-  // Check if user is admin/owner/worker based on profile from useAuthProfile
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'owner';
-  const isWorker = profile?.role === 'worker';
-
   // Redirect admin/owner users to admin dashboard, workers to worker dashboard
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || roleLoading) return;
     
     // Only redirect from /mitt-fixco to correct dashboard
     if (location.pathname !== '/mitt-fixco') return;
@@ -81,9 +79,9 @@ const MyFixcoLayout = () => {
     } else if (isWorker) {
       navigate('/worker', { replace: true });
     }
-  }, [authLoading, profile, isAdmin, isWorker, location.pathname, navigate]);
+  }, [authLoading, roleLoading, profile, isAdmin, isWorker, location.pathname, navigate]);
 
-  if (authLoading) {
+  if (authLoading || roleLoading) {
     return <PageSkeleton />;
   }
 

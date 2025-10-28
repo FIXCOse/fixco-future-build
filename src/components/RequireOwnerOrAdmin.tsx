@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuthProfile } from '@/hooks/useAuthProfile';
+import { useRole } from '@/hooks/useRole';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface RequireOwnerOrAdminProps {
@@ -8,7 +8,7 @@ interface RequireOwnerOrAdminProps {
 }
 
 const RequireOwnerOrAdmin: React.FC<RequireOwnerOrAdminProps> = ({ children }) => {
-  const { role, loading } = useAuthProfile();
+  const { isAdmin, isOwner, loading } = useRole();
 
   if (loading) {
     return (
@@ -19,7 +19,7 @@ const RequireOwnerOrAdmin: React.FC<RequireOwnerOrAdminProps> = ({ children }) =
     );
   }
 
-  if (!['owner', 'admin'].includes(role)) {
+  if (!isAdmin && !isOwner) {
     return <Navigate to="/mitt-fixco" replace />;
   }
 

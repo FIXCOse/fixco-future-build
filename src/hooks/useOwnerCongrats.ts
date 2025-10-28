@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthProfile } from "@/hooks/useAuthProfile";
+import { useRole } from "@/hooks/useRole";
 
 export function useOwnerCongrats() {
   const [show, setShow] = useState(false);
   const { profile } = useAuthProfile();
+  const { isOwner } = useRole();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -14,7 +16,7 @@ export function useOwnerCongrats() {
     if (!profile) return;
 
     // Visa ENDAST för OWNER + aldrig tidigare visat
-    if (profile.role === 'owner' && !profile.owner_welcome_at) {
+    if (isOwner && !profile.owner_welcome_at) {
       // Extra failsafe mot dubbelvisning i samma session
       const onceKey = `owner_welcome_once_${profile.id}`;
       if (!sessionStorage.getItem(onceKey)) {
@@ -28,7 +30,7 @@ export function useOwnerCongrats() {
     return () => { 
       mounted = false;
     };
-  }, [profile]);
+  }, [profile, isOwner]);
 
   // När ägaren stänger modalen → skriv till DB så den aldrig kommer igen
   const acknowledge = async () => {

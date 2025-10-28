@@ -8,7 +8,6 @@ interface UserProfile {
   first_name: string;
   last_name: string;
   phone: string | null;
-  role: string;
   user_type: 'private' | 'company' | 'brf';
   created_at: string;
   loyalty_points: number;
@@ -23,10 +22,10 @@ export const useAuthProfile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
-      // Optimized query - only select what we need for role check
+      // Optimized query - select profile data (role is now in user_roles table)
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
+        .select('id, email, first_name, last_name, phone, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
         .eq('id', user.id)
         .single();
 
@@ -47,7 +46,7 @@ export const useAuthProfile = () => {
             loyalty_points: 0,
             total_spent: 0
           })
-          .select('id, email, first_name, last_name, phone, role, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
+          .select('id, email, first_name, last_name, phone, user_type, created_at, loyalty_points, total_spent, owner_welcome_at')
           .single();
         
         if (insertError) throw insertError;
@@ -75,7 +74,6 @@ export const useAuthProfile = () => {
 
   return {
     profile,
-    role: profile?.role || 'customer',
     loading: isLoading,
     error
   };

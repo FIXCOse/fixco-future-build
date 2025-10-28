@@ -1497,7 +1497,6 @@ export type Database = {
           owner_welcome_at: string | null
           phone: string | null
           postal_code: string | null
-          role: string | null
           total_spent: number | null
           updated_at: string | null
           user_type: Database["public"]["Enums"]["user_type"]
@@ -1523,7 +1522,6 @@ export type Database = {
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
-          role?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]
@@ -1549,7 +1547,6 @@ export type Database = {
           owner_welcome_at?: string | null
           phone?: string | null
           postal_code?: string | null
-          role?: string | null
           total_spent?: number | null
           updated_at?: string | null
           user_type?: Database["public"]["Enums"]["user_type"]
@@ -2769,16 +2766,19 @@ export type Database = {
       user_roles: {
         Row: {
           created_at: string | null
+          id: string
           role: string
           user_id: string
         }
         Insert: {
           created_at?: string | null
+          id?: string
           role: string
           user_id: string
         }
         Update: {
           created_at?: string | null
+          id?: string
           role?: string
           user_id?: string
         }
@@ -3113,6 +3113,7 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
       is_admin: { Args: { user_uuid?: string }; Returns: boolean }
       is_admin_or_owner: { Args: { user_uuid?: string }; Returns: boolean }
       is_organization_admin: {
