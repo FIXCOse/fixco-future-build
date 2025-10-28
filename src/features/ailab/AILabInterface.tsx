@@ -7,6 +7,9 @@ import { QualificationForm, QualificationData } from './QualificationForm';
 import { useToast } from '@/hooks/use-toast';
 import { aiEditImage } from '../ai/lib/ai';
 import { supabase } from '@/integrations/supabase/client';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Check } from 'lucide-react';
 
 export function AILabInterface() {
   const { t } = useCopy();
@@ -21,6 +24,7 @@ export function AILabInterface() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const handleImageUpload = useCallback((file: File, preview: string) => {
     setOriginalFile(file);
@@ -127,11 +131,7 @@ export function AILabInterface() {
 
       if (error) throw error;
 
-      toast({
-        title: '✅ Tack för din förfrågan!',
-        description: 'Vi återkommer inom 48h med en offert efter platsbesiktning.',
-        duration: 5000
-      });
+      setShowSuccessDialog(true);
 
       // Reset form data
       setOriginalImage('');
@@ -185,6 +185,33 @@ export function AILabInterface() {
           isSubmitting={isSubmittingLead}
         />
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl">
+              Tack för din förfrågan!
+            </DialogTitle>
+            <DialogDescription className="text-center text-base">
+              Vi återkommer inom 48 timmar med en offert efter platsbesiktning.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button 
+              onClick={() => setShowSuccessDialog(false)}
+              className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 text-white"
+            >
+              Stäng
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
