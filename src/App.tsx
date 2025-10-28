@@ -127,13 +127,12 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <CopyProvider locale="sv">
-          <SecurityWrapper>
-            <TooltipProvider>
-              <div className="min-h-screen bg-background font-inter">
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
+        <SecurityWrapper>
+          <TooltipProvider>
+            <div className="min-h-screen bg-background font-inter">
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
                 <ScrollToTop />
                 <Routes>
                   <Route path="/auth" element={<Auth />} />
@@ -292,7 +291,6 @@ const App = () => {
             </div>
           </TooltipProvider>
         </SecurityWrapper>
-        </CopyProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );
