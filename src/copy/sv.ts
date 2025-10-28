@@ -672,7 +672,7 @@ export const sv: Record<CopyKey, string> = {
   'comparison.customer_satisfaction_desc': 'Branschens högsta kundnöjdhet baserat på tusentals recensioner',
   'comparison.rut_handling': 'RUT-hantering',
   'comparison.rut_handling_fixco': 'Vi sköter allt',
-  'comparison.rut_handling_competitor': 'Du själv',
+  'comparison.rut_handling_competitor': 'Sköter också',
   'comparison.rut_handling_desc': 'Vi hanterar all RUT-administration för hushållsnära tjänster',
   'comparison.project_completion': 'Projekt klart i tid',
   'comparison.project_completion_desc': 'Nästan alla projekt levereras enligt överenskommen tidsplan',

@@ -672,7 +672,7 @@ export const en: Record<CopyKey, string> = {
   'comparison.customer_satisfaction_desc': 'Industry-highest customer satisfaction based on thousands of reviews',
   'comparison.rut_handling': 'RUT handling',
   'comparison.rut_handling_fixco': 'We handle everything',
-  'comparison.rut_handling_competitor': 'You handle it',
+  'comparison.rut_handling_competitor': 'They also handle it',
   'comparison.rut_handling_desc': 'We handle all RUT administration for household services',
   'comparison.project_completion': 'Projects completed on time',
   'comparison.project_completion_desc': 'Almost all projects delivered according to agreed timeline',
