@@ -451,7 +451,7 @@ export type Database = {
           event_data: Json | null
           event_type: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           page_url: string | null
           session_id: string | null
           user_agent: string | null
@@ -462,7 +462,7 @@ export type Database = {
           event_data?: Json | null
           event_type: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           page_url?: string | null
           session_id?: string | null
           user_agent?: string | null
@@ -473,7 +473,7 @@ export type Database = {
           event_data?: Json | null
           event_type?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           page_url?: string | null
           session_id?: string | null
           user_agent?: string | null
@@ -1308,6 +1308,137 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      payroll_entries: {
+        Row: {
+          created_at: string | null
+          deductions: number | null
+          gross_salary: number
+          hourly_rate: number
+          id: string
+          jobs_count: number | null
+          net_salary: number
+          notes: string | null
+          period_id: string | null
+          staff_id: string | null
+          total_hours: number
+          updated_at: string | null
+          worker_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deductions?: number | null
+          gross_salary: number
+          hourly_rate: number
+          id?: string
+          jobs_count?: number | null
+          net_salary: number
+          notes?: string | null
+          period_id?: string | null
+          staff_id?: string | null
+          total_hours?: number
+          updated_at?: string | null
+          worker_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deductions?: number | null
+          gross_salary?: number
+          hourly_rate?: number
+          id?: string
+          jobs_count?: number | null
+          net_salary?: number
+          notes?: string | null
+          period_id?: string | null
+          staff_id?: string | null
+          total_hours?: number
+          updated_at?: string | null
+          worker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_entries_period_id_fkey"
+            columns: ["period_id"]
+            isOneToOne: false
+            referencedRelation: "payroll_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "worker_statistics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payroll_periods: {
+        Row: {
+          created_at: string | null
+          id: string
+          locked_at: string | null
+          locked_by: string | null
+          notes: string | null
+          paid_at: string | null
+          period_end: string
+          period_start: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          locked_at?: string | null
+          locked_by?: string | null
+          notes?: string | null
+          paid_at?: string | null
+          period_end: string
+          period_start: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          locked_at?: string | null
+          locked_by?: string | null
+          notes?: string | null
+          paid_at?: string | null
+          period_end?: string
+          period_start?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_periods_locked_by_fkey"
+            columns: ["locked_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_periods_locked_by_fkey"
+            columns: ["locked_by"]
+            isOneToOne: false
+            referencedRelation: "worker_statistics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       product_interactions: {
         Row: {
@@ -2934,118 +3065,43 @@ export type Database = {
         Args: { p_job_id: string; p_worker_id: string }
         Returns: boolean
       }
-      check_user_is_worker: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      claim_job: {
-        Args: { p_job_id: string }
-        Returns: boolean
-      }
-      cleanup_old_deleted_quotes: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_deleted_records: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      complete_job: {
-        Args: { p_job_id: string }
-        Returns: boolean
-      }
-      create_booking_secure: {
-        Args: { p: Json }
-        Returns: string
-      }
+      check_user_is_worker: { Args: never; Returns: boolean }
+      claim_job: { Args: { p_job_id: string }; Returns: boolean }
+      cleanup_old_deleted_quotes: { Args: never; Returns: undefined }
+      cleanup_old_deleted_records: { Args: never; Returns: undefined }
+      complete_job: { Args: { p_job_id: string }; Returns: boolean }
+      create_booking_secure: { Args: { p: Json }; Returns: string }
       create_draft_quote_for_booking: {
         Args: { booking_id: string }
         Returns: string
       }
-      create_expense_entry: {
-        Args: { p: Json }
-        Returns: string
-      }
+      create_expense_entry: { Args: { p: Json }; Returns: string }
       create_job_from_booking: {
         Args: { p_booking_id: string }
         Returns: string
       }
-      create_job_from_quote: {
-        Args: { p_quote_id: string }
-        Returns: string
-      }
+      create_job_from_quote: { Args: { p_quote_id: string }; Returns: string }
       create_job_from_quote_new: {
         Args: { p_quote_id: string }
         Returns: string
       }
-      create_material_entry: {
-        Args: { p: Json }
-        Returns: string
-      }
-      create_quote_request_secure: {
-        Args: { p: Json }
-        Returns: string
-      }
-      create_time_entry: {
-        Args: { p: Json }
-        Returns: string
-      }
-      debug_auth_context: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      empty_bookings_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_job_requests_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_jobs_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_projects_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_quote_requests_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_quotes_new_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      empty_quotes_trash: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      generate_invoice_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_public_token: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_quote_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_quote_number_new: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_invoice_statistics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_next_staff_id: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      create_material_entry: { Args: { p: Json }; Returns: string }
+      create_quote_request_secure: { Args: { p: Json }; Returns: string }
+      create_time_entry: { Args: { p: Json }; Returns: string }
+      debug_auth_context: { Args: never; Returns: Json }
+      empty_bookings_trash: { Args: never; Returns: number }
+      empty_job_requests_trash: { Args: never; Returns: number }
+      empty_jobs_trash: { Args: never; Returns: number }
+      empty_projects_trash: { Args: never; Returns: number }
+      empty_quote_requests_trash: { Args: never; Returns: number }
+      empty_quotes_new_trash: { Args: never; Returns: number }
+      empty_quotes_trash: { Args: never; Returns: number }
+      generate_invoice_number: { Args: never; Returns: string }
+      generate_public_token: { Args: never; Returns: string }
+      generate_quote_number: { Args: never; Returns: string }
+      generate_quote_number_new: { Args: never; Returns: string }
+      get_invoice_statistics: { Args: never; Returns: Json }
+      get_next_staff_id: { Args: never; Returns: number }
       get_user_organizations: {
         Args: { user_uuid: string }
         Returns: {
@@ -3057,14 +3113,8 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
-      is_admin: {
-        Args: { user_uuid?: string }
-        Returns: boolean
-      }
-      is_admin_or_owner: {
-        Args: { user_uuid?: string }
-        Returns: boolean
-      }
+      is_admin: { Args: { user_uuid?: string }; Returns: boolean }
+      is_admin_or_owner: { Args: { user_uuid?: string }; Returns: boolean }
       is_organization_admin: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
@@ -3073,18 +3123,9 @@ export type Database = {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
       }
-      is_owner: {
-        Args: { user_uuid?: string }
-        Returns: boolean
-      }
-      is_worker: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      kpi_today: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      is_owner: { Args: { user_uuid?: string }; Returns: boolean }
+      is_worker: { Args: never; Returns: boolean }
+      kpi_today: { Args: never; Returns: Json }
       log_activity: {
         Args: {
           p_event_type: string
@@ -3103,18 +3144,12 @@ export type Database = {
         Args: { p_property_id: string }
         Returns: undefined
       }
-      organization_has_members: {
-        Args: { org_uuid: string }
-        Returns: boolean
-      }
+      organization_has_members: { Args: { org_uuid: string }; Returns: boolean }
       permanently_delete_booking: {
         Args: { p_booking_id: string }
         Returns: boolean
       }
-      permanently_delete_job: {
-        Args: { p_job_id: string }
-        Returns: boolean
-      }
+      permanently_delete_job: { Args: { p_job_id: string }; Returns: boolean }
       permanently_delete_job_request: {
         Args: { p_request_id: string }
         Returns: boolean
@@ -3135,66 +3170,30 @@ export type Database = {
         Args: { p_quote_request_id: string }
         Returns: boolean
       }
-      prepare_invoice_from_job: {
-        Args: { p_job_id: string }
-        Returns: Json
-      }
-      reorder_services: {
-        Args: { _service_updates: Json }
-        Returns: undefined
-      }
-      restore_booking: {
-        Args: { p_booking_id: string }
-        Returns: boolean
-      }
-      restore_job: {
-        Args: { p_job_id: string }
-        Returns: boolean
-      }
-      restore_job_request: {
-        Args: { p_request_id: string }
-        Returns: boolean
-      }
-      restore_project: {
-        Args: { p_project_id: string }
-        Returns: boolean
-      }
-      restore_quote: {
-        Args: { p_quote_id: string }
-        Returns: boolean
-      }
-      restore_quote_new: {
-        Args: { p_quote_id: string }
-        Returns: boolean
-      }
+      prepare_invoice_from_job: { Args: { p_job_id: string }; Returns: Json }
+      reorder_services: { Args: { _service_updates: Json }; Returns: undefined }
+      restore_booking: { Args: { p_booking_id: string }; Returns: boolean }
+      restore_job: { Args: { p_job_id: string }; Returns: boolean }
+      restore_job_request: { Args: { p_request_id: string }; Returns: boolean }
+      restore_project: { Args: { p_project_id: string }; Returns: boolean }
+      restore_quote: { Args: { p_quote_id: string }; Returns: boolean }
+      restore_quote_new: { Args: { p_quote_id: string }; Returns: boolean }
       restore_quote_request: {
         Args: { p_quote_request_id: string }
         Returns: boolean
       }
-      rpc_acquire_lock: {
-        Args: { p_scope: string }
-        Returns: boolean
-      }
-      rpc_batch_publish_content: {
-        Args: { p_items: Json }
-        Returns: number
-      }
+      rpc_acquire_lock: { Args: { p_scope: string }; Returns: boolean }
+      rpc_batch_publish_content: { Args: { p_items: Json }; Returns: number }
       rpc_publish_content_block: {
         Args: { p_key: string; p_locale: string }
         Returns: boolean
       }
-      rpc_release_lock: {
-        Args: { p_scope: string }
-        Returns: boolean
-      }
+      rpc_release_lock: { Args: { p_scope: string }; Returns: boolean }
       rpc_update_service_partial: {
         Args: { p_id: string; p_patch: Json }
         Returns: boolean
       }
-      track_product_view: {
-        Args: { p_product_id: string }
-        Returns: undefined
-      }
+      track_product_view: { Args: { p_product_id: string }; Returns: undefined }
       translate_service_to_english: {
         Args: { service_id: string }
         Returns: boolean

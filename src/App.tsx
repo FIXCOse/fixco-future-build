@@ -64,6 +64,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminStaff from "./pages/admin/AdminStaff";
+import AdminPayroll from "./pages/admin/AdminPayroll";
 import JobPool from "./pages/worker/JobPool";
 import MyJobs from "./pages/worker/MyJobs";
 import JobDetail from "./pages/worker/JobDetail";
@@ -184,6 +185,7 @@ const App = () => {
                     <Route path="settings" element={<AdminSettings />} />
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
+                    <Route path="payroll" element={<AdminPayroll />} />
                     <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="job-requests-trash" element={<AdminJobRequestsTrash />} />
                     <Route path="jobs" element={<AdminJobs />} />

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { 
   Users, FileText, Receipt, BarChart3, 
-  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages, Wrench, MessageCircle, Briefcase
+  Plus, Calendar, Settings, Database, Shield, Clock, UserCheck, Send, Languages, Wrench, MessageCircle, Briefcase, DollarSign
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -50,6 +50,13 @@ const AdminDashboard = () => {
       description: 'Hantera anställda och kompetenser',
       href: '/admin/staff',
       icon: UserCheck,
+      variant: 'outline' as const
+    },
+    {
+      title: 'Lönehantering',
+      description: 'Löner, timmar och lönsamhet',
+      href: '/admin/payroll',
+      icon: DollarSign,
       variant: 'outline' as const
     },
     {
