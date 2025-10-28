@@ -403,9 +403,8 @@ export const useContentStore = create<ContentStore>()(
           }
         });
         
-        // Step 3: Force page reload to apply changes
-        console.log('🔄 Reloading page to apply gradient fixes...');
-        window.location.reload();
+        // NO RELOAD HERE - let onRehydrateStorage handle it with proper timing
+        console.log('✅ Cleared gradient colors from content store');
       },
       
       exportData: () => {
@@ -424,19 +423,25 @@ export const useContentStore = create<ContentStore>()(
     {
       name: 'fixco-content-store',
       version: 1,
-      onRehydrateStorage: () => {
-        return (state) => {
-          if (state) {
-            // Migration: Clear gradient colors after store has loaded from localStorage
-            const hasMigrated = sessionStorage.getItem('gradient-colors-cleared-v2');
-            if (!hasMigrated) {
-              console.log('🧹 Running post-rehydrate migration...');
-              state.clearGradientColors();
-              sessionStorage.setItem('gradient-colors-cleared-v2', 'true');
+        onRehydrateStorage: () => {
+          return (state) => {
+            if (state) {
+              // Migration: Clear gradient colors after store has loaded from localStorage
+              const hasMigrated = sessionStorage.getItem('gradient-colors-cleared-v3');
+              if (!hasMigrated) {
+                console.log('🧹 Running post-rehydrate migration...');
+                state.clearGradientColors();
+                sessionStorage.setItem('gradient-colors-cleared-v3', 'true');
+                
+                // Force page reload AFTER localStorage has been flushed
+                console.log('🔄 Reloading page to apply gradient fixes...');
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100); // 100ms delay to ensure localStorage flush
+              }
             }
-          }
-        };
-      }
+          };
+        }
     }
   )
 );
