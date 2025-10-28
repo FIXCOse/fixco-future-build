@@ -24,12 +24,7 @@ const AdminInvoices = () => {
     queryFn: async () => {
       let query = supabase
         .from('invoices')
-        .select(`
-          *,
-          customer:customers!invoices_customer_id_fkey(id, name, email),
-          booking:bookings(service_name),
-          quote:quotes(quote_number, title)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (searchTerm) {
@@ -40,9 +35,50 @@ const AdminInvoices = () => {
         query = query.eq('status', statusFilter as any);
       }
 
-      const { data, error } = await query;
+      const { data: invoices, error } = await query;
       if (error) throw error;
-      return data || [];
+      if (!invoices || invoices.length === 0) return [];
+
+      // Hämta customer data separat
+      const customerIds = [...new Set(invoices.map(inv => inv.customer_id).filter(Boolean))];
+      let customers: any[] = [];
+      if (customerIds.length > 0) {
+        const { data } = await supabase
+          .from('customers')
+          .select('id, name, email, phone')
+          .in('id', customerIds);
+        customers = data || [];
+      }
+
+      // Hämta booking data separat
+      const bookingIds = [...new Set(invoices.map(inv => inv.booking_id).filter(Boolean))];
+      let bookings: any[] = [];
+      if (bookingIds.length > 0) {
+        const { data } = await supabase
+          .from('bookings')
+          .select('id, service_name')
+          .in('id', bookingIds);
+        bookings = data || [];
+      }
+
+      // Hämta quote data separat (från gamla quotes tabellen)
+      const quoteIds = [...new Set(invoices.map(inv => inv.quote_id).filter(Boolean))];
+      let quotes: any[] = [];
+      if (quoteIds.length > 0) {
+        const { data } = await supabase
+          .from('quotes')
+          .select('id, quote_number, title')
+          .in('id', quoteIds);
+        quotes = data || [];
+      }
+
+      // Kombinera all data
+      return invoices.map(invoice => ({
+        ...invoice,
+        customer: customers.find(c => c.id === invoice.customer_id) || null,
+        booking: bookings.find(b => b.id === invoice.booking_id) || null,
+        quote: quotes.find(q => q.id === invoice.quote_id) || null,
+      }));
     },
   });
 
