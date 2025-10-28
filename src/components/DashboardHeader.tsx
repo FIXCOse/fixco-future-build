@@ -51,7 +51,7 @@ const DashboardHeader = ({ profile, stats }: DashboardHeaderProps) => {
       'platinum': { min: 10000, max: 10000, next: 'platinum' }
     };
     
-    const tierInfo = tiers[tier as keyof typeof tiers];
+    const tierInfo = tiers[tier as keyof typeof tiers] || tiers['bronze'];
     const progress = tierInfo.max > tierInfo.min 
       ? ((points - tierInfo.min) / (tierInfo.max - tierInfo.min)) * 100
       : 100;
