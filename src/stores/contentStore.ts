@@ -77,6 +77,7 @@ interface ContentStore {
   // Utility methods
   reset: () => void;
   clearHeroContent: () => void;
+  clearGradientColors: () => void;
   exportData: () => string;
   importData: (data: string) => void;
 }
@@ -336,6 +337,52 @@ export const useContentStore = create<ContentStore>()(
             console.error('Failed to clear hero content:', error);
           }
         }
+      },
+      
+      clearGradientColors: () => {
+        const state = get();
+        const gradientContentIds = [
+          'services-title',
+          'services-categories-title', 
+          'services-all-title',
+          'services-rot-title',
+          'services-rot-what-title',
+          'services-rot-handle-title'
+        ];
+
+        // Clear from both locales
+        ['sv', 'en'].forEach(locale => {
+          const localeContent = state.content[locale];
+          if (localeContent) {
+            gradientContentIds.forEach(id => {
+              const item = localeContent[id];
+              if (item?.styles?.color) {
+                // Remove color but keep other styles
+                const { color, ...restStyles } = item.styles;
+                set((currentState) => ({
+                  content: {
+                    ...currentState.content,
+                    [locale]: {
+                      ...currentState.content[locale],
+                      [id]: {
+                        ...item,
+                        styles: restStyles
+                      }
+                    }
+                  }
+                }));
+                
+                // Also update in database
+                get().saveContentToDatabase(id, {
+                  ...item,
+                  styles: restStyles
+                }, locale);
+              }
+            });
+          }
+        });
+        
+        console.log('✅ Cleared gradient colors from content store');
       },
       
       exportData: () => {

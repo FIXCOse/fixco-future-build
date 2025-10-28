@@ -108,15 +108,18 @@ export const EditableText: React.FC<EditableTextProps> = ({
     placeholder
   };
 
-  // Check if this element uses gradient text
-  const hasGradient = className?.includes('gradient-text') || className?.includes('gradient-rainbow');
+  // Check if this element uses gradient text - more robust null-safety
+  const hasGradient = 
+    className?.includes('gradient-text') || 
+    className?.includes('gradient-rainbow') ||
+    className?.includes('gradient-');
 
-  // Apply saved styles
+  // Apply saved styles, but NEVER apply color on gradient elements
   const inlineStyles: React.CSSProperties = {
     fontSize: textStyles.fontSize,
     fontWeight: textStyles.fontWeight as any,
-    // Only apply color if NOT using gradient (inline color overrides background-clip: text)
-    ...(hasGradient ? {} : { color: textStyles.color }),
+    // IMPORTANT: Never apply color on gradient elements (inline color overrides background-clip: text)
+    ...(!hasGradient && textStyles.color ? { color: textStyles.color } : {}),
     fontFamily: textStyles.fontFamily,
     textAlign: textStyles.textAlign as any,
     lineHeight: textStyles.lineHeight,
