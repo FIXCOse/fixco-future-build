@@ -9,6 +9,7 @@ import { useCopy } from "@/copy/CopyProvider";
 import { EditableText } from "@/components/EditableText";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { AnimatedFixcoFIcon } from "@/components/icons/AnimatedFixcoFIcon";
+import LiquidEther from "@/components/effects/LiquidEther";
 
 interface ParticleSystemProps {
   count?: number;
@@ -216,8 +217,32 @@ const HeroUltra = () => {
           {/* Base gradient (always visible) */}
           <div className="absolute inset-0 hero-background" />
           
+          {/* LiquidEther fluid simulation - ULTRA mode only */}
+          {ultraEnabled && capabilities.prefersMotion && (
+            <div className="absolute inset-0 z-0">
+              <LiquidEther
+                colors={['#8C19FF', '#00AAFF', '#FF33DD']}
+                mouseForce={15}
+                cursorSize={120}
+                resolution={0.4}
+                dt={0.016}
+                BFECC={true}
+                autoDemo={true}
+                autoSpeed={0.3}
+                autoIntensity={1.8}
+                takeoverDuration={0.3}
+                autoResumeDelay={2000}
+                autoRampDuration={0.8}
+                style={{
+                  mixBlendMode: 'screen',
+                  opacity: 0.6
+                }}
+              />
+            </div>
+          )}
+          
         {/* Simplified F Watermark - Using static F icons */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20 relative z-[3]">
           <div 
             className="absolute top-1/4 right-12 w-28 h-28 rotate-45 animate-pulse"
             style={{ animationDuration: '6s', animationDelay: '2s' }}
@@ -236,7 +261,7 @@ const HeroUltra = () => {
           
           {/* Animated gradients */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"
+          className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20 relative z-[1]"
           animate={{
             background: [
               "linear-gradient(45deg, rgba(147, 51, 234, 0.2) 0%, transparent 50%, rgba(236, 72, 153, 0.2) 100%)",
@@ -249,13 +274,13 @@ const HeroUltra = () => {
         
         {/* Particle System - Progressive Enhancement */}
         {capabilities.prefersMotion && (
-          <>
+          <div className="absolute inset-0 z-[2]">
             {ultraEnabled ? (
               <ParticleSystemULTRA count={150} speed={0.5} />
             ) : (
               <ParticleSystemPRO count={12} speed={1} />
             )}
-          </>
+          </div>
         )}
       </div>
 
