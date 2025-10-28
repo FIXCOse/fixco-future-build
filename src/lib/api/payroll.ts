@@ -36,7 +36,6 @@ export type WorkerPayrollSummary = {
   worker_id: string;
   name: string;
   email: string;
-  role: string;
   hourly_rate: number;
   total_hours: number;
   gross_salary: number;
@@ -68,6 +67,16 @@ export async function fetchPayrollSummary(startDate: Date, endDate: Date) {
 
   if (timeError) throw timeError;
 
+  // Get workers by querying user_roles table
+  const { data: workerRoles, error: rolesError } = await supabase
+    .from('user_roles')
+    .select('user_id')
+    .in('role', ['worker', 'technician']);
+
+  if (rolesError) throw rolesError;
+
+  const workerIds = workerRoles?.map(r => r.user_id) || [];
+
   const { data: workers, error: workerError } = await supabase
     .from('profiles')
     .select(`
@@ -75,10 +84,9 @@ export async function fetchPayrollSummary(startDate: Date, endDate: Date) {
       first_name,
       last_name,
       email,
-      role,
       staff!staff_user_id_fkey(hourly_rate, active)
     `)
-    .eq('role', 'worker');
+    .in('id', workerIds);
 
   if (workerError) throw workerError;
 
@@ -113,7 +121,6 @@ export async function fetchPayrollSummary(startDate: Date, endDate: Date) {
         worker_id: worker.id,
         name: `${worker.first_name} ${worker.last_name}`,
         email: worker.email,
-        role: worker.role,
         hourly_rate: hourlyRate,
         total_hours: totalHours,
         gross_salary: grossSalary,

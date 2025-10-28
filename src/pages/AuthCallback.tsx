@@ -52,12 +52,13 @@ export default function AuthCallback() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session) {
-          // Get user profile to determine role
-          const { data: profileData } = await supabase
-            .from('profiles')
+          // Get user roles to determine redirect
+          const { data: userRoles } = await supabase
+            .from('user_roles')
             .select('role')
-            .eq('id', session.user.id)
-            .single();
+            .eq('user_id', session.user.id);
+
+          const roles = userRoles?.map(r => r.role) || [];
 
           toast({
             title: "Välkommen!",
@@ -65,9 +66,9 @@ export default function AuthCallback() {
           });
           
           // Redirect based on role
-          if (profileData?.role === 'worker') {
+          if (roles.includes('worker') || roles.includes('technician')) {
             navigate('/worker', { replace: true });
-          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+          } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin', { replace: true });
           } else {
             navigate('/mitt-fixco', { replace: true });

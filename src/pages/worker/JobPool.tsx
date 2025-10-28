@@ -52,14 +52,15 @@ const JobPool = () => {
         return;
       }
       
-      const { data: profile } = await supabase
-        .from('profiles')
+      const { data: userRoles } = await supabase
+        .from('user_roles')
         .select('role')
-        .eq('id', user.id)
-        .single();
-      console.log('JobPool - User role:', profile?.role);
+        .eq('user_id', user.id);
       
-      if (!profile || !['worker', 'technician'].includes(profile.role)) {
+      const roles = userRoles?.map(r => r.role) || [];
+      console.log('JobPool - User roles:', roles);
+      
+      if (!roles.some(r => ['worker', 'technician'].includes(r))) {
         toast({
           title: "Åtkomst nekad",
           description: "Du måste ha worker-rollen för att komma åt jobbpoolen",

@@ -31,8 +31,8 @@ const AdminWorkers = () => {
   const { jobs } = useJobsData();
   const { toast } = useToast();
 
-  // Filter workers from users
-  const workers = users.filter(u => u.role === 'worker');
+  // Filter workers from users (users now have role from user_roles table)
+  const workers = users.filter(u => u.role === 'worker' || u.role === 'technician');
 
   // Filter workers based on search
   const filteredWorkers = workers.filter(worker => {
@@ -59,10 +59,18 @@ const AdminWorkers = () => {
 
   const handleUpdateUserRole = async (userId: string, newRole: string) => {
     try {
+      // Delete existing roles
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (deleteError) throw deleteError;
+
+      // Insert new role
       const { error } = await supabase
-        .from('profiles')
-        .update({ role: newRole })
-        .eq('id', userId);
+        .from('user_roles')
+        .insert({ user_id: userId, role: newRole });
 
       if (error) throw error;
 

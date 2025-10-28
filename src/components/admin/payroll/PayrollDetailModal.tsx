@@ -76,10 +76,6 @@ export function PayrollDetailModal({
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Roll</p>
-                  <Badge>{worker?.role}</Badge>
-                </div>
-                <div>
                   <p className="text-sm text-muted-foreground">Email</p>
                   <p className="text-sm flex items-center gap-1">
                     <Mail className="h-3 w-3" />

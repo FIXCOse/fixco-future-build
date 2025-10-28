@@ -59,10 +59,18 @@ const AdminUsers = () => {
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     try {
+      // Delete existing roles
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (deleteError) throw deleteError;
+
+      // Insert new role
       const { error } = await supabase
-        .from('profiles')
-        .update({ role: newRole })
-        .eq('id', userId);
+        .from('user_roles')
+        .insert({ user_id: userId, role: newRole });
 
       if (error) throw error;
 

@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 export async function listUsers(searchQuery?: string) {
   let query = supabase
     .from('profiles')
-    .select('id, email, first_name, last_name, role, created_at, updated_at')
+    .select('id, email, first_name, last_name, created_at, updated_at')
     .order('created_at', { ascending: false })
     .limit(100);
   
@@ -17,11 +17,19 @@ export async function listUsers(searchQuery?: string) {
   return data;
 }
 
-export async function updateUserRole(userId: string, role: 'customer' | 'staff' | 'admin' | 'owner') {
+export async function updateUserRole(userId: string, role: 'customer' | 'staff' | 'admin' | 'owner' | 'worker') {
+  // Delete existing roles
+  const { error: deleteError } = await supabase
+    .from('user_roles')
+    .delete()
+    .eq('user_id', userId);
+  
+  if (deleteError) throw deleteError;
+  
+  // Insert new role
   const { data, error } = await supabase
-    .from('profiles')
-    .update({ role })
-    .eq('id', userId)
+    .from('user_roles')
+    .insert({ user_id: userId, role })
     .select()
     .single();
   

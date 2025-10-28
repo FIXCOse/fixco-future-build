@@ -122,12 +122,13 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Get user profile to determine role
-          const { data: profileData } = await supabase
-            .from('profiles')
+          // Get user roles to determine redirect
+          const { data: userRoles } = await supabase
+            .from('user_roles')
             .select('role')
-            .eq('id', user.id)
-            .single();
+            .eq('user_id', user.id);
+
+          const roles = userRoles?.map(r => r.role) || [];
 
           toast({
             title: "Välkommen tillbaka! 🎉",
@@ -136,9 +137,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           handleClose();
           
           // Redirect based on role
-          if (profileData?.role === 'worker') {
+          if (roles.includes('worker') || roles.includes('technician')) {
             navigate('/worker');
-          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+          } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin');
           } else {
             navigate('/mitt-fixco');
@@ -265,12 +266,13 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           });
           handleClose();
         } else if (data.session) {
-          // Get user profile to determine role
-          const { data: profileData } = await supabase
-            .from('profiles')
+          // Get user roles to determine redirect
+          const { data: userRoles } = await supabase
+            .from('user_roles')
             .select('role')
-            .eq('id', data.user.id)
-            .single();
+            .eq('user_id', data.user.id);
+
+          const roles = userRoles?.map(r => r.role) || [];
 
           toast({
             title: "Välkommen till Fixco! 🎉",
@@ -279,9 +281,9 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
           handleClose();
           
           // Redirect based on role
-          if (profileData?.role === 'worker') {
+          if (roles.includes('worker') || roles.includes('technician')) {
             navigate('/worker');
-          } else if (profileData?.role === 'admin' || profileData?.role === 'owner') {
+          } else if (roles.includes('admin') || roles.includes('owner')) {
             navigate('/admin');
           } else {
             navigate('/mitt-fixco');

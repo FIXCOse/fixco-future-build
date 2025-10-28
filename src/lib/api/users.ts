@@ -7,7 +7,6 @@ export type UserProfile = {
   last_name?: string;
   full_name?: string;
   phone?: string;
-  role: string;
   user_type: string;
   company_name?: string;
   org_number?: string;
@@ -18,6 +17,8 @@ export type UserProfile = {
   created_at: string;
   total_spent?: number;
   loyalty_points?: number;
+  role?: string; // Added for admin views - fetched from user_roles
+  roles?: string[]; // All roles user has
 };
 
 export async function fetchAllUsers(params?: {
@@ -41,10 +42,6 @@ export async function fetchAllUsers(params?: {
     query = query.eq('user_type', params.userType as any);
   }
 
-  if (params?.role && params.role !== 'all') {
-    query = query.eq('role', params.role);
-  }
-
   if (params?.limit) {
     query = query.limit(params.limit);
   }
@@ -56,8 +53,46 @@ export async function fetchAllUsers(params?: {
   const { data, count, error } = await query;
   if (error) throw error;
 
+  // Fetch roles for all users
+  const userIds = data?.map(u => u.id) || [];
+  const { data: userRoles } = await supabase
+    .from('user_roles')
+    .select('user_id, role')
+    .in('user_id', userIds);
+
+  // Create role map
+  const roleMap = new Map<string, string[]>();
+  (userRoles || []).forEach(ur => {
+    if (!roleMap.has(ur.user_id)) {
+      roleMap.set(ur.user_id, []);
+    }
+    roleMap.get(ur.user_id)!.push(ur.role);
+  });
+
+  // Enrich profiles with role data
+  const enrichedData = (data || []).map(profile => {
+    const roles = roleMap.get(profile.id) || ['customer'];
+    const primaryRole = roles.includes('owner') ? 'owner' :
+                       roles.includes('admin') ? 'admin' :
+                       roles.includes('manager') ? 'manager' :
+                       roles.includes('technician') ? 'technician' :
+                       roles.includes('worker') ? 'worker' : 'customer';
+    
+    return {
+      ...profile,
+      role: primaryRole,
+      roles: roles
+    };
+  });
+
+  // Apply role filter if specified
+  let filteredData = enrichedData;
+  if (params?.role && params.role !== 'all') {
+    filteredData = enrichedData.filter(u => u.role === params.role);
+  }
+
   return { 
-    data: data as UserProfile[], 
-    count: count ?? 0 
+    data: filteredData as UserProfile[], 
+    count: filteredData.length
   };
 }

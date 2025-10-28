@@ -44,7 +44,7 @@ serve(async (req) => {
     const userIds = users.map(u => u.id);
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
-      .select('id, first_name, last_name, role, created_at, user_type, company_name, brf_name')
+      .select('id, first_name, last_name, created_at, user_type, company_name, brf_name')
       .in('id', userIds);
 
     if (profilesError) {
@@ -58,13 +58,37 @@ serve(async (req) => {
     const profilesData = profiles || [];
     console.log(`Found ${profilesData.length} profiles`);
 
-    // 3) Create lookup map
-    const profileMap = Object.fromEntries(profilesData.map(p => [p.id, p]));
+    // 3) Get user roles
+    const { data: userRoles, error: rolesError } = await supabase
+      .from('user_roles')
+      .select('user_id, role')
+      .in('user_id', userIds);
 
-    // 4) Combine auth + profile data and apply filters
+    if (rolesError) {
+      console.error('Error fetching user roles:', rolesError);
+    }
+
+    // 4) Create lookup maps
+    const profileMap = Object.fromEntries(profilesData.map(p => [p.id, p]));
+    const roleMap = new Map<string, string[]>();
+    (userRoles || []).forEach(ur => {
+      if (!roleMap.has(ur.user_id)) {
+        roleMap.set(ur.user_id, []);
+      }
+      roleMap.get(ur.user_id)!.push(ur.role);
+    });
+
+    // 5) Combine auth + profile + role data and apply filters
     const combinedUsers = users
       .map(user => {
         const profile = profileMap[user.id];
+        const roles = roleMap.get(user.id) || ['customer'];
+        const primaryRole = roles.includes('owner') ? 'owner' :
+                           roles.includes('admin') ? 'admin' :
+                           roles.includes('manager') ? 'manager' :
+                           roles.includes('technician') ? 'technician' :
+                           roles.includes('worker') ? 'worker' : 'customer';
+        
         return {
           id: user.id,
           email: user.email,
@@ -73,7 +97,8 @@ serve(async (req) => {
           email_confirmed_at: user.email_confirmed_at,
           first_name: profile?.first_name || '',
           last_name: profile?.last_name || '',
-          role: profile?.role || 'customer',
+          role: primaryRole,
+          roles: roles,
           user_type: profile?.user_type || 'private',
           company_name: profile?.company_name,
           brf_name: profile?.brf_name,

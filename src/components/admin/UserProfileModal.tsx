@@ -91,12 +91,6 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">Grundläggande information</h3>
-              <Badge variant={user.role === 'owner' ? 'default' : user.role === 'admin' ? 'secondary' : 'outline'}>
-                {user.role === 'owner' ? 'Ägare' : 
-                 user.role === 'admin' ? 'Admin' : 
-                 user.role === 'technician' ? 'Tekniker' :
-                 user.role === 'manager' ? 'Chef' : 'Kund'}
-              </Badge>
               <Badge variant="outline">
                 {user.user_type === 'company' ? 'Företag' :
                  user.user_type === 'brf' ? 'BRF' : 'Privat'}
@@ -137,24 +131,6 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
                     value={formData.phone || ''}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
-                </div>
-                <div>
-                  <Label htmlFor="role">Roll</Label>
-                  <Select
-                    value={formData.role}
-                    onValueChange={(value) => setFormData({ ...formData, role: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="customer">Kund</SelectItem>
-                      <SelectItem value="technician">Tekniker</SelectItem>
-                      <SelectItem value="manager">Chef</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="owner">Ägare</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
                 <div>
                   <Label htmlFor="user_type">Användartyp</Label>
