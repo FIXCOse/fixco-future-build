@@ -66,11 +66,19 @@ const useProgressiveEnhancement = () => {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
     
-    // GPU detection - More permissive check for better UX
-    // If WebGL context exists, assume capable GPU (auto-degradation handles performance issues)
+    // GPU detection
     let hasModernGPU = false;
     if (gl) {
-      hasModernGPU = true;
+      try {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        const renderer = debugInfo ? 
+          gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || '' : '';
+        
+        hasModernGPU = !renderer.toLowerCase().includes('software') && 
+                      !renderer.toLowerCase().includes('swiftshader');
+      } catch {
+        hasModernGPU = !!gl;
+      }
     }
 
     // Connection detection  
