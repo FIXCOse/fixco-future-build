@@ -9,6 +9,7 @@ import { useCopy } from "@/copy/CopyProvider";
 import { EditableText } from "@/components/EditableText";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { AnimatedFixcoFIcon } from "@/components/icons/AnimatedFixcoFIcon";
+import { useUnicornStudio } from "@/hooks/useUnicornStudio";
 
 interface ParticleSystemProps {
   count?: number;
@@ -156,6 +157,7 @@ const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useCopy();
+  const unicornRef = useUnicornStudio('tVTHLQLXdvHumXA5lN2z', ultraEnabled && capabilities.prefersMotion);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -215,6 +217,19 @@ const HeroUltra = () => {
         <div className="absolute inset-0">
           {/* Base gradient (always visible) */}
           <div className="absolute inset-0 hero-background" />
+          
+          {/* UnicornStudio Animation - ULTRA only */}
+          {ultraEnabled && capabilities.prefersMotion && (
+            <div 
+              ref={unicornRef}
+              data-us-project="tVTHLQLXdvHumXA5lN2z"
+              className="absolute inset-0 pointer-events-none opacity-40"
+              style={{
+                filter: 'hue-rotate(20deg) saturate(1.3) brightness(1.1)',
+                mixBlendMode: 'screen'
+              }}
+            />
+          )}
           
         {/* Simplified F Watermark - Using static F icons */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">

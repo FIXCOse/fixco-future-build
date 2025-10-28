@@ -235,6 +235,19 @@
     background-clip: text;
   }
 
+  /* UnicornStudio responsive container */
+  [data-us-project] {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  [data-us-project] canvas,
+  [data-us-project] > div {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
   /* NO SHADOWS - removed to prevent glow effects */
   .shadow-premium {
     box-shadow: none;
