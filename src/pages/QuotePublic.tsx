@@ -31,6 +31,7 @@ type QuoteQuestion = {
 type PublicQuote = {
   number: string;
   title: string;
+  status: string;
   items: any;
   subtotal_work_sek: number;
   subtotal_mat_sek: number;
@@ -43,6 +44,9 @@ type PublicQuote = {
   total_sek: number;
   pdf_url?: string;
   valid_until?: string;
+  accepted_at?: string;
+  signature_name?: string;
+  signature_date?: string;
   customer_name: string;
   customer_email: string;
   questions: QuoteQuestion[];
@@ -109,6 +113,11 @@ export default function QuotePublic() {
         if (!data) throw new Error('Ingen data returnerad');
 
         setQuote(data);
+        
+        // Sätt accepted state om offerten redan är accepterad
+        if (data.status === 'accepted') {
+          setAccepted(true);
+        }
       } catch (err: any) {
         console.error('Fel vid hämtning av offert:', err);
         setError(err.message || 'Offerten kunde inte hittas');
@@ -441,7 +450,7 @@ export default function QuotePublic() {
                   <AlertCircle className="h-3 w-3 mr-1" />
                   Raderad
                 </Badge>
-              ) : accepted ? (
+              ) : (accepted || quote?.status === 'accepted') ? (
                 <Badge className="bg-green-600 hover:bg-green-700 px-3 py-1">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
                   Accepterad
@@ -569,8 +578,39 @@ export default function QuotePublic() {
                 </Button>
               )}
 
+              {/* Already Accepted Badge */}
+              {(accepted || quote?.status === 'accepted') && !isDeleted && (
+                <Card className="border-green-200 bg-green-50 dark:bg-green-900/10">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-center gap-3 text-green-700 dark:text-green-300">
+                      <CheckCircle2 className="h-8 w-8" />
+                      <div>
+                        <h3 className="font-semibold text-lg">Offert redan godkänd</h3>
+                        <p className="text-sm text-green-600 dark:text-green-400">
+                          Denna offert har redan accepterats. Vi kontaktar dig inom kort.
+                        </p>
+                        {quote?.signature_name && (
+                          <p className="text-xs text-green-600 dark:text-green-500 mt-1">
+                            Signerad av: {quote.signature_name}
+                            {quote.accepted_at && (
+                              <> · {new Date(quote.accepted_at).toLocaleDateString('sv-SE', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}</>
+                            )}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Next Steps Info */}
-              {!isDeleted && !accepted && !declined && !isExpired && (
+              {!isDeleted && !accepted && !declined && !isExpired && quote?.status !== 'accepted' && (
                 <Card className="bg-primary/5 border-primary/20">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2">
@@ -736,7 +776,9 @@ export default function QuotePublic() {
                     </div>
                   )}
                   
-                  {/* Terms & Signature */}
+                  {/* Terms & Signature + Action Buttons - Only show if not already accepted */}
+                  {quote?.status !== 'accepted' && (
+                  <>
                   <div className="space-y-4 pt-2 border-t border-border">
                     <div className="flex items-start gap-3 p-3 bg-primary/5 rounded-lg">
                       <Checkbox 
@@ -1060,6 +1102,8 @@ export default function QuotePublic() {
                       </DialogContent>
                     </Dialog>
                   </div>
+                  </>
+                  )}
                 </>
               )}
             </CardContent>

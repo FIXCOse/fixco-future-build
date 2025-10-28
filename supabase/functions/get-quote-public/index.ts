@@ -45,6 +45,9 @@ Deno.serve(async (req) => {
         pdf_url,
         valid_until,
         status,
+        accepted_at,
+        signature_name,
+        signature_date,
         deleted_at,
         customer:customers(name, email)
       `)
@@ -105,6 +108,10 @@ Deno.serve(async (req) => {
       total_sek: quote.total_sek,
       pdf_url: quote.pdf_url,
       valid_until: quote.valid_until,
+      status: quote.status,
+      accepted_at: quote.accepted_at,
+      signature_name: quote.signature_name,
+      signature_date: quote.signature_date,
       customer_name: quote.customer?.name || 'Okänd kund',
       customer_email: quote.customer?.email || '',
       questions: questions || []
