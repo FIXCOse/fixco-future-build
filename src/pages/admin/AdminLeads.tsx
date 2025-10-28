@@ -9,6 +9,18 @@ import { Users, Mail, Phone, MapPin, FileText, Image as ImageIcon } from "lucide
 import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/features/ai/tools/estimateQuote";
 
+type ParsedMessageData = {
+  serviceCategory?: string;
+  projectScope?: string;
+  size?: string;
+  timeline?: string;
+  budget?: string;
+  additionalDetails?: string;
+  leadScore?: number;
+  leadPriority?: 'high' | 'medium' | 'low';
+  generatedImages?: string[];
+};
+
 type Lead = {
   id: string;
   name: string | null;
@@ -228,12 +240,71 @@ export default function AdminLeads() {
                   )}
                 </div>
 
-                {lead.message && (
-                  <div>
-                    <p className="text-sm font-medium mb-1">Meddelande:</p>
-                    <p className="text-sm text-muted-foreground">{lead.message}</p>
-                  </div>
-                )}
+                {lead.message && (() => {
+                  try {
+                    const messageData: ParsedMessageData = JSON.parse(lead.message);
+                    return (
+                      <div className="space-y-3">
+                        <p className="text-sm font-medium">Projektdetaljer:</p>
+                        <div className="grid md:grid-cols-2 gap-3 text-sm">
+                          {messageData.serviceCategory && (
+                            <div>
+                              <span className="text-muted-foreground">Kategori:</span>
+                              <span className="ml-2 font-medium">{messageData.serviceCategory}</span>
+                            </div>
+                          )}
+                          {messageData.projectScope && (
+                            <div>
+                              <span className="text-muted-foreground">Omfattning:</span>
+                              <span className="ml-2 font-medium">{messageData.projectScope}</span>
+                            </div>
+                          )}
+                          {messageData.size && (
+                            <div>
+                              <span className="text-muted-foreground">Storlek:</span>
+                              <span className="ml-2 font-medium">{messageData.size}</span>
+                            </div>
+                          )}
+                          {messageData.timeline && (
+                            <div>
+                              <span className="text-muted-foreground">Tidsplan:</span>
+                              <span className="ml-2 font-medium">{messageData.timeline}</span>
+                            </div>
+                          )}
+                          {messageData.budget && (
+                            <div>
+                              <span className="text-muted-foreground">Budget:</span>
+                              <span className="ml-2 font-medium">{messageData.budget}</span>
+                            </div>
+                          )}
+                        </div>
+                        {messageData.additionalDetails && (
+                          <div>
+                            <span className="text-sm text-muted-foreground">Ytterligare detaljer:</span>
+                            <p className="text-sm mt-1">{messageData.additionalDetails}</p>
+                          </div>
+                        )}
+                        {messageData.leadScore && (
+                          <div className="mt-2 flex items-center gap-2">
+                            <Badge variant={messageData.leadPriority === 'high' ? 'default' : 'secondary'}>
+                              Lead Score: {messageData.leadScore}/100
+                            </Badge>
+                            <Badge variant="outline">
+                              Prioritet: {messageData.leadPriority}
+                            </Badge>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  } catch {
+                    return (
+                      <div>
+                        <p className="text-sm font-medium mb-1">Meddelande:</p>
+                        <p className="text-sm text-muted-foreground">{lead.message}</p>
+                      </div>
+                    );
+                  }
+                })()}
 
                 {lead.estimated_quote && (
                   <div className="rounded-lg bg-muted p-4">
@@ -255,31 +326,43 @@ export default function AdminLeads() {
                   </div>
                 )}
 
-                {lead.images && Array.isArray(lead.images) && lead.images.length > 0 && (
-                  <div>
-                    <p className="text-sm font-medium mb-2 flex items-center gap-2">
-                      <ImageIcon className="h-4 w-4" />
-                      Uppladdade bilder ({lead.images.length})
-                    </p>
-                    <div className="grid grid-cols-4 gap-2">
-                      {lead.images.map((imageUrl: string, index: number) => (
-                        <a
-                          key={index}
-                          href={imageUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-lg overflow-hidden border hover:opacity-80 transition-opacity"
-                        >
-                          <img
-                            src={imageUrl}
-                            alt={`Lead bild ${index + 1}`}
-                            className="w-full h-24 object-cover"
-                          />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                {lead.images && (() => {
+                  try {
+                    const imageArray = typeof lead.images === 'string' 
+                      ? JSON.parse(lead.images) 
+                      : lead.images;
+                    
+                    return Array.isArray(imageArray) && imageArray.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium mb-2 flex items-center gap-2">
+                          <ImageIcon className="h-4 w-4" />
+                          Uppladdade bilder ({imageArray.length})
+                        </p>
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                          {imageArray.filter((url: string) => url && url.trim()).map((imageUrl: string, index: number) => (
+                            <div
+                              key={index}
+                              className="rounded-lg overflow-hidden border hover:opacity-80 transition-opacity cursor-pointer"
+                              onClick={() => window.open(imageUrl, '_blank')}
+                            >
+                              <img
+                                src={imageUrl}
+                                alt={`Lead bild ${index + 1}`}
+                                className="w-full h-32 object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src = '/placeholder.svg';
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  } catch (error) {
+                    console.error('Failed to parse images:', error);
+                    return null;
+                  }
+                })()}
               </CardContent>
             </Card>
           ))
