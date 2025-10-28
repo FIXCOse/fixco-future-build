@@ -118,7 +118,7 @@ export function AILabInterface() {
           email: data.email,
           phone: data.phone,
           address: data.address,
-          service_interest: data.serviceCategory || selectedAction || 'AI Generated',
+          service_interest: data.serviceCategory || selectedAction || 'AI Lab - Allmän förfrågan',
           message: JSON.stringify(qualificationData),
           status: 'new',
           source: 'ai_lab_qualification',

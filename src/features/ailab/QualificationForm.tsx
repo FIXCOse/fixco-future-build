@@ -70,7 +70,7 @@ export function QualificationForm({
     onSubmit(formData);
   };
 
-  const isValid = formData.name && formData.email && formData.serviceCategory;
+  const isValid = formData.name && formData.email;
 
   return (
     <Card className="p-6 space-y-6">
