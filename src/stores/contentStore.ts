@@ -78,6 +78,7 @@ interface ContentStore {
   reset: () => void;
   clearHeroContent: () => void;
   clearGradientColors: () => void;
+  resetGradientContent: () => void;
   exportData: () => string;
   importData: (data: string) => void;
 }
@@ -407,6 +408,67 @@ export const useContentStore = create<ContentStore>()(
         console.log('✅ Cleared gradient colors from content store');
       },
       
+      resetGradientContent: () => {
+        const gradientContentIds = [
+          'services-title',
+          'services-categories-title', 
+          'services-all-title',
+          'services-rot-title',
+          'services-rot-what-title',
+          'services-rot-handle-title'
+        ];
+
+        const store = localStorage.getItem('fixco-content-store');
+        if (store) {
+          try {
+            const parsed = JSON.parse(store);
+            
+            // NUCLEAR OPTION: Delete entire content entries from localStorage
+            if (parsed?.state?.content) {
+              ['sv', 'en'].forEach(locale => {
+                if (parsed.state.content[locale]) {
+                  gradientContentIds.forEach(id => {
+                    if (parsed.state.content[locale][id]) {
+                      delete parsed.state.content[locale][id];
+                      console.log(`🗑️ DELETED ${id} from localStorage (${locale})`);
+                    }
+                  });
+                }
+              });
+            }
+            
+            // Write back to localStorage IMMEDIATELY
+            localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
+            console.log('✅ RESET gradient content - will rebuild from CSS');
+          } catch (error) {
+            console.error('Failed to reset gradient content from localStorage:', error);
+          }
+        }
+        
+        // Also clear from current store (for this session)
+        const state = get();
+        ['sv', 'en'].forEach(locale => {
+          const localeContent = state.content[locale];
+          if (localeContent) {
+            gradientContentIds.forEach(id => {
+              if (localeContent[id]) {
+                set((currentState) => {
+                  const newContent = { ...currentState.content };
+                  if (newContent[locale]) {
+                    const newLocaleContent = { ...newContent[locale] };
+                    delete newLocaleContent[id];
+                    newContent[locale] = newLocaleContent;
+                  }
+                  return { content: newContent };
+                });
+              }
+            });
+          }
+        });
+        
+        console.log('✅ Reset gradient content from store');
+      },
+      
       exportData: () => {
         return JSON.stringify(get(), null, 2);
       },
@@ -426,18 +488,18 @@ export const useContentStore = create<ContentStore>()(
         onRehydrateStorage: () => {
           return (state) => {
             if (state) {
-              // Migration: Clear gradient colors after store has loaded from localStorage
-              const hasMigrated = sessionStorage.getItem('gradient-colors-cleared-v3');
+              // NUCLEAR OPTION: Completely reset gradient content
+              const hasMigrated = sessionStorage.getItem('gradient-reset-v4');
               if (!hasMigrated) {
-                console.log('🧹 Running post-rehydrate migration...');
-                state.clearGradientColors();
-                sessionStorage.setItem('gradient-colors-cleared-v3', 'true');
+                console.log('🗑️ Running NUCLEAR gradient reset...');
+                state.resetGradientContent();
+                sessionStorage.setItem('gradient-reset-v4', 'true');
                 
-                // Force page reload AFTER localStorage has been flushed
-                console.log('🔄 Reloading page to apply gradient fixes...');
+                // Force page reload with longer delay to ensure localStorage flush
+                console.log('🔄 Reloading page in 300ms to rebuild gradient content...');
                 setTimeout(() => {
                   window.location.reload();
-                }, 100); // 100ms delay to ensure localStorage flush
+                }, 300); // Longer delay for reliable localStorage flush
               }
             }
           };
