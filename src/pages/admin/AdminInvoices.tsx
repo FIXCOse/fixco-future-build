@@ -26,7 +26,7 @@ const AdminInvoices = () => {
         .from('invoices')
         .select(`
           *,
-          customer:profiles!invoices_customer_id_fkey(first_name, last_name, email),
+          customer:customers!invoices_customer_id_fkey(id, name, email),
           booking:bookings(service_name),
           quote:quotes(quote_number, title)
         `)
@@ -462,10 +462,7 @@ const AdminInvoices = () => {
                         </div>
                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
                            <span>
-                             {invoice.customer?.first_name && invoice.customer?.last_name
-                               ? `${invoice.customer.first_name} ${invoice.customer.last_name}`
-                               : invoice.customer?.email || 'Okänd kund'
-                             }
+                             {invoice.customer?.name || invoice.customer?.email || 'Okänd kund'}
                            </span>
                            <span>{invoice.total_amount?.toLocaleString()} SEK</span>
                            {invoice.quote && (
