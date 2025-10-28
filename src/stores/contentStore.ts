@@ -340,7 +340,6 @@ export const useContentStore = create<ContentStore>()(
       },
       
       clearGradientColors: () => {
-        const state = get();
         const gradientContentIds = [
           'services-title',
           'services-categories-title', 
@@ -350,14 +349,42 @@ export const useContentStore = create<ContentStore>()(
           'services-rot-handle-title'
         ];
 
-        // Clear from both locales
+        // Step 1: Manipulate localStorage DIRECTLY
+        const store = localStorage.getItem('fixco-content-store');
+        if (store) {
+          try {
+            const parsed = JSON.parse(store);
+            
+            // Remove color from localStorage DIRECTLY
+            if (parsed?.state?.content) {
+              ['sv', 'en'].forEach(locale => {
+                if (parsed.state.content[locale]) {
+                  gradientContentIds.forEach(id => {
+                    if (parsed.state.content[locale][id]?.styles?.color) {
+                      delete parsed.state.content[locale][id].styles.color;
+                      console.log(`🧹 Removed color from ${id} (${locale})`);
+                    }
+                  });
+                }
+              });
+            }
+            
+            // Write back to localStorage IMMEDIATELY
+            localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
+            console.log('✅ Cleared gradient colors from localStorage');
+          } catch (error) {
+            console.error('Failed to clear gradient colors from localStorage:', error);
+          }
+        }
+        
+        // Step 2: Also clear from current store (for this session)
+        const state = get();
         ['sv', 'en'].forEach(locale => {
           const localeContent = state.content[locale];
           if (localeContent) {
             gradientContentIds.forEach(id => {
               const item = localeContent[id];
               if (item?.styles?.color) {
-                // Remove color but keep other styles
                 const { color, ...restStyles } = item.styles;
                 set((currentState) => ({
                   content: {
@@ -371,24 +398,14 @@ export const useContentStore = create<ContentStore>()(
                     }
                   }
                 }));
-                
-                // Also update in database
-                get().saveContentToDatabase(id, {
-                  ...item,
-                  styles: restStyles
-                }, locale);
               }
             });
           }
         });
         
-        // Force localStorage update by triggering a state change
-        set((state) => ({
-          ...state,
-          content: { ...state.content }
-        }));
-        
-        console.log('✅ Cleared gradient colors from content store and localStorage');
+        // Step 3: Force page reload to apply changes
+        console.log('🔄 Reloading page to apply gradient fixes...');
+        window.location.reload();
       },
       
       exportData: () => {
