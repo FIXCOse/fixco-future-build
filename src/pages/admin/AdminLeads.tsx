@@ -8,6 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Users, Mail, Phone, MapPin, FileText, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/features/ai/tools/estimateQuote";
+import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
+import { createCustomer } from "@/lib/api/customers";
+import type { QuoteNewRow } from "@/lib/api/quotes-new";
 
 type ParsedMessageData = {
   serviceCategory?: string;
@@ -58,6 +61,10 @@ export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [prefilledCustomerId, setPrefilledCustomerId] = useState<string | null>(null);
+  const [prefilledQuoteData, setPrefilledQuoteData] = useState<any>(null);
 
   useEffect(() => {
     loadLeads();
@@ -106,6 +113,98 @@ export default function AdminLeads() {
       toast({
         title: "Fel vid uppdatering",
         description: "Kunde inte uppdatera status",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleCreateQuote = async (lead: Lead) => {
+    try {
+      // 1. Hitta eller skapa kund
+      let customerId = null;
+      
+      if (lead.email) {
+        // Kolla om kund redan finns
+        const { data: existingCustomers } = await supabase
+          .from('customers')
+          .select('id')
+          .eq('email', lead.email)
+          .limit(1);
+        
+        if (existingCustomers && existingCustomers.length > 0) {
+          customerId = existingCustomers[0].id;
+        } else {
+          // Skapa ny kund
+          const newCustomer = await createCustomer({
+            name: lead.name || 'Okänd',
+            email: lead.email,
+            phone: lead.phone || undefined,
+            address: lead.address || undefined,
+            postalCode: lead.postal_code || undefined,
+            city: lead.city || undefined
+          });
+          customerId = newCustomer.id;
+        }
+      }
+      
+      // 2. Förbered offertdata
+      let messageData: ParsedMessageData | null = null;
+      try {
+        messageData = lead.message ? JSON.parse(lead.message) : null;
+      } catch {}
+      
+      const title = messageData?.serviceCategory 
+        ? `${messageData.serviceCategory} - ${lead.name || 'Kund'}`
+        : `AI Lead - ${lead.name || 'Kund'}`;
+      
+      // 3. Förbered radposter från estimerad offert
+      let items: any[] = [];
+      if (lead.estimated_quote) {
+        const est = lead.estimated_quote;
+        
+        // Lägg till arbete om > 0
+        if (est.workSek > 0) {
+          items.push({
+            type: 'work',
+            description: messageData?.serviceCategory || 'Arbete',
+            quantity: 1,
+            unit: 'st',
+            price: est.workSek
+          });
+        }
+        
+        // Lägg till material om > 0
+        if (est.materialSek > 0) {
+          items.push({
+            type: 'material',
+            description: 'Material',
+            quantity: 1,
+            unit: 'st',
+            price: est.materialSek
+          });
+        }
+      }
+      
+      // Om inga items, lägg till en tom rad
+      if (items.length === 0) {
+        items = [{ type: 'work', description: '', quantity: 1, unit: 'tim', price: 0 }];
+      }
+      
+      // 4. Sätt prefilled data
+      setPrefilledCustomerId(customerId);
+      setPrefilledQuoteData({
+        title,
+        items,
+        enableRot: lead.estimated_quote?.rotDeductionSek && lead.estimated_quote.rotDeductionSek > 0
+      });
+      setSelectedLead(lead);
+      setShowQuoteModal(true);
+      
+    } catch (error) {
+      console.error('Error preparing quote:', error);
+      toast({
+        title: "Fel",
+        description: "Kunde inte förbereda offert",
         variant: "destructive"
       });
     }
@@ -363,11 +462,39 @@ export default function AdminLeads() {
                     return null;
                   }
                 })()}
+
+                <div className="flex gap-2 pt-4 border-t">
+                  <Button 
+                    onClick={() => handleCreateQuote(lead)}
+                    className="flex-1"
+                    variant="default"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Skapa offert
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))
         )}
       </div>
+
+      <QuoteFormModal
+        open={showQuoteModal}
+        onOpenChange={setShowQuoteModal}
+        quote={null}
+        onSuccess={async (createdQuote: QuoteNewRow | undefined) => {
+          if (selectedLead && createdQuote) {
+            await updateLeadStatus(selectedLead.id, 'quoted');
+          }
+          setShowQuoteModal(false);
+          setSelectedLead(null);
+          setPrefilledCustomerId(null);
+          setPrefilledQuoteData(null);
+        }}
+        prefilledCustomerId={prefilledCustomerId}
+        prefilledData={prefilledQuoteData}
+      />
     </div>
   );
 }

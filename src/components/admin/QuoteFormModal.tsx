@@ -27,9 +27,15 @@ type QuoteFormModalProps = {
   onOpenChange: (open: boolean) => void;
   quote?: QuoteNewRow | null;
   onSuccess: (created?: QuoteNewRow) => void;
+  prefilledCustomerId?: string | null;
+  prefilledData?: {
+    title?: string;
+    items?: LineItem[];
+    enableRot?: boolean;
+  } | null;
 };
 
-export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFormModalProps) {
+export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilledCustomerId, prefilledData }: QuoteFormModalProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>('');
   const [showNewCustomer, setShowNewCustomer] = useState(false);
@@ -104,10 +110,25 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess }: QuoteFo
         setDiscountType(quote.discount_type as any);
         setDiscountValue(quote.discount_value || 0);
       }
+    } else if (prefilledCustomerId || prefilledData) {
+      // Load prefilled data from AI lead
+      if (prefilledCustomerId) {
+        setSelectedCustomerId(prefilledCustomerId);
+      }
+      if (prefilledData?.title) {
+        setTitle(prefilledData.title);
+      }
+      if (prefilledData?.items && prefilledData.items.length > 0) {
+        setItems(prefilledData.items);
+      }
+      if (prefilledData?.enableRot) {
+        setEnableRot(true);
+        setRotRate(30);
+      }
     } else {
       resetForm();
     }
-  }, [quote]);
+  }, [quote, prefilledCustomerId, prefilledData]);
 
   const loadCustomers = async () => {
     try {
