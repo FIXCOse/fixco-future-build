@@ -196,7 +196,7 @@ export function FloatingAIWidget() {
             <button
               aria-label="Öppna AI-chatt med Fixco"
               onClick={() => setOpen(!open)}
-              className="group fixed right-4 bottom-4 z-[9999] h-14 px-3 rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2.5"
+              className="group fixed right-4 bottom-20 z-[9999] h-14 px-3 rounded-full shadow-2xl border-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2.5"
             >
               {/* Pulse animation bakom */}
               <span className="absolute inset-0 animate-pulse-slow opacity-20 rounded-full bg-primary-foreground" />
@@ -218,7 +218,7 @@ export function FloatingAIWidget() {
       {open && (
         <div
           ref={panelRef}
-          className="fixed right-4 bottom-20 z-[9999] w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
+          className="fixed right-4 bottom-36 z-[9999] w-[380px] max-h-[600px] overflow-hidden rounded-2xl border-2 bg-background shadow-2xl animate-in slide-in-from-bottom-8"
           role="dialog"
           aria-modal="true"
           aria-label={t('ai_widget.title')}

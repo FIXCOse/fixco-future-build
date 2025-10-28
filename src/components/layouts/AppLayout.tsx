@@ -16,6 +16,7 @@ import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 import { FloatingAIWidget } from '../FloatingAIWidget';
 import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
+import { BottomNavigation } from '../BottomNavigation';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -42,10 +43,11 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
           <Navigation />
-          <main className="min-h-[60vh]">
+          <main className="min-h-[60vh] pb-16">
             <Outlet key={`${locale}-${location.pathname}`} />
           </main>
           <GlobalFooter locale={locale} />
+          <BottomNavigation />
           <EditModeToggle />
           <GlobalContentEditor />
           <EditModeIndicator />
