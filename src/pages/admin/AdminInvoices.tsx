@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Search, Receipt, Plus, Eye, Download, Send, FileText, CheckCircle, Trash2, TrendingUp, Clock, AlertTriangle, CreditCard } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
+import InvoicePreviewDialog from '@/components/InvoicePreviewDialog';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { toast } from 'sonner';
@@ -18,8 +19,9 @@ const AdminInvoices = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [showQuoteDialog, setShowQuoteDialog] = useState(false);
   const [creatingInvoice, setCreatingInvoice] = useState(false);
+  const [previewInvoice, setPreviewInvoice] = useState<any | null>(null);
 
-  const { data: invoices, isLoading } = useQuery({
+  const { data: invoices, isLoading, refetch } = useQuery({
     queryKey: ['admin-invoices', searchTerm, statusFilter],
     queryFn: async () => {
       let query = supabase
@@ -83,7 +85,7 @@ const AdminInvoices = () => {
   });
 
   // Hämta statistik för fakturor
-  const { data: invoiceStats } = useQuery({
+  const { data: invoiceStats, refetch: refetchStats } = useQuery({
     queryKey: ['invoice-statistics'],
     queryFn: async () => {
       const { data, error } = await supabase.rpc('get_invoice_statistics');
@@ -154,34 +156,6 @@ const AdminInvoices = () => {
     }
   };
 
-  // Åtgärder för fakturor
-  const previewInvoice = async (invoice: any) => {
-    try {
-      if (invoice.pdf_url) {
-        const { data, error } = await supabase.storage
-          .from('invoices')
-          .createSignedUrl(invoice.pdf_url, 60 * 60);
-        if (error) throw error;
-        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
-        return;
-      }
-      // Fallback: rendera enkel HTML-klientvy
-      const win = window.open('', '_blank');
-      if (win) {
-        const items = (invoice.line_items || []).map((item: any) => {
-          const qty = Number(item.quantity ?? 1);
-          const unit = Number(item.unit_price ?? (item.amount != null ? Number(item.amount) / qty : 0));
-          const total = Number(item.total_price ?? item.amount ?? unit * qty);
-          return `<tr><td>${item.description || 'Arbete'}</td><td>${qty}</td><td style="text-align:right">${unit.toLocaleString('sv-SE')} kr</td><td style="text-align:right">${total.toLocaleString('sv-SE')} kr</td></tr>`;
-        }).join('');
-        win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${invoice.invoice_number}</title></head><body><h2>Faktura ${invoice.invoice_number}</h2><table style="width:100%;border-collapse:collapse" border="1"><thead><tr><th>Beskrivning</th><th>Antal</th><th>Enhetspris</th><th>Total</th></tr></thead><tbody>${items}</tbody></table><h3 style="text-align:right">Att betala: ${(Number(invoice.total_amount)||0).toLocaleString('sv-SE')} kr</h3></body></html>`);
-        win.document.close();
-      }
-    } catch (e) {
-      console.error(e);
-      toast.error('Kunde inte förhandsvisa fakturan');
-    }
-  };
 
   const downloadInvoice = async (invoice: any) => {
     try {
@@ -516,7 +490,7 @@ const AdminInvoices = () => {
                          </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => previewInvoice(invoice)}>
+                        <Button variant="ghost" size="sm" onClick={() => setPreviewInvoice(invoice)}>
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="sm" onClick={() => downloadInvoice(invoice)}>
@@ -551,6 +525,17 @@ const AdminInvoices = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Invoice Preview Dialog */}
+      <InvoicePreviewDialog
+        invoice={previewInvoice}
+        open={!!previewInvoice}
+        onOpenChange={(open) => !open && setPreviewInvoice(null)}
+        onInvoiceUpdated={() => {
+          refetch();
+          refetchStats();
+        }}
+      />
     </div>
   );
 };
