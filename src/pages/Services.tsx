@@ -14,23 +14,10 @@ import { EditableText } from "@/components/EditableText";
 
 import { Link } from "react-router-dom";
 import { useCopy } from "@/copy/CopyProvider";
-import { useContentStore } from "@/stores/contentStore";
-import { useEffect } from "react";
 
 const Services = () => {
   const { t, locale } = useCopy();
   const { isEditMode } = useEditMode();
-  const { clearGradientColors } = useContentStore();
-  
-  // Clear old gradient colors on mount (migration)
-  useEffect(() => {
-    const hasMigrated = sessionStorage.getItem('gradient-colors-cleared');
-    if (!hasMigrated) {
-      clearGradientColors();
-      sessionStorage.setItem('gradient-colors-cleared', 'true');
-      console.log('🧹 Migration: Cleared gradient colors');
-    }
-  }, [clearGradientColors]);
   
   return (
     <div className="min-h-screen">

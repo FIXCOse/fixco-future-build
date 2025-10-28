@@ -382,7 +382,13 @@ export const useContentStore = create<ContentStore>()(
           }
         });
         
-        console.log('✅ Cleared gradient colors from content store');
+        // Force localStorage update by triggering a state change
+        set((state) => ({
+          ...state,
+          content: { ...state.content }
+        }));
+        
+        console.log('✅ Cleared gradient colors from content store and localStorage');
       },
       
       exportData: () => {
@@ -400,7 +406,20 @@ export const useContentStore = create<ContentStore>()(
     }),
     {
       name: 'fixco-content-store',
-      version: 1
+      version: 1,
+      onRehydrateStorage: () => {
+        return (state) => {
+          if (state) {
+            // Migration: Clear gradient colors after store has loaded from localStorage
+            const hasMigrated = sessionStorage.getItem('gradient-colors-cleared-v2');
+            if (!hasMigrated) {
+              console.log('🧹 Running post-rehydrate migration...');
+              state.clearGradientColors();
+              sessionStorage.setItem('gradient-colors-cleared-v2', 'true');
+            }
+          }
+        };
+      }
     }
   )
 );
