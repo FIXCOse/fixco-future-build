@@ -96,8 +96,8 @@ export default function Navigation() {
       { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
       { href: paths.services, label: t('nav.services') },
       { href: paths.smartHome, label: t('nav.smartHome') },
-      { href: paths.references, label: t('nav.references') },
       { href: paths.ai, label: <span className="flex items-center gap-1"><Bot className="h-3.5 w-3.5" />AI</span>, highlight: true },
+      { href: paths.references, label: t('nav.references') },
       { href: paths.about, label: t('nav.about') },
       { href: paths.contact, label: t('nav.contact') },
     ];
