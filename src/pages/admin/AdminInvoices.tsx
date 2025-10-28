@@ -56,36 +56,53 @@ const AdminInvoices = () => {
     },
   });
 
-  // Hämta slutförda offerter som inte har fakturor än
-  const { data: availableQuotes, isLoading: quotesLoading } = useQuery({
-    queryKey: ['available-quotes-for-invoice'],
+  // Hämta slutförda jobb som inte har fakturor än
+  const { data: availableJobs, isLoading: jobsLoading } = useQuery({
+    queryKey: ['available-jobs-for-invoice'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('quotes')
-        .select(`
-          *,
-          customer:profiles!quotes_customer_id_fkey(first_name, last_name, email),
-          invoices:invoices!invoices_quote_id_fkey(id)
-        `)
-        .eq('status', 'accepted')
-        .eq('project_status', 'completed')
+      // Hämta jobb
+      const { data: jobs, error: jobsError } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('status', 'completed')
+        .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      return data || [];
+      if (jobsError) throw jobsError;
+      if (!jobs || jobs.length === 0) return [];
+      
+      // Hämta kundinformation separat
+      const customerIds: string[] = [...new Set(jobs.map((j: any) => j.customer_id).filter(Boolean))];
+      const { data: customers } = await supabase
+        .from('customers')
+        .select('id, name, email')
+        .in('id', customerIds);
+      
+      const customerMap = new Map((customers || []).map((c: any) => [c.id, c]));
+      
+      // Lägg till kundinfo (enkel implementation utan filtrering av redan fakturerade)
+      const jobsWithDetails = jobs.map((job: any) => ({
+        ...job,
+        customers: customerMap.get(job.customer_id) || { name: 'Okänd kund' }
+      }));
+      
+      return jobsWithDetails;
     },
   });
 
-  const createInvoiceFromQuote = async (quote: any) => {
+  const createInvoiceFromJob = async (job: any) => {
     setCreatingInvoice(true);
     try {
-      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
-        body: { quoteId: quote.id }
+      const { data, error } = await supabase.functions.invoke('create-invoice-from-job', {
+        body: { 
+          jobId: job.id,
+          customerId: job.customer_id
+        }
       });
 
       if (error) throw error;
       
-      if (data?.success) {
+      if (data?.success || data?.invoice) {
         toast.success('Faktura skapad framgångsrikt!');
         setShowQuoteDialog(false);
         // Refresh invoices list
@@ -240,7 +257,7 @@ const AdminInvoices = () => {
     return acc;
   }, {} as Record<string, number>) || {};
 
-  const availableQuotesFiltered = ((availableQuotes as any[]) || []).filter((q: any) => !q.invoices || q.invoices.length === 0);
+  
 
   return (
     <div className="space-y-6">
@@ -306,14 +323,14 @@ const AdminInvoices = () => {
       <Dialog open={showQuoteDialog} onOpenChange={setShowQuoteDialog}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Skapa faktura från offert</DialogTitle>
+            <DialogTitle>Skapa faktura från jobb</DialogTitle>
             <DialogDescription>
-              Välj en slutförd offert att skapa faktura från. Endast slutförda projekt som inte redan har fakturor visas.
+              Välj ett slutfört jobb att skapa faktura från. Endast slutförda jobb som inte redan har fakturor visas.
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
-            {quotesLoading ? (
+            {jobsLoading ? (
               <div className="space-y-3">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="animate-pulse">
@@ -321,54 +338,49 @@ const AdminInvoices = () => {
                   </div>
                 ))}
               </div>
-            ) : availableQuotesFiltered.length > 0 ? (
+            ) : availableJobs && availableJobs.length > 0 ? (
               <div className="space-y-3">
-                {availableQuotesFiltered.map((quote) => (
+                {availableJobs.map((job) => (
                   <Card 
-                    key={quote.id} 
+                    key={job.id} 
                     className="cursor-pointer hover:shadow-md transition-shadow"
-                    onClick={() => createInvoiceFromQuote(quote)}
+                    onClick={() => createInvoiceFromJob(job)}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                           <Badge variant="default">
+                            <Badge variant="default" className="bg-green-600">
                               <CheckCircle className="h-3 w-3 mr-1" />
-                              Accepterad
+                              Slutfört
                             </Badge>
-                            <h3 className="font-medium">{quote.title}</h3>
+                            <h3 className="font-medium">{job.title || 'Inget titel'}</h3>
                           </div>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <FileText className="h-4 w-4" />
-                              {quote.quote_number}
+                              Jobb ID: {job.id.substring(0, 8)}...
                             </div>
                             <div>
-                              Kund: {quote.customer ? 
-                                `${quote.customer.first_name} ${quote.customer.last_name}` : 
-                                'Okänd kund'
+                              Kund: {job.customers ? job.customers.name : 'Okänd kund'}
+                            </div>
+                            <div>
+                              {job.pricing_mode === 'fixed' && job.fixed_price ? 
+                                `${job.fixed_price.toLocaleString()} SEK` : 
+                                'Timpris'
                               }
                             </div>
-                            <div>
-                              {quote.total_amount?.toLocaleString()} SEK
+                            <div className="text-xs">
+                              Skapad: {new Date(job.created_at).toLocaleDateString('sv-SE')}
                             </div>
                           </div>
-                          {quote.description && (
-                            <p className="text-sm text-muted-foreground mt-2">
-                              {quote.description.length > 100 
-                                ? `${quote.description.substring(0, 100)}...`
-                                : quote.description
-                              }
-                            </p>
-                          )}
                         </div>
                         <Button 
                           variant="default" 
                           disabled={creatingInvoice}
                           onClick={(e) => {
                             e.stopPropagation();
-                            createInvoiceFromQuote(quote);
+                            createInvoiceFromJob(job);
                           }}
                         >
                           {creatingInvoice ? 'Skapar...' : 'Skapa faktura'}
@@ -382,10 +394,10 @@ const AdminInvoices = () => {
               <div className="text-center py-8">
                 <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">
-                  Inga slutförda projekt tillgängliga för fakturering
+                  Inga slutförda jobb tillgängliga för fakturering
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Slutför projekt först för att kunna skapa fakturor från dem
+                  Slutför jobb först för att kunna skapa fakturor från dem
                 </p>
               </div>
             )}
