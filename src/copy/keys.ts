@@ -223,10 +223,20 @@ export type CopyKey =
   | 'pages.faq.sendMessage'
 
   // About Page Extended
-  | 'pages.about.values' | 'pages.about.speed' | 'pages.about.speedDesc'
-  | 'pages.about.quality' | 'pages.about.qualityDesc' | 'pages.about.transparency'
-  | 'pages.about.transparencyDesc' | 'pages.about.coverageArea' | 'pages.about.coverageDesc'
-  | 'pages.about.readyToStart' | 'pages.about.contactToday'
+  | 'pages.about.values' | 'pages.about.subtitle'
+  | 'pages.about.founded_vision' | 'pages.about.growth_story'
+  | 'pages.about.pandemic_adapt' | 'pages.about.today_team' | 'pages.about.current_status'
+  | 'pages.about.what_we_offer_title'
+  | 'pages.about.for_private_title' | 'pages.about.for_private_desc'
+  | 'pages.about.for_brf_title' | 'pages.about.for_brf_desc'
+  | 'pages.about.for_business_title' | 'pages.about.for_business_desc'
+  | 'pages.about.our_team_title' | 'pages.about.team_description'
+  | 'pages.about.quality_value' | 'pages.about.quality_value_desc'
+  | 'pages.about.transparency_value' | 'pages.about.transparency_value_desc'
+  | 'pages.about.respect_value' | 'pages.about.respect_value_desc'
+  | 'pages.about.where_we_operate' | 'pages.about.coverage_simple'
+  | 'pages.about.want_to_know_more' | 'pages.about.contact_us_desc'
+  | 'pages.about.contact_us_button' | 'pages.about.see_services_button'
 
   // Privacy Page
   | 'pages.privacy.title' | 'pages.privacy.description'
