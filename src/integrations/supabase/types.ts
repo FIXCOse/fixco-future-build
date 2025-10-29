@@ -951,6 +951,7 @@ export type Database = {
           pricing_mode: string
           property_id: string | null
           rot_rut: Json
+          service_id: string | null
           source_id: string
           source_type: string
           start_scheduled_at: string | null
@@ -977,6 +978,7 @@ export type Database = {
           pricing_mode: string
           property_id?: string | null
           rot_rut?: Json
+          service_id?: string | null
           source_id: string
           source_type: string
           start_scheduled_at?: string | null
@@ -1003,6 +1005,7 @@ export type Database = {
           pricing_mode?: string
           property_id?: string | null
           rot_rut?: Json
+          service_id?: string | null
           source_id?: string
           source_type?: string
           start_scheduled_at?: string | null
@@ -1022,6 +1025,13 @@ export type Database = {
             columns: ["assigned_worker_id"]
             isOneToOne: false
             referencedRelation: "worker_statistics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
             referencedColumns: ["id"]
           },
         ]

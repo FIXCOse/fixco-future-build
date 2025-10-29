@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { getServiceCategoriesForSkills } from '@/lib/skillCategoryMapping';
 
 export type Job = {
   id: string;
@@ -105,8 +106,59 @@ export async function fetchJobs(params?: {
   }
 
   if (params?.pool_only) {
-    console.log('Fetching pool jobs: status=pool, pool_enabled=true');
-    query = query.eq('status', 'pool').eq('pool_enabled', true);
+    console.log('Fetching pool jobs with skill-based filtering');
+    
+    // Fetch worker's skills
+    const { data: staffData } = await supabase
+      .from('staff')
+      .select(`
+        staff_id,
+        staff_skills (
+          skills (
+            category
+          )
+        )
+      `)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (staffData?.staff_skills && staffData.staff_skills.length > 0) {
+      // Extract skill categories
+      const skillCategories = staffData.staff_skills
+        .map((ss: any) => ss.skills?.category)
+        .filter(Boolean);
+
+      console.log('Worker skill categories:', skillCategories);
+
+      if (skillCategories.length > 0) {
+        // Map to service categories
+        const serviceCategories = getServiceCategoriesForSkills(skillCategories);
+        console.log('Mapped service categories:', serviceCategories);
+
+        // Fetch matching service IDs
+        const { data: matchingServices } = await supabase
+          .from('services')
+          .select('id')
+          .in('category', serviceCategories)
+          .eq('is_active', true);
+
+        const serviceIds = matchingServices?.map((s: any) => s.id) || [];
+        console.log('Matching service IDs:', serviceIds);
+
+        if (serviceIds.length > 0) {
+          // Filter jobs: either matching service_id OR null (for backward compatibility)
+          query = query.or(`service_id.in.(${serviceIds.join(',')}),service_id.is.null`);
+        } else {
+          // No matching services found, but still show jobs without service_id
+          query = query.is('service_id', null);
+        }
+      }
+    }
+    
+    query = query
+      .eq('status', 'pool')
+      .eq('pool_enabled', true)
+      .is('assigned_worker_id', null);
   }
 
   if (params?.limit) {
@@ -267,18 +319,55 @@ export async function prepareInvoiceFromJob(jobId: string) {
 }
 
 export const createJobFromBooking = async (bookingId: string) => {
+  // First, get booking details to extract service_slug
+  const { data: booking } = await supabase
+    .from('bookings')
+    .select('service_slug')
+    .eq('id', bookingId)
+    .single();
+
   const { data, error } = await supabase.rpc('create_job_from_booking', {
     p_booking_id: bookingId
   });
   if (error) throw error;
+
+  // Update the created job with service_id from booking
+  if (data && booking?.service_slug) {
+    await supabase
+      .from('jobs')
+      .update({ service_id: booking.service_slug })
+      .eq('source_type', 'booking')
+      .eq('source_id', bookingId);
+  }
+
   return data;
 };
 
 export const createJobFromQuote = async (quoteId: string) => {
+  // First, get quote details to extract service from line_items
+  const { data: quote } = await supabase
+    .from('quotes')
+    .select('line_items')
+    .eq('id', quoteId)
+    .single();
+
   const { data, error } = await supabase.rpc('create_job_from_quote', {
     p_quote_id: quoteId
   });
   if (error) throw error;
+
+  // Update the created job with service_id from quote's first line item
+  if (data && quote?.line_items && Array.isArray(quote.line_items) && quote.line_items[0]) {
+    const firstItem: any = quote.line_items[0];
+    if (firstItem.service_id) {
+      await supabase
+        .from('jobs')
+        .update({ service_id: firstItem.service_id })
+        .eq('source_type', 'quote')
+        .eq('source_id', quoteId);
+    }
+  }
+
   return data;
 };
 
