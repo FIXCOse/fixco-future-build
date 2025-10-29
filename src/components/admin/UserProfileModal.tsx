@@ -27,13 +27,26 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
     mutationFn: async (data: Partial<UserProfile>) => {
       if (!user) return;
       
-      // Ensure user_type is properly typed
-      const updateData: any = { ...data };
+      // Build update object with only allowed profile fields (NO role)
+      const updateData: any = {};
+      if (data.first_name !== undefined) updateData.first_name = data.first_name;
+      if (data.last_name !== undefined) updateData.last_name = data.last_name;
+      if (data.email !== undefined) updateData.email = data.email;
+      if (data.phone !== undefined) updateData.phone = data.phone;
+      if (data.user_type !== undefined) updateData.user_type = data.user_type;
+      if (data.company_name !== undefined) updateData.company_name = data.company_name;
+      if (data.brf_name !== undefined) updateData.brf_name = data.brf_name;
+      if (data.org_number !== undefined) updateData.org_number = data.org_number;
+      if (data.address_line !== undefined) updateData.address_line = data.address_line;
+      if (data.postal_code !== undefined) updateData.postal_code = data.postal_code;
+      if (data.city !== undefined) updateData.city = data.city;
       
+      // EXPLICIT SELECT - only return columns that exist in profiles table
       const { error } = await supabase
         .from('profiles')
         .update(updateData)
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .select('id, email, first_name, last_name, full_name, phone, user_type, company_name, brf_name, org_number, address_line, postal_code, city, loyalty_points, total_spent, created_at');
 
       if (error) throw error;
     },
