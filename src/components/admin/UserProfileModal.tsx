@@ -76,34 +76,52 @@ export const UserProfileModal = ({ user, open, onOpenChange }: UserProfileModalP
     mutationFn: async (newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
       if (!user) return;
       
-      // Delete all existing roles
-      const { error: deleteError } = await supabase
-        .from('user_roles')
-        .delete()
-        .eq('user_id', user.id);
-      
-      if (deleteError) throw deleteError;
+      console.log('🔄 [updateRole] Starting role update for user:', user.id);
+      console.log('🔄 [updateRole] New role:', newRole);
 
-      // Insert new role
-      const { error: insertError } = await supabase
-        .from('user_roles')
-        .insert([{ user_id: user.id, role: newRole }]);
-      
-      if (insertError) throw insertError;
+      // Check auth session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !session) {
+        console.error('❌ [updateRole] No valid session:', sessionError);
+        throw new Error('No valid session found');
+      }
+      console.log('✅ [updateRole] Session valid, user:', session.user.id);
+
+      // Use edge function for server-side handling with service role
+      const { data, error } = await supabase.functions.invoke('admin-update-user-role', {
+        body: { user_id: user.id, new_role: newRole }
+      });
+
+      if (error) {
+        console.error('❌ [updateRole] Edge function error:', error);
+        throw error;
+      }
+
+      console.log('✅ [updateRole] Role updated successfully:', data);
+      return data;
     },
     onSuccess: () => {
+      console.log('✅ [updateRole] Mutation success, invalidating queries');
       toast.success('Roll uppdaterad');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       queryClient.invalidateQueries({ queryKey: ['user-roles'] });
     },
     onError: (error: any) => {
-      console.error('Error updating role:', error);
-      if (error.message?.includes('invalid input value for enum')) {
-        toast.error('Ogiltig roll vald. Kontakta support om problemet kvarstår.');
-      } else if (error.message?.includes('violates row-level security')) {
+      console.error('❌ [updateRole] Mutation error:', error);
+      console.error('❌ [updateRole] Error details:', {
+        message: error.message,
+        status: error.status,
+        context: error.context
+      });
+      
+      if (error.message?.includes('Forbidden')) {
         toast.error('Du har inte behörighet att ändra roller');
+      } else if (error.message?.includes('Invalid role')) {
+        toast.error('Ogiltig roll vald');
+      } else if (error.message?.includes('Unauthorized')) {
+        toast.error('Du måste vara inloggad för att ändra roller');
       } else {
-        toast.error('Kunde inte uppdatera roll');
+        toast.error(`Kunde inte uppdatera roll: ${error.message || 'Okänt fel'}`);
       }
     },
   });
