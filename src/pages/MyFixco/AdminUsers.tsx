@@ -25,14 +25,45 @@ const AdminUsers = () => {
   const logDebug = (message: string, data?: any) => {
     const timestamp = new Date().toISOString();
     const logEntry = `[${timestamp}] ${message}`;
+    
+    // ALWAYS log to console first
     console.log(`🐛 ${logEntry}`, data || '');
-    setDebugLogs(prev => [`${logEntry}${data ? ': ' + JSON.stringify(data, null, 2) : ''}`, ...prev].slice(0, 50));
+    console.log('🔧 About to update debugLogs state...');
+    
+    // Then update state
+    setDebugLogs(prev => {
+      const newLog = `${logEntry}${data ? ': ' + JSON.stringify(data, null, 2) : ''}`;
+      const updated = [newLog, ...prev].slice(0, 50);
+      console.log(`📊 DebugLogs updated. New length: ${updated.length}`);
+      return updated;
+    });
+  };
+
+  // 🚀 INITIAL MOUNT LOGGING
+  useEffect(() => {
+    console.log('🎬 AdminUsers component mounted!');
+    logDebug('🎬 COMPONENT MOUNTED - Debug system initialized', {
+      timestamp: new Date().toISOString(),
+      location: window.location.pathname
+    });
+  }, []);
+
+  // 🔄 FORCE REFRESH FUNCTION
+  const forceRefresh = () => {
+    console.log('💪 FORCE REFRESH TRIGGERED');
+    logDebug('💪 FORCE REFRESH - Invalidating all cache');
+    queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    setTimeout(() => {
+      refetch();
+    }, 100);
   };
 
   // Fetch users using the edge function
   const { data: usersData, isLoading, error, refetch } = useQuery({
     queryKey: ['admin-users', searchQuery, roleFilter],
     queryFn: async () => {
+      console.log('🔵 queryFn EXECUTING NOW!');
+      console.log('Search:', searchQuery, 'Role:', roleFilter);
       logDebug('🚀 STARTING admin-list-users Edge Function call', {
         searchQuery,
         roleFilter,
@@ -364,14 +395,14 @@ const AdminUsers = () => {
           <CollapsibleContent>
             <CardContent className="space-y-4">
               <div className="flex flex-wrap gap-2">
+                <Button onClick={forceRefresh} variant="default" size="sm" className="bg-orange-600 hover:bg-orange-700">
+                  💪 FORCE REFRESH
+                </Button>
                 <Button onClick={testProfilesQuery} variant="outline" size="sm">
                   🧪 Test Profiles Query
                 </Button>
                 <Button onClick={testUserRolesQuery} variant="outline" size="sm">
                   🧪 Test UserRoles Query
-                </Button>
-                <Button onClick={() => refetch()} variant="outline" size="sm">
-                  🔄 Refetch Users
                 </Button>
                 <Button onClick={clearLogs} variant="outline" size="sm">
                   🧹 Clear Logs
