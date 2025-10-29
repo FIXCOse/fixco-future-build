@@ -22,7 +22,7 @@ const AdminStaff = () => {
   const [editingStaff, setEditingStaff] = useState<any>(null);
   
 
-  // Fetch staff with their skills
+  // Fetch staff with their skills and linked user profiles
   const { data: staff, isLoading } = useQuery({
     queryKey: ['admin-staff', searchTerm],
     queryFn: async () => {
@@ -30,6 +30,12 @@ const AdminStaff = () => {
         .from('staff')
         .select(`
           *,
+          user:profiles!staff_user_id_fkey (
+            id,
+            full_name,
+            email,
+            phone
+          ),
           staff_skills (
             skill_id,
             level,
@@ -227,6 +233,12 @@ const AdminStaff = () => {
                           <Badge variant={getRoleBadgeVariant(member.role)}>
                             {getRoleDisplayName(member.role)}
                           </Badge>
+                          {member.user_id && (
+                            <Badge variant="default" className="bg-green-600">
+                              <UserCheck className="h-3 w-3 mr-1" />
+                              Användarkonto
+                            </Badge>
+                          )}
                           {!member.active && (
                             <Badge variant="destructive">Inaktiv</Badge>
                           )}
