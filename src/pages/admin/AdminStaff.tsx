@@ -24,18 +24,13 @@ const AdminStaff = () => {
 
   // Fetch staff with their skills and linked user profiles
   const { data: staff, isLoading } = useQuery({
-    queryKey: ['admin-staff', searchTerm],
+    queryKey: ['admin-staff'],
     queryFn: async () => {
-      let query = supabase
+      // Step 1: Fetch staff data with skills
+      const { data: staffData, error: staffError } = await supabase
         .from('staff')
         .select(`
           *,
-          user:profiles!staff_user_id_fkey (
-            id,
-            full_name,
-            email,
-            phone
-          ),
           staff_skills (
             skill_id,
             level,
@@ -44,14 +39,57 @@ const AdminStaff = () => {
         `)
         .order('staff_id', { ascending: true });
 
-      if (searchTerm) {
-        query = query.or(`name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,phone.ilike.%${searchTerm}%`);
+      if (staffError) {
+        console.error("Error fetching staff:", staffError);
+        throw staffError;
       }
 
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
+      if (!staffData || staffData.length === 0) {
+        return [];
+      }
+
+      // Step 2: Extract user IDs that are not null
+      const userIds = staffData
+        .map(s => s.user_id)
+        .filter(Boolean);
+
+      // Step 3: Fetch matching profiles if there are any user IDs
+      let profiles: any[] = [];
+      if (userIds.length > 0) {
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, full_name, email, phone')
+          .in('id', userIds);
+        
+        if (profilesError) {
+          console.error("Error fetching profiles:", profilesError);
+        } else {
+          profiles = profilesData || [];
+        }
+      }
+
+      // Step 4: Merge staff data with user profiles
+      const enrichedStaff = staffData.map(staff => ({
+        ...staff,
+        user: profiles.find(p => p.id === staff.user_id) || null
+      }));
+
+      return enrichedStaff;
     },
+  });
+
+  // Client-side filtering by search term
+  const filteredStaff = staff?.filter(member => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase();
+    return (
+      member.name?.toLowerCase().includes(term) ||
+      member.email?.toLowerCase().includes(term) ||
+      member.phone?.toLowerCase().includes(term) ||
+      member.user?.full_name?.toLowerCase().includes(term) ||
+      member.user?.email?.toLowerCase().includes(term) ||
+      member.user?.phone?.toLowerCase().includes(term)
+    );
   });
 
 
@@ -219,9 +257,9 @@ const AdminStaff = () => {
                     </div>
                   ))}
                 </div>
-              ) : staff && staff.length > 0 ? (
+              ) : filteredStaff && filteredStaff.length > 0 ? (
                 <div className="space-y-4">
-                  {staff.map((member) => (
+                  {filteredStaff.map((member) => (
                     <div key={member.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                       <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                         <User className="h-6 w-6 text-primary" />
