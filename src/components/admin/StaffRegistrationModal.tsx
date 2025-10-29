@@ -151,10 +151,15 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
       // Update staff skills
       if (staffId) {
         // Remove existing skills
-        await supabase
+        const { error: deleteError } = await supabase
           .from('staff_skills')
           .delete()
           .eq('staff_id', staffId);
+
+        if (deleteError) {
+          console.error('Error deleting skills:', deleteError);
+          throw new Error(`Kunde inte ta bort gamla kompetenser: ${deleteError.message}`);
+        }
 
         // Add new skills
         if (formData.selectedSkills.length > 0) {
@@ -164,9 +169,14 @@ export function StaffRegistrationModal({ open, onOpenChange, editingStaff }: Sta
             level: 1
           }));
 
-          await supabase
+          const { error: insertError } = await supabase
             .from('staff_skills')
             .insert(skillsToAdd);
+
+          if (insertError) {
+            console.error('Error inserting skills:', insertError);
+            throw new Error(`Kunde inte lägga till kompetenser: ${insertError.message}`);
+          }
         }
       }
 
