@@ -4,117 +4,49 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Users, Search, Download, Edit, RefreshCw, Mail, Shield, Trash2, Bug, AlertTriangle } from 'lucide-react';
+import { Users, Search, Download, Edit, RefreshCw, Mail, Shield, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import AdminBack from '@/components/admin/AdminBack';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
+/**
+ * AdminUsers Component
+ * 
+ * Architecture:
+ * - User profiles stored in 'profiles' table (basic info, NO roles)
+ * - User roles stored separately in 'user_roles' table (security)
+ * - Fetches users via 'admin-list-users' Edge Function
+ * - Role updates via 'admin-update-user-role' Edge Function
+ * - Real-time updates via Supabase subscription on 'user_roles' table
+ */
 const AdminUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [userToDelete, setUserToDelete] = useState<any>(null);
-  const [debugLogs, setDebugLogs] = useState<string[]>([]);
-  const [showDebugPanel, setShowDebugPanel] = useState(true);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-
-  // 🔍 MEGA DEBUG LOGGER
-  const logDebug = (message: string, data?: any) => {
-    const timestamp = new Date().toISOString();
-    const logEntry = `[${timestamp}] ${message}`;
-    
-    // ALWAYS log to console first
-    console.log(`🐛 ${logEntry}`, data || '');
-    console.log('🔧 About to update debugLogs state...');
-    
-    // Then update state
-    setDebugLogs(prev => {
-      const newLog = `${logEntry}${data ? ': ' + JSON.stringify(data, null, 2) : ''}`;
-      const updated = [newLog, ...prev].slice(0, 50);
-      console.log(`📊 DebugLogs updated. New length: ${updated.length}`);
-      return updated;
-    });
-  };
-
-  // 🚀 INITIAL MOUNT LOGGING
-  useEffect(() => {
-    console.log('🎬 AdminUsers component mounted!');
-    logDebug('🎬 COMPONENT MOUNTED - Debug system initialized', {
-      timestamp: new Date().toISOString(),
-      location: window.location.pathname
-    });
-  }, []);
-
-  // 🔄 FORCE REFRESH FUNCTION
-  const forceRefresh = () => {
-    console.log('💪 FORCE REFRESH TRIGGERED');
-    logDebug('💪 FORCE REFRESH - Invalidating all cache');
-    queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-    setTimeout(() => {
-      refetch();
-    }, 100);
-  };
 
   // Fetch users using the edge function
   const { data: usersData, isLoading, error, refetch } = useQuery({
     queryKey: ['admin-users', searchQuery, roleFilter],
     queryFn: async () => {
-      console.log('🔵 queryFn EXECUTING NOW!');
-      console.log('Search:', searchQuery, 'Role:', roleFilter);
-      logDebug('🚀 STARTING admin-list-users Edge Function call', {
-        searchQuery,
-        roleFilter,
-        timestamp: new Date().toISOString()
+      const { data, error } = await supabase.functions.invoke('admin-list-users', {
+        body: { 
+          q: searchQuery,
+          role: roleFilter === 'all' ? '' : roleFilter,
+          page: 1,
+          pageSize: 100
+        }
       });
 
-      try {
-        const { data, error } = await supabase.functions.invoke('admin-list-users', {
-          body: { 
-            q: searchQuery,
-            role: roleFilter === 'all' ? '' : roleFilter,
-            page: 1,
-            pageSize: 100
-          }
-        });
-
-        if (error) {
-          logDebug('❌ ERROR from admin-list-users', {
-            error,
-            message: error.message,
-            code: error.code,
-            details: error.details,
-            hint: error.hint,
-            stack: new Error().stack
-          });
-          throw error;
-        }
-
-        logDebug('✅ SUCCESS from admin-list-users', {
-          userCount: data?.users?.length || 0,
-          sampleUser: data?.users?.[0] ? {
-            id: data.users[0].id,
-            email: data.users[0].email,
-            role: data.users[0].role,
-            hasRoleField: 'role' in data.users[0]
-          } : null
-        });
-
-        return data;
-      } catch (err: any) {
-        logDebug('💥 CAUGHT ERROR in queryFn', {
-          errorType: err?.constructor?.name,
-          message: err?.message,
-          code: err?.code,
-          details: err?.details,
-          hint: err?.hint,
-          fullError: JSON.stringify(err, Object.getOwnPropertyNames(err)),
-          stack: err?.stack
-        });
-        throw err;
+      if (error) {
+        console.error('Error fetching users:', error);
+        throw error;
       }
+
+      return data;
     },
     refetchInterval: 30000,
     staleTime: 10000
@@ -122,17 +54,7 @@ const AdminUsers = () => {
 
   const users = usersData?.users || [];
 
-  // Log when data changes
-  useEffect(() => {
-    if (usersData) {
-      logDebug('📊 Users data updated', { 
-        userCount: users.length,
-        timestamp: new Date().toISOString()
-      });
-    }
-  }, [usersData]);
-
-  // Set up realtime sync for user_roles changes (not profiles to avoid PGRST204 error)
+  // Set up realtime sync for user_roles changes
   useEffect(() => {
     const channel = supabase
       .channel('admin-users-roles-realtime')
@@ -150,14 +72,12 @@ const AdminUsers = () => {
     };
   }, [queryClient]);
 
+  // Updates user role via admin-update-user-role Edge Function
+  // Roles are stored in user_roles table (NOT in profiles)
   const handleRoleChange = async (userId: string, newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
-    logDebug('🔄 STARTING handleRoleChange', { userId, newRole });
+    console.log('[handleRoleChange] Updating role:', { userId, newRole });
 
     try {
-      logDebug('📤 Invoking admin-update-user-role Edge Function', {
-        body: { user_id: userId, new_role: newRole }
-      });
-      
       const { data, error } = await supabase.functions.invoke('admin-update-user-role', {
         body: { 
           user_id: userId,
@@ -166,21 +86,11 @@ const AdminUsers = () => {
       });
 
       if (error) {
-        logDebug('❌ ERROR from admin-update-user-role', {
-          error,
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint,
-          fullError: JSON.stringify(error, Object.getOwnPropertyNames(error)),
-          stack: new Error().stack
-        });
+        console.error('[handleRoleChange] Error:', error);
         throw error;
       }
 
-      logDebug('✅ SUCCESS admin-update-user-role', { data });
-      logDebug('🔄 Invalidating queries');
-
+      console.log('[handleRoleChange] Success:', data);
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       
       toast({
@@ -188,15 +98,7 @@ const AdminUsers = () => {
         description: 'Användarroll har ändrats'
       });
     } catch (error: any) {
-      logDebug('💥 CAUGHT ERROR in handleRoleChange', {
-        errorType: error?.constructor?.name,
-        message: error?.message,
-        code: error?.code,
-        details: error?.details,
-        hint: error?.hint,
-        fullError: JSON.stringify(error, Object.getOwnPropertyNames(error)),
-        stack: error?.stack
-      });
+      console.error('[handleRoleChange] Exception:', error);
       
       const errorMessage = error?.message || 'Kunde inte uppdatera roll';
       
@@ -291,76 +193,6 @@ const AdminUsers = () => {
     }
   };
 
-  // 🔍 DEBUG: Test direct profiles query
-  const testProfilesQuery = async () => {
-    logDebug('🧪 TESTING direct profiles query (without role column)');
-    
-    try {
-      logDebug('📤 Executing: supabase.from("profiles").select("id, email, first_name, last_name").limit(1)');
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, email, first_name, last_name')
-        .limit(1);
-
-      if (error) {
-        logDebug('❌ ERROR from profiles query', {
-          error,
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint,
-          fullError: JSON.stringify(error, Object.getOwnPropertyNames(error))
-        });
-      } else {
-        logDebug('✅ SUCCESS profiles query', { data });
-      }
-    } catch (err: any) {
-      logDebug('💥 CAUGHT ERROR in testProfilesQuery', {
-        errorType: err?.constructor?.name,
-        message: err?.message,
-        fullError: JSON.stringify(err, Object.getOwnPropertyNames(err))
-      });
-    }
-  };
-
-  // 🔍 DEBUG: Test user_roles query
-  const testUserRolesQuery = async () => {
-    logDebug('🧪 TESTING user_roles query');
-    
-    try {
-      logDebug('📤 Executing: supabase.from("user_roles").select("*").limit(5)');
-      
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .limit(5);
-
-      if (error) {
-        logDebug('❌ ERROR from user_roles query', {
-          error,
-          message: error.message,
-          code: error.code,
-          fullError: JSON.stringify(error, Object.getOwnPropertyNames(error))
-        });
-      } else {
-        logDebug('✅ SUCCESS user_roles query', { data });
-      }
-    } catch (err: any) {
-      logDebug('💥 CAUGHT ERROR in testUserRolesQuery', {
-        errorType: err?.constructor?.name,
-        message: err?.message,
-        fullError: JSON.stringify(err, Object.getOwnPropertyNames(err))
-      });
-    }
-  };
-
-  // 🔍 DEBUG: Clear logs
-  const clearLogs = () => {
-    setDebugLogs([]);
-    logDebug('🧹 Logs cleared');
-  };
-
   return (
     <div className="space-y-6">
       <AdminBack />
@@ -371,75 +203,6 @@ const AdminUsers = () => {
           Hantera kunder, personal och roller
         </p>
       </div>
-
-      {/* 🐛 DEBUG PANEL */}
-      <Card className="border-orange-500 bg-orange-50 dark:bg-orange-950/20">
-        <Collapsible open={showDebugPanel} onOpenChange={setShowDebugPanel}>
-          <CardHeader>
-            <CollapsibleTrigger asChild>
-              <div className="flex items-center justify-between cursor-pointer">
-                <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-400">
-                  <Bug className="h-5 w-5" />
-                  🐛 MEGA DEBUG PANEL
-                  <Badge variant="outline" className="ml-2">
-                    {debugLogs.length} logs
-                  </Badge>
-                </CardTitle>
-                <AlertTriangle className="h-5 w-5 text-orange-600" />
-              </div>
-            </CollapsibleTrigger>
-            <CardDescription className="text-orange-600 dark:text-orange-400">
-              Detaljerad logging för PGRST204-felet
-            </CardDescription>
-          </CardHeader>
-          <CollapsibleContent>
-            <CardContent className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                <Button onClick={forceRefresh} variant="default" size="sm" className="bg-orange-600 hover:bg-orange-700">
-                  💪 FORCE REFRESH
-                </Button>
-                <Button onClick={testProfilesQuery} variant="outline" size="sm">
-                  🧪 Test Profiles Query
-                </Button>
-                <Button onClick={testUserRolesQuery} variant="outline" size="sm">
-                  🧪 Test UserRoles Query
-                </Button>
-                <Button onClick={clearLogs} variant="outline" size="sm">
-                  🧹 Clear Logs
-                </Button>
-                <Button 
-                  onClick={() => {
-                    const logs = debugLogs.join('\n\n');
-                    const blob = new Blob([logs], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `debug-logs-${Date.now()}.txt`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                  }}
-                  variant="outline" 
-                  size="sm"
-                >
-                  💾 Download Logs
-                </Button>
-              </div>
-
-              <div className="bg-black text-green-400 p-4 rounded-lg max-h-[400px] overflow-y-auto font-mono text-xs">
-                {debugLogs.length === 0 ? (
-                  <div className="text-muted-foreground">Inga loggar ännu. Klicka på en test-knapp eller utför en åtgärd.</div>
-                ) : (
-                  debugLogs.map((log, i) => (
-                    <div key={i} className="mb-2 pb-2 border-b border-green-900/30">
-                      <pre className="whitespace-pre-wrap break-words">{log}</pre>
-                    </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </CollapsibleContent>
-        </Collapsible>
-      </Card>
 
       <Card>
         <CardHeader>
