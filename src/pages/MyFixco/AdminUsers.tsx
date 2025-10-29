@@ -40,13 +40,14 @@ const AdminUsers = () => {
 
   const users = usersData?.users || [];
 
-  // Set up realtime sync
+  // Set up realtime sync for user_roles changes (not profiles to avoid PGRST204 error)
   useEffect(() => {
     const channel = supabase
-      .channel('admin-users-realtime')
+      .channel('admin-users-roles-realtime')
       .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'profiles' }, 
+        { event: '*', schema: 'public', table: 'user_roles' }, 
         () => {
+          console.log('🔄 [AdminUsers] user_roles changed, invalidating queries');
           queryClient.invalidateQueries({ queryKey: ['admin-users'] });
         }
       )
@@ -59,20 +60,21 @@ const AdminUsers = () => {
 
   const handleRoleChange = async (userId: string, newRole: 'customer' | 'admin' | 'owner' | 'worker') => {
     try {
-      // Delete existing roles
-      const { error: deleteError } = await supabase
-        .from('user_roles')
-        .delete()
-        .eq('user_id', userId);
+      console.log('🔄 [AdminUsers] Updating role via Edge Function:', { userId, newRole });
+      
+      const { data, error } = await supabase.functions.invoke('admin-update-user-role', {
+        body: { 
+          user_id: userId,
+          new_role: newRole
+        }
+      });
 
-      if (deleteError) throw deleteError;
+      if (error) {
+        console.error('❌ [AdminUsers] Edge Function error:', error);
+        throw error;
+      }
 
-      // Insert new role
-      const { error } = await supabase
-        .from('user_roles')
-        .insert([{ user_id: userId, role: newRole }]);
-
-      if (error) throw error;
+      console.log('✅ [AdminUsers] Role updated successfully:', data);
 
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
@@ -81,11 +83,18 @@ const AdminUsers = () => {
         title: 'Uppdaterat',
         description: 'Användarroll har ändrats'
       });
-    } catch (error) {
-      console.error('Error updating role:', error);
+    } catch (error: any) {
+      console.error('❌ [AdminUsers] Error updating role:', error);
+      
+      const errorMessage = error?.message || 'Kunde inte uppdatera roll';
+      
       toast({
         title: 'Fel',
-        description: 'Kunde inte uppdatera roll',
+        description: errorMessage.includes('Forbidden') 
+          ? 'Du har inte behörighet att ändra roller'
+          : errorMessage.includes('Invalid role')
+          ? 'Ogiltig roll vald'
+          : errorMessage,
         variant: 'destructive'
       });
     }
