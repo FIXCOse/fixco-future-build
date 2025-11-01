@@ -1,230 +1,195 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Shield, AlertTriangle, CheckCircle, Lock, Eye, RefreshCw } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Shield, Eye, Search, AlertTriangle } from 'lucide-react';
+import { getAuditLog, setSetting, getSettings } from '@/lib/admin';
+import { useToast } from '@/hooks/use-toast';
 import AdminBack from '@/components/admin/AdminBack';
-import { formatDistanceToNow } from 'date-fns';
-import { sv } from 'date-fns/locale';
 
 const AdminSecurity = () => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [auditLog, setAuditLog] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionFilter, setActionFilter] = useState('all');
+  const [force2FA, setForce2FA] = useState(false);
+  const { toast } = useToast();
 
-  // Mock security events data
-  const { data: securityEvents } = useQuery({
-    queryKey: ['security-events'],
-    queryFn: async () => {
-      // Simulate API call
-      return [
-        {
-          id: '1',
-          type: 'login_success',
-          user_email: 'admin@fixco.se',
-          ip_address: '192.168.1.100',
-          timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-          severity: 'info',
-        },
-        {
-          id: '2',
-          type: 'login_failed',
-          user_email: 'unknown@example.com',
-          ip_address: '203.0.113.195',
-          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-          severity: 'warning',
-        },
-        {
-          id: '3',
-          type: 'data_access',
-          user_email: 'admin@fixco.se',
-          ip_address: '192.168.1.100',
-          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
-          severity: 'info',
-        },
-      ];
-    },
-  });
+  useEffect(() => {
+    loadData();
+  }, [actionFilter]);
 
-  const securityMetrics = [
-    {
-      title: 'Aktiva sessioner',
-      value: '3',
-      status: 'good',
-      icon: Lock,
-    },
-    {
-      title: 'Misslyckade inloggningar (24h)',
-      value: '2',
-      status: 'warning',
-      icon: AlertTriangle,
-    },
-    {
-      title: 'RLS policies',
-      value: '15',
-      status: 'good',
-      icon: Shield,
-    },
-    {
-      title: 'SSL-certifikat',
-      value: 'Giltigt',
-      status: 'good',
-      icon: CheckCircle,
-    },
-  ];
-
-  const getEventBadgeVariant = (severity: string) => {
-    switch (severity) {
-      case 'warning': return 'destructive' as const;
-      case 'error': return 'destructive' as const;
-      default: return 'secondary' as const;
+  const loadData = async () => {
+    try {
+      const [auditData, settings] = await Promise.all([
+        getAuditLog({ action: actionFilter === 'all' ? undefined : actionFilter, limit: 50 }),
+        getSettings(['force_2fa'])
+      ]);
+      
+      setAuditLog(auditData || []);
+      setForce2FA(settings['force_2fa'] === true);
+    } catch (error) {
+      console.error('Error loading security data:', error);
+      toast({
+        title: 'Fel',
+        description: 'Kunde inte ladda säkerhetsdata',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getEventIcon = (type: string) => {
-    switch (type) {
-      case 'login_success': return CheckCircle;
-      case 'login_failed': return AlertTriangle;
-      case 'data_access': return Eye;
-      default: return Shield;
+  const toggle2FA = async (enabled: boolean) => {
+    try {
+      await setSetting('force_2fa', enabled);
+      setForce2FA(enabled);
+      toast({
+        title: enabled ? 'Aktiverat' : 'Inaktiverat',
+        description: `2FA ${enabled ? 'krävs nu' : 'är nu valfritt'} för alla användare`
+      });
+    } catch (error) {
+      console.error('Error updating 2FA setting:', error);
+      toast({
+        title: 'Fel',
+        description: 'Kunde inte uppdatera 2FA-inställning',
+        variant: 'destructive'
+      });
     }
   };
 
-  const getEventDescription = (type: string) => {
-    switch (type) {
-      case 'login_success': return 'Lyckad inloggning';
-      case 'login_failed': return 'Misslyckad inloggning';
-      case 'data_access': return 'Dataåtkomst';
-      default: return 'Säkerhetshändelse';
-    }
-  };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    // Simulate refresh
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsRefreshing(false);
+  const getActionColor = (action: string) => {
+    if (action.includes('delete') || action.includes('remove')) return 'destructive';
+    if (action.includes('update') || action.includes('change')) return 'default';
+    if (action.includes('create') || action.includes('add')) return 'secondary';
+    return 'outline';
   };
 
   return (
     <div className="space-y-6">
       <AdminBack />
       
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Säkerhet</h1>
-          <p className="text-muted-foreground">Övervaka systemets säkerhet och aktivitet</p>
-        </div>
-        <Button 
-          onClick={handleRefresh} 
-          variant="outline" 
-          disabled={isRefreshing}
-          className="flex items-center gap-2"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Uppdatera
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold">Säkerhet & Behörigheter</h1>
+        <p className="text-muted-foreground">
+          Hantera åtkomst och säkerhetsinställningar
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {securityMetrics.map((metric) => {
-          const Icon = metric.icon;
-          const statusColor = metric.status === 'good' ? 'text-green-600' : 'text-yellow-600';
-          const bgColor = metric.status === 'good' ? 'bg-green-100' : 'bg-yellow-100';
-          
-          return (
-            <Card key={metric.title}>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-lg ${bgColor}`}>
-                    <Icon className={`h-6 w-6 ${statusColor}`} />
+      {/* Security Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5" />
+            Säkerhetsinställningar
+          </CardTitle>
+          <CardDescription>
+            Konfigurera säkerhetspolicies
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-orange-500" />
+              <div>
+                <Label className="text-base">Kräv 2FA för alla användare</Label>
+                <p className="text-sm text-muted-foreground">
+                  Tvångsaktivera tvåfaktorsautentisering för alla konton
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={force2FA}
+              onCheckedChange={toggle2FA}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Audit Log */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              Auditlogg ({auditLog.length})
+            </div>
+          </CardTitle>
+          <CardDescription>
+            Alla administrativa åtgärder loggas här
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Filtrera på åtgärd..."
+                value={actionFilter}
+                onChange={(e) => setActionFilter(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={actionFilter} onValueChange={setActionFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Alla åtgärder" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alla åtgärder</SelectItem>
+                <SelectItem value="update_user_role">Rolländringar</SelectItem>
+                <SelectItem value="update_setting">Inställningar</SelectItem>
+                <SelectItem value="create_staff">Skapa personal</SelectItem>
+                <SelectItem value="assign_work">Tilldela arbete</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            </div>
+          ) : (
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {auditLog.map((entry) => (
+                <div key={entry.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge variant={getActionColor(entry.action)}>
+                        {entry.action}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">
+                        av {entry.profiles?.first_name} {entry.profiles?.last_name}
+                      </span>
+                    </div>
+                    
+                    <div className="text-sm">
+                      {entry.target && <span className="font-mono text-xs">Target: {entry.target}</span>}
+                      {entry.meta && (
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {JSON.stringify(entry.meta, null, 2)}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-2xl font-bold">{metric.value}</p>
-                    <p className="text-sm text-muted-foreground">{metric.title}</p>
+                  
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(entry.created_at).toLocaleString('sv-SE')}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
-              Säkerhetsstatus
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span>Row Level Security</span>
-              <Badge variant="default">Aktiverad</Badge>
+              ))}
+              
+              {auditLog.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  Inga loggposter hittades
+                </div>
+              )}
             </div>
-            <div className="flex items-center justify-between">
-              <span>SSL/TLS</span>
-              <Badge variant="default">Aktiverad</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>2FA för admins</span>
-              <Badge variant="secondary">Rekommenderas</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>API Rate Limiting</span>
-              <Badge variant="default">Aktiverad</Badge>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Intrusion Detection</span>
-              <Badge variant="default">Aktiv</Badge>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Senaste säkerhetshändelser
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {securityEvents && securityEvents.length > 0 ? (
-              <div className="space-y-4">
-                {securityEvents.map((event) => {
-                  const Icon = getEventIcon(event.type);
-                  return (
-                    <div key={event.id} className="flex items-start gap-3 p-3 rounded-lg border">
-                      <div className="p-2 rounded-lg bg-muted">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{getEventDescription(event.type)}</span>
-                          <Badge variant={getEventBadgeVariant(event.severity)}>
-                            {event.severity}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {event.user_email} från {event.ip_address}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(event.timestamp), { 
-                            addSuffix: true, 
-                            locale: sv 
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-muted-foreground">Inga säkerhetshändelser att visa</p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
