@@ -4,7 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Download } from 'lucide-react';
+import { Download, RefreshCw, Info } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 import { WorkerPerformancePanel } from '@/components/admin/WorkerPerformancePanel';
 import { WorkerStatisticsPanel } from '@/components/admin/WorkerStatisticsPanel';
 import { WorkerKPICards } from '@/components/admin/statistics/WorkerKPICards';
@@ -45,6 +47,34 @@ export default function AdminWorkerAnalytics() {
 
   const problemWorkers = detailedStats.filter(w => w.completion_rate_percent < 70);
 
+  const refreshStats = async () => {
+    try {
+      setLoading(true);
+      toast.info('Uppdaterar worker statistik...');
+      
+      // Call the refresh function
+      const { error } = await supabase.rpc('refresh_worker_detailed_stats');
+      
+      if (error) throw error;
+      
+      // Re-fetch data after refresh
+      const [detailed, daily] = await Promise.all([
+        fetchWorkerDetailedStatistics(),
+        fetchWorkerDailyStats(timeRange)
+      ]);
+      
+      setDetailedStats(detailed);
+      setDailyStats(daily);
+      
+      toast.success('Worker statistik uppdaterad!');
+    } catch (error) {
+      console.error('Failed to refresh stats:', error);
+      toast.error('Kunde inte uppdatera statistik');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const exportToCSV = () => {
     const headers = ['Name', 'Email', 'Total Jobs', 'Completed', 'Completion Rate', 'Last 30d', 'Earnings 30d'];
     const rows = detailedStats.map(w => [
@@ -75,11 +105,30 @@ export default function AdminWorkerAnalytics() {
           <h1 className="text-3xl font-bold">Worker Analytics</h1>
           <p className="text-muted-foreground">Djupgående analys av worker prestanda och beteende</p>
         </div>
-        <Button onClick={exportToCSV} disabled={loading || detailedStats.length === 0}>
-          <Download className="w-4 h-4 mr-2" />
-          Export CSV
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={refreshStats} 
+            variant="outline"
+            disabled={loading}
+          >
+            <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
+            Uppdatera
+          </Button>
+          <Button onClick={exportToCSV} disabled={loading || detailedStats.length === 0}>
+            <Download className="w-4 h-4 mr-2" />
+            Export CSV
+          </Button>
+        </div>
       </div>
+
+      <Card className="bg-muted/50">
+        <CardContent className="py-3 flex items-center gap-2 text-sm">
+          <Info className="w-4 h-4 text-muted-foreground" />
+          <span className="text-muted-foreground">
+            Statistiken cachas för prestanda. Klicka på "Uppdatera" för att se senaste ändringar.
+          </span>
+        </CardContent>
+      </Card>
 
       {/* Loading State */}
       {loading ? (
