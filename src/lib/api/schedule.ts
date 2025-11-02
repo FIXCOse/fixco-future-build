@@ -43,33 +43,35 @@ export type WorkerDetailedStatistic = {
   first_name: string;
   last_name: string;
   email: string;
-  avatar_url?: string;
+  avatar_url: string | null;
   total_jobs: number;
   completed_jobs: number;
   jobs_last_30_days: number;
   jobs_last_7_days: number;
-  jobs_today: number;
   completion_rate_percent: number;
-  avg_job_hours: number;
-  fastest_job_hours: number;
-  longest_job_hours: number;
-  avg_start_hour: number;
-  avg_end_hour: number;
-  jobs_by_weekday: Record<string, number>;
+  avg_job_hours: number | null;
+  fastest_job_hours: number | null;
+  longest_job_hours: number | null;
+  jobs_monday: number;
+  jobs_tuesday: number;
+  jobs_wednesday: number;
+  jobs_thursday: number;
+  jobs_friday: number;
+  jobs_saturday: number;
+  jobs_sunday: number;
   current_streak_days: number;
-  last_job_at: string;
+  last_job_at: string | null;
   top_services: Array<{
+    service_id: string;
     service_name: string;
     count: number;
     success_rate: number;
   }> | null;
-  total_earnings: number;
   earnings_last_30_days: number;
   overtime_jobs: number;
 };
 
 export type WorkerDailyStat = {
-  id: string;
   worker_id: string;
   date: string;
   jobs_completed: number;
@@ -153,38 +155,6 @@ export async function checkJobLocked(jobId: string): Promise<boolean> {
   return !!data;
 }
 
-export async function fetchWorkerDetailedStatistics(): Promise<WorkerDetailedStatistic[]> {
-  const { data, error } = await supabase
-    .from('worker_detailed_statistics' as any)
-    .select('*')
-    .order('total_jobs', { ascending: false });
-  
-  if (error) throw error;
-  return (data as any) || [];
-}
-
-export async function fetchWorkerDailyStats(
-  timeRange: '7d' | '30d' | '90d'
-): Promise<WorkerDailyStat[]> {
-  const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
-  
-  const { data, error } = await supabase
-    .from('worker_daily_stats' as any)
-    .select('*')
-    .gte('date', startDate.toISOString().split('T')[0])
-    .order('date', { ascending: true });
-  
-  if (error) throw error;
-  return (data as any) || [];
-}
-
-export async function updateDailyStats(): Promise<void> {
-  const { error } = await supabase.rpc('update_worker_daily_stats' as any);
-  if (error) throw error;
-}
-
 export interface WorkerPerformance {
   id: string;
   first_name: string;
@@ -223,6 +193,50 @@ export interface JobClaimEvent {
     last_name: string;
     email: string;
   };
+}
+
+export async function fetchWorkerDetailedStatistics(): Promise<WorkerDetailedStatistic[]> {
+  const { data, error } = await supabase
+    .from('worker_detailed_statistics')
+    .select('*')
+    .order('completed_jobs', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching detailed worker statistics:', error);
+    throw error;
+  }
+
+  return (data as any) || [];
+}
+
+export async function fetchWorkerDailyStats(timeRange: '7d' | '30d' | '90d'): Promise<WorkerDailyStat[]> {
+  const daysMap = { '7d': 7, '30d': 30, '90d': 90 };
+  const days = daysMap[timeRange];
+  
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  const { data, error } = await supabase
+    .from('worker_daily_stats')
+    .select('*')
+    .gte('date', startDate.toISOString().split('T')[0])
+    .order('date', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching worker daily stats:', error);
+    throw error;
+  }
+
+  return (data as any) || [];
+}
+
+export async function updateDailyStats(): Promise<void> {
+  const { error } = await supabase.rpc('update_worker_daily_stats');
+  
+  if (error) {
+    console.error('Error updating daily stats:', error);
+    throw error;
+  }
 }
 
 export async function fetchJobClaimHistory(jobId: string): Promise<JobClaimEvent[]> {

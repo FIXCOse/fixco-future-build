@@ -1,10 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp } from 'lucide-react';
+import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { type WorkerDetailedStatistic, type WorkerDailyStat } from '@/lib/api/schedule';
-import { format } from 'date-fns';
-import { sv } from 'date-fns/locale';
 
 interface TrendChartsPanelProps {
   statistics: WorkerDetailedStatistic[];
@@ -14,48 +12,48 @@ interface TrendChartsPanelProps {
 }
 
 export function TrendChartsPanel({ statistics, dailyStats, timeRange, onTimeRangeChange }: TrendChartsPanelProps) {
-  const top5Workers = [...statistics]
-    .sort((a, b) => b.total_jobs - a.total_jobs)
-    .slice(0, 5);
-
-  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-
-  // Process daily stats for line chart
+  // Prepare data for charts
+  const topWorkers = statistics.slice(0, 5);
+  
+  // Group daily stats by date
   const dailyJobsData = dailyStats.reduce((acc, stat) => {
-    const date = format(new Date(stat.date), 'MMM dd', { locale: sv });
-    const existing = acc.find(d => d.date === date);
-    const worker = statistics.find(w => w.id === stat.worker_id);
-    const workerName = worker ? `${worker.first_name} ${worker.last_name}` : 'Unknown';
+    const existing = acc.find(d => d.date === stat.date);
+    const workerName = statistics.find(w => w.id === stat.worker_id)?.first_name || 'Unknown';
     
     if (existing) {
-      existing[workerName] = (existing[workerName] || 0) + stat.jobs_completed;
+      existing[workerName] = stat.jobs_completed;
     } else {
-      acc.push({ date, [workerName]: stat.jobs_completed });
+      acc.push({
+        date: new Date(stat.date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric' }),
+        [workerName]: stat.jobs_completed,
+      });
     }
     return acc;
   }, [] as any[]);
 
-  // Process earnings data for area chart
+  // Prepare earnings data
   const earningsData = dailyStats.reduce((acc, stat) => {
-    const date = format(new Date(stat.date), 'MMM dd', { locale: sv });
-    const existing = acc.find(d => d.date === date);
-    const worker = statistics.find(w => w.id === stat.worker_id);
-    const workerName = worker ? `${worker.first_name} ${worker.last_name}` : 'Unknown';
+    const existing = acc.find(d => d.date === stat.date);
+    const workerName = statistics.find(w => w.id === stat.worker_id)?.first_name || 'Unknown';
     
     if (existing) {
       existing[workerName] = (existing[workerName] || 0) + stat.total_earnings;
     } else {
-      acc.push({ date, [workerName]: stat.total_earnings });
+      acc.push({
+        date: new Date(stat.date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric' }),
+        [workerName]: stat.total_earnings,
+      });
     }
     return acc;
   }, [] as any[]);
 
   // Last 7 days bar chart
-  const last7DaysData = statistics.map(w => ({
-    name: `${w.first_name} ${w.last_name}`,
-    jobb: w.jobs_last_7_days,
-    completion: w.completion_rate_percent,
-  })).sort((a, b) => b.jobb - a.jobb).slice(0, 8);
+  const last7DaysData = statistics.slice(0, 5).map(worker => ({
+    name: worker.first_name,
+    jobs: worker.jobs_last_7_days,
+  }));
+
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#a28dff'];
 
   return (
     <Card>
@@ -63,7 +61,7 @@ export function TrendChartsPanel({ statistics, dailyStats, timeRange, onTimeRang
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            Trender över tid
+            Trender & Prestationshistorik
           </CardTitle>
           <div className="flex gap-2">
             <Button
@@ -71,29 +69,29 @@ export function TrendChartsPanel({ statistics, dailyStats, timeRange, onTimeRang
               size="sm"
               onClick={() => onTimeRangeChange('7d')}
             >
-              7 dagar
+              7d
             </Button>
             <Button
               variant={timeRange === '30d' ? 'default' : 'outline'}
               size="sm"
               onClick={() => onTimeRangeChange('30d')}
             >
-              30 dagar
+              30d
             </Button>
             <Button
               variant={timeRange === '90d' ? 'default' : 'outline'}
               size="sm"
               onClick={() => onTimeRangeChange('90d')}
             >
-              3 månader
+              90d
             </Button>
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
-        {/* Jobs over time line chart */}
+        {/* Jobs Completed Over Time */}
         <div>
-          <h3 className="text-sm font-medium mb-4">Jobb över tid (Top 5 workers)</h3>
+          <h3 className="text-sm font-medium mb-4">Jobb Slutförda (Top 5 Workers)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={dailyJobsData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -101,12 +99,12 @@ export function TrendChartsPanel({ statistics, dailyStats, timeRange, onTimeRang
               <YAxis />
               <Tooltip />
               <Legend />
-              {top5Workers.map((worker, index) => (
+              {topWorkers.map((worker, idx) => (
                 <Line
                   key={worker.id}
                   type="monotone"
-                  dataKey={`${worker.first_name} ${worker.last_name}`}
-                  stroke={colors[index]}
+                  dataKey={worker.first_name}
+                  stroke={colors[idx]}
                   strokeWidth={2}
                 />
               ))}
@@ -114,38 +112,38 @@ export function TrendChartsPanel({ statistics, dailyStats, timeRange, onTimeRang
           </ResponsiveContainer>
         </div>
 
-        {/* Last 7 days bar chart */}
+        {/* Last 7 Days Bar Chart */}
         <div>
-          <h3 className="text-sm font-medium mb-4">Jobb senaste veckan</h3>
-          <ResponsiveContainer width="100%" height={300}>
+          <h3 className="text-sm font-medium mb-4">Jobb Senaste 7 Dagarna</h3>
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={last7DaysData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="jobb" fill="#3b82f6" />
+              <Bar dataKey="jobs" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Earnings area chart */}
+        {/* Earnings Over Time */}
         <div>
-          <h3 className="text-sm font-medium mb-4">Total intjäning över tid</h3>
+          <h3 className="text-sm font-medium mb-4">Intjäning Över Tid (Top 5 Workers)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={earningsData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip formatter={(value) => `${Math.round(Number(value)).toLocaleString('sv-SE')} kr`} />
+              <Tooltip />
               <Legend />
-              {top5Workers.map((worker, index) => (
+              {topWorkers.map((worker, idx) => (
                 <Area
                   key={worker.id}
                   type="monotone"
-                  dataKey={`${worker.first_name} ${worker.last_name}`}
+                  dataKey={worker.first_name}
                   stackId="1"
-                  stroke={colors[index]}
-                  fill={colors[index]}
+                  stroke={colors[idx]}
+                  fill={colors[idx]}
                   fillOpacity={0.6}
                 />
               ))}

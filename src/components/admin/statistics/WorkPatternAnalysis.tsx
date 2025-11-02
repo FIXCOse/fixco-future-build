@@ -7,8 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, Moon } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { type WorkerDetailedStatistic } from '@/lib/api/schedule';
 
 interface WorkPatternAnalysisProps {
@@ -16,42 +15,52 @@ interface WorkPatternAnalysisProps {
 }
 
 export function WorkPatternAnalysis({ statistics }: WorkPatternAnalysisProps) {
-  const weekdays = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+  const weekdays = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
 
-  const getIntensityColor = (count: number, maxCount: number) => {
+  const getIntensityColor = (count: number) => {
     if (count === 0) return 'bg-muted';
-    const intensity = count / maxCount;
-    if (intensity > 0.7) return 'bg-primary';
-    if (intensity > 0.4) return 'bg-primary/60';
-    return 'bg-primary/30';
+    if (count < 3) return 'bg-green-200 dark:bg-green-900/30';
+    if (count < 6) return 'bg-green-400 dark:bg-green-700/50';
+    if (count < 10) return 'bg-green-600 dark:bg-green-600/70';
+    return 'bg-green-800 dark:bg-green-500';
   };
-
-  const totals = weekdays.map((_, dayIndex) => {
-    return statistics.reduce((sum, w) => sum + (w.jobs_by_weekday[dayIndex.toString()] || 0), 0);
-  });
-
-  const maxCount = Math.max(...statistics.flatMap(w => 
-    Object.values(w.jobs_by_weekday).map(v => Number(v) || 0)
-  ));
 
   const getMostActiveDay = (worker: WorkerDetailedStatistic) => {
-    let maxDay = 0;
-    let maxJobs = 0;
-    Object.entries(worker.jobs_by_weekday).forEach(([day, count]) => {
-      if (Number(count) > maxJobs) {
-        maxJobs = Number(count);
-        maxDay = Number(day);
-      }
-    });
-    return { day: weekdays[maxDay], jobs: maxJobs };
+    const days = [
+      worker.jobs_monday,
+      worker.jobs_tuesday,
+      worker.jobs_wednesday,
+      worker.jobs_thursday,
+      worker.jobs_friday,
+      worker.jobs_saturday,
+      worker.jobs_sunday,
+    ];
+    const maxJobs = Math.max(...days);
+    const dayIndex = days.indexOf(maxJobs);
+    return { day: weekdays[dayIndex], count: maxJobs };
   };
+
+  // Calculate totals per day
+  const totals = statistics.reduce(
+    (acc, worker) => ({
+      monday: acc.monday + worker.jobs_monday,
+      tuesday: acc.tuesday + worker.jobs_tuesday,
+      wednesday: acc.wednesday + worker.jobs_wednesday,
+      thursday: acc.thursday + worker.jobs_thursday,
+      friday: acc.friday + worker.jobs_friday,
+      saturday: acc.saturday + worker.jobs_saturday,
+      sunday: acc.sunday + worker.jobs_sunday,
+      overtime: acc.overtime + worker.overtime_jobs,
+    }),
+    { monday: 0, tuesday: 0, wednesday: 0, thursday: 0, friday: 0, saturday: 0, sunday: 0, overtime: 0 }
+  );
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Calendar className="h-5 w-5" />
-          Arbetsmönster per veckodag
+          Arbetsmönster per Veckodag
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -59,8 +68,10 @@ export function WorkPatternAnalysis({ statistics }: WorkPatternAnalysisProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Worker</TableHead>
-              {weekdays.map((day, index) => (
-                <TableHead key={index} className="text-center">{day}</TableHead>
+              {weekdays.map((day) => (
+                <TableHead key={day} className="text-center">
+                  {day}
+                </TableHead>
               ))}
               <TableHead className="text-right">Övertid</TableHead>
             </TableRow>
@@ -76,55 +87,68 @@ export function WorkPatternAnalysis({ statistics }: WorkPatternAnalysisProps) {
               <>
                 {statistics.map((worker) => {
                   const mostActive = getMostActiveDay(worker);
+                  
                   return (
                     <TableRow key={worker.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm">
-                            {worker.first_name} {worker.last_name}
-                          </span>
-                          {mostActive.jobs > 0 && (
-                            <Badge variant="outline" className="text-xs">
-                              📅 {mostActive.day}
-                            </Badge>
-                          )}
+                      <TableCell className="font-medium">
+                        <div>
+                          <p>{worker.first_name} {worker.last_name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Mest: {mostActive.day} ({mostActive.count})
+                          </p>
                         </div>
                       </TableCell>
-                      {weekdays.map((_, dayIndex) => {
-                        const count = worker.jobs_by_weekday[dayIndex.toString()] || 0;
-                        return (
-                          <TableCell key={dayIndex} className="text-center">
-                            <div
-                              className={`inline-block px-3 py-1 rounded ${getIntensityColor(Number(count), maxCount)}`}
-                            >
-                              <span className="text-xs font-medium">{count}</span>
-                            </div>
-                          </TableCell>
-                        );
-                      })}
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          {worker.overtime_jobs > 5 && (
-                            <Moon className="h-4 w-4 text-blue-500" />
-                          )}
-                          <span className="text-sm">{worker.overtime_jobs}</span>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_monday)}`}>
+                          {worker.jobs_monday || '-'}
                         </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_tuesday)}`}>
+                          {worker.jobs_tuesday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_wednesday)}`}>
+                          {worker.jobs_wednesday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_thursday)}`}>
+                          {worker.jobs_thursday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_friday)}`}>
+                          {worker.jobs_friday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_saturday)}`}>
+                          {worker.jobs_saturday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={`inline-flex items-center justify-center w-8 h-8 rounded ${getIntensityColor(worker.jobs_sunday)}`}>
+                          {worker.jobs_sunday || '-'}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {worker.overtime_jobs}
                       </TableCell>
                     </TableRow>
                   );
                 })}
-                
-                {/* Totals row */}
-                <TableRow className="bg-muted/50 font-bold">
+                <TableRow className="font-bold bg-muted/50">
                   <TableCell>Total</TableCell>
-                  {totals.map((total, index) => (
-                    <TableCell key={index} className="text-center">
-                      {total}
-                    </TableCell>
-                  ))}
-                  <TableCell className="text-right">
-                    {statistics.reduce((sum, w) => sum + w.overtime_jobs, 0)}
-                  </TableCell>
+                  <TableCell className="text-center">{totals.monday}</TableCell>
+                  <TableCell className="text-center">{totals.tuesday}</TableCell>
+                  <TableCell className="text-center">{totals.wednesday}</TableCell>
+                  <TableCell className="text-center">{totals.thursday}</TableCell>
+                  <TableCell className="text-center">{totals.friday}</TableCell>
+                  <TableCell className="text-center">{totals.saturday}</TableCell>
+                  <TableCell className="text-center">{totals.sunday}</TableCell>
+                  <TableCell className="text-right">{totals.overtime}</TableCell>
                 </TableRow>
               </>
             )}
