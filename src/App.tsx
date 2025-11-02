@@ -80,6 +80,7 @@ import AdminQuoteQuestions from "./pages/admin/AdminQuoteQuestions";
 import QuotePublic from "./pages/QuotePublic";
 import WorkerSchedule from "./pages/worker/WorkerSchedule";
 import AdminSchedule from "./pages/admin/AdminSchedule";
+import AdminWorkerAnalytics from "./pages/admin/AdminWorkerAnalytics";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -192,6 +193,7 @@ const App = () => {
                     <Route path="analytics/detailed" element={<AdminReports />} />
                     <Route path="translations" element={<AdminTranslations />} />
                     <Route path="leads" element={<AdminLeads />} />
+                    <Route path="worker-analytics" element={<AdminWorkerAnalytics />} />
                   </Route>
 
                   {/* Worker Routes */}

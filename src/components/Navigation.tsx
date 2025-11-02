@@ -46,6 +46,7 @@ export default function Navigation() {
     { href: "/admin/customers", label: "Kunder" },
     { href: "/admin/users", label: "Användare" },
     { href: "/admin/staff", label: "Personal" },
+    { href: "/admin/worker-analytics", label: "Worker Analytics" },
     { href: "/admin/leads", label: "AI Leads" },
     { href: "/admin/translations", label: "Översättningar" },
     { href: "/admin/reports", label: "Rapporter" },
