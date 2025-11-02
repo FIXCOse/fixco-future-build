@@ -257,6 +257,40 @@ export async function getTopServices() {
     .slice(0, 10);
 }
 
+// Job Assignment logging
+export async function logJobAssignment(params: {
+  jobId: string;
+  workerId: string;
+  workerName: string;
+  jobTitle: string;
+  requiredSkills: string[];
+  workerSkills: string[];
+  missingSkills: string[];
+  justification?: string;
+}) {
+  const { data: userData } = await supabase.auth.getUser();
+  
+  const { error } = await supabase.from('audit_log').insert({
+    actor: userData.user?.id,
+    action: 'assign_job',
+    target: params.jobId,
+    meta: {
+      worker_id: params.workerId,
+      worker_name: params.workerName,
+      job_title: params.jobTitle,
+      required_skills: params.requiredSkills,
+      worker_skills: params.workerSkills,
+      missing_skills: params.missingSkills,
+      skill_match: params.missingSkills.length === 0,
+      justification: params.justification || null
+    }
+  });
+
+  if (error) {
+    console.error('Failed to log job assignment:', error);
+  }
+}
+
 // Audit functions
 export async function getAuditLog(filters?: { action?: string; actor?: string; limit?: number }) {
   let query = supabase

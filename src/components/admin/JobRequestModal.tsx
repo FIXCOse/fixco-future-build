@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Send, User, Clock, MapPin } from 'lucide-react';
+import { logJobAssignment } from '@/lib/admin';
 
 interface JobRequestModalProps {
   open: boolean;
@@ -171,6 +172,32 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
         title: "Förfrågan skickad",
         description: "Jobbförfrågan har skickats till den valda personalen"
       });
+
+      // Log to audit log
+      try {
+        const staffMember = staff.find((s: any) => s.id === selectedStaff);
+        if (staffMember) {
+          const staffSkillNames = staffMember.staff_skills?.map((ss: any) => ss.skills?.name || 'Okänd') || [];
+          const requiredSkillNames = requiredSkills.map((rs: any) => rs.skills?.name || 'Okänd');
+          const missingSkillNames = requiredSkills
+            .filter((rs: any) => rs.required && !staffMember.staff_skills?.some((ss: any) => ss.skill_id === rs.skill_id))
+            .map((rs: any) => rs.skills?.name || 'Okänd');
+
+          await logJobAssignment({
+            jobId: typeof job.id === 'string' && job.id.startsWith('quote-') ? job.source_id : job.id,
+            workerId: selectedStaff,
+            workerName: staffMember.name,
+            jobTitle: job.title || 'Jobb',
+            requiredSkills: requiredSkillNames,
+            workerSkills: staffSkillNames,
+            missingSkills: missingSkillNames,
+            justification: message.trim() || undefined
+          });
+        }
+      } catch (logError) {
+        console.error('Failed to log job request:', logError);
+        // Don't fail the whole operation if logging fails
+      }
 
       queryClient.invalidateQueries({ queryKey: ['job-requests'] });
       queryClient.invalidateQueries({ queryKey: ['jobs'] });

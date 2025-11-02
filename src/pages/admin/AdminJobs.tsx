@@ -15,6 +15,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { JobPricingModal } from '@/components/admin/JobPricingModal';
+import { SkillWarningDialog } from '@/components/admin/SkillWarningDialog';
+import { logJobAssignment } from '@/lib/admin';
+import { getServiceCategoriesForSkills } from '@/lib/skillCategoryMapping';
 
 interface Job {
   id: string;
@@ -41,6 +44,14 @@ const AdminJobs = () => {
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
   const [jobForPricing, setJobForPricing] = useState<Job | null>(null);
+  const [skillWarningOpen, setSkillWarningOpen] = useState(false);
+  const [skillCheckData, setSkillCheckData] = useState<{
+    workerName: string;
+    jobTitle: string;
+    matchingSkills: string[];
+    missingSkills: string[];
+  } | null>(null);
+  const [isAssigning, setIsAssigning] = useState(false);
   const { jobs, loading } = useJobsData();
   const { users } = useUsersData();
   const { toast } = useToast();
@@ -71,13 +82,154 @@ const AdminJobs = () => {
   const handleAssignWorker = async () => {
     if (!selectedJob || !selectedWorker) return;
     
+    setIsAssigning(true);
+    
     try {
-      await assignJobToWorker(selectedJob.id, selectedWorker);
-      toast({ title: "Arbetare tilldelad", description: "Jobbet har tilldelats arbetaren." });
-      setIsAssignDialogOpen(false);
-      setSelectedWorker('');
+      // Fetch job source and worker skills
+      const [jobSourceResult, workerStaffResult] = await Promise.all([
+        supabase
+          .from('jobs')
+          .select('source_type, source_id')
+          .eq('id', selectedJob.id)
+          .single(),
+        supabase
+          .from('staff')
+          .select('name, skills')
+          .eq('user_id', selectedWorker)
+          .single()
+      ]);
+
+      let requiredSkills: string[] = [];
+      
+      // Get required skills from booking's service category
+      if (jobSourceResult.data?.source_type === 'booking' && jobSourceResult.data?.source_id) {
+        const { data: bookingData } = await supabase
+          .from('bookings')
+          .select('service_slug')
+          .eq('id', jobSourceResult.data.source_id)
+          .single();
+        
+        if (bookingData?.service_slug) {
+          const { data: serviceData } = await supabase
+            .from('services')
+            .select('category')
+            .eq('id', bookingData.service_slug)
+            .single();
+          
+          // Map service category to required skills
+          if (serviceData?.category) {
+            // Use the service category as required skill
+            requiredSkills = [serviceData.category];
+          }
+        }
+      }
+
+      const workerSkills = workerStaffResult.data?.skills || [];
+      const workerName = workerStaffResult.data?.name || 'Okänd';
+      
+      // Check for missing skills
+      const missingSkills = requiredSkills.filter(skill => !workerSkills.includes(skill));
+      const matchingSkills = requiredSkills.filter(skill => workerSkills.includes(skill));
+
+      // If skills are missing, show warning dialog
+      if (missingSkills.length > 0) {
+        setSkillCheckData({
+          workerName,
+          jobTitle: selectedJob.title,
+          matchingSkills,
+          missingSkills
+        });
+        setSkillWarningOpen(true);
+        setIsAssigning(false);
+        return;
+      }
+
+      // If all skills match, proceed directly
+      await performAssignment('');
+      
     } catch (error) {
+      console.error('Error checking skills:', error);
       toast({ title: "Fel", description: "Kunde inte tilldela arbetare.", variant: "destructive" });
+      setIsAssigning(false);
+    }
+  };
+
+  const performAssignment = async (justification: string) => {
+    if (!selectedJob || !selectedWorker) return;
+    
+    setIsAssigning(true);
+    
+    try {
+      // Fetch data for audit log
+      const [workerStaffResult, jobSourceResult] = await Promise.all([
+        supabase
+          .from('staff')
+          .select('name, skills')
+          .eq('user_id', selectedWorker)
+          .single(),
+        supabase
+          .from('jobs')
+          .select('source_type, source_id')
+          .eq('id', selectedJob.id)
+          .single()
+      ]);
+
+      let requiredSkills: string[] = [];
+      
+      if (jobSourceResult.data?.source_type === 'booking' && jobSourceResult.data?.source_id) {
+        const { data: bookingData } = await supabase
+          .from('bookings')
+          .select('service_slug')
+          .eq('id', jobSourceResult.data.source_id)
+          .single();
+        
+        if (bookingData?.service_slug) {
+          const { data: serviceData } = await supabase
+            .from('services')
+            .select('category')
+            .eq('id', bookingData.service_slug)
+            .single();
+          
+          if (serviceData?.category) {
+            requiredSkills = [serviceData.category];
+          }
+        }
+      }
+
+      const workerSkills = workerStaffResult.data?.skills || [];
+      const workerName = workerStaffResult.data?.name || 'Okänd';
+      const missingSkills = requiredSkills.filter(skill => !workerSkills.includes(skill));
+
+      // Perform assignment
+      await assignJobToWorker(selectedJob.id, selectedWorker);
+      
+      // Log to audit log
+      await logJobAssignment({
+        jobId: selectedJob.id,
+        workerId: selectedWorker,
+        workerName,
+        jobTitle: selectedJob.title,
+        requiredSkills,
+        workerSkills,
+        missingSkills,
+        justification
+      });
+
+      toast({ 
+        title: "Arbetare tilldelad", 
+        description: `${workerName} har tilldelats ${selectedJob.title}` 
+      });
+      
+      setIsAssignDialogOpen(false);
+      setSkillWarningOpen(false);
+      setSelectedWorker('');
+      setSkillCheckData(null);
+      
+    } catch (error) {
+      console.error('Assignment error:', error);
+      toast({ title: "Fel", description: "Kunde inte tilldela arbetare.", variant: "destructive" });
+    } finally {
+      setIsAssigning(false);
     }
   };
 
@@ -317,13 +469,27 @@ const AdminJobs = () => {
               <Button variant="outline" onClick={() => setIsAssignDialogOpen(false)}>
                 Avbryt
               </Button>
-              <Button onClick={handleAssignWorker} disabled={!selectedWorker}>
-                Tilldela
+              <Button onClick={handleAssignWorker} disabled={!selectedWorker || isAssigning}>
+                {isAssigning ? 'Kontrollerar...' : 'Tilldela'}
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Skill Warning Dialog */}
+      {skillCheckData && (
+        <SkillWarningDialog
+          open={skillWarningOpen}
+          onOpenChange={setSkillWarningOpen}
+          workerName={skillCheckData.workerName}
+          jobTitle={skillCheckData.jobTitle}
+          matchingSkills={skillCheckData.matchingSkills}
+          missingSkills={skillCheckData.missingSkills}
+          onConfirm={performAssignment}
+          loading={isAssigning}
+        />
+      )}
 
       {/* Invoice Data Dialog */}
       {invoiceData && (

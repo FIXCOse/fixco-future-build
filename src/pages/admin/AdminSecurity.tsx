@@ -139,6 +139,7 @@ const AdminSecurity = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Alla åtgärder</SelectItem>
+                <SelectItem value="assign_job">Jobbtilldelningar</SelectItem>
                 <SelectItem value="update_user_role">Rolländringar</SelectItem>
                 <SelectItem value="update_setting">Inställningar</SelectItem>
                 <SelectItem value="create_staff">Skapa personal</SelectItem>
@@ -163,14 +164,50 @@ const AdminSecurity = () => {
                       <span className="text-sm text-muted-foreground">
                         av {entry.profiles?.first_name} {entry.profiles?.last_name}
                       </span>
+                      {entry.action === 'assign_job' && entry.meta?.skill_match === false && (
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">
+                          ⚠️ Skills saknades
+                        </Badge>
+                      )}
+                      {entry.action === 'assign_job' && entry.meta?.skill_match === true && (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                          ✓ Skills matchade
+                        </Badge>
+                      )}
                     </div>
                     
-                    <div className="text-sm">
-                      {entry.target && <span className="font-mono text-xs">Target: {entry.target}</span>}
-                      {entry.meta && (
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {JSON.stringify(entry.meta, null, 2)}
-                        </div>
+                    <div className="text-sm space-y-1">
+                      {entry.action === 'assign_job' && entry.meta && (
+                        <>
+                          <p className="font-medium">
+                            {entry.meta.worker_name} tilldelades "{entry.meta.job_title}"
+                          </p>
+                          {entry.meta.missing_skills && entry.meta.missing_skills.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              <span className="text-xs text-muted-foreground">Saknade skills:</span>
+                              {entry.meta.missing_skills.map((skill: string) => (
+                                <Badge key={skill} variant="outline" className="text-xs bg-red-50 text-red-700">
+                                  {skill}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          {entry.meta.justification && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              <strong>Motivering:</strong> {entry.meta.justification}
+                            </p>
+                          )}
+                        </>
+                      )}
+                      {entry.action !== 'assign_job' && (
+                        <>
+                          {entry.target && <span className="font-mono text-xs">Target: {entry.target}</span>}
+                          {entry.meta && (
+                            <div className="text-xs text-muted-foreground mt-1">
+                              {JSON.stringify(entry.meta, null, 2)}
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
