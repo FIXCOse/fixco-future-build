@@ -168,7 +168,22 @@ export type Database = {
           meta?: Json | null
           target?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "audit_log_actor_fkey"
+            columns: ["actor"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_log_actor_fkey"
+            columns: ["actor"]
+            isOneToOne: false
+            referencedRelation: "worker_statistics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       bookings: {
         Row: {
