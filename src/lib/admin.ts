@@ -295,7 +295,7 @@ export async function logJobAssignment(params: {
 export async function getAuditLog(filters?: { action?: string; actor?: string; limit?: number }) {
   let query = supabase
     .from('audit_log')
-    .select('*, profiles!inner(first_name, last_name, email)')
+    .select('*, profiles(first_name, last_name, email)')
     .order('created_at', { ascending: false });
   
   if (filters?.action) {
