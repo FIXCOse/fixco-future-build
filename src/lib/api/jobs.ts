@@ -379,3 +379,18 @@ export const assignJobToWorker = async (jobId: string, workerId: string) => {
   if (error) throw error;
   return data;
 };
+
+export const returnJobToPool = async (
+  jobId: string, 
+  reason: 'too_difficult' | 'time_conflict' | 'equipment_missing' | 'customer_request' | 'other',
+  reasonText?: string
+) => {
+  const { data, error } = await supabase.rpc('return_job_to_pool', {
+    p_job_id: jobId,
+    p_reason: reason,
+    p_reason_text: reasonText || null
+  });
+  
+  if (error) throw error;
+  return data;
+};

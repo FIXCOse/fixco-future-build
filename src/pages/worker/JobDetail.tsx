@@ -26,6 +26,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { JobPhotoUpload } from '@/components/JobPhotoUpload';
+import { ReturnJobDialog } from '@/components/worker/ReturnJobDialog';
+import { RotateCcw } from 'lucide-react';
 
 interface JobPhoto {
   id: string;
@@ -47,6 +49,7 @@ const JobDetail = () => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [showOnWayDialog, setShowOnWayDialog] = useState(false);
+  const [showReturnDialog, setShowReturnDialog] = useState(false);
   
   // Form visibility states
   const [showTimeForm, setShowTimeForm] = useState(false);
@@ -419,6 +422,16 @@ const JobDetail = () => {
                 <Send className="w-5 h-5 mr-2" />
                 Jag är på väg
               </Button>
+              <Button 
+                variant="destructive" 
+                onClick={() => setShowReturnDialog(true)} 
+                disabled={actionLoading} 
+                className="w-full sm:w-auto" 
+                size="lg"
+              >
+                <RotateCcw className="w-5 h-5 mr-2" />
+                Returnera
+              </Button>
             </>
           )}
           
@@ -460,6 +473,16 @@ const JobDetail = () => {
               >
                 <Send className="w-5 h-5 mr-2" />
                 Jag är på väg
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={() => setShowReturnDialog(true)} 
+                disabled={actionLoading} 
+                className="w-full sm:w-auto" 
+                size="lg"
+              >
+                <RotateCcw className="w-5 h-5 mr-2" />
+                Returnera
               </Button>
             </>
           )}
@@ -905,6 +928,18 @@ const JobDetail = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Return Job Dialog */}
+      <ReturnJobDialog
+        open={showReturnDialog}
+        onOpenChange={setShowReturnDialog}
+        jobId={job.id}
+        jobTitle={job.title}
+        onReturn={() => {
+          // Refresh job data or navigate back
+          navigate('/worker/jobs');
+        }}
+      />
 
       {/* On Way Confirmation Dialog */}
       <AlertDialog open={showOnWayDialog} onOpenChange={setShowOnWayDialog}>

@@ -180,6 +180,13 @@ export type Database = {
             foreignKeyName: "audit_log_actor_fkey"
             columns: ["actor"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_log_actor_fkey"
+            columns: ["actor"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -261,6 +268,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -500,6 +514,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -747,6 +768,13 @@ export type Database = {
             foreignKeyName: "job_locks_locked_by_fkey"
             columns: ["locked_by"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_locks_locked_by_fkey"
+            columns: ["locked_by"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -891,6 +919,13 @@ export type Database = {
             foreignKeyName: "job_schedule_notifications_scheduled_by_fkey"
             columns: ["scheduled_by"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_schedule_notifications_scheduled_by_fkey"
+            columns: ["scheduled_by"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -899,6 +934,13 @@ export type Database = {
             columns: ["worker_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_schedule_notifications_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -1039,6 +1081,13 @@ export type Database = {
             foreignKeyName: "jobs_assigned_worker_id_fkey"
             columns: ["assigned_worker_id"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_assigned_worker_id_fkey"
+            columns: ["assigned_worker_id"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -1146,6 +1195,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -1269,6 +1325,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -1403,6 +1466,13 @@ export type Database = {
             foreignKeyName: "payroll_entries_worker_id_fkey"
             columns: ["worker_id"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -1451,6 +1521,13 @@ export type Database = {
             columns: ["locked_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_periods_locked_by_fkey"
+            columns: ["locked_by"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -1621,6 +1698,13 @@ export type Database = {
             foreignKeyName: "projects_assigned_to_fkey"
             columns: ["assigned_to"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -1629,6 +1713,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -1712,6 +1803,13 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "properties_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -2002,6 +2100,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
             referencedColumns: ["id"]
           },
           {
@@ -2853,6 +2958,13 @@ export type Database = {
             foreignKeyName: "voucher_usage_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "voucher_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "worker_statistics"
             referencedColumns: ["id"]
           },
@@ -3068,6 +3180,21 @@ export type Database = {
       }
     }
     Views: {
+      worker_performance_stats: {
+        Row: {
+          avg_time_held_minutes: number | null
+          completion_rate: number | null
+          email: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          return_reasons: string[] | null
+          total_claimed: number | null
+          total_completed: number | null
+          total_returned: number | null
+        }
+        Relationships: []
+      }
       worker_statistics: {
         Row: {
           avg_job_duration_hours: number | null
@@ -3185,6 +3312,7 @@ export type Database = {
         Returns: boolean
       }
       prepare_invoice_from_job: { Args: { p_job_id: string }; Returns: Json }
+      refresh_worker_stats: { Args: never; Returns: undefined }
       reorder_services: { Args: { _service_updates: Json }; Returns: undefined }
       restore_booking: { Args: { p_booking_id: string }; Returns: boolean }
       restore_job: { Args: { p_job_id: string }; Returns: boolean }
@@ -3194,6 +3322,10 @@ export type Database = {
       restore_quote_new: { Args: { p_quote_id: string }; Returns: boolean }
       restore_quote_request: {
         Args: { p_quote_request_id: string }
+        Returns: boolean
+      }
+      return_job_to_pool: {
+        Args: { p_job_id: string; p_reason?: string; p_reason_text?: string }
         Returns: boolean
       }
       rpc_acquire_lock: { Args: { p_scope: string }; Returns: boolean }

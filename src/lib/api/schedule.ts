@@ -184,3 +184,62 @@ export async function updateDailyStats(): Promise<void> {
   const { error } = await supabase.rpc('update_worker_daily_stats' as any);
   if (error) throw error;
 }
+
+export interface WorkerPerformance {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  total_claimed: number;
+  total_completed: number;
+  total_returned: number;
+  completion_rate: number;
+  return_reasons: string[];
+  avg_time_held_minutes: number;
+}
+
+export async function fetchWorkerPerformanceStats(): Promise<WorkerPerformance[]> {
+  // Refresh stats first
+  await supabase.rpc('refresh_worker_stats');
+  
+  const { data, error } = await supabase
+    .from('worker_performance_stats')
+    .select('*')
+    .order('completion_rate', { ascending: false });
+    
+  if (error) throw error;
+  return data;
+}
+
+export interface JobClaimEvent {
+  id: string;
+  job_id: string;
+  actor: string;
+  event: string;
+  meta: any;
+  created_at: string;
+  profiles?: {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+}
+
+export async function fetchJobClaimHistory(jobId: string): Promise<JobClaimEvent[]> {
+  const { data, error } = await supabase
+    .from('job_events')
+    .select(`
+      *,
+      profiles!job_events_actor_fkey (
+        first_name,
+        last_name,
+        email
+      )
+    `)
+    .eq('job_id', jobId)
+    .in('event', ['job.claimed', 'job.returned_to_pool', 'job.completed', 'job.assigned'])
+    .order('created_at', { ascending: true });
+    
+  if (error) throw error;
+  return (data as unknown) as JobClaimEvent[];
+}
