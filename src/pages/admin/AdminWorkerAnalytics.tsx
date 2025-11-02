@@ -70,7 +70,7 @@ export default function AdminWorkerAnalytics() {
           </CardContent>
         </Card>
 
-        <Card className={problemWorkers.length > 0 ? 'border-red-200 bg-red-50' : ''}>
+        <Card className={problemWorkers.length > 0 ? 'border-destructive/50 bg-destructive/5' : ''}>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-red-600" />

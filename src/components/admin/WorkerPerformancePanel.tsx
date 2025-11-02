@@ -82,7 +82,7 @@ export function WorkerPerformancePanel() {
                 const hasIssues = worker.completion_rate < 70 || worker.total_returned > 3;
                 
                 return (
-                  <TableRow key={worker.id} className={hasIssues ? 'bg-red-50' : ''}>
+                  <TableRow key={worker.id} className={hasIssues ? 'bg-destructive/5 hover:bg-destructive/10' : ''}>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {hasIssues && <AlertCircle className="w-4 h-4 text-red-500" />}
