@@ -15,17 +15,22 @@ const AdminSecurity = () => {
   const [auditLog, setAuditLog] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionFilter, setActionFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [force2FA, setForce2FA] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     loadData();
-  }, [actionFilter]);
+  }, [actionFilter, searchQuery]);
 
   const loadData = async () => {
     try {
       const [auditData, settings] = await Promise.all([
-        getAuditLog({ action: actionFilter === 'all' ? undefined : actionFilter, limit: 50 }),
+        getAuditLog({ 
+          action: actionFilter === 'all' ? undefined : actionFilter, 
+          search: searchQuery || undefined,
+          limit: 50 
+        }),
         getSettings(['force_2fa'])
       ]);
       
@@ -127,9 +132,9 @@ const AdminSecurity = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Filtrera på åtgärd..."
-                value={actionFilter}
-                onChange={(e) => setActionFilter(e.target.value)}
+                placeholder="Sök i logs (action, target, användare, meta)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>

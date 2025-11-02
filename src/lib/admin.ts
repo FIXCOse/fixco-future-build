@@ -292,7 +292,7 @@ export async function logJobAssignment(params: {
 }
 
 // Audit functions
-export async function getAuditLog(filters?: { action?: string; actor?: string; limit?: number }) {
+export async function getAuditLog(filters?: { action?: string; actor?: string; search?: string; limit?: number }) {
   let query = supabase
     .from('audit_log')
     .select('*, profiles(first_name, last_name, email)')
@@ -306,10 +306,38 @@ export async function getAuditLog(filters?: { action?: string; actor?: string; l
     query = query.eq('actor', filters.actor);
   }
   
+  if (filters?.search) {
+    // Search across multiple fields using OR
+    const searchTerm = `%${filters.search}%`;
+    query = query.or(`action.ilike.${searchTerm},target.ilike.${searchTerm}`);
+  }
+  
   query = query.limit(filters?.limit || 100);
   
   const { data, error } = await query;
   if (error) throw error;
+  
+  // Client-side filtering for profile names and meta since Supabase doesn't support 
+  // searching in joined tables or JSONB with .or()
+  if (filters?.search && data) {
+    const searchLower = filters.search.toLowerCase();
+    return data.filter((entry: any) => {
+      const profileMatch = 
+        entry.profiles?.first_name?.toLowerCase().includes(searchLower) ||
+        entry.profiles?.last_name?.toLowerCase().includes(searchLower) ||
+        entry.profiles?.email?.toLowerCase().includes(searchLower);
+      
+      const metaMatch = JSON.stringify(entry.meta || {}).toLowerCase().includes(searchLower);
+      
+      // If already matched by SQL query (action or target), keep it
+      // Otherwise check profiles and meta
+      return entry.action?.toLowerCase().includes(searchLower) ||
+             entry.target?.toLowerCase().includes(searchLower) ||
+             profileMatch ||
+             metaMatch;
+    });
+  }
+  
   return data;
 }
 
