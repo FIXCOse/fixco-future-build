@@ -334,6 +334,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         customer_id: selectedCustomerId,
         title: title.trim(),
         items: items,
+        request_id: bookingData?.id || undefined,
         subtotal_work_sek: Math.round(calculateSubtotalWork()),
         subtotal_mat_sek: Math.round(calculateSubtotalMaterial()),
         vat_sek: Math.round(calculateVat()),
