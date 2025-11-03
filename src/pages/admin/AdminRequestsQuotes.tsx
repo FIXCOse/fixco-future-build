@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
+import { createCustomer } from "@/lib/api/customers";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,27 +61,76 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCreateQuote = async (bookingId: string) => {
-    // Find booking in data
     const bookingItem = data.find(d => d.booking.id === bookingId);
     if (!bookingItem) {
       toast.error('Kunde inte hitta bokning');
       return;
     }
 
-    // Check if quote already exists
     if (bookingItem.quote) {
       toast.error('En offert finns redan för denna förfrågan');
       return;
     }
 
-    // Set booking data and open modal with prefilled data
-    setBookingDataForQuote({
-      id: bookingItem.booking.id,
-      payload: bookingItem.booking.payload,
-      customer_id: bookingItem.booking.customer_id
-    });
-    setEditQuoteId(null);
-    setQuoteModalOpen(true);
+    const payload = bookingItem.booking.payload || {};
+    const customerEmail = payload.email || payload.contact_email;
+
+    if (!customerEmail) {
+      toast.error('Kundens email saknas i bokningen');
+      return;
+    }
+
+    try {
+      let customerId = bookingItem.customer?.id;
+      
+      if (!customerId) {
+        // Sök efter befintlig kund via email
+        const { data: existingCustomers } = await supabase
+          .from('customers')
+          .select('id')
+          .ilike('email', customerEmail)
+          .limit(1);
+        
+        if (existingCustomers && existingCustomers.length > 0) {
+          customerId = existingCustomers[0].id;
+          console.log('[handleCreateQuote] Hittade befintlig kund:', customerId);
+        } else {
+          // Skapa ny kund automatiskt
+          const customerName = payload.name || payload.contact_name || 'Okänd kund';
+          const customerPhone = payload.phone || payload.contact_phone;
+          const customerAddress = payload.address;
+          const postalCode = payload.postal_code || payload.postalCode;
+          const city = payload.city;
+          
+          const newCustomerData = {
+            name: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            address: customerAddress,
+            postalCode: postalCode,
+            city: city
+          };
+          
+          console.log('[handleCreateQuote] Skapar ny kund:', newCustomerData);
+          const createdCustomer = await createCustomer(newCustomerData);
+          customerId = createdCustomer.id;
+          toast.success('Kund skapad automatiskt');
+        }
+      }
+
+      // Öppna modal med färdig kunddata
+      setBookingDataForQuote({
+        id: bookingItem.booking.id,
+        payload: payload,
+        customer_id: customerId
+      });
+      setEditQuoteId(null);
+      setQuoteModalOpen(true);
+
+    } catch (error) {
+      console.error('[handleCreateQuote] Error:', error);
+      toast.error('Kunde inte förbereda offert');
+    }
   };
 
   const handleEditQuote = (quoteId: string) => {

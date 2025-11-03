@@ -120,46 +120,28 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       // Prefill from booking payload
       const payload = bookingData.payload;
       
-      // Find or prepare customer data
+      // Kunden är redan skapad/hittad i AdminRequestsQuotes, använd direkt
       if (bookingData.customer_id) {
         setSelectedCustomerId(bookingData.customer_id);
-      } else if (payload.email) {
-        // Try to find existing customer by email
-        const existingCustomer = customers.find(c => c.email === payload.email);
-        if (existingCustomer) {
-          setSelectedCustomerId(existingCustomer.id);
-        } else {
-          // Prepare new customer form with prefilled data
-          setShowNewCustomer(true);
-          setNewCustomer({
-            name: payload.name || '',
-            email: payload.email || '',
-            phone: payload.phone || '',
-            address: payload.address || '',
-            personnummer: payload.personnummer || '',
-            postalCode: payload.postal_code || '',
-            city: payload.city || ''
-          });
-        }
       }
       
-      // Set title from service name
-      if (payload.service_name) {
-        setTitle(payload.service_name);
-      }
+      // Sätt titel från service_name
+      const serviceName = payload.service_name || payload.serviceName || 'Tjänst';
+      setTitle(`Offert – ${serviceName}`);
       
-      // Create initial line item from service
-      if (payload.service_name) {
-        setItems([{
-          type: 'work',
-          description: payload.service_name,
-          quantity: payload.estimated_hours || 1,
-          unit: 'tim',
-          price: 0
-        }]);
-      }
+      // Skapa initial radpost med data från payload
+      const estimatedHours = payload.estimated_hours || payload.estimatedHours || 4;
+      const hourlyRate = payload.hourly_rate || payload.hourlyRate || 950;
       
-      // Enable ROT if service is ROT eligible
+      setItems([{
+        type: 'work',
+        description: serviceName,
+        quantity: estimatedHours,
+        unit: 'tim',
+        price: hourlyRate
+      }]);
+      
+      // Aktivera ROT om tjänsten är ROT-berättigad
       if (payload.rot_eligible !== false) {
         setEnableRot(true);
         setRotRate(30);
