@@ -34,10 +34,7 @@ export default function AdminRequestsQuotes() {
   const [editQuoteId, setEditQuoteId] = useState<string | null>(null);
 
   // Filter based on tab
-  const statusFilter = 
-    activeTab === "requests" ? ["new"] :
-    activeTab === "quotes" ? ["with_quote"] :
-    activeTab === "archived" ? ["archived"] : [];
+  const statusFilter = [activeTab];
 
   const { data, loading, refresh } = useRequestsQuotes(statusFilter);
 

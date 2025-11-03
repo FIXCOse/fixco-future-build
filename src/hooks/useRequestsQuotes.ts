@@ -40,7 +40,10 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       // Fetch bookings
       const { data: bookings, error: bookingsError } = await supabase
-        .rpc('admin_get_bookings');
+        .from('bookings')
+        .select('*')
+        .is('deleted_at', null)
+        .order('created_at', { ascending: false });
 
       if (bookingsError) throw bookingsError;
 
@@ -53,12 +56,20 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (quotesError) throw quotesError;
 
-      // Fetch customers
+      // Fetch customers from profiles
       const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
-      const { data: customers } = await supabase
-        .from('customers')
-        .select('*')
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, email, phone')
         .in('id', customerIds);
+
+      // Map profiles to customer format
+      const customers = profiles?.map(p => ({
+        id: p.id,
+        name: [p.first_name, p.last_name].filter(Boolean).join(' ') || p.email || 'Okänd',
+        email: p.email || '',
+        phone: p.phone || ''
+      }));
 
       // Combine data
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
@@ -75,18 +86,22 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
       // Apply filters
       let filtered = combined;
       if (statusFilter.length > 0) {
-        filtered = combined.filter(item => {
-          if (statusFilter.includes('new')) {
-            return !item.quote && item.booking.status === 'new';
-          }
-          if (statusFilter.includes('with_quote')) {
-            return !!item.quote;
-          }
-          if (statusFilter.includes('archived')) {
-            return ['completed', 'cancelled'].includes(item.booking.status);
-          }
-          return true;
-        });
+        const filterType = statusFilter[0];
+        
+        if (filterType === 'requests') {
+          // Visa alla med status "new" OCH som inte har offert
+          filtered = combined.filter(item => 
+            item.booking.status === 'new' && !item.quote
+          );
+        } else if (filterType === 'quotes') {
+          // Visa ALLA som har en offert, oavsett booking status
+          filtered = combined.filter(item => !!item.quote);
+        } else if (filterType === 'archived') {
+          // Visa arkiverade
+          filtered = combined.filter(item => 
+            ['completed', 'cancelled'].includes(item.booking.status)
+          );
+        }
       }
 
       setData(filtered);
