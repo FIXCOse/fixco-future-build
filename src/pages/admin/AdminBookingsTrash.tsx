@@ -188,10 +188,13 @@ export default function AdminBookingsTrash() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="text-lg">
-                        {booking.service_name}
+                        {booking.payload?.serviceName || booking.payload?.service_name || booking.service_slug || 'Okänd tjänst'}
                       </CardTitle>
                       <CardDescription>
-                        Kontakt: {booking.contact_name || booking.name} ({booking.contact_email || booking.email})
+                        Kontakt: {booking.payload?.name || booking.payload?.contact_name || 'Okänd'} 
+                        {(booking.payload?.email || booking.payload?.contact_email) && 
+                          ` (${booking.payload?.email || booking.payload?.contact_email})`
+                        }
                       </CardDescription>
                       <CardDescription className="text-xs mt-2">
                         Raderad {formatDistanceToNow(new Date(booking.deleted_at!), { addSuffix: true, locale: sv })}
@@ -210,15 +213,29 @@ export default function AdminBookingsTrash() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm mb-4">
                     <div>
                       <p className="font-medium">Status</p>
                       <p className="text-muted-foreground capitalize">{booking.status}</p>
                     </div>
                     <div>
+                      <p className="font-medium">Mode</p>
+                      <p className="text-muted-foreground capitalize">{booking.mode || 'quote'}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Tjänst (Slug)</p>
+                      <p className="text-muted-foreground">{booking.service_slug || 'Ej angivet'}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Telefon</p>
+                      <p className="text-muted-foreground">
+                        {booking.payload?.phone || booking.payload?.contact_phone || 'Ej angivet'}
+                      </p>
+                    </div>
+                    <div>
                       <p className="font-medium">Adress</p>
                       <p className="text-muted-foreground">
-                        {booking.address || 'Ej angivet'}
+                        {booking.payload?.address || 'Ej angivet'}
                       </p>
                     </div>
                     <div>
@@ -228,6 +245,32 @@ export default function AdminBookingsTrash() {
                       </p>
                     </div>
                   </div>
+
+                  {booking.payload?.description && (
+                    <div className="mb-4 p-3 bg-muted rounded-md">
+                      <p className="font-medium text-sm mb-1">Beskrivning</p>
+                      <p className="text-sm text-muted-foreground">{booking.payload.description}</p>
+                    </div>
+                  )}
+
+                  {booking.file_urls && booking.file_urls.length > 0 && (
+                    <div className="mb-4">
+                      <p className="font-medium text-sm mb-2">Bifogade filer ({booking.file_urls.length})</p>
+                      <div className="flex flex-wrap gap-2">
+                        {booking.file_urls.map((url, idx) => (
+                          <a
+                            key={idx}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary hover:underline"
+                          >
+                            Fil {idx + 1}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex flex-wrap gap-2">
                     <Button size="sm" variant="default" onClick={() => handleRestoreBooking(booking.id)}>
