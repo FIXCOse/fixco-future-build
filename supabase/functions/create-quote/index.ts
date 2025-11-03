@@ -27,8 +27,8 @@ serve(async (req) => {
 
     // Call the RPC function
     const { data: quoteId, error } = await supabase
-      .rpc('create_quote_from_booking', {
-        p_booking_id: bookingId
+      .rpc('create_draft_quote_for_booking', {
+        booking_id: bookingId
       });
 
     if (error) {
