@@ -3,7 +3,7 @@ import { useRole } from '@/hooks/useRole';
 import { Navigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight, Briefcase, Activity } from 'lucide-react';
+import { Users, Settings, BarChart3, Shield, Database, UserCheck, ArrowRight, Briefcase, Activity, FileText } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const AdminPage = () => {
@@ -100,6 +100,24 @@ const AdminPage = () => {
               </CardTitle>
               <CardDescription>
                 Översikt av verksamheten och KPI:er
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        {/* Requests & Quotes Management */}
+        <Link to="/admin/requests-quotes" className="block group">
+          <Card className="h-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Förfrågningar & Offerter
+                </div>
+                <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </CardTitle>
+              <CardDescription>
+                Hantera kundförfrågningar och skapa offerter
               </CardDescription>
             </CardHeader>
           </Card>
