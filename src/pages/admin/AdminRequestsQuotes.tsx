@@ -188,7 +188,7 @@ export default function AdminRequestsQuotes() {
         </div>
         <Button
           variant="outline"
-          onClick={() => navigate('/admin/bookings-trash')}
+          onClick={() => navigate('/admin/bookings/trash')}
         >
           <Trash2 className="h-4 w-4 mr-2" />
           Visa papperskorg
