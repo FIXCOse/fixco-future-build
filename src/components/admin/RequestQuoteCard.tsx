@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -157,14 +157,6 @@ export function RequestQuoteCard({
                 Skapa offert
               </Button>
             )}
-            <Button
-              onClick={() => onDeleteBooking(booking.id)}
-              variant="outline"
-              size="sm"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Ta bort
-            </Button>
           </div>
         </div>
 
@@ -364,6 +356,31 @@ export function RequestQuoteCard({
             </div>
           </>
         )}
+
+        {/* Danger Zone - Ta bort bokning */}
+        <Separator className="my-4" />
+        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle className="h-4 w-4 text-destructive" />
+                <h3 className="text-sm font-semibold text-destructive">Farlig zon</h3>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Att ta bort denna bokning är permanent och kan inte ångras. All associerad data (offert, jobb, faktura) kommer att påverkas.
+              </p>
+            </div>
+            <Button
+              onClick={() => onDeleteBooking(booking.id)}
+              variant="destructive"
+              size="sm"
+              className="shrink-0"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Ta bort bokning
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
