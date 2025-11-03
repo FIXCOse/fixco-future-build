@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import { ArrowLeft, Bell } from 'lucide-react';
+import { ArrowLeft, Bell, LayoutDashboard, FileText, Users, Calendar, Package, Settings, ShieldCheck, DollarSign, Briefcase, ClipboardList, MessageSquare, Wrench, Languages, UserCog, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
