@@ -32,6 +32,7 @@ export default function AdminRequestsQuotes() {
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
   const [editQuoteId, setEditQuoteId] = useState<string | null>(null);
+  const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
 
   // Filter based on tab
   const statusFilter = [activeTab];
@@ -59,38 +60,32 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCreateQuote = async (bookingId: string) => {
-    try {
-      // Call edge function to create quote
-      const { data, error } = await supabase.functions.invoke('create-quote', {
-        body: { bookingId }
-      });
-
-      if (error) {
-        if (error.message?.includes('already exists')) {
-          toast.error('En offert finns redan för denna förfrågan');
-        } else {
-          throw error;
-        }
-        return;
-      }
-
-      toast.success('Offert skapad!');
-      refresh();
-      
-      // Navigate to quotes tab and open edit modal
-      setSearchParams({ tab: 'quotes' });
-      if (data?.quoteId) {
-        setEditQuoteId(data.quoteId);
-        setQuoteModalOpen(true);
-      }
-    } catch (error: any) {
-      console.error('Error creating quote:', error);
-      toast.error('Kunde inte skapa offert');
+    // Find booking in data
+    const bookingItem = data.find(d => d.booking.id === bookingId);
+    if (!bookingItem) {
+      toast.error('Kunde inte hitta bokning');
+      return;
     }
+
+    // Check if quote already exists
+    if (bookingItem.quote) {
+      toast.error('En offert finns redan för denna förfrågan');
+      return;
+    }
+
+    // Set booking data and open modal with prefilled data
+    setBookingDataForQuote({
+      id: bookingItem.booking.id,
+      payload: bookingItem.booking.payload,
+      customer_id: bookingItem.booking.customer_id
+    });
+    setEditQuoteId(null);
+    setQuoteModalOpen(true);
   };
 
   const handleEditQuote = (quoteId: string) => {
     setEditQuoteId(quoteId);
+    setBookingDataForQuote(null);
     setQuoteModalOpen(true);
   };
 
@@ -325,11 +320,20 @@ export default function AdminRequestsQuotes() {
 
       <QuoteFormModal
         open={quoteModalOpen}
-        onOpenChange={setQuoteModalOpen}
+        onOpenChange={(open) => {
+          setQuoteModalOpen(open);
+          if (!open) {
+            setEditQuoteId(null);
+            setBookingDataForQuote(null);
+          }
+        }}
         quote={editQuoteId ? data.find(d => d.quote?.id === editQuoteId)?.quote : undefined}
+        bookingData={bookingDataForQuote}
         onSuccess={() => {
           setQuoteModalOpen(false);
           setEditQuoteId(null);
+          setBookingDataForQuote(null);
+          setSearchParams({ tab: 'quotes' });
           refresh();
         }}
       />

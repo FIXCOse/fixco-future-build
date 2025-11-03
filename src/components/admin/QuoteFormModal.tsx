@@ -34,9 +34,14 @@ type QuoteFormModalProps = {
     items?: LineItem[];
     enableRot?: boolean;
   } | null;
+  bookingData?: {
+    id: string;
+    payload?: any;
+    customer_id?: string;
+  } | null;
 };
 
-export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilledCustomerId, prefilledData }: QuoteFormModalProps) {
+export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilledCustomerId, prefilledData, bookingData }: QuoteFormModalProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>('');
   const [showNewCustomer, setShowNewCustomer] = useState(false);
@@ -111,6 +116,54 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         setDiscountType(quote.discount_type as any);
         setDiscountValue(quote.discount_value || 0);
       }
+    } else if (bookingData?.payload) {
+      // Prefill from booking payload
+      const payload = bookingData.payload;
+      
+      // Find or prepare customer data
+      if (bookingData.customer_id) {
+        setSelectedCustomerId(bookingData.customer_id);
+      } else if (payload.email) {
+        // Try to find existing customer by email
+        const existingCustomer = customers.find(c => c.email === payload.email);
+        if (existingCustomer) {
+          setSelectedCustomerId(existingCustomer.id);
+        } else {
+          // Prepare new customer form with prefilled data
+          setShowNewCustomer(true);
+          setNewCustomer({
+            name: payload.name || '',
+            email: payload.email || '',
+            phone: payload.phone || '',
+            address: payload.address || '',
+            personnummer: payload.personnummer || '',
+            postalCode: payload.postal_code || '',
+            city: payload.city || ''
+          });
+        }
+      }
+      
+      // Set title from service name
+      if (payload.service_name) {
+        setTitle(payload.service_name);
+      }
+      
+      // Create initial line item from service
+      if (payload.service_name) {
+        setItems([{
+          type: 'work',
+          description: payload.service_name,
+          quantity: payload.estimated_hours || 1,
+          unit: 'tim',
+          price: 0
+        }]);
+      }
+      
+      // Enable ROT if service is ROT eligible
+      if (payload.rot_eligible !== false) {
+        setEnableRot(true);
+        setRotRate(30);
+      }
     } else if (prefilledCustomerId || prefilledData) {
       // Load prefilled data from AI lead
       if (prefilledCustomerId) {
@@ -129,7 +182,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     } else {
       resetForm();
     }
-  }, [quote, prefilledCustomerId, prefilledData]);
+  }, [quote, prefilledCustomerId, prefilledData, bookingData, customers]);
 
   const loadCustomers = async () => {
     try {
