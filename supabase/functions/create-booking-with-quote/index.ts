@@ -117,55 +117,15 @@ serve(async (req) => {
     }
 
     console.log("[create-booking-with-quote] Bokning skapad:", booking.id);
+    console.log("[create-booking-with-quote] Mode:", mode);
 
-    // --- 4) Skapa draft-offert kopplad till booking ---
-    let quoteId: string | null = null;
-    if (mode === "quote") {
-      const { data: rpcRes, error: rpcErr } = await admin
-        .rpc("create_draft_quote_for_booking", { booking_id: booking.id });
-
-      if (!rpcErr && rpcRes) {
-        quoteId = rpcRes as unknown as string;
-        console.log("[create-booking-with-quote] Offert skapad via RPC:", quoteId);
-      } else {
-        // Fallback: direkt INSERT i quotes_new
-        console.warn("RPC fallback (create_draft_quote_for_booking):", rpcErr?.message);
-        
-        // Generate number and token via RPC calls
-        const { data: genNumber } = await admin.rpc('generate_quote_number_new');
-        const { data: genToken } = await admin.rpc('generate_public_token');
-        
-        const { data: qInsert, error: qErr } = await admin
-          .from("quotes_new")
-          .insert({
-            number: genNumber || `Q-${Date.now()}`, // fallback if RPC fails
-            public_token: genToken || crypto.randomUUID(),
-            customer_id: customer.id, // Use customer ID from customers table for quotes
-            request_id: booking.id,
-            title: `Offert – ${service_slug}`,
-            items: [],
-            subtotal_work_sek: 0,
-            subtotal_mat_sek: 0,
-            vat_sek: 0,
-            rot_deduction_sek: 0,
-            total_sek: 0,
-            status: "draft",
-            valid_until: null,
-            pdf_url: null,
-          })
-          .select("id")
-          .single();
-
-        if (qErr) {
-          console.error("quotes_new.insert", qErr);
-          return json({ error: `quotes_new.insert: ${qErr.message}` }, 400);
-        }
-        quoteId = qInsert!.id;
-        console.log("[create-booking-with-quote] Offert skapad via fallback:", quoteId);
-      }
-    }
-
-    return json({ ok: true, bookingId: booking.id, quoteId });
+    return json({ 
+      ok: true, 
+      bookingId: booking.id,
+      message: mode === 'quote' 
+        ? 'Förfrågan mottagen. Vi återkommer med offert inom kort.'
+        : 'Bokning mottagen. Vi kontaktar dig för bekräftelse.'
+    });
   } catch (e: any) {
     console.error("FUNCTION ERROR", e);
     return json({ error: e?.message ?? String(e) }, 400);
