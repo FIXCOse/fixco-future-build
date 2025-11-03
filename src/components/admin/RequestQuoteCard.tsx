@@ -36,11 +36,13 @@ export function RequestQuoteCard({
   onSendInvoice,
   onRefresh,
 }: Props) {
-  const { booking, quote, customer, invoice, job, workers: itemWorkers } = item;
+  const { booking, quote, customer, invoice, job } = item;
   const { workers, totalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
   
   const handleRefresh = () => {
-    refreshWorkers();
+    if (job?.id) {
+      refreshWorkers();
+    }
     onRefresh();
   };
 

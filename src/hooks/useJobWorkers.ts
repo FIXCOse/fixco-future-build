@@ -20,6 +20,9 @@ export function useJobWorkers(jobId?: string) {
 
   const loadWorkers = async () => {
     if (!jobId) {
+      setWorkers([]);
+      setTotalHours(0);
+      setEstimatedHours(0);
       setLoading(false);
       return;
     }
@@ -28,27 +31,43 @@ export function useJobWorkers(jobId?: string) {
     
     try {
       // Fetch job with estimated_hours
-      const { data: job } = await supabase
+      const { data: job, error: jobError } = await supabase
         .from('jobs')
         .select('estimated_hours')
         .eq('id', jobId)
         .single();
       
-      setEstimatedHours(job?.estimated_hours || 0);
+      if (jobError) {
+        console.error('Error fetching job:', jobError);
+        setEstimatedHours(0);
+      } else {
+        setEstimatedHours(job?.estimated_hours || 0);
+      }
 
       // Fetch workers with their hours
-      const { data: workerData } = await supabase
+      const { data: workerData, error: workerError } = await supabase
         .from('job_worker_hours')
         .select('*')
         .eq('job_id', jobId);
 
+      if (workerError) {
+        console.error('Error fetching workers:', workerError);
+        setWorkers([]);
+        setTotalHours(0);
+        return;
+      }
+
       // Fetch worker profiles
       if (workerData && workerData.length > 0) {
         const workerIds = workerData.map((w: any) => w.worker_id);
-        const { data: profiles } = await supabase
+        const { data: profiles, error: profileError } = await supabase
           .from('profiles')
           .select('id, first_name, last_name, email')
           .in('id', workerIds);
+
+        if (profileError) {
+          console.error('Error fetching profiles:', profileError);
+        }
 
         const enrichedWorkers = workerData.map((w: any) => {
           const profile = profiles?.find((p) => p.id === w.worker_id);
@@ -67,6 +86,8 @@ export function useJobWorkers(jobId?: string) {
       }
     } catch (error) {
       console.error('Error loading workers:', error);
+      setWorkers([]);
+      setTotalHours(0);
     } finally {
       setLoading(false);
     }
