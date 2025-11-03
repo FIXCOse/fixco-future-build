@@ -218,7 +218,7 @@ export default function AdminRequestsQuotes() {
           />
         </div>
 
-        <TabsContent value="requests" className="space-y-4 mt-6">
+        <TabsContent value="requests" className="space-y-6 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -251,7 +251,7 @@ export default function AdminRequestsQuotes() {
           )}
         </TabsContent>
 
-        <TabsContent value="quotes" className="space-y-4 mt-6">
+        <TabsContent value="quotes" className="space-y-6 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -284,7 +284,7 @@ export default function AdminRequestsQuotes() {
           )}
         </TabsContent>
 
-        <TabsContent value="archived" className="space-y-4 mt-6">
+        <TabsContent value="archived" className="space-y-6 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">

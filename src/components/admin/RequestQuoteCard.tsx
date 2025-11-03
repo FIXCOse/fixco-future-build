@@ -85,9 +85,46 @@ export function RequestQuoteCard({
   const address = booking.payload?.address;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      {/* Booking Card */}
-      <Card>
+    <Card className="overflow-hidden border-2 shadow-md hover:shadow-lg transition-shadow">
+      {/* Container Header */}
+      <CardHeader className="bg-muted/50 border-b pb-4">
+        <div className="flex items-start justify-between flex-wrap gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h2 className="text-xl font-bold">#{booking.id.slice(0, 8)}</h2>
+              <Badge variant={getStatusBadge(booking.status).variant as any}>
+                {getStatusBadge(booking.status).label}
+              </Badge>
+              {quote && (
+                <Badge variant="outline">Offert #{quote.number}</Badge>
+              )}
+              {job && (
+                <Badge variant="secondary">Jobb #{job.id.slice(0, 8)}</Badge>
+              )}
+              {invoice && (
+                <Badge variant="default">Faktura</Badge>
+              )}
+            </div>
+            <p className="text-lg font-semibold">{serviceName}</p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+              <span className="flex items-center gap-1">
+                <Phone className="h-3 w-3" />
+                {customerName}
+              </span>
+              <span className="flex items-center gap-1">
+                <Mail className="h-3 w-3" />
+                {customerEmail}
+              </span>
+              <span>📅 {format(new Date(booking.created_at), "d MMM yyyy", { locale: sv })}</span>
+            </div>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Booking Card */}
+          <Card className="border-muted">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
@@ -151,9 +188,9 @@ export function RequestQuoteCard({
         </CardFooter>
       </Card>
 
-      {/* Quote Card */}
-      {quote ? (
-        <Card className="border-primary/20 bg-primary/5">
+          {/* Quote Card */}
+          {quote ? (
+            <Card className="border-muted border-primary/20 bg-primary/5">
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
@@ -224,148 +261,150 @@ export function RequestQuoteCard({
               <ExternalLink className="h-4 w-4" />
             </Button>
           </CardFooter>
-        </Card>
-      ) : (
-        <Card className="border-dashed">
-          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
-            <div className="text-center text-muted-foreground">
-              <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Ingen offert ännu</p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </Card>
+          ) : (
+            <Card className="border-muted border-dashed">
+              <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+                <div className="text-center text-muted-foreground">
+                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Ingen offert ännu</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Job Management Card */}
-      {quote ? (
-        job ? (
-          <JobManagementCard 
-            job={job} 
-            workers={workers}
-            onRefresh={handleRefresh}
-          />
-        ) : (
-          <Card className="border-dashed opacity-50">
-            <CardContent className="flex items-center justify-center h-full min-h-[200px]">
-              <div className="text-center text-muted-foreground">
-                <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
-                <p className="text-sm">Väntar på jobb</p>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      ) : (
-        <Card className="border-dashed opacity-50">
-          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
-            <div className="text-center text-muted-foreground">
-              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">Skapas efter offert</p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+          {/* Job Management Card */}
+          {quote ? (
+            job ? (
+              <JobManagementCard 
+                job={job} 
+                workers={workers}
+                onRefresh={handleRefresh}
+              />
+            ) : (
+              <Card className="border-muted border-dashed opacity-50">
+                <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+                  <div className="text-center text-muted-foreground">
+                    <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+                    <p className="text-sm">Väntar på jobb</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          ) : (
+            <Card className="border-muted border-dashed opacity-50">
+              <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+                <div className="text-center text-muted-foreground">
+                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+                  <p className="text-sm">Skapas efter offert</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Worker Status Card */}
-      {job ? (
-        <WorkerStatusCard 
-          workers={workers}
-          totalHours={totalHours}
-          estimatedHours={estimatedHours}
-          jobId={job.id}
-          onRefresh={handleRefresh}
-        />
-      ) : (
-        <Card className="border-dashed opacity-50">
-          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
-            <div className="text-center text-muted-foreground">
-              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">Väntar på jobb</p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+          {/* Worker Status Card */}
+          {job ? (
+            <WorkerStatusCard 
+              workers={workers}
+              totalHours={totalHours}
+              estimatedHours={estimatedHours}
+              jobId={job.id}
+              onRefresh={handleRefresh}
+            />
+          ) : (
+            <Card className="border-muted border-dashed opacity-50">
+              <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+                <div className="text-center text-muted-foreground">
+                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+                  <p className="text-sm">Väntar på jobb</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Invoice Card */}
-      {quote?.status === 'accepted' && job?.status === 'completed' ? (
-        invoice ? (
-          <Card className="border-green-500/20 bg-green-500/5">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <h3 className="font-semibold text-lg">Faktura {invoice.invoice_number}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {format(new Date(invoice.created_at), "d MMM yyyy", { locale: sv })}
+          {/* Invoice Card */}
+          {quote?.status === 'accepted' && job?.status === 'completed' ? (
+            invoice ? (
+              <Card className="border-muted border-green-500/20 bg-green-500/5">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <h3 className="font-semibold text-lg">Faktura {invoice.invoice_number}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(invoice.created_at), "d MMM yyyy", { locale: sv })}
+                      </p>
+                    </div>
+                    <Badge variant={getInvoiceStatusBadge(invoice.status).variant}>
+                      {getInvoiceStatusBadge(invoice.status).label}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Totalt belopp</p>
+                      <p className="text-2xl font-bold">{invoice.total_amount?.toLocaleString('sv-SE')} kr</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Förfallodatum</p>
+                      <p className="font-semibold">
+                        {format(new Date(invoice.due_date), "d MMM yyyy", { locale: sv })}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex gap-2">
+                  <Button
+                    onClick={() => onViewInvoice(invoice.id)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Visa
+                  </Button>
+                  {invoice.status === 'draft' && (
+                    <Button
+                      onClick={() => onSendInvoice(invoice.id)}
+                      size="sm"
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Skicka
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            ) : (
+              <Card className="border-muted border-dashed">
+                <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px]">
+                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-50 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-4">Offert accepterad - skapa faktura</p>
+                  <Button
+                    onClick={() => onCreateInvoice(quote.id)}
+                    size="sm"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Skapa faktura
+                  </Button>
+                </CardContent>
+              </Card>
+            )
+          ) : (
+            <Card className="border-muted border-dashed opacity-50">
+              <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+                <div className="text-center text-muted-foreground">
+                  <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+                  <p className="text-sm">
+                    {!quote ? 'Väntar på offert' : 
+                     quote.status !== 'accepted' ? 'Väntar på accepterad offert' :
+                     !job ? 'Väntar på jobb' :
+                     'Väntar på slutfört jobb'}
                   </p>
                 </div>
-                <Badge variant={getInvoiceStatusBadge(invoice.status).variant}>
-                  {getInvoiceStatusBadge(invoice.status).label}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-muted-foreground">Totalt belopp</p>
-                  <p className="text-2xl font-bold">{invoice.total_amount?.toLocaleString('sv-SE')} kr</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Förfallodatum</p>
-                  <p className="font-semibold">
-                    {format(new Date(invoice.due_date), "d MMM yyyy", { locale: sv })}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex gap-2">
-              <Button
-                onClick={() => onViewInvoice(invoice.id)}
-                variant="outline"
-                size="sm"
-              >
-                <FileText className="h-4 w-4 mr-2" />
-                Visa
-              </Button>
-              {invoice.status === 'draft' && (
-                <Button
-                  onClick={() => onSendInvoice(invoice.id)}
-                  size="sm"
-                >
-                  <Send className="h-4 w-4 mr-2" />
-                  Skicka
-                </Button>
-              )}
-            </CardFooter>
-          </Card>
-        ) : (
-          <Card className="border-dashed">
-            <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px]">
-              <FileText className="h-12 w-12 mx-auto mb-2 opacity-50 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-4">Offert accepterad - skapa faktura</p>
-              <Button
-                onClick={() => onCreateInvoice(quote.id)}
-                size="sm"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Skapa faktura
-              </Button>
-            </CardContent>
-          </Card>
-        )
-      ) : (
-        <Card className="border-dashed opacity-50">
-          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
-            <div className="text-center text-muted-foreground">
-              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">
-                {!quote ? 'Väntar på offert' : 
-                 quote.status !== 'accepted' ? 'Väntar på accepterad offert' :
-                 !job ? 'Väntar på jobb' :
-                 'Väntar på slutfört jobb'}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
