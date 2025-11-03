@@ -250,6 +250,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onRefresh={refresh}
               />
             ))
           )}
@@ -282,6 +283,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onRefresh={refresh}
               />
             ))
           )}
@@ -314,6 +316,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onRefresh={refresh}
               />
             ))
           )}

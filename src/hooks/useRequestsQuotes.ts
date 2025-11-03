@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBookingsRealtime } from './useBookingsRealtime';
 import { useQuotesRealtime } from './useQuotesRealtime';
+import { useJobsRealtime } from './useJobsRealtime';
+import { useJobWorkersRealtime } from './useJobWorkersRealtime';
 import type { QuoteNewRow as QuoteType } from '@/lib/api/quotes-new';
 
 export type BookingRow = {
@@ -24,11 +26,31 @@ export type CustomerRow = {
   phone: string;
 };
 
+export type JobRow = {
+  id: string;
+  status: string;
+  estimated_hours?: number;
+  created_at: string;
+  pool_enabled: boolean;
+  source_type: string;
+  source_id: string;
+};
+
+export type JobWorkerRow = {
+  job_id: string;
+  worker_id: string;
+  is_lead: boolean;
+  status: string;
+  total_hours: number;
+};
+
 export type RequestWithQuote = {
   booking: BookingRow;
   quote?: QuoteType;
   customer?: CustomerRow;
   invoice?: InvoiceRow;
+  job?: JobRow;
+  workers?: JobWorkerRow[];
 };
 
 export type InvoiceRow = {
@@ -74,6 +96,21 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (invoicesError) throw invoicesError;
 
+      // Fetch jobs
+      const { data: jobs, error: jobsError } = await supabase
+        .from('jobs')
+        .select('id, status, estimated_hours, created_at, pool_enabled, source_type, source_id')
+        .order('created_at', { ascending: false });
+
+      if (jobsError) console.error('Error fetching jobs:', jobsError);
+
+      // Fetch job workers
+      const { data: jobWorkers, error: workersError } = await supabase
+        .from('job_worker_hours')
+        .select('*');
+
+      if (workersError) console.error('Error fetching workers:', workersError);
+
       // Fetch customers from profiles
       const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
       const { data: profiles } = await supabase
@@ -94,12 +131,23 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
         const quote = quotes?.find((q: any) => q.source_booking_id === booking.id) as QuoteType | undefined;
         const customer = customers?.find((c: any) => c.id === booking.customer_id);
         const invoice = quote ? invoices?.find((inv: any) => inv.quote_id === quote.id) : undefined;
+        
+        // Find job by source (quote or booking)
+        const job = jobs?.find((j: any) => 
+          (j.source_type === 'quote' && j.source_id === quote?.id) ||
+          (j.source_type === 'booking' && j.source_id === booking.id)
+        );
+
+        // Get workers for this job
+        const workers = job ? jobWorkers?.filter((jw: any) => jw.job_id === job.id) : [];
 
         return {
           booking,
           quote,
           customer,
           invoice,
+          job,
+          workers,
         };
       });
 
@@ -139,6 +187,8 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
   // Realtime updates
   useBookingsRealtime(() => loadData());
   useQuotesRealtime(() => loadData());
+  useJobsRealtime(() => loadData());
+  useJobWorkersRealtime(() => loadData());
 
   return { data, loading, refresh: loadData };
 }

@@ -5,6 +5,9 @@ import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus }
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { JobManagementCard } from "./JobManagementCard";
+import { WorkerStatusCard } from "./WorkerStatusCard";
+import { useJobWorkers } from "@/hooks/useJobWorkers";
 
 type Props = {
   item: RequestWithQuote;
@@ -17,6 +20,7 @@ type Props = {
   onCreateInvoice: (quoteId: string) => void;
   onViewInvoice: (invoiceId: string) => void;
   onSendInvoice: (invoiceId: string) => void;
+  onRefresh: () => void;
 };
 
 export function RequestQuoteCard({
@@ -30,8 +34,15 @@ export function RequestQuoteCard({
   onCreateInvoice,
   onViewInvoice,
   onSendInvoice,
+  onRefresh,
 }: Props) {
-  const { booking, quote, customer, invoice } = item;
+  const { booking, quote, customer, invoice, job, workers: itemWorkers } = item;
+  const { workers, totalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
+  
+  const handleRefresh = () => {
+    refreshWorkers();
+    onRefresh();
+  };
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { variant: any; label: string }> = {
@@ -72,7 +83,7 @@ export function RequestQuoteCard({
   const address = booking.payload?.address;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
       {/* Booking Card */}
       <Card>
         <CardHeader className="pb-3">
@@ -215,8 +226,57 @@ export function RequestQuoteCard({
         </Card>
       )}
 
+      {/* Job Management Card */}
+      {quote ? (
+        job ? (
+          <JobManagementCard 
+            job={job} 
+            workers={workers}
+            onRefresh={handleRefresh}
+          />
+        ) : (
+          <Card className="border-dashed opacity-50">
+            <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+              <div className="text-center text-muted-foreground">
+                <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+                <p className="text-sm">Väntar på jobb</p>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      ) : (
+        <Card className="border-dashed opacity-50">
+          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+            <div className="text-center text-muted-foreground">
+              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+              <p className="text-sm">Skapas efter offert</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Worker Status Card */}
+      {job ? (
+        <WorkerStatusCard 
+          workers={workers}
+          totalHours={totalHours}
+          estimatedHours={estimatedHours}
+          jobId={job.id}
+          onRefresh={handleRefresh}
+        />
+      ) : (
+        <Card className="border-dashed opacity-50">
+          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+            <div className="text-center text-muted-foreground">
+              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+              <p className="text-sm">Väntar på jobb</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Invoice Card */}
-      {quote?.status === 'accepted' ? (
+      {quote?.status === 'accepted' && job?.status === 'completed' ? (
         invoice ? (
           <Card className="border-green-500/20 bg-green-500/5">
             <CardHeader className="pb-3">
@@ -286,7 +346,12 @@ export function RequestQuoteCard({
           <CardContent className="flex items-center justify-center h-full min-h-[200px]">
             <div className="text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
-              <p className="text-sm">Väntar på accepterad offert</p>
+              <p className="text-sm">
+                {!quote ? 'Väntar på offert' : 
+                 quote.status !== 'accepted' ? 'Väntar på accepterad offert' :
+                 !job ? 'Väntar på jobb' :
+                 'Väntar på slutfört jobb'}
+              </p>
             </div>
           </CardContent>
         </Card>

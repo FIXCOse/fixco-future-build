@@ -1029,6 +1029,50 @@ export type Database = {
           },
         ]
       }
+      job_workers: {
+        Row: {
+          assigned_at: string | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          is_lead: boolean | null
+          job_id: string
+          started_at: string | null
+          status: string | null
+          worker_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_lead?: boolean | null
+          job_id: string
+          started_at?: string | null
+          status?: string | null
+          worker_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_lead?: boolean | null
+          job_id?: string
+          started_at?: string | null
+          status?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_workers_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jobs: {
         Row: {
           address: string | null
@@ -1042,6 +1086,7 @@ export type Database = {
           deleted_at: string | null
           description: string | null
           due_date: string | null
+          estimated_hours: number | null
           fixed_price: number | null
           hourly_rate: number | null
           id: string
@@ -1069,6 +1114,7 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           due_date?: string | null
+          estimated_hours?: number | null
           fixed_price?: number | null
           hourly_rate?: number | null
           id?: string
@@ -1096,6 +1142,7 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           due_date?: string | null
+          estimated_hours?: number | null
           fixed_price?: number | null
           hourly_rate?: number | null
           id?: string
@@ -3351,6 +3398,28 @@ export type Database = {
       }
     }
     Views: {
+      job_worker_hours: {
+        Row: {
+          assigned_at: string | null
+          completed_at: string | null
+          is_lead: boolean | null
+          job_id: string | null
+          started_at: string | null
+          status: string | null
+          time_entries: number | null
+          total_hours: number | null
+          worker_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_workers_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       worker_detailed_statistics: {
         Row: {
           avatar_url: string | null
