@@ -38,6 +38,13 @@ const AdminDashboard = () => {
       variant: 'cta-primary' as const
     },
     {
+      title: 'Förfrågningar & Offerter',
+      description: 'Hantera kundförfrågningar och offerter',
+      href: '/admin/requests-quotes',
+      icon: FileText,
+      variant: 'outline' as const
+    },
+    {
       title: 'Offertfrågor',
       description: 'Hantera kundfrågor om offerter',
       href: '/admin/quote-questions',
@@ -88,13 +95,6 @@ const AdminDashboard = () => {
       variant: 'outline' as const
     },
     {
-      title: 'Bokningar',
-      description: 'Se alla bokningar',
-      href: '/admin/bookings',
-      icon: Calendar,
-      variant: 'outline' as const
-    },
-    {
       title: 'Schema',
       description: 'Schemalägg workers',
       href: '/admin/schedule',
@@ -117,13 +117,6 @@ const AdminDashboard = () => {
       href: '/admin/services',
       icon: Wrench,
       color: 'bg-blue-500/10 text-blue-600'
-    },
-    {
-      title: 'Offerter',
-      description: 'Se alla skapade offerter',
-      href: '/admin/quotes',
-      icon: FileText,
-      color: 'bg-yellow-500/10 text-yellow-600'
     },
     {
       title: 'Användare',
