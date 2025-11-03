@@ -111,7 +111,46 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleViewPdf = (quoteId: string) => {
-    window.open(`/admin/quotes-new/${quoteId}/pdf`, '_blank');
+    const item = data.find(d => d.quote?.id === quoteId);
+    if (!item?.quote) return;
+    const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
+    window.open(publicUrl, '_blank');
+  };
+
+  const handleCreateInvoice = async (quoteId: string) => {
+    try {
+      const { data: invoiceData, error } = await supabase.functions.invoke('create-invoice-from-quote', {
+        body: { quoteId }
+      });
+
+      if (error) throw error;
+
+      toast.success('Faktura skapad!');
+      refresh();
+    } catch (error: any) {
+      console.error('Error creating invoice:', error);
+      toast.error(error.message || 'Kunde inte skapa faktura');
+    }
+  };
+
+  const handleViewInvoice = (invoiceId: string) => {
+    navigate(`/admin/invoices?id=${invoiceId}`);
+  };
+
+  const handleSendInvoice = async (invoiceId: string) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-invoice-email', {
+        body: { invoiceId }
+      });
+
+      if (error) throw error;
+
+      toast.success('Faktura skickad till kund!');
+      refresh();
+    } catch (error: any) {
+      console.error('Error sending invoice:', error);
+      toast.error('Kunde inte skicka faktura');
+    }
   };
 
   const handleCopyLink = async (quoteId: string) => {
@@ -187,7 +226,8 @@ export default function AdminRequestsQuotes() {
         <TabsContent value="requests" className="space-y-4 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
               </div>
@@ -207,6 +247,9 @@ export default function AdminRequestsQuotes() {
                 onViewPdf={handleViewPdf}
                 onDeleteBooking={(id) => setDeleteId(id)}
                 onCopyLink={handleCopyLink}
+                onCreateInvoice={handleCreateInvoice}
+                onViewInvoice={handleViewInvoice}
+                onSendInvoice={handleSendInvoice}
               />
             ))
           )}
@@ -215,7 +258,8 @@ export default function AdminRequestsQuotes() {
         <TabsContent value="quotes" className="space-y-4 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
               </div>
@@ -235,6 +279,9 @@ export default function AdminRequestsQuotes() {
                 onViewPdf={handleViewPdf}
                 onDeleteBooking={(id) => setDeleteId(id)}
                 onCopyLink={handleCopyLink}
+                onCreateInvoice={handleCreateInvoice}
+                onViewInvoice={handleViewInvoice}
+                onSendInvoice={handleSendInvoice}
               />
             ))
           )}
@@ -243,7 +290,8 @@ export default function AdminRequestsQuotes() {
         <TabsContent value="archived" className="space-y-4 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
                 <Skeleton className="h-[300px]" />
               </div>
@@ -263,6 +311,9 @@ export default function AdminRequestsQuotes() {
                 onViewPdf={handleViewPdf}
                 onDeleteBooking={(id) => setDeleteId(id)}
                 onCopyLink={handleCopyLink}
+                onCreateInvoice={handleCreateInvoice}
+                onViewInvoice={handleViewInvoice}
+                onSendInvoice={handleSendInvoice}
               />
             ))
           )}

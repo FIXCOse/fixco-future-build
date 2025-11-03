@@ -28,6 +28,16 @@ export type RequestWithQuote = {
   booking: BookingRow;
   quote?: QuoteType;
   customer?: CustomerRow;
+  invoice?: InvoiceRow;
+};
+
+export type InvoiceRow = {
+  id: string;
+  invoice_number: string;
+  status: string;
+  total_amount: number;
+  due_date: string;
+  created_at: string;
 };
 
 export function useRequestsQuotes(statusFilter: string[] = []) {
@@ -56,6 +66,14 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (quotesError) throw quotesError;
 
+      // Fetch invoices
+      const { data: invoices, error: invoicesError } = await supabase
+        .from('invoices')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (invoicesError) throw invoicesError;
+
       // Fetch customers from profiles
       const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
       const { data: profiles } = await supabase
@@ -73,13 +91,15 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       // Combine data
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
-        const quote = quotes?.find((q: any) => q.request_id === booking.id) as QuoteType | undefined;
+        const quote = quotes?.find((q: any) => q.source_booking_id === booking.id) as QuoteType | undefined;
         const customer = customers?.find((c: any) => c.id === booking.customer_id);
+        const invoice = quote ? invoices?.find((inv: any) => inv.quote_id === quote.id) : undefined;
 
         return {
           booking,
           quote,
           customer,
+          invoice,
         };
       });
 

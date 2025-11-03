@@ -14,6 +14,9 @@ type Props = {
   onViewPdf: (quoteId: string) => void;
   onDeleteBooking: (bookingId: string) => void;
   onCopyLink: (quoteId: string) => void;
+  onCreateInvoice: (quoteId: string) => void;
+  onViewInvoice: (invoiceId: string) => void;
+  onSendInvoice: (invoiceId: string) => void;
 };
 
 export function RequestQuoteCard({
@@ -24,8 +27,11 @@ export function RequestQuoteCard({
   onViewPdf,
   onDeleteBooking,
   onCopyLink,
+  onCreateInvoice,
+  onViewInvoice,
+  onSendInvoice,
 }: Props) {
-  const { booking, quote, customer } = item;
+  const { booking, quote, customer, invoice } = item;
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { variant: any; label: string }> = {
@@ -48,6 +54,16 @@ export function RequestQuoteCard({
     return variants[status] || { variant: "default", label: status };
   };
 
+  const getInvoiceStatusBadge = (status: string) => {
+    const variants: Record<string, { variant: any; label: string }> = {
+      draft: { variant: "secondary", label: "Utkast" },
+      sent: { variant: "default", label: "Skickad" },
+      paid: { variant: "default", label: "Betald" },
+      overdue: { variant: "destructive", label: "Förfallen" },
+    };
+    return variants[status] || { variant: "default", label: status };
+  };
+
   const bookingStatus = getStatusBadge(booking.status);
   const serviceName = booking.payload?.service_name || booking.payload?.serviceName || booking.service_slug;
   const customerName = customer?.name || booking.payload?.name || booking.payload?.contact_name || 'Okänd kund';
@@ -56,7 +72,7 @@ export function RequestQuoteCard({
   const address = booking.payload?.address;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {/* Booking Card */}
       <Card>
         <CardHeader className="pb-3">
@@ -177,7 +193,10 @@ export function RequestQuoteCard({
               </Button>
             )}
             <Button
-              onClick={() => onViewPdf(quote.id)}
+              onClick={() => {
+                const publicUrl = `${window.location.origin}/q/${quote.public_token}`;
+                window.open(publicUrl, '_blank');
+              }}
               variant="outline"
               size="sm"
             >
@@ -191,6 +210,83 @@ export function RequestQuoteCard({
             <div className="text-center text-muted-foreground">
               <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
               <p className="text-sm">Ingen offert ännu</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Invoice Card */}
+      {quote?.status === 'accepted' ? (
+        invoice ? (
+          <Card className="border-green-500/20 bg-green-500/5">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-lg">Faktura {invoice.invoice_number}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {format(new Date(invoice.created_at), "d MMM yyyy", { locale: sv })}
+                  </p>
+                </div>
+                <Badge variant={getInvoiceStatusBadge(invoice.status).variant}>
+                  {getInvoiceStatusBadge(invoice.status).label}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Totalt belopp</p>
+                  <p className="text-2xl font-bold">{invoice.total_amount?.toLocaleString('sv-SE')} kr</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Förfallodatum</p>
+                  <p className="font-semibold">
+                    {format(new Date(invoice.due_date), "d MMM yyyy", { locale: sv })}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex gap-2">
+              <Button
+                onClick={() => onViewInvoice(invoice.id)}
+                variant="outline"
+                size="sm"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Visa
+              </Button>
+              {invoice.status === 'draft' && (
+                <Button
+                  onClick={() => onSendInvoice(invoice.id)}
+                  size="sm"
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Skicka
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
+        ) : (
+          <Card className="border-dashed">
+            <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px]">
+              <FileText className="h-12 w-12 mx-auto mb-2 opacity-50 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground mb-4">Offert accepterad - skapa faktura</p>
+              <Button
+                onClick={() => onCreateInvoice(quote.id)}
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Skapa faktura
+              </Button>
+            </CardContent>
+          </Card>
+        )
+      ) : (
+        <Card className="border-dashed opacity-50">
+          <CardContent className="flex items-center justify-center h-full min-h-[200px]">
+            <div className="text-center text-muted-foreground">
+              <FileText className="h-12 w-12 mx-auto mb-2 opacity-30" />
+              <p className="text-sm">Väntar på accepterad offert</p>
             </div>
           </CardContent>
         </Card>
