@@ -1,8 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { getServiceBySlug, ServiceConfig } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { serviceRequestSchema } from "./bookingValidation";
+import { useDebounce } from "@/hooks/useDebounce";
+import { 
+  serviceRequestSchema,
+  nameSchema,
+  emailSchema,
+  phoneSchema,
+  personnummerSchema,
+  addressSchema,
+  postalCodeSchema,
+  citySchema
+} from "./bookingValidation";
 
 export type OpenModalDetail = {
   serviceSlug?: string;
@@ -67,17 +77,47 @@ export default function ServiceRequestModal() {
     return () => window.removeEventListener("openServiceRequestModal", onOpen);
   }, []);
 
-  function onChange(key: string, val: any) {
-    setValues(v => ({ ...v, [key]: val }));
+  const [fieldToValidate, setFieldToValidate] = useState<{ key: string; value: any } | null>(null);
+  const debouncedValidation = useDebounce(fieldToValidate, 300);
+
+  // Validera fält i realtid med debounce
+  useEffect(() => {
+    if (!debouncedValidation) return;
+
+    const { key, value } = debouncedValidation;
     
-    // Rensa fel när användaren börjar skriva
-    if (errors[key]) {
-      setErrors(e => {
-        const newErrors = { ...e };
-        delete newErrors[key];
+    const fieldSchema = {
+      name: nameSchema,
+      email: emailSchema,
+      phone: phoneSchema,
+      personnummer: personnummerSchema,
+      address: addressSchema,
+      postal_code: postalCodeSchema,
+      city: citySchema,
+    }[key];
+
+    if (fieldSchema) {
+      const result = fieldSchema.safeParse(value);
+      
+      setErrors(prevErrors => {
+        const newErrors = { ...prevErrors };
+        
+        if (!result.success) {
+          newErrors[key] = result.error.issues[0]?.message || 'Ogiltigt värde';
+        } else {
+          delete newErrors[key];
+        }
+        
         return newErrors;
       });
     }
+  }, [debouncedValidation]);
+
+  function onChange(key: string, val: any) {
+    setValues(v => ({ ...v, [key]: val }));
+    
+    // Trigga debounced validering
+    setFieldToValidate({ key, value: val });
   }
 
   function onFiles(key: string, list: FileList | null) {
