@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminBack from "@/components/admin/AdminBack";
+import { useLeadsRealtime } from "@/hooks/useLeadsRealtime";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -90,6 +91,9 @@ export default function AdminLeads() {
       setIsLoading(false);
     }
   };
+
+  // Enable realtime updates
+  useLeadsRealtime(loadLeads);
 
   const updateLeadStatus = async (leadId: string, newStatus: string) => {
     try {

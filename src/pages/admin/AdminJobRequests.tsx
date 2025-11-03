@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useJobRequestsRealtime } from '@/hooks/useJobRequestsRealtime';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -209,6 +210,11 @@ const AdminJobRequests = () => {
       if (error) throw error;
       return data;
     }
+  });
+
+  // Enable realtime updates for job requests
+  useJobRequestsRealtime(() => {
+    refetch();
   });
 
   const handleJobAssignment = (job: any) => {
