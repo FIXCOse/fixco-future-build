@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getServiceBySlug, ServiceConfig } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { serviceRequestSchema } from "./bookingValidation";
 
 export type OpenModalDetail = {
   serviceSlug?: string;
@@ -19,6 +20,7 @@ export default function ServiceRequestModal() {
   const [files, setFiles] = useState<Record<string, File[]>>({});
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -67,6 +69,15 @@ export default function ServiceRequestModal() {
 
   function onChange(key: string, val: any) {
     setValues(v => ({ ...v, [key]: val }));
+    
+    // Rensa fel när användaren börjar skriva
+    if (errors[key]) {
+      setErrors(e => {
+        const newErrors = { ...e };
+        delete newErrors[key];
+        return newErrors;
+      });
+    }
   }
 
   function onFiles(key: string, list: FileList | null) {
@@ -96,8 +107,18 @@ export default function ServiceRequestModal() {
       console.error("[ServiceRequestModal] No service set");
       return;
     }
-    if (!values.name || !values.email) {
-      toast.error("Namn och e-post krävs");
+
+    // Validera formulärdata
+    const validation = serviceRequestSchema.safeParse(values);
+    
+    if (!validation.success) {
+      const fieldErrors: Record<string, string> = {};
+      validation.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      toast.error('Vänligen kontrollera alla fält');
       return;
     }
 
@@ -225,49 +246,105 @@ export default function ServiceRequestModal() {
                   Kontaktuppgifter
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="Ditt namn *"
-                    value={values.name || ""}
-                    onChange={e => onChange("name", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="Personnummer"
-                    value={values.personnummer || ""}
-                    onChange={e => onChange("personnummer", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="E-post *"
-                    type="email"
-                    value={values.email || ""}
-                    onChange={e => onChange("email", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="Telefon"
-                    value={values.phone || ""}
-                    onChange={e => onChange("phone", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all md:col-span-2"
-                    placeholder="Adress"
-                    value={values.address || ""}
-                    onChange={e => onChange("address", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="Postnummer"
-                    value={values.postal_code || ""}
-                    onChange={e => onChange("postal_code", e.target.value)}
-                  />
-                  <input
-                    className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                    placeholder="Ort"
-                    value={values.city || ""}
-                    onChange={e => onChange("city", e.target.value)}
-                  />
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.name ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Ditt namn *"
+                      value={values.name || ""}
+                      onChange={e => onChange("name", e.target.value)}
+                    />
+                    {errors.name && (
+                      <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.personnummer ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Personnummer (YYYYMMDD-XXXX)"
+                      value={values.personnummer || ""}
+                      onChange={e => onChange("personnummer", e.target.value)}
+                    />
+                    {errors.personnummer && (
+                      <p className="text-xs text-red-500 mt-1">{errors.personnummer}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.email ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="E-post *"
+                      type="email"
+                      value={values.email || ""}
+                      onChange={e => onChange("email", e.target.value)}
+                    />
+                    {errors.email && (
+                      <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.phone ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Telefon (070-123 45 67) *"
+                      type="tel"
+                      value={values.phone || ""}
+                      onChange={e => onChange("phone", e.target.value)}
+                    />
+                    {errors.phone && (
+                      <p className="text-xs text-red-500 mt-1">{errors.phone}</p>
+                    )}
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.address ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Adress"
+                      value={values.address || ""}
+                      onChange={e => onChange("address", e.target.value)}
+                    />
+                    {errors.address && (
+                      <p className="text-xs text-red-500 mt-1">{errors.address}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.postal_code ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Postnummer (123 45)"
+                      value={values.postal_code || ""}
+                      onChange={e => onChange("postal_code", e.target.value)}
+                    />
+                    {errors.postal_code && (
+                      <p className="text-xs text-red-500 mt-1">{errors.postal_code}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <input
+                      className={`px-4 py-3 rounded-xl border ${
+                        errors.city ? 'border-red-500' : 'border-border/50'
+                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                      placeholder="Ort"
+                      value={values.city || ""}
+                      onChange={e => onChange("city", e.target.value)}
+                    />
+                    {errors.city && (
+                      <p className="text-xs text-red-500 mt-1">{errors.city}</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -372,7 +449,7 @@ export default function ServiceRequestModal() {
               </button>
               <button
                 className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all font-semibold flex items-center gap-2"
-                disabled={busy || !values.name || !values.email}
+                disabled={busy || Object.keys(errors).length > 0}
                 onClick={onSubmit}
               >
                 {busy ? (

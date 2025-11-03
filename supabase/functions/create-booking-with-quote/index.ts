@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -10,6 +11,18 @@ const cors = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
+
+// Validering schema
+const requestSchema = z.object({
+  name: z.string().min(2, "Namn måste vara minst 2 bokstäver").max(100),
+  email: z.string().email("Ogiltig e-postadress").max(255),
+  phone: z.string().regex(/^(\+46|0)[-\s]?7[0-9][-\s]?[0-9]{3}[-\s]?[0-9]{2}[-\s]?[0-9]{2}$/, "Ogiltigt svenskt telefonnummer"),
+  service_slug: z.string().min(1, "service_slug krävs"),
+  mode: z.enum(['quote', 'book']),
+  address: z.string().optional(),
+  fields: z.record(z.any()).optional(),
+  fileUrls: z.array(z.string().url()).optional(),
+});
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { headers: { ...cors, "Content-Type": "application/json" }, status });
@@ -24,21 +37,30 @@ serve(async (req) => {
     if (!ct.includes("application/json")) return json({ error: "Use application/json" }, 415);
 
     const body = await req.json();
+
+    // Server-side validering med Zod
+    const validation = requestSchema.safeParse(body);
+    if (!validation.success) {
+      console.error("Validation error:", validation.error.issues);
+      return json({ 
+        ok: false, 
+        error: 'Ogiltig data', 
+        details: validation.error.issues 
+      }, 400);
+    }
+
     const {
-      name = "",
-      email = "",
-      phone = "",
+      name,
+      email,
+      phone,
       address = "",
       service_slug,
-      mode = "quote",
+      mode,
       fields = {},
       fileUrls = [],
-    } = body ?? {};
+    } = validation.data;
 
-    // --- Validering ---
-    if (!email) return json({ error: "Missing email" }, 400);
-    if (!service_slug) return json({ error: "Missing service_slug" }, 400);
-    if (!["quote", "book"].includes(mode)) return json({ error: "Invalid mode" }, 400);
+    console.log("[create-booking-with-quote] Validerad data:", { name, email, phone, service_slug, mode });
 
     // --- 1) Upsert kund ---
     const { data: customer, error: custErr } = await admin
@@ -77,10 +99,10 @@ serve(async (req) => {
       payload: {
         ...fields,
         // Store customer details in payload for reference
-        customer_email: email,
-        customer_name: name,
-        customer_phone: phone,
-        customer_address: address,
+        email,
+        name,
+        phone,
+        address,
       },
       file_urls: fileUrls ?? [],
     };
@@ -94,6 +116,8 @@ serve(async (req) => {
       return json({ error: `bookings.insert: ${bookErr.message}` }, 400);
     }
 
+    console.log("[create-booking-with-quote] Bokning skapad:", booking.id);
+
     // --- 4) Skapa draft-offert kopplad till booking ---
     let quoteId: string | null = null;
     if (mode === "quote") {
@@ -102,6 +126,7 @@ serve(async (req) => {
 
       if (!rpcErr && rpcRes) {
         quoteId = rpcRes as unknown as string;
+        console.log("[create-booking-with-quote] Offert skapad via RPC:", quoteId);
       } else {
         // Fallback: direkt INSERT i quotes_new
         console.warn("RPC fallback (create_draft_quote_for_booking):", rpcErr?.message);
@@ -136,6 +161,7 @@ serve(async (req) => {
           return json({ error: `quotes_new.insert: ${qErr.message}` }, 400);
         }
         quoteId = qInsert!.id;
+        console.log("[create-booking-with-quote] Offert skapad via fallback:", quoteId);
       }
     }
 
