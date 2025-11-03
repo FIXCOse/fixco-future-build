@@ -25,10 +25,12 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Create job_requests for each worker
+    console.log(`Creating job requests for job ${jobId} with ${workerIds.length} workers (using user_id directly)`);
+
+    // Create job_requests for each worker - workerIds are user_id (auth.uid())
     const requests = workerIds.map((workerId: string) => ({
       job_id: jobId,
-      staff_id: workerId,
+      worker_id: workerId, // Changed from staff_id - now uses user_id directly
       message: message || 'Du har fått en ny jobbförfrågan',
       status: 'pending',
       expires_at: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(), // 48h

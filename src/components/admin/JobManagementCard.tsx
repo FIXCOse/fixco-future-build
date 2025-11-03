@@ -41,12 +41,9 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
       .from('job_requests')
       .select(`
         *,
-        staff:staff_id (
-          id,
-          profiles:user_id (
-            full_name,
-            email
-          )
+        worker:worker_id (
+          full_name,
+          email
         )
       `)
       .eq('job_id', job.id)
@@ -157,7 +154,7 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
             <div className="space-y-1 pl-6">
               {jobRequests.map((request) => (
                 <div key={request.id} className="flex items-center justify-between text-sm">
-                  <span>{request.staff?.profiles?.full_name || request.staff?.profiles?.email || 'Okänd'}</span>
+                  <span>{request.worker?.full_name || request.worker?.email || 'Okänd'}</span>
                   <Badge variant={
                     request.status === 'accepted' ? 'default' :
                     request.status === 'rejected' ? 'destructive' :

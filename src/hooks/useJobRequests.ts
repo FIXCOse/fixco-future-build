@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export interface JobRequest {
   id: string;
   job_id: string;
-  staff_id: string;
+  worker_id: string; // Changed from staff_id - now uses user_id (auth.uid())
   status: 'pending' | 'accepted' | 'rejected' | 'expired';
   message?: string;
   expires_at: string;
@@ -28,22 +28,11 @@ export function useJobRequests() {
 
   const fetchMyRequests = async (): Promise<JobRequest[]> => {
     try {
-      // Get current user's staff record
+      // Get current user - using auth.uid() directly (standardized worker_id)
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const { data: staff, error: staffError } = await supabase
-        .from('staff')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      if (staffError || !staff) {
-        console.error('Error fetching staff:', staffError);
-        return [];
-      }
-
-      // Fetch job requests for this worker
+      // Fetch job requests for this worker using user_id directly
       const { data, error } = await supabase
         .from('job_requests')
         .select(`
@@ -53,7 +42,7 @@ export function useJobRequests() {
             bonus_amount, estimated_hours
           )
         `)
-        .eq('staff_id', staff.id)
+        .eq('worker_id', user.id) // Now uses user_id directly
         .eq('status', 'pending')
         .gt('expires_at', new Date().toISOString())
         .order('requested_at', { ascending: false });

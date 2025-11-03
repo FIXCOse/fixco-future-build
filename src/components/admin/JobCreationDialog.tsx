@@ -82,6 +82,7 @@ export function JobCreationDialog({
         .from('staff')
         .select('id, user_id, name, email, skills, active')
         .eq('active', true)
+        .not('user_id', 'is', null) // Only workers with auth accounts
         .order('name');
 
       if (error) throw error;
@@ -124,11 +125,13 @@ export function JobCreationDialog({
 
       // 3. Hantera tilldelning baserat på strategi
       if (assignmentType === 'manual' && selectedWorkerId) {
+        // selectedWorkerId is already user_id from worker selection
         const success = await assignWorker(jobId, selectedWorkerId, true);
         if (!success) {
           toast.error('Jobbet skapades men kunde inte tilldelas worker');
         }
       } else if (assignmentType === 'request' && selectedWorkerIds.length > 0) {
+        // selectedWorkerIds are already user_ids from worker selection
         const success = await requestWorkers(jobId, selectedWorkerIds, description);
         if (!success) {
           toast.error('Jobbet skapades men förfrågningar kunde inte skickas');

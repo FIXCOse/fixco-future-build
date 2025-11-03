@@ -854,8 +854,8 @@ export type Database = {
           requested_by: string
           responded_at: string | null
           response_message: string | null
-          staff_id: string
           status: string
+          worker_id: string
         }
         Insert: {
           deleted_at?: string | null
@@ -867,8 +867,8 @@ export type Database = {
           requested_by: string
           responded_at?: string | null
           response_message?: string | null
-          staff_id: string
           status?: string
+          worker_id: string
         }
         Update: {
           deleted_at?: string | null
@@ -880,8 +880,8 @@ export type Database = {
           requested_by?: string
           responded_at?: string | null
           response_message?: string | null
-          staff_id?: string
           status?: string
+          worker_id?: string
         }
         Relationships: [
           {
@@ -893,7 +893,7 @@ export type Database = {
           },
           {
             foreignKeyName: "job_requests_staff_id_fkey"
-            columns: ["staff_id"]
+            columns: ["worker_id"]
             isOneToOne: false
             referencedRelation: "staff"
             referencedColumns: ["id"]

@@ -114,11 +114,17 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
         }
 
         // Now create the job request with the real job ID
+        // Get user_id for the selected staff member
+        const staffMember = staff.find((s: any) => s.id === selectedStaff);
+        if (!staffMember?.user_id) {
+          throw new Error('Vald personal saknar användar-ID');
+        }
+
         const { error: requestError } = await supabase
           .from('job_requests')
           .insert([{
             job_id: newJobId,
-            staff_id: selectedStaff,
+            worker_id: staffMember.user_id, // Use user_id instead of staff_id
             requested_by: (await supabase.auth.getUser()).data.user?.id,
             message: message.trim(),
             status: 'pending'
@@ -136,11 +142,17 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
           jobId = job.source_id;
         }
 
+        // Get user_id for the selected staff member
+        const staffMember = staff.find((s: any) => s.id === selectedStaff);
+        if (!staffMember?.user_id) {
+          throw new Error('Vald personal saknar användar-ID');
+        }
+
         const { error } = await supabase
           .from('job_requests')
           .insert([{
             job_id: jobId,
-            staff_id: selectedStaff,
+            worker_id: staffMember.user_id, // Use user_id instead of staff_id
             requested_by: (await supabase.auth.getUser()).data.user?.id,
             message: message.trim(),
             status: 'pending'
@@ -153,7 +165,7 @@ export function JobRequestModal({ open, onOpenChange, job }: JobRequestModalProp
           if (error.code === '23503') {
             if (error.message.includes('job_id')) {
               errorMessage = "Jobbet kunde inte hittas i systemet";
-            } else if (error.message.includes('staff_id')) {
+            } else if (error.message.includes('worker_id')) {
               errorMessage = "Den valda personalen kunde inte hittas";
             } else {
               errorMessage = "Referensfel - kontrollera att jobbet och personalen finns";
