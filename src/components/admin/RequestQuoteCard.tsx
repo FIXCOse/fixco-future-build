@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -85,7 +85,7 @@ export function RequestQuoteCard({
   const address = booking.payload?.address;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {/* Booking Card */}
       <Card>
         <CardHeader className="pb-3">
@@ -187,7 +187,7 @@ export function RequestQuoteCard({
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex gap-2">
+          <CardFooter className="flex gap-2 flex-wrap">
             <Button
               onClick={() => onEditQuote(quote.id)}
               variant="outline"
@@ -205,6 +205,14 @@ export function RequestQuoteCard({
                 Skicka
               </Button>
             )}
+            <Button
+              onClick={() => onCopyLink(quote.id)}
+              variant="outline"
+              size="sm"
+            >
+              <Copy className="h-4 w-4 mr-2" />
+              Kopiera
+            </Button>
             <Button
               onClick={() => {
                 const publicUrl = `${window.location.origin}/q/${quote.public_token}`;

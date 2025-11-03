@@ -152,7 +152,7 @@ export default function AdminRequestsQuotes() {
     const item = data.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
 
-    const publicUrl = `${window.location.origin}/offert/${item.quote.number}`;
+    const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
     await navigator.clipboard.writeText(publicUrl);
     toast.success('Länk kopierad!');
   };
