@@ -56,10 +56,11 @@ export function JobCreationDialog({
   const [description, setDescription] = useState('');
   const [bonusAmount, setBonusAmount] = useState('');
   const [estimatedHours, setEstimatedHours] = useState('');
-  const [assignmentType, setAssignmentType] = useState<'pool' | 'manual'>('pool');
+  const [assignmentType, setAssignmentType] = useState<'pool' | 'manual' | 'request'>('pool');
   const [selectedWorkerId, setSelectedWorkerId] = useState('');
+  const [selectedWorkerIds, setSelectedWorkerIds] = useState<string[]>([]);
 
-  const { assignWorker } = useJobManagement();
+  const { assignWorker, requestWorkers } = useJobManagement();
 
   useEffect(() => {
     if (open) {
@@ -69,6 +70,7 @@ export function JobCreationDialog({
       setEstimatedHours('4');
       setAssignmentType('pool');
       setSelectedWorkerId('');
+      setSelectedWorkerIds([]);
       loadWorkers();
     }
   }, [open, quoteData]);
@@ -105,7 +107,8 @@ export function JobCreationDialog({
       // 2. Uppdatera jobb med extra detaljer
       const updates: any = {
         pool_enabled: assignmentType === 'pool',
-        status: assignmentType === 'pool' ? 'pool' : 'assigned',
+        status: assignmentType === 'pool' ? 'pool' : 
+                assignmentType === 'request' ? 'pending_request' : 'assigned',
       };
 
       if (description) updates.description = description;
@@ -119,17 +122,24 @@ export function JobCreationDialog({
 
       if (updateError) throw updateError;
 
-      // 3. Om manuell tilldelning, tilldela worker
+      // 3. Hantera tilldelning baserat på strategi
       if (assignmentType === 'manual' && selectedWorkerId) {
         const success = await assignWorker(jobId, selectedWorkerId, true);
         if (!success) {
           toast.error('Jobbet skapades men kunde inte tilldelas worker');
+        }
+      } else if (assignmentType === 'request' && selectedWorkerIds.length > 0) {
+        const success = await requestWorkers(jobId, selectedWorkerIds, description);
+        if (!success) {
+          toast.error('Jobbet skapades men förfrågningar kunde inte skickas');
         }
       }
 
       toast.success(
         assignmentType === 'pool'
           ? 'Jobb skapat och lagt i arbetspoolen'
+          : assignmentType === 'request'
+          ? `Jobb skapat och förfrågningar skickade till ${selectedWorkerIds.length} worker(s)`
           : 'Jobb skapat och tilldelat worker'
       );
       onSuccess();
@@ -219,21 +229,79 @@ export function JobCreationDialog({
               </div>
 
               <div className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors">
+                <RadioGroupItem value="request" id="request" className="mt-1" />
+                <div className="space-y-1 flex-1">
+                  <Label htmlFor="request" className="font-semibold cursor-pointer">
+                    📬 Skicka jobbförfrågan
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Skicka förfrågan till specifika workers som kan acceptera eller avslå
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors">
                 <RadioGroupItem value="manual" id="manual" className="mt-1" />
                 <div className="space-y-1 flex-1">
                   <Label htmlFor="manual" className="font-semibold cursor-pointer flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    Tilldela manuellt
+                    Tilldela direkt (akut)
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Välj en specifik worker som ska få jobbet direkt
+                    Tilldela direkt till en worker utan att fråga (för akuta jobb)
                   </p>
                 </div>
               </div>
             </RadioGroup>
           </div>
 
-          {/* Worker Selection (endast om manuell tilldelning) */}
+          {/* Worker Selection för Request */}
+          {assignmentType === 'request' && (
+            <div className="space-y-2">
+              <Label>Välj workers att skicka förfrågan till</Label>
+              {loadingWorkers ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-y-auto border rounded-md p-3">
+                  {workers.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      Inga aktiva workers hittades
+                    </p>
+                  ) : (
+                    workers.map((worker) => (
+                      <div key={worker.id} className="flex items-center space-x-2 hover:bg-accent/50 p-2 rounded">
+                        <input
+                          type="checkbox"
+                          id={`worker-${worker.id}`}
+                          checked={selectedWorkerIds.includes(worker.user_id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedWorkerIds([...selectedWorkerIds, worker.user_id]);
+                            } else {
+                              setSelectedWorkerIds(selectedWorkerIds.filter(id => id !== worker.user_id));
+                            }
+                          }}
+                          className="h-4 w-4 rounded border-gray-300"
+                        />
+                        <Label htmlFor={`worker-${worker.id}`} className="flex-1 cursor-pointer font-normal">
+                          {worker.name || worker.email}
+                        </Label>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+              {selectedWorkerIds.length > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  {selectedWorkerIds.length} worker(s) vald(a)
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Worker Selection för Manual */}
           {assignmentType === 'manual' && (
             <div className="space-y-2">
               <Label htmlFor="worker">Välj worker</Label>
@@ -287,17 +355,21 @@ export function JobCreationDialog({
           <Button
             type="button"
             onClick={handleSubmit}
-            disabled={loading || (assignmentType === 'manual' && !selectedWorkerId)}
+            disabled={
+              loading || 
+              (assignmentType === 'manual' && !selectedWorkerId) ||
+              (assignmentType === 'request' && selectedWorkerIds.length === 0)
+            }
           >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Skapar jobb...
+                {assignmentType === 'request' ? 'Skickar förfrågningar...' : 'Skapar jobb...'}
               </>
             ) : (
               <>
                 <Briefcase className="mr-2 h-4 w-4" />
-                Skapa jobb
+                {assignmentType === 'request' ? 'Skicka förfrågningar' : 'Skapa jobb'}
               </>
             )}
           </Button>

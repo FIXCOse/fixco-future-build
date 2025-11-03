@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,10 +10,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useJobManagement } from '@/hooks/useJobManagement';
-import { PlusCircle, MinusCircle, Users, Calendar, DollarSign, Edit, Send } from 'lucide-react';
+import { PlusCircle, MinusCircle, Users, Calendar, DollarSign, Edit, Send, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { JobEditDialog } from './JobEditDialog';
+import { supabase } from '@/integrations/supabase/client';
 
 interface JobManagementCardProps {
   job: any;
@@ -26,6 +27,35 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
   const [selectedWorker, setSelectedWorker] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [jobRequests, setJobRequests] = useState<any[]>([]);
+
+  // Load job requests if job is in pending_request status
+  useEffect(() => {
+    if (job.status === 'pending_request') {
+      loadJobRequests();
+    }
+  }, [job.status, job.id]);
+
+  const loadJobRequests = async () => {
+    const { data, error } = await supabase
+      .from('job_requests')
+      .select(`
+        *,
+        staff:staff_id (
+          id,
+          profiles:user_id (
+            full_name,
+            email
+          )
+        )
+      `)
+      .eq('job_id', job.id)
+      .order('requested_at', { ascending: false });
+
+    if (!error && data) {
+      setJobRequests(data);
+    }
+  };
 
   // Mock workers list - replace with real data
   const availableWorkers = workers || [];
@@ -58,12 +88,14 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
   const getStatusBadge = (status: string) => {
     const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
       pool: 'secondary',
+      pending_request: 'outline',
       assigned: 'default',
       in_progress: 'default',
       completed: 'outline',
     };
     const labels: Record<string, string> = {
       pool: 'I pool',
+      pending_request: 'Väntar på svar',
       assigned: 'Tilldelad',
       in_progress: 'Pågående',
       completed: 'Klar',
@@ -115,8 +147,38 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
           )}
         </div>
 
+        {/* Job Requests Status */}
+        {job.status === 'pending_request' && jobRequests.length > 0 && (
+          <div className="space-y-2 pt-2 border-t">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-yellow-600" />
+              <span className="text-sm font-medium">Förfrågningar skickade till:</span>
+            </div>
+            <div className="space-y-1 pl-6">
+              {jobRequests.map((request) => (
+                <div key={request.id} className="flex items-center justify-between text-sm">
+                  <span>{request.staff?.profiles?.full_name || request.staff?.profiles?.email || 'Okänd'}</span>
+                  <Badge variant={
+                    request.status === 'accepted' ? 'default' :
+                    request.status === 'rejected' ? 'destructive' :
+                    request.status === 'expired' ? 'secondary' :
+                    'outline'
+                  }>
+                    {request.status === 'accepted' && <CheckCircle className="h-3 w-3 mr-1 inline" />}
+                    {request.status === 'rejected' && <XCircle className="h-3 w-3 mr-1 inline" />}
+                    {request.status === 'pending' ? 'Väntar' :
+                     request.status === 'accepted' ? 'Accepterad' :
+                     request.status === 'rejected' ? 'Avslagen' :
+                     'Utgången'}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="space-y-2 pt-2 border-t">
-          {job.pool_enabled ? (
+          {job.status === 'pool' && (
             <Button
               onClick={handleRemoveFromPool}
               variant="outline"
@@ -126,10 +188,23 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
               <MinusCircle className="mr-2 h-4 w-4" />
               Ta bort från pool
             </Button>
-          ) : (
+          )}
+
+          {job.status === 'pending_request' && (
             <Button
               onClick={handleAddToPool}
               variant="outline"
+              className="w-full"
+              disabled={isLoading}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Konvertera till pool
+            </Button>
+          )}
+
+          {job.status !== 'pool' && job.status !== 'pending_request' && !job.pool_enabled && (
+            <Button
+              onClick={handleAddToPool}
               className="w-full"
               disabled={isLoading}
             >

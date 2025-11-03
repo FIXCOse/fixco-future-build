@@ -12,14 +12,18 @@ import {
   Pause,
   Users,
   FileText,
-  Gift
+  Gift,
+  Bell
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useJobsData } from '@/hooks/useJobsData';
 import { useJobsRealtime } from '@/hooks/useJobsRealtime';
+import { useJobRequestsRealtime } from '@/hooks/useJobRequestsRealtime';
 import { supabase } from '@/integrations/supabase/client';
+import { JobRequestsPanel } from '@/components/worker/JobRequestsPanel';
+import { toast } from 'sonner';
 
 const WorkerDashboard = () => {
   const [activeTimer, setActiveTimer] = useState<string | null>(null);
@@ -64,6 +68,15 @@ const WorkerDashboard = () => {
     console.log('Worker Dashboard - Realtime update triggered');
   });
 
+  // Real-time job requests with toast notification
+  useJobRequestsRealtime(() => {
+    console.log('Worker Dashboard - Job request update');
+    toast('Ny jobbförfrågan!', {
+      description: 'Du har fått en ny jobbförfrågan att svara på',
+      icon: <Bell className="h-4 w-4" />,
+    });
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'in_progress': return 'bg-green-500';
@@ -101,6 +114,9 @@ const WorkerDashboard = () => {
           Välkommen tillbaka! Här ser du dina aktiva jobb och dagens statistik.
         </p>
       </div>
+
+      {/* Job Requests Panel - shows if there are pending requests */}
+      <JobRequestsPanel />
 
       {/* Stats Cards - Mobile optimized */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
