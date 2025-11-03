@@ -26,8 +26,8 @@ export default function AdminQuotesNew() {
       // Find or create draft quote for booking
       loadQuoteForBooking(requestId);
     } else {
-      // Redirect to quotes list if no ID provided
-      navigate('/admin/quotes');
+      // Open modal for new quote if no ID or request
+      setModalOpen(true);
     }
   }, [quoteId, requestId, navigate]);
 
@@ -48,27 +48,32 @@ export default function AdminQuotesNew() {
     setLoading(true);
     try {
       // Check if quote exists for this booking
-      const { data: existingQuote } = await supabase
+      const { data: existingQuote, error: fetchError } = await supabase
         .from('quotes_new')
         .select('*, customer:customers(*)')
         .eq('request_id', bookingId)
         .maybeSingle();
 
+      if (fetchError) throw fetchError;
+
       if (existingQuote) {
         setQuote(existingQuote as any);
-      } else {
-        // Call DB function to create draft quote
-        const { data: quoteId, error } = await supabase
-          .rpc('create_draft_quote_for_booking', {
-            booking_id: bookingId
-          });
+        setModalOpen(true); // Open modal automatically
+        return;
+      }
 
-        if (error) throw error;
-        
-        // Load the newly created quote
-        if (quoteId) {
-          await loadQuote(String(quoteId));
-        }
+      // Call DB function to create draft quote
+      const { data: quoteId, error: rpcError } = await supabase
+        .rpc('create_draft_quote_for_booking', {
+          booking_id: bookingId
+        });
+
+      if (rpcError) throw rpcError;
+      
+      // Load the newly created quote
+      if (quoteId) {
+        await loadQuote(String(quoteId));
+        setModalOpen(true); // Open modal automatically after creating quote
       }
     } catch (error: any) {
       console.error('Error loading quote for booking:', error);
