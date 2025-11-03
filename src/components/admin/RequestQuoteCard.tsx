@@ -210,13 +210,13 @@ export function RequestQuoteCard({
                   <Edit className="h-4 w-4 mr-2" />
                   Redigera
                 </Button>
-                {quote.status === 'draft' && (
+                {(quote.status === 'draft' || quote.status === 'sent') && (
                   <Button
                     onClick={() => onSendQuote(quote.id)}
                     size="sm"
                   >
                     <Send className="h-4 w-4 mr-2" />
-                    Skicka
+                    {quote.status === 'sent' ? 'Skicka igen' : 'Skicka'}
                   </Button>
                 )}
                 <Button
