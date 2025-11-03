@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
+import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
 import { createCustomer } from "@/lib/api/customers";
 import {
   AlertDialog,
@@ -31,7 +32,9 @@ export default function AdminRequestsQuotes() {
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
+  const [jobCreationModalOpen, setJobCreationModalOpen] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
+  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
   const [editQuoteId, setEditQuoteId] = useState<string | null>(null);
   const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
 
@@ -207,6 +210,22 @@ export default function AdminRequestsQuotes() {
     toast.success('Länk kopierad!');
   };
 
+  const handleCreateJob = async (quoteId: string) => {
+    const item = data.find(d => d.quote?.id === quoteId);
+    if (!item?.quote) {
+      toast.error('Kunde inte hitta offert');
+      return;
+    }
+
+    if (item.job) {
+      toast.error('Ett jobb finns redan för denna offert');
+      return;
+    }
+
+    setSelectedQuoteId(quoteId);
+    setJobCreationModalOpen(true);
+  };
+
   const handleDeleteBooking = async () => {
     if (!deleteId) return;
 
@@ -295,6 +314,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCreateJob={handleCreateJob}
                 onRefresh={refresh}
               />
             ))
@@ -328,6 +348,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCreateJob={handleCreateJob}
                 onRefresh={refresh}
               />
             ))
@@ -361,12 +382,25 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCreateJob={handleCreateJob}
                 onRefresh={refresh}
               />
             ))
           )}
         </TabsContent>
       </Tabs>
+
+      <JobCreationDialog
+        open={jobCreationModalOpen}
+        onOpenChange={setJobCreationModalOpen}
+        quoteId={selectedQuoteId || ''}
+        quoteData={data.find(d => d.quote?.id === selectedQuoteId)?.quote}
+        onSuccess={() => {
+          setJobCreationModalOpen(false);
+          setSelectedQuoteId(null);
+          refresh();
+        }}
+      />
 
       <QuoteFormModal
         open={quoteModalOpen}

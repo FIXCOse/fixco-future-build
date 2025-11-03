@@ -10,9 +10,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useJobManagement } from '@/hooks/useJobManagement';
-import { PlusCircle, MinusCircle, Users, Calendar } from 'lucide-react';
+import { PlusCircle, MinusCircle, Users, Calendar, DollarSign, Edit, Send } from 'lucide-react';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { JobEditDialog } from './JobEditDialog';
 
 interface JobManagementCardProps {
   job: any;
@@ -21,9 +22,10 @@ interface JobManagementCardProps {
 }
 
 export function JobManagementCard({ job, workers, onRefresh }: JobManagementCardProps) {
-  const { addToPool, removeFromPool, assignWorker } = useJobManagement();
+  const { addToPool, removeFromPool, assignWorker, requestWorkers } = useJobManagement();
   const [selectedWorker, setSelectedWorker] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // Mock workers list - replace with real data
   const availableWorkers = workers || [];
@@ -95,6 +97,22 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
               <span className="text-sm font-medium">{job.estimated_hours}h</span>
             </div>
           )}
+          {job.bonus_amount && job.bonus_amount > 0 && (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground flex items-center gap-1">
+                <DollarSign className="h-3 w-3" />
+                Bonus:
+              </span>
+              <Badge variant="default" className="bg-green-600">
+                +{job.bonus_amount} kr
+              </Badge>
+            </div>
+          )}
+          {job.description && (
+            <div className="pt-2 border-t">
+              <p className="text-xs text-muted-foreground">{job.description}</p>
+            </div>
+          )}
         </div>
 
         <div className="space-y-2 pt-2 border-t">
@@ -141,8 +159,25 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
               Tilldela manuellt
             </Button>
           </div>
+
+          <Button
+            onClick={() => setEditDialogOpen(true)}
+            variant="outline"
+            className="w-full"
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Redigera jobb
+          </Button>
         </div>
       </CardContent>
+
+      <JobEditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        job={job}
+        workers={workers}
+        onSuccess={onRefresh}
+      />
     </Card>
   );
 }

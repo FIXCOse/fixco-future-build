@@ -95,11 +95,57 @@ export function useJobManagement() {
     }
   };
 
+  const updateJobDetails = async (jobId: string, updates: any) => {
+    try {
+      const { error } = await supabase
+        .from('jobs')
+        .update(updates)
+        .eq('id', jobId);
+
+      if (error) throw error;
+      toast.success('Jobb uppdaterat');
+      return true;
+    } catch (error) {
+      console.error('Error updating job:', error);
+      toast.error('Kunde inte uppdatera jobb');
+      return false;
+    }
+  };
+
+  const addWorkerToJob = async (jobId: string, workerId: string, isLead: boolean = false) => {
+    return await assignWorker(jobId, workerId, isLead);
+  };
+
+  const removeWorkerFromJob = async (jobId: string, workerId: string) => {
+    return await removeWorker(jobId, workerId);
+  };
+
+  const setJobBonus = async (jobId: string, bonusAmount: number) => {
+    try {
+      const { error } = await supabase
+        .from('jobs')
+        .update({ bonus_amount: bonusAmount })
+        .eq('id', jobId);
+
+      if (error) throw error;
+      toast.success('Bonus uppdaterad');
+      return true;
+    } catch (error) {
+      console.error('Error setting bonus:', error);
+      toast.error('Kunde inte sätta bonus');
+      return false;
+    }
+  };
+
   return { 
     addToPool, 
     removeFromPool, 
     assignWorker, 
     removeWorker,
-    requestWorkers
+    requestWorkers,
+    updateJobDetails,
+    addWorkerToJob,
+    removeWorkerFromJob,
+    setJobBonus,
   };
 }

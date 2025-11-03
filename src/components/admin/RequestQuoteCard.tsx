@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -21,6 +21,7 @@ type Props = {
   onCreateInvoice: (quoteId: string) => void;
   onViewInvoice: (invoiceId: string) => void;
   onSendInvoice: (invoiceId: string) => void;
+  onCreateJob: (quoteId: string) => void;
   onRefresh: () => void;
 };
 
@@ -35,6 +36,7 @@ export function RequestQuoteCard({
   onCreateInvoice,
   onViewInvoice,
   onSendInvoice,
+  onCreateJob,
   onRefresh,
 }: Props) {
   const { booking, quote, customer, invoice, job } = item;
@@ -229,6 +231,16 @@ export function RequestQuoteCard({
                 >
                   <ExternalLink className="h-4 w-4" />
                 </Button>
+                {quote.status === 'accepted' && !job && (
+                  <Button
+                    onClick={() => onCreateJob(quote.id)}
+                    size="sm"
+                    variant="default"
+                  >
+                    <Briefcase className="h-4 w-4 mr-2" />
+                    Skapa jobb
+                  </Button>
+                )}
               </div>
             </div>
           </>
