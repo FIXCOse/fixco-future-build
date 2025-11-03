@@ -3411,6 +3411,38 @@ export type Database = {
       }
     }
     Functions: {
+      admin_get_bookings: {
+        Args: never
+        Returns: {
+          created_at: string
+          customer_id: string
+          deleted_at: string
+          file_urls: string[]
+          id: string
+          mode: string
+          payload: Json
+          service_slug: string
+          status: string
+          updated_at: string
+        }[]
+      }
+      admin_get_job_requests: {
+        Args: { p_search_term?: string; p_status_filter?: string }
+        Returns: {
+          deleted_at: string
+          expires_at: string
+          id: string
+          job_data: Json
+          job_id: string
+          message: string
+          requested_at: string
+          responded_at: string
+          response_message: string
+          staff_data: Json
+          staff_id: string
+          status: string
+        }[]
+      }
       assign_job_to_worker: {
         Args: { p_job_id: string; p_worker_id: string }
         Returns: boolean

@@ -32,21 +32,40 @@ export default function AdminBookings() {
 
   const loadBookings = useCallback(async () => {
     try {
-      const params: any = {};
-      if (statusFilter !== "all") {
-        params.status = [statusFilter];
-      }
-      if (searchTerm) {
-        params.q = searchTerm;
-      }
-      const { data } = await fetchBookings(params);
-      console.log('Loaded bookings:', data?.length || 0, 'bookings');
-      // Filter out deleted bookings
-      const activeBookings = (data || []).filter((b: any) => !b.deleted_at);
+      // Use RPC function to get bookings (bypasses RLS)
+      const { data, error } = await supabase.rpc('admin_get_bookings' as any);
       
-      // Check if each booking has a quote (with comprehensive error handling)
+      if (error) throw error;
+      
+      const bookingsData = (data as any[]) || [];
+      console.log('Loaded bookings via RPC:', bookingsData.length, 'bookings');
+      
+      // Filter by status if needed (client-side since RPC returns all)
+      let filteredData = bookingsData;
+      if (statusFilter !== "all") {
+        filteredData = filteredData.filter((b: any) => b.status === statusFilter);
+      }
+      
+      // Filter by search term if needed
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        filteredData = filteredData.filter((b: any) => {
+          const payload = b.payload || {};
+          return (
+            b.service_slug?.toLowerCase().includes(searchLower) ||
+            payload.service_name?.toLowerCase().includes(searchLower) ||
+            payload.description?.toLowerCase().includes(searchLower) ||
+            payload.name?.toLowerCase().includes(searchLower) ||
+            payload.email?.toLowerCase().includes(searchLower) ||
+            payload.contact_name?.toLowerCase().includes(searchLower) ||
+            payload.contact_email?.toLowerCase().includes(searchLower)
+          );
+        });
+      }
+      
+      // Check if each booking has a quote
       const bookingsWithQuotes = await Promise.all(
-        activeBookings.map(async (booking) => {
+        filteredData.map(async (booking: any) => {
           try {
             const { data: quote, error: quoteError } = await supabase
               .from('quotes_new')
@@ -54,7 +73,6 @@ export default function AdminBookings() {
               .eq('request_id', booking.id)
               .maybeSingle();
             
-            // Ignore query errors, just mark as no quote
             if (quoteError) {
               console.warn('Error checking quote for booking:', booking.id, quoteError.message);
               return {
@@ -83,22 +101,8 @@ export default function AdminBookings() {
       setBookings(bookingsWithQuotes);
     } catch (error) {
       console.error("Error loading bookings:", error);
-      // Fallback: try to load bookings directly from supabase without quote checking
-      try {
-        const { data: fallbackData } = await supabase
-          .from('bookings')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        const activeBookings = (fallbackData || [])
-          .filter((b: any) => !b.deleted_at)
-          .map(b => ({ ...b, hasQuote: false, quoteId: undefined } as BookingWithQuote));
-        
-        setBookings(activeBookings);
-      } catch (fallbackError) {
-        console.error("Fallback also failed:", fallbackError);
-        setBookings([]);
-      }
+      toast.error('Kunde inte hämta bokningar');
+      setBookings([]);
     } finally {
       setLoading(false);
     }

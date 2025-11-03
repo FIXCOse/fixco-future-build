@@ -145,48 +145,24 @@ const AdminJobRequests = () => {
     }
   });
 
-  // Fetch job requests with staff and job details
+  // Fetch job requests with staff and job details using RPC
   const { data: jobRequests, isLoading: requestsLoading, refetch } = useQuery({
     queryKey: ['job-requests', statusFilter, searchTerm],
     queryFn: async () => {
-      let query = supabase
-        .from('job_requests')
-        .select(`
-          *,
-          staff (
-            id,
-            name,
-            staff_id,
-            email,
-            phone,
-            role
-          ),
-          jobs (
-            id,
-            title,
-            description,
-            address,
-            city,
-            status,
-            pricing_mode,
-            hourly_rate,
-            fixed_price
-          )
-        `)
-        .is('deleted_at', null)
-        .order('requested_at', { ascending: false });
+      const { data, error } = await supabase.rpc('admin_get_job_requests' as any, {
+        p_status_filter: statusFilter,
+        p_search_term: searchTerm
+      });
 
-      if (statusFilter !== 'all') {
-        query = query.eq('status', statusFilter);
-      }
-
-      if (searchTerm) {
-        query = query.or(`message.ilike.%${searchTerm}%,response_message.ilike.%${searchTerm}%`);
-      }
-
-      const { data, error } = await query;
       if (error) throw error;
-      return data || [];
+      
+      // Transform RPC result to match expected structure
+      const results = (data as any[]) || [];
+      return results.map((row: any) => ({
+        ...row,
+        staff: row.staff_data,
+        jobs: row.job_data
+      }));
     }
   });
 
