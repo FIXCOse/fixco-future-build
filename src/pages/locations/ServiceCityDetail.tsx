@@ -88,6 +88,19 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     return dbServices.filter(s => s.category === categoryName);
   }, [dbServices, categoryName]);
 
+  // Related services (other services from different categories)
+  const relatedServices = useMemo(() => {
+    if (!dbServices || !categoryName) return [];
+    return dbServices
+      .filter(s => s.category !== categoryName)
+      .slice(0, 3);
+  }, [dbServices, categoryName]);
+
+  const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
+
+  // Handle loading and error states AFTER all hooks
   if (!serviceData || !cityServiceData) {
     return (
       <div className="min-h-screen">
@@ -116,18 +129,6 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   }
 
   const IconComponent = serviceData.icon;
-  
-  const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
-
-  // Related services (other services from different categories)
-  const relatedServices = useMemo(() => {
-    if (!dbServices || !categoryName) return [];
-    return dbServices
-      .filter(s => s.category !== categoryName)
-      .slice(0, 3);
-  }, [dbServices, categoryName]);
 
   // SEO Schema
   const breadcrumbSchema = getBreadcrumbSchema([
