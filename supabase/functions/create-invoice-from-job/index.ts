@@ -54,6 +54,20 @@ serve(async (req) => {
     let finalTotalAmount = totalAmount;
     let finalDiscountAmount = discountAmount || 0;
 
+    // Get job details to find source
+    const { data: job, error: jobError } = await supabaseAdmin
+      .from('jobs')
+      .select('source_type, source_id')
+      .eq('id', jobId)
+      .single();
+
+    if (jobError) {
+      console.error("Error fetching job:", jobError);
+      throw jobError;
+    }
+
+    console.log("Job source:", job?.source_type, job?.source_id);
+
     if (!finalLineItems || finalLineItems.length === 0) {
       // Get invoice data from the job
       const { data: invoiceData, error: invoiceError } = await supabaseAdmin
@@ -115,11 +129,17 @@ serve(async (req) => {
 
     // Generate invoice number
     const invoiceNumber = `INV-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+    
+    // Generate public token for sharing
+    const publicToken = crypto.randomUUID();
 
     // Prepare invoice record data
     const invoiceData: any = {
       invoice_number: invoiceNumber,
       customer_id: customerId,
+      // Set relationship based on job source
+      quote_id: job?.source_type === 'quote' ? job.source_id : null,
+      booking_id: job?.source_type === 'booking' ? job.source_id : null,
       subtotal: finalSubtotal,
       vat_amount: finalVatAmount,
       total_amount: finalTotalAmount,
@@ -129,7 +149,8 @@ serve(async (req) => {
       issue_date: new Date().toISOString().split('T')[0],
       due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
       rot_amount: 0,
-      rut_amount: 0
+      rut_amount: 0,
+      public_token: publicToken
     };
 
     // Create the invoice record

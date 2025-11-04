@@ -192,7 +192,11 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
         const quote = quotes?.find((q: any) => q.request_id === booking.id) as QuoteType | undefined;
         const customer = customers?.find((c: any) => c.id === booking.customer_id);
-        const invoice = quote ? invoices?.find((inv: any) => inv.quote_id === quote.id) : undefined;
+        // Find invoice via quote_id OR booking_id
+        const invoice = invoices?.find((inv: any) => 
+          (quote && inv.quote_id === quote.id) || 
+          (inv.booking_id === booking.id)
+        );
         
         // Find job by source (quote or booking)
         const job = jobs?.find((j: any) => 
