@@ -39,12 +39,8 @@ const useGlobalPricing = () => {
         loading: false
       });
       
-      // Sync URL if not already set
-      if (!urlParam || !['ordinarie', 'rot', 'rut'].includes(urlParam)) {
-        const newParams = new URLSearchParams(searchParams);
-        newParams.set(PRICING_URL_PARAM, initialValue);
-        setSearchParams(newParams, { replace: true });
-      }
+      // Don't sync URL automatically on page load - keeps clean URLs
+      // URL parameter will only be added when user actively changes mode via toggle
       
     } catch (error) {
       console.warn('Error initializing pricing state:', error);

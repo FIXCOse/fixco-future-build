@@ -70,14 +70,8 @@ export const usePriceStore = create<PriceState>()(
             currentMode === 'all' ? 'all' : currentMode;
           set({ eligibilityFilter });
           
-          // Sync URL to match current mode
-          const url = new URL(window.location.href);
-          if (currentMode === 'all') {
-            url.searchParams.delete('price');
-          } else {
-            url.searchParams.set('price', currentMode);
-          }
-          window.history.replaceState({}, '', url.toString());
+          // Don't sync URL automatically on page load - keeps clean URLs
+          // URL parameter will only be added when user actively changes mode via toggle
         }
       }
     }),
