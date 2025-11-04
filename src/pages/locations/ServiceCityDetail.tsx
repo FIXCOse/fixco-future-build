@@ -106,6 +106,40 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
 
+  // SEO Schema - must be before any early returns
+  const breadcrumbSchema = useMemo(() => getBreadcrumbSchema([
+    { name: 'Hem', url: 'https://fixco.se' },
+    { name: 'Tjänster', url: 'https://fixco.se/tjanster' },
+    { name: serviceData?.title || '', url: `https://fixco.se/tjanster/${service}` },
+    { name: city, url: `https://fixco.se/tjanster/${cityServiceData?.slug || ''}` }
+  ]), [serviceData, service, cityServiceData, city]);
+
+  const localBusinessSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": `Fixco ${cityServiceData?.h1 || ''}`,
+    "description": cityServiceData?.description || '',
+    "areaServed": {
+      "@type": "City",
+      "name": city,
+      "containsPlace": cityDataItem.districts.map(district => ({
+        "@type": "Place",
+        "name": district
+      }))
+    },
+    "priceRange": "$$",
+    "telephone": "+46-XX-XXX-XX-XX",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": city,
+      "addressCountry": "SE"
+    }
+  }), [cityServiceData, city, cityDataItem]);
+
+  const faqSchema = useMemo(() => getFAQSchema(
+    cityDataItem.faqs.map(faq => ({ question: faq.q, answer: faq.a }))
+  ), [cityDataItem]);
+
   // Handle loading and error states AFTER all hooks
   if (!serviceData || !cityServiceData) {
     return (
@@ -135,40 +169,6 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   }
 
   const IconComponent = serviceData.icon;
-
-  // SEO Schema
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'Hem', url: 'https://fixco.se' },
-    { name: 'Tjänster', url: 'https://fixco.se/tjanster' },
-    { name: serviceData.title, url: `https://fixco.se/tjanster/${service}` },
-    { name: city, url: `https://fixco.se/tjanster/${cityServiceData.slug}` }
-  ]);
-
-  const localBusinessSchema = {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": `Fixco ${cityServiceData.h1}`,
-    "description": cityServiceData.description,
-    "areaServed": {
-      "@type": "City",
-      "name": city,
-      "containsPlace": cityDataItem.districts.map(district => ({
-        "@type": "Place",
-        "name": district
-      }))
-    },
-    "priceRange": "$$",
-    "telephone": "+46-XX-XXX-XX-XX",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": city,
-      "addressCountry": "SE"
-    }
-  };
-
-  const faqSchema = getFAQSchema(
-    cityDataItem.faqs.map(faq => ({ question: faq.q, answer: faq.a }))
-  );
 
   return (
     <>

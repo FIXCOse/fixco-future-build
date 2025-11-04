@@ -67,6 +67,14 @@ const ServiceDetail = () => {
     return dbServices.filter(s => s.category === categoryName);
   }, [dbServices, categoryName]);
 
+  // Related services (other services from different categories)
+  const relatedServices = useMemo(() => {
+    if (!dbServices || !categoryName) return [];
+    return dbServices
+      .filter(s => s.category !== categoryName)
+      .slice(0, 3);
+  }, [dbServices, categoryName]);
+
   if (!service) {
     return (
       <div className="min-h-screen">
@@ -99,15 +107,6 @@ const ServiceDetail = () => {
   const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
-
-  // Related services (other services from different categories)
-  const relatedServices = useMemo(() => {
-    if (!dbServices || !categoryName) return [];
-    // Get services from other categories
-    return dbServices
-      .filter(s => s.category !== categoryName)
-      .slice(0, 3);
-  }, [dbServices, categoryName]);
 
   return (
     <div className="min-h-screen">
