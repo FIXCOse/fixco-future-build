@@ -185,11 +185,13 @@ const InvoicePublic = () => {
             <CardHeader className="bg-gradient-to-r from-primary via-blue-500 to-purple-600 border-b-0 pb-8">
               <div className="flex justify-between items-start text-white">
                 <div>
-                  <Link to="/" className="inline-block mb-4">
-                    <h1 className="text-5xl font-bold tracking-tight text-white hover:opacity-90 transition-opacity">
-                      FIXCO
-                    </h1>
-                  </Link>
+        <Link to="/" className="inline-block mb-4">
+          <img 
+            src="/assets/fixco-logo.webp" 
+            alt="Fixco" 
+            className="h-12 w-auto hover:opacity-90 transition-opacity"
+          />
+        </Link>
                   <CardTitle className="text-2xl mb-2 text-white">Faktura</CardTitle>
                   <p className="text-white/90 text-lg font-medium">
                     {invoice.invoice_number}
