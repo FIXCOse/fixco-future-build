@@ -160,7 +160,7 @@ const ServiceDetail = () => {
             {/* Service Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{service.subServices.length}</div>
+                <div className="text-2xl font-bold text-primary">{filteredSubServices.length}</div>
                 <div className="text-sm text-muted-foreground">{t('serviceDetail.differentServices')}</div>
               </div>
               <div className="text-center">
