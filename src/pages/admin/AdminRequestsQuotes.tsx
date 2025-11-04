@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
 import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
 import InvoicePreviewDialog from "@/components/admin/InvoicePreviewDialog";
+import { AdvancedInvoiceEditor } from "@/components/admin/AdvancedInvoiceEditor";
 import { createCustomer } from "@/lib/api/customers";
 import { createInvoiceFromJob } from "@/lib/api/invoices";
 import {
@@ -41,6 +42,8 @@ export default function AdminRequestsQuotes() {
   const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
   const [invoicePreviewOpen, setInvoicePreviewOpen] = useState(false);
   const [selectedJobForInvoice, setSelectedJobForInvoice] = useState<any>(null);
+  const [advancedInvoiceOpen, setAdvancedInvoiceOpen] = useState(false);
+  const [advancedInvoiceJobData, setAdvancedInvoiceJobData] = useState<any>(null);
 
   // Filter based on tab
   const statusFilter = [activeTab];
@@ -237,15 +240,50 @@ export default function AdminRequestsQuotes() {
       return;
     }
 
-    setSelectedJobForInvoice({
-      job: item.job,
-      timeLogs: item.timeLogs || [],
-      materialLogs: item.materialLogs || [],
-      expenseLogs: item.expenseLogs || [],
-      customer: item.customer,
-      booking: item.booking,
-    });
-    setInvoicePreviewOpen(true);
+    // Prepare job data for advanced invoice editor
+    const jobData = {
+      id: item.job.id,
+      title: (item.job as any).title || item.booking.service_slug || 'Ej angivet',
+      customer_id: customerId,
+      customer: item.customer ? {
+        id: customerId,
+        name: item.customer.name,
+        email: item.customer.email,
+        phone: item.customer.phone
+      } : item.booking.payload ? {
+        id: customerId,
+        name: item.booking.payload.name || item.booking.payload.contact_name || 'Okänd',
+        email: item.booking.payload.email || item.booking.payload.contact_email,
+        phone: item.booking.payload.phone || item.booking.payload.contact_phone
+      } : undefined,
+      totalHours: item.totalHours || 0,
+      hourlyRate: (item.job as any).hourly_rate || 950,
+      totalMaterialCost: item.totalMaterialCost || 0,
+      totalExpenses: item.totalExpenses || 0,
+      pricing_mode: (item.job as any).pricing_mode,
+      fixed_price: (item.job as any).fixed_price
+    };
+
+    setAdvancedInvoiceJobData(jobData);
+    setAdvancedInvoiceOpen(true);
+  };
+
+  const handleCreateInvoiceSubmit = async (invoicePayload: any) => {
+    try {
+      const { data: invoiceData, error } = await supabase.functions.invoke('create-invoice-from-job', {
+        body: invoicePayload
+      });
+
+      if (error) throw error;
+
+      toast.success('Faktura skapad!');
+      setAdvancedInvoiceOpen(false);
+      setAdvancedInvoiceJobData(null);
+      refresh();
+    } catch (error: any) {
+      console.error('Error creating invoice:', error);
+      throw error; // Let AdvancedInvoiceEditor handle error display
+    }
   };
 
   const handleDeleteBooking = async () => {
@@ -464,21 +502,13 @@ export default function AdminRequestsQuotes() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {selectedJobForInvoice && (
-        <InvoicePreviewDialog
-          open={invoicePreviewOpen}
-          onOpenChange={setInvoicePreviewOpen}
-          job={selectedJobForInvoice.job}
-          timeLogs={selectedJobForInvoice.timeLogs}
-          materialLogs={selectedJobForInvoice.materialLogs}
-          expenseLogs={selectedJobForInvoice.expenseLogs}
-          onInvoiceCreated={() => {
-            setInvoicePreviewOpen(false);
-            setSelectedJobForInvoice(null);
-            refresh();
-          }}
-        />
-      )}
+      {/* Advanced Invoice Editor */}
+      <AdvancedInvoiceEditor
+        open={advancedInvoiceOpen}
+        onOpenChange={setAdvancedInvoiceOpen}
+        jobData={advancedInvoiceJobData}
+        onCreateInvoice={handleCreateInvoiceSubmit}
+      />
     </div>
   );
 }

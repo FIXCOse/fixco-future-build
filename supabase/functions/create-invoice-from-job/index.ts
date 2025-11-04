@@ -24,8 +24,22 @@ serve(async (req) => {
       }
     );
 
-    // Get the job ID from the request
-    const { jobId, customerId } = await req.json();
+    // Get the job ID and optional custom data from the request
+    const { 
+      jobId, 
+      customerId,
+      lineItems,
+      discountType,
+      discountValue,
+      discountAmount,
+      vatEnabled,
+      vatAmount,
+      subtotal,
+      totalAmount,
+      customerNotes,
+      internalNotes,
+      paymentTerms
+    } = await req.json();
 
     if (!jobId) {
       throw new Error("Job ID is required");
@@ -33,86 +47,95 @@ serve(async (req) => {
 
     console.log("Creating invoice for job:", jobId);
 
-    // Get invoice data from the job
-    const { data: invoiceData, error: invoiceError } = await supabaseAdmin
-      .rpc('prepare_invoice_from_job', { p_job_id: jobId });
+    // If custom line items provided, use them; otherwise get from job
+    let finalLineItems = lineItems;
+    let finalSubtotal = subtotal;
+    let finalVatAmount = vatAmount;
+    let finalTotalAmount = totalAmount;
+    let finalDiscountAmount = discountAmount || 0;
 
-    if (invoiceError) {
-      console.error("Error preparing invoice data:", invoiceError);
-      throw invoiceError;
+    if (!finalLineItems || finalLineItems.length === 0) {
+      // Get invoice data from the job
+      const { data: invoiceData, error: invoiceError } = await supabaseAdmin
+        .rpc('prepare_invoice_from_job', { p_job_id: jobId });
+
+      if (invoiceError) {
+        console.error("Error preparing invoice data:", invoiceError);
+        throw invoiceError;
+      }
+
+      console.log("Invoice data prepared:", invoiceData);
+
+      // Calculate totals
+      finalSubtotal = invoiceData.subtotal || 0;
+      const vatPercent = vatEnabled !== false ? 25 : 0; // Swedish VAT
+      finalVatAmount = finalSubtotal * (vatPercent / 100);
+      finalTotalAmount = finalSubtotal + finalVatAmount;
+
+      // Create line items
+      finalLineItems = [];
+
+      // Add labor/time line item
+      if (invoiceData.pricing_mode === 'hourly' && invoiceData.hours > 0) {
+        finalLineItems.push({
+          description: 'Arbetstimmar',
+          quantity: invoiceData.hours,
+          unit_price: invoiceData.hourly_rate || 0,
+          amount: invoiceData.hours * (invoiceData.hourly_rate || 0)
+        });
+      } else if (invoiceData.pricing_mode === 'fixed') {
+        finalLineItems.push({
+          description: 'Arbete (fast pris)',
+          quantity: 1,
+          unit_price: invoiceData.fixed_price || 0,
+          amount: invoiceData.fixed_price || 0
+        });
+      }
+
+      // Add materials line item if any
+      if (invoiceData.materials > 0) {
+        finalLineItems.push({
+          description: 'Material och delar',
+          quantity: 1,
+          unit_price: invoiceData.materials,
+          amount: invoiceData.materials
+        });
+      }
+
+      // Add expenses line item if any
+      if (invoiceData.expenses > 0) {
+        finalLineItems.push({
+          description: 'Utlägg och övriga kostnader',
+          quantity: 1,
+          unit_price: invoiceData.expenses,
+          amount: invoiceData.expenses
+        });
+      }
     }
-
-    console.log("Invoice data prepared:", invoiceData);
-
-    // Calculate totals
-    const subtotal = invoiceData.subtotal || 0;
-    const vatPercent = 25; // Swedish VAT
-    const vatAmount = subtotal * (vatPercent / 100);
-    const totalAmount = subtotal + vatAmount;
 
     // Generate invoice number
     const invoiceNumber = `INV-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
 
-    // Create line items
-    const lineItems = [];
-
-    // Add labor/time line item
-    if (invoiceData.pricing_mode === 'hourly' && invoiceData.hours > 0) {
-      lineItems.push({
-        type: 'labor',
-        description: 'Arbetstimmar',
-        quantity: invoiceData.hours,
-        unit_price: invoiceData.hourly_rate || 0,
-        total: invoiceData.hours * (invoiceData.hourly_rate || 0)
-      });
-    } else if (invoiceData.pricing_mode === 'fixed') {
-      lineItems.push({
-        type: 'labor',
-        description: 'Arbete (fast pris)',
-        quantity: 1,
-        unit_price: invoiceData.fixed_price || 0,
-        total: invoiceData.fixed_price || 0
-      });
-    }
-
-    // Add materials line item if any
-    if (invoiceData.materials > 0) {
-      lineItems.push({
-        type: 'materials',
-        description: 'Material och delar',
-        quantity: 1,
-        unit_price: invoiceData.materials,
-        total: invoiceData.materials
-      });
-    }
-
-    // Add expenses line item if any
-    if (invoiceData.expenses > 0) {
-      lineItems.push({
-        type: 'expenses',
-        description: 'Utlägg och övriga kostnader',
-        quantity: 1,
-        unit_price: invoiceData.expenses,
-        total: invoiceData.expenses
-      });
-    }
+    // Prepare invoice record data
+    const invoiceData: any = {
+      invoice_number: invoiceNumber,
+      customer_id: customerId,
+      subtotal: finalSubtotal,
+      vat_amount: finalVatAmount,
+      total_amount: finalTotalAmount,
+      discount_amount: finalDiscountAmount,
+      line_items: finalLineItems,
+      status: 'draft',
+      issue_date: new Date().toISOString().split('T')[0],
+      due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+      rot_amount: 0,
+      rut_amount: 0
+    };
 
     // Create the invoice record
     const { data: invoice, error: createError } = await supabaseAdmin
       .from('invoices')
-      .insert({
-        invoice_number: invoiceNumber,
-        customer_id: customerId,
-        subtotal: subtotal,
-        vat_amount: vatAmount,
-        total_amount: totalAmount,
-        line_items: lineItems,
-        status: 'draft',
-        issue_date: new Date().toISOString().split('T')[0],
-        due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
-        rot_amount: invoiceData.rot_rut?.rot_amount || 0,
-        rut_amount: invoiceData.rot_rut?.rut_amount || 0
-      })
+      .insert(invoiceData)
       .select()
       .single();
 
@@ -132,8 +155,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        invoice: invoice,
-        invoiceData: invoiceData
+        invoice: invoice
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
