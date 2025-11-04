@@ -17,8 +17,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const url = new URL(req.url);
-    const token = url.searchParams.get("token");
+    const { token } = await req.json();
 
     if (!token) {
       return new Response(
