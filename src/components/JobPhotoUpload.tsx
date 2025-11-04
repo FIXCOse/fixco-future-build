@@ -22,17 +22,19 @@ interface JobPhotoUploadProps {
 }
 
 export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUploadProps) => {
-  const [uploading, setUploading] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState<Set<string>>(new Set());
   const [caption, setCaption] = useState('');
   const { toast } = useToast();
 
   const uploadPhoto = useCallback(async (file: File) => {
+    const fileId = `${file.name}-${Date.now()}`;
+    
     try {
-      setUploading(true);
+      setUploadingFiles(prev => new Set(prev).add(fileId));
 
       // Generate unique filename
       const fileExt = file.name.split('.').pop();
-      const fileName = `${jobId}/${Date.now()}.${fileExt}`;
+      const fileName = `${jobId}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
       // Upload to Supabase Storage
       const { error: uploadError } = await supabase.storage
@@ -53,25 +55,39 @@ export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUpload
 
       if (dbError) throw dbError;
 
-      toast({ title: "Foto uppladdat", description: "Fotot har sparats till jobbet." });
-      setCaption('');
+      toast({ 
+        title: "Foto uppladdat", 
+        description: `${file.name} har laddats upp.` 
+      });
+      
       onPhotosUpdate();
 
     } catch (error: any) {
       toast({ 
         title: "Fel vid uppladdning", 
-        description: error.message, 
+        description: `${file.name}: ${error.message}`, 
         variant: "destructive" 
       });
     } finally {
-      setUploading(false);
+      setUploadingFiles(prev => {
+        const next = new Set(prev);
+        next.delete(fileId);
+        return next;
+      });
     }
   }, [jobId, caption, toast, onPhotosUpdate]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      uploadPhoto(file);
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Upload all files in parallel
+      Array.from(files).forEach(file => {
+        uploadPhoto(file);
+      });
+      // Reset input so same files can be selected again
+      event.target.value = '';
+      // Clear caption after upload
+      setCaption('');
     }
   };
 
@@ -149,12 +165,14 @@ export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUpload
           <div className="flex gap-2">
             <Button
               variant="outline"
-              disabled={uploading}
+              disabled={uploadingFiles.size > 0}
               onClick={() => document.getElementById('photo-input')?.click()}
               className="flex-1"
             >
               <Upload className="h-4 w-4 mr-2" />
-              {uploading ? 'Laddar upp...' : 'Välj foto'}
+              {uploadingFiles.size > 0 
+                ? `Laddar upp ${uploadingFiles.size} fil(er)...` 
+                : 'Välj foto(n)'}
             </Button>
           </div>
 
@@ -162,6 +180,7 @@ export const JobPhotoUpload = ({ jobId, photos, onPhotosUpdate }: JobPhotoUpload
             id="photo-input"
             type="file"
             accept="image/*"
+            multiple
             onChange={handleFileSelect}
             className="hidden"
           />
