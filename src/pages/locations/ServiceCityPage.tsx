@@ -4,7 +4,8 @@ import { Seo } from "@/components/SEO";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
-import { CheckCircle2, Phone, Calendar, MapPin, Zap } from "lucide-react";
+import { CheckCircle2, Phone, Calendar, MapPin, Zap, FileText } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 interface ServiceCityPageProps {
   service: ServiceKey;
@@ -103,19 +104,27 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4">
-              <a 
-                href="tel:+46701234567" 
+              <button
+                onClick={() => {
+                  openServiceRequestModal({
+                    serviceSlug: item.slug,
+                    prefill: { 
+                      service_name: item.h1 
+                    }
+                  });
+                }}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
-                <Phone className="w-5 h-5" />
-                Ring 070-123 45 67
-              </a>
-              <Link 
-                to="/boka-hembesok" 
+                <FileText className="w-5 h-5" />
+                Begär offert
+              </button>
+              <a 
+                href="tel:08-123 456 78" 
                 className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-colors"
               >
-                Boka gratis hembesök
-              </Link>
+                <Phone className="w-5 h-5" />
+                Ring 08-123 456 78
+              </a>
             </div>
           </div>
 

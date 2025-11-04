@@ -16,12 +16,13 @@ import {
   Clock,
   Shield,
   Phone,
-  Calculator,
+  FileText,
   Calendar,
   MapPin,
   Star
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 const ServiceDetail = () => {
   const { slug } = useParams();
@@ -147,11 +148,26 @@ const ServiceDetail = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button variant="cta" size="lg">
-                <Calculator className="h-5 w-5 mr-2" />
+              <Button 
+                variant="cta" 
+                size="lg"
+                onClick={() => {
+                  openServiceRequestModal({
+                    serviceSlug: service.slug,
+                    prefill: { 
+                      service_name: t(`serviceCategories.${service.slug}.title` as any) || service.title 
+                    }
+                  });
+                }}
+              >
+                <FileText className="h-5 w-5 mr-2" />
                 {t('serviceDetail.requestQuote')}
               </Button>
-              <Button variant="ghost-premium" size="lg">
+              <Button 
+                variant="ghost-premium" 
+                size="lg"
+                onClick={() => window.location.href = 'tel:08-123 456 78'}
+              >
                 <Phone className="h-5 w-5 mr-2" />
                 {t('serviceDetail.callUs')}
               </Button>

@@ -8,7 +8,7 @@ import { useServices } from "@/hooks/useServices";
 import ServiceCardV3 from '@/components/ServiceCardV3';
 import { useCopy } from "@/copy/CopyProvider";
 import { 
-  Calculator,
+  FileText,
   Phone,
   Clock,
   Shield,
@@ -17,6 +17,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { cityData, CityKey } from "@/data/cityData";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
 import { Helmet } from "react-helmet-async";
@@ -237,11 +238,26 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <Button variant="cta" size="lg">
-                  <Calculator className="h-5 w-5 mr-2" />
+                <Button 
+                  variant="cta" 
+                  size="lg"
+                  onClick={() => {
+                    openServiceRequestModal({
+                      serviceSlug: serviceData.slug,
+                      prefill: { 
+                        service_name: cityServiceData.h1 
+                      }
+                    });
+                  }}
+                >
+                  <FileText className="h-5 w-5 mr-2" />
                   {t('serviceDetail.requestQuote')}
                 </Button>
-                <Button variant="ghost-premium" size="lg">
+                <Button 
+                  variant="ghost-premium" 
+                  size="lg"
+                  onClick={() => window.location.href = 'tel:08-123 456 78'}
+                >
                   <Phone className="h-5 w-5 mr-2" />
                   {t('serviceDetail.callUs')}
                 </Button>
