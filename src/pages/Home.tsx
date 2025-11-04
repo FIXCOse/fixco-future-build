@@ -89,7 +89,7 @@ const Home = () => {
   };
 
   useSEO({
-    title: "Fixco - Professionella Bygg- & Renoveringstjänster med ROT & RUT-avdrag",
+    title: "Fixco - Professionella Bygg- & Renoveringstjänster | ROT & RUT-avdrag 50%",
     description: "Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 50% rabatt med ROT-avdrag. Över 15 000 nöjda kunder i Uppsala och Stockholm.",
     keywords: "ROT-avdrag, RUT-avdrag, byggtjänster, renovering, elmontör, VVS, måleri, snickare, Uppsala, Stockholm, hemtjänster, hantverkare, byggfirma",
     image: "https://fixco.se/assets/hero-construction.jpg",
