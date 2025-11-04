@@ -36,251 +36,361 @@ const generateInvoiceHTML = (invoice: any, customer: any, property: any, company
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faktura ${invoice.invoice_number}</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        .invoice-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-        .content {
-            padding: 40px;
-        }
-        .invoice-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-        }
-        .company-info, .customer-info {
-            flex: 1;
-        }
-        .customer-info {
-            text-align: right;
-        }
-        .section-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #6366f1;
-        }
-        .info-line {
-            margin: 5px 0;
-            line-height: 1.5;
-        }
-        .invoice-meta {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 30px 0;
-        }
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .line-items {
-            margin: 30px 0;
-        }
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .items-table th,
-        .items-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .items-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #374151;
-        }
-        .items-table .amount {
-            text-align: right;
-        }
-        .totals {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 30px 0;
-        }
-        .total-line {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            padding: 5px 0;
-        }
-        .total-line.final {
-            border-top: 2px solid #6366f1;
-            font-weight: 700;
-            font-size: 1.2em;
-            color: #6366f1;
-            margin-top: 15px;
-            padding-top: 15px;
-        }
-        .rot-rut-info {
-            background: #ecfdf5;
-            border: 1px solid #10b981;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 30px 0;
-        }
-        .rot-rut-title {
-            color: #059669;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .terms {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid #e5e7eb;
-            font-size: 0.9em;
-            color: #6b7280;
-        }
-        .footer {
-            background: #f8f9fa;
-            padding: 30px;
-            text-align: center;
-            color: #6b7280;
-            font-size: 0.9em;
-        }
-        @media print {
-            body { background: white; }
-            .invoice-container { box-shadow: none; }
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #1a1a1a;
+        line-height: 1.6;
+        background: #ffffff;
+      }
+      
+      .invoice-container {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 0;
+        background: white;
+      }
+      
+      .header {
+        padding: 50px 40px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #8b5cf6 100%);
+        color: white;
+        margin-bottom: 0;
+      }
+      
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+      }
+      
+      .company-info h1 {
+        font-size: 56px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 15px;
+        color: white;
+      }
+      
+      .company-info h2 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.95);
+      }
+      
+      .company-info p {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+      }
+      
+      .invoice-meta {
+        text-align: right;
+        color: white;
+      }
+      
+      .invoice-meta .status {
+        display: inline-block;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      
+      .content {
+        padding: 40px;
+      }
+      
+      .details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        padding: 30px;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border-radius: 12px;
+      }
+      
+      .details-section h3 {
+        font-size: 18px;
+        color: #8b5cf6;
+        margin-bottom: 15px;
+        font-weight: 700;
+      }
+      
+      .details-section p {
+        margin-bottom: 8px;
+        color: #475569;
+        font-size: 14px;
+      }
+      
+      .details-section strong {
+        color: #1e293b;
+        font-weight: 600;
+      }
+      
+      .line-items {
+        margin-bottom: 40px;
+      }
+      
+      .line-items h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #1e293b;
+        font-weight: 700;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      
+      thead {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+      }
+      
+      th {
+        text-align: left;
+        padding: 16px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #1e293b;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      
+      th:last-child,
+      td:last-child {
+        text-align: right;
+      }
+      
+      td {
+        padding: 16px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        color: #475569;
+      }
+      
+      tbody tr:hover {
+        background: #f8fafc;
+      }
+      
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      
+      .totals {
+        margin-top: 30px;
+        padding: 30px;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+        border-radius: 12px;
+      }
+      
+      .totals-content {
+        max-width: 400px;
+        margin-left: auto;
+      }
+      
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 15px;
+      }
+      
+      .total-row.final {
+        padding-top: 15px;
+        border-top: 3px solid #8b5cf6;
+        margin-top: 15px;
+        font-size: 22px;
+        font-weight: 800;
+        color: #8b5cf6;
+      }
+      
+      .total-row span:first-child {
+        color: #64748b;
+        font-weight: 500;
+      }
+      
+      .total-row span:last-child {
+        font-weight: 700;
+        color: #1e293b;
+      }
+      
+      .total-row.final span {
+        color: #8b5cf6;
+      }
+      
+      .rot-rut-info {
+        margin-top: 30px;
+        padding: 25px;
+        background: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        border-radius: 8px;
+      }
+      
+      .rot-rut-info h3 {
+        color: #92400e;
+        margin-bottom: 12px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      
+      .rot-rut-info p {
+        color: #78350f;
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      
+      .terms {
+        margin-top: 40px;
+        padding: 25px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        font-size: 14px;
+        color: #475569;
+      }
+      
+      .terms strong {
+        color: #1e293b;
+      }
+      
+      .footer {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+        padding-top: 30px;
+        border-top: 2px solid #e2e8f0;
+      }
+      
+      @media print {
+        body { background: white; }
+        .invoice-container { box-shadow: none; }
+      }
     </style>
 </head>
 <body>
     <div class="invoice-container">
-        <div class="header">
-            <h1>FAKTURA</h1>
-            <p style="margin: 10px 0 0 0; font-size: 1.2em;">${invoice.invoice_number}</p>
+      <div class="header">
+        <div class="header-content">
+          <div class="company-info">
+            <h1>FIXCO</h1>
+            <h2>Faktura</h2>
+            <p>${invoice.invoice_number}</p>
+          </div>
+          <div class="invoice-meta">
+            <div class="status">${invoice.status === 'paid' ? 'BETALD' : invoice.status === 'sent' ? 'SKICKAD' : 'UTKAST'}</div>
+            <p><strong>Datum:</strong> ${formatDate(invoice.issue_date)}</p>
+            <p><strong>Förfallodatum:</strong> ${formatDate(invoice.due_date)}</p>
+          </div>
         </div>
-        
-        <div class="content">
-            <div class="invoice-details">
-                <div class="company-info">
-                    <div class="section-title">Från</div>
-                    <div class="info-line"><strong>Fixco AB</strong></div>
-                    <div class="info-line">Hantverkargatan 123</div>
-                    <div class="info-line">118 21 Stockholm</div>
-                    <div class="info-line">Org.nr: 556789-0123</div>
-                    <div class="info-line">info@fixco.se</div>
-                    <div class="info-line">08-123 45 67</div>
-                </div>
-                
-                <div class="customer-info">
-                    <div class="section-title">Till</div>
-                    <div class="info-line"><strong>${customer.first_name ? `${customer.first_name} ${customer.last_name}` : 'Okänd kund'}</strong></div>
-                     ${customer.company_name ? `<div class="info-line">${customer.company_name}</div>` : ''}
-                     ${customer.org_number ? `<div class="info-line">Org.nr: ${customer.org_number}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.address}</div>` : customer.address ? `<div class="info-line">${customer.address}</div>` : ''}
-                     ${property ? `<div class="info-line">${property.postal_code} ${property.city}</div>` : (customer.postal_code && customer.city) ? `<div class="info-line">${customer.postal_code} ${customer.city}</div>` : ''}
-                     <div class="info-line">${customer.email || ''}</div>
-                </div>
-            </div>
+      </div>
+      
+      <div class="content">
+        <div class="details">
+          <div class="details-section">
+            <h3>Från:</h3>
+            <p><strong>Fixco AB</strong></p>
+            <p>Hantverkargatan 123</p>
+            <p>118 21 Stockholm</p>
+            <p>Org.nr: 556789-0123</p>
+            <p>Momsreg.nr: SE556789012301</p>
+            <p>📧 info@fixco.se</p>
+            <p>📞 08-123 45 67</p>
+          </div>
+          <div class="details-section">
+            <h3>Till:</h3>
+            <p><strong>${customer.first_name ? `${customer.first_name} ${customer.last_name}` : 'Okänd kund'}</strong></p>
+            ${customer.company_name ? `<p>${customer.company_name}</p>` : ''}
+            ${customer.org_number ? `<p>Org.nr: ${customer.org_number}</p>` : ''}
+            ${property ? `<p>${property.address}</p>` : customer.address ? `<p>${customer.address}</p>` : ''}
+            ${property ? `<p>${property.postal_code} ${property.city}</p>` : (customer.postal_code && customer.city) ? `<p>${customer.postal_code} ${customer.city}</p>` : ''}
+            ${customer.email ? `<p>📧 ${customer.email}</p>` : ''}
+          </div>
+        </div>
             
-            <div class="invoice-meta">
-                <div class="meta-grid">
-                    <div>
-                        <strong>Fakturadatum:</strong> ${formatDate(invoice.issue_date)}
-                    </div>
-                    <div>
-                        <strong>Förfallodatum:</strong> ${formatDate(invoice.due_date)}
-                    </div>
-                </div>
+        <div class="line-items">
+          <h3>Specifikation</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Beskrivning</th>
+                <th>Antal</th>
+                <th>À-pris</th>
+                <th>Summa</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoice.line_items.map((item: any) => `
+                <tr>
+                  <td>${item.description}</td>
+                  <td>${item.quantity}</td>
+                  <td>${formatCurrency(item.unit_price)}</td>
+                  <td>${formatCurrency(item.total_price)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="totals">
+          <div class="totals-content">
+            <div class="total-row">
+              <span>Delsumma:</span>
+              <span>${formatCurrency(invoice.subtotal)}</span>
             </div>
-            
-            <div class="line-items">
-                <div class="section-title">Specifikation</div>
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th>Beskrivning</th>
-                            <th>Antal</th>
-                            <th class="amount">Enhetspris</th>
-                            <th class="amount">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${invoice.line_items.map((item: any) => `
-                            <tr>
-                                <td>${item.description}</td>
-                                <td>${item.quantity}</td>
-                                <td class="amount">${formatCurrency(item.unit_price)}</td>
-                                <td class="amount">${formatCurrency(item.total_price)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="totals">
-                <div class="total-line">
-                    <span>Subtotal:</span>
-                    <span>${formatCurrency(invoice.subtotal)}</span>
-                </div>
-                ${invoice.discount_amount > 0 ? `
-                    <div class="total-line">
-                        <span>Rabatt:</span>
-                        <span>-${formatCurrency(invoice.discount_amount)}</span>
-                    </div>
-                ` : ''}
-                <div class="total-line">
-                    <span>Moms (25%):</span>
-                    <span>${formatCurrency(invoice.vat_amount)}</span>
-                </div>
-                <div class="total-line final">
-                    <span>Att betala:</span>
-                    <span>${formatCurrency(invoice.total_amount)}</span>
-                </div>
-            </div>
-            
-            ${(invoice.rot_amount > 0 || invoice.rut_amount > 0) ? `
-                <div class="rot-rut-info">
-                    <div class="rot-rut-title">🎉 ROT/RUT-avdrag</div>
-                    ${invoice.rot_amount > 0 ? `<div>ROT-avdrag: ${formatCurrency(invoice.rot_amount)}</div>` : ''}
-                    ${invoice.rut_amount > 0 ? `<div>RUT-avdrag: ${formatCurrency(invoice.rut_amount)}</div>` : ''}
-                    <div style="margin-top: 10px; font-size: 0.9em;">
-                        <strong>Viktigt:</strong> ROT/RUT-avdragen hanteras direkt av Skatteverket och dras av från din slutskatt. 
-                        Denna faktura ska betalas till fullo.
-                    </div>
-                </div>
+            ${invoice.discount_amount > 0 ? `
+              <div class="total-row">
+                <span>Rabatt:</span>
+                <span>-${formatCurrency(invoice.discount_amount)}</span>
+              </div>
             ` : ''}
-            
-            <div class="terms">
-                <div class="section-title">Betalningsvillkor</div>
-                <p>Betalning sker inom 30 dagar från fakturadatum via bankgiro eller Swish.</p>
-                <p><strong>Bankgiro:</strong> 123-4567 | <strong>Swish:</strong> 123 456 78 90</p>
-                <p>Vid frågor om fakturan, kontakta oss på info@fixco.se eller 08-123 45 67.</p>
+            <div class="total-row">
+              <span>Moms (25%):</span>
+              <span>${formatCurrency(invoice.vat_amount)}</span>
             </div>
+            <div class="total-row final">
+              <span>Totalt att betala:</span>
+              <span>${formatCurrency(invoice.total_amount)}</span>
+            </div>
+          </div>
+        </div>
+            
+        ${(invoice.rot_amount > 0 || invoice.rut_amount > 0) ? `
+          <div class="rot-rut-info">
+            <h3>🎉 ROT/RUT-avdrag</h3>
+            ${invoice.rot_amount > 0 ? `<p>ROT-avdrag: ${formatCurrency(invoice.rot_amount)}</p>` : ''}
+            ${invoice.rut_amount > 0 ? `<p>RUT-avdrag: ${formatCurrency(invoice.rut_amount)}</p>` : ''}
+            <p style="margin-top: 10px;">
+              <strong>Viktigt:</strong> ROT/RUT-avdragen hanteras direkt av Skatteverket och dras av från din slutskatt. 
+              Denna faktura ska betalas till fullo.
+            </p>
+          </div>
+        ` : ''}
+        
+        <div class="terms">
+          <p><strong>Betalningsvillkor</strong></p>
+          <p>Betalning sker inom 30 dagar från fakturadatum via bankgiro eller Swish.</p>
+          <p><strong>Bankgiro:</strong> 123-4567 | <strong>Swish:</strong> 123 456 78 90</p>
+          <p>Vid frågor om fakturan, kontakta oss på info@fixco.se eller 08-123 45 67.</p>
         </div>
         
         <div class="footer">
-            <p>Tack för att du valde Fixco! Vi ser fram emot att hjälpa dig igen.</p>
-            <p>www.fixco.se | info@fixco.se | 08-123 45 67</p>
+          <p><strong>Tack för ditt förtroende!</strong></p>
+          <p>Vid frågor, kontakta oss på info@fixco.se</p>
+          <p>Fixco AB • 08-123 45 67 • info@fixco.se</p>
         </div>
+      </div>
     </div>
 </body>
 </html>`;
