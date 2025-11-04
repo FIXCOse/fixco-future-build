@@ -4,18 +4,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Search, Users, Eye, Mail, Phone, MapPin, Calendar, TrendingUp } from 'lucide-react';
+import { Search, Users, Eye, Mail, Phone, MapPin, Calendar, TrendingUp, Building2, Home } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { fetchCustomers, fetchCustomerWithDetails, type Customer } from '@/lib/api/customers';
 import { CustomerDetailModal } from '@/components/admin/CustomerDetailModal';
+import { CustomerTypeFilter } from '@/components/admin/CustomerTypeFilter';
 import { supabase } from '@/integrations/supabase/client';
 import { useBookingsRealtime } from '@/hooks/useBookingsRealtime';
 import { useQuotesRealtime } from '@/hooks/useQuotesRealtime';
 
+type CustomerType = 'all' | 'private' | 'company' | 'brf';
+
 const AdminCustomers = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [customerType, setCustomerType] = useState<CustomerType>('all');
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
   const { data: customers, isLoading, refetch: refetchCustomers } = useQuery({
@@ -62,14 +66,38 @@ const AdminCustomers = () => {
   useBookingsRealtime(handleRealtimeUpdate);
   useQuotesRealtime(handleRealtimeUpdate);
 
+  // Calculate counts per type
+  const customerCounts = {
+    all: customers?.length || 0,
+    private: customers?.filter(c => c.customer_type === 'private' || !c.customer_type).length || 0,
+    company: customers?.filter(c => c.customer_type === 'company').length || 0,
+    brf: customers?.filter(c => c.customer_type === 'brf').length || 0,
+  };
+
   const filteredCustomers = customers?.filter(customer => {
+    // Filter by customer type
+    if (customerType !== 'all') {
+      if (customerType === 'private' && customer.customer_type !== 'private' && customer.customer_type !== null) {
+        return false;
+      }
+      if (customerType === 'company' && customer.customer_type !== 'company') {
+        return false;
+      }
+      if (customerType === 'brf' && customer.customer_type !== 'brf') {
+        return false;
+      }
+    }
+
+    // Filter by search term
     if (!searchTerm) return true;
     const search = searchTerm.toLowerCase();
     return (
       customer.name?.toLowerCase().includes(search) ||
       customer.email?.toLowerCase().includes(search) ||
       customer.phone?.toLowerCase().includes(search) ||
-      customer.city?.toLowerCase().includes(search)
+      customer.city?.toLowerCase().includes(search) ||
+      customer.company_name?.toLowerCase().includes(search) ||
+      customer.brf_name?.toLowerCase().includes(search)
     );
   });
 
@@ -142,20 +170,27 @@ const AdminCustomers = () => {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-4">
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Kundlista
-            </CardTitle>
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Sök namn, e-post, telefon, stad..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Kundlista
+              </CardTitle>
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Sök namn, e-post, telefon, stad, företag..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
             </div>
+            <CustomerTypeFilter
+              value={customerType}
+              onChange={setCustomerType}
+              counts={customerCounts}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -183,8 +218,30 @@ const AdminCustomers = () => {
                     <Users className="h-6 w-6 text-primary" />
                   </div>
                   <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold">{customer.name}</h3>
+                      
+                      {/* Customer Type Badge */}
+                      {customer.customer_type === 'company' && (
+                        <Badge variant="outline" className="bg-blue-500/10 text-blue-500 border-blue-500/20">
+                          <Building2 className="h-3 w-3 mr-1" />
+                          Företag
+                        </Badge>
+                      )}
+                      {customer.customer_type === 'brf' && (
+                        <Badge variant="outline" className="bg-purple-500/10 text-purple-500 border-purple-500/20">
+                          <Building2 className="h-3 w-3 mr-1" />
+                          BRF
+                        </Badge>
+                      )}
+                      {(customer.customer_type === 'private' || !customer.customer_type) && (
+                        <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                          <Home className="h-3 w-3 mr-1" />
+                          Privat
+                        </Badge>
+                      )}
+                      
+                      {/* Booking Count Badge */}
                       {customer.booking_count && customer.booking_count > 0 && (
                         <Badge variant="secondary">
                           {customer.booking_count} {customer.booking_count === 1 ? 'bokning' : 'bokningar'}

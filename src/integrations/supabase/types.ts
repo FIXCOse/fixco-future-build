@@ -385,13 +385,17 @@ export type Database = {
         Row: {
           address: string | null
           booking_count: number | null
+          brf_name: string | null
           city: string | null
+          company_name: string | null
           created_at: string | null
+          customer_type: Database["public"]["Enums"]["customer_type"] | null
           email: string
           id: string
           last_booking_at: string | null
           name: string
           notes: string | null
+          org_number: string | null
           personnummer: string | null
           phone: string | null
           postal_code: string | null
@@ -400,13 +404,17 @@ export type Database = {
         Insert: {
           address?: string | null
           booking_count?: number | null
+          brf_name?: string | null
           city?: string | null
+          company_name?: string | null
           created_at?: string | null
+          customer_type?: Database["public"]["Enums"]["customer_type"] | null
           email: string
           id?: string
           last_booking_at?: string | null
           name: string
           notes?: string | null
+          org_number?: string | null
           personnummer?: string | null
           phone?: string | null
           postal_code?: string | null
@@ -415,13 +423,17 @@ export type Database = {
         Update: {
           address?: string | null
           booking_count?: number | null
+          brf_name?: string | null
           city?: string | null
+          company_name?: string | null
           created_at?: string | null
+          customer_type?: Database["public"]["Enums"]["customer_type"] | null
           email?: string
           id?: string
           last_booking_at?: string | null
           name?: string
           notes?: string | null
+          org_number?: string | null
           personnummer?: string | null
           phone?: string | null
           postal_code?: string | null
@@ -3673,6 +3685,7 @@ export type Database = {
         | "scheduled"
         | "done"
         | "canceled"
+      customer_type: "private" | "company" | "brf"
       invoice_status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
       loyalty_tier: "bronze" | "silver" | "gold" | "platinum"
       property_type:
@@ -3834,6 +3847,7 @@ export const Constants = {
         "done",
         "canceled",
       ],
+      customer_type: ["private", "company", "brf"],
       invoice_status: ["draft", "sent", "paid", "overdue", "cancelled"],
       loyalty_tier: ["bronze", "silver", "gold", "platinum"],
       property_type: [

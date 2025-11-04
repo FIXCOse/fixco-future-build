@@ -9,6 +9,10 @@ export type Customer = {
   personnummer?: string | null;
   postal_code?: string | null;
   city?: string | null;
+  customer_type?: 'private' | 'company' | 'brf';
+  company_name?: string | null;
+  org_number?: string | null;
+  brf_name?: string | null;
   booking_count?: number;
   last_booking_at?: string | null;
   total_spent?: number;
@@ -62,6 +66,10 @@ export async function createCustomer(customerData: {
   personnummer?: string;
   postalCode?: string;
   city?: string;
+  customerType?: 'private' | 'company' | 'brf';
+  companyName?: string;
+  orgNumber?: string;
+  brfName?: string;
 }) {
   const { data, error } = await supabase
     .from('customers')
@@ -72,7 +80,11 @@ export async function createCustomer(customerData: {
       address: customerData.address,
       personnummer: customerData.personnummer,
       postal_code: customerData.postalCode,
-      city: customerData.city
+      city: customerData.city,
+      customer_type: customerData.customerType || 'private',
+      company_name: customerData.companyName,
+      org_number: customerData.orgNumber,
+      brf_name: customerData.brfName
     })
     .select()
     .single();

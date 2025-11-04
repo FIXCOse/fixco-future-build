@@ -23,7 +23,7 @@ serve(async (req) => {
       }
     );
 
-    const { email, firstName, lastName, phone } = await req.json();
+    const { email, firstName, lastName, phone, customerType, companyName, orgNumber, brfName } = await req.json();
 
     if (!email) {
       return new Response(
@@ -65,7 +65,11 @@ serve(async (req) => {
       user_metadata: {
         first_name: firstName || 'Okänd',
         last_name: lastName || 'Kund',
-        phone: phone || null
+        phone: phone || null,
+        customer_type: customerType || 'private',
+        company_name: companyName || null,
+        org_number: orgNumber || null,
+        brf_name: brfName || null
       }
     });
 

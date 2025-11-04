@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { User, Mail, Phone, MapPin, Calendar, FileText, Receipt, CreditCard, ExternalLink } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Calendar, FileText, Receipt, CreditCard, ExternalLink, Building2, Home } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
@@ -81,8 +81,28 @@ export function CustomerDetailModal({
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
               <User className="h-6 w-6 text-primary" />
             </div>
-            <div>
-              <h2 className="text-2xl font-bold">{customer.name}</h2>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl font-bold">{customer.name}</h2>
+                {customer.customer_type === 'company' && (
+                  <Badge variant="outline" className="bg-blue-500/10 text-blue-500 border-blue-500/20">
+                    <Building2 className="h-3 w-3 mr-1" />
+                    Företag
+                  </Badge>
+                )}
+                {customer.customer_type === 'brf' && (
+                  <Badge variant="outline" className="bg-purple-500/10 text-purple-500 border-purple-500/20">
+                    <Building2 className="h-3 w-3 mr-1" />
+                    BRF
+                  </Badge>
+                )}
+                {(customer.customer_type === 'private' || !customer.customer_type) && (
+                  <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                    <Home className="h-3 w-3 mr-1" />
+                    Privat
+                  </Badge>
+                )}
+              </div>
               <p className="text-sm text-muted-foreground">Kundnummer: {customer.id.slice(0, 8)}</p>
             </div>
           </DialogTitle>
@@ -108,7 +128,36 @@ export function CustomerDetailModal({
                     <span>{customer.phone}</span>
                   </div>
                 )}
-                {customer.personnummer && (
+                
+                {/* Company-specific fields */}
+                {customer.customer_type === 'company' && customer.company_name && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Building2 className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium">Företag:</span>
+                    <span>{customer.company_name}</span>
+                  </div>
+                )}
+                
+                {/* BRF-specific fields */}
+                {customer.customer_type === 'brf' && customer.brf_name && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Building2 className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium">BRF:</span>
+                    <span>{customer.brf_name}</span>
+                  </div>
+                )}
+                
+                {/* Org number for company/BRF */}
+                {(customer.customer_type === 'company' || customer.customer_type === 'brf') && customer.org_number && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium">Org.nummer:</span>
+                    <span>{customer.org_number}</span>
+                  </div>
+                )}
+                
+                {/* Personnummer for private customers */}
+                {(customer.customer_type === 'private' || !customer.customer_type) && customer.personnummer && (
                   <div className="flex items-center gap-2 text-sm">
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="font-medium">Personnummer:</span>
