@@ -711,7 +711,7 @@ export type Database = {
             foreignKeyName: "invoices_quote_id_fkey"
             columns: ["quote_id"]
             isOneToOne: false
-            referencedRelation: "quotes"
+            referencedRelation: "quotes_new"
             referencedColumns: ["id"]
           },
         ]
