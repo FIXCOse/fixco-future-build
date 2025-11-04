@@ -629,6 +629,7 @@ export type Database = {
           organization_id: string | null
           paid_at: string | null
           pdf_url: string | null
+          public_token: string | null
           quote_id: string | null
           rot_amount: number | null
           rut_amount: number | null
@@ -651,6 +652,7 @@ export type Database = {
           organization_id?: string | null
           paid_at?: string | null
           pdf_url?: string | null
+          public_token?: string | null
           quote_id?: string | null
           rot_amount?: number | null
           rut_amount?: number | null
@@ -673,6 +675,7 @@ export type Database = {
           organization_id?: string | null
           paid_at?: string | null
           pdf_url?: string | null
+          public_token?: string | null
           quote_id?: string | null
           rot_amount?: number | null
           rut_amount?: number | null

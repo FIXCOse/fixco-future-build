@@ -19,7 +19,7 @@ const formatCurrency = (amount: number) =>
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString("sv-SE");
 
-function generateInvoiceHTML(invoice: any, customer: any, property: any) {
+function generateInvoiceHTML(invoice: any, customer: any, property: any, publicUrl?: string) {
   const lineItemsHtml = (invoice?.line_items ?? [])
     .map((item: any) => {
       const qty = Number(item.quantity ?? 1);
@@ -121,6 +121,13 @@ function generateInvoiceHTML(invoice: any, customer: any, property: any) {
         <div class="total-line final"><span>Att betala:</span><span>${formatCurrency(Number(invoice.total_amount || 0))}</span></div>
       </div>
       <div class="footer">
+        ${publicUrl ? `
+        <div style="margin-bottom:20px">
+          <a href="${publicUrl}" style="display:inline-block; padding:12px 24px; background:#6366f1; color:white; text-decoration:none; border-radius:6px; font-weight:600;">
+            Visa faktura online
+          </a>
+        </div>
+        ` : ''}
         <p>Tack för att du valde Fixco!</p>
         <p>www.fixco.se | info@fixco.se | 08-123 45 67</p>
       </div>
@@ -176,7 +183,12 @@ serve(async (req) => {
       );
     }
 
-    const html = generateInvoiceHTML(inv, inv.customer, inv.property);
+    // Generate public URL if token exists
+    const publicUrl = inv.public_token 
+      ? `https://fixco.se/invoice/${inv.public_token}`
+      : undefined;
+
+    const html = generateInvoiceHTML(inv, inv.customer, inv.property, publicUrl);
 
     const to = body.toEmail || inv.customer?.email;
     if (!to) {

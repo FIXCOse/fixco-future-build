@@ -82,6 +82,7 @@ import WorkerSchedule from "./pages/worker/WorkerSchedule";
 import AdminSchedule from "./pages/admin/AdminSchedule";
 import AdminWorkerAnalytics from "./pages/admin/AdminWorkerAnalytics";
 import AdminJobDetail from "./pages/admin/AdminJobDetail";
+import InvoicePublic from "./pages/InvoicePublic";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -147,6 +148,9 @@ const App = () => {
                   
                   {/* Public Quote View */}
                   <Route path="/q/:token" element={<QuotePublic />} />
+                  
+                  {/* Public Invoice View */}
+                  <Route path="/invoice/:token" element={<InvoicePublic />} />
 
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={
