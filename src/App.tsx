@@ -45,7 +45,6 @@ import StaffManagement from "./pages/MyFixco/StaffManagement";
 // Admin pages
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
-import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminQuotes from "./pages/admin/AdminQuotes";
 import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
@@ -177,7 +176,7 @@ const App = () => {
 
                   {/* Admin Routes */}
                   <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                    <Route index element={<AdminDashboard />} />
+                    <Route index element={<DashboardOverview />} />
                     <Route path="services" element={<AdminServices />} />
                     <Route path="requests-quotes" element={
                       <Suspense fallback={<SuspenseFallback />}>
