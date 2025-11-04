@@ -84,6 +84,9 @@ serve(async (req) => {
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30);
 
+    // Generate public token for sharing
+    const publicToken = crypto.randomUUID();
+
     // Create invoice
     const { data: invoice, error: invoiceError } = await supabase
       .from('invoices')
@@ -93,6 +96,7 @@ serve(async (req) => {
         customer_id: quote.customer_id,
         organization_id: quote.organization_id,
         invoice_number: invoiceNumber,
+        public_token: publicToken,
         status: 'draft',
         issue_date: new Date().toISOString().split('T')[0],
         due_date: dueDate.toISOString().split('T')[0],
