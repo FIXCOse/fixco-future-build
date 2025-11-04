@@ -22,6 +22,7 @@ type Props = {
   onViewInvoice: (invoiceId: string) => void;
   onSendInvoice: (invoiceId: string) => void;
   onCreateJob: (quoteId: string) => void;
+  onCreateInvoiceFromJob?: (jobId: string, customerId: string) => void;
   onRefresh: () => void;
 };
 
@@ -37,10 +38,11 @@ export function RequestQuoteCard({
   onViewInvoice,
   onSendInvoice,
   onCreateJob,
+  onCreateInvoiceFromJob,
   onRefresh,
 }: Props) {
-  const { booking, quote, customer, invoice, job } = item;
-  const { workers, totalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
+  const { booking, quote, customer, invoice, job, timeLogs, materialLogs, expenseLogs, totalHours: jobTotalHours, totalMaterialCost, totalExpenses } = item;
+  const { workers, totalHours: workerTotalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
   
   const handleRefresh = () => {
     if (job?.id) {
@@ -254,7 +256,7 @@ export function RequestQuoteCard({
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">🔧 Jobb #{job.id.slice(0, 8)}</h3>
                 <Badge variant={job.status === 'completed' ? 'default' : 'secondary'}>
-                  {job.status === 'completed' ? 'Slutfört' : 'Pågående'}
+                  {job.status === 'completed' ? 'Slutfört ✓' : 'Pågående'}
                 </Badge>
               </div>
 
@@ -269,13 +271,46 @@ export function RequestQuoteCard({
                     <span className="font-semibold ml-2">{workers.length} st</span>
                   </div>
                 )}
-                {totalHours !== undefined && estimatedHours !== undefined && (
+                {jobTotalHours !== undefined && estimatedHours !== undefined && (
                   <div>
                     <span className="text-muted-foreground">Timmar:</span>
-                    <span className="font-semibold ml-2">{totalHours}/{estimatedHours}h</span>
+                    <span className="font-semibold ml-2">{jobTotalHours}/{estimatedHours}h</span>
                   </div>
                 )}
               </div>
+
+              {/* Show totals for completed jobs */}
+              {job.status === 'completed' && (
+                <div className="bg-muted/30 p-4 rounded-lg space-y-2">
+                  <h4 className="font-semibold text-sm">Sammanfattning</h4>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Timmar arbetade</p>
+                      <p className="font-bold">{jobTotalHours || 0}h</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Material</p>
+                      <p className="font-bold">{totalMaterialCost?.toLocaleString('sv-SE')} kr</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Utlägg</p>
+                      <p className="font-bold">{totalExpenses?.toLocaleString('sv-SE')} kr</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action button for completed jobs */}
+              {job.status === 'completed' && !invoice && onCreateInvoiceFromJob && (
+                <Button
+                  onClick={() => onCreateInvoiceFromJob(job.id, booking.customer_id)}
+                  size="sm"
+                  className="w-full"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Visa & Skapa faktura
+                </Button>
+              )}
             </div>
           </>
         )}

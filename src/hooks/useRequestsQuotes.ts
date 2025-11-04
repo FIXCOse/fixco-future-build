@@ -34,6 +34,9 @@ export type JobRow = {
   pool_enabled: boolean;
   source_type: string;
   source_id: string;
+  pricing_mode?: string;
+  hourly_rate?: number;
+  fixed_price?: number;
 };
 
 export type JobWorkerRow = {
@@ -44,6 +47,38 @@ export type JobWorkerRow = {
   total_hours: number;
 };
 
+export type TimeLogRow = {
+  id: string;
+  job_id: string;
+  worker_id: string;
+  started_at: string;
+  ended_at: string | null;
+  hours: number;
+};
+
+export type MaterialLogRow = {
+  id: string;
+  job_id: string;
+  worker_id: string;
+  name: string;
+  sku: string;
+  supplier: string;
+  qty: number;
+  unit_price: number;
+  created_at: string;
+};
+
+export type ExpenseLogRow = {
+  id: string;
+  job_id: string;
+  worker_id: string;
+  category: string;
+  note: string;
+  amount: number;
+  receipt_url: string | null;
+  created_at: string;
+};
+
 export type RequestWithQuote = {
   booking: BookingRow;
   quote?: QuoteType;
@@ -51,6 +86,12 @@ export type RequestWithQuote = {
   invoice?: InvoiceRow;
   job?: JobRow;
   workers?: JobWorkerRow[];
+  timeLogs?: TimeLogRow[];
+  materialLogs?: MaterialLogRow[];
+  expenseLogs?: ExpenseLogRow[];
+  totalHours?: number;
+  totalMaterialCost?: number;
+  totalExpenses?: number;
 };
 
 export type InvoiceRow = {
@@ -99,7 +140,7 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
       // Fetch jobs
       const { data: jobs, error: jobsError } = await supabase
         .from('jobs')
-        .select('id, status, estimated_hours, created_at, pool_enabled, source_type, source_id')
+        .select('id, status, estimated_hours, created_at, pool_enabled, source_type, source_id, pricing_mode, hourly_rate, fixed_price')
         .order('created_at', { ascending: false });
 
       if (jobsError) console.error('Error fetching jobs:', jobsError);
@@ -110,6 +151,27 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
         .select('*');
 
       if (workersError) console.error('Error fetching workers:', workersError);
+
+      // Fetch time logs
+      const { data: timeLogs, error: timeLogsError } = await supabase
+        .from('time_logs')
+        .select('*');
+
+      if (timeLogsError) console.error('Error fetching time logs:', timeLogsError);
+
+      // Fetch material logs
+      const { data: materialLogs, error: materialLogsError } = await supabase
+        .from('material_logs')
+        .select('*');
+
+      if (materialLogsError) console.error('Error fetching material logs:', materialLogsError);
+
+      // Fetch expense logs
+      const { data: expenseLogs, error: expenseLogsError } = await supabase
+        .from('expense_logs')
+        .select('*');
+
+      if (expenseLogsError) console.error('Error fetching expense logs:', expenseLogsError);
 
       // Fetch customers from profiles
       const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
@@ -141,6 +203,16 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
         // Get workers for this job
         const workers = job ? jobWorkers?.filter((jw: any) => jw.job_id === job.id) : [];
 
+        // Get logs for this job
+        const jobTimeLogs = job ? timeLogs?.filter((tl: any) => tl.job_id === job.id) : [];
+        const jobMaterialLogs = job ? materialLogs?.filter((ml: any) => ml.job_id === job.id) : [];
+        const jobExpenseLogs = job ? expenseLogs?.filter((el: any) => el.job_id === job.id) : [];
+
+        // Calculate totals
+        const totalHours = jobTimeLogs?.reduce((sum: number, log: any) => sum + (log.hours || 0), 0) || 0;
+        const totalMaterialCost = jobMaterialLogs?.reduce((sum: number, log: any) => sum + ((log.qty || 0) * (log.unit_price || 0)), 0) || 0;
+        const totalExpenses = jobExpenseLogs?.reduce((sum: number, log: any) => sum + (log.amount || 0), 0) || 0;
+
         return {
           booking,
           quote,
@@ -148,6 +220,12 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
           invoice,
           job,
           workers,
+          timeLogs: jobTimeLogs,
+          materialLogs: jobMaterialLogs,
+          expenseLogs: jobExpenseLogs,
+          totalHours,
+          totalMaterialCost,
+          totalExpenses,
         };
       });
 

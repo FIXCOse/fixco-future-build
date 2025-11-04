@@ -12,7 +12,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
 import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
+import InvoicePreviewDialog from "@/components/admin/InvoicePreviewDialog";
 import { createCustomer } from "@/lib/api/customers";
+import { createInvoiceFromJob } from "@/lib/api/invoices";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +39,8 @@ export default function AdminRequestsQuotes() {
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
   const [editQuoteId, setEditQuoteId] = useState<string | null>(null);
   const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
+  const [invoicePreviewOpen, setInvoicePreviewOpen] = useState(false);
+  const [selectedJobForInvoice, setSelectedJobForInvoice] = useState<any>(null);
 
   // Filter based on tab
   const statusFilter = [activeTab];
@@ -226,6 +230,24 @@ export default function AdminRequestsQuotes() {
     setJobCreationModalOpen(true);
   };
 
+  const handleCreateInvoiceFromJob = (jobId: string, customerId: string) => {
+    const item = data.find(d => d.job?.id === jobId);
+    if (!item || !item.job) {
+      toast.error('Kunde inte hitta jobb');
+      return;
+    }
+
+    setSelectedJobForInvoice({
+      job: item.job,
+      timeLogs: item.timeLogs || [],
+      materialLogs: item.materialLogs || [],
+      expenseLogs: item.expenseLogs || [],
+      customer: item.customer,
+      booking: item.booking,
+    });
+    setInvoicePreviewOpen(true);
+  };
+
   const handleDeleteBooking = async () => {
     if (!deleteId) return;
 
@@ -315,6 +337,7 @@ export default function AdminRequestsQuotes() {
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
                 onCreateJob={handleCreateJob}
+                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
               />
             ))
@@ -349,6 +372,7 @@ export default function AdminRequestsQuotes() {
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
                 onCreateJob={handleCreateJob}
+                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
               />
             ))
@@ -383,6 +407,7 @@ export default function AdminRequestsQuotes() {
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
                 onCreateJob={handleCreateJob}
+                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
               />
             ))
@@ -438,6 +463,22 @@ export default function AdminRequestsQuotes() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {selectedJobForInvoice && (
+        <InvoicePreviewDialog
+          open={invoicePreviewOpen}
+          onOpenChange={setInvoicePreviewOpen}
+          job={selectedJobForInvoice.job}
+          timeLogs={selectedJobForInvoice.timeLogs}
+          materialLogs={selectedJobForInvoice.materialLogs}
+          expenseLogs={selectedJobForInvoice.expenseLogs}
+          onInvoiceCreated={() => {
+            setInvoicePreviewOpen(false);
+            setSelectedJobForInvoice(null);
+            refresh();
+          }}
+        />
+      )}
     </div>
   );
 }
