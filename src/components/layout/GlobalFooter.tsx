@@ -158,28 +158,27 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
 
             {/* Geographic Links */}
             <div>
-              <h3 className="text-sm font-semibold mb-4">Områden</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link to="/omraden/uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Uppsala
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/omraden/stockholm" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Stockholm
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Elmontör Uppsala
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
-                    VVS Uppsala
-                  </Link>
-                </li>
+              <h3 className="text-sm font-semibold mb-4">Tjänster per Ort</h3>
+              <ul className="space-y-1.5 text-sm">
+                <li><Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Elmontör Uppsala</Link></li>
+                <li><Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">VVS Uppsala</Link></li>
+                <li><Link to="/tjanster/snickare-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Snickare Uppsala</Link></li>
+                <li><Link to="/tjanster/montering-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Montering Uppsala</Link></li>
+                <li><Link to="/tjanster/tradgard-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Trädgård Uppsala</Link></li>
+                <li><Link to="/tjanster/stad-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Städ Uppsala</Link></li>
+                <li><Link to="/tjanster/markarbeten-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Markarbeten Uppsala</Link></li>
+                <li><Link to="/tjanster/tekniska-installationer-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Teknik Uppsala</Link></li>
+                <li><Link to="/tjanster/flytt-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Flytt Uppsala</Link></li>
+                
+                <li><Link to="/tjanster/elmontor-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Elmontör Stockholm</Link></li>
+                <li><Link to="/tjanster/vvs-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">VVS Stockholm</Link></li>
+                <li><Link to="/tjanster/snickare-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Snickare Stockholm</Link></li>
+                <li><Link to="/tjanster/montering-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Montering Stockholm</Link></li>
+                <li><Link to="/tjanster/tradgard-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Trädgård Stockholm</Link></li>
+                <li><Link to="/tjanster/stad-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Städ Stockholm</Link></li>
+                <li><Link to="/tjanster/markarbeten-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Markarbeten Stockholm</Link></li>
+                <li><Link to="/tjanster/tekniska-installationer-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Teknik Stockholm</Link></li>
+                <li><Link to="/tjanster/flytt-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Flytt Stockholm</Link></li>
               </ul>
             </div>
 

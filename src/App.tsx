@@ -161,8 +161,23 @@ const App = () => {
                   {/* Service+City pages */}
                   <Route path="/tjanster/elmontor-uppsala" element={<ServiceCityPage service="Elmontör" city="Uppsala" slug="elmontor-uppsala" />} />
                   <Route path="/tjanster/vvs-uppsala" element={<ServiceCityPage service="VVS" city="Uppsala" slug="vvs-uppsala" />} />
+                  <Route path="/tjanster/snickare-uppsala" element={<ServiceCityPage service="Snickare" city="Uppsala" slug="snickare-uppsala" />} />
+                  <Route path="/tjanster/montering-uppsala" element={<ServiceCityPage service="Montering" city="Uppsala" slug="montering-uppsala" />} />
+                  <Route path="/tjanster/tradgard-uppsala" element={<ServiceCityPage service="Trädgård" city="Uppsala" slug="tradgard-uppsala" />} />
+                  <Route path="/tjanster/stad-uppsala" element={<ServiceCityPage service="Städ" city="Uppsala" slug="stad-uppsala" />} />
+                  <Route path="/tjanster/markarbeten-uppsala" element={<ServiceCityPage service="Markarbeten" city="Uppsala" slug="markarbeten-uppsala" />} />
+                  <Route path="/tjanster/tekniska-installationer-uppsala" element={<ServiceCityPage service="Tekniska installationer" city="Uppsala" slug="tekniska-installationer-uppsala" />} />
+                  <Route path="/tjanster/flytt-uppsala" element={<ServiceCityPage service="Flytt" city="Uppsala" slug="flytt-uppsala" />} />
+                  
                   <Route path="/tjanster/elmontor-stockholm" element={<ServiceCityPage service="Elmontör" city="Stockholm" slug="elmontor-stockholm" />} />
                   <Route path="/tjanster/vvs-stockholm" element={<ServiceCityPage service="VVS" city="Stockholm" slug="vvs-stockholm" />} />
+                  <Route path="/tjanster/snickare-stockholm" element={<ServiceCityPage service="Snickare" city="Stockholm" slug="snickare-stockholm" />} />
+                  <Route path="/tjanster/montering-stockholm" element={<ServiceCityPage service="Montering" city="Stockholm" slug="montering-stockholm" />} />
+                  <Route path="/tjanster/tradgard-stockholm" element={<ServiceCityPage service="Trädgård" city="Stockholm" slug="tradgard-stockholm" />} />
+                  <Route path="/tjanster/stad-stockholm" element={<ServiceCityPage service="Städ" city="Stockholm" slug="stad-stockholm" />} />
+                  <Route path="/tjanster/markarbeten-stockholm" element={<ServiceCityPage service="Markarbeten" city="Stockholm" slug="markarbeten-stockholm" />} />
+                  <Route path="/tjanster/tekniska-installationer-stockholm" element={<ServiceCityPage service="Tekniska installationer" city="Stockholm" slug="tekniska-installationer-stockholm" />} />
+                  <Route path="/tjanster/flytt-stockholm" element={<ServiceCityPage service="Flytt" city="Stockholm" slug="flytt-stockholm" />} />
 
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={

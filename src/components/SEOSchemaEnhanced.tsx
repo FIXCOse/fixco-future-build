@@ -2,10 +2,10 @@
 
 const baseUrl = 'https://fixco.se';
 
-// Organization Schema with comprehensive details
+// Organization Schema - ServiceAreaBusiness for local SEO
 export const getOrganizationSchema = () => ({
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "ServiceAreaBusiness",
   "@id": `${baseUrl}#organization`,
   "name": "Fixco",
   "alternateName": ["Fixco Sverige", "Fixco AB"],
@@ -15,8 +15,7 @@ export const getOrganizationSchema = () => ({
   "image": `${baseUrl}/assets/hero-construction.jpg`,
   "telephone": "+46-70-123-45-67",
   "email": "info@fixco.se",
-  "priceRange": "480-1300 SEK/timme",
-  "paymentAccepted": ["Swish", "Bankcard", "Invoice", "Cash"],
+  "paymentAccepted": ["Swish", "Bankcard", "Invoice"],
   "currenciesAccepted": "SEK",
   "foundingDate": "2020",
   "slogan": "Snabbare, billigare, mer professionellt",
@@ -33,32 +32,119 @@ export const getOrganizationSchema = () => ({
     "latitude": "59.8586",
     "longitude": "17.6389"
   },
-  "areaServed": [
+  "areaServed": ["Uppsala kommun", "Stockholms stad"],
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "59.8586",
+      "longitude": "17.6389"
+    },
+    "geoRadius": "80000"
+  },
+  "hasCredential": [
     {
-      "@type": "City",
-      "name": "Uppsala",
-      "sameAs": "https://sv.wikipedia.org/wiki/Uppsala"
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "F-skatt",
+      "name": "Godkänd för F-skatt"
     },
     {
-      "@type": "City",
-      "name": "Stockholm",
-      "sameAs": "https://sv.wikipedia.org/wiki/Stockholm"
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Elsäkerhetsverket",
+      "name": "Auktorisation Elsäkerhetsverket"
     },
     {
-      "@type": "State",
-      "name": "Uppsala län"
-    },
-    {
-      "@type": "State",
-      "name": "Stockholms län"
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Säker Vatten",
+      "name": "Certifierad VVS-installatör"
     }
   ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "2147",
-    "bestRating": "5",
-    "worstRating": "1"
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Fixco Tjänster",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Elmontör",
+          "description": "Elinstallation, felsökning, laddboxar",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "VVS",
+          "description": "Rörmokare, badrum, akuta läckor",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Snickare",
+          "description": "Kök, garderober, inredning",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Montering",
+          "description": "IKEA-möbler, TV-fästen, vitvaror",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Trädgård",
+          "description": "Gräsklippning, häckar, plantering",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Städning",
+          "description": "Hemstäd, flyttstäd, byggstäd",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Markarbeten",
+          "description": "Dränering, schaktning, plattläggning",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Tekniska installationer",
+          "description": "Nätverk, larm, IT-support",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Flytt",
+          "description": "Flytthjälp, packning, transport",
+          "provider": { "@id": `${baseUrl}#organization` }
+        }
+      }
+    ]
   },
   "openingHoursSpecification": [
     {
