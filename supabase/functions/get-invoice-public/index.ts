@@ -46,7 +46,6 @@ serve(async (req) => {
         customer_id
       `)
       .eq("public_token", token)
-      .is("deleted_at", null)
       .maybeSingle();
 
     if (invoiceError) {
