@@ -3517,7 +3517,7 @@ export type Database = {
         Returns: boolean
       }
       check_user_is_worker: { Args: never; Returns: boolean }
-      claim_job: { Args: { p_job_id: string }; Returns: boolean }
+      claim_job: { Args: { p_job_id: string }; Returns: Json }
       cleanup_old_deleted_quotes: { Args: never; Returns: undefined }
       cleanup_old_deleted_records: { Args: never; Returns: undefined }
       complete_job: { Args: { p_job_id: string }; Returns: boolean }
