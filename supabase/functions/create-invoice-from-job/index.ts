@@ -168,10 +168,15 @@ serve(async (req) => {
     console.log("Invoice created successfully:", invoice.id);
 
     // Update job status to invoiced
-    await supabaseAdmin
+    const { error: jobUpdateError } = await supabaseAdmin
       .from('jobs')
       .update({ status: 'invoiced' })
       .eq('id', jobId);
+
+    if (jobUpdateError) {
+      console.error("Failed to update job status:", jobUpdateError);
+      // Don't throw - invoice was created successfully
+    }
 
     return new Response(
       JSON.stringify({ 

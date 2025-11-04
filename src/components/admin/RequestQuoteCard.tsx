@@ -340,7 +340,7 @@ export function RequestQuoteCard({
         )}
 
         {/* Invoice Section */}
-        {quote?.status === 'accepted' && (invoice || job?.status === 'completed' || job?.status === 'invoiced') && (
+        {quote?.status === 'accepted' && (invoice !== undefined || job?.status === 'completed' || job?.status === 'invoiced') && (
           <>
             <Separator />
             <div className="space-y-3">
