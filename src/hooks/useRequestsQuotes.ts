@@ -4,6 +4,7 @@ import { useBookingsRealtime } from './useBookingsRealtime';
 import { useQuotesRealtime } from './useQuotesRealtime';
 import { useJobsRealtime } from './useJobsRealtime';
 import { useJobWorkersRealtime } from './useJobWorkersRealtime';
+import { useInvoicesRealtime } from './useInvoicesRealtime';
 import type { QuoteNewRow as QuoteType } from '@/lib/api/quotes-new';
 
 export type BookingRow = {
@@ -271,6 +272,7 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
   useQuotesRealtime(() => loadData());
   useJobsRealtime(() => loadData());
   useJobWorkersRealtime(() => loadData());
+  useInvoicesRealtime(() => loadData());
 
   return { data, loading, refresh: loadData };
 }
