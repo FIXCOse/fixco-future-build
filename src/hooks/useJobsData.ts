@@ -11,7 +11,10 @@ export const useJobsData = () => {
       try {
         const { data, error } = await supabase
           .from('jobs')
-          .select('*')
+          .select(`
+            *,
+            customer:customer_id(id, full_name, email, phone, address_line, postal_code, city)
+          `)
           .order('created_at', { ascending: false });
 
         if (error) throw error;

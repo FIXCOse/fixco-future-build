@@ -81,6 +81,7 @@ import QuotePublic from "./pages/QuotePublic";
 import WorkerSchedule from "./pages/worker/WorkerSchedule";
 import AdminSchedule from "./pages/admin/AdminSchedule";
 import AdminWorkerAnalytics from "./pages/admin/AdminWorkerAnalytics";
+import AdminJobDetail from "./pages/admin/AdminJobDetail";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -188,6 +189,7 @@ const App = () => {
                     <Route path="database" element={<AdminDatabase />} />
                     <Route path="reports" element={<AdminReports />} />
                     <Route path="jobs" element={<AdminJobs />} />
+                    <Route path="jobs/:jobId" element={<AdminJobDetail />} />
                     <Route path="jobs/trash" element={<AdminJobsTrash />} />
                     <Route path="schedule" element={<AdminSchedule />} />
                     <Route path="settings" element={<AdminSettings />} />

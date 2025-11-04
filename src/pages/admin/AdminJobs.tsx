@@ -399,11 +399,11 @@ const AdminJobs = () => {
                 {job.status === 'completed' && (
                   <Button
                     size="sm"
-                    variant="outline"
-                    onClick={() => handlePrepareInvoice(job.id)}
+                    variant="default"
+                    onClick={() => window.location.href = `/admin/jobs/${job.id}`}
                   >
-                    <FileText className="h-4 w-4 mr-1" />
-                    Faktura
+                    <Eye className="h-4 w-4 mr-1" />
+                    Visa & Fakturera
                   </Button>
                 )}
 

@@ -10,11 +10,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useJobManagement } from '@/hooks/useJobManagement';
-import { PlusCircle, MinusCircle, Users, Calendar, DollarSign, Edit, Send, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { PlusCircle, MinusCircle, Users, Calendar, DollarSign, Edit, Send, CheckCircle, XCircle, AlertCircle, Eye, RotateCcw } from 'lucide-react';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { JobEditDialog } from './JobEditDialog';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
+import { updateJobStatus } from '@/lib/api/jobs';
+import { toast } from 'sonner';
 
 interface JobManagementCardProps {
   job: any;
@@ -23,6 +26,7 @@ interface JobManagementCardProps {
 }
 
 export function JobManagementCard({ job, workers, onRefresh }: JobManagementCardProps) {
+  const navigate = useNavigate();
   const { addToPool, removeFromPool, assignWorker, requestWorkers } = useJobManagement();
   const [selectedWorker, setSelectedWorker] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -80,6 +84,19 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
       setSelectedWorker('');
     }
     setIsLoading(false);
+  };
+
+  const handleStatusUpdate = async (newStatus: string) => {
+    setIsLoading(true);
+    try {
+      await updateJobStatus(job.id, newStatus);
+      toast.success(`Status uppdaterad till ${newStatus}`);
+      onRefresh();
+    } catch (error) {
+      toast.error('Kunde inte uppdatera status');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -241,6 +258,31 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
             Redigera jobb
           </Button>
         </div>
+
+        {/* Completed job actions */}
+        {job.status === 'completed' && (
+          <div className="space-y-2 pt-2 border-t">
+            <Button
+              onClick={() => navigate(`/admin/jobs/${job.id}`)}
+              variant="default"
+              className="w-full"
+              disabled={isLoading}
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              Visa detaljer & Skapa faktura
+            </Button>
+            
+            <Button
+              onClick={() => handleStatusUpdate('in_progress')}
+              variant="outline"
+              className="w-full"
+              disabled={isLoading}
+            >
+              <RotateCcw className="mr-2 h-4 w-4" />
+              Återställ till pågående
+            </Button>
+          </div>
+        )}
       </CardContent>
 
       <JobEditDialog
