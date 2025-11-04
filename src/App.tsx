@@ -159,27 +159,6 @@ const App = () => {
                   <Route path="/omraden/uppsala" element={<LocationCityPage city="Uppsala" />} />
                   <Route path="/omraden/stockholm" element={<LocationCityPage city="Stockholm" />} />
 
-                  {/* Service+City pages - Full detail pages like main service pages */}
-                  <Route path="/tjanster/elmontor-uppsala" element={<ServiceCityDetail service="el" city="Uppsala" />} />
-                  <Route path="/tjanster/vvs-uppsala" element={<ServiceCityDetail service="vvs" city="Uppsala" />} />
-                  <Route path="/tjanster/snickare-uppsala" element={<ServiceCityDetail service="snickeri" city="Uppsala" />} />
-                  <Route path="/tjanster/montering-uppsala" element={<ServiceCityDetail service="montering" city="Uppsala" />} />
-                  <Route path="/tjanster/tradgard-uppsala" element={<ServiceCityDetail service="tradgard" city="Uppsala" />} />
-                  <Route path="/tjanster/stad-uppsala" element={<ServiceCityDetail service="stadning" city="Uppsala" />} />
-                  <Route path="/tjanster/markarbeten-uppsala" element={<ServiceCityDetail service="markarbeten" city="Uppsala" />} />
-                  <Route path="/tjanster/tekniska-installationer-uppsala" element={<ServiceCityDetail service="tekniska-installationer" city="Uppsala" />} />
-                  <Route path="/tjanster/flytt-uppsala" element={<ServiceCityDetail service="flytt" city="Uppsala" />} />
-                  
-                  <Route path="/tjanster/elmontor-stockholm" element={<ServiceCityDetail service="el" city="Stockholm" />} />
-                  <Route path="/tjanster/vvs-stockholm" element={<ServiceCityDetail service="vvs" city="Stockholm" />} />
-                  <Route path="/tjanster/snickare-stockholm" element={<ServiceCityDetail service="snickeri" city="Stockholm" />} />
-                  <Route path="/tjanster/montering-stockholm" element={<ServiceCityDetail service="montering" city="Stockholm" />} />
-                  <Route path="/tjanster/tradgard-stockholm" element={<ServiceCityDetail service="tradgard" city="Stockholm" />} />
-                  <Route path="/tjanster/stad-stockholm" element={<ServiceCityDetail service="stadning" city="Stockholm" />} />
-                  <Route path="/tjanster/markarbeten-stockholm" element={<ServiceCityDetail service="markarbeten" city="Stockholm" />} />
-                  <Route path="/tjanster/tekniska-installationer-stockholm" element={<ServiceCityDetail service="tekniska-installationer" city="Stockholm" />} />
-                  <Route path="/tjanster/flytt-stockholm" element={<ServiceCityDetail service="flytt" city="Stockholm" />} />
-
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={
                     <Suspense fallback={<SuspenseFallback />}>
@@ -265,6 +244,28 @@ const App = () => {
                     <Route path="home-v2" element={<HomeV2 />} />
                     <Route path="tjanster" element={<Services />} />
                     <Route path="tjanster/:slug" element={<ServiceDetail />} />
+                    
+                    {/* Service+City pages - Full detail pages like main service pages */}
+                    <Route path="tjanster/elmontor-uppsala" element={<ServiceCityDetail service="el" city="Uppsala" />} />
+                    <Route path="tjanster/vvs-uppsala" element={<ServiceCityDetail service="vvs" city="Uppsala" />} />
+                    <Route path="tjanster/snickare-uppsala" element={<ServiceCityDetail service="snickeri" city="Uppsala" />} />
+                    <Route path="tjanster/montering-uppsala" element={<ServiceCityDetail service="montering" city="Uppsala" />} />
+                    <Route path="tjanster/tradgard-uppsala" element={<ServiceCityDetail service="tradgard" city="Uppsala" />} />
+                    <Route path="tjanster/stad-uppsala" element={<ServiceCityDetail service="stadning" city="Uppsala" />} />
+                    <Route path="tjanster/markarbeten-uppsala" element={<ServiceCityDetail service="markarbeten" city="Uppsala" />} />
+                    <Route path="tjanster/tekniska-installationer-uppsala" element={<ServiceCityDetail service="tekniska-installationer" city="Uppsala" />} />
+                    <Route path="tjanster/flytt-uppsala" element={<ServiceCityDetail service="flytt" city="Uppsala" />} />
+                    
+                    <Route path="tjanster/elmontor-stockholm" element={<ServiceCityDetail service="el" city="Stockholm" />} />
+                    <Route path="tjanster/vvs-stockholm" element={<ServiceCityDetail service="vvs" city="Stockholm" />} />
+                    <Route path="tjanster/snickare-stockholm" element={<ServiceCityDetail service="snickeri" city="Stockholm" />} />
+                    <Route path="tjanster/montering-stockholm" element={<ServiceCityDetail service="montering" city="Stockholm" />} />
+                    <Route path="tjanster/tradgard-stockholm" element={<ServiceCityDetail service="tradgard" city="Stockholm" />} />
+                    <Route path="tjanster/stad-stockholm" element={<ServiceCityDetail service="stadning" city="Stockholm" />} />
+                    <Route path="tjanster/markarbeten-stockholm" element={<ServiceCityDetail service="markarbeten" city="Stockholm" />} />
+                    <Route path="tjanster/tekniska-installationer-stockholm" element={<ServiceCityDetail service="tekniska-installationer" city="Stockholm" />} />
+                    <Route path="tjanster/flytt-stockholm" element={<ServiceCityDetail service="flytt" city="Stockholm" />} />
+                    
                     <Route path="kontakt" element={<Contact />} />
                     <Route path="faq" element={<FAQ />} />
                     <Route path="om-oss" element={<AboutUs />} />
