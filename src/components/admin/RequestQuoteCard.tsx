@@ -21,6 +21,7 @@ type Props = {
   onCreateInvoice: (quoteId: string) => void;
   onViewInvoice: (invoiceId: string) => void;
   onSendInvoice: (invoiceId: string) => void;
+  onCopyInvoiceLink?: (invoiceId: string) => void;
   onCreateJob: (quoteId: string) => void;
   onCreateInvoiceFromJob?: (jobId: string, customerId: string) => void;
   onRefresh: () => void;
@@ -37,6 +38,7 @@ export function RequestQuoteCard({
   onCreateInvoice,
   onViewInvoice,
   onSendInvoice,
+  onCopyInvoiceLink,
   onCreateJob,
   onCreateInvoiceFromJob,
   onRefresh,
@@ -385,6 +387,28 @@ export function RequestQuoteCard({
                         <Send className="h-4 w-4 mr-2" />
                         Skicka
                       </Button>
+                    )}
+                    {(invoice as any).public_token && onCopyInvoiceLink && (
+                      <>
+                        <Button
+                          onClick={() => onCopyInvoiceLink(invoice.id)}
+                          variant="outline"
+                          size="sm"
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Kopiera
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            const publicUrl = `${window.location.origin}/invoice/${(invoice as any).public_token}`;
+                            window.open(publicUrl, '_blank');
+                          }}
+                          variant="outline"
+                          size="sm"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </Button>
+                      </>
                     )}
                   </div>
                 </>

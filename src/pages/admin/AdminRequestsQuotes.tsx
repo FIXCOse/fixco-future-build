@@ -217,6 +217,18 @@ export default function AdminRequestsQuotes() {
     toast.success('Länk kopierad!');
   };
 
+  const handleCopyInvoiceLink = async (invoiceId: string) => {
+    const item = data.find(d => d.invoice?.id === invoiceId);
+    if (!item?.invoice || !(item.invoice as any).public_token) {
+      toast.error('Ingen publik token finns för denna faktura');
+      return;
+    }
+
+    const publicUrl = `${window.location.origin}/invoice/${(item.invoice as any).public_token}`;
+    await navigator.clipboard.writeText(publicUrl);
+    toast.success('Fakturalänk kopierad!');
+  };
+
   const handleCreateJob = async (quoteId: string) => {
     const item = data.find(d => d.quote?.id === quoteId);
     if (!item?.quote) {
@@ -374,6 +386,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCopyInvoiceLink={handleCopyInvoiceLink}
                 onCreateJob={handleCreateJob}
                 onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
@@ -409,6 +422,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCopyInvoiceLink={handleCopyInvoiceLink}
                 onCreateJob={handleCreateJob}
                 onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
@@ -444,6 +458,7 @@ export default function AdminRequestsQuotes() {
                 onCreateInvoice={handleCreateInvoice}
                 onViewInvoice={handleViewInvoice}
                 onSendInvoice={handleSendInvoice}
+                onCopyInvoiceLink={handleCopyInvoiceLink}
                 onCreateJob={handleCreateJob}
                 onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                 onRefresh={refresh}
