@@ -89,173 +89,115 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
       <footer className="bg-background border-t border-border text-foreground">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Brand */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-rainbow rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">F</span>
-                </div>
-                <span className="text-xl font-bold gradient-rainbow">Fixco</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                {t('tagline')}
-              </p>
-              <div className="text-sm space-y-1">
-                <p className="font-medium">Fixco AB</p>
-                <p className="text-muted-foreground">{t('org')}: 559123-4567</p>
-                <p className="text-muted-foreground">{t('address')}: Storgatan 1, 111 22 Stockholm</p>
-                <p className="text-muted-foreground">{t('phone')}: 08-123 456 78</p>
-                <p className="text-muted-foreground">{t('email')}: support@fixco.se</p>
-              </div>
-            </div>
-
-            {/* Quick Links */}
+            
+            {/* Våra Tjänster */}
             <div>
-              <h3 className="text-sm font-semibold mb-4">{t('linksTitle')}</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-bold text-lg mb-4">Våra Tjänster</h3>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link 
-                    to={`${basePath}/${isEnglish ? 'services' : 'tjanster'}`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('services')}
+                  <Link to="/tjanster/el" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Elmontör
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to={`${basePath}/${isEnglish ? 'references' : 'referenser'}`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('references')}
+                  <Link to="/tjanster/vvs" className="text-muted-foreground hover:text-foreground transition-colors">
+                    VVS
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to={`${basePath}/faq`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    FAQ
+                  <Link to="/tjanster/snickeri" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Snickeri
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to={`${basePath}/${isEnglish ? 'contact' : 'kontakt'}`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('contact')}
+                  <Link to="/tjanster/maleri" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Måleri
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to={`${basePath}/${isEnglish ? 'about' : 'om-oss'}`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('about')}
+                  <Link to="/tjanster" className="text-primary hover:text-primary/80 transition-colors font-medium">
+                    Alla tjänster →
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Geographic Links */}
+            {/* Områden */}
             <div>
-              <h3 className="text-sm font-semibold mb-4">Tjänster per Ort</h3>
-              <ul className="space-y-1.5 text-sm">
-                <li><Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Elmontör Uppsala</Link></li>
-                <li><Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">VVS Uppsala</Link></li>
-                <li><Link to="/tjanster/snickare-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Snickare Uppsala</Link></li>
-                <li><Link to="/tjanster/montering-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Montering Uppsala</Link></li>
-                <li><Link to="/tjanster/tradgard-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Trädgård Uppsala</Link></li>
-                <li><Link to="/tjanster/stad-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Städ Uppsala</Link></li>
-                <li><Link to="/tjanster/markarbeten-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Markarbeten Uppsala</Link></li>
-                <li><Link to="/tjanster/tekniska-installationer-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Teknik Uppsala</Link></li>
-                <li><Link to="/tjanster/flytt-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">Flytt Uppsala</Link></li>
-                
-                <li><Link to="/tjanster/elmontor-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Elmontör Stockholm</Link></li>
-                <li><Link to="/tjanster/vvs-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">VVS Stockholm</Link></li>
-                <li><Link to="/tjanster/snickare-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Snickare Stockholm</Link></li>
-                <li><Link to="/tjanster/montering-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Montering Stockholm</Link></li>
-                <li><Link to="/tjanster/tradgard-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Trädgård Stockholm</Link></li>
-                <li><Link to="/tjanster/stad-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Städ Stockholm</Link></li>
-                <li><Link to="/tjanster/markarbeten-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Markarbeten Stockholm</Link></li>
-                <li><Link to="/tjanster/tekniska-installationer-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Teknik Stockholm</Link></li>
-                <li><Link to="/tjanster/flytt-stockholm" className="text-muted-foreground hover:text-foreground transition-colors">Flytt Stockholm</Link></li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h3 className="text-sm font-semibold mb-4">{t('legalTitle')}</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-bold text-lg mb-4">Områden</h3>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <Link 
-                    to={`${basePath}/privacy`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('privacy')}
+                  <Link to="/omraden/uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Uppsala
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to={`${basePath}/terms`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('terms')}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to={`${basePath}/cookies`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {t('cookies')}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to={`${basePath}/${isEnglish ? 'insurance' : 'ansvar-forsakring'}`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {isEnglish ? "Insurance" : "Ansvar & Försäkring"}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to={`${basePath}/rot`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    ROT
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to={`${basePath}/rut`} 
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    RUT
+                  <Link to="/omraden/stockholm" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Stockholm
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* CTA */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold">{t('ctaTitle')}</h3>
-              <p className="text-sm text-muted-foreground">{t('ctaText')}</p>
-              <div className="flex flex-col gap-2">
-                <Link 
-                  to={`${basePath}/${isEnglish ? 'contact' : 'kontakt'}`} 
-                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity"
-                >
-                  {t('ctaContact')}
-                </Link>
-                <Link 
-                  to={`${basePath}/${isEnglish ? 'contact' : 'kontakt'}`} 
-                  className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity"
-                >
-                  {t('ctaQuote')}
-                </Link>
-              </div>
+            {/* Information */}
+            <div>
+              <h3 className="font-bold text-lg mb-4">Information</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link to="/rot-info" className="text-muted-foreground hover:text-foreground transition-colors">
+                    ROT-avdrag
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/rut" className="text-muted-foreground hover:text-foreground transition-colors">
+                    RUT-avdrag
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Vanliga frågor
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/om-oss" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Om oss
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/referenser" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Referenser
+                  </Link>
+                </li>
+              </ul>
             </div>
+
+            {/* Kontakt */}
+            <div>
+              <h3 className="font-bold text-lg mb-4">Kontakt</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link to="/kontakt" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Kontakta oss
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/boka-hembesok" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Boka hembesök
+                  </Link>
+                </li>
+                <li>
+                  <a href="tel:08-123 456 78" className="text-muted-foreground hover:text-foreground transition-colors">
+                    08-123 456 78
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:support@fixco.se" className="text-muted-foreground hover:text-foreground transition-colors">
+                    support@fixco.se
+                  </a>
+                </li>
+              </ul>
+            </div>
+
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground">

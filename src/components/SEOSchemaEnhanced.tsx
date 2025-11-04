@@ -329,3 +329,75 @@ export const getHomeServicesSchema = () => ({
     "name": "Sverige"
   }
 });
+
+// Site Navigation Schema for Sitelinks
+export const getSiteNavigationSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "SiteNavigationElement",
+  "name": "Huvudnavigation",
+  "hasPart": [
+    {
+      "@type": "WebPageElement",
+      "name": "Våra Tjänster",
+      "url": `${baseUrl}/tjanster`,
+      "description": "Alla våra tjänster med ROT & RUT-avdrag"
+    },
+    {
+      "@type": "WebPageElement", 
+      "name": "Kontakta Oss",
+      "url": `${baseUrl}/kontakt`,
+      "description": "Ta kontakt för offert eller frågor"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "ROT-avdrag",
+      "url": `${baseUrl}/rot-info`,
+      "description": "Allt om ROT-avdrag 50% rabatt"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "RUT-avdrag", 
+      "url": `${baseUrl}/rut`,
+      "description": "Allt om RUT-avdrag för hemtjänster"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "Referenser",
+      "url": `${baseUrl}/referenser`,
+      "description": "Se våra tidigare projekt"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "Vanliga Frågor",
+      "url": `${baseUrl}/faq`,
+      "description": "Svar på vanliga frågor"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "Boka Hembesök",
+      "url": `${baseUrl}/boka-hembesok`,
+      "description": "Boka gratis hembesök direkt"
+    },
+    {
+      "@type": "WebPageElement",
+      "name": "Om Oss",
+      "url": `${baseUrl}/om-oss`,
+      "description": "Läs mer om Fixco"
+    }
+  ]
+});
+
+// Service List Schema for service pages
+export const getServiceListSchema = (services: Array<{name: string; url: string; description: string}>) => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Fixco Tjänster",
+  "description": "Alla våra tjänster",
+  "itemListElement": services.map((service, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": service.name,
+    "url": service.url,
+    "description": service.description
+  }))
+});

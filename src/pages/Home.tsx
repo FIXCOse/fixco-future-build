@@ -14,7 +14,8 @@ import {
   getOrganizationSchema, 
   getWebsiteSchema, 
   getFAQSchema,
-  getOfferCatalogSchema 
+  getOfferCatalogSchema,
+  getSiteNavigationSchema
 } from "@/components/SEOSchemaEnhanced";
 
 // Lazy load non-critical components for better initial load
@@ -77,6 +78,9 @@ const Home = () => {
     { name: "Trädgård", price: 520, description: "Trädgårdsarbeten med RUT-avdrag" }
   ]);
 
+  // Navigation schema for Sitelinks
+  const navigationSchema = getSiteNavigationSchema();
+
   // Combined schema
   const combinedSchema = {
     "@context": "https://schema.org",
@@ -84,7 +88,8 @@ const Home = () => {
       organizationSchema,
       websiteSchema,
       faqSchema,
-      offerCatalogSchema
+      offerCatalogSchema,
+      navigationSchema
     ]
   };
 
