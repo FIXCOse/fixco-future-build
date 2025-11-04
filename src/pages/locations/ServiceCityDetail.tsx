@@ -49,15 +49,21 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   
   // Map slug to category name for filtering
   const categoryMap: Record<string, string> = {
-    'el': 'El',
-    'vvs': 'VVS',
-    'snickeri': 'Snickeri',
-    'montering': 'Montering',
-    'tradgard': 'Trädgård',
-    'stadning': 'Städning',
-    'flytt': 'Flytt',
-    'markarbeten': 'Markarbeten',
-    'tekniska-installationer': 'Tekniska installationer'
+    'el': 'el',
+    'vvs': 'vvs',
+    'snickeri': 'snickeri',
+    'montering': 'montering',
+    'tradgard': 'tradgard',
+    'stadning': 'stadning',
+    'flytt': 'flytt',
+    'markarbeten': 'markarbeten',
+    'tekniska-installationer': 'tekniska-installationer',
+    'badrum': 'badrum',
+    'fonster-dorrar': 'fonster-dorrar',
+    'golv': 'golv',
+    'kok': 'kok',
+    'malning': 'malning',
+    'takarbeten': 'takarbeten'
   };
 
   // Map slug to ServiceKey
