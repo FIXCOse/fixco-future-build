@@ -83,6 +83,8 @@ import AdminSchedule from "./pages/admin/AdminSchedule";
 import AdminWorkerAnalytics from "./pages/admin/AdminWorkerAnalytics";
 import AdminJobDetail from "./pages/admin/AdminJobDetail";
 import InvoicePublic from "./pages/InvoicePublic";
+import LocationCityPage from "./pages/locations/LocationCityPage";
+import ServiceCityPage from "./pages/locations/ServiceCityPage";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -151,6 +153,16 @@ const App = () => {
                   
                   {/* Public Invoice View */}
                   <Route path="/invoice/:token" element={<InvoicePublic />} />
+
+                  {/* City pages */}
+                  <Route path="/omraden/uppsala" element={<LocationCityPage city="Uppsala" />} />
+                  <Route path="/omraden/stockholm" element={<LocationCityPage city="Stockholm" />} />
+
+                  {/* Service+City pages */}
+                  <Route path="/tjanster/elmontor-uppsala" element={<ServiceCityPage service="Elmontör" city="Uppsala" slug="elmontor-uppsala" />} />
+                  <Route path="/tjanster/vvs-uppsala" element={<ServiceCityPage service="VVS" city="Uppsala" slug="vvs-uppsala" />} />
+                  <Route path="/tjanster/elmontor-stockholm" element={<ServiceCityPage service="Elmontör" city="Stockholm" slug="elmontor-stockholm" />} />
+                  <Route path="/tjanster/vvs-stockholm" element={<ServiceCityPage service="VVS" city="Stockholm" slug="vvs-stockholm" />} />
 
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={

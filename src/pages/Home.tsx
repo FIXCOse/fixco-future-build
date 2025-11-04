@@ -118,6 +118,30 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
+      {/* Geographic Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Vi Arbetar i Uppsala & Stockholm</h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Samma höga kvalitet, snabba service och ROT-avdrag 50% överallt
+          </p>
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <Link to="/omraden/uppsala" className="p-8 rounded-lg border border-border hover:border-primary transition-all hover:shadow-lg bg-card">
+              <div className="text-4xl mb-4">📍</div>
+              <h3 className="text-2xl font-bold mb-2">Uppsala</h3>
+              <p className="text-muted-foreground mb-4">Alla stadsdelar i Uppsala kommun</p>
+              <span className="text-sm text-primary font-bold">✓ Fri resa</span>
+            </Link>
+            <Link to="/omraden/stockholm" className="p-8 rounded-lg border border-border hover:border-primary transition-all hover:shadow-lg bg-card">
+              <div className="text-4xl mb-4">📍</div>
+              <h3 className="text-2xl font-bold mb-2">Stockholm</h3>
+              <p className="text-muted-foreground mb-4">Stockholm stad och närförort</p>
+              <span className="text-sm text-primary font-bold">✓ Resekostnad 299 kr</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
         <ContextualEditor contentId="comparison-section">

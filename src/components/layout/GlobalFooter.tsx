@@ -156,6 +156,33 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
               </ul>
             </div>
 
+            {/* Geographic Links */}
+            <div>
+              <h3 className="text-sm font-semibold mb-4">Områden</h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <Link to="/omraden/uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Uppsala
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/omraden/stockholm" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Stockholm
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Elmontör Uppsala
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
+                    VVS Uppsala
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
             {/* Legal */}
             <div>
               <h3 className="text-sm font-semibold mb-4">{t('legalTitle')}</h3>

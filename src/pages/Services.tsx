@@ -96,6 +96,24 @@ const Services = () => {
 
 
 
+      {/* Geographic Links */}
+      <section className="py-12 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-2xl font-bold mb-4">Tjänster i Ditt Område</h3>
+          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+            Se specifik information och priser för din stad
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link to="/omraden/uppsala" className="px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
+              Uppsala
+            </Link>
+            <Link to="/omraden/stockholm" className="px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
+              Stockholm
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ROT Info Section */}
       <EditableSection id="services-rot" title="ROT info sektion">
         <section className="py-20 relative">

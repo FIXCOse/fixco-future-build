@@ -107,4 +107,44 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit" />
   </url>
 
+  <!-- City pages -->
+  <url>
+    <loc>https://fixco.se/omraden/uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fixco.se/omraden/stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Service+City pages -->
+  <url>
+    <loc>https://fixco.se/tjanster/elmontor-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://fixco.se/tjanster/vvs-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://fixco.se/tjanster/elmontor-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://fixco.se/tjanster/vvs-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
 </urlset>
