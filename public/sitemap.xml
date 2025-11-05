@@ -11,6 +11,7 @@
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/" />
     <image:image>
       <image:loc>https://fixco.se/assets/hero-construction.jpg</image:loc>
       <image:title>Fixco - Professionella byggtjänster</image:title>
@@ -25,6 +26,7 @@
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster" />
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster" />
   </url>
 
   <!-- Main service detail pages -->
@@ -32,61 +34,61 @@
     <loc>https://fixco.se/tjanster/el</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/vvs</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/snickeri</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/maleri</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/montering</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tradgard</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/stadning</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/markarbeten</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/flytt</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
   </url>
 
   <!-- Contact -->
@@ -169,6 +171,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit" />
   </url>
 
+  <!-- City hub -->
+  <url>
+    <loc>https://fixco.se/omraden</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
   <!-- City pages -->
   <url>
     <loc>https://fixco.se/omraden/uppsala</loc>
@@ -188,125 +198,125 @@
     <loc>https://fixco.se/tjanster/elmontor-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/vvs-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/snickare-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/montering-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tradgard-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/stad-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/markarbeten-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/flytt-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   
   <url>
     <loc>https://fixco.se/tjanster/elmontor-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/vvs-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/snickare-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   
   <!-- Måleri Uppsala & Stockholm -->
   <url>
-    <loc>https://fixco.se/tjanster/malning-uppsala</loc>
+    <loc>https://fixco.se/tjanster/maleri-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://fixco.se/tjanster/malning-stockholm</loc>
+    <loc>https://fixco.se/tjanster/maleri-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   
   <url>
     <loc>https://fixco.se/tjanster/montering-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tradgard-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/stad-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/markarbeten-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://fixco.se/tjanster/flytt-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.75</priority>
   </url>
 
 </urlset>

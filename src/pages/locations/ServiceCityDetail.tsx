@@ -65,7 +65,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     'golv': 'golv',
     'kok': 'kok',
     'malning': 'malning',
-    'maleri': 'malning', // Map maleri slug to malning category for sub-services
+    'maleri': 'maleri',
     'takarbeten': 'takarbeten'
   };
 
