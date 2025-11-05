@@ -82,21 +82,15 @@ export interface ConversionFunnel {
 export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<RevenueAnalytics> {
   const { startDate, endDate, customerTypes } = filters;
 
-  let query = supabase
+  const { data, error } = await supabase
     .from('invoices')
     .select(`
       *,
-      customers!customer_id(customer_type, name, company_name, brf_name)
+      customers:customer_id(customer_type, name, company_name, brf_name)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
-
-  if (customerTypes?.length) {
-    query = query.in('customers.customer_type', customerTypes);
-  }
-
-  const { data, error } = await query;
   if (error) {
     console.error('fetchRevenueAnalytics error:', error);
     return {
@@ -111,15 +105,43 @@ export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<
     };
   }
 
-  const totalRevenue = data?.reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0) || 0;
-  const byCustomerType = data?.reduce((acc: Record<string, number>, inv) => {
+  console.log('Revenue Analytics - Raw data:', data?.length, 'invoices');
+  
+  // Apply customer type filter in JavaScript (after fetch)
+  const filteredData = customerTypes?.length 
+    ? data?.filter(inv => {
+        const type = (inv.customers as any)?.customer_type || 'private';
+        return customerTypes.includes(type as any);
+      })
+    : data;
+
+  console.log('Revenue Analytics - Filtered data:', filteredData?.length, 'invoices');
+
+  if (!filteredData || filteredData.length === 0) {
+    console.log('Revenue Analytics - No data after filtering');
+    return {
+      totalRevenue: 0,
+      byCustomerType: {},
+      rotDeduction: 0,
+      rutDeduction: 0,
+      trend: 0,
+      avgOrderValue: 0,
+      invoiceCount: 0,
+      previousPeriodRevenue: 0,
+    };
+  }
+
+  const totalRevenue = filteredData.reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0);
+  const byCustomerType = filteredData.reduce((acc: Record<string, number>, inv) => {
     const type = (inv.customers as any)?.customer_type || 'private';
     acc[type] = (acc[type] || 0) + Number(inv.total_amount || 0);
     return acc;
-  }, {}) || {};
+  }, {} as Record<string, number>);
+  
+  console.log('Revenue Analytics - Total Revenue:', totalRevenue, 'By Type:', byCustomerType);
 
-  const rotDeduction = data?.reduce((sum, inv) => sum + Number(inv.rot_amount || 0), 0) || 0;
-  const rutDeduction = data?.reduce((sum, inv) => sum + Number(inv.rut_amount || 0), 0) || 0;
+  const rotDeduction = filteredData.reduce((sum, inv) => sum + Number(inv.rot_amount || 0), 0);
+  const rutDeduction = filteredData.reduce((sum, inv) => sum + Number(inv.rut_amount || 0), 0);
 
   // Previous period comparison
   const startDateObj = new Date(startDate);
@@ -144,8 +166,8 @@ export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<
     rotDeduction,
     rutDeduction,
     trend,
-    avgOrderValue: data?.length ? totalRevenue / data.length : 0,
-    invoiceCount: data?.length || 0,
+    avgOrderValue: filteredData.length ? totalRevenue / filteredData.length : 0,
+    invoiceCount: filteredData.length,
     previousPeriodRevenue: prevRevenue,
   };
 }
@@ -155,10 +177,10 @@ export async function fetchBookingAnalytics(filters: AnalyticsFilters): Promise<
   const { startDate, endDate } = filters;
 
   const { data, error } = await supabase
-    .from('quotes')
+    .from('quotes_new')
     .select(`
       *,
-      customers!customer_id(customer_type)
+      customers:customer_id(customer_type)
     `)
     .gte('created_at', startDate)
     .lte('created_at', endDate)
@@ -236,7 +258,7 @@ export async function fetchCustomerSegmentation(filters: AnalyticsFilters): Prom
     .from('invoices')
     .select(`
       *,
-      customers!customer_id!inner(customer_type, name, company_name, brf_name)
+      customers:customer_id(customer_type, name, company_name, brf_name)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
@@ -546,7 +568,7 @@ export async function fetchRevenueTimeline(filters: AnalyticsFilters) {
     .select(`
       created_at,
       total_amount,
-      customers!customer_id(customer_type)
+      customers:customer_id(customer_type)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
@@ -592,11 +614,13 @@ export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
       customer_id,
       total_amount,
       created_at,
-      customers!customer_id!inner(customer_type, name, company_name, brf_name, email)
+      customers:customer_id(customer_type, name, company_name, brf_name, email)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
-    .lte('created_at', endDate);
+    .lte('created_at', endDate)
+    .order('total_amount', { ascending: false })
+    .limit(limit * 3);
 
   if (error) {
     console.error('fetchTopCustomers error:', error);
@@ -607,24 +631,25 @@ export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
 
   data?.forEach((inv) => {
     const customer = inv.customers as any;
-    if (!customer) return;
+    // Skip if no customer_id
+    if (!inv.customer_id) return;
 
     if (!customerMap.has(inv.customer_id)) {
       customerMap.set(inv.customer_id, {
         id: inv.customer_id,
-        name: customer.company_name || customer.brf_name || customer.name || customer.email,
-        type: customer.customer_type,
+        name: customer?.company_name || customer?.brf_name || customer?.name || customer?.email || 'Okänd kund',
+        type: customer?.customer_type || 'private',
         bookingCount: 0,
         totalSpent: 0,
         lastBooking: inv.created_at,
       });
     }
 
-    const data = customerMap.get(inv.customer_id);
-    data.bookingCount += 1;
-    data.totalSpent += Number(inv.total_amount || 0);
-    if (inv.created_at > data.lastBooking) {
-      data.lastBooking = inv.created_at;
+    const entry = customerMap.get(inv.customer_id);
+    entry.bookingCount += 1;
+    entry.totalSpent += Number(inv.total_amount || 0);
+    if (inv.created_at > entry.lastBooking) {
+      entry.lastBooking = inv.created_at;
     }
   });
 
