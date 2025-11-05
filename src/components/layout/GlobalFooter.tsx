@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 
 interface GlobalFooterProps {
   locale?: 'sv' | 'en';
@@ -32,7 +34,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
         ctaContact: "Kontakta oss",
         ctaQuote: "Begär offert",
         rights: "Alla rättigheter förbehålls",
-        reg: "Registrerad i Sverige"
+        reg: "Registrerad i Sverige",
+        servicesPerArea: "Tjänster per område"
       },
       en: {
         tagline: "Your complete solution for home & construction",
@@ -55,7 +58,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
         ctaContact: "Contact us",
         ctaQuote: "Request a quote",
         rights: "All rights reserved",
-        reg: "Registered in Sweden"
+        reg: "Registered in Sweden",
+        servicesPerArea: "Services by Area"
       }
     };
     
@@ -137,6 +141,129 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
               </ul>
+            </div>
+
+            {/* Tjänster per område - Collapsible */}
+            <div>
+              <Collapsible>
+                <CollapsibleTrigger className="flex items-center gap-2 font-bold text-lg mb-4 hover:text-primary transition-colors">
+                  <span>{t('servicesPerArea')}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-3">
+                  
+                  {/* Elektriker */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Elektriker</div>
+                    <Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Elektriker Uppsala
+                    </Link>
+                    <Link to="/tjanster/elmontor-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Elektriker Stockholm
+                    </Link>
+                  </div>
+
+                  {/* VVS */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">VVS</div>
+                    <Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      VVS Uppsala
+                    </Link>
+                    <Link to="/tjanster/vvs-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      VVS Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Snickare */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Snickare</div>
+                    <Link to="/tjanster/snickare-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Snickare Uppsala
+                    </Link>
+                    <Link to="/tjanster/snickare-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Snickare Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Målare */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Målare</div>
+                    <Link to="/tjanster/malning-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Målare Uppsala
+                    </Link>
+                    <Link to="/tjanster/malning-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Målare Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Montering */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Montering</div>
+                    <Link to="/tjanster/montering-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Montering Uppsala
+                    </Link>
+                    <Link to="/tjanster/montering-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Montering Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Trädgård */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Trädgård</div>
+                    <Link to="/tjanster/tradgard-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Trädgård Uppsala
+                    </Link>
+                    <Link to="/tjanster/tradgard-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Trädgård Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Städning */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Städning</div>
+                    <Link to="/tjanster/stad-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Städning Uppsala
+                    </Link>
+                    <Link to="/tjanster/stad-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Städning Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Markarbeten */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Markarbeten</div>
+                    <Link to="/tjanster/markarbeten-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Markarbeten Uppsala
+                    </Link>
+                    <Link to="/tjanster/markarbeten-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Markarbeten Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Tekniska installationer */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Tekniska installationer</div>
+                    <Link to="/tjanster/tekniska-installationer-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Tekniska installationer Uppsala
+                    </Link>
+                    <Link to="/tjanster/tekniska-installationer-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Tekniska installationer Stockholm
+                    </Link>
+                  </div>
+
+                  {/* Flytt */}
+                  <div className="text-sm">
+                    <div className="font-medium mb-1 text-foreground">Flytthjälp</div>
+                    <Link to="/tjanster/flytt-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Flytthjälp Uppsala
+                    </Link>
+                    <Link to="/tjanster/flytt-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                      Flytthjälp Stockholm
+                    </Link>
+                  </div>
+
+                </CollapsibleContent>
+              </Collapsible>
             </div>
 
             {/* Information */}
