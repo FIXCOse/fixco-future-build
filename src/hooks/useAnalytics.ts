@@ -9,6 +9,7 @@ import {
   fetchConversionFunnel,
   fetchRevenueTimeline,
   fetchTopCustomers,
+  fetchQuotePipeline,
   type AnalyticsFilters,
 } from '@/lib/api/analytics';
 
@@ -26,6 +27,7 @@ export function useAnalytics(filters: AnalyticsFilters) {
           funnel,
           revenueTimeline,
           topCustomers,
+          quotePipeline,
         ] = await Promise.all([
           fetchRevenueAnalytics(filters),
           fetchBookingAnalytics(filters),
@@ -35,6 +37,7 @@ export function useAnalytics(filters: AnalyticsFilters) {
           fetchConversionFunnel(filters),
           fetchRevenueTimeline(filters),
           fetchTopCustomers(filters, 10),
+          fetchQuotePipeline(filters),
         ]);
 
         return {
@@ -46,6 +49,7 @@ export function useAnalytics(filters: AnalyticsFilters) {
           funnel,
           revenueTimeline,
           topCustomers,
+          quotePipeline,
         };
       } catch (err) {
         console.error('Analytics query error:', err);

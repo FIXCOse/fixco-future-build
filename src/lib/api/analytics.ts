@@ -78,6 +78,27 @@ export interface ConversionFunnel {
   }>;
 }
 
+export interface QuotePipeline {
+  pending: {
+    count: number;
+    totalAmount: number;
+  };
+  accepted: {
+    count: number;
+    totalAmount: number;
+  };
+  awaitingInvoice: {
+    count: number;
+    totalAmount: number;
+  };
+  declined: {
+    count: number;
+    totalAmount: number;
+  };
+  conversionRate: number;
+  pipelineTotal: number;
+}
+
 // Revenue Analytics
 export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<RevenueAnalytics> {
   const { startDate, endDate, customerTypes } = filters;
@@ -656,6 +677,84 @@ export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
   return Array.from(customerMap.values())
     .sort((a, b) => b.totalSpent - a.totalSpent)
     .slice(0, limit);
+}
+
+// Fetch quote pipeline data
+export async function fetchQuotePipeline(filters: AnalyticsFilters): Promise<QuotePipeline> {
+  console.log('fetchQuotePipeline called with filters:', filters);
+
+  const query = supabase
+    .from('quotes_new')
+    .select(`
+      *,
+      invoices!left(id, status)
+    `)
+    .is('deleted_at', null);
+
+  // Apply date filters
+  if (filters.startDate) {
+    query.gte('created_at', filters.startDate);
+  }
+  if (filters.endDate) {
+    query.lte('created_at', filters.endDate);
+  }
+
+  const { data: quotes, error } = await query;
+
+  if (error) {
+    console.error('Error fetching quote pipeline:', error);
+    throw error;
+  }
+
+  console.log('Raw quotes data:', quotes);
+
+  // Categorize quotes
+  const pending = quotes?.filter(q => ['draft', 'sent'].includes(q.status || '')) || [];
+  const accepted = quotes?.filter(q => q.status === 'accepted') || [];
+  const declined = quotes?.filter(q => q.status === 'declined') || [];
+  
+  // Accepted quotes without invoices
+  const awaitingInvoice = accepted.filter(q => {
+    const invoices = Array.isArray(q.invoices) ? q.invoices : (q.invoices ? [q.invoices] : []);
+    return invoices.length === 0;
+  });
+
+  // Calculate totals
+  const pendingTotal = pending.reduce((sum, q) => sum + (Number(q.total_sek) || 0), 0);
+  const acceptedTotal = accepted.reduce((sum, q) => sum + (Number(q.total_sek) || 0), 0);
+  const awaitingInvoiceTotal = awaitingInvoice.reduce((sum, q) => sum + (Number(q.total_sek) || 0), 0);
+  const declinedTotal = declined.reduce((sum, q) => sum + (Number(q.total_sek) || 0), 0);
+
+  // Calculate conversion rate (accepted / total non-pending)
+  const totalQuotes = quotes?.length || 0;
+  const conversionRate = totalQuotes > 0 ? (accepted.length / totalQuotes) * 100 : 0;
+
+  // Pipeline total = pending + awaiting invoice
+  const pipelineTotal = pendingTotal + awaitingInvoiceTotal;
+
+  const result = {
+    pending: {
+      count: pending.length,
+      totalAmount: pendingTotal,
+    },
+    accepted: {
+      count: accepted.length,
+      totalAmount: acceptedTotal,
+    },
+    awaitingInvoice: {
+      count: awaitingInvoice.length,
+      totalAmount: awaitingInvoiceTotal,
+    },
+    declined: {
+      count: declined.length,
+      totalAmount: declinedTotal,
+    },
+    conversionRate,
+    pipelineTotal,
+  };
+
+  console.log('Quote pipeline result:', result);
+  return result;
 }
 
 // Export CSV

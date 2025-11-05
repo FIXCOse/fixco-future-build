@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, RefreshCw, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart, FileText, Target, Clock } from 'lucide-react';
+import { Download, RefreshCw, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart, FileText, Target, Clock, Hourglass, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
 import { RevenueTimelineChart } from '@/components/admin/analytics/RevenueTimelineChart';
@@ -142,43 +142,83 @@ const AdminReports = () => {
       {/* Filters */}
       <AnalyticsFilters onFilterChange={setFilters} />
 
-      {/* KPI Dashboard */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-        <KPICard
-          title="Total Intäkt"
-          value={formatCurrency(analytics.revenue.totalRevenue)}
-          trend={analytics.revenue.trend}
-          icon={DollarSign}
-        />
-        <KPICard
-          title="Bokningar"
-          value={analytics.bookings.totalBookings}
-          trend={analytics.bookings.trend}
-          icon={ShoppingCart}
-        />
-        <KPICard
-          title="AOV"
-          value={formatCurrency(analytics.revenue.avgOrderValue)}
-          icon={Target}
-          description="Genomsnittligt ordervärde"
-        />
-        <KPICard
-          title="Quote Accept"
-          value={`${analytics.bookings.conversionRate.toFixed(1)}%`}
-          icon={FileText}
-          description="Bokning → Faktura"
-        />
-        <KPICard
-          title="Kunder"
-          value={analytics.customers.totalCustomers}
-          icon={Users}
-          description={`${analytics.customers.newVsReturning.new} nya`}
-        />
-        <KPICard
-          title="ROT/RUT Besparing"
-          value={formatCurrency(analytics.revenue.rotDeduction + analytics.revenue.rutDeduction)}
-          icon={Clock}
-        />
+      {/* Quote Pipeline KPI Cards */}
+      <div>
+        <h2 className="text-lg font-semibold mb-3">Quote Pipeline</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <KPICard
+            title="Väntande Offerter"
+            value={`${analytics.quotePipeline.pending.count} st`}
+            icon={Hourglass}
+            description={formatCurrency(analytics.quotePipeline.pending.totalAmount)}
+          />
+          <KPICard
+            title="Accepterade Offerter"
+            value={`${analytics.quotePipeline.accepted.count} st`}
+            icon={CheckCircle2}
+            description={formatCurrency(analytics.quotePipeline.accepted.totalAmount)}
+          />
+          <KPICard
+            title="Väntande Fakturor"
+            value={`${analytics.quotePipeline.awaitingInvoice.count} st`}
+            icon={AlertCircle}
+            description={formatCurrency(analytics.quotePipeline.awaitingInvoice.totalAmount)}
+          />
+          <KPICard
+            title="Conversion Rate"
+            value={`${analytics.quotePipeline.conversionRate.toFixed(1)}%`}
+            icon={Target}
+            description="Accepterade av totalt"
+          />
+          <KPICard
+            title="Pipeline Total"
+            value={formatCurrency(analytics.quotePipeline.pipelineTotal)}
+            icon={DollarSign}
+            description="Väntande + Ej fakturerade"
+          />
+        </div>
+      </div>
+
+      {/* Revenue KPI Dashboard */}
+      <div>
+        <h2 className="text-lg font-semibold mb-3">Ekonomi & Kunder</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          <KPICard
+            title="Total Intäkt"
+            value={formatCurrency(analytics.revenue.totalRevenue)}
+            trend={analytics.revenue.trend}
+            icon={DollarSign}
+          />
+          <KPICard
+            title="Bokningar"
+            value={analytics.bookings.totalBookings}
+            trend={analytics.bookings.trend}
+            icon={ShoppingCart}
+          />
+          <KPICard
+            title="AOV"
+            value={formatCurrency(analytics.revenue.avgOrderValue)}
+            icon={Target}
+            description="Genomsnittligt ordervärde"
+          />
+          <KPICard
+            title="Quote Accept"
+            value={`${analytics.bookings.conversionRate.toFixed(1)}%`}
+            icon={FileText}
+            description="Bokning → Faktura"
+          />
+          <KPICard
+            title="Kunder"
+            value={analytics.customers.totalCustomers}
+            icon={Users}
+            description={`${analytics.customers.newVsReturning.new} nya`}
+          />
+          <KPICard
+            title="ROT/RUT Besparing"
+            value={formatCurrency(analytics.revenue.rotDeduction + analytics.revenue.rutDeduction)}
+            icon={Clock}
+          />
+        </div>
       </div>
 
       {/* Tabs */}
@@ -271,22 +311,22 @@ const AdminReports = () => {
         <TabsContent value="kunder" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-3">
             {Object.entries(analytics.customers.byType).map(([type, data]) => (
-              <Card key={type}>
+            <Card key={type}>
                 <CardHeader>
                   <CardTitle className="capitalize">{type === 'company' ? 'Företag' : type === 'private' ? 'Privat' : 'BRF'}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Antal:</span>
-                    <span className="font-semibold">{data.count}</span>
+                    <span className="font-semibold">{(data as any).count}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Intäkt:</span>
-                    <span className="font-semibold">{formatCurrency(data.revenue)}</span>
+                    <span className="font-semibold">{formatCurrency((data as any).revenue)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">AOV:</span>
-                    <span className="font-semibold">{formatCurrency(data.avgOrderValue)}</span>
+                    <span className="font-semibold">{formatCurrency((data as any).avgOrderValue)}</span>
                   </div>
                 </CardContent>
               </Card>
