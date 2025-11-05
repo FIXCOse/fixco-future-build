@@ -28,6 +28,13 @@ import {
   getBreadcrumbSchema 
 } from "@/components/SEOSchemaEnhanced";
 import { generateCityServiceData } from "@/utils/cityServiceTemplates";
+import { serviceCityContent } from "@/data/serviceCityContent";
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 
 interface ServiceCityDetailProps {
   service: string; // slug like 'el', 'vvs', 'snickeri'
@@ -95,6 +102,9 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   // Generate metadata dynamically from main service data (Single Source of Truth)
   const generatedMeta = generateCityServiceData(service, city);
   
+  // Get service content for "Om tjänsten" section
+  const serviceContent = serviceKey && serviceCityContent[serviceKey]?.[city];
+  
   // Filter services by category from database
   const filteredSubServices = useMemo(() => {
     if (!dbServices || !categoryName) return [];
@@ -143,9 +153,12 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     }
   }), [generatedMeta, city, cityDataItem]);
 
-  const faqSchema = useMemo(() => getFAQSchema(
-    cityDataItem.faqs.map(faq => ({ question: faq.q, answer: faq.a }))
-  ), [cityDataItem]);
+  const faqSchema = useMemo(() => {
+    const faqs = cityServiceData?.faqs && cityServiceData.faqs.length > 0 
+      ? cityServiceData.faqs 
+      : cityDataItem.faqs;
+    return getFAQSchema(faqs.map(faq => ({ question: faq.q, answer: faq.a })));
+  }, [cityServiceData, cityDataItem]);
 
   // Handle loading and error states AFTER all hooks
   if (!serviceData || !generatedMeta) {
@@ -292,6 +305,70 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
+        {/* Om tjänsten Section */}
+        {serviceContent && (
+          <section className="py-12 bg-background">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto prose prose-slate dark:prose-invert">
+                <h2 className="text-3xl font-bold mb-6">{serviceContent.aboutTitle}</h2>
+                {serviceContent.aboutParagraphs.map((paragraph, idx) => (
+                  <p key={idx} className="text-muted-foreground leading-relaxed mb-4">
+                    {paragraph}
+                  </p>
+                ))}
+                
+                {serviceContent.authorizations && (
+                  <div className="bg-muted/20 rounded-lg p-6 my-6 border border-primary/10">
+                    <h3 className="text-xl font-semibold mb-3">Behörigheter och certifieringar</h3>
+                    <ul className="space-y-2">
+                      {serviceContent.authorizations.map((auth, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                          <span>{auth}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                <div className="bg-primary/5 rounded-lg p-6 border border-primary/20">
+                  <h3 className="text-xl font-semibold mb-3">Vanligaste uppdragen i {city}</h3>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {serviceContent.commonTasks.map((task, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <CheckCircle className="h-4 w-4 text-primary mr-2 mt-1 flex-shrink-0" />
+                        <span className="text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Populära tjänster Section */}
+        {serviceContent && (
+          <section className="py-12 bg-muted/5">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold mb-8 text-center">
+                Populära {categoryName?.toLowerCase()}-tjänster i {city}
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                {serviceContent.popularServices.map((service, idx) => {
+                  const IconComponent = service.icon;
+                  return (
+                    <div key={idx} className="flex items-center space-x-2 bg-card border rounded-lg p-3 hover:border-primary/50 transition-colors">
+                      <IconComponent className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span className="text-sm">{service.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Trust Indicators */}
         <section className="py-8 bg-muted/5">
           <div className="container mx-auto px-4">
@@ -384,7 +461,54 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* Så fungerar det Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Så fungerar {categoryName?.toLowerCase()}-uppdrag i {city}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-primary">1</span>
+                </div>
+                <h3 className="font-semibold mb-2">Beskriv uppdraget</h3>
+                <p className="text-sm text-muted-foreground">
+                  Fyll i formulär eller ring – vi ger offert inom 24h
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-primary">2</span>
+                </div>
+                <h3 className="font-semibold mb-2">Godkänn offert</h3>
+                <p className="text-sm text-muted-foreground">
+                  Tydlig offert med priser, ROT/RUT-avdrag och tidplan
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-primary">3</span>
+                </div>
+                <h3 className="font-semibold mb-2">Vi utför jobbet</h3>
+                <p className="text-sm text-muted-foreground">
+                  Start inom 24-48h, professionell utförande med dokumentation
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-primary">4</span>
+                </div>
+                <h3 className="font-semibold mb-2">Klart & garanterat</h3>
+                <p className="text-sm text-muted-foreground">
+                  Slutbesiktning, dokumentation och 100% nöjd kund-garanti
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section - Using service-specific FAQs */}
         <section className="py-16 bg-muted/5">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
@@ -395,20 +519,57 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 </p>
               </div>
               
-              <div className="space-y-6">
-                {cityDataItem.faqs.map((faq, idx) => (
-                  <div key={idx} className="bg-card border border-border rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-3 flex items-start">
-                      <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1 flex-shrink-0" />
-                      {faq.q}
-                    </h3>
-                    <p className="text-muted-foreground pl-7">{faq.a}</p>
-                  </div>
+              <div className="space-y-4">
+                {(cityServiceData?.faqs && cityServiceData.faqs.length > 0 
+                  ? cityServiceData.faqs 
+                  : cityDataItem.faqs
+                ).map((faq, idx) => (
+                  <Collapsible key={idx}>
+                    <CollapsibleTrigger className="w-full bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-colors">
+                      <div className="flex items-center justify-between text-left">
+                        <h3 className="text-lg font-semibold flex items-start flex-1">
+                          <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1 flex-shrink-0" />
+                          {faq.q}
+                        </h3>
+                        <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0 ml-4 transition-transform group-data-[state=open]:rotate-180" />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="px-6 pb-4 pt-2">
+                      <p className="text-muted-foreground pl-7">{faq.a}</p>
+                    </CollapsibleContent>
+                  </Collapsible>
                 ))}
               </div>
             </div>
           </div>
         </section>
+
+        {/* Cases Section - Using service-specific cases */}
+        {cityServiceData?.cases && cityServiceData.cases.length > 0 && (
+          <section className="py-16 bg-background">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">Tidigare uppdrag – {categoryName} i {city}</h2>
+                <p className="text-muted-foreground">
+                  Exempel på genomförda projekt från nöjda kunder
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                {cityServiceData.cases.map((caseItem, idx) => (
+                  <div key={idx} className="bg-card border rounded-lg p-6 hover:border-primary/50 transition-colors">
+                    <div className="flex items-start mb-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                        <CheckCircle className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-lg">{caseItem.title}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{caseItem.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Testimonials Section */}
         <section className="py-16">
