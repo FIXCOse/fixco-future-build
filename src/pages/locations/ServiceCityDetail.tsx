@@ -27,6 +27,7 @@ import {
   getFAQSchema,
   getBreadcrumbSchema 
 } from "@/components/SEOSchemaEnhanced";
+import { generateCityServiceData } from "@/utils/cityServiceTemplates";
 
 interface ServiceCityDetailProps {
   service: string; // slug like 'el', 'vvs', 'snickeri'
@@ -64,6 +65,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     'golv': 'golv',
     'kok': 'kok',
     'malning': 'malning',
+    'maleri': 'malning', // Map maleri slug to malning category for sub-services
     'takarbeten': 'takarbeten'
   };
 
@@ -85,10 +87,13 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const serviceKey = service ? serviceKeyMap[service] : undefined;
   const cityDataItem = cityData[city];
 
-  // Get city-specific service data
+  // Get city-specific service data (for FAQs and cases only)
   const cityServiceData = serviceCityData.find(
     item => item.service === serviceKey && item.city === city
   );
+
+  // Generate metadata dynamically from main service data (Single Source of Truth)
+  const generatedMeta = generateCityServiceData(service, city);
   
   // Filter services by category from database
   const filteredSubServices = useMemo(() => {
@@ -119,8 +124,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const localBusinessSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": `Fixco ${cityServiceData?.h1 || ''}`,
-    "description": cityServiceData?.description || '',
+    "name": `Fixco ${generatedMeta?.h1 || ''}`,
+    "description": generatedMeta?.description || '',
     "areaServed": {
       "@type": "City",
       "name": city,
@@ -136,14 +141,14 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
       "addressLocality": city,
       "addressCountry": "SE"
     }
-  }), [cityServiceData, city, cityDataItem]);
+  }), [generatedMeta, city, cityDataItem]);
 
   const faqSchema = useMemo(() => getFAQSchema(
     cityDataItem.faqs.map(faq => ({ question: faq.q, answer: faq.a }))
   ), [cityDataItem]);
 
   // Handle loading and error states AFTER all hooks
-  if (!serviceData || !cityServiceData) {
+  if (!serviceData || !generatedMeta) {
     return (
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-20">
@@ -175,8 +180,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   return (
     <>
       <Helmet>
-        <title>{cityServiceData.title}</title>
-        <meta name="description" content={cityServiceData.description} />
+        <title>{generatedMeta.title}</title>
+        <meta name="description" content={generatedMeta.description} />
         <script type="application/ld+json">
           {JSON.stringify(breadcrumbSchema)}
         </script>
@@ -217,12 +222,12 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 </div>
                 <div>
                   <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-                    {cityServiceData.h1}
+                    {generatedMeta.h1}
                   </h1>
                 </div>
               </div>
               <p className="text-xl text-muted-foreground mb-6">
-                {cityServiceData.description}
+                {generatedMeta.description}
               </p>
               
               {/* City-specific paragraph */}
@@ -246,7 +251,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                     openServiceRequestModal({
                       serviceSlug: serviceData.slug,
                       prefill: { 
-                        service_name: cityServiceData.h1 
+                        service_name: generatedMeta.h1 
                       }
                     });
                   }}
