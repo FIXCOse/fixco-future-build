@@ -1,8 +1,22 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /boka/
+Disallow: /offert/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /boka/
+Disallow: /offert/
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +26,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /boka/
+Disallow: /offert/
+
+Sitemap: https://fixco.se/sitemap.xml

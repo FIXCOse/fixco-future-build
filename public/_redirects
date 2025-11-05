@@ -1,0 +1,41 @@
+# Gamla URL:er som inte längre finns (301 permanent redirects)
+/tjanster/maleri                /tjanster              301!
+/cleaning-organization/         /tjanster/stadning     301!
+
+# Tvinga bort trailing slashes - Svenska routes
+/tjanster/              /tjanster              301!
+/tjanster/*/            /tjanster/:splat       301!
+/kontakt/               /kontakt               301!
+/om-oss/                /om-oss                301!
+/referenser/            /referenser            301!
+/faq/                   /faq                   301!
+/smart-hem/             /smart-hem             301!
+/boka-hembesok/         /boka-hembesok         301!
+/rot-info/              /rot-info              301!
+/rut/                   /rut                   301!
+/ai/                    /ai                    301!
+/terms/                 /terms                 301!
+/privacy/               /privacy               301!
+/cookies/               /cookies               301!
+/ansvar-forsakring/     /ansvar-forsakring     301!
+
+# Tvinga bort trailing slashes - Engelska routes
+/en/                    /en                    301!
+/en/services/           /en/services           301!
+/en/services/*/         /en/services/:splat    301!
+/en/contact/            /en/contact            301!
+/en/about/              /en/about              301!
+/en/references/         /en/references         301!
+/en/faq/                /en/faq                301!
+/en/smart-home/         /en/smart-home         301!
+/en/book-visit/         /en/book-visit         301!
+/en/rot-info/           /en/rot-info           301!
+/en/rut/                /en/rut                301!
+/en/ai/                 /en/ai                 301!
+/en/terms/              /en/terms              301!
+/en/privacy/            /en/privacy            301!
+/en/cookies/            /en/cookies            301!
+/en/insurance/          /en/insurance          301!
+
+# Catch-all för alla andra trailing slashes
+/*/                     /:splat                301!
