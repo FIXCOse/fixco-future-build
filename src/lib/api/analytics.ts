@@ -86,14 +86,14 @@ export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<
     .from('invoices')
     .select(`
       *,
-      profiles!customer_id(user_type)
+      customers!customer_id(customer_type, name, company_name, brf_name)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
 
   if (customerTypes?.length) {
-    query = query.in('profiles.user_type', customerTypes);
+    query = query.in('customers.customer_type', customerTypes);
   }
 
   const { data, error } = await query;
@@ -113,7 +113,7 @@ export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<
 
   const totalRevenue = data?.reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0) || 0;
   const byCustomerType = data?.reduce((acc: Record<string, number>, inv) => {
-    const type = (inv.profiles as any)?.user_type || 'private';
+    const type = (inv.customers as any)?.customer_type || 'private';
     acc[type] = (acc[type] || 0) + Number(inv.total_amount || 0);
     return acc;
   }, {}) || {};
@@ -156,7 +156,10 @@ export async function fetchBookingAnalytics(filters: AnalyticsFilters): Promise<
 
   const { data, error } = await supabase
     .from('quotes')
-    .select('*')
+    .select(`
+      *,
+      customers!customer_id(customer_type)
+    `)
     .gte('created_at', startDate)
     .lte('created_at', endDate)
     .is('deleted_at', null);
@@ -174,20 +177,15 @@ export async function fetchBookingAnalytics(filters: AnalyticsFilters): Promise<
 
   const totalBookings = data?.length || 0;
   
-  const byCustomerType: Record<string, number> = {
+  const byCustomerType = data?.reduce((acc: Record<string, number>, quote) => {
+    const type = (quote.customers as any)?.customer_type || 'private';
+    acc[type] = (acc[type] || 0) + 1;
+    return acc;
+  }, {
     company: 0,
     private: 0,
     brf: 0,
-  };
-  
-  data?.forEach((quote) => {
-    // Infer type from customer data if available
-    if (quote.customer_name) {
-      byCustomerType.private = (byCustomerType.private || 0) + 1;
-    } else {
-      byCustomerType.private = (byCustomerType.private || 0) + 1;
-    }
-  });
+  }) || { company: 0, private: 0, brf: 0 };
 
   const byStatus = data?.reduce((acc: Record<string, number>, quote) => {
     const status = quote.status || 'draft';
@@ -238,7 +236,7 @@ export async function fetchCustomerSegmentation(filters: AnalyticsFilters): Prom
     .from('invoices')
     .select(`
       *,
-      profiles!customer_id!inner(user_type)
+      customers!customer_id!inner(customer_type, name, company_name, brf_name)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
@@ -266,7 +264,7 @@ export async function fetchCustomerSegmentation(filters: AnalyticsFilters): Prom
   const customerIds = new Set();
   
   invoices?.forEach((inv) => {
-    const type = ((inv.profiles as any)?.user_type || 'private') as 'company' | 'private' | 'brf';
+    const type = ((inv.customers as any)?.customer_type || 'private') as 'company' | 'private' | 'brf';
     byType[type].count += 1;
     byType[type].revenue += Number(inv.total_amount || 0);
     customerIds.add(inv.customer_id);
@@ -548,7 +546,7 @@ export async function fetchRevenueTimeline(filters: AnalyticsFilters) {
     .select(`
       created_at,
       total_amount,
-      profiles!customer_id(user_type)
+      customers!customer_id(customer_type)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
@@ -564,7 +562,7 @@ export async function fetchRevenueTimeline(filters: AnalyticsFilters) {
 
   data?.forEach((inv) => {
     const date = inv.created_at.split('T')[0];
-    const type = (inv.profiles as any)?.user_type || 'private';
+    const type = (inv.customers as any)?.customer_type || 'private';
 
     if (!timelineMap.has(date)) {
       timelineMap.set(date, {
@@ -594,7 +592,7 @@ export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
       customer_id,
       total_amount,
       created_at,
-      profiles!customer_id!inner(first_name, last_name, company_name, user_type, email)
+      customers!customer_id!inner(customer_type, name, company_name, brf_name, email)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
@@ -608,14 +606,14 @@ export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
   const customerMap = new Map();
 
   data?.forEach((inv) => {
-    const profile = inv.profiles as any;
-    if (!profile) return;
+    const customer = inv.customers as any;
+    if (!customer) return;
 
     if (!customerMap.has(inv.customer_id)) {
       customerMap.set(inv.customer_id, {
         id: inv.customer_id,
-        name: profile.company_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || profile.email,
-        type: profile.user_type,
+        name: customer.company_name || customer.brf_name || customer.name || customer.email,
+        type: customer.customer_type,
         bookingCount: 0,
         totalSpent: 0,
         lastBooking: inv.created_at,
