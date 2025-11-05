@@ -36,6 +36,10 @@ interface ServiceContentItem {
     icon: LucideIcon;
     label: string;
   }>;
+  seasonalTips?: Array<{
+    title: string;
+    description: string;
+  }>;
 }
 
 export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockholm", ServiceContentItem>> = {
@@ -69,6 +73,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "Utomhusbelysning" },
         { icon: Wrench, label: "Elbesiktning" },
         { icon: Network, label: "Nätverksuttag" }
+      ],
+      seasonalTips: [
+        {
+          title: "Ökad belastning på elnätet",
+          description: "Vintermånader med el-värmare och elbilsladdning ökar risken för utlösta säkringar. Överväg uppgradering till 3-fas om du har problem med för låg effekt."
+        },
+        {
+          title: "Utomhusbelysning & säkerhet",
+          description: "Kontrollera att utomhusarmaturer har korrekt IP-klass (minst IP44) för vinter. Vi hjälper till med installation av vinter-belysning och markspotlights."
+        },
+        {
+          title: "Motorvärmare & timer",
+          description: "Installera motorvärmare med timer för att spara energi. ROT-avdrag gäller för installation. Vi monterar och kopplar enligt gällande standard."
+        }
       ]
     },
     "Stockholm": {
@@ -100,6 +118,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "Porttelefon" },
         { icon: Wrench, label: "Elbesiktning" },
         { icon: Network, label: "Smarta hem-system" }
+      ],
+      seasonalTips: [
+        {
+          title: "Ökad belastning på elnätet",
+          description: "Vintermånader med el-värmare och elbilsladdning ökar risken för utlösta säkringar i äldre lägenheter. Vi hjälper till med uppgradering av elcentral."
+        },
+        {
+          title: "Porttelefoner vid kyla",
+          description: "Gamla porttelefonsystem kan krångla vid minusgrader. Vi uppgraderar till moderna system som fungerar stabilt året runt."
+        },
+        {
+          title: "Eluppvärmning i BRF",
+          description: "Många sekelskifteslägenheter har direktverkande el-element. Överväg byte till modern, energisnål lösning för att minska elkostnaderna."
+        }
       ]
     }
   },
@@ -133,6 +165,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Ruler, label: "Vattenmätare" },
         { icon: Cable, label: "Avloppsstopp" },
         { icon: Droplets, label: "Läckage-kontroll" }
+      ],
+      seasonalTips: [
+        {
+          title: "Frostskydd för utomhuskranar",
+          description: "Stäng av och tappa utomhuskranar före vintern för att undvika frostrisk. Vi hjälper till med installation av självdränerande kranar."
+        },
+        {
+          title: "Golvvärmekontroll",
+          description: "Testa golvvärmen tidigt på hösten för att upptäcka eventuella problem innan kylan kommer. Vi utför trycktester och åtgärdar läckor."
+        },
+        {
+          title: "Vattenrörsisolering",
+          description: "Isolera vattenrör i kallförråd och garage för att förhindra frysning. Vi hjälper till med rätt isolermaterial och montering."
+        }
       ]
     },
     "Stockholm": {
@@ -164,6 +210,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Ruler, label: "BRF-arbete" },
         { icon: Cable, label: "Avloppsstopp" },
         { icon: Droplets, label: "Försäkringsintyg" }
+      ],
+      seasonalTips: [
+        {
+          title: "Läckor i BRF:er",
+          description: "Vintern ökar risken för läckor i äldre BRF-system på grund av temperaturvariationer. Vi erbjuder akut jourtjänst dygnet runt."
+        },
+        {
+          title: "Avloppsstopp vid kyla",
+          description: "Köldknappar och fet mat ökar risken för tilltäppningar i avlopp. Vi installerar fettavskiljare och utför regelbunden spolning."
+        },
+        {
+          title: "Trycktester enligt standard",
+          description: "Alla badrumsrenoveringar i BRF kräver trycktester. Vi dokumenterar och utfärdar intyg enligt försäkringsbolagens krav."
+        }
       ]
     }
   },
@@ -196,6 +256,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Trees, label: "Trädäck" },
         { icon: Sofa, label: "Inredning" },
         { icon: Home, label: "Renoveringar" }
+      ],
+      seasonalTips: [
+        {
+          title: "Trädäck före vintern",
+          description: "Behandla träytor med olja eller lasyr före hösten för att skydda mot fukt och mögel under vintern. Vi erbjuder träskydd och underhåll."
+        },
+        {
+          title: "Lister och dörrar",
+          description: "Vinterfukt kan göra att träkarmar sväller. Kontrollera att fönster och dörrar stänger tätt för att undvika drag och kyla."
+        },
+        {
+          title: "Inomhusprojekt på vintern",
+          description: "Vinter är perfekt tid för köksrenoveringar och platsbyggda garderober när man inte kan arbeta utomhus lika mycket."
+        }
       ]
     },
     "Stockholm": {
@@ -226,6 +300,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Trees, label: "Trägolv" },
         { icon: Sofa, label: "Inredning" },
         { icon: Home, label: "BRF-renoveringar" }
+      ],
+      seasonalTips: [
+        {
+          title: "Originaldetaljer vid renovering",
+          description: "Sekelskifteslägenheter kräver särskild hänsyn till lister, dörrar och fönsterkarmar. Vi har erfarenhet av att bevara originaldetaljer."
+        },
+        {
+          title: "Ljudisolering i BRF",
+          description: "Träbjälklag i äldre hus kan behöva ljudisolering. Vi bygger ljudisolerade väggar och golv enligt Boverkets rekommendationer."
+        },
+        {
+          title: "Fuktskydd vid renovering",
+          description: "Kontrollera fuktskydd i badrum och kök vid renovering i äldre hus. Vi installerar nya membran enligt gällande standard."
+        }
       ]
     }
   },
@@ -248,6 +336,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Brush, label: "Fasadmålning" },
         { icon: Home, label: "Lister & dörrar" },
         { icon: Ruler, label: "Tapetsering" }
+      ],
+      seasonalTips: [
+        {
+          title: "Fasadmålning på sommaren",
+          description: "Planera fasadmålning till sommarhalvåret när temperaturen är över 10 grader. Torktiden är kortare och resultatet blir bättre."
+        },
+        {
+          title: "Invändig målning på vintern",
+          description: "Vinter är perfekt för invändiga målningsprojekt när man inte vistas utomhus lika mycket. Vi hjälper till med färgval och utförande."
+        },
+        {
+          title: "Träskydd och lasyr",
+          description: "Behandla träfasader, fönster och dörrar vart tredje år för optimalt skydd. Vi använder miljövänliga produkter från ledande leverantörer."
+        }
       ]
     },
     "Stockholm": {
@@ -268,6 +370,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Brush, label: "Originaldetaljer" },
         { icon: Home, label: "BRF-målning" },
         { icon: Ruler, label: "Trapphus" }
+      ],
+      seasonalTips: [
+        {
+          title: "BRF-trapphus på sommaren",
+          description: "Planera trapphus- och fasadmålning till sommaren när fönster kan stå öppna för ventilation. Vi koordinerar med BRF-styrelsen."
+        },
+        {
+          title: "Färgval för sekelskifteshus",
+          description: "Använd autentiska NCS-kulörer för att bevara husets karaktär. Vi har erfarenhet av historiska miljöer och originalfärger."
+        },
+        {
+          title: "Invändig renovering vinter",
+          description: "Vintern är idealisk för lägenhetsmålning och uppdatering av lister och dörrar. Vi skyddar golv och inredning under arbetet."
+        }
       ]
     }
   },
@@ -290,6 +406,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "Hemstäd" },
         { icon: Brush, label: "Byggstäd" },
         { icon: Wrench, label: "Fönsterputs" }
+      ],
+      seasonalTips: [
+        {
+          title: "Flyttstäd vid terminsslut",
+          description: "Boka flyttstäd i god tid inför terminsslut då efterfrågan är hög. Vi garanterar godkänt resultat vid besiktning."
+        },
+        {
+          title: "Vårens storstädning",
+          description: "Våren är perfekt för hemstäd och fönsterputs efter den mörka vintern. Vi erbjuder extrastäd med fönsterputs inkluderat."
+        },
+        {
+          title: "Byggstäd efter renovering",
+          description: "Efter renovering krävs noggrann byggstäd med damsugning av finpartiklar. Vi använder HEPA-filter för bästa resultat."
+        }
       ]
     },
     "Stockholm": {
@@ -310,6 +440,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "BRF-städning" },
         { icon: Brush, label: "Flyttstäd" },
         { icon: Wrench, label: "Trapphus" }
+      ],
+      seasonalTips: [
+        {
+          title: "BRF-trappstädning vinter",
+          description: "Ökad smuts från snö och salt kräver extra noggrann trappstädning vintertid. Vi erbjuder ökad frekvens vid behov."
+        },
+        {
+          title: "Kontorsstäd efter storhelger",
+          description: "Boka extra städning efter storhelger och semester för att hålla kontoret fräscht. Vi arbetar efter kontorstid."
+        },
+        {
+          title: "Flyttstäd i Stockholm",
+          description: "Boka flyttstäd minst 1 vecka före besiktning. Vi följer Svensk Fastighetsförmedlings checklista för godkänt resultat."
+        }
       ]
     }
   },
@@ -332,6 +476,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Ruler, label: "Plattläggning" },
         { icon: Wrench, label: "Schaktning" },
         { icon: Home, label: "Markplanering" }
+      ],
+      seasonalTips: [
+        {
+          title: "Dränering på hösten",
+          description: "Hösten är bästa tiden för dräneringsarbeten innan marken fryser. Vi utför dränering enligt moderna standards med filtersand."
+        },
+        {
+          title: "Plattläggning på våren",
+          description: "Vänta till marken töat på våren för att börja plattläggning. Vi planerar projektet för optimal torkning och stabilitet."
+        },
+        {
+          title: "Markarbeten vintertid",
+          description: "Undvik schaktning vid minusgrader då marken är fruset. Boka projektet till vår eller sommar för bästa resultat."
+        }
       ]
     },
     "Stockholm": {
@@ -352,6 +510,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Ruler, label: "Natursten" },
         { icon: Wrench, label: "Dränering" },
         { icon: Home, label: "BRF-arbete" }
+      ],
+      seasonalTips: [
+        {
+          title: "Innergårdar på sommaren",
+          description: "Sommaren är perfekt för innergårdsprojekt i Stockholm. Vi koordinerar med grannar och BRF-styrelser för smidig genomgång."
+        },
+        {
+          title: "Dränering i BRF",
+          description: "Äldre BRF:er kan behöva uppdaterad dränering. Vi utför undersökning och åtgärdar fuktproblem enligt moderna standards."
+        },
+        {
+          title: "Parkering och lastzon",
+          description: "I Stockholm planerar vi parkering och lastzon i förväg för att säkerställa smidig leverans av material till innergårdar."
+        }
       ]
     }
   },
@@ -374,6 +546,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "Villaflytt" },
         { icon: Wrench, label: "Bärhjälp" },
         { icon: Sofa, label: "Packning" }
+      ],
+      seasonalTips: [
+        {
+          title: "Flytt vid terminsstart",
+          description: "Boka flytt i god tid inför terminsstart när efterfrågan är hög bland studenter i Uppsala. Vi erbjurar flexibla tider."
+        },
+        {
+          title: "Vinterflyttar",
+          description: "Vid flytt på vintern använder vi skyddsmaterial för golv och trappor för att undvika skador från snö och väta."
+        },
+        {
+          title: "Packning och förvaring",
+          description: "Vi erbjuder packtjänst och magasinering mellan flytt för smidigare övergång. Boka i förväg för garanterat utrymme."
+        }
       ]
     },
     "Stockholm": {
@@ -394,6 +580,20 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         { icon: Home, label: "Trapparbete" },
         { icon: Wrench, label: "Magasinering" },
         { icon: Sofa, label: "Kontorsflytt" }
+      ],
+      seasonalTips: [
+        {
+          title: "Flytt i Stockholm innerstad",
+          description: "Boka lastzon minst 1 vecka i förväg för flytt i Stockholm innerstad. Vi hanterar all dokumentation och tillstånd."
+        },
+        {
+          title: "Skydd i trapphus",
+          description: "I Stockholms äldre trapphus använder vi extra skyddsmaterial för väggar, trappräcken och golv för att undvika skador."
+        },
+        {
+          title: "Effektivitet vid flytt",
+          description: "Vi planerar flyttrutt och packning för maximal effektivitet i trånga stockholmsmiljöer. Inga extra kostnader för trappor utan hiss."
+        }
       ]
     }
   },

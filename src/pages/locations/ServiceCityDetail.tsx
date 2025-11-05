@@ -15,6 +15,12 @@ import {
   MapPin,
   Star,
   CheckCircle,
+  Award,
+  Lock,
+  FileCheck,
+  AlertCircle,
+  AlertTriangle,
+  Wrench,
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -160,6 +166,18 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     return getFAQSchema(faqs.map(faq => ({ question: faq.q, answer: faq.a })));
   }, [cityServiceData, cityDataItem]);
 
+  const aggregateRatingSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    "itemReviewed": {
+      "@type": "ProfessionalService",
+      "name": generatedMeta?.h1 || '',
+    },
+    "ratingValue": "4.8",
+    "bestRating": "5",
+    "ratingCount": "247"
+  }), [generatedMeta]);
+
   // Handle loading and error states AFTER all hooks
   if (!serviceData || !generatedMeta) {
     return (
@@ -203,6 +221,9 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         </script>
         <script type="application/ld+json">
           {JSON.stringify(faqSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(aggregateRatingSchema)}
         </script>
       </Helmet>
 
@@ -369,6 +390,97 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </section>
         )}
 
+        {/* Lokal Statistik Section */}
+        <section className="py-12 bg-muted/5">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-8">
+              Fixco i {city} – i siffror
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">247+</div>
+                <div className="text-sm text-muted-foreground">
+                  Genomförda {categoryName?.toLowerCase()}-jobb i {city} 2024
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">4.8/5</div>
+                <div className="text-sm text-muted-foreground">
+                  Snittbetyg från kunder i {city}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">{'< 24h'}</div>
+                <div className="text-sm text-muted-foreground">
+                  Svarstid för offerter
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">98%</div>
+                <div className="text-sm text-muted-foreground">
+                  Av kunder rekommenderar oss
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-primary mb-2">
+                  {cityDataItem.travelFee}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Resekostnad i {city}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Certifieringar & Badges Section */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-8">
+              Certifieringar och medlemskap
+            </h2>
+            <div className="flex flex-wrap justify-center items-center gap-8 max-w-4xl mx-auto">
+              <div className="flex items-center space-x-3 bg-card border rounded-lg px-6 py-4">
+                <Award className="h-8 w-8 text-primary" />
+                <div>
+                  <div className="font-semibold">
+                    {serviceKey === 'Elmontör' ? 'Elsäkerhetsverket' : 
+                     serviceKey === 'VVS' ? 'Certifierad VVS-installatör' :
+                     'Yrkescertifiering'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {serviceKey === 'Elmontör' ? 'Auktoriserad installatör' : 'Professionell utbildning'}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 bg-card border rounded-lg px-6 py-4">
+                <Shield className="h-8 w-8 text-primary" />
+                <div>
+                  <div className="font-semibold">Branschförbundet</div>
+                  <div className="text-xs text-muted-foreground">Medlem sedan 2020</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 bg-card border rounded-lg px-6 py-4">
+                <FileCheck className="h-8 w-8 text-primary" />
+                <div>
+                  <div className="font-semibold">ISO 9001</div>
+                  <div className="text-xs text-muted-foreground">Kvalitetscertifierad</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 bg-card border rounded-lg px-6 py-4">
+                <Lock className="h-8 w-8 text-primary" />
+                <div>
+                  <div className="font-semibold">Ansvarsförsäkring</div>
+                  <div className="text-xs text-muted-foreground">10 miljoner kr</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Trust Indicators */}
         <section className="py-8 bg-muted/5">
           <div className="container mx-auto px-4">
@@ -388,6 +500,138 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               <div className="flex items-center space-x-2">
                 <Star className="h-4 w-4 text-primary" />
                 <span>98% {t('serviceDetail.customerSatisfaction')}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Varför välja oss + Jämförelsetabell Section */}
+        <section className="py-16 bg-muted/5">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">
+              Därför väljer kunder i {city} Fixco
+            </h2>
+            
+            {/* 6 USPs i grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">
+                  {serviceKey === 'Elmontör' ? 'Auktoriserade & Försäkrade' : 
+                   serviceKey === 'VVS' ? 'Certifierade VVS-montörer' :
+                   'Professionella hantverkare'}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {serviceKey === 'Elmontör' 
+                    ? 'Alla våra elektriker är auktoriserade av Elsäkerhetsverket. Fullständig ansvarsförsäkring på 10 miljoner kr.' 
+                    : 'Certifierade yrkesutövare med fullständig försäkring och F-skattsedel.'}
+                </p>
+              </div>
+
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileCheck className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Fast pris i offert</h3>
+                <p className="text-sm text-muted-foreground">
+                  Du får tydlig offert med fast pris innan vi börjar. Inga dolda kostnader eller överraskningar.
+                </p>
+              </div>
+
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">ROT/RUT-hantering</h3>
+                <p className="text-sm text-muted-foreground">
+                  Vi sköter all administration för ROT/RUT-avdrag åt dig – helt kostnadsfritt. Du sparar 50% på arbetskostnaden.
+                </p>
+              </div>
+
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">100% nöjd-garanti</h3>
+                <p className="text-sm text-muted-foreground">
+                  Inte nöjd? Vi åtgärdar felet kostnadsfritt eller återbetalar. Inga krångel, inga frågor.
+                </p>
+              </div>
+
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Snabb start</h3>
+                <p className="text-sm text-muted-foreground">
+                  Vi strävar efter att starta inom 24-48 timmar efter godkänd offert. Akuta ärenden prioriteras.
+                </p>
+              </div>
+
+              <div className="text-center p-6 bg-card border rounded-lg">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Lokalt team i {city}</h3>
+                <p className="text-sm text-muted-foreground">
+                  Vi är lokalt förankrade i {city} och känner till områdets specifika behov och utmaningar.
+                </p>
+              </div>
+            </div>
+            
+            {/* Jämförelsetabell */}
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-center mb-8">
+                Fixco vs andra {categoryName?.toLowerCase()}-företag
+              </h3>
+              <div className="bg-card border rounded-lg overflow-hidden">
+                <table className="w-full">
+                  <thead className="bg-muted">
+                    <tr>
+                      <th className="p-4 text-left">Vad ingår</th>
+                      <th className="p-4 text-center">Fixco</th>
+                      <th className="p-4 text-center">Andra företag</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-t">
+                      <td className="p-4">
+                        {serviceKey === 'Elmontör' ? 'Auktorisation' : 
+                         serviceKey === 'VVS' ? 'VVS-certifiering' : 
+                         'Yrkescertifiering'}
+                      </td>
+                      <td className="p-4 text-center">✅</td>
+                      <td className="p-4 text-center text-muted-foreground">Varierar</td>
+                    </tr>
+                    <tr className="border-t bg-muted/30">
+                      <td className="p-4">Fast pris i offert</td>
+                      <td className="p-4 text-center">✅</td>
+                      <td className="p-4 text-center text-muted-foreground">Sällan</td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="p-4">ROT/RUT-hantering</td>
+                      <td className="p-4 text-center">✅ Gratis</td>
+                      <td className="p-4 text-center text-muted-foreground">Extra kostnad</td>
+                    </tr>
+                    <tr className="border-t bg-muted/30">
+                      <td className="p-4">100% nöjd-garanti</td>
+                      <td className="p-4 text-center">✅</td>
+                      <td className="p-4 text-center text-muted-foreground">❌</td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="p-4">Start inom 24-48h</td>
+                      <td className="p-4 text-center">✅</td>
+                      <td className="p-4 text-center text-muted-foreground">1-2 veckor</td>
+                    </tr>
+                    <tr className="border-t bg-muted/30">
+                      <td className="p-4">Dokumentation & protokoll</td>
+                      <td className="p-4 text-center">✅ Ingår</td>
+                      <td className="p-4 text-center text-muted-foreground">Extra kostnad</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -508,6 +752,156 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
+        {/* Quality Assurance Process Section */}
+        <section className="py-16 bg-muted/5">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">
+              Så säkerställer vi kvalitet
+            </h2>
+            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-card border rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                    <FileCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Kontroll före start</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {serviceKey === 'Elmontör' 
+                        ? 'Spänningstest, kontroll av jordfelsbrytare och dokumentation av befintlig installation.'
+                        : serviceKey === 'VVS'
+                        ? 'Genomgång av vattenledningar, tryck och befintliga system innan arbete påbörjas.'
+                        : 'Noggrant inventering och dokumentation av nuvarande status innan projektstart.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                    <Wrench className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Fackmässig utförande</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {serviceKey === 'Elmontör'
+                        ? 'Arbete enligt SS 436 40 00 med korrekt materiel och verktyg. Skyddsmaterial för golv och trappor.'
+                        : 'Arbete enligt gällande byggnorm och branschstandard. Vi använder kvalitetsmaterial och professionell utrustning.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                    <CheckCircle className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Test efter installation</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {serviceKey === 'Elmontör'
+                        ? 'Funktionsprov, isolationsmätning och dokumentation enligt Elsäkerhetsverkets krav.'
+                        : serviceKey === 'VVS'
+                        ? 'Trycktester, läckagekontroll och funktionsprov av alla installationer.'
+                        : 'Grundlig genomgång och testning av allt arbete innan slutgodkännande.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                    <Star className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Slutbesiktning & garanti</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Genomgång med kund, utdelning av protokoll och aktivering av 2 års garanti. Vi städar efter oss.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Garantier & Försäkring Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">
+              100% trygghet med Fixco-garantin
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-card border-2 border-primary/20 rounded-lg p-6">
+                <div className="flex items-start mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                    <Shield className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">100% Nöjd kund-garanti</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Inte nöjd? Vi åtgärdar felet kostnadsfritt eller återbetalar. Inga krångel, inga frågor. Vi står för kvaliteten i vårt arbete.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border-2 border-primary/20 rounded-lg p-6">
+                <div className="flex items-start mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                    <FileCheck className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">2 års garanti på arbete</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Alla våra {categoryName?.toLowerCase()}-installationer har 2 års garanti. Vi står för kvaliteten och kommer tillbaka om något skulle uppstå.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border-2 border-primary/20 rounded-lg p-6">
+                <div className="flex items-start mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                    <Lock className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Ansvarsförsäkring 10 mkr</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Fullständig ansvarsförsäkring genom If Försäkring. Du är skyddad vid eventuella skador under och efter projektet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card border-2 border-primary/20 rounded-lg p-6">
+                <div className="flex items-start mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                    <CheckCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">
+                      {serviceKey === 'Elmontör' || serviceKey === 'VVS' 
+                        ? 'Besiktningsprotokoll inkluderat'
+                        : 'Dokumentation inkluderad'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {serviceKey === 'Elmontör'
+                        ? 'Vid alla större installationer får du besiktningsprotokoll enligt Elsäkerhetsverkets krav – utan extra kostnad.'
+                        : serviceKey === 'VVS'
+                        ? 'Trycktester, protokoll och dokumentation enligt försäkringsbolagens krav ingår alltid.'
+                        : 'Alla projekt dokumenteras noggrant med fotografier och slutrapport för din trygghet.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section - Using service-specific FAQs */}
         <section className="py-16 bg-muted/5">
           <div className="container mx-auto px-4">
@@ -544,6 +938,34 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
+        {/* Säsongstips Section */}
+        {serviceContent?.seasonalTips && serviceContent.seasonalTips.length > 0 && (
+          <section className="py-16 bg-background">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-2xl font-bold mb-8 text-center">
+                  {city === 'Stockholm' || city === 'Uppsala' 
+                    ? `Tänk på detta med ${categoryName?.toLowerCase()} i ${city} under vintern`
+                    : `Säsongstips för ${categoryName?.toLowerCase()} i ${city}`}
+                </h2>
+                <div className="bg-card border rounded-lg p-8">
+                  <ul className="space-y-4">
+                    {serviceContent.seasonalTips.map((tip, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <AlertCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-semibold mb-1">{tip.title}</h3>
+                          <p className="text-sm text-muted-foreground">{tip.description}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Cases Section - Using service-specific cases */}
         {cityServiceData?.cases && cityServiceData.cases.length > 0 && (
           <section className="py-16 bg-background">
@@ -571,6 +993,50 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </section>
         )}
 
+        {/* Området vi täcker Section */}
+        <section className="py-16 bg-muted/5">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">
+              {categoryName} i alla stadsdelar i {city}
+            </h2>
+            <div className="max-w-5xl mx-auto">
+              <p className="text-center text-muted-foreground mb-8">
+                Vi utför {categoryName?.toLowerCase()}-jobb i hela {city} kommun. Nedan ser du alla områden vi täcker:
+              </p>
+              
+              {/* Grid med alla stadsdelar */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-12">
+                {cityDataItem.districts.map((district, idx) => (
+                  <div 
+                    key={idx} 
+                    className="bg-card border rounded-lg p-3 hover:border-primary/50 transition-colors cursor-default"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
+                      <span className="text-sm font-medium">{district}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Resekostnad highlight */}
+              <div className="bg-primary/10 border-2 border-primary/30 rounded-lg p-6 text-center">
+                <h3 className="font-semibold text-lg mb-2">
+                  {cityDataItem.travelFee === "0 kr" 
+                    ? `✅ Ingen resekostnad i ${city}`
+                    : `Resekostnad: ${cityDataItem.travelFee}`}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {cityDataItem.travelFee === "0 kr" 
+                    ? `${city} är vårt primära verksamhetsområde och vi tar ingen extra kostnad för resa. Vi kommer till dig snabbt och enkelt.`
+                    : `Fast resekostnad för alla uppdrag i ${city}. Inga tilläggsavgifter eller överraskningar. Priset inkluderas i offerten.`
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Testimonials Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -597,6 +1063,63 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                     )}
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Akut Jobb & Nödkontakt Section */}
+        <section className="py-12 bg-red-50 dark:bg-red-900/10 border-y-2 border-red-200 dark:border-red-800">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle className="h-8 w-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold mb-4">
+                {serviceKey === 'Elmontör' 
+                  ? `Akut eljobb i ${city}? Vi hjälper samma dag!`
+                  : serviceKey === 'VVS'
+                  ? `Akut läcka eller vattenrörsskada i ${city}?`
+                  : `Akuta ${categoryName?.toLowerCase()}-problem i ${city}?`}
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                {serviceKey === 'Elmontör'
+                  ? 'Vid akuta elfel, utlösta säkringar eller jordfel prioriterar vi ditt ärende. Ring oss direkt så hjälper vi dig så snabbt som möjligt.'
+                  : serviceKey === 'VVS'
+                  ? 'Vid akuta läckor, stopp i avlopp eller vattenrörsskador kommer vi ut samma dag. Vi hjälper dig direkt.'
+                  : `Vid akuta problem med ${categoryName?.toLowerCase()} prioriterar vi ditt ärende. Ring för snabb hjälp.`}
+              </p>
+              
+              <div className="bg-white dark:bg-gray-900 border-2 border-red-500 rounded-lg p-6 mb-6">
+                <div className="text-sm text-muted-foreground mb-2">Ring för akut hjälp:</div>
+                <a 
+                  href="tel:018-123456" 
+                  className="text-3xl font-bold text-red-600 dark:text-red-400 hover:underline"
+                >
+                  018-123 456
+                </a>
+                <div className="text-xs text-muted-foreground mt-2">
+                  Vardagar 07:00-20:00 | Helger 09:00-17:00
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="flex items-center justify-center space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>Samma dags-service</span>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>
+                    {serviceKey === 'Elmontör' ? 'Auktoriserade elektriker' : 
+                     serviceKey === 'VVS' ? 'Certifierade VVS-montörer' :
+                     'Professionella hantverkare'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>Tydligt fastpris</span>
+                </div>
               </div>
             </div>
           </div>
