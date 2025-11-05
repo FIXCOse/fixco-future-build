@@ -14,15 +14,33 @@ const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: 
 
 // Validering schema
 const requestSchema = z.object({
+  customer_type: z.enum(['private', 'company', 'brf']).default('private'),
   name: z.string().min(2, "Namn måste vara minst 2 bokstäver").max(100),
   email: z.string().email("Ogiltig e-postadress").max(255),
   phone: z.string().regex(/^(\+46|0)[-\s]?7[0-9][-\s]?[0-9]{3}[-\s]?[0-9]{2}[-\s]?[0-9]{2}$/, "Ogiltigt svenskt telefonnummer"),
+  personnummer: z.string().optional(),
+  company_name: z.string().optional(),
+  brf_name: z.string().optional(),
+  org_number: z.string().optional(),
   service_slug: z.string().min(1, "service_slug krävs"),
   mode: z.enum(['quote', 'book']),
   address: z.string().optional(),
   fields: z.record(z.any()).optional(),
   fileUrls: z.array(z.string().url()).optional(),
-});
+}).refine(
+  (data) => {
+    if (data.customer_type === 'company') {
+      return !!(data.company_name && data.org_number);
+    }
+    if (data.customer_type === 'brf') {
+      return !!(data.brf_name && data.org_number);
+    }
+    return true;
+  },
+  {
+    message: 'Företagsnamn/BRF-namn och organisationsnummer krävs',
+  }
+);
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { headers: { ...cors, "Content-Type": "application/json" }, status });
@@ -50,9 +68,14 @@ serve(async (req) => {
     }
 
     const {
+      customer_type = 'private',
       name,
       email,
       phone,
+      personnummer,
+      company_name,
+      brf_name,
+      org_number,
       address = "",
       service_slug,
       mode,
@@ -60,12 +83,44 @@ serve(async (req) => {
       fileUrls = [],
     } = validation.data;
 
-    console.log("[create-booking-with-quote] Validerad data:", { name, email, phone, service_slug, mode });
+    console.log("[create-booking-with-quote] Validerad data:", { 
+      customer_type, 
+      name, 
+      email, 
+      phone, 
+      service_slug, 
+      mode 
+    });
 
     // --- 1) Upsert kund ---
+    const customerData: any = { 
+      email, 
+      name, 
+      phone, 
+      address,
+      customer_type,
+    };
+
+    // Lägg till personnummer för privat
+    if (customer_type === 'private' && personnummer) {
+      customerData.personnummer = personnummer;
+    }
+
+    // Lägg till företagsnamn och orgnummer för företag
+    if (customer_type === 'company') {
+      customerData.company_name = company_name;
+      customerData.org_number = org_number;
+    }
+
+    // Lägg till BRF-namn och orgnummer för BRF
+    if (customer_type === 'brf') {
+      customerData.brf_name = brf_name;
+      customerData.org_number = org_number;
+    }
+
     const { data: customer, error: custErr } = await admin
       .from("customers")
-      .upsert({ email, name, phone, address }, { onConflict: "email" })
+      .upsert(customerData, { onConflict: "email" })
       .select("*")
       .single();
     if (custErr) {

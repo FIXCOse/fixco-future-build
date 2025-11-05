@@ -35,6 +35,27 @@ export const personnummerSchema = z
   .optional()
   .or(z.literal(''));
 
+export const orgNumberSchema = z
+  .string()
+  .trim()
+  .regex(
+    /^\d{6}[-\s]?\d{4}$/,
+    'Ogiltigt organisationsnummer (format: XXXXXX-XXXX)'
+  )
+  .transform((val) => val.replace(/[-\s]/g, ''));
+
+export const companyNameSchema = z
+  .string()
+  .trim()
+  .min(2, 'Företagsnamn måste vara minst 2 bokstäver')
+  .max(200, 'Företagsnamn för långt');
+
+export const brfNameSchema = z
+  .string()
+  .trim()
+  .min(2, 'BRF-namn måste vara minst 2 bokstäver')
+  .max(200, 'BRF-namn för långt');
+
 export const postalCodeSchema = z
   .string()
   .trim()
@@ -54,13 +75,33 @@ export const addressSchema = z
 
 // Huvudschema för bokningsformuläret
 export const serviceRequestSchema = z.object({
+  customer_type: z.enum(['private', 'company', 'brf']).default('private'),
   name: nameSchema,
   email: emailSchema,
   phone: phoneSchema,
   personnummer: personnummerSchema,
+  company_name: companyNameSchema.optional().or(z.literal('')),
+  brf_name: brfNameSchema.optional().or(z.literal('')),
+  org_number: orgNumberSchema.optional().or(z.literal('')),
   address: addressSchema.optional().or(z.literal('')),
   postal_code: postalCodeSchema.optional().or(z.literal('')),
   city: citySchema.optional().or(z.literal('')),
-});
+}).refine(
+  (data) => {
+    // Om company: company_name och org_number krävs
+    if (data.customer_type === 'company') {
+      return !!(data.company_name && data.org_number);
+    }
+    // Om brf: brf_name och org_number krävs
+    if (data.customer_type === 'brf') {
+      return !!(data.brf_name && data.org_number);
+    }
+    return true;
+  },
+  {
+    message: 'Företagsnamn/BRF-namn och organisationsnummer krävs',
+    path: ['customer_type'],
+  }
+);
 
 export type ServiceRequestFormData = z.infer<typeof serviceRequestSchema>;

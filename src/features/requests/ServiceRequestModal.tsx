@@ -3,12 +3,18 @@ import { getServiceBySlug, ServiceConfig } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/useDebounce";
+import { AnimatePresence, motion } from "framer-motion";
+import { User, Building2, Home } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { 
   serviceRequestSchema,
   nameSchema,
   emailSchema,
   phoneSchema,
   personnummerSchema,
+  orgNumberSchema,
+  companyNameSchema,
+  brfNameSchema,
   addressSchema,
   postalCodeSchema,
   citySchema
@@ -26,6 +32,7 @@ export function openServiceRequestModal(detail: OpenModalDetail) {
 export default function ServiceRequestModal() {
   const [open, setOpen] = useState(false);
   const [service, setService] = useState<ServiceConfig | null>(null);
+  const [customerType, setCustomerType] = useState<'private' | 'company' | 'brf'>('private');
   const [values, setValues] = useState<Record<string, any>>({});
   const [files, setFiles] = useState<Record<string, File[]>>({});
   const [busy, setBusy] = useState(false);
@@ -67,6 +74,7 @@ export default function ServiceRequestModal() {
       }
       
       setService(svc ?? null);
+      setCustomerType('private');
       setValues(prefill);
       setFiles({});
       setDone(false);
@@ -91,6 +99,9 @@ export default function ServiceRequestModal() {
       email: emailSchema,
       phone: phoneSchema,
       personnummer: personnummerSchema,
+      company_name: companyNameSchema,
+      brf_name: brfNameSchema,
+      org_number: orgNumberSchema,
       address: addressSchema,
       postal_code: postalCodeSchema,
       city: citySchema,
@@ -186,9 +197,14 @@ export default function ServiceRequestModal() {
 
       // Send simple JSON payload to edge function
       const jsonPayload = {
+        customer_type: customerType,
         name: values.name,
         email: values.email,
         phone: values.phone,
+        personnummer: values.personnummer,
+        company_name: values.company_name,
+        brf_name: values.brf_name,
+        org_number: values.org_number,
         address: values.address,
         service_slug: service.slug,
         mode,
@@ -285,13 +301,47 @@ export default function ServiceRequestModal() {
                   </svg>
                   Kontaktuppgifter
                 </h4>
+                
+                {/* Kundtypsväljare */}
+                <div className="mb-4">
+                  <label className="text-xs text-muted-foreground mb-2 block">Jag bokar som</label>
+                  <ToggleGroup 
+                    type="single" 
+                    value={customerType} 
+                    onValueChange={(val) => val && setCustomerType(val as 'private' | 'company' | 'brf')}
+                    className="grid grid-cols-3 gap-2 w-full"
+                  >
+                    <ToggleGroupItem 
+                      value="private" 
+                      className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      <User className="w-4 h-4" />
+                      Privat
+                    </ToggleGroupItem>
+                    <ToggleGroupItem 
+                      value="company"
+                      className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      <Building2 className="w-4 h-4" />
+                      Företag
+                    </ToggleGroupItem>
+                    <ToggleGroupItem 
+                      value="brf"
+                      className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      <Home className="w-4 h-4" />
+                      BRF
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <input
                       className={`px-4 py-3 rounded-xl border ${
                         errors.name ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Ditt namn *"
+                      placeholder={customerType === 'private' ? "Ditt namn *" : "Kontaktperson *"}
                       value={values.name || ""}
                       onChange={e => onChange("name", e.target.value)}
                     />
@@ -300,19 +350,102 @@ export default function ServiceRequestModal() {
                     )}
                   </div>
                   
-                  <div>
-                    <input
-                      className={`px-4 py-3 rounded-xl border ${
-                        errors.personnummer ? 'border-red-500' : 'border-border/50'
-                      } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Personnummer (YYYYMMDD-XXXX)"
-                      value={values.personnummer || ""}
-                      onChange={e => onChange("personnummer", e.target.value)}
-                    />
-                    {errors.personnummer && (
-                      <p className="text-xs text-red-500 mt-1">{errors.personnummer}</p>
+                  {/* Personnummer - endast för privatpersoner */}
+                  <AnimatePresence mode="wait">
+                    {customerType === 'private' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <input
+                          className={`px-4 py-3 rounded-xl border ${
+                            errors.personnummer ? 'border-red-500' : 'border-border/50'
+                          } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                          placeholder="Personnummer (YYYYMMDD-XXXX)"
+                          value={values.personnummer || ""}
+                          onChange={e => onChange("personnummer", e.target.value)}
+                        />
+                        {errors.personnummer && (
+                          <p className="text-xs text-red-500 mt-1">{errors.personnummer}</p>
+                        )}
+                      </motion.div>
                     )}
-                  </div>
+                  </AnimatePresence>
+
+                  {/* Företagsnamn - endast för företag */}
+                  <AnimatePresence mode="wait">
+                    {customerType === 'company' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <input
+                          className={`px-4 py-3 rounded-xl border ${
+                            errors.company_name ? 'border-red-500' : 'border-border/50'
+                          } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                          placeholder="Företagsnamn *"
+                          value={values.company_name || ""}
+                          onChange={e => onChange("company_name", e.target.value)}
+                        />
+                        {errors.company_name && (
+                          <p className="text-xs text-red-500 mt-1">{errors.company_name}</p>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* BRF-namn - endast för BRF */}
+                  <AnimatePresence mode="wait">
+                    {customerType === 'brf' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <input
+                          className={`px-4 py-3 rounded-xl border ${
+                            errors.brf_name ? 'border-red-500' : 'border-border/50'
+                          } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                          placeholder="BRF-namn *"
+                          value={values.brf_name || ""}
+                          onChange={e => onChange("brf_name", e.target.value)}
+                        />
+                        {errors.brf_name && (
+                          <p className="text-xs text-red-500 mt-1">{errors.brf_name}</p>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Organisationsnummer - för företag och BRF */}
+                  <AnimatePresence mode="wait">
+                    {(customerType === 'company' || customerType === 'brf') && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <input
+                          className={`px-4 py-3 rounded-xl border ${
+                            errors.org_number ? 'border-red-500' : 'border-border/50'
+                          } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
+                          placeholder="Organisationsnummer (XXXXXX-XXXX) *"
+                          value={values.org_number || ""}
+                          onChange={e => onChange("org_number", e.target.value)}
+                        />
+                        {errors.org_number && (
+                          <p className="text-xs text-red-500 mt-1">{errors.org_number}</p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-1">Format: 123456-7890</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
                   <div>
                     <input
