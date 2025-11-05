@@ -86,22 +86,34 @@ export async function fetchRevenueAnalytics(filters: AnalyticsFilters): Promise<
     .from('invoices')
     .select(`
       *,
-      customer:customer_id(user_type)
+      profiles!customer_id(user_type)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
 
   if (customerTypes?.length) {
-    query = query.in('customer.user_type', customerTypes);
+    query = query.in('profiles.user_type', customerTypes);
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) {
+    console.error('fetchRevenueAnalytics error:', error);
+    return {
+      totalRevenue: 0,
+      byCustomerType: {},
+      rotDeduction: 0,
+      rutDeduction: 0,
+      trend: 0,
+      avgOrderValue: 0,
+      invoiceCount: 0,
+      previousPeriodRevenue: 0,
+    };
+  }
 
   const totalRevenue = data?.reduce((sum, inv) => sum + Number(inv.total_amount || 0), 0) || 0;
   const byCustomerType = data?.reduce((acc: Record<string, number>, inv) => {
-    const type = (inv.customer as any)?.user_type || 'private';
+    const type = (inv.profiles as any)?.user_type || 'private';
     acc[type] = (acc[type] || 0) + Number(inv.total_amount || 0);
     return acc;
   }, {}) || {};
@@ -149,7 +161,16 @@ export async function fetchBookingAnalytics(filters: AnalyticsFilters): Promise<
     .lte('created_at', endDate)
     .is('deleted_at', null);
 
-  if (error) throw error;
+  if (error) {
+    console.error('fetchBookingAnalytics error:', error);
+    return {
+      totalBookings: 0,
+      byCustomerType: {},
+      byStatus: {},
+      trend: 0,
+      conversionRate: 0,
+    };
+  }
 
   const totalBookings = data?.length || 0;
   
@@ -213,15 +234,28 @@ export async function fetchBookingAnalytics(filters: AnalyticsFilters): Promise<
 export async function fetchCustomerSegmentation(filters: AnalyticsFilters): Promise<CustomerSegmentation> {
   const { startDate, endDate } = filters;
 
-  const { data: invoices } = await supabase
+  const { data: invoices, error } = await supabase
     .from('invoices')
     .select(`
       *,
-      customer:customer_id!inner(user_type)
+      profiles!customer_id!inner(user_type)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
+
+  if (error) {
+    console.error('fetchCustomerSegmentation error:', error);
+    return {
+      totalCustomers: 0,
+      byType: {
+        company: { count: 0, revenue: 0, avgOrderValue: 0 },
+        private: { count: 0, revenue: 0, avgOrderValue: 0 },
+        brf: { count: 0, revenue: 0, avgOrderValue: 0 },
+      },
+      newVsReturning: { new: 0, returning: 0 },
+    };
+  }
 
   const byType = {
     company: { count: 0, revenue: 0, avgOrderValue: 0 },
@@ -232,7 +266,7 @@ export async function fetchCustomerSegmentation(filters: AnalyticsFilters): Prom
   const customerIds = new Set();
   
   invoices?.forEach((inv) => {
-    const type = ((inv.customer as any)?.user_type || 'private') as 'company' | 'private' | 'brf';
+    const type = ((inv.profiles as any)?.user_type || 'private') as 'company' | 'private' | 'brf';
     byType[type].count += 1;
     byType[type].revenue += Number(inv.total_amount || 0);
     customerIds.add(inv.customer_id);
@@ -342,12 +376,22 @@ export async function fetchServicePerformance(filters: AnalyticsFilters): Promis
 export async function fetchTrafficAnalytics(filters: AnalyticsFilters): Promise<TrafficAnalytics> {
   const { startDate, endDate } = filters;
 
-  const { data: events } = await supabase
+  const { data: events, error } = await supabase
     .from('events')
     .select('*')
     .eq('event_type', 'page_view')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
+
+  if (error) {
+    console.error('fetchTrafficAnalytics error:', error);
+    return {
+      totalPageViews: 0,
+      uniqueVisitors: 0,
+      bySource: [],
+      topPages: [],
+    };
+  }
 
   const totalPageViews = events?.length || 0;
   const uniqueVisitors = new Set(events?.map((e) => e.session_id)).size;
@@ -412,12 +456,25 @@ export async function fetchTrafficAnalytics(filters: AnalyticsFilters): Promise<
 export async function fetchConversionFunnel(filters: AnalyticsFilters): Promise<ConversionFunnel> {
   const { startDate, endDate } = filters;
 
-  const { data: pageViews } = await supabase
+  const { data: pageViews, error: pvError } = await supabase
     .from('events')
     .select('id')
     .eq('event_type', 'page_view')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
+
+  if (pvError) {
+    console.error('fetchConversionFunnel error:', pvError);
+    return {
+      stages: [
+        { stage: 'Sidbesök', count: 0, dropoffRate: 0 },
+        { stage: 'Lead', count: 0, dropoffRate: 0 },
+        { stage: 'Bokning', count: 0, dropoffRate: 0 },
+        { stage: 'Faktura', count: 0, dropoffRate: 0 },
+        { stage: 'Betald', count: 0, dropoffRate: 0 },
+      ],
+    };
+  }
 
   const { data: leads } = await supabase
     .from('leads')
@@ -425,8 +482,8 @@ export async function fetchConversionFunnel(filters: AnalyticsFilters): Promise<
     .gte('created_at', startDate)
     .lte('created_at', endDate);
 
-  const { data: bookings } = await supabase
-    .from('bookings')
+  const { data: quotes } = await supabase
+    .from('quotes')
     .select('id')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
@@ -447,7 +504,7 @@ export async function fetchConversionFunnel(filters: AnalyticsFilters): Promise<
 
   const pvCount = pageViews?.length || 0;
   const leadCount = leads?.length || 0;
-  const bookingCount = bookings?.length || 0;
+  const quoteCount = quotes?.length || 0;
   const invoiceCount = invoices?.length || 0;
   const paidCount = paidInvoices?.length || 0;
 
@@ -464,14 +521,14 @@ export async function fetchConversionFunnel(filters: AnalyticsFilters): Promise<
         dropoffRate: pvCount > 0 ? ((pvCount - leadCount) / pvCount) * 100 : 0,
       },
       {
-        stage: 'Bokning',
-        count: bookingCount,
-        dropoffRate: leadCount > 0 ? ((leadCount - bookingCount) / leadCount) * 100 : 0,
+        stage: 'Offert',
+        count: quoteCount,
+        dropoffRate: leadCount > 0 ? ((leadCount - quoteCount) / leadCount) * 100 : 0,
       },
       {
         stage: 'Faktura',
         count: invoiceCount,
-        dropoffRate: bookingCount > 0 ? ((bookingCount - invoiceCount) / bookingCount) * 100 : 0,
+        dropoffRate: quoteCount > 0 ? ((quoteCount - invoiceCount) / quoteCount) * 100 : 0,
       },
       {
         stage: 'Betald',
@@ -486,23 +543,28 @@ export async function fetchConversionFunnel(filters: AnalyticsFilters): Promise<
 export async function fetchRevenueTimeline(filters: AnalyticsFilters) {
   const { startDate, endDate } = filters;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('invoices')
     .select(`
       created_at,
       total_amount,
-      customer:customer_id(user_type)
+      profiles!customer_id(user_type)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
     .order('created_at');
 
+  if (error) {
+    console.error('fetchRevenueTimeline error:', error);
+    return [];
+  }
+
   const timelineMap = new Map();
 
   data?.forEach((inv) => {
     const date = inv.created_at.split('T')[0];
-    const type = (inv.customer as any)?.user_type || 'private';
+    const type = (inv.profiles as any)?.user_type || 'private';
 
     if (!timelineMap.has(date)) {
       timelineMap.set(date, {
@@ -526,29 +588,34 @@ export async function fetchRevenueTimeline(filters: AnalyticsFilters) {
 export async function fetchTopCustomers(filters: AnalyticsFilters, limit = 10) {
   const { startDate, endDate } = filters;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('invoices')
     .select(`
       customer_id,
       total_amount,
       created_at,
-      customer:customer_id!inner(first_name, last_name, company_name, user_type, email)
+      profiles!customer_id!inner(first_name, last_name, company_name, user_type, email)
     `)
     .eq('status', 'paid')
     .gte('created_at', startDate)
     .lte('created_at', endDate);
 
+  if (error) {
+    console.error('fetchTopCustomers error:', error);
+    return [];
+  }
+
   const customerMap = new Map();
 
   data?.forEach((inv) => {
-    const customer = inv.customer as any;
-    if (!customer) return;
+    const profile = inv.profiles as any;
+    if (!profile) return;
 
     if (!customerMap.has(inv.customer_id)) {
       customerMap.set(inv.customer_id, {
         id: inv.customer_id,
-        name: customer.company_name || `${customer.first_name} ${customer.last_name}`.trim() || customer.email,
-        type: customer.user_type,
+        name: profile.company_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || profile.email,
+        type: profile.user_type,
         bookingCount: 0,
         totalSpent: 0,
         lastBooking: inv.created_at,
