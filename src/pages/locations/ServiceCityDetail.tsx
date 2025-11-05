@@ -72,6 +72,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     'el': 'Elmontör',
     'vvs': 'VVS',
     'snickeri': 'Snickare',
+    'maleri': 'Måleri',
     'stadning': 'Städ',
     'markarbeten': 'Markarbeten',
     'flytt': 'Flytt',

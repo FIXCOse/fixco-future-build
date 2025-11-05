@@ -478,5 +478,91 @@ export const serviceCityData: ServiceCityItem[] = [
       { title: "Lägenhetsflytt Södermalm", desc: "Flytt av 2:a från 4:e våning utan hiss. Allt hanterades smidigt med trappskydd och professionell utrustning." },
       { title: "Kontorsflytt Kungsholmen", desc: "Flytt av större kontor med servrar, skrivbord och kontorsinredning. Genomförd över en helg." }
     ]
+  },
+
+  // ========== MÅLERI - UPPSALA ==========
+  {
+    service: "Måleri",
+    city: "Uppsala",
+    slug: "malning-uppsala",
+    h1: "Målare i Uppsala",
+    title: "Målare i Uppsala – Målning, Tapetsering & Ytbehandling | ROT 30%",
+    description: "Professionella målare i Uppsala för målning av rum, tak, fasad och tapetsering. Snabb start, ROT-avdrag 30%. Vi täcker hela Uppsala.",
+    priceHint: "Från 450 kr/h",
+    faqs: [
+      { 
+        q: "Hur snabbt kan målare komma ut i Uppsala?", 
+        a: "Vi kan oftast starta målningsprojekt inom 3-5 dagar beroende på projektets storlek. För akuta behov kontakta oss direkt." 
+      },
+      { 
+        q: "Ingår material i priset?", 
+        a: "Material som färg, spackel och tape faktureras separat. Vi hjälper dig välja rätt kvalitet och färgval för ditt projekt." 
+      },
+      {
+        q: "Kan ni tapetsera också?",
+        a: "Ja, vi utför både målning och tapetsering. Vi har erfarenhet av både klassiska tapeter och moderna tapetvarianter."
+      },
+      {
+        q: "Finns ROT-avdrag för målning?",
+        a: "Ja, målning och tapetsering i befintlig bostad ger 30% ROT-avdrag på arbetskostnaden."
+      }
+    ],
+    cases: [
+      { 
+        title: "Målning av villa i Gottsunda",
+        desc: "Komplett målning av 3 rum, hall och kök. Inklusive spackling, grundning och två lager toppmålning. Projekttid: 5 dagar." 
+      },
+      { 
+        title: "Tapetsering lägenhet Kungsängen",
+        desc: "Tapetsering av sovrum och vardagsrum med moderna designtapeter. Inklusive rivning av gammal tapet och preparering." 
+      },
+      { 
+        title: "Fasadmålning radhus Stenhagen",
+        desc: "Målning av träfasad på radhus, inklusive slipning, grundning och två lager fasadfärg. Certifierad för ROT-avdrag." 
+      }
+    ]
+  },
+
+  // ========== MÅLERI - STOCKHOLM ==========
+  {
+    service: "Måleri",
+    city: "Stockholm",
+    slug: "malning-stockholm",
+    h1: "Målare i Stockholm",
+    title: "Målare i Stockholm – Målning, Tapetsering & Ytbehandling | ROT 30%",
+    description: "Erfarna målare i Stockholm för målning av rum, fasader och tapetsering. Snabb hjälp, ROT-avdrag 30%. Täcker hela Stockholms stad.",
+    priceHint: "Från 500 kr/h",
+    faqs: [
+      { 
+        q: "Hur snabbt kan målare komma ut i Stockholm?", 
+        a: "Beroende på område och projekttyp kan vi ofta starta inom 3-7 dagar. Kontakta oss för exakt tillgänglighet." 
+      },
+      { 
+        q: "Vilka områden i Stockholm täcker ni?", 
+        a: "Vi täcker hela Stockholms stad inklusive Södermalm, Östermalm, Vasastan, Kungsholmen och alla övriga stadsdelar." 
+      },
+      {
+        q: "Kan ni måla fasader?",
+        a: "Ja, vi utför både fasadmålning och invändig målning. Vi har rätt utrustning och kompetens för både putsfasader och träfasader."
+      },
+      {
+        q: "Vad kostar målning av ett rum?",
+        a: "Priset beror på rumsstorlek, skick och finish. Ett standardrum (15-20 kvm) kostar typiskt 8 000-15 000 kr inklusive material och ROT."
+      }
+    ],
+    cases: [
+      { 
+        title: "Helrenovering lägenhet Södermalm",
+        desc: "Målning av 3:a i Södermalm inklusive spackling, grundning och målning av väggar, tak och foder. Projekttid: 1 vecka." 
+      },
+      { 
+        title: "Tapetsering våning Östermalm",
+        desc: "Tapetsering av hall och två sovrum med exklusiva designer-tapeter. Perfekt slutresultat med ROT-avdrag." 
+      },
+      { 
+        title: "Målning radhus Bromma",
+        desc: "Fasadmålning av 2-plans radhus inklusive fönsterbågar och dörrar. Komplett målningssystem för långvarig skydd." 
+      }
+    ]
   }
 ];

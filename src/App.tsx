@@ -263,6 +263,7 @@ const App = () => {
                     <Route path="tjanster/markarbeten-uppsala" element={<ServiceCityDetail service="markarbeten" city="Uppsala" />} />
                     <Route path="tjanster/tekniska-installationer-uppsala" element={<ServiceCityDetail service="tekniska-installationer" city="Uppsala" />} />
                     <Route path="tjanster/flytt-uppsala" element={<ServiceCityDetail service="flytt" city="Uppsala" />} />
+                    <Route path="tjanster/malning-uppsala" element={<ServiceCityDetail service="maleri" city="Uppsala" />} />
                     
                     <Route path="tjanster/elmontor-stockholm" element={<ServiceCityDetail service="el" city="Stockholm" />} />
                     <Route path="tjanster/vvs-stockholm" element={<ServiceCityDetail service="vvs" city="Stockholm" />} />
@@ -273,6 +274,7 @@ const App = () => {
                     <Route path="tjanster/markarbeten-stockholm" element={<ServiceCityDetail service="markarbeten" city="Stockholm" />} />
                     <Route path="tjanster/tekniska-installationer-stockholm" element={<ServiceCityDetail service="tekniska-installationer" city="Stockholm" />} />
                     <Route path="tjanster/flytt-stockholm" element={<ServiceCityDetail service="flytt" city="Stockholm" />} />
+                    <Route path="tjanster/malning-stockholm" element={<ServiceCityDetail service="maleri" city="Stockholm" />} />
                     
                     <Route path="kontakt" element={<Contact />} />
                     <Route path="faq" element={<FAQ />} />
