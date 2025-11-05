@@ -85,6 +85,42 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Material, färg, placering…" },
       { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
     ]
+  },
+  {
+    slug: "maleri",
+    name: "Målning",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal_rum", label: "Antal rum att måla", min: 1 },
+      { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
+      { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Väggar/tak, färg, spackling, tapet..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "mala-rum",
+    name: "Måla rum/väggar",
+    pricingMode: "unit",
+    unitLabel: "rum",
+    unitPriceSek: 3500,
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal_rum", label: "Antal rum", min: 1, required: true },
+      { kind: "textarea", key: "beskrivning", label: "Beskrivning", placeholder: "Takhöjd, färgval, spackling behövs..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "mala-fasad",
+    name: "Måla fasad",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "yta_m2", label: "Ungefärlig fasadyta (m²)", min: 1 },
+      { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Antal våningar, färg, kondition..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
   }
 ];
 

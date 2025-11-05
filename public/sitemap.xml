@@ -195,6 +195,21 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
+  
+  <!-- Måleri Uppsala & Stockholm -->
+  <url>
+    <loc>https://fixco.se/tjanster/maleri-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://fixco.se/tjanster/maleri-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
   <url>
     <loc>https://fixco.se/tjanster/montering-stockholm</loc>
     <lastmod>2025-01-15</lastmod>

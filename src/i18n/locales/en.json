@@ -24,6 +24,10 @@
     "myFixco": "My Fixco",
     "adminPanel": "Admin Panel"
   },
+  "services": {
+    "maleri": "Painting",
+    "maleri_desc": "Professional painting indoors and outdoors"
+  },
   "home": {
     "hero": {
       "title": "Construction & property services for private, HOA & business",

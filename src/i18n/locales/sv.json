@@ -24,6 +24,10 @@
     "myFixco": "Mitt Fixco",
     "adminPanel": "Adminpanel"
   },
+  "services": {
+    "maleri": "Måleri",
+    "maleri_desc": "Professionell målning inomhus och utomhus"
+  },
   "home": {
     "hero": {
       "title": "Bygg- & fastighetstjänster för privat, BRF & företag",

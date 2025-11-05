@@ -2,6 +2,7 @@ export type ServiceKey =
   | "Elmontör"
   | "VVS"
   | "Snickare"
+  | "Måleri"
   | "Städ"
   | "Markarbeten"
   | "Flytt"
@@ -186,6 +187,86 @@ export const serviceCityData: ServiceCityItem[] = [
     cases: [
       { title: "Garderob Vasastan", desc: "Platsbyggd walk-in closet med belysning, klädstänger och hyllsystem i sekelskifteslägenhet." },
       { title: "Köksmontage Östermalm", desc: "Montering av exklusivt kök med massivt trä, stenbänkskiva och integrerade vitvaror." }
+    ]
+  },
+
+  // ========== MÅLERI ==========
+  {
+    service: "Måleri",
+    city: "Uppsala",
+    slug: "maleri-uppsala",
+    h1: "Målare i Uppsala",
+    title: "Målare i Uppsala – Professionell Målning & Tapetsering | ROT 50%",
+    description:
+      "Erfarna målare i Uppsala för väggar, tak, fasader och snickerier. Snabb offert, hög kvalitet och ROT-avdrag 50%. Start inom 24-48h.",
+    faqs: [
+      { 
+        q: "Hur snabbt kan målare komma ut i Uppsala?", 
+        a: "För mindre målningsjobb kan vi ofta starta inom 24-48 timmar. Större projekt som helrenoveringar planeras in efter offertbesök." 
+      },
+      { 
+        q: "Inkluderar priset material och färg?", 
+        a: "Priset är för arbetskostnaden (759 kr/h med ROT). Färg och material tillkommer, men vi hjälper dig välja rätt produkter." 
+      },
+      {
+        q: "Målar ni även fasader?",
+        a: "Ja, vi målar både fasader, staket, plank och altan. Vi använder utvändig färg anpassad för svenska väderförhållanden."
+      },
+      {
+        q: "Spackling ingår väl?",
+        a: "Ja, grundläggande spackling och förberedelse ingår alltid i våra målningsjobb för bästa resultat."
+      }
+    ],
+    cases: [
+      { 
+        title: "Helrenovering lägenhet Luthagen", 
+        desc: "Målning av alla väggar och tak i 3:a, spackling, grundmålning och två topplager. Snyggt resultat med ROT-avdrag." 
+      },
+      { 
+        title: "Fasadmålning villa Gottsunda", 
+        desc: "Komplett fasadmålning av villa 150 kvm, högtryckstvätt, grundbehandling och två lager fasadfärg." 
+      },
+      {
+        title: "Köksluckor Svartbäcken",
+        desc: "Målning av köksluckor i vit kulör, slipning, grundning och lackering för fräsch finish."
+      }
+    ]
+  },
+  {
+    service: "Måleri",
+    city: "Stockholm",
+    slug: "maleri-stockholm",
+    h1: "Målare i Stockholm",
+    title: "Målare i Stockholm – Målning Inomhus & Utomhus | ROT 50%",
+    description:
+      "Professionella målare i Stockholm för väggar, tak, fasader och renovering. Tydliga prisexempel och ROT-avdrag 50%.",
+    faqs: [
+      { 
+        q: "Kan ni arbeta i BRF:er i Stockholm?", 
+        a: "Ja, vi har stor erfarenhet av BRF-arbete. Vi följer husets rutiner för bokning, skydd av trapphus och städning." 
+      },
+      {
+        q: "Målar ni sekelskifteslägenheter?",
+        a: "Ja, vi har stor erfarenhet av sekelskifteslägenheter med höga tak, stukaturer och känsliga ytor. Vi använder rätt teknik och material."
+      },
+      {
+        q: "Hur skyddar ni golv och möbler?",
+        a: "Vi täcker över alla golv med plastfolie och skyddskartong, och flyttar/täcker över möbler. Professionell maskning av allt som inte ska målas."
+      }
+    ],
+    cases: [
+      { 
+        title: "Målning sekelskifteslägenhet Vasastan", 
+        desc: "Målning av väggar och tak i sekelskifteslägenhet med 3,2m takhöjd. Stukaturer målades för hand." 
+      },
+      {
+        title: "Kontorsmålning Kungsholmen",
+        desc: "Målning av kontorslokal 250 kvm, arbete utfört kvällstid för minimal störning."
+      },
+      {
+        title: "Fasadrenovering Södermalm",
+        desc: "Fasadmålning av flerbostadshus, byggnadsställning, slipning och nya lager färg."
+      }
     ]
   },
 

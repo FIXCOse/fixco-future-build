@@ -10,7 +10,8 @@ import {
   Zap, 
   Building,
   Truck,
-  Droplets
+  Droplets,
+  Paintbrush
 } from "lucide-react";
 import { ServicePricing } from '@/utils/priceCalculation';
 
@@ -43,6 +44,14 @@ export const mainServices: ServicePricing[] = [
     id: "snickeri",
     title: "Snickeri", 
     basePrice: 859,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    laborShare: 1.0
+  },
+  {
+    id: "maleri",
+    title: "Måleri",
+    basePrice: 759,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     laborShare: 1.0
@@ -105,6 +114,14 @@ export const serviceCategories = [
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
+    eligible: { rot: true, rut: false }
+  },
+  {
+    id: "maleri",
+    title: "Måleri",
+    slug: "maleri",
+    description: "Professionell målning in- och utvändigt",
+    icon: Paintbrush,
     eligible: { rot: true, rut: false }
   },
   {
@@ -582,6 +599,144 @@ export const servicesDataNew = [
         title: "Trapp-renovering",
         description: "Renovering av trappor",
         basePrice: 859,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Renovering",
+        location: "inomhus",
+        laborShare: 1.0
+      }
+    ]
+  },
+  {
+    title: "Måleri",
+    slug: "maleri",
+    description: "Professionell målning inomhus och utomhus",
+    icon: Paintbrush,
+    basePrice: 759,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    subServices: [
+      // VÄGGAR & TAK
+      {
+        id: "maleri-1",
+        title: "Måla rum/väggar",
+        description: "Målning av väggar. Antal rum och typ av yta väljs vid bokning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Inomhus",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-2",
+        title: "Måla tak",
+        description: "Målning av tak. Rum och typ väljs vid bokning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Inomhus",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-3",
+        title: "Tapetsera",
+        description: "Tapetsering av väggar. Typ av tapet och yta väljs vid bokning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Inomhus",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-4",
+        title: "Spackling & förberedelse",
+        description: "Spackling av väggar och förberedelse innan målning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Förberedelse",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      
+      // SPECIALMÅLNING
+      {
+        id: "maleri-5",
+        title: "Måla foder & lister",
+        description: "Målning av dörrfoder, lister och snickerier",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Snickerier",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-6",
+        title: "Måla köksluckor",
+        description: "Målning av köksluckor och skåp",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Kök",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      
+      // UTOMHUS
+      {
+        id: "maleri-7",
+        title: "Måla fasad",
+        description: "Målning av fasad. Yta och typ väljs vid bokning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "quote",
+        eligible: { rot: true, rut: false },
+        category: "Utomhus",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-8",
+        title: "Måla staket/plank",
+        description: "Målning av staket eller plank. Längd väljs vid bokning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Utomhus",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "maleri-9",
+        title: "Måla dörrar/fönster utvändigt",
+        description: "Målning av utvändiga dörrar och fönsterbågar",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Utomhus",
+        location: "utomhus",
+        laborShare: 1.0
+      },
+      
+      // STÖRRE PROJEKT
+      {
+        id: "maleri-10",
+        title: "Helrenovering målning",
+        description: "Komplett målning av hela lägenheten/huset",
+        basePrice: 759,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },

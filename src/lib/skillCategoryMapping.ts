@@ -7,7 +7,7 @@ export const SKILL_TO_SERVICE_CATEGORY_MAP: Record<string, string[]> = {
   'plumbing': ['vvs', 'badrum'],
   'carpentry': ['snickeri', 'fonster-dorrar', 'kok'],
   'construction': ['snickeri', 'markarbeten', 'utbyggnad'],
-  'painting': ['malning'],
+  'painting': ['maleri'],
   'flooring': ['golv'],
   'tiling': ['badrum', 'kok', 'golv'],
   'roofing': ['takarbeten'],
