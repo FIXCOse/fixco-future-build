@@ -92,6 +92,8 @@ const SmartHome = lazy(() => import('./pages/SmartHome'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopyProvider } from '@/copy/CopyProvider';
+import { useEventTracking } from '@/hooks/useEventTracking';
+import { useLocation } from 'react-router-dom';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -108,6 +110,18 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Track page views component
+const PageViewTracker = () => {
+  const location = useLocation();
+  const { trackPageView } = useEventTracking();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname, trackPageView]);
+
+  return null;
+};
 
 const App = () => {
   // Global event handling for wizard actions
@@ -139,6 +153,7 @@ const App = () => {
                 <Toaster />
                 <Sonner />
                 <BrowserRouter>
+                <PageViewTracker />
                 <ScrollToTop />
                 <Routes>
                   <Route path="/auth" element={<Auth />} />

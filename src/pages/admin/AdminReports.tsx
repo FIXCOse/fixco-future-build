@@ -1,252 +1,436 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  DollarSign, 
-  Calendar, 
-  Download,
-  FileText,
-  Receipt,
-  Users
-} from 'lucide-react';
-import AdminBack from '@/components/admin/AdminBack';
-import { formatDistanceToNow } from 'date-fns';
-import { sv } from 'date-fns/locale';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Download, RefreshCw, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart, FileText, Target, Clock } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
+import { RevenueTimelineChart } from '@/components/admin/analytics/RevenueTimelineChart';
+import { CustomerSegmentChart } from '@/components/admin/analytics/CustomerSegmentChart';
+import { ServicePerformanceChart } from '@/components/admin/analytics/ServicePerformanceChart';
+import { TopCustomersTable } from '@/components/admin/analytics/TopCustomersTable';
+import { ConversionFunnelChart } from '@/components/admin/analytics/ConversionFunnelChart';
+import { TrafficSourcesChart } from '@/components/admin/analytics/TrafficSourcesChart';
+import { exportAnalyticsCSV, type AnalyticsFilters as Filters } from '@/lib/api/analytics';
+import { toast } from 'sonner';
 
 const AdminReports = () => {
-  const [period, setPeriod] = useState('30');
-
-  const { data: reportData, isLoading } = useQuery({
-    queryKey: ['admin-reports', period],
-    queryFn: async () => {
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - parseInt(period));
-
-      const [bookings, quotes, invoices, revenue] = await Promise.all([
-        supabase
-          .from('bookings')
-          .select('*')
-          .gte('created_at', startDate.toISOString()),
-        supabase
-          .from('quotes')
-          .select('*')
-          .gte('created_at', startDate.toISOString()),
-        supabase
-          .from('invoices')
-          .select('*')
-          .gte('created_at', startDate.toISOString()),
-        supabase
-          .from('invoices')
-          .select('total_amount')
-          .eq('status', 'paid')
-          .gte('created_at', startDate.toISOString()),
-      ]);
-
-      const totalRevenue = revenue.data?.reduce((sum, invoice) => sum + (invoice.total_amount || 0), 0) || 0;
-      const acceptedQuotes = quotes.data?.filter(q => q.status === 'accepted').length || 0;
-      const quoteAcceptanceRate = quotes.data?.length ? (acceptedQuotes / quotes.data.length) * 100 : 0;
-
-      return {
-        bookings: bookings.data || [],
-        quotes: quotes.data || [],
-        invoices: invoices.data || [],
-        totalRevenue,
-        quoteAcceptanceRate,
-        bookingsCount: bookings.data?.length || 0,
-        quotesCount: quotes.data?.length || 0,
-        invoicesCount: invoices.data?.length || 0,
-      };
-    },
+  const [filters, setFilters] = useState<Filters>({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    endDate: new Date().toISOString(),
   });
 
-  const kpiCards = [
-    {
-      title: 'Totala intäkter',
-      value: reportData?.totalRevenue ? `${reportData.totalRevenue.toLocaleString()} SEK` : '0 SEK',
-      icon: DollarSign,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-    },
-    {
-      title: 'Bokningar',
-      value: reportData?.bookingsCount.toString() || '0',
-      icon: Calendar,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
-    },
-    {
-      title: 'Offert-acceptans',
-      value: reportData ? `${reportData.quoteAcceptanceRate.toFixed(1)}%` : '0%',
-      icon: FileText,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-100',
-    },
-    {
-      title: 'Fakturor',
-      value: reportData?.invoicesCount.toString() || '0',
-      icon: Receipt,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
-    },
-  ];
+  const { analytics, loading, refresh } = useAnalytics(filters);
 
-  const handleExport = () => {
-    // Mock export functionality
-    const csvData = [
-      ['Datum', 'Typ', 'Beskrivning', 'Belopp'],
-      ...(reportData?.bookings.map(b => [
-        new Date(b.created_at).toLocaleDateString('sv-SE'),
-        'Bokning',
-        b.service_slug,
-        (b.payload as any)?.base_price || 0
-      ]) || []),
-      ...(reportData?.invoices.map(i => [
-        new Date(i.created_at).toLocaleDateString('sv-SE'),
-        'Faktura',
-        `Faktura ${i.invoice_number}`,
-        i.total_amount
-      ]) || [])
+  const handleExportCSV = () => {
+    if (!analytics) return;
+
+    const exportData = [
+      {
+        metric: 'Total Intäkt',
+        value: analytics.revenue.totalRevenue,
+        trend: `${analytics.revenue.trend > 0 ? '+' : ''}${analytics.revenue.trend.toFixed(1)}%`,
+      },
+      {
+        metric: 'Bokningar',
+        value: analytics.bookings.totalBookings,
+        trend: `${analytics.bookings.trend > 0 ? '+' : ''}${analytics.bookings.trend.toFixed(1)}%`,
+      },
+      {
+        metric: 'AOV',
+        value: analytics.revenue.avgOrderValue,
+        trend: '-',
+      },
     ];
 
-    const csvContent = csvData.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `rapport-${period}-dagar.csv`;
-    a.click();
+    exportAnalyticsCSV(exportData, 'analytics-summary');
+    toast.success('CSV exporterad');
   };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('sv-SE', {
+      style: 'currency',
+      currency: 'SEK',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  const formatPercentage = (value: number) => {
+    return `${value > 0 ? '+' : ''}${value.toFixed(1)}%`;
+  };
+
+  const KPICard = ({
+    title,
+    value,
+    trend,
+    icon: Icon,
+    description,
+  }: {
+    title: string;
+    value: string | number;
+    trend?: number;
+    icon: any;
+    description?: string;
+  }) => (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        {trend !== undefined && (
+          <div className="flex items-center text-xs text-muted-foreground mt-1">
+            {trend > 0 ? (
+              <TrendingUp className="h-3 w-3 mr-1 text-green-500" />
+            ) : trend < 0 ? (
+              <TrendingDown className="h-3 w-3 mr-1 text-red-500" />
+            ) : null}
+            <span className={trend > 0 ? 'text-green-500' : trend < 0 ? 'text-red-500' : ''}>
+              {formatPercentage(trend)}
+            </span>
+            <span className="ml-1">från förra perioden</span>
+          </div>
+        )}
+        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
+      </CardContent>
+    </Card>
+  );
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-4">
+          <RefreshCw className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
+          <p className="text-muted-foreground">Laddar analytics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!analytics) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-muted-foreground">Ingen data tillgänglig</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      <AdminBack />
-      
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Detaljerad analys</h1>
-          <p className="text-muted-foreground">Försäljningsrapporter och KPI:er</p>
+          <h1 className="text-3xl font-bold tracking-tight">Avancerad Analys</h1>
+          <p className="text-muted-foreground">
+            Fullständig översikt över företagets prestanda och trafik
+          </p>
         </div>
-        <div className="flex items-center gap-3">
-          <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7">7 dagar</SelectItem>
-              <SelectItem value="30">30 dagar</SelectItem>
-              <SelectItem value="90">90 dagar</SelectItem>
-              <SelectItem value="365">1 år</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={handleExport} variant="outline" className="flex items-center gap-2">
-            <Download className="h-4 w-4" />
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => refresh()}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Uppdatera
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleExportCSV}>
+            <Download className="h-4 w-4 mr-2" />
             Exportera CSV
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {kpiCards.map((kpi) => {
-          const Icon = kpi.icon;
-          return (
-            <Card key={kpi.title}>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-lg ${kpi.bgColor}`}>
-                    <Icon className={`h-6 w-6 ${kpi.color}`} />
+      {/* Filters */}
+      <AnalyticsFilters onFilterChange={setFilters} />
+
+      {/* KPI Dashboard */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <KPICard
+          title="Total Intäkt"
+          value={formatCurrency(analytics.revenue.totalRevenue)}
+          trend={analytics.revenue.trend}
+          icon={DollarSign}
+        />
+        <KPICard
+          title="Bokningar"
+          value={analytics.bookings.totalBookings}
+          trend={analytics.bookings.trend}
+          icon={ShoppingCart}
+        />
+        <KPICard
+          title="AOV"
+          value={formatCurrency(analytics.revenue.avgOrderValue)}
+          icon={Target}
+          description="Genomsnittligt ordervärde"
+        />
+        <KPICard
+          title="Quote Accept"
+          value={`${analytics.bookings.conversionRate.toFixed(1)}%`}
+          icon={FileText}
+          description="Bokning → Faktura"
+        />
+        <KPICard
+          title="Kunder"
+          value={analytics.customers.totalCustomers}
+          icon={Users}
+          description={`${analytics.customers.newVsReturning.new} nya`}
+        />
+        <KPICard
+          title="ROT/RUT Besparing"
+          value={formatCurrency(analytics.revenue.rotDeduction + analytics.revenue.rutDeduction)}
+          icon={Clock}
+        />
+      </div>
+
+      {/* Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-7">
+          <TabsTrigger value="overview">Översikt</TabsTrigger>
+          <TabsTrigger value="ekonomi">Ekonomi</TabsTrigger>
+          <TabsTrigger value="kunder">Kunder</TabsTrigger>
+          <TabsTrigger value="trafik">Trafik</TabsTrigger>
+          <TabsTrigger value="tidsanalys">Tid</TabsTrigger>
+          <TabsTrigger value="tjanster">Tjänster</TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
+        </TabsList>
+
+        {/* Tab 1: Overview */}
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2">
+            <RevenueTimelineChart data={analytics.revenueTimeline} />
+            <CustomerSegmentChart data={analytics.customers} />
+          </div>
+          <ServicePerformanceChart data={analytics.services} />
+        </TabsContent>
+
+        {/* Tab 2: Ekonomi & Priser */}
+        <TabsContent value="ekonomi" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue Breakdown</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {Object.entries(analytics.revenue.byCustomerType).map(([type, amount]) => (
+                  <div key={type} className="flex justify-between items-center">
+                    <span className="text-sm capitalize">{type}</span>
+                    <span className="font-semibold">{formatCurrency(amount as number)}</span>
                   </div>
-                  <div>
-                    <p className="text-2xl font-bold">
-                      {isLoading ? '...' : kpi.value}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{kpi.title}</p>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>ROT/RUT Statistik</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">ROT Avdrag</span>
+                  <span className="font-semibold text-green-600">
+                    {formatCurrency(analytics.revenue.rotDeduction)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">RUT Avdrag</span>
+                  <span className="font-semibold text-green-600">
+                    {formatCurrency(analytics.revenue.rutDeduction)}
+                  </span>
+                </div>
+                <div className="pt-3 border-t">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Total Besparing</span>
+                    <span className="font-bold text-green-600">
+                      {formatCurrency(analytics.revenue.rotDeduction + analytics.revenue.rutDeduction)}
+                    </span>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          );
-        })}
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              Senaste bokningar
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-3 animate-pulse">
-                    <div className="w-3 h-3 bg-muted rounded-full" />
-                    <div className="flex-1 h-4 bg-muted rounded" />
+            <Card>
+              <CardHeader>
+                <CardTitle>Faktura-statistik</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Antal Fakturor</span>
+                  <span className="font-semibold">{analytics.revenue.invoiceCount}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Genomsnittligt Värde</span>
+                  <span className="font-semibold">{formatCurrency(analytics.revenue.avgOrderValue)}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <RevenueTimelineChart data={analytics.revenueTimeline} />
+        </TabsContent>
+
+        {/* Tab 3: Kund-analys */}
+        <TabsContent value="kunder" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            {Object.entries(analytics.customers.byType).map(([type, data]) => (
+              <Card key={type}>
+                <CardHeader>
+                  <CardTitle className="capitalize">{type === 'company' ? 'Företag' : type === 'private' ? 'Privat' : 'BRF'}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Antal:</span>
+                    <span className="font-semibold">{data.count}</span>
                   </div>
-                ))}
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Intäkt:</span>
+                    <span className="font-semibold">{formatCurrency(data.revenue)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">AOV:</span>
+                    <span className="font-semibold">{formatCurrency(data.avgOrderValue)}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <CustomerSegmentChart data={analytics.customers} />
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Customer Retention</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center p-6 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground mb-2">Nya Kunder</p>
+                  <p className="text-4xl font-bold">{analytics.customers.newVsReturning.new}</p>
+                </div>
+                <div className="text-center p-6 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground mb-2">Återkommande</p>
+                  <p className="text-4xl font-bold">{analytics.customers.newVsReturning.returning}</p>
+                </div>
               </div>
-            ) : reportData?.bookings.length ? (
+            </CardContent>
+          </Card>
+
+          <TopCustomersTable customers={analytics.topCustomers} />
+        </TabsContent>
+
+        {/* Tab 4: Trafik & Sidbesök */}
+        <TabsContent value="trafik" className="space-y-6">
+          <TrafficSourcesChart data={analytics.traffic} />
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Mest Populära Sidor</CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="space-y-3">
-                {reportData.bookings.slice(0, 5).map((booking) => (
-                  <div key={booking.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{(booking.payload as any)?.service_name || booking.service_slug}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(booking.created_at), { 
-                          addSuffix: true, 
-                          locale: sv 
-                        })}
-                      </p>
+                {analytics.traffic.topPages.map((page, index) => (
+                  <div key={page.url} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-medium text-sm">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm">{page.url}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Genomsnittlig tid: {Math.round(page.avgDuration)}s
+                        </p>
+                      </div>
                     </div>
-                    <Badge variant="outline">{booking.status}</Badge>
+                    <div className="text-right">
+                      <p className="font-bold">{page.views}</p>
+                      <p className="text-xs text-muted-foreground">visningar</p>
+                    </div>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-muted-foreground">Inga bokningar för vald period</p>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Prestanda översikt
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span>Genomsnittlig ordervärde</span>
-              <span className="font-medium">
-                {reportData?.bookings.length 
-                  ? `${Math.round(reportData.totalRevenue / reportData.bookings.length).toLocaleString()} SEK`
-                  : '0 SEK'
-                }
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Betalda fakturor</span>
-              <span className="font-medium">
-                {reportData?.invoices.filter(i => i.status === 'paid').length || 0} av {reportData?.invoicesCount || 0}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Offert → Bokning</span>
-              <span className="font-medium">
-                {reportData ? `${reportData.quoteAcceptanceRate.toFixed(1)}%` : '0%'}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <ConversionFunnelChart data={analytics.funnel} />
+        </TabsContent>
+
+        {/* Tab 5: Tidsanalys */}
+        <TabsContent value="tidsanalys" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Säsongstrender</CardTitle>
+              <CardDescription>Bokningar och intäkter över tid</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RevenueTimelineChart data={analytics.revenueTimeline} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 6: Tjänsteanalys */}
+        <TabsContent value="tjanster" className="space-y-6">
+          <ServicePerformanceChart data={analytics.services} />
+
+          <Card>
+            <CardHeader>
+              <CardTitle>ROT/RUT Eligible Services</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">ROT Eligible</p>
+                  <p className="text-2xl font-bold">
+                    {analytics.services.services.filter((s) => s.rotEligible).length}
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">RUT Eligible</p>
+                  <p className="text-2xl font-bold">
+                    {analytics.services.services.filter((s) => s.rutEligible).length}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 7: Performance Metrics */}
+        <TabsContent value="performance" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Conversion Rate</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold">{analytics.bookings.conversionRate.toFixed(1)}%</div>
+                <p className="text-sm text-muted-foreground mt-2">Bokning → Faktura</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Genomsnittligt Ordervärde</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold">{formatCurrency(analytics.revenue.avgOrderValue)}</div>
+                <p className="text-sm text-muted-foreground mt-2">Per faktura</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Total Besparing</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-green-600">
+                  {formatCurrency(analytics.revenue.rotDeduction + analytics.revenue.rutDeduction)}
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">ROT + RUT avdrag</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <ConversionFunnelChart data={analytics.funnel} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
