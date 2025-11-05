@@ -113,16 +113,46 @@ export function RequestQuoteCard({
               )}
             </div>
             <p className="text-lg font-semibold">{serviceName}</p>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-              <span className="flex items-center gap-1">
-                <Phone className="h-3 w-3" />
-                {customerName}
-              </span>
-              <span className="flex items-center gap-1">
-                <Mail className="h-3 w-3" />
-                {customerEmail}
-              </span>
-              <span>📅 {format(new Date(booking.created_at), "d MMM yyyy", { locale: sv })}</span>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Phone className="h-3 w-3" />
+                  {customerName}
+                </span>
+                {customer?.customer_type && (
+                  <Badge 
+                    variant={
+                      customer.customer_type === 'company' ? 'default' : 
+                      customer.customer_type === 'brf' ? 'secondary' : 
+                      'outline'
+                    }
+                    className="text-xs"
+                  >
+                    {customer.customer_type === 'company' ? '🏢 Företag' : 
+                     customer.customer_type === 'brf' ? '🏘️ BRF' : 
+                     '👤 Privat'}
+                  </Badge>
+                )}
+              </div>
+              
+              {(customer?.company_name || customer?.brf_name) && (
+                <div className="text-sm font-medium text-foreground">
+                  {customer.customer_type === 'brf' ? '🏘️' : '🏢'} {customer.company_name || customer.brf_name}
+                  {customer.org_number && (
+                    <span className="text-muted-foreground ml-2">
+                      (Org.nr: {customer.org_number})
+                    </span>
+                  )}
+                </div>
+              )}
+              
+              <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                <span className="flex items-center gap-1">
+                  <Mail className="h-3 w-3" />
+                  {customerEmail}
+                </span>
+                <span>📅 {format(new Date(booking.created_at), "d MMM yyyy", { locale: sv })}</span>
+              </div>
             </div>
           </div>
         </div>

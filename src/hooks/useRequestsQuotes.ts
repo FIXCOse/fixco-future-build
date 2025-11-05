@@ -25,6 +25,11 @@ export type CustomerRow = {
   name: string;
   email: string;
   phone: string;
+  customer_type?: 'private' | 'company' | 'brf';
+  company_name?: string;
+  brf_name?: string;
+  org_number?: string;
+  personnummer?: string;
 };
 
 export type JobRow = {
@@ -174,20 +179,12 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (expenseLogsError) console.error('Error fetching expense logs:', expenseLogsError);
 
-      // Fetch customers from profiles
+      // Fetch customers
       const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name, email, phone')
+      const { data: customers } = await supabase
+        .from('customers')
+        .select('id, name, email, phone, customer_type, company_name, brf_name, org_number, personnummer')
         .in('id', customerIds);
-
-      // Map profiles to customer format
-      const customers = profiles?.map(p => ({
-        id: p.id,
-        name: [p.first_name, p.last_name].filter(Boolean).join(' ') || p.email || 'Okänd',
-        email: p.email || '',
-        phone: p.phone || ''
-      }));
 
       // Combine data
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
