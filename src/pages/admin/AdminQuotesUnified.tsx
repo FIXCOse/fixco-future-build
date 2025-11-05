@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Trash2, Search } from "lucide-react";
+import { Trash2, Search, Plus } from "lucide-react";
 import { useRequestsQuotes } from "@/hooks/useRequestsQuotes";
 import { RequestQuoteCard } from "@/components/admin/RequestQuoteCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,10 +12,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
 import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
-import InvoicePreviewDialog from "@/components/admin/InvoicePreviewDialog";
 import { AdvancedInvoiceEditor } from "@/components/admin/AdvancedInvoiceEditor";
 import { createCustomer } from "@/lib/api/customers";
-import { createInvoiceFromJob } from "@/lib/api/invoices";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,52 +24,115 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 
-export default function AdminRequestsQuotes() {
+export default function AdminQuotesUnified() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "requests";
+  const subFilter = searchParams.get("status") || "all";
   
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [jobCreationModalOpen, setJobCreationModalOpen] = useState(false);
-  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
   const [editQuoteId, setEditQuoteId] = useState<string | null>(null);
   const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
-  const [invoicePreviewOpen, setInvoicePreviewOpen] = useState(false);
-  const [selectedJobForInvoice, setSelectedJobForInvoice] = useState<any>(null);
   const [advancedInvoiceOpen, setAdvancedInvoiceOpen] = useState(false);
   const [advancedInvoiceJobData, setAdvancedInvoiceJobData] = useState<any>(null);
 
-  // Filter based on tab
-  const statusFilter = [activeTab];
+  // Fetch all data without filtering - we'll do client-side filtering
+  const { data: allData, loading, refresh } = useRequestsQuotes([]);
 
-  const { data, loading, refresh } = useRequestsQuotes(statusFilter);
+  // Client-side filtering based on active tab
+  const filteredByTab = useMemo(() => {
+    switch (activeTab) {
+      case "requests":
+        // Bookings without quotes, status = new
+        return allData.filter(item => !item.quote && item.booking.status === 'new');
+      
+      case "active":
+        // Quotes with active statuses
+        const activeStatuses = ['draft', 'sent', 'viewed', 'change_requested'];
+        let activeItems = allData.filter(item => 
+          item.quote && activeStatuses.includes(item.quote.status)
+        );
+        
+        // Sub-filter by status
+        if (subFilter !== "all") {
+          activeItems = activeItems.filter(item => item.quote?.status === subFilter);
+        }
+        return activeItems;
+      
+      case "completed":
+        // Quotes with completed statuses
+        const completedStatuses = ['accepted', 'declined', 'expired'];
+        let completedItems = allData.filter(item => 
+          item.quote && completedStatuses.includes(item.quote.status)
+        );
+        
+        // Sub-filter by status
+        if (subFilter !== "all") {
+          completedItems = completedItems.filter(item => item.quote?.status === subFilter);
+        }
+        return completedItems;
+      
+      case "jobs":
+        // Items with jobs and/or invoices
+        return allData.filter(item => item.job || item.invoice);
+      
+      case "archived":
+        // Completed/cancelled bookings
+        return allData.filter(item => ['completed', 'cancelled'].includes(item.booking.status));
+      
+      default:
+        return allData;
+    }
+  }, [allData, activeTab, subFilter]);
 
-  const filteredData = data.filter(item => {
-    if (!search) return true;
-    const searchLower = search.toLowerCase();
-    const serviceName = (item.booking.payload?.service_name || item.booking.service_slug || '').toLowerCase();
-    const customerName = (item.customer?.name || item.booking.payload?.name || '').toLowerCase();
-    const customerEmail = (item.customer?.email || item.booking.payload?.email || '').toLowerCase();
-    const quoteNumber = (item.quote?.number || '').toLowerCase();
+  // Search filtering
+  const filteredData = useMemo(() => {
+    if (!search) return filteredByTab;
     
-    return serviceName.includes(searchLower) ||
-           customerName.includes(searchLower) ||
-           customerEmail.includes(searchLower) ||
-           quoteNumber.includes(searchLower);
-  });
+    const searchLower = search.toLowerCase();
+    return filteredByTab.filter(item => {
+      const serviceName = (item.booking.payload?.service_name || item.booking.service_slug || '').toLowerCase();
+      const customerName = (item.customer?.name || item.booking.payload?.name || '').toLowerCase();
+      const customerEmail = (item.customer?.email || item.booking.payload?.email || '').toLowerCase();
+      const quoteNumber = (item.quote?.number || '').toLowerCase();
+      
+      return serviceName.includes(searchLower) ||
+             customerName.includes(searchLower) ||
+             customerEmail.includes(searchLower) ||
+             quoteNumber.includes(searchLower);
+    });
+  }, [filteredByTab, search]);
 
-  const counts = {
-    requests: data.filter(item => !item.quote && item.booking.status === 'new').length,
-    quotes: data.filter(item => !!item.quote).length,
-    archived: data.filter(item => ['completed', 'cancelled'].includes(item.booking.status)).length,
-  };
+  // Calculate counts for badges
+  const counts = useMemo(() => {
+    return {
+      requests: allData.filter(item => !item.quote && item.booking.status === 'new').length,
+      active: allData.filter(item => 
+        item.quote && ['draft', 'sent', 'viewed', 'change_requested'].includes(item.quote.status)
+      ).length,
+      draft: allData.filter(item => item.quote?.status === 'draft').length,
+      sent: allData.filter(item => item.quote?.status === 'sent').length,
+      viewed: allData.filter(item => item.quote?.status === 'viewed').length,
+      change_requested: allData.filter(item => item.quote?.status === 'change_requested').length,
+      completed: allData.filter(item => 
+        item.quote && ['accepted', 'declined', 'expired'].includes(item.quote.status)
+      ).length,
+      accepted: allData.filter(item => item.quote?.status === 'accepted').length,
+      declined: allData.filter(item => item.quote?.status === 'declined').length,
+      expired: allData.filter(item => item.quote?.status === 'expired').length,
+      jobs: allData.filter(item => item.job || item.invoice).length,
+      archived: allData.filter(item => ['completed', 'cancelled'].includes(item.booking.status)).length,
+    };
+  }, [allData]);
 
   const handleCreateQuote = async (bookingId: string) => {
-    const bookingItem = data.find(d => d.booking.id === bookingId);
+    const bookingItem = allData.find(d => d.booking.id === bookingId);
     if (!bookingItem) {
       toast.error('Kunde inte hitta bokning');
       return;
@@ -94,7 +155,6 @@ export default function AdminRequestsQuotes() {
       let customerId = bookingItem.customer?.id;
       
       if (!customerId) {
-        // Sök efter befintlig kund via email
         const { data: existingCustomers } = await supabase
           .from('customers')
           .select('id')
@@ -103,9 +163,7 @@ export default function AdminRequestsQuotes() {
         
         if (existingCustomers && existingCustomers.length > 0) {
           customerId = existingCustomers[0].id;
-          console.log('[handleCreateQuote] Hittade befintlig kund:', customerId);
         } else {
-          // Skapa ny kund automatiskt
           const customerName = payload.name || payload.contact_name || 'Okänd kund';
           const customerPhone = payload.phone || payload.contact_phone;
           const customerAddress = payload.address;
@@ -121,14 +179,12 @@ export default function AdminRequestsQuotes() {
             city: city
           };
           
-          console.log('[handleCreateQuote] Skapar ny kund:', newCustomerData);
           const createdCustomer = await createCustomer(newCustomerData);
           customerId = createdCustomer.id;
           toast.success('Kund skapad automatiskt');
         }
       }
 
-      // Öppna modal med färdig kunddata
       setBookingDataForQuote({
         id: bookingItem.booking.id,
         payload: payload,
@@ -145,6 +201,12 @@ export default function AdminRequestsQuotes() {
 
   const handleEditQuote = (quoteId: string) => {
     setEditQuoteId(quoteId);
+    setBookingDataForQuote(null);
+    setQuoteModalOpen(true);
+  };
+
+  const handleNewQuote = () => {
+    setEditQuoteId(null);
     setBookingDataForQuote(null);
     setQuoteModalOpen(true);
   };
@@ -166,7 +228,7 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleViewPdf = (quoteId: string) => {
-    const item = data.find(d => d.quote?.id === quoteId);
+    const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
     const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
     window.open(publicUrl, '_blank');
@@ -209,7 +271,7 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCopyLink = async (quoteId: string) => {
-    const item = data.find(d => d.quote?.id === quoteId);
+    const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
 
     const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
@@ -218,7 +280,7 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCopyInvoiceLink = async (invoiceId: string) => {
-    const item = data.find(d => d.invoice?.id === invoiceId);
+    const item = allData.find(d => d.invoice?.id === invoiceId);
     if (!item?.invoice || !(item.invoice as any).public_token) {
       toast.error('Ingen publik token finns för denna faktura');
       return;
@@ -230,7 +292,7 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCreateJob = async (quoteId: string) => {
-    const item = data.find(d => d.quote?.id === quoteId);
+    const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) {
       toast.error('Kunde inte hitta offert');
       return;
@@ -246,13 +308,12 @@ export default function AdminRequestsQuotes() {
   };
 
   const handleCreateInvoiceFromJob = (jobId: string, customerId: string) => {
-    const item = data.find(d => d.job?.id === jobId);
+    const item = allData.find(d => d.job?.id === jobId);
     if (!item || !item.job) {
       toast.error('Kunde inte hitta jobb');
       return;
     }
 
-    // Prepare job data for advanced invoice editor
     const jobData = {
       id: item.job.id,
       title: (item.job as any).title || item.booking.service_slug || 'Ej angivet',
@@ -294,7 +355,7 @@ export default function AdminRequestsQuotes() {
       refresh();
     } catch (error: any) {
       console.error('Error creating invoice:', error);
-      throw error; // Let AdvancedInvoiceEditor handle error display
+      throw error;
     }
   };
 
@@ -319,35 +380,130 @@ export default function AdminRequestsQuotes() {
     }
   };
 
+  const setTab = (tab: string) => {
+    setSearchParams({ tab });
+  };
+
+  const setSubFilterParam = (status: string) => {
+    setSearchParams({ tab: activeTab, status });
+  };
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <AdminBack />
-          <h1 className="text-3xl font-bold mt-2">Förfrågningar & Offerter</h1>
-          <p className="text-muted-foreground">Hantera kundförfrågningar och skapa offerter</p>
+          <h1 className="text-3xl font-bold mt-2">Offerter & Jobb</h1>
+          <p className="text-muted-foreground">Hantera hela arbetsflödet från förfrågan till faktura</p>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => navigate('/admin/bookings/trash')}
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Visa papperskorg
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={handleNewQuote}>
+            <Plus className="h-4 w-4 mr-2" />
+            Ny offert
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/admin/quotes/trash')}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Papperskorg
+          </Button>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={(v) => setSearchParams({ tab: v })}>
+      <Tabs value={activeTab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="requests">
-            Nya förfrågningar {counts.requests > 0 && `(${counts.requests})`}
+            Förfrågningar {counts.requests > 0 && <Badge variant="secondary" className="ml-2">{counts.requests}</Badge>}
           </TabsTrigger>
-          <TabsTrigger value="quotes">
-            Offerter {counts.quotes > 0 && `(${counts.quotes})`}
+          <TabsTrigger value="active">
+            Aktiva offerter {counts.active > 0 && <Badge variant="secondary" className="ml-2">{counts.active}</Badge>}
+          </TabsTrigger>
+          <TabsTrigger value="completed">
+            Avslutade {counts.completed > 0 && <Badge variant="secondary" className="ml-2">{counts.completed}</Badge>}
+          </TabsTrigger>
+          <TabsTrigger value="jobs">
+            Jobb & Fakturor {counts.jobs > 0 && <Badge variant="secondary" className="ml-2">{counts.jobs}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="archived">
-            Arkiv {counts.archived > 0 && `(${counts.archived})`}
+            Arkiv {counts.archived > 0 && <Badge variant="secondary" className="ml-2">{counts.archived}</Badge>}
           </TabsTrigger>
         </TabsList>
+
+        {/* Sub-filters for Active quotes */}
+        {activeTab === "active" && (
+          <div className="flex gap-2 mt-4">
+            <Button
+              variant={subFilter === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("all")}
+            >
+              Alla ({counts.active})
+            </Button>
+            <Button
+              variant={subFilter === "draft" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("draft")}
+            >
+              Utkast ({counts.draft})
+            </Button>
+            <Button
+              variant={subFilter === "sent" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("sent")}
+            >
+              Skickade ({counts.sent})
+            </Button>
+            <Button
+              variant={subFilter === "viewed" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("viewed")}
+            >
+              Visade ({counts.viewed})
+            </Button>
+            <Button
+              variant={subFilter === "change_requested" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("change_requested")}
+            >
+              Ändring begärd ({counts.change_requested})
+            </Button>
+          </div>
+        )}
+
+        {/* Sub-filters for Completed quotes */}
+        {activeTab === "completed" && (
+          <div className="flex gap-2 mt-4">
+            <Button
+              variant={subFilter === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("all")}
+            >
+              Alla ({counts.completed})
+            </Button>
+            <Button
+              variant={subFilter === "accepted" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("accepted")}
+            >
+              Accepterade ({counts.accepted})
+            </Button>
+            <Button
+              variant={subFilter === "declined" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("declined")}
+            >
+              Avvisade ({counts.declined})
+            </Button>
+            <Button
+              variant={subFilter === "expired" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("expired")}
+            >
+              Utgångna ({counts.expired})
+            </Button>
+          </div>
+        )}
 
         <div className="relative mt-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -359,90 +515,14 @@ export default function AdminRequestsQuotes() {
           />
         </div>
 
-        <TabsContent value="requests" className="space-y-6 mt-6">
+        <TabsContent value={activeTab} className="space-y-6 mt-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-              </div>
+              <Skeleton key={i} className="h-[300px]" />
             ))
           ) : filteredData.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <p>Inga nya förfrågningar</p>
-            </div>
-          ) : (
-            filteredData.map((item) => (
-              <RequestQuoteCard
-                key={item.booking.id}
-                item={item}
-                onCreateQuote={handleCreateQuote}
-                onEditQuote={handleEditQuote}
-                onSendQuote={handleSendQuote}
-                onViewPdf={handleViewPdf}
-                onDeleteBooking={(id) => setDeleteId(id)}
-                onCopyLink={handleCopyLink}
-                onCreateInvoice={handleCreateInvoice}
-                onViewInvoice={handleViewInvoice}
-                onSendInvoice={handleSendInvoice}
-                onCopyInvoiceLink={handleCopyInvoiceLink}
-                onCreateJob={handleCreateJob}
-                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
-                onRefresh={refresh}
-              />
-            ))
-          )}
-        </TabsContent>
-
-        <TabsContent value="quotes" className="space-y-6 mt-6">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-              </div>
-            ))
-          ) : filteredData.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>Inga offerter</p>
-            </div>
-          ) : (
-            filteredData.map((item) => (
-              <RequestQuoteCard
-                key={item.booking.id}
-                item={item}
-                onCreateQuote={handleCreateQuote}
-                onEditQuote={handleEditQuote}
-                onSendQuote={handleSendQuote}
-                onViewPdf={handleViewPdf}
-                onDeleteBooking={(id) => setDeleteId(id)}
-                onCopyLink={handleCopyLink}
-                onCreateInvoice={handleCreateInvoice}
-                onViewInvoice={handleViewInvoice}
-                onSendInvoice={handleSendInvoice}
-                onCopyInvoiceLink={handleCopyInvoiceLink}
-                onCreateJob={handleCreateJob}
-                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
-                onRefresh={refresh}
-              />
-            ))
-          )}
-        </TabsContent>
-
-        <TabsContent value="archived" className="space-y-6 mt-6">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-                <Skeleton className="h-[300px]" />
-              </div>
-            ))
-          ) : filteredData.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>Inget i arkivet</p>
+              <p>Inga poster att visa</p>
             </div>
           ) : (
             filteredData.map((item) => (
@@ -472,7 +552,7 @@ export default function AdminRequestsQuotes() {
         open={jobCreationModalOpen}
         onOpenChange={setJobCreationModalOpen}
         quoteId={selectedQuoteId || ''}
-        quoteData={data.find(d => d.quote?.id === selectedQuoteId)?.quote}
+        quoteData={allData.find(d => d.quote?.id === selectedQuoteId)?.quote}
         onSuccess={() => {
           setJobCreationModalOpen(false);
           setSelectedQuoteId(null);
@@ -485,19 +565,25 @@ export default function AdminRequestsQuotes() {
         onOpenChange={(open) => {
           setQuoteModalOpen(open);
           if (!open) {
-            setEditQuoteId(null);
             setBookingDataForQuote(null);
+            setEditQuoteId(null);
           }
         }}
-        quote={editQuoteId ? data.find(d => d.quote?.id === editQuoteId)?.quote : undefined}
+        quote={editQuoteId ? allData.find(d => d.quote?.id === editQuoteId)?.quote as any : null}
         bookingData={bookingDataForQuote}
         onSuccess={() => {
           setQuoteModalOpen(false);
-          setEditQuoteId(null);
           setBookingDataForQuote(null);
-          setSearchParams({ tab: 'quotes' });
+          setEditQuoteId(null);
           refresh();
         }}
+      />
+
+      <AdvancedInvoiceEditor
+        open={advancedInvoiceOpen}
+        onOpenChange={setAdvancedInvoiceOpen}
+        jobData={advancedInvoiceJobData}
+        onCreateInvoice={handleCreateInvoiceSubmit}
       />
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
@@ -516,14 +602,6 @@ export default function AdminRequestsQuotes() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Advanced Invoice Editor */}
-      <AdvancedInvoiceEditor
-        open={advancedInvoiceOpen}
-        onOpenChange={setAdvancedInvoiceOpen}
-        jobData={advancedInvoiceJobData}
-        onCreateInvoice={handleCreateInvoiceSubmit}
-      />
     </div>
   );
 }

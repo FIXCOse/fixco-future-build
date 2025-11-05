@@ -45,7 +45,7 @@ import StaffManagement from "./pages/MyFixco/StaffManagement";
 // Admin pages
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
-import AdminQuotes from "./pages/admin/AdminQuotes";
+import AdminQuotesUnified from "./pages/admin/AdminQuotesUnified";
 import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
@@ -91,7 +91,6 @@ const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
 const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
 const SmartHome = lazy(() => import('./pages/SmartHome'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
-const LazyAdminRequestsQuotes = lazy(() => import("@/pages/admin/AdminRequestsQuotes"));
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopyProvider } from '@/copy/CopyProvider';
 
@@ -178,18 +177,15 @@ const App = () => {
                   <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
                     <Route index element={<DashboardOverview />} />
                     <Route path="services" element={<AdminServices />} />
-                    <Route path="requests-quotes" element={
-                      <Suspense fallback={<SuspenseFallback />}>
-                        <LazyAdminRequestsQuotes />
-                      </Suspense>
-                    } />
-                    {/* Redirects for old routes */}
-                    <Route path="bookings" element={<Navigate to="/admin/requests-quotes?tab=requests" replace />} />
-                    <Route path="bookings/:id" element={<Navigate to="/admin/requests-quotes?tab=requests" replace />} />
-                    <Route path="bookings/trash" element={<AdminBookingsTrash />} />
-                    <Route path="quotes" element={<AdminQuotes />} />
-                    <Route path="quotes/new" element={<Navigate to="/admin/requests-quotes?tab=quotes" replace />} />
+                    {/* Unified quotes page */}
+                    <Route path="quotes" element={<AdminQuotesUnified />} />
+                    <Route path="quotes-new" element={<AdminQuotesNew />} />
                     <Route path="quotes/trash" element={<AdminQuotesTrash />} />
+                    {/* Redirects for old routes */}
+                    <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                    <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                    <Route path="bookings/:id" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                    <Route path="bookings/trash" element={<AdminBookingsTrash />} />
                     <Route path="quote-questions" element={<AdminQuoteQuestions />} />
                     <Route path="invoices" element={<AdminInvoices />} />
                     <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
