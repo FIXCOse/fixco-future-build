@@ -65,6 +65,7 @@ export type CopyKey =
   
    // Service Categories  
    | 'serviceCategories.el' | 'serviceCategories.vvs' | 'serviceCategories.snickeri'
+   | 'serviceCategories.maleri'
    | 'serviceCategories.montering' | 'serviceCategories.tradgard' | 'serviceCategories.stadning'
    | 'serviceCategories.markarbeten' | 'serviceCategories.tekniska-installationer' | 'serviceCategories.flytt'
    
@@ -72,6 +73,7 @@ export type CopyKey =
    | 'serviceCategories.el.title' | 'serviceCategories.el.description'
    | 'serviceCategories.vvs.title' | 'serviceCategories.vvs.description'  
    | 'serviceCategories.snickeri.title' | 'serviceCategories.snickeri.description'
+   | 'serviceCategories.maleri.title' | 'serviceCategories.maleri.description'
    | 'serviceCategories.montering.title' | 'serviceCategories.montering.description'
    | 'serviceCategories.tradgard.title' | 'serviceCategories.tradgard.description'
    | 'serviceCategories.stadning.title' | 'serviceCategories.stadning.description'
