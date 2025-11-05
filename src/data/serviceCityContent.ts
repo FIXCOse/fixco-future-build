@@ -40,6 +40,15 @@ interface ServiceContentItem {
     title: string;
     description: string;
   }>;
+  commonProblems?: Array<{
+    title: string;
+    description: string;
+    solution: string;
+    relatedService?: {
+      name: string;
+      slug: string;
+    };
+  }>;
 }
 
 export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockholm", ServiceContentItem>> = {
@@ -87,6 +96,50 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           title: "Motorvärmare & timer",
           description: "Installera motorvärmare med timer för att spara energi. ROT-avdrag gäller för installation. Vi monterar och kopplar enligt gällande standard."
         }
+      ],
+      commonProblems: [
+        {
+          title: "Gamla säkringar i 60-70-talshus",
+          description: "Många hus från 60- och 70-talet har fortfarande gamla propp-säkringar eller tidiga automatsäkringar som inte klarar dagens elbehov med induktionshällar, tvättmaskin och laddbox samtidigt.",
+          solution: "Vi uppgraderar elcentralen till modern gruppcentral med jordfelsbrytare och automatsäkringar. Oftast kan befintliga ledningar behållas om de är i gott skick.",
+          relatedService: {
+            name: "Elcentralsbyte",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "Utlösta jordfelsbrytare i äldre lägenheter",
+          description: "Sekelskifteslägenheter och 50-talshus har ofta gamla ledningar med sliten isolering som orsakar jordfel, särskilt i badrummet och köket där fukt tränger in.",
+          solution: "Vi lokaliserar felet med isolationsmätning och byter ut berörda kablar. Vid omfattande problem rekommenderar vi omledning av hela lägenheten.",
+          relatedService: {
+            name: "Felsökning & Reparation",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "För få eluttag i kök och vardagsrum",
+          description: "Många äldre bostäder har endast 2-3 uttag per rum, vilket inte räcker för dagens behov med kaffemaskin, mikrovågsugn, mixer, laddare och ljudanläggning.",
+          solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 50% på arbetskostnaden."
+        },
+        {
+          title: "Överlast vid laddning av elbil",
+          description: "När du installerar laddbox till elbilen upptäcker du att huvudsäkringen (ofta 16-20A i äldre villor) inte räcker till när du samtidigt använder spis, tvättmaskin och varmvattenberedare.",
+          solution: "Vi ansöker om effekthöjning hos elnätsägaren och uppgraderar elcentralen till 25-32A eller 3-fas. Detta möjliggör både laddbox och normal elanvändning samtidigt.",
+          relatedService: {
+            name: "Laddbox-installation",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "Bristfällig belysning och mörka hörn",
+          description: "Äldre hus och lägenheter har ofta endast en taklampa per rum, vilket ger skuggiga hörn och dåligt arbetsljus i kök och badrum.",
+          solution: "Vi installerar spotlights, LED-lister eller väggamplar för att skapa både funktionell arbetsbelysning och stämningsfull belysning. Smart styrning kan läggas till för olika ljusscenarier."
+        },
+        {
+          title: "Osäker utomhusbelysning och trädgårdsuttag",
+          description: "Många villaägare har gammal utomhusbelysning utan jordfelsbrytare eller armaturer med för låg IP-klass som inte tål regn och snö.",
+          solution: "Vi byter till moderna armaturer med IP44 eller högre, installerar jordfelsbrytare och drar nya ledningar enligt säkerhetsstandard. Alla uttag utomhus får också jordfelsbrytare."
+        }
       ]
     },
     "Stockholm": {
@@ -131,6 +184,50 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         {
           title: "Eluppvärmning i BRF",
           description: "Många sekelskifteslägenheter har direktverkande el-element. Överväg byte till modern, energisnål lösning för att minska elkostnaderna."
+        }
+      ],
+      commonProblems: [
+        {
+          title: "Gamla säkringar i 60-70-talshus",
+          description: "Många hus från 60- och 70-talet har fortfarande gamla propp-säkringar eller tidiga automatsäkringar som inte klarar dagens elbehov med induktionshällar, tvättmaskin och laddbox samtidigt.",
+          solution: "Vi uppgraderar elcentralen till modern gruppcentral med jordfelsbrytare och automatsäkringar. Oftast kan befintliga ledningar behållas om de är i gott skick.",
+          relatedService: {
+            name: "Elcentralsbyte",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "Utlösta jordfelsbrytare i äldre lägenheter",
+          description: "Sekelskifteslägenheter och 50-talshus har ofta gamla ledningar med sliten isolering som orsakar jordfel, särskilt i badrummet och köket där fukt tränger in.",
+          solution: "Vi lokaliserar felet med isolationsmätning och byter ut berörda kablar. Vid omfattande problem rekommenderar vi omledning av hela lägenheten.",
+          relatedService: {
+            name: "Felsökning & Reparation",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "För få eluttag i kök och vardagsrum",
+          description: "Många äldre bostäder har endast 2-3 uttag per rum, vilket inte räcker för dagens behov med kaffemaskin, mikrovågsugn, mixer, laddare och ljudanläggning.",
+          solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 50% på arbetskostnaden."
+        },
+        {
+          title: "Överlast vid laddning av elbil",
+          description: "När du installerar laddbox till elbilen upptäcker du att huvudsäkringen (ofta 16-20A i äldre villor) inte räcker till när du samtidigt använder spis, tvättmaskin och varmvattenberedare.",
+          solution: "Vi ansöker om effekthöjning hos elnätsägaren och uppgraderar elcentralen till 25-32A eller 3-fas. Detta möjliggör både laddbox och normal elanvändning samtidigt.",
+          relatedService: {
+            name: "Laddbox-installation",
+            slug: "/tjanster/elmontör"
+          }
+        },
+        {
+          title: "Bristfällig belysning och mörka hörn",
+          description: "Äldre hus och lägenheter har ofta endast en taklampa per rum, vilket ger skuggiga hörn och dåligt arbetsljus i kök och badrum.",
+          solution: "Vi installerar spotlights, LED-lister eller väggamplar för att skapa både funktionell arbetsbelysning och stämningsfull belysning. Smart styrning kan läggas till för olika ljusscenarier."
+        },
+        {
+          title: "Osäker utomhusbelysning och trädgårdsuttag",
+          description: "Många villaägare har gammal utomhusbelysning utan jordfelsbrytare eller armaturer med för låg IP-klass som inte tål regn och snö.",
+          solution: "Vi byter till moderna armaturer med IP44 eller högre, installerar jordfelsbrytare och drar nya ledningar enligt säkerhetsstandard. Alla uttag utomhus får också jordfelsbrytare."
         }
       ]
     }
@@ -179,6 +276,54 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           title: "Vattenrörsisolering",
           description: "Isolera vattenrör i kallförråd och garage för att förhindra frysning. Vi hjälper till med rätt isolermaterial och montering."
         }
+      ],
+      commonProblems: [
+        {
+          title: "Dåligt vattentryck i äldre rörledningar",
+          description: "Hus från 60-70-talet har ofta förzinkade rörledningar som är igensatta av rost och kalk, vilket ger dåligt vattentryck särskilt på övervåningen.",
+          solution: "Vi byter ut gamla rör till moderna PEX-rör eller kopparrör. Arbetet går snabbt och ROT-avdraget gör det överkomligt. Vattentrycket blir som nytt.",
+          relatedService: {
+            name: "Rörbyte & Renovering",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Läckande kranar och droppar",
+          description: "Blandare från 80- och 90-talet börjar läcka när tätningarna slits ut. Även små droppar kan öka vattenkostnaden med hundratals kronor per år.",
+          solution: "Vi byter ut slitna tätningar eller installerar nya, moderna blandare med keramiska kartusch som håller längre. Sparar både vatten och pengar.",
+          relatedService: {
+            name: "Blandarbyte",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Kalkavlagringar i dusch och WC",
+          description: "Hårt vatten orsakar kalkavlagringar i duschmunstycken, kranar och toalettstol, vilket försämrar vattentrycket och ser fult ut.",
+          solution: "Vi installerar vattenavhärdare eller kalkfilter vid inkommande vatten. För befintliga avlagringar använder vi professionell avkalkning och polering."
+        },
+        {
+          title: "Fukt och mögel i badrum",
+          description: "Äldre badrum med dålig ventilation och slitna fogar får ofta problem med fukt, vilket leder till mögel bakom kakel och skador på bjälklag.",
+          solution: "Vi åtgärdar fuktskador, förbättrar ventilationen och installerar nya membran och kakel enligt Säker Vatten-standard. Inkluderar trycktester och certifikat.",
+          relatedService: {
+            name: "Badrumsrenovering",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Tilltäppta avlopp och dålig dränering",
+          description: "Äldre avloppsledningar får uppbyggnader av fett, hår och tvålrester som saktar ner dräneringen eller orsakar stopp, särskilt i kök och badrum.",
+          solution: "Vi spolar och rensar avloppen med professionell utrustning. Vid återkommande problem kan vi byta ut gamla rör eller installera fettavskiljare.",
+          relatedService: {
+            name: "Avloppsspolning",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Varmvattenbrist och ojämn temperatur",
+          description: "Gamla varmvattenberedare eller felaktiga inställningar gör att varmvattnet tar slut snabbt eller att temperaturen varierar mellan kranarna.",
+          solution: "Vi kontrollerar beredaren, justerar termostat och flöden, eller installerar ny energieffektiv beredare om befintlig är uttjänt. ROT-avdrag gäller för arbetet."
+        }
       ]
     },
     "Stockholm": {
@@ -223,6 +368,54 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         {
           title: "Trycktester enligt standard",
           description: "Alla badrumsrenoveringar i BRF kräver trycktester. Vi dokumenterar och utfärdar intyg enligt försäkringsbolagens krav."
+        }
+      ],
+      commonProblems: [
+        {
+          title: "Dåligt vattentryck i äldre rörledningar",
+          description: "Hus från 60-70-talet har ofta förzinkade rörledningar som är igensatta av rost och kalk, vilket ger dåligt vattentryck särskilt på övervåningen.",
+          solution: "Vi byter ut gamla rör till moderna PEX-rör eller kopparrör. Arbetet går snabbt och ROT-avdraget gör det överkomligt. Vattentrycket blir som nytt.",
+          relatedService: {
+            name: "Rörbyte & Renovering",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Läckande kranar och droppar",
+          description: "Blandare från 80- och 90-talet börjar läcka när tätningarna slits ut. Även små droppar kan öka vattenkostnaden med hundratals kronor per år.",
+          solution: "Vi byter ut slitna tätningar eller installerar nya, moderna blandare med keramiska kartusch som håller längre. Sparar både vatten och pengar.",
+          relatedService: {
+            name: "Blandarbyte",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Kalkavlagringar i dusch och WC",
+          description: "Hårt vatten orsakar kalkavlagringar i duschmunstycken, kranar och toalettstol, vilket försämrar vattentrycket och ser fult ut.",
+          solution: "Vi installerar vattenavhärdare eller kalkfilter vid inkommande vatten. För befintliga avlagringar använder vi professionell avkalkning och polering."
+        },
+        {
+          title: "Fukt och mögel i badrum",
+          description: "Äldre badrum med dålig ventilation och slitna fogar får ofta problem med fukt, vilket leder till mögel bakom kakel och skador på bjälklag.",
+          solution: "Vi åtgärdar fuktskador, förbättrar ventilationen och installerar nya membran och kakel enligt Säker Vatten-standard. Inkluderar trycktester och certifikat.",
+          relatedService: {
+            name: "Badrumsrenovering",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Tilltäppta avlopp och dålig dränering",
+          description: "Äldre avloppsledningar får uppbyggnader av fett, hår och tvålrester som saktar ner dräneringen eller orsakar stopp, särskilt i kök och badrum.",
+          solution: "Vi spolar och rensar avloppen med professionell utrustning. Vid återkommande problem kan vi byta ut gamla rör eller installera fettavskiljare.",
+          relatedService: {
+            name: "Avloppsspolning",
+            slug: "/tjanster/vvs"
+          }
+        },
+        {
+          title: "Varmvattenbrist och ojämn temperatur",
+          description: "Gamla varmvattenberedare eller felaktiga inställningar gör att varmvattnet tar slut snabbt eller att temperaturen varierar mellan kranarna.",
+          solution: "Vi kontrollerar beredaren, justerar termostat och flöden, eller installerar ny energieffektiv beredare om befintlig är uttjänt. ROT-avdrag gäller för arbetet."
         }
       ]
     }
@@ -270,6 +463,62 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           title: "Inomhusprojekt på vintern",
           description: "Vinter är perfekt tid för köksrenoveringar och platsbyggda garderober när man inte kan arbeta utomhus lika mycket."
         }
+      ],
+      commonProblems: [
+        {
+          title: "Hängande dörrar och skeva karmar",
+          description: "Äldre hus sätter sig över tid, vilket gör att dörrar hänger snett, skaver eller inte stänger ordentligt. Särskilt vanligt i 60-70-talshus med träkonstruktion.",
+          solution: "Vi justerar gångjärn, hyvlar dörrbladet eller byter ut skeva karmar. För större problem kan vi förstärka dörrkarmen och se över konstruktionen.",
+          relatedService: {
+            name: "Dörrjustering & Byte",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Slitna och knarrande trägolv",
+          description: "Gamla trägolv från 50-70-talet börjar knarra, får sprickor och fläckar som inte går att tvätta bort. Lacken är sliten och golvet absorberar smuts.",
+          solution: "Vi sliper och lackar om golvet för ett helt nytt utseende. Vid större skador kan vi byta ut enskilda plankor eller lägga nytt trägolv.",
+          relatedService: {
+            name: "Golvsliping & Lackering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Fuktskador i köks- och badrumsskåp",
+          description: "Läckor från diskbänk, diskmaskinsanslutning eller badrumskranar orsakar fuktskador på skåpbotten och sockel, vilket leder till mögel och ruttna materialspånskivor.",
+          solution: "Vi byter ut skadade skåpdelar, åtgärdar fuktorsaken och installerar nya socklar. Vid större skador rekommenderar vi helrenovering av köket med ROT-avdrag.",
+          relatedService: {
+            name: "Köksrenovering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Brist på förvaring och garderober",
+          description: "Äldre lägenheter och hus har ofta endast en liten hall-garderob, vilket ger kaos med kläder, skor och säsongsförvaring överallt.",
+          solution: "Vi bygger platsanpassade garderober, walk-in closets eller förvaringsväggar som maximerar utrymmet. Skräddarsydda lösningar efter dina behov och stil.",
+          relatedService: {
+            name: "Garderober & Förvaring",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Dålig ljudisolering mellan rum",
+          description: "Äldre träbjälklag och tunnare väggar ger dålig ljudisolering, särskilt i flerbostadshus och sekelskifteslägenheter där barnens lek eller tv-ljud hörs överallt.",
+          solution: "Vi bygger nya väggar med ljudisolerande mineralull och dubbelskikt gips. För golv kan vi installera trampljudsmatta under nytt golv eller mattor.",
+          relatedService: {
+            name: "Ljudisolering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Slitna altaner och utetrappor",
+          description: "Trädäck, altaner och utetrappor utsätts för väder och vind, vilket gör att träet sprucker, ruttnar och blir halkigt. Särskilt problem i kustnära områden med saltluft.",
+          solution: "Vi renoverar eller bygger nytt trädäck med rätt träslag och behandling. Använder tryckmimpregnerat eller hårdträ beroende på budget och önskemål. ROT-avdrag gäller.",
+          relatedService: {
+            name: "Altaner & Trädäck",
+            slug: "/tjanster/snickare"
+          }
+        }
       ]
     },
     "Stockholm": {
@@ -314,6 +563,62 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           title: "Fuktskydd vid renovering",
           description: "Kontrollera fuktskydd i badrum och kök vid renovering i äldre hus. Vi installerar nya membran enligt gällande standard."
         }
+      ],
+      commonProblems: [
+        {
+          title: "Hängande dörrar och skeva karmar",
+          description: "Äldre hus sätter sig över tid, vilket gör att dörrar hänger snett, skaver eller inte stänger ordentligt. Särskilt vanligt i 60-70-talshus med träkonstruktion.",
+          solution: "Vi justerar gångjärn, hyvlar dörrbladet eller byter ut skeva karmar. För större problem kan vi förstärka dörrkarmen och se över konstruktionen.",
+          relatedService: {
+            name: "Dörrjustering & Byte",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Slitna och knarrande trägolv",
+          description: "Gamla trägolv från 50-70-talet börjar knarra, får sprickor och fläckar som inte går att tvätta bort. Lacken är sliten och golvet absorberar smuts.",
+          solution: "Vi sliper och lackar om golvet för ett helt nytt utseende. Vid större skador kan vi byta ut enskilda plankor eller lägga nytt trägolv.",
+          relatedService: {
+            name: "Golvsliping & Lackering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Fuktskador i köks- och badrumsskåp",
+          description: "Läckor från diskbänk, diskmaskinsanslutning eller badrumskranar orsakar fuktskador på skåpbotten och sockel, vilket leder till mögel och ruttna materialspånskivor.",
+          solution: "Vi byter ut skadade skåpdelar, åtgärdar fuktorsaken och installerar nya socklar. Vid större skador rekommenderar vi helrenovering av köket med ROT-avdrag.",
+          relatedService: {
+            name: "Köksrenovering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Brist på förvaring och garderober",
+          description: "Äldre lägenheter och hus har ofta endast en liten hall-garderob, vilket ger kaos med kläder, skor och säsongsförvaring överallt.",
+          solution: "Vi bygger platsanpassade garderober, walk-in closets eller förvaringsväggar som maximerar utrymmet. Skräddarsydda lösningar efter dina behov och stil.",
+          relatedService: {
+            name: "Garderober & Förvaring",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Dålig ljudisolering mellan rum",
+          description: "Äldre träbjälklag och tunnare väggar ger dålig ljudisolering, särskilt i flerbostadshus och sekelskifteslägenheter där barnens lek eller tv-ljud hörs överallt.",
+          solution: "Vi bygger nya väggar med ljudisolerande mineralull och dubbelskikt gips. För golv kan vi installera trampljudsmatta under nytt golv eller mattor.",
+          relatedService: {
+            name: "Ljudisolering",
+            slug: "/tjanster/snickare"
+          }
+        },
+        {
+          title: "Slitna altaner och utetrappor",
+          description: "Trädäck, altaner och utetrappor utsätts för väder och vind, vilket gör att träet sprucker, ruttnar och blir halkigt. Särskilt problem i kustnära områden med saltluft.",
+          solution: "Vi renoverar eller bygger nytt trädäck med rätt träslag och behandling. Använder tryckmimpregnerat eller hårdträ beroende på budget och önskemål. ROT-avdrag gäller.",
+          relatedService: {
+            name: "Altaner & Trädäck",
+            slug: "/tjanster/snickare"
+          }
+        }
       ]
     }
   },
@@ -350,6 +655,49 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           title: "Träskydd och lasyr",
           description: "Behandla träfasader, fönster och dörrar vart tredje år för optimalt skydd. Vi använder miljövänliga produkter från ledande leverantörer."
         }
+      ],
+      commonProblems: [
+        {
+          title: "Flagande och sprucken färg på väggar",
+          description: "Gamla latexmålningar från 80-90-talet börjar spricka och flagga, särskilt på soliga väggar och i fuktutsatta rum som badrum och kök.",
+          solution: "Vi skrapar bort lös färg, spackling av ojämnheter och grundmålar innan vi applicerar nya lager med högkvalitativ färg. Resultatet blir slätt och hållbart.",
+          relatedService: {
+            name: "Invändig målning",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Fläckar och missfärgningar på tak",
+          description: "Vattenskador, nikotin eller allmän åldrande ger gula eller bruna fläckar på taket som inte går bort med vanlig målning.",
+          solution: "Vi använder isoleringsprimer som blockerar fläckar innan vi målar. För omfattande vattenskador åtgärdar vi orsaken först och sedan renoverar vi taket.",
+          relatedService: {
+            name: "Takmålning",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Fuktskador och mögel bakom tapeter",
+          description: "Äldre tapeter i källare, badrum eller fasadväggar kan dölja fukt och mögel, vilket ger dålig lukt och kan vara hälsofarligt.",
+          solution: "Vi river tapeter, åtgärdar fuktorsaken, behandlar mögel och installerar fuktspärr om nödvändigt. Sedan målar eller tapetserar vi på nytt med rätt material.",
+          relatedService: {
+            name: "Fuktskaderepar",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Gamla tapeter som inte håller",
+          description: "70-80-talets vinyltapeter eller blomstrande mönster är omoderna och börjar lossna i kanterna, särskilt vid fönster och dörrar där luftfuktigheten varierar.",
+          solution: "Vi river gamla tapeter, slätspackling av väggen och målar eller lägger nya moderna tapeter. ROT-avdrag gäller för arbetet.",
+          relatedService: {
+            name: "Tapetsering",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Nedtagning och utjämning av äldre strukturtak",
+          description: "70-talets strutex- och stänktak är omoderna, samlar damm och är svåra att hålla rena. Många vill ha släta, moderna tak istället.",
+          solution: "Vi tar ner strukturtak genom slipning eller spackling, slätspackling och slutmålning. Arbetet är mer omfattande men ger ett modernt resultat som varar länge."
+        }
       ]
     },
     "Stockholm": {
@@ -383,6 +731,41 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         {
           title: "Invändig renovering vinter",
           description: "Vintern är idealisk för lägenhetsmålning och uppdatering av lister och dörrar. Vi skyddar golv och inredning under arbetet."
+        }
+      ],
+      commonProblems: [
+        {
+          title: "Flagande och sprucken färg på väggar",
+          description: "Gamla latexmålningar från 80-90-talet börjar spricka och flagga, särskilt på soliga väggar och i fuktutsatta rum som badrum och kök.",
+          solution: "Vi skrapar bort lös färg, spackling av ojämnheter och grundmålar innan vi applicerar nya lager med högkvalitativ färg. Resultatet blir slätt och hållbart.",
+          relatedService: {
+            name: "Invändig målning",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Fläckar och missfärgningar på tak",
+          description: "Vattenskador, nikotin eller allmän åldrande ger gula eller bruna fläckar på taket som inte går bort med vanlig målning.",
+          solution: "Vi använder isoleringsprimer som blockerar fläckar innan vi målar. För omfattande vattenskador åtgärdar vi orsaken först och sedan renoverar vi taket.",
+          relatedService: {
+            name: "Takmålning",
+            slug: "/tjanster/måleri"
+          }
+        },
+        {
+          title: "Fuktskador och mögel bakom tapeter",
+          description: "Äldre tapeter i källare, badrum eller fasadväggar kan dölja fukt och mögel, vilket ger dålig lukt och kan vara hälsofarligt.",
+          solution: "Vi river tapeter, åtgärdar fuktorsaken, behandlar mögel och installerar fuktspärr om nödvändigt. Sedan målar eller tapetserar vi på nytt med rätt material."
+        },
+        {
+          title: "Gamla tapeter som inte håller",
+          description: "70-80-talets vinyltapeter eller blomstrande mönster är omoderna och börjar lossna i kanterna, särskilt vid fönster och dörrar där luftfuktigheten varierar.",
+          solution: "Vi river gamla tapeter, slätspackling av väggen och målar eller lägger nya moderna tapeter. ROT-avdrag gäller för arbetet."
+        },
+        {
+          title: "Nedtagning och utjämning av äldre strukturtak",
+          description: "70-talets strutex- och stänktak är omoderna, samlar damm och är svåra att hålla rena. Många vill ha släta, moderna tak istället.",
+          solution: "Vi tar ner strukturtak genom slipning eller spackling, slätspackling och slutmålning. Arbetet är mer omfattande men ger ett modernt resultat som varar länge."
         }
       ]
     }

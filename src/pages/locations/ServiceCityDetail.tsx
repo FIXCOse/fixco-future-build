@@ -966,6 +966,93 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </section>
         )}
 
+        {/* Vanliga Problem Section */}
+        {serviceContent?.commonProblems && serviceContent.commonProblems.length > 0 && (
+          <section className="py-16 bg-muted/5">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="text-3xl font-bold text-center mb-4">
+                  Vanliga problem med {categoryName?.toLowerCase()} vi löser
+                </h2>
+                <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+                  Oavsett om du bor i en sekelskiftslägenhet, 60-talsvilla eller nybyggt radhus – 
+                  dessa problem är vanliga och vi har lösningen. Alla uppdrag inkluderar ROT/RUT-avdrag.
+                </p>
+                
+                <div className="space-y-6">
+                  {serviceContent.commonProblems.map((problem, idx) => (
+                    <div key={idx} className="bg-card border-2 border-orange-200/50 dark:border-orange-900/50 rounded-lg p-6 hover:border-orange-300 dark:hover:border-orange-800 transition-colors">
+                      <div className="flex items-start">
+                        <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                          <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-3">{problem.title}</h3>
+                          <div className="space-y-3">
+                            <div>
+                              <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wider">
+                                Problemet
+                              </span>
+                              <p className="text-sm text-muted-foreground mt-1">
+                                {problem.description}
+                              </p>
+                            </div>
+                            <div>
+                              <span className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">
+                                Vår lösning
+                              </span>
+                              <p className="text-sm text-muted-foreground mt-1">
+                                {problem.solution}
+                              </p>
+                            </div>
+                            {problem.relatedService && (
+                              <div className="pt-2">
+                                <Link 
+                                  to={problem.relatedService.slug}
+                                  className="text-sm text-primary hover:underline font-medium inline-flex items-center"
+                                >
+                                  Läs mer om {problem.relatedService.name} →
+                                </Link>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* CTA efter problem-listan */}
+                <div className="mt-12 text-center bg-primary/5 border-2 border-primary/20 rounded-lg p-8">
+                  <h3 className="text-xl font-bold mb-3">
+                    Känner du igen dig i något av dessa problem?
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    Vi hjälper dig med en kostnadsfri genomgång och offert inom 24 timmar. 
+                    Ingen bindning – bara professionella råd.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button 
+                      size="lg" 
+                      onClick={() => openServiceRequestModal({ serviceSlug: service })}
+                    >
+                      Begär kostnadsfri offert
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="outline"
+                      onClick={() => window.location.href = 'tel:018-123456'}
+                    >
+                      <Phone className="h-4 w-4 mr-2" />
+                      Ring: 018-123 456
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Cases Section - Using service-specific cases */}
         {cityServiceData?.cases && cityServiceData.cases.length > 0 && (
           <section className="py-16 bg-background">
