@@ -46,7 +46,6 @@ import StaffManagement from "./pages/MyFixco/StaffManagement";
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminQuotesUnified from "./pages/admin/AdminQuotesUnified";
-import AdminQuotesNew from "./pages/admin/AdminQuotesNew";
 import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
 import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
 import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
@@ -179,7 +178,6 @@ const App = () => {
                     <Route path="services" element={<AdminServices />} />
                     {/* Unified quotes page */}
                     <Route path="quotes" element={<AdminQuotesUnified />} />
-                    <Route path="quotes-new" element={<AdminQuotesNew />} />
                     <Route path="quotes/trash" element={<AdminQuotesTrash />} />
                     {/* Redirects for old routes */}
                     <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />

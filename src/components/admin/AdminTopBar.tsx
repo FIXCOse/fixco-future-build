@@ -89,7 +89,7 @@ export function AdminTopBar() {
   };
 
   const quickActions = [
-    { title: 'Skapa offert', path: '/admin/quotes-new' },
+    { title: 'Skapa offert', path: '/admin/quotes?new=true' },
     { title: 'Ny bokning', path: '/admin/bookings' },
     { title: 'Lägg till kund', path: '/admin/customers' },
     { title: 'Skapa jobb', path: '/admin/jobs' },

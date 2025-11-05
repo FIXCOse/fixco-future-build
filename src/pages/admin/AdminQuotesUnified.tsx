@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,15 @@ export default function AdminQuotesUnified() {
 
   // Fetch all data without filtering - we'll do client-side filtering
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
+
+  // Listen for ?new=true query param to open quote modal
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      handleNewQuote();
+      searchParams.delete('new');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams]);
 
   // Client-side filtering based on active tab
   const filteredByTab = useMemo(() => {

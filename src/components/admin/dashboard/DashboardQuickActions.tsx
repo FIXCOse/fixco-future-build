@@ -17,7 +17,7 @@ export function DashboardQuickActions() {
     { 
       title: 'Skapa offert', 
       icon: FileText, 
-      path: '/admin/quotes-new',
+      path: '/admin/quotes?new=true',
       description: 'Ny offert',
       variant: 'default' as const,
     },

@@ -74,7 +74,7 @@ export function AdminSidebar() {
     {
       category: 'Offerter & Bokningar',
       items: [
-        { title: 'Skapa offert', icon: PlusCircle, path: '/admin/quotes-new' },
+        { title: 'Skapa offert', icon: PlusCircle, path: '/admin/quotes?new=true' },
         { title: 'Förfrågningar & Offerter', icon: FileText, path: '/admin/requests-quotes' },
         { 
           title: 'Offertfrågor', 
