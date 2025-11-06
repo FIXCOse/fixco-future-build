@@ -7,29 +7,32 @@ export interface ServiceComparisonItem {
   competitorBad?: boolean;
 }
 
-type ServiceComparisonData = {
+export type ServiceComparisonData = {
   [key: string]: ServiceComparisonItem[];
 };
 
+// Service category names for dynamic titles
+export const serviceCategoryNames: Record<string, string> = {
+  'el': 'elektriker',
+  'vvs': 'VVS-installatörer',
+  'snickeri': 'snickare',
+  'maleri': 'målare',
+  'montering': 'monteringsservice',
+  'tradgard': 'trädgårdstjänster',
+  'stadning': 'städservice',
+  'markarbeten': 'markarbeten',
+  'tekniska-installationer': 'tekniska installationer',
+  'flytt': 'flyttservice',
+  'default': 'hantverkare'
+};
+
 export const serviceComparisonData: ServiceComparisonData = {
-  'el': [
+  el: [
     {
-      label: 'Auktorisation',
-      fixco: '✅ Alltid certifierade',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'EIA-rapport',
-      fixco: '✅ Ingår alltid',
-      fixcoSubtext: 'Elinstallationsrapport',
-      competitor: 'Extra 1 200-2 000 kr',
-      competitorBad: true
-    },
-    {
-      label: 'Elmätning & test',
-      fixco: '✅ Ingår',
-      competitor: 'Extra 600-1 200 kr',
+      label: 'Pris per timme',
+      fixco: '675 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '800-1200 kr',
       competitorBad: true
     },
     {
@@ -41,158 +44,39 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
-      competitorBad: true
-    },
-    {
-      label: 'Garantitid',
-      fixco: '✅ 5 år',
-      competitor: '1-2 år',
-      competitorBad: true
-    }
-  ],
-  'vvs': [
-    {
-      label: 'VVS-certifiering',
-      fixco: '✅ Alltid behöriga',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Tryckprovning',
-      fixco: '✅ Ingår alltid',
-      fixcoSubtext: 'Säker installation',
-      competitor: 'Extra 800-1 500 kr',
-      competitorBad: true
-    },
-    {
-      label: 'Besiktningsprotokoll',
-      fixco: '✅ Digitalt',
-      fixcoSubtext: 'Direkt i appen',
-      competitor: 'Extra 500-1 000 kr',
-      competitorBad: true
-    },
-    {
-      label: 'ROT-hantering',
-      fixco: '✅ Gratis',
-      fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Oftast gratis',
-      competitorBad: false
-    },
-    {
-      label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
-      competitorBad: true
-    },
-    {
-      label: 'Fast pris',
-      fixco: '✅ Alltid i offerten',
-      competitor: 'Sällan',
-      competitorBad: true
-    }
-  ],
-  'snickeri': [
-    {
-      label: 'Certifierad hantverkare',
-      fixco: '✅ Alltid',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Fuktsäker garanti',
-      fixco: '✅ 5 år',
-      fixcoSubtext: 'På alla badrum',
-      competitor: '1-2 år eller ingen',
-      competitorBad: true
-    },
-    {
-      label: 'Måttsättning',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Precisionsverktyg',
-      competitor: 'Extra 500-1 200 kr',
-      competitorBad: true
-    },
-    {
-      label: 'ROT-hantering',
-      fixco: '✅ Gratis',
-      fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Oftast gratis',
-      competitorBad: false
-    },
-    {
-      label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
-      competitorBad: true
-    },
-    {
-      label: 'Materialrådgivning',
-      fixco: '✅ Ingår',
-      competitor: 'Sällan',
-      competitorBad: true
-    }
-  ],
-  'maleri': [
-    {
-      label: 'Erfarna målare',
-      fixco: '✅ Alltid',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Kulörmatchning',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Perfekt färgmatchning',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
-    },
-    {
-      label: 'Grundning',
-      fixco: '✅ Ingår alltid',
-      competitor: 'Extra 400-1 000 kr',
-      competitorBad: true
-    },
-    {
-      label: 'ROT-hantering',
-      fixco: '✅ Gratis',
-      fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Oftast gratis',
-      competitorBad: false
-    },
-    {
-      label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
       label: 'Garanti',
-      fixco: '✅ 3 år',
-      competitor: '1 år eller ingen',
-      competitorBad: true
-    }
-  ],
-  'montering': [
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
     {
-      label: 'Erfarenhet',
-      fixco: '✅ Certifierade montörer',
+      label: 'Certifieringar',
+      fixco: 'Auktoriserad installatör + F-skatt + försäkring',
+      fixcoSubtext: 'Alla behörigheter',
       competitor: 'Varierar',
       competitorBad: true
     },
     {
-      label: 'Verktyg & utrustning',
-      fixco: '✅ Professionellt',
-      fixcoSubtext: 'Allt vi behöver',
-      competitor: 'Kan saknas',
-      competitorBad: true
-    },
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  vvs: [
     {
-      label: 'Väggkontroll',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Säker montering',
-      competitor: 'Sällan',
+      label: 'Pris per timme',
+      fixco: '750 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '850-1400 kr',
       competitorBad: true
     },
     {
@@ -204,116 +88,39 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '3-5 dagar',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
-      label: 'Fast pris',
-      fixco: '✅ Alltid',
-      competitor: 'Varierar',
-      competitorBad: true
-    }
-  ],
-  'tradgard': [
-    {
-      label: 'Professionell utrustning',
-      fixco: '✅ Alltid',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Trädgårdsmästare',
-      fixco: '✅ Certifierade',
-      competitor: 'Sällan',
-      competitorBad: true
-    },
-    {
-      label: 'Kompostering & återvinning',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Miljövänligt',
-      competitor: 'Extra 300-600 kr',
-      competitorBad: true
-    },
-    {
-      label: 'RUT-hantering',
-      fixco: '✅ Gratis',
-      fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Oftast gratis',
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
       competitorBad: false
     },
     {
-      label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
-      competitorBad: true
-    },
-    {
-      label: 'Säsongstips',
-      fixco: '✅ Ingår',
-      competitor: 'Sällan',
-      competitorBad: true
-    }
-  ],
-  'stadning': [
-    {
-      label: 'Erfarna städare',
-      fixco: '✅ Alltid',
+      label: 'Certifieringar',
+      fixco: 'Certifierad rörmokare + F-skatt + försäkring',
+      fixcoSubtext: 'Tryckprovning ingår',
       competitor: 'Varierar',
       competitorBad: true
     },
     {
-      label: 'Miljövänliga produkter',
-      fixco: '✅ Alltid',
-      fixcoSubtext: 'Allergivänligt',
-      competitor: 'Ofta kemiska',
-      competitorBad: true
-    },
-    {
-      label: 'Utrustning',
-      fixco: '✅ Professionell',
-      fixcoSubtext: 'Vi tar med allt',
-      competitor: 'Kan saknas',
-      competitorBad: true
-    },
-    {
-      label: 'RUT-hantering',
-      fixco: '✅ Gratis',
-      fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Oftast gratis',
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
       competitorBad: false
-    },
-    {
-      label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '3-5 dagar',
-      competitorBad: true
-    },
-    {
-      label: 'Nöjdhetsgaranti',
-      fixco: '✅ 100%',
-      competitor: 'Sällan',
-      competitorBad: true
     }
   ],
-  'markarbeten': [
+  snickeri: [
     {
-      label: 'Grävmaskin & utrustning',
-      fixco: '✅ Egen maskinpark',
-      competitor: 'Hyrd/varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Dräneringsplan',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Professionell analys',
-      competitor: 'Extra 800-1 500 kr',
-      competitorBad: true
-    },
-    {
-      label: 'Markberedning',
-      fixco: '✅ Ingår',
-      competitor: 'Extra 500-1 200 kr',
+      label: 'Pris per timme',
+      fixco: '650 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '750-1100 kr',
       competitorBad: true
     },
     {
@@ -325,75 +132,303 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Start inom',
-      fixco: '✅ 3-5 dagar',
-      competitor: '1-2 veckor',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
-      label: 'Garantitid',
-      fixco: '✅ 3 år',
-      competitor: '1 år eller ingen',
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + materialkännedom',
+      fixcoSubtext: 'Professionella snickare',
+      competitor: 'Varierar',
       competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  maleri: [
+    {
+      label: 'Pris per timme',
+      fixco: '600 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '700-1000 kr',
+      competitorBad: true
+    },
+    {
+      label: 'ROT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
+    },
+    {
+      label: 'Start inom',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
+      competitorBad: true
+    },
+    {
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + miljöcertifierad färg',
+      fixcoSubtext: 'Professionella målare',
+      competitor: 'Varierar',
+      competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  montering: [
+    {
+      label: 'Pris per timme',
+      fixco: '550 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '650-950 kr',
+      competitorBad: true
+    },
+    {
+      label: 'ROT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
+    },
+    {
+      label: 'Start inom',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
+      competitorBad: true
+    },
+    {
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + monteringserfarenhet',
+      fixcoSubtext: 'Professionell montering',
+      competitor: 'Varierar',
+      competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  tradgard: [
+    {
+      label: 'Pris per timme',
+      fixco: '500 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '600-900 kr',
+      competitorBad: true
+    },
+    {
+      label: 'RUT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
+    },
+    {
+      label: 'Start inom',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
+      competitorBad: true
+    },
+    {
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + maskinkompetens',
+      fixcoSubtext: 'Professionella trädgårdsarbetare',
+      competitor: 'Varierar',
+      competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  stadning: [
+    {
+      label: 'Pris per timme',
+      fixco: '400 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '500-750 kr',
+      competitorBad: true
+    },
+    {
+      label: 'RUT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
+    },
+    {
+      label: 'Start inom',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
+      competitorBad: true
+    },
+    {
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Nöjdhetsgaranti',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'RUT-godkänd + F-skatt + försäkring',
+      fixcoSubtext: 'Professionell städning',
+      competitor: 'Varierar',
+      competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  markarbeten: [
+    {
+      label: 'Pris per timme',
+      fixco: '700 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '800-1300 kr',
+      competitorBad: true
+    },
+    {
+      label: 'ROT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
+    },
+    {
+      label: 'Start inom',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
+      competitorBad: true
+    },
+    {
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + maskinförarutbildning',
+      fixcoSubtext: 'Professionella markarbetare',
+      competitor: 'Varierar',
+      competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
     }
   ],
   'tekniska-installationer': [
     {
-      label: 'IT-certifiering',
-      fixco: '✅ Certifierade tekniker',
-      competitor: 'Varierar',
+      label: 'Pris per timme',
+      fixco: '650 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '750-1200 kr',
       competitorBad: true
     },
     {
-      label: 'Nätverksanalys',
-      fixco: '✅ Ingår',
-      fixcoSubtext: 'Optimering',
-      competitor: 'Extra 800-1 500 kr',
-      competitorBad: true
-    },
-    {
-      label: 'Kabeldragning',
-      fixco: '✅ Professionell',
-      competitor: 'Varierar',
-      competitorBad: true
-    },
-    {
-      label: 'Support efteråt',
-      fixco: '✅ 3 månader gratis',
-      competitor: 'Sällan',
-      competitorBad: true
+      label: 'ROT-hantering',
+      fixco: '✅ Gratis',
+      fixcoSubtext: 'Vi sköter allt',
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '3-7 dagar',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
-      label: 'Dokumentation',
-      fixco: '✅ Komplett',
-      competitor: 'Ofta bristfällig',
-      competitorBad: true
-    }
-  ],
-  'flytt': [
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
     {
-      label: 'Erfarna flyttare',
-      fixco: '✅ Alltid',
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + produktutbildning',
+      fixcoSubtext: 'Professionella installatörer',
       competitor: 'Varierar',
       competitorBad: true
     },
     {
-      label: 'Försäkring',
-      fixco: '✅ Full försäkring',
-      fixcoSubtext: 'Ingår alltid',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
-    },
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
+    }
+  ],
+  flytt: [
     {
-      label: 'Emballage',
-      fixco: '✅ Professionellt',
-      fixcoSubtext: 'För känsliga föremål',
-      competitor: 'Enkelt/saknas',
+      label: 'Pris per timme',
+      fixco: '550 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '650-1000 kr',
       competitorBad: true
     },
     {
@@ -405,22 +440,39 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '3-5 dagar',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
-      label: 'Städning efteråt',
-      fixco: '✅ Kan tillköpas',
-      competitor: 'Sällan',
+      label: 'Garanti',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Skadegaranti ingår',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + godshantering',
+      fixcoSubtext: 'Professionell flytt',
+      competitor: 'Varierar',
       competitorBad: true
+    },
+    {
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
     }
   ],
-  'default': [
+  default: [
     {
-      label: 'Certifiering',
-      fixco: '✅ Alltid certifierade',
-      competitor: 'Varierar',
+      label: 'Pris per timme',
+      fixco: '600 kr',
+      fixcoSubtext: 'Fast pris (tillfälligt)',
+      competitor: '700-1100 kr',
       competitorBad: true
     },
     {
@@ -432,27 +484,31 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Start inom',
-      fixco: '✅ 24-48 timmar',
-      competitor: '1-2 veckor',
-      competitorBad: true
-    },
-    {
-      label: 'Fast pris',
-      fixco: '✅ Alltid i offerten',
-      competitor: 'Sällan',
+      fixco: '24-48h',
+      fixcoSubtext: 'Efter godkänd offert',
+      competitor: '5-10 dagar',
       competitorBad: true
     },
     {
       label: 'Garanti',
-      fixco: '✅ 3-5 år',
-      competitor: '1 år eller ingen',
+      fixco: 'Konsumenttjänstlagen + Fixco',
+      fixcoSubtext: 'Utökad trygghet',
+      competitor: 'Konsumenttjänstlagen',
+      competitorBad: false
+    },
+    {
+      label: 'Certifieringar',
+      fixco: 'F-skatt + försäkring + alla certifieringar',
+      fixcoSubtext: 'Professionella hantverkare',
+      competitor: 'Varierar',
       competitorBad: true
     },
     {
-      label: 'Försäkring',
-      fixco: '✅ Alltid',
-      competitor: 'Varierar',
-      competitorBad: true
+      label: 'Kundnöjdhet',
+      fixco: '4.9/5',
+      fixcoSubtext: 'Verifierade omdömen',
+      competitor: '3.8-4.2/5',
+      competitorBad: false
     }
   ]
 };

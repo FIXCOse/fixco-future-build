@@ -1,204 +1,238 @@
-import { motion } from "framer-motion";
-import { CheckCircle, X, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { CheckCircle, X, Trophy, Timer, ArrowRight, Clock, Zap, Wrench, Paintbrush, Hammer, Leaf, Sparkles, Mountain, Cpu, Truck, Shield, Award, TrendingDown, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { serviceComparisonData, ServiceComparisonItem } from "@/data/serviceComparisonData";
+import { Button } from "@/components/ui/button";
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { serviceComparisonData, ServiceComparisonItem, serviceCategoryNames } from "@/data/serviceComparisonData";
 
 interface ServiceComparisonCardProps {
   serviceKey: string;
   city: string;
 }
 
+// Icon mapping for comparison labels
+const getIconForLabel = (label: string) => {
+  const iconMap: Record<string, any> = {
+    'Pris per timme': TrendingDown,
+    'ROT-hantering': Shield,
+    'RUT-hantering': Shield,
+    'Start inom': Clock,
+    'Garanti': Award,
+    'Certifieringar': Shield,
+    'Kundnöjdhet': Star,
+    'default': CheckCircle
+  };
+  return iconMap[label] || iconMap.default;
+};
+
 export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCardProps) => {
   const comparisonData = serviceComparisonData[serviceKey] || serviceComparisonData['default'];
+  const serviceTypeName = serviceCategoryNames[serviceKey] || serviceCategoryNames.default;
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true });
 
   return (
-    <section className="py-16 bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          {/* Header */}
+    <section 
+      ref={sectionRef}
+      className="relative py-12 overflow-hidden"
+    >
+      {/* Premium Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 hero-background" />
+        
+        {/* F Watermark */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+          <div className="absolute top-20 left-20 w-24 h-24 rotate-12 animate-pulse" style={{ animationDuration: '5s' }}>
+            <FixcoFIcon className="w-full h-full" disableFilter={true} />
+          </div>
+          <div className="absolute top-1/2 left-1/4 w-20 h-20 rotate-45 animate-pulse" style={{ animationDuration: '6s', animationDelay: '0.8s' }}>
+            <FixcoFIcon className="w-full h-full" disableFilter={true} />
+          </div>
+        </div>
+        
+        {/* Animated gradient */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.08) 0%, transparent 40%)",
+              "radial-gradient(circle at 70% 80%, hsl(320 100% 65% / 0.08) 0%, transparent 40%)",
+              "radial-gradient(circle at 30% 20%, hsl(280 100% 60% / 0.08) 0%, transparent 40%)"
+            ]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10 max-w-6xl">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-6 md:mb-8"
+        >
+          <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
+            <span className="text-sm font-semibold gradient-text">⚡ Jämförelse</span>
+          </div>
+          <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
+            Fixco vs andra {serviceTypeName} i {city}
+          </h2>
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
+            Se varför {serviceTypeName} från Fixco är det bästa valet i {city}
+          </p>
+        </motion.div>
+
+        <div className="max-w-md md:max-w-5xl mx-auto">
+          {/* Desktop Header Row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8 md:mb-12"
+            initial={{ opacity: 0, y: 15 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="hidden md:grid grid-cols-3 gap-3 mb-4"
           >
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
-              ⚡ Jämförelse
+            <div className="text-center">
+              <h3 className="text-base font-semibold text-muted-foreground">Kriterie</h3>
             </div>
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">
-              Fixco vs andra företag i {city}
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-              Se vad som skiljer oss från andra leverantörer - transparenta priser, snabb start och alltid med garanti
-            </p>
+            <div className="card-premium p-3 text-center border-primary/20">
+              <Trophy className="h-5 w-5 mx-auto mb-1 text-primary" />
+              <h3 className="text-lg font-bold gradient-text">Fixco</h3>
+            </div>
+            <div className="card-premium p-3 text-center border-muted/20">
+              <Timer className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
+              <h3 className="text-lg font-bold text-muted-foreground">Andra företag</h3>
+            </div>
           </motion.div>
 
-          {/* Comparison Grid - Desktop */}
-          <div className="hidden md:block">
-            {/* Header Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="grid grid-cols-[2fr,1.5fr,1.5fr] gap-4 mb-4"
-            >
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-muted-foreground">Kriteria</h3>
-              </div>
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-4 text-center">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                    Fixco
-                  </h3>
-                </div>
-                <p className="text-xs text-muted-foreground">Din pålitliga partner</p>
-              </div>
-              <div className="bg-muted/30 border border-muted rounded-xl p-4 text-center">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <AlertCircle className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="text-xl font-bold text-muted-foreground">Andra</h3>
-                </div>
-                <p className="text-xs text-muted-foreground">Typiskt hos konkurrenter</p>
-              </div>
-            </motion.div>
+          {/* Mobile Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="md:hidden grid grid-cols-3 gap-2 mb-4 text-center"
+          >
+            <div className="text-xs font-medium text-muted-foreground">Kriterie</div>
+            <div className="text-xs font-bold gradient-text">Fixco</div>
+            <div className="text-xs font-medium text-muted-foreground">Andra</div>
+          </motion.div>
 
-            {/* Data Rows */}
-            <div className="space-y-3">
-              {comparisonData.map((item: ServiceComparisonItem, index: number) => (
+          {/* Metrics Grid */}
+          <div className="space-y-2 md:space-y-2">
+            {comparisonData.map((item: ServiceComparisonItem, index: number) => {
+              const IconComponent = getIconForLabel(item.label);
+              return (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                  className="grid grid-cols-[2fr,1.5fr,1.5fr] gap-4 items-center"
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.3 + index * 0.12, duration: 0.5 }}
+                  className="grid grid-cols-3 gap-2 md:gap-3 items-center"
                 >
-                  {/* Label */}
-                  <div className="bg-card border rounded-xl p-4 flex items-center min-h-[70px]">
-                    <h4 className="font-semibold text-base">{item.label}</h4>
+                  {/* Kriterie-kolumn */}
+                  <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 min-h-[60px] md:min-h-[44px]">
+                    <div className="w-6 h-6 md:w-8 md:h-8 gradient-primary-subtle rounded-lg flex items-center justify-center shrink-0">
+                      <IconComponent className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-semibold text-xs md:text-base leading-tight">{item.label}</h4>
+                    </div>
                   </div>
 
-                  {/* Fixco Value */}
+                  {/* Fixco-kolumn */}
                   <motion.div
+                    className="card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[60px] md:min-h-[44px] flex items-center justify-center"
                     whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 rounded-xl p-4 relative min-h-[70px] flex items-center justify-center"
+                    transition={{ duration: 0.15 }}
                   >
-                    <CheckCircle className="absolute top-2 right-2 h-4 w-4 text-green-500" />
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-foreground">
+                    <CheckCircle className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-green-400" />
+                    <div className="text-center px-1">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold gradient-text">
                         {item.fixco}
                       </div>
                       {item.fixcoSubtext && (
-                        <p className="text-xs text-muted-foreground mt-1">{item.fixcoSubtext}</p>
+                        <div className="text-xs text-muted-foreground mt-0.5">{item.fixcoSubtext}</div>
                       )}
                     </div>
                   </motion.div>
 
-                  {/* Competitor Value */}
-                  <div className="bg-muted/20 border border-muted rounded-xl p-4 relative min-h-[70px] flex items-center justify-center">
+                  {/* Konkurrent-kolumn */}
+                  <div className="card-premium p-2 md:p-3 border-muted/20 bg-muted/10 min-h-[60px] md:min-h-[44px] flex items-center justify-center relative">
                     {item.competitorBad && (
-                      <X className="absolute top-2 right-2 h-4 w-4 text-red-400" />
+                      <X className="absolute top-0.5 right-0.5 md:top-1 md:right-1 h-2.5 w-2.5 md:h-3 md:w-3 text-red-400" />
                     )}
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-muted-foreground">
+                    <div className="text-center px-1">
+                      <div className="text-xs sm:text-sm md:text-xl font-bold text-muted-foreground">
                         {item.competitor}
                       </div>
-                      {item.competitorSubtext && (
-                        <p className="text-xs text-muted-foreground mt-1">{item.competitorSubtext}</p>
-                      )}
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
-          {/* Comparison Grid - Mobile */}
-          <div className="md:hidden space-y-4">
-            {/* Mobile Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="grid grid-cols-3 gap-2 text-center mb-4"
-            >
-              <div className="text-xs font-medium text-muted-foreground">Kriteria</div>
-              <div className="text-xs font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Fixco ✓
-              </div>
-              <div className="text-xs font-medium text-muted-foreground">Andra</div>
-            </motion.div>
-
-            {/* Mobile Data Rows */}
-            {comparisonData.map((item: ServiceComparisonItem, index: number) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                className="grid grid-cols-3 gap-2 items-center"
-              >
-                {/* Label */}
-                <div className="bg-card border rounded-lg p-3 min-h-[60px] flex items-center">
-                  <h4 className="font-semibold text-xs leading-tight">{item.label}</h4>
-                </div>
-
-                {/* Fixco Value */}
-                <div className="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 rounded-lg p-3 relative min-h-[60px] flex items-center justify-center">
-                  <CheckCircle className="absolute top-1 right-1 h-3 w-3 text-green-500" />
-                  <div className="text-center">
-                    <div className="text-sm font-bold text-foreground">{item.fixco}</div>
-                  </div>
-                </div>
-
-                {/* Competitor Value */}
-                <div className="bg-muted/20 border border-muted rounded-lg p-3 relative min-h-[60px] flex items-center justify-center">
-                  {item.competitorBad && (
-                    <X className="absolute top-1 right-1 h-3 w-3 text-red-400" />
-                  )}
-                  <div className="text-center">
-                    <div className="text-sm font-bold text-muted-foreground">{item.competitor}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* CTA Footer */}
+          {/* Winner Summary */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="mt-8 md:mt-12"
+            className="mt-4 md:mt-6"
           >
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 rounded-2xl p-6 md:p-8 text-center">
-              <h3 className="text-xl md:text-2xl font-bold mb-3">
-                Upplev Fixco-skillnaden i {city}
-              </h3>
-              <p className="text-muted-foreground mb-6 text-sm md:text-base">
-                Vi erbjuder transparent prissättning, snabb start och alltid med garanti. 
-                Få din kostnadsfria offert idag!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button asChild size="lg" variant="default">
-                  <Link to="/kontakt">
-                    Få kostnadsfri offert
+            <div className="card-premium p-4 md:p-6 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                {/* Left: Summary */}
+                <div className="text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <div className="w-10 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110">
+                      <FixcoFIcon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold gradient-text">
+                      Fixco vinner {comparisonData.length}/{comparisonData.length} kategorier
+                    </h3>
+                  </div>
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    Vi är marknadsledande inom {serviceTypeName.toLowerCase()} i {city}
+                  </p>
+                </div>
+                
+                {/* Right: CTAs */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end items-center">
+                  <Link to="/kontakt" className="w-full sm:w-auto">
+                    <Button variant="cta-primary" size="cta" className="w-full sm:w-auto">
+                      Begär offert
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
                   </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link to="/tjanster">
-                    Se alla tjänster
+                  <Link to="/tjanster" className="w-full sm:w-auto">
+                    <Button variant="cta-secondary" size="cta" className="w-full sm:w-auto">
+                      Se alla tjänster
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
                   </Link>
-                </Button>
+                </div>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Stats Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="grid grid-cols-3 gap-2 md:gap-3 mt-4"
+          >
+            <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
+              <div className="text-sm md:text-xl font-bold gradient-text mb-1">24-48h</div>
+              <p className="text-xs text-muted-foreground">Efter offert</p>
+            </div>
+            <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
+              <div className="text-sm md:text-xl font-bold gradient-text mb-1">3000+</div>
+              <p className="text-xs text-muted-foreground">Projekt genomförda</p>
+            </div>
+            <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
+              <div className="text-sm md:text-xl font-bold gradient-text mb-1">08-19:00</div>
+              <p className="text-xs text-muted-foreground">Support vardagar</p>
             </div>
           </motion.div>
         </div>
