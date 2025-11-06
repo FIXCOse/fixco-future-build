@@ -388,92 +388,466 @@ export const HowItWorksGlassNeon = ({ steps }: HowItWorksProps) => {
 };
 
 // GLASS VARIANT 3: Aurora (Nordic Lights) - Teal/Green/Blue aurora
-export const HowItWorksGlassAurora = ({ steps }: HowItWorksProps) => {
+// Glass Cascade - Diagonal Waterfall Layout
+export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-900 via-teal-950/40 to-indigo-950 relative overflow-hidden">
-      {/* Aurora wave animation */}
+    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Animated blobs */}
       <motion.div
-        animate={{ 
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+        className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+        animate={{
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+          scale: [1, 1.2, 1],
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 opacity-30"
-        style={{
-          background: "linear-gradient(120deg, #10b981, #14b8a6, #3b82f6, #10b981)",
-          backgroundSize: "200% 200%"
-        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-
-      {/* Aurora blobs */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-400 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-teal-400 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl" />
-      </div>
+      <motion.div
+        className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+        animate={{
+          x: [0, -50, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-emerald-300 via-teal-300 to-blue-300 bg-clip-text text-transparent">
-            Så här går det till
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Så fungerar det
           </h2>
-          <p className="text-teal-200 text-lg max-w-2xl mx-auto">
-            En smidig och transparent process från start till mål
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            En enkel resa från start till mål
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
-          {steps.map((step, index) => {
-            const Icon = getIcon(index);
-            
+        {/* Desktop: Diagonal Cascade */}
+        <div className="hidden md:block relative min-h-[800px] max-w-6xl mx-auto">
+          {steps.map((step, i) => {
+            const Icon = getIcon(i);
             return (
               <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                key={i}
+                initial={{ opacity: 0, y: -100, rotate: -10 }}
+                whileInView={{ opacity: 1, y: 0, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
+                transition={{ delay: i * 0.15, type: "spring", stiffness: 100 }}
+                style={{
+                  position: 'absolute',
+                  left: `${i * 18}%`,
+                  top: `${i * 15}%`,
+                  zIndex: i + 1,
+                  width: `${280 + i * 20}px`
+                }}
               >
-                <GlassCard 
-                  className="p-8 h-full relative group"
-                  glowColor="hsl(174 72% 56% / 0.5)"
-                >
-                  {/* Aurora gradient badge with shimmer */}
-                  <div className="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-blue-500 flex items-center justify-center shadow-2xl overflow-hidden">
-                    <span className="text-xl font-bold text-white relative z-10">{step.step}</span>
-                    {/* Shimmer effect */}
-                    <motion.div
-                      animate={{ x: ["-100%", "200%"] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                    />
+                <GlassCard hoverEffect={true} glowColor="hsl(262 83% 58% / 0.4)">
+                  <div className="p-8">
+                    <div className="flex items-start gap-4 mb-4">
+                      <motion.div
+                        initial={{ rotate: -180, scale: 0 }}
+                        whileInView={{ rotate: 0, scale: 1 }}
+                        transition={{ delay: i * 0.15 + 0.3, type: "spring" }}
+                        className="relative"
+                      >
+                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/20 flex items-center justify-center">
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                          {step.step}
+                        </div>
+                      </motion.div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-white mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-white/70 text-sm leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Floating icon */}
-                  <motion.div 
-                    animate={{ y: [0, -12, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-16 h-16 mx-auto mb-4 rounded-full bg-teal-500/20 flex items-center justify-center backdrop-blur-sm border border-emerald-400/30"
+                </GlassCard>
+                {/* Connection line to next card */}
+                {i < steps.length - 1 && (
+                  <svg
+                    className="absolute left-full top-1/2 w-24 h-24 -translate-y-1/2 opacity-30"
+                    style={{ pointerEvents: 'none' }}
                   >
-                    <Icon className="w-8 h-8 text-emerald-300" />
-                  </motion.div>
+                    <motion.path
+                      d="M 0 0 Q 50 50 96 96"
+                      stroke="url(#gradient)"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeDasharray="5,5"
+                      initial={{ pathLength: 0 }}
+                      whileInView={{ pathLength: 1 }}
+                      transition={{ delay: i * 0.15 + 0.5, duration: 0.8 }}
+                    />
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="rgb(168, 85, 247)" />
+                        <stop offset="100%" stopColor="rgb(59, 130, 246)" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
 
-                  <h3 className="font-bold text-lg mb-3 text-center bg-gradient-to-r from-emerald-200 via-teal-200 to-blue-200 bg-clip-text text-transparent group-hover:from-emerald-300 group-hover:via-teal-300 group-hover:to-blue-300 transition-all">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-teal-100/80 text-center leading-relaxed">
-                    {step.desc}
-                  </p>
+        {/* Mobile: Vertical Stack with Offset */}
+        <div className="md:hidden space-y-8">
+          {steps.map((step, i) => {
+            const Icon = getIcon(i);
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                style={{ marginLeft: `${(i % 3) * 20}px` }}
+              >
+                <GlassCard hoverEffect={false}>
+                  <div className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="relative flex-shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/20 flex items-center justify-center">
+                          <Icon className="w-7 h-7 text-white" />
+                        </div>
+                        <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-xs">
+                          {step.step}
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-bold text-white mb-2">
+                          {step.title}
+                        </h3>
+                          <p className="text-white/70 text-sm leading-relaxed">
+                            {step.desc}
+                          </p>
+                      </div>
+                    </div>
+                  </div>
                 </GlassCard>
               </motion.div>
             );
           })}
         </div>
+      </div>
+    </section>
+  );
+};
+
+// Glass Orbit - Circular Planetary System Layout
+export const HowItWorksGlassOrbit = ({ steps }: HowItWorksProps) => {
+  return (
+    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Animated background */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: 'radial-gradient(circle at center, hsl(262 83% 58% / 0.3) 0%, transparent 70%)',
+        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Så fungerar det
+          </h2>
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            Din resa i vårt ekosystem
+          </p>
+        </motion.div>
+
+        {/* Desktop: Circular Orbit */}
+        <div className="hidden md:block">
+          <div className="relative w-[700px] h-[700px] mx-auto">
+            {/* Orbit circles */}
+            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+              <motion.circle
+                cx="350"
+                cy="350"
+                r="280"
+                stroke="url(#orbitGradient)"
+                strokeWidth="1"
+                fill="none"
+                strokeDasharray="10,10"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 0.3 }}
+                transition={{ duration: 2 }}
+              />
+              <defs>
+                <linearGradient id="orbitGradient">
+                  <stop offset="0%" stopColor="rgb(168, 85, 247)" />
+                  <stop offset="50%" stopColor="rgb(59, 130, 246)" />
+                  <stop offset="100%" stopColor="rgb(168, 85, 247)" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            {/* Central hub */}
+            <motion.div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48"
+              initial={{ scale: 0, rotate: -180 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              <GlassCard hoverEffect={false} glowColor="hsl(262 83% 58% / 0.5)">
+                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center mb-3"
+                  >
+                    <Sparkles className="w-8 h-8 text-white" />
+                  </motion.div>
+                  <p className="text-white font-semibold text-sm">
+                    Din resa<br />börjar här
+                  </p>
+                </div>
+              </GlassCard>
+            </motion.div>
+
+            {/* Orbiting cards */}
+            {steps.map((step, i) => {
+              const Icon = getIcon(i);
+              const angle = (i * 360 / steps.length - 90) * (Math.PI / 180);
+              const radius = 280;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius;
+
+              return (
+                <motion.div
+                  key={i}
+                  initial={{
+                    scale: 0,
+                    x: 0,
+                    y: 0,
+                    rotate: -360
+                  }}
+                  whileInView={{
+                    scale: 1,
+                    x,
+                    y,
+                    rotate: 0
+                  }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: i * 0.2, type: "spring" }}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  className="w-56"
+                >
+                  <GlassCard hoverEffect={true} glowColor="hsl(262 83% 58% / 0.4)">
+                    <div className="p-6">
+                      <div className="flex flex-col items-center text-center">
+                        <motion.div
+                          animate={{ rotate: [0, 360] }}
+                          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                          className="relative mb-4"
+                        >
+                          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/20 flex items-center justify-center">
+                            <Icon className="w-7 h-7 text-white" />
+                          </div>
+                          <motion.div
+                            animate={{ rotate: [0, -360] }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-xs shadow-lg"
+                          >
+                            {step.step}
+                          </motion.div>
+                        </motion.div>
+                        <h3 className="text-base font-bold text-white mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-white/70 text-xs leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </GlassCard>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Mobile: Vertical List */}
+        <div className="md:hidden space-y-6">
+          {steps.map((step, i) => {
+            const Icon = getIcon(i);
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <GlassCard hoverEffect={false}>
+                  <div className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="relative flex-shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/20 flex items-center justify-center">
+                          <Icon className="w-7 h-7 text-white" />
+                        </div>
+                        <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-xs">
+                          {step.step}
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-bold text-white mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-white/70 text-sm leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </GlassCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Glass Stream - Horizontal Flowing River Layout
+export const HowItWorksGlassStream = ({ steps }: HowItWorksProps) => {
+  return (
+    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Flowing wave background */}
+      <motion.div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: 'linear-gradient(90deg, transparent 0%, hsl(262 83% 58% / 0.3) 50%, transparent 100%)',
+        }}
+        animate={{ x: ['-100%', '100%'] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+      />
+      
+      {/* Floating particles */}
+      {[...Array(10)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-white/20 rounded-full"
+          style={{
+            top: `${20 + i * 8}%`,
+            left: 0,
+          }}
+          animate={{
+            x: ['0vw', '100vw'],
+            opacity: [0, 0.5, 0],
+          }}
+          transition={{
+            duration: 10 + i * 2,
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: "linear"
+          }}
+        />
+      ))}
+
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Så fungerar det
+          </h2>
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            Följ flödet från start till mål
+          </p>
+        </motion.div>
+
+        {/* Horizontal scrolling stream */}
+        <div className="overflow-x-auto overflow-y-visible pb-8 -mx-4 md:mx-0 scroll-smooth snap-x snap-mandatory">
+          <div className="flex gap-8 px-4 min-w-max relative py-16">
+            {steps.map((step, i) => {
+              const Icon = getIcon(i);
+              const yOffset = i % 2 === 0 ? -20 : 20;
+              
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 100 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="w-72 md:w-80 flex-shrink-0 snap-center"
+                  style={{ transform: `translateY(${yOffset}px)` }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                  >
+                    <GlassCard hoverEffect={true} glowColor="hsl(262 83% 58% / 0.4)">
+                      <div className="p-8">
+                        <div className="flex flex-col items-center text-center">
+                          <motion.div
+                            whileHover={{ scale: 1.1, rotate: 360 }}
+                            transition={{ duration: 0.6 }}
+                            className="relative mb-6"
+                          >
+                            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/20 flex items-center justify-center">
+                              <Icon className="w-10 h-10 text-white" />
+                            </div>
+                            <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold shadow-lg">
+                              {step.step}
+                            </div>
+                          </motion.div>
+                          <h3 className="text-xl font-bold text-white mb-3">
+                            {step.title}
+                          </h3>
+                        <p className="text-white/70 text-sm leading-relaxed">
+                          {step.desc}
+                        </p>
+                        </div>
+                      </div>
+                    </GlassCard>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Scroll hint */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="text-center mt-8 md:hidden"
+        >
+          <p className="text-white/50 text-sm flex items-center justify-center gap-2">
+            <ArrowRight className="w-4 h-4" />
+            Swipa för att se alla steg
+          </p>
+        </motion.div>
       </div>
     </section>
   );
