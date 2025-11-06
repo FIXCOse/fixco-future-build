@@ -25,6 +25,8 @@ import {
   CheckCircle2,
   Lightbulb,
   Sparkles,
+  Layout,
+  Layers
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -46,6 +48,11 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import { 
+  HowItWorksTimeline, 
+  HowItWorksGlass, 
+  HowItWorksZigzag 
+} from '@/components/v2/HowItWorksVariants';
 
 interface ServiceCityDetailProps {
   service: string; // slug like 'el', 'vvs', 'snickeri'
@@ -57,6 +64,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
+  const [howItWorksVariant, setHowItWorksVariant] = useState<'timeline' | 'glass' | 'zigzag'>('timeline');
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
@@ -723,73 +731,100 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
-        {/* How It Works Section - Using service-specific steps if available */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-12 text-center">
-              {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0
-                ? 'Så här går det till'
-                : `Så fungerar ${categoryName?.toLowerCase()}-uppdrag i ${city}`}
-            </h2>
-            <div className={`grid grid-cols-1 gap-6 max-w-5xl mx-auto ${
-              cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 
-                ? 'md:grid-cols-5' 
-                : 'md:grid-cols-4'
-            }`}>
-              {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 
-                ? cityServiceData.howItWorks.map((step) => (
-                    <div key={step.step} className="relative p-6 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
-                      <div className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                        {step.step}
-                      </div>
-                      <h3 className="font-semibold mb-2 mt-2">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground">{step.desc}</p>
-                    </div>
-                  ))
-                : (
-                  <>
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-primary">1</span>
-                      </div>
-                      <h3 className="font-semibold mb-2">Beskriv uppdraget</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Fyll i formulär eller ring – vi ger offert inom 24h
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-primary">2</span>
-                      </div>
-                      <h3 className="font-semibold mb-2">Godkänn offert</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Tydlig offert med priser, ROT/RUT-avdrag och tidplan
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-primary">3</span>
-                      </div>
-                      <h3 className="font-semibold mb-2">Vi utför jobbet</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Start inom 24-48h, professionell utförande med dokumentation
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-primary">4</span>
-                      </div>
-                      <h3 className="font-semibold mb-2">Klart & garanterat</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Slutbesiktning, dokumentation och 100% nöjd kund-garanti
-                      </p>
-                    </div>
-                  </>
-                )
-              }
-            </div>
+        {/* Design Variant Switcher - TEMPORARY FOR TESTING */}
+        <div className="fixed bottom-4 right-4 z-50 bg-card border-2 border-primary shadow-2xl rounded-lg p-4">
+          <div className="text-xs font-semibold mb-2 text-center text-foreground">Test Designs:</div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant={howItWorksVariant === 'timeline' ? 'default' : 'outline'}
+              onClick={() => setHowItWorksVariant('timeline')}
+              className="text-xs"
+            >
+              <Layout className="w-4 h-4 mr-1" />
+              Timeline
+            </Button>
+            <Button
+              size="sm"
+              variant={howItWorksVariant === 'glass' ? 'default' : 'outline'}
+              onClick={() => setHowItWorksVariant('glass')}
+              className="text-xs"
+            >
+              <Sparkles className="w-4 h-4 mr-1" />
+              Glass
+            </Button>
+            <Button
+              size="sm"
+              variant={howItWorksVariant === 'zigzag' ? 'default' : 'outline'}
+              onClick={() => setHowItWorksVariant('zigzag')}
+              className="text-xs"
+            >
+              <Layers className="w-4 h-4 mr-1" />
+              Zigzag
+            </Button>
           </div>
-        </section>
+        </div>
+
+        {/* How It Works Section - Multiple Variants */}
+        {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 ? (
+          <>
+            {howItWorksVariant === 'timeline' && (
+              <HowItWorksTimeline steps={cityServiceData.howItWorks} />
+            )}
+            {howItWorksVariant === 'glass' && (
+              <HowItWorksGlass steps={cityServiceData.howItWorks} />
+            )}
+            {howItWorksVariant === 'zigzag' && (
+              <HowItWorksZigzag steps={cityServiceData.howItWorks} />
+            )}
+          </>
+        ) : (
+          <section className="py-16 bg-background">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold mb-12 text-center">
+                Så fungerar {categoryName?.toLowerCase()}-uppdrag i {city}
+              </h2>
+              <div className="grid grid-cols-1 gap-6 max-w-5xl mx-auto md:grid-cols-4">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-primary">1</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">Beskriv uppdraget</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Fyll i formulär eller ring – vi ger offert inom 24h
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-primary">2</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">Godkänn offert</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Tydlig offert med priser, ROT/RUT-avdrag och tidplan
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-primary">3</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">Vi utför jobbet</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Start inom 24-48h, professionell utförande med dokumentation
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-primary">4</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">Klart & garanterat</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Slutbesiktning, dokumentation och 100% nöjd kund-garanti
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Quality Assurance Process Section */}
         <section className="py-16 bg-muted/5">
