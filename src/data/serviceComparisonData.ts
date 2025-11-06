@@ -58,8 +58,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'Auktoriserad installatör + F-skatt + försäkring',
-      fixcoSubtext: 'Alla behörigheter',
+      fixco: 'Auktoriserad installatör',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -102,8 +102,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'Certifierad rörmokare + F-skatt + försäkring',
-      fixcoSubtext: 'Tryckprovning ingår',
+      fixco: 'Certifierad rörmokare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -146,8 +146,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + materialkännedom',
-      fixcoSubtext: 'Professionella snickare',
+      fixco: 'Certifierade snickare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -190,8 +190,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + miljöcertifierad färg',
-      fixcoSubtext: 'Professionella målare',
+      fixco: 'Certifierade målare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -234,8 +234,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + monteringserfarenhet',
-      fixcoSubtext: 'Professionell montering',
+      fixco: 'Certifierade montörer',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -278,8 +278,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + maskinkompetens',
-      fixcoSubtext: 'Professionella trädgårdsarbetare',
+      fixco: 'RUT-godkänd',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -322,8 +322,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'RUT-godkänd + F-skatt + försäkring',
-      fixcoSubtext: 'Professionell städning',
+      fixco: 'RUT-godkänd',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -366,8 +366,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + maskinförarutbildning',
-      fixcoSubtext: 'Professionella markarbetare',
+      fixco: 'Certifierade markarbetare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -410,8 +410,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + produktutbildning',
-      fixcoSubtext: 'Professionella installatörer',
+      fixco: 'Certifierade tekniker',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -454,8 +454,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + godshantering',
-      fixcoSubtext: 'Professionell flytt',
+      fixco: 'Certifierade flyttare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
@@ -498,8 +498,8 @@ export const serviceComparisonData: ServiceComparisonData = {
     },
     {
       label: 'Certifieringar',
-      fixco: 'F-skatt + försäkring + alla certifieringar',
-      fixcoSubtext: 'Professionella hantverkare',
+      fixco: 'Certifierade hantverkare',
+      fixcoSubtext: 'F-skatt + försäkring',
       competitor: 'Varierar',
       competitorBad: true
     },
