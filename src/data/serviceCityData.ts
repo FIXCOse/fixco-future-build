@@ -463,53 +463,54 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "Trädgård",
     city: "Uppsala",
     slug: "tradgard-uppsala",
-    h1: "Trädgårdstjänster i Uppsala",
-    title: "Trädgård i Uppsala – Gräsklippning, Häckar & Plantering | RUT 50%",
-    description: "Trädgårdshjälp i Uppsala. Gräsklippning, häckklippning, ogräsrensning och plantering. RUT-avdrag 50%.",
-    howItWorks: [
-      { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
-      { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
-      { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
-      { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
-      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
+    h1Key: 'serviceCity.tradgard.uppsala.h1',
+    titleKey: 'serviceCity.tradgard.uppsala.title',
+    descriptionKey: 'serviceCity.tradgard.uppsala.description',
+    priceHintKey: 'serviceCity.tradgard.uppsala.priceHint',
+    howItWorksKeys: [
+      { step: 1, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.0.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.0.desc' },
+      { step: 2, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.1.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.1.desc' },
+      { step: 3, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.2.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.2.desc' },
+      { step: 4, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.3.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.3.desc' },
+      { step: 5, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.4.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.4.desc' }
     ],
-    priceExamples: [
-      { job: "Gräsklippning 300 kvm", price: "800 kr", duration: "1 timme" },
-      { job: "Häckklippning 20 meter", price: "1 500 kr", duration: "2 timmar" },
-      { job: "Ogräsrensning rabatter", price: "600 kr/timme", duration: "2-4 timmar" },
-      { job: "Plantering 10 buskar", price: "2 200 kr", duration: "2 timmar" }
+    priceExampleKeys: [
+      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.0.job', price: "800 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.0.duration' },
+      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.1.job', price: "1 500 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.1.duration' },
+      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.2.job', price: "600 kr/timme", durationKey: 'serviceCity.tradgard.uppsala.priceExample.2.duration' },
+      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.3.job', price: "2 200 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.3.duration' }
     ],
-    quickFacts: [
-      "Uppsalas lera kräver kompost för bättre dränering",
-      "Gräsklippning april-oktober rekommenderas varannan vecka",
-      "Häckar ska klippas 2 gånger per år - juni och augusti",
-      "RUT-avdrag gäller trädgårdsskötsel på tomten",
-      "Mulchning sparar vatten och minskar ogräs",
-      "Uppsala har kyligare nätter än Stockholm - vissa växter trivs sämre",
-      "Kompostering minskar trädgårdsavfall med 50%",
-      "Gräsmattor i Uppsala behöver kalkgödsling på grund av sur jord",
-      "Snöskottning ingår inte i RUT-avdrag men snöröjning gör det",
-      "Trädgårdsavfall kan lämnas på Rosendals återvinningscentral",
-      "Bevattning av gräsmattan bör göras tidigt på morgonen för bäst effekt",
-      "Plantering bör göras i maj eller september i Uppsala"
+    quickFactKeys: [
+      'serviceCity.tradgard.uppsala.quickFact.0',
+      'serviceCity.tradgard.uppsala.quickFact.1',
+      'serviceCity.tradgard.uppsala.quickFact.2',
+      'serviceCity.tradgard.uppsala.quickFact.3',
+      'serviceCity.tradgard.uppsala.quickFact.4',
+      'serviceCity.tradgard.uppsala.quickFact.5',
+      'serviceCity.tradgard.uppsala.quickFact.6',
+      'serviceCity.tradgard.uppsala.quickFact.7',
+      'serviceCity.tradgard.uppsala.quickFact.8',
+      'serviceCity.tradgard.uppsala.quickFact.9',
+      'serviceCity.tradgard.uppsala.quickFact.10',
+      'serviceCity.tradgard.uppsala.quickFact.11'
     ],
-    didYouKnow: [
-      "Uppsala botaniska trädgård grundades 1655 - en av världens äldsta",
-      "Uppsalas leriga jord är perfekt för äppelträd - staden hade 10 000+ äppelträd på 1800-talet",
-      "Gräsklippning på rätt höjd (5-6 cm) gör gräsmattan tätare och grönare",
-      "En trädgård i Uppsala behöver 30-40 liter vatten per kvm under torr sommar",
-      "Häckar av thuja växer 30-40 cm per år och behöver regelbunden klippning",
-      "Uppsala har 15 000+ privata trädgårdar som kräver regelbunden skötsel",
-      "Rätt tid för plantering i Uppsala är maj (efter sista frosten) och september"
+    didYouKnowKeys: [
+      'serviceCity.tradgard.uppsala.didYouKnow.0',
+      'serviceCity.tradgard.uppsala.didYouKnow.1',
+      'serviceCity.tradgard.uppsala.didYouKnow.2',
+      'serviceCity.tradgard.uppsala.didYouKnow.3',
+      'serviceCity.tradgard.uppsala.didYouKnow.4',
+      'serviceCity.tradgard.uppsala.didYouKnow.5',
+      'serviceCity.tradgard.uppsala.didYouKnow.6'
     ],
-    faqs: [
-      { q: "Hur ofta klipps gräset?", a: "Vi rekommenderar gräsklippning var 7-10 dag under högsäsong. Vi kan sätta upp regelbundna besök efter ditt schema." },
-      { q: "Tar ni med utrustning?", a: "Ja, vi tar med all nödvändig utrustning som gräsklippare, häcksax, kratta och trädgårdssäckar." },
-      { q: "Gör ni snöskottning vintertid?", a: "Ja, vi erbjuder snöskottning av uppfarter, gångvägar och trappor under vintersäsongen." }
+    faqKeys: [
+      { qKey: 'serviceCity.tradgard.uppsala.faq.0.q', aKey: 'serviceCity.tradgard.uppsala.faq.0.a' },
+      { qKey: 'serviceCity.tradgard.uppsala.faq.1.q', aKey: 'serviceCity.tradgard.uppsala.faq.1.a' },
+      { qKey: 'serviceCity.tradgard.uppsala.faq.2.q', aKey: 'serviceCity.tradgard.uppsala.faq.2.a' }
     ],
-    cases: [
-      { title: "Regelbunden trädgårdsskötsel Svartbäcken", desc: "Gräsklippning varannan vecka, häckklippning 2 ggr/år och ogräsrensning i rabatter." },
-      { title: "Häckbeskärning Luthagen", desc: "Beskärning av 30 meter thujahaeck med formklippning och bortforsling av grenar." }
+    caseKeys: [
+      { titleKey: 'serviceCity.tradgard.uppsala.case.0.title', descKey: 'serviceCity.tradgard.uppsala.case.0.desc' },
+      { titleKey: 'serviceCity.tradgard.uppsala.case.1.title', descKey: 'serviceCity.tradgard.uppsala.case.1.desc' }
     ]
   },
   {
