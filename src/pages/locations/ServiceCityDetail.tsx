@@ -368,6 +368,34 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </section>
         )}
 
+        {/* CTA Section 1 - Se alla våra tjänster */}
+        <section className="py-16 bg-gradient-to-b from-primary/5 to-primary/10">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+                💡 Utforska vårt utbud
+              </div>
+              <h2 className="text-3xl font-bold mb-4">Se alla våra tjänster</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Fixco erbjuder ett komplett utbud av hantverkstjänster med ROT/RUT-avdrag. 
+                Utforska alla våra tjänster och se priser, avdragsmöjligheter och mer.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg">
+                  <Link to="/tjanster">
+                    Visa alla tjänster
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link to="/tjanster#priser">
+                    Se priser & ROT/RUT-avdrag
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Populära tjänster Section */}
         {serviceContent && (
           <section className="py-12 bg-muted/5">
@@ -1079,6 +1107,55 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
             </div>
           </section>
         )}
+
+        {/* CTA Section 2 - Behöver du hjälp med något annat? */}
+        <section className="py-16 bg-muted/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                {/* Left Column - Information */}
+                <div>
+                  <h2 className="text-3xl font-bold mb-4">
+                    Behöver du hjälp med något annat?
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Fixco erbjuder ett komplett utbud av hantverkstjänster. Från el och VVS till snickeri, måleri, städ och mycket mer.
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <span>ROT/RUT-avdrag på de flesta tjänster</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <span>Snabb service och professionella hantverkare</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                      <span>Försäkring och garanti på alla uppdrag</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                {/* Right Column - CTA Card */}
+                <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 rounded-2xl p-8">
+                  <div className="text-5xl mb-4">🛠️</div>
+                  <h3 className="text-2xl font-bold mb-3">
+                    Utforska alla våra tjänster
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    Se vårt kompletta utbud, priser och läs mer om varje tjänst.
+                  </p>
+                  <Button asChild size="lg" className="w-full">
+                    <Link to="/tjanster">
+                      Till alla tjänster →
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Området vi täcker Section */}
         <section className="py-16 bg-muted/5">
