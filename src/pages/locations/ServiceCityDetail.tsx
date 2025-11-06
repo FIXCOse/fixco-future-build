@@ -24,9 +24,7 @@ import {
   Zap,
   CheckCircle2,
   Lightbulb,
-  Sparkles,
-  Layout,
-  Layers
+  Sparkles
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -48,13 +46,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
-import { 
-  HowItWorksTimeline, 
-  HowItWorksGlassCascade,
-  HowItWorksGlassOrbit,
-  HowItWorksGlassStream,
-  HowItWorksZigzag
-} from '@/components/v2/HowItWorksVariants';
+import { HowItWorksTimeline } from '@/components/v2/HowItWorksVariants';
 
 interface ServiceCityDetailProps {
   service: string; // slug like 'el', 'vvs', 'snickeri'
@@ -66,10 +58,6 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
-  const [howItWorksVariant, setHowItWorksVariant] = useState<'timeline' | 'glass' | 'zigzag'>('timeline');
-  const [glassVariant, setGlassVariant] = useState<'cascade' | 'orbit' | 'stream'>('cascade');
-  
-  console.log('ServiceCityDetail rendered, howItWorksVariant:', howItWorksVariant);
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
@@ -736,90 +724,10 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </section>
 
-        {/* Design Variant Switcher - TEMPORARY FOR TESTING */}
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-card border-2 border-primary shadow-2xl rounded-lg p-4">
-          <div className="text-xs font-semibold mb-2 text-center text-foreground">Test Designs:</div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant={howItWorksVariant === 'timeline' ? 'default' : 'outline'}
-              onClick={() => setHowItWorksVariant('timeline')}
-              className="text-xs"
-            >
-              <Layout className="w-4 h-4 mr-1" />
-              Timeline
-            </Button>
-            <Button
-              size="sm"
-              variant={howItWorksVariant === 'glass' ? 'default' : 'outline'}
-              onClick={() => setHowItWorksVariant('glass')}
-              className="text-xs"
-            >
-              <Sparkles className="w-4 h-4 mr-1" />
-              Glass
-            </Button>
-            <Button
-              size="sm"
-              variant={howItWorksVariant === 'zigzag' ? 'default' : 'outline'}
-              onClick={() => setHowItWorksVariant('zigzag')}
-              className="text-xs"
-            >
-              <Layers className="w-4 h-4 mr-1" />
-              Zigzag
-            </Button>
-          </div>
-        </div>
 
-        {/* Glass Variants Switcher - ONLY VISIBLE WHEN GLASS IS SELECTED */}
-        {howItWorksVariant === 'glass' && (
-          <div className="fixed top-40 left-1/2 transform -translate-x-1/2 z-50 bg-card border-2 border-secondary shadow-2xl rounded-lg p-4">
-            <div className="text-xs font-semibold mb-2 text-center text-foreground">Glass Layouts:</div>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant={glassVariant === 'cascade' ? 'default' : 'outline'}
-                onClick={() => setGlassVariant('cascade')}
-                className="text-xs"
-              >
-                💧 Cascade
-              </Button>
-              <Button
-                size="sm"
-                variant={glassVariant === 'orbit' ? 'default' : 'outline'}
-                onClick={() => setGlassVariant('orbit')}
-                className="text-xs"
-              >
-                🪐 Orbit
-              </Button>
-              <Button
-                size="sm"
-                variant={glassVariant === 'stream' ? 'default' : 'outline'}
-                onClick={() => setGlassVariant('stream')}
-                className="text-xs"
-              >
-                🌊 Stream
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* How It Works Section - Multiple Variants */}
+        {/* How It Works Section */}
         {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 ? (
-          <>
-            {howItWorksVariant === 'timeline' && (
-              <HowItWorksTimeline steps={cityServiceData.howItWorks} />
-            )}
-            {howItWorksVariant === 'glass' && (
-              <>
-                {glassVariant === 'cascade' && <HowItWorksGlassCascade steps={cityServiceData.howItWorks} />}
-                {glassVariant === 'orbit' && <HowItWorksGlassOrbit steps={cityServiceData.howItWorks} />}
-                {glassVariant === 'stream' && <HowItWorksGlassStream steps={cityServiceData.howItWorks} />}
-              </>
-            )}
-            {howItWorksVariant === 'zigzag' && (
-              <HowItWorksZigzag steps={cityServiceData.howItWorks} />
-            )}
-          </>
+          <HowItWorksTimeline steps={cityServiceData.howItWorks} />
         ) : (
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
