@@ -734,7 +734,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         </section>
 
         {/* Design Variant Switcher - TEMPORARY FOR TESTING */}
-        <div className="fixed bottom-4 right-4 z-50 bg-card border-2 border-primary shadow-2xl rounded-lg p-4">
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-card border-2 border-primary shadow-2xl rounded-lg p-4">
           <div className="text-xs font-semibold mb-2 text-center text-foreground">Test Designs:</div>
           <div className="flex gap-2">
             <Button
