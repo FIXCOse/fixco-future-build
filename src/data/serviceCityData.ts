@@ -23,6 +23,7 @@ export interface ServiceCityItem {
   howItWorks?: Array<{ step: number; title: string; desc: string }>;
   priceExamples?: Array<{ job: string; price: string; duration: string }>;
   quickFacts?: Array<string>;
+  didYouKnow?: Array<string>;
 }
 
 export const serviceCityData: ServiceCityItem[] = [
@@ -53,7 +54,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "Laddbox kan öka fastighetsvärdet med 2-5%",
       "ROT-avdrag ger 50% rabatt på arbetskostnaden",
       "Uppsala kommun kräver installationstillstånd för laddboxar",
-      "LED-belysning sparar 80% energi jämfört med glödlampor"
+      "LED-belysning sparar 80% energi jämfört med glödlampor",
+      "Elinstallationer får endast utföras av auktoriserad elektriker enligt ellagen",
+      "En elsäkerhetsbesiktning kostar 2 500-4 500 kr och rekommenderas vart 10:e år",
+      "Uppsala har över 15 000 villor byggda före 1970 med behov av eluppgradering",
+      "Modernisering av elcentral inkl. 10 nya automatsäkringar kostar ca 15 000-25 000 kr",
+      "Jordfelsvarnare är obligatoriska i våtutrymmen sedan 1994",
+      "Uppsala Energi erbjuder bidrag för installation av solceller på villatak",
+      "En 3-rums lägenhet i Uppsala använder i snitt 2 000-3 000 kWh el per år"
+    ],
+    didYouKnow: [
+      "Uppsala universitet installerade Sveriges första elledning för gatubelysning år 1893",
+      "Ett hushåll i Uppsala lämnar i snitt apparater i standby-läge som drar 500 kWh/år – motsvarande 800 kr",
+      "Blixtnedslag orsakar varje år skador på elsystem i Uppsala län för över 50 miljoner kronor",
+      "En smart termostat kan sänka din elräkning med 15-20% genom optimerad styrning",
+      "Uppsala har Sveriges högsta andel laddboxar per capita – 1 laddbox per 12 invånare",
+      "En typisk villa i Uppsala kan spara 8 000-12 000 kr/år genom byte till LED-belysning",
+      "Elsäkerhetsverket kontrollerar ca 15% av alla elanläggningar i Sverige årligen"
     ],
     faqs: [
       { 

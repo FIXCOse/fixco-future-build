@@ -23,6 +23,8 @@ import {
   Wrench,
   Zap,
   CheckCircle2,
+  Lightbulb,
+  Sparkles,
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -993,6 +995,30 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                       </li>
                     ))}
                   </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Did You Know Section */}
+        {cityServiceData?.didYouKnow && cityServiceData.didYouKnow.length > 0 && (
+          <section className="py-16 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto">
+                <div className="bg-card border border-border rounded-lg p-8 shadow-sm">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <Lightbulb className="w-7 h-7 text-amber-500" />
+                    Visste du att...
+                  </h3>
+                  <div className="space-y-4">
+                    {cityServiceData.didYouKnow.map((fact, i) => (
+                      <div key={i} className="flex items-start gap-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
+                        <Sparkles className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+                        <p className="text-sm leading-relaxed">{fact}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
