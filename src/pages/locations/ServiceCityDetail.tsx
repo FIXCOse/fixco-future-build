@@ -35,6 +35,7 @@ import {
 } from "@/components/SEOSchemaEnhanced";
 import { generateCityServiceData } from "@/utils/cityServiceTemplates";
 import { serviceCityContent } from "@/data/serviceCityContent";
+import { ServiceComparisonCard } from "@/components/ServiceComparisonCard";
 import { 
   Collapsible,
   CollapsibleContent,
@@ -608,62 +609,11 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 </p>
               </div>
             </div>
-            
-            {/* Jämförelsetabell */}
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold text-center mb-8">
-                Fixco vs andra {categoryName?.toLowerCase()}-företag
-              </h3>
-              <div className="bg-card border rounded-lg overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-muted">
-                    <tr>
-                      <th className="p-4 text-left">Vad ingår</th>
-                      <th className="p-4 text-center">Fixco</th>
-                      <th className="p-4 text-center">Andra företag</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-t">
-                      <td className="p-4">
-                        {serviceKey === 'Elmontör' ? 'Auktorisation' : 
-                         serviceKey === 'VVS' ? 'VVS-certifiering' : 
-                         'Yrkescertifiering'}
-                      </td>
-                      <td className="p-4 text-center">✅</td>
-                      <td className="p-4 text-center text-muted-foreground">Varierar</td>
-                    </tr>
-                    <tr className="border-t bg-muted/30">
-                      <td className="p-4">Fast pris i offert</td>
-                      <td className="p-4 text-center">✅</td>
-                      <td className="p-4 text-center text-muted-foreground">Sällan</td>
-                    </tr>
-                    <tr className="border-t">
-                      <td className="p-4">ROT/RUT-hantering</td>
-                      <td className="p-4 text-center">✅ Gratis</td>
-                      <td className="p-4 text-center text-muted-foreground">Extra kostnad</td>
-                    </tr>
-                    <tr className="border-t bg-muted/30">
-                      <td className="p-4">100% nöjd-garanti</td>
-                      <td className="p-4 text-center">✅</td>
-                      <td className="p-4 text-center text-muted-foreground">❌</td>
-                    </tr>
-                    <tr className="border-t">
-                      <td className="p-4">Start inom 24-48h</td>
-                      <td className="p-4 text-center">✅</td>
-                      <td className="p-4 text-center text-muted-foreground">1-2 veckor</td>
-                    </tr>
-                    <tr className="border-t bg-muted/30">
-                      <td className="p-4">Dokumentation & protokoll</td>
-                      <td className="p-4 text-center">✅ Ingår</td>
-                      <td className="p-4 text-center text-muted-foreground">Extra kostnad</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         </section>
+
+        {/* Comparison Section - Upgraded with ServiceComparisonCard */}
+        <ServiceComparisonCard serviceKey={service} city={city} />
 
         {/* Sub-services Grid */}
         <section className="py-20">
