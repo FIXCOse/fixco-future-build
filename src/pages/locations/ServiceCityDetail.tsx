@@ -51,7 +51,10 @@ import { ChevronDown } from "lucide-react";
 import { 
   HowItWorksTimeline, 
   HowItWorksGlass, 
-  HowItWorksZigzag 
+  HowItWorksZigzag,
+  HowItWorksGlassClassic,
+  HowItWorksGlassNeon,
+  HowItWorksGlassAurora
 } from '@/components/v2/HowItWorksVariants';
 
 interface ServiceCityDetailProps {
@@ -65,6 +68,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
   const [howItWorksVariant, setHowItWorksVariant] = useState<'timeline' | 'glass' | 'zigzag'>('timeline');
+  const [glassVariant, setGlassVariant] = useState<'classic' | 'neon' | 'aurora'>('classic');
   
   console.log('ServiceCityDetail rendered, howItWorksVariant:', howItWorksVariant);
 
@@ -767,6 +771,39 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           </div>
         </div>
 
+        {/* Glass Variants Switcher - ONLY VISIBLE WHEN GLASS IS SELECTED */}
+        {howItWorksVariant === 'glass' && (
+          <div className="fixed top-40 left-1/2 transform -translate-x-1/2 z-50 bg-card border-2 border-secondary shadow-2xl rounded-lg p-4">
+            <div className="text-xs font-semibold mb-2 text-center text-foreground">Glass Variants:</div>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant={glassVariant === 'classic' ? 'default' : 'outline'}
+                onClick={() => setGlassVariant('classic')}
+                className="text-xs"
+              >
+                🟣 Classic
+              </Button>
+              <Button
+                size="sm"
+                variant={glassVariant === 'neon' ? 'default' : 'outline'}
+                onClick={() => setGlassVariant('neon')}
+                className="text-xs"
+              >
+                🔵 Neon
+              </Button>
+              <Button
+                size="sm"
+                variant={glassVariant === 'aurora' ? 'default' : 'outline'}
+                onClick={() => setGlassVariant('aurora')}
+                className="text-xs"
+              >
+                🟢 Aurora
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* How It Works Section - Multiple Variants */}
         {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 ? (
           <>
@@ -774,7 +811,11 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               <HowItWorksTimeline steps={cityServiceData.howItWorks} />
             )}
             {howItWorksVariant === 'glass' && (
-              <HowItWorksGlass steps={cityServiceData.howItWorks} />
+              <>
+                {glassVariant === 'classic' && <HowItWorksGlassClassic steps={cityServiceData.howItWorks} />}
+                {glassVariant === 'neon' && <HowItWorksGlassNeon steps={cityServiceData.howItWorks} />}
+                {glassVariant === 'aurora' && <HowItWorksGlassAurora steps={cityServiceData.howItWorks} />}
+              </>
             )}
             {howItWorksVariant === 'zigzag' && (
               <HowItWorksZigzag steps={cityServiceData.howItWorks} />
