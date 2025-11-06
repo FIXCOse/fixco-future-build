@@ -979,19 +979,19 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
 
         {/* Quick Facts Section */}
         {cityServiceData?.quickFacts && cityServiceData.quickFacts.length > 0 && (
-          <section className="py-16 bg-background">
+          <section className="py-12 bg-background">
             <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto">
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-dashed border-primary/30 rounded-lg p-8">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-dashed border-primary/30 rounded-lg p-6">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                     <Zap className="w-7 h-7 text-primary" />
                     Bra att veta om {categoryName?.toLowerCase()} i {city}
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                     {cityServiceData.quickFacts.map((fact, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                        <span className="text-sm leading-relaxed">{fact}</span>
+                      <li key={i} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                        <span className="text-sm leading-tight">{fact}</span>
                       </li>
                     ))}
                   </ul>
@@ -1003,19 +1003,19 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
 
         {/* Did You Know Section */}
         {cityServiceData?.didYouKnow && cityServiceData.didYouKnow.length > 0 && (
-          <section className="py-16 bg-muted/30">
+          <section className="py-12 bg-muted/30">
             <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto">
-                <div className="bg-card border border-border rounded-lg p-8 shadow-sm">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                     <Lightbulb className="w-7 h-7 text-amber-500" />
                     Visste du att...
                   </h3>
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {cityServiceData.didYouKnow.map((fact, i) => (
-                      <div key={i} className="flex items-start gap-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
-                        <Sparkles className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-                        <p className="text-sm leading-relaxed">{fact}</p>
+                      <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
+                        <Sparkles className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                        <p className="text-sm leading-tight">{fact}</p>
                       </div>
                     ))}
                   </div>
