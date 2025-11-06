@@ -36,8 +36,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -77,8 +77,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -118,8 +118,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -158,8 +158,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -199,8 +199,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -239,8 +239,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'RUT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -280,8 +280,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'RUT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -320,8 +320,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -400,8 +400,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'RUT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
@@ -427,8 +427,8 @@ export const serviceComparisonData: ServiceComparisonData = {
       label: 'ROT/RUT-hantering',
       fixco: '✅ Gratis',
       fixcoSubtext: 'Vi sköter allt',
-      competitor: 'Extra 300-800 kr',
-      competitorBad: true
+      competitor: 'Oftast gratis',
+      competitorBad: false
     },
     {
       label: 'Start inom',
