@@ -37,7 +37,7 @@ export const GlassCard = ({
       })}
     >
       {darkOverlay && (
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-purple-900/20 to-slate-800/50 rounded-2xl -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-800/80 to-slate-900/85 rounded-2xl -z-10" />
       )}
       {innerGlow && (
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-2xl" />

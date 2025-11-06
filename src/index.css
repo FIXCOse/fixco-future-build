@@ -296,13 +296,25 @@
   }
 
   /* Text shadow utilities for enhanced readability */
-  .text-shadow-soft {
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  }
+.text-shadow-soft {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
 
-  .text-shadow-strong {
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
-  }
+.text-shadow-strong {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.text-shadow-ultra {
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 1),
+    0 4px 12px rgba(0, 0, 0, 0.95),
+    0 8px 24px rgba(0, 0, 0, 0.9);
+}
+
+.text-stroke-light {
+  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.5);
+  text-stroke: 0.5px rgba(0, 0, 0, 0.5);
+}
 }
 
 /* NO KEYFRAMES - animations disabled */

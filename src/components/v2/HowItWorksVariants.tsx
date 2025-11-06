@@ -427,10 +427,10 @@ export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight text-shadow-strong">
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight text-shadow-ultra text-stroke-light">
             Hur det <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">fungerar</span>
           </h2>
-          <p className="text-white/90 text-lg max-w-2xl mx-auto font-medium">
+          <p className="text-white text-xl max-w-2xl mx-auto font-semibold text-shadow-ultra">
             En transparent process från förfrågan till färdigt resultat
           </p>
         </motion.div>
@@ -470,7 +470,7 @@ export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
                     {/* Gradient number badge - larger */}
                     <motion.div 
                       className="absolute -top-4 -left-4 w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 
-                                 flex items-center justify-center font-extrabold text-white text-2xl shadow-2xl border-2 border-white/30"
+                                 flex items-center justify-center font-black text-white text-2xl shadow-2xl border-2 border-white/30 text-shadow-ultra"
                       whileHover={{ scale: 1.1, rotate: 5 }}
                     >
                       {step.step}
@@ -486,13 +486,15 @@ export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
                       <Icon className="w-10 h-10 text-white drop-shadow-lg" />
                     </motion.div>
 
-                    {/* Content with improved typography */}
-                    <h3 className="text-2xl font-extrabold text-white mb-4 group-hover:text-purple-300 transition-colors tracking-tight text-shadow-soft leading-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-white/90 text-base leading-relaxed font-medium text-shadow-soft">
-                      {step.desc}
-                    </p>
+                    {/* Content with solid text container */}
+                    <div className="bg-slate-900/90 backdrop-blur-md rounded-xl p-6 border border-white/10">
+                      <h3 className="text-3xl font-black text-white mb-5 tracking-tight text-shadow-ultra text-stroke-light leading-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-white text-lg leading-loose font-semibold text-shadow-ultra">
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Connection line to next card - thicker and more visible */}
@@ -557,7 +559,7 @@ export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
                   <div className="relative p-7">
                     <motion.div 
                       className="absolute -top-3 -left-3 w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 
-                                 flex items-center justify-center font-extrabold text-white text-xl shadow-xl border-2 border-white/30"
+                                 flex items-center justify-center font-black text-white text-xl shadow-xl border-2 border-white/30 text-shadow-ultra"
                     >
                       {step.step}
                     </motion.div>
@@ -567,12 +569,14 @@ export const HowItWorksGlassCascade = ({ steps }: HowItWorksProps) => {
                       <Icon className="w-8 h-8 text-white drop-shadow-lg" />
                     </div>
 
-                    <h3 className="text-xl font-extrabold text-white mb-3 tracking-tight text-shadow-soft leading-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-white/90 text-sm leading-loose font-medium text-shadow-soft">
-                      {step.desc}
-                    </p>
+                    <div className="bg-slate-900/90 backdrop-blur-md rounded-xl p-5 border border-white/10">
+                      <h3 className="text-2xl font-black text-white mb-4 tracking-tight text-shadow-ultra text-stroke-light leading-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-white text-base leading-loose font-semibold text-shadow-ultra">
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
                 </GlassCard>
               </motion.div>
