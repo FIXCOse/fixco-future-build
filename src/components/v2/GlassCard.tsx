@@ -6,32 +6,42 @@ interface GlassCardProps {
   className?: string;
   hoverEffect?: boolean;
   glowColor?: string;
+  darkOverlay?: boolean;
+  innerGlow?: boolean;
 }
 
 export const GlassCard = ({ 
   children, 
   className = "", 
   hoverEffect = true,
-  glowColor = "hsl(262 83% 58% / 0.3)"
+  glowColor = "hsl(262 83% 58% / 0.3)",
+  darkOverlay = false,
+  innerGlow = false
 }: GlassCardProps) => {
   const Card = hoverEffect ? motion.div : "div";
   
   return (
     <Card
       className={cn(
-        "relative rounded-2xl backdrop-blur-md bg-white/5 border border-white/10",
+        "relative rounded-2xl backdrop-blur-xl bg-white/10 border border-white/10 shadow-2xl",
         "transition-all duration-300",
-        hoverEffect && "hover:bg-white/10 hover:border-white/20",
+        hoverEffect && "hover:bg-white/[0.12] hover:border-white/30 hover:scale-[1.02]",
         className
       )}
       {...(hoverEffect && {
         whileHover: { 
           y: -8,
-          boxShadow: `0 20px 40px -10px ${glowColor}`
+          boxShadow: `0 30px 60px -10px ${glowColor}`
         },
         transition: { duration: 0.3, ease: "easeOut" }
       })}
     >
+      {darkOverlay && (
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-purple-900/20 to-slate-800/50 rounded-2xl -z-10" />
+      )}
+      {innerGlow && (
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-2xl" />
+      )}
       {children}
     </Card>
   );
