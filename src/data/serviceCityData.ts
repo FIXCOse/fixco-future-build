@@ -127,7 +127,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "Laddbox i Stockholm kräver anmälan till Ellevio 4-6 veckor innan",
       "ROT-avdrag ger 50% rabatt på arbetskostnaden (max 50 000 kr/år)",
       "Stockholm har Sveriges högsta efterfrågan på elbilsladdning",
-      "Modern belysning kan spara 500-800 kr/år per rum"
+      "Modern belysning kan spara 500-800 kr/år per rum",
+      "Sekelskifteslägenheter har ofta schukuttag som ska bytas till jordat uttag",
+      "Stockholm Energi erbjuder bidrag för smart elmätare och energioptimering",
+      "Elbilar i Stockholm har ökat med 400% sedan 2019 - laddbox är nödvändigt",
+      "En lägenhet i Stockholm förbrukar i snitt 2 500-3 500 kWh el per år",
+      "Felaktig elinstallation orsakar 5 000 bostadsbränder i Sverige årligen",
+      "LED-konvertering av en 3:a i Stockholm sparar 3 000-4 000 kr/år",
+      "Jordfelsbrytare ska testas månadsvis enligt Elsäkerhetsverkets rekommendation"
+    ],
+    didYouKnow: [
+      "Kungliga Slottet fick Sveriges första elbelysning år 1883 med gatubelysning längs Slottsbacken",
+      "Stockholm konsumerar 8 TWh el årligen - mer än hela Norrbottens industri",
+      "Gamla Stan har fortfarande äldre elledningar från 1930-talet som behöver moderniseras",
+      "En lägenhet på Östermalm använder i snitt 40% mer el än motsvarande lägenhet i förorten",
+      "Stockholm har Sveriges högsta koncentration av datahallar vilket påverkar elnätet",
+      "Blixtnedslag orsakar skador på elektronik i Stockholms innerstad för 80 miljoner kr/år",
+      "Ett hushåll i Stockholm kan spara 15 000-20 000 kr/år genom att byta till energieffektiv belysning och smart styrning"
     ],
     faqs: [
       { 
@@ -178,7 +194,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "BRF-badrumsrenoveringar kräver ofta godkännande från styrelse",
       "ROT-avdrag gäller både arbetskostnad och viss materiel",
       "Försäkring kan täcka akuta läckor - spara alltid kvitton",
-      "Moderna termostatblandare sparar vatten och energi"
+      "Moderna termostatblandare sparar vatten och energi",
+      "VVS-installationer kräver certifiering enligt Byggvarudeklaration",
+      "En droppande kran slösar 20 liter vatten per dag (motsvarande 150 kr/år)",
+      "Uppsala vatten har hög hårdhet vilket kräver regelbunden avkalkning",
+      "Fuktskador kostar svenska husägare 9 miljarder kr årligen",
+      "Golvvärme i badrum kan spara 20% på uppvärmningskostnaden",
+      "Uppsala kommun kräver VA-anmälan för större badrumsrenoveringar",
+      "Moderna duschsystem använder 50% mindre vatten än äldre modeller"
+    ],
+    didYouKnow: [
+      "Uppsala fick sitt första vattenledningssystem år 1867 - ett av Sveriges äldsta",
+      "En genomsnittlig familj i Uppsala använder 150 liter vatten per person och dag",
+      "Uppsalas vattenledningsnät är 600 km långt - det är längre än från Uppsala till Malmö",
+      "Köldknäpp kan orsaka läckor i ovärmda sommarstugor runt Uppsala - över 200 fall per vinter",
+      "En standard WC-spolning använder 6 liter vatten - äldre modeller använde 9-12 liter",
+      "Vattenläckor i Uppsala upptäcks i genomsnitt efter 3 dagar - mycket senare än Stockholm",
+      "Uppsala Vatten har Sveriges modernaste reningsverk med 99,7% reningsgrad"
     ],
     faqs: [
       { 
@@ -231,7 +263,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "BRF-badrum kräver ofta fuktsäkerhetsprojektering",
       "Vattentryck i Stockholm varierar mellan 2-6 bar",
       "ROT-avdrag gäller upp till 50 000 kr per person och år",
-      "Moderna duschblandare kan spara 30% vatten"
+      "Moderna duschblandare kan spara 30% vatten",
+      "Stockholm vatten levererar 350 000 m³ dricksvatten per dag",
+      "Äldre fastigheter i Stockholm har ofta blyrör som bör bytas",
+      "BRF-renovering av stammar kostar typiskt 15 000-30 000 kr per lägenhet",
+      "Vattentryck i Stockholm kan variera mellan 1,5 och 6 bar beroende på våning",
+      "Läckor i stamledningar är vanligt i fastigheter byggda före 1980",
+      "Försäkringsbolag kräver ofta dokumentation från certifierad VVS-montör",
+      "Installationsbesiktning kostar 3 000-5 000 kr och rekommenderas efter större renoveringar"
+    ],
+    didYouKnow: [
+      "Stockholms första vattenledning byggdes 1861 från Årsta sjön till Norr Mälarstrand",
+      "Stockholm förlorar 12% av allt dricksvatten genom läckor i ledningsnätet - motsvarande 42 000 m³/dag",
+      "En genomsnittlig lägenhet i Stockholm har 15 vattenpunkter (kranar, toaletter, tvättmaskin)",
+      "Gamla Stans medeltida källare får ofta problem med grundvatten och kräver avancerad dränering",
+      "Stambyte i en BRF kan öka lägenhetsvärdet med 5-8% direkt",
+      "Stockholm använder värmeåtervinning från avloppsvatten som värmer 400 000 bostäder",
+      "Vattenskador är den vanligaste försäkringsskadan i Stockholm - över 15 000 ärenden per år"
     ],
     faqs: [
       { 
@@ -281,7 +329,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "Platsbyggt är ofta billigare än färdiga lösningar för sneda rum",
       "ROT-avdrag gäller montering men inte själva möblerna",
       "Köksbyte tar vanligtvis 2-4 dagar beroende på storlek",
-      "Moderna kök ökar lägenhetsvärdet med upp till 10%"
+      "Moderna kök ökar lägenhetsvärdet med upp till 10%",
+      "Platsbyggda lösningar kan spara 30-40% jämfört med standardlösningar från stora kedjor",
+      "Snickeriarbeten ska följa BFS 2011:6 - BBR (Boverkets Byggregler)",
+      "Massivt trä ökar i värde över tid och håller i generationer",
+      "Köksskåp från 60-70-talet innehåller ofta asbest i baksidor - ska hanteras av proffs",
+      "Uppsala har många snickerier som kan specialtillverka komponenter",
+      "Träfukt ska vara under 16% vid montering för att undvika sprickor",
+      "Moderna MDF-skivor är stabilare än massivt trä men tål inte fukt lika bra"
+    ],
+    didYouKnow: [
+      "Uppsala har en 400 år gammal snickeritradition kopplad till slottsbygget på 1500-talet",
+      "En välbyggd platsbyggd garderob kan hålla i 50+ år - längre än byggnaden själv ibland",
+      "IKEA-köksmontering tar en proffs 6-8 timmar - en oerfaren person kan behöva 20-30 timmar",
+      "Gamla Uppsalahus från 1800-talet har ofta trädetaljer som kräver specialanpassad snickeri",
+      "Listmontering runt fönster och dörrar förbättrar energieffektiviteten genom att täta springor",
+      "Snickeriarbeten utomhus (altaner, plank) kräver impregnerat eller hyvlat tryckimpregnerat trä",
+      "Moderna limträbalkar kan spänna över 12 meter utan mellanstöd - perfekt för öppna planlösningar"
     ],
     faqs: [
       { q: "Bygger ni platsbyggda garderober?", a: "Ja, vi bygger skräddarsydda garderober, bokhyllor och förvaringslösningar anpassade efter dina behov och utrymme." },
@@ -318,7 +382,23 @@ export const serviceCityData: ServiceCityItem[] = [
       "BRF-arbete kräver ofta styrelsegodkännande innan start",
       "Stockholm har strängare bullerkrav - ljudisolering kan behövas",
       "ROT-avdrag gäller arbetskostnad men inte material",
-      "Platsbyggda lösningar är perfekta för Stockholms sneda väggar"
+      "Platsbyggda lösningar är perfekta för Stockholms sneda väggar",
+      "Sekelskifteslägenheter har ofta 3,2 meter i takhöjd - perfekt för höga bokhyllor",
+      "Parkettgolv i Stockholm är ofta 100+ år gamla och kan slipas många gånger",
+      "Ljudisolering mellan rum kräver dubbelreglar med mineralull",
+      "Platsbyggda hyllor kan utnyttja takvinklar och sneda väggar perfekt",
+      "Måttsydda lösningar passar perfekt för Stockholms ojämna väggar",
+      "Ekparkett kostar 800-1 500 kr/kvm inklusive slipning och lackering",
+      "BRF-regler i Stockholm kräver ofta tillstånd för större ombyggnationer"
+    ],
+    didYouKnow: [
+      "Gamla Stans hus från 1600-talet har timmerkonstruktioner som fortfarande är starka",
+      "Stockholms sekelskifteslägenheter har ofta 3,2 meter i takhöjd - perfekt för höga bokhyllor",
+      "Originaldetaljer från 1890-talet som dörrar och lister kan vara värda 50 000+ kr på auktion",
+      "En genomsnittlig Stockholmslägenhet har 3-5 skeva väggar - platsbyggt är enda lösningen",
+      "Sveriges första standardiserade kök byggdes i Stockholm 1922 - 'Stockholmsköket'",
+      "Träpanel i sekelskifteshus är ofta av furu från Norrland - håller i 200+ år med rätt underhåll",
+      "Snickare i Stockholm måste ofta hantera eldragning i gamla väggar med kanalisation"
     ],
     faqs: [
       { q: "Arbetar ni i BRF:er?", a: "Ja, vi har stor erfarenhet av BRF-arbete och följer husets rutiner för bokning, tillträde och städning." },
@@ -338,6 +418,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Montering i Uppsala",
     title: "Montering i Uppsala – IKEA-möbler, TV-fästen & Mer | ROT 50%",
     description: "Snabb och professionell montering i Uppsala. IKEA-möbler, vitvaror, TV-fästen. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
+      { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
+      { step: 3, title: "Vi kommer hem till dig", desc: "Montör kommer med verktyg och kunnande. Ofta klart samma dag." },
+      { step: 4, title: "Professionell montering", desc: "Vi monterar enligt tillverkarens instruktioner och testar allt." },
+      { step: 5, title: "Städning & bortforsling", desc: "Vi städar och tar hand om emballage. ROT/RUT-avdrag inkluderat." }
+    ],
+    priceExamples: [
+      { job: "TV-fäste på vägg", price: "1 200 kr", duration: "1 timme" },
+      { job: "IKEA PAX-garderob 3 dörrar", price: "2 500 kr", duration: "2-3 timmar" },
+      { job: "Köksmontage IKEA 8 skåp", price: "12 000 kr", duration: "1-2 dagar" },
+      { job: "Säng + 2 nattduksbord", price: "1 800 kr", duration: "1,5 timmar" }
+    ],
+    quickFacts: [
+      "IKEA-instruktioner är ofta otydliga - proffs gör jobbet 3x snabbare",
+      "Felaktig montering kan göra möbler farliga - särskilt barnsäkring",
+      "TV-fästen på betongvägg kräver specialborr och pluggar",
+      "ROT/RUT-avdrag gäller monteringsarbete i hemmet",
+      "Moderna möbler är ofta tyngre än äldre - rätt väggfäste är kritiskt",
+      "Emballage från IKEA ska till återvinningen - vi tar hand om det",
+      "PAX-garderober med spegeldörrar kräver noggrann vågrätjustering",
+      "Vitvaror måste anslutas enligt tillverkarens instruktioner för garanti",
+      "Felmontering av köksskåp kan orsaka vattenskador senare",
+      "TV-montering kräver studsare för att hitta reglar i väggen",
+      "IKEA-möbler från samma serie passar ofta inte exakt ihop - justering behövs",
+      "Professionell montering sparar 4-6 timmar frustration för genomsnittlig IKEA-möbel"
+    ],
+    didYouKnow: [
+      "IKEA-möbler kommer med 19 000 olika skruvar och beslag - lätt att blanda ihop",
+      "En felaktigt monterad bokhylla kan rasa och orsaka skador på 50 000+ kr",
+      "Uppsala har Sveriges högsta andel IKEA-möbler per capita efter Stockholm",
+      "Genomsnittlig IKEA-kund spenderar 4-6 timmar på montering - proffs gör samma jobb på 1-2 timmar",
+      "TV-fästen på gipsväggar kräver specialfästen som klarar 50+ kg",
+      "IKEA-kök har 45 olika delar per skåp i genomsnitt",
+      "Felaktig montering av vitvaror kan orsaka vattenskador som inte täcks av försäkring"
+    ],
     faqs: [
       { q: "Monterar ni IKEA-möbler samma dag?", a: "Ja, för mindre monteringsjobb kan vi ofta komma samma dag. Kontakta oss för aktuell tillgänglighet." },
       { q: "Tar ni hand om emballage?", a: "Ja, vi tar med oss alla kartonger och emballage och ser till att det lämnas på återvinningsstation." },
@@ -355,6 +471,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Montering i Stockholm",
     title: "Montering i Stockholm – IKEA, Vitvaror & Fästen | ROT 50%",
     description: "Professionell monteringshjälp i Stockholm. IKEA-möbler, vitvaror och fästen. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
+      { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
+      { step: 3, title: "Vi kommer hem till dig", desc: "Montör kommer med verktyg och kunnande. Ofta klart samma dag." },
+      { step: 4, title: "Professionell montering", desc: "Vi monterar enligt tillverkarens instruktioner och testar allt." },
+      { step: 5, title: "Städning & bortforsling", desc: "Vi städar och tar hand om emballage. ROT/RUT-avdrag inkluderat." }
+    ],
+    priceExamples: [
+      { job: "TV-fäste på vägg", price: "1 400 kr", duration: "1 timme" },
+      { job: "IKEA PAX-garderob 3 dörrar", price: "2 800 kr", duration: "2-3 timmar" },
+      { job: "Köksmontage IKEA 8 skåp", price: "14 000 kr", duration: "1-2 dagar" },
+      { job: "Säng + 2 nattduksbord", price: "2 000 kr", duration: "1,5 timmar" }
+    ],
+    quickFacts: [
+      "IKEA-instruktioner är ofta otydliga - proffs gör jobbet 3x snabbare",
+      "Felaktig montering kan göra möbler farliga - särskilt barnsäkring",
+      "TV-fästen på betongvägg kräver specialborr och pluggar",
+      "ROT/RUT-avdrag gäller monteringsarbete i hemmet",
+      "Moderna möbler är ofta tyngre än äldre - rätt väggfäste är kritiskt",
+      "Emballage från IKEA ska till återvinningen - vi tar hand om det",
+      "PAX-garderober med spegeldörrar kräver noggrann vågrätjustering",
+      "Sekelskifteslägenheter har ofta betongväggar som kräver slagborr",
+      "Stockholm har strängare bullerkrav - monteringar efter 18.00 kan störa grannar",
+      "BRF-regler kan begränsa vad som får monteras - kontrollera innan",
+      "Gamla Stans smala trapphus kräver ofta demontering av stora möbler för transport",
+      "TV-montering i Stockholm kostar ofta mer på grund av betongväggar"
+    ],
+    didYouKnow: [
+      "Stockholms tightaste utrymmen är i Gamla Stan - montering kräver ofta specialverktyg",
+      "Sekelskifteslägenheter har ofta ojämna golv - möbler behöver justeras noggrannt",
+      "IKEA Kungens Kurva säljer 2,5 miljoner Billy-bokhyllor per år",
+      "En felaktigt monterad spegel kan falla och orsaka skador - alltid säkra tunga föremål",
+      "Betongväggar i nybyggen i Stockholm kräver slagborr - vanlig borr funkar inte",
+      "Stockholm har flest hyreslägenheter där BRF-regler kan begränsa monteringar",
+      "Genomsnittlig Stockholmare monterar 3-4 IKEA-möbler per år"
+    ],
     faqs: [
       { q: "Kan ni hämta möbler från IKEA?", a: "Ja, vi kan hämta möbler från IKEA Kungens Kurva eller Barkarby och leverera direkt till dig för montering." },
       { q: "Arbetar ni på kvällar?", a: "Ja, vi erbjuder kvällstider för de som behöver monteringshjälp efter kontorstid. Boka i förväg för bästa tid." }
@@ -373,6 +525,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Trädgårdstjänster i Uppsala",
     title: "Trädgård i Uppsala – Gräsklippning, Häckar & Plantering | RUT 50%",
     description: "Trädgårdshjälp i Uppsala. Gräsklippning, häckklippning, ogräsrensning och plantering. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
+      { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
+      { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
+      { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
+      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
+    ],
+    priceExamples: [
+      { job: "Gräsklippning 300 kvm", price: "800 kr", duration: "1 timme" },
+      { job: "Häckklippning 20 meter", price: "1 500 kr", duration: "2 timmar" },
+      { job: "Ogräsrensning rabatter", price: "600 kr/timme", duration: "2-4 timmar" },
+      { job: "Plantering 10 buskar", price: "2 200 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Uppsalas lera kräver kompost för bättre dränering",
+      "Gräsklippning april-oktober rekommenderas varannan vecka",
+      "Häckar ska klippas 2 gånger per år - juni och augusti",
+      "RUT-avdrag gäller trädgårdsskötsel på tomten",
+      "Mulchning sparar vatten och minskar ogräs",
+      "Uppsala har kyligare nätter än Stockholm - vissa växter trivs sämre",
+      "Kompostering minskar trädgårdsavfall med 50%",
+      "Gräsmattor i Uppsala behöver kalkgödsling på grund av sur jord",
+      "Snöskottning ingår inte i RUT-avdrag men snöröjning gör det",
+      "Trädgårdsavfall kan lämnas på Rosendals återvinningscentral",
+      "Bevattning av gräsmattan bör göras tidigt på morgonen för bäst effekt",
+      "Plantering bör göras i maj eller september i Uppsala"
+    ],
+    didYouKnow: [
+      "Uppsala botaniska trädgård grundades 1655 - en av världens äldsta",
+      "Uppsalas leriga jord är perfekt för äppelträd - staden hade 10 000+ äppelträd på 1800-talet",
+      "Gräsklippning på rätt höjd (5-6 cm) gör gräsmattan tätare och grönare",
+      "En trädgård i Uppsala behöver 30-40 liter vatten per kvm under torr sommar",
+      "Häckar av thuja växer 30-40 cm per år och behöver regelbunden klippning",
+      "Uppsala har 15 000+ privata trädgårdar som kräver regelbunden skötsel",
+      "Rätt tid för plantering i Uppsala är maj (efter sista frosten) och september"
+    ],
     faqs: [
       { q: "Hur ofta klipps gräset?", a: "Vi rekommenderar gräsklippning var 7-10 dag under högsäsong. Vi kan sätta upp regelbundna besök efter ditt schema." },
       { q: "Tar ni med utrustning?", a: "Ja, vi tar med all nödvändig utrustning som gräsklippare, häcksax, kratta och trädgårdssäckar." },
@@ -390,6 +578,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Trädgårdstjänster i Stockholm",
     title: "Trädgård i Stockholm – Gräs, Häckar & Plantering | RUT 50%",
     description: "Professionell trädgårdshjälp i Stockholm. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
+      { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
+      { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
+      { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
+      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
+    ],
+    priceExamples: [
+      { job: "Gräsklippning 300 kvm", price: "950 kr", duration: "1 timme" },
+      { job: "Häckklippning 20 meter", price: "1 800 kr", duration: "2 timmar" },
+      { job: "Ogräsrensning rabatter", price: "700 kr/timme", duration: "2-4 timmar" },
+      { job: "Plantering 10 buskar", price: "2 500 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Stockholms innerstad har över 1 000 innergårdar som kräver professionell skötsel",
+      "BRF-trädgårdar kräver ofta kollektivt godkännande för större förändringar",
+      "RUT-avdrag gäller trädgårdsskötsel på fastigheten",
+      "Takträdgårdar blir allt vanligare i Stockholm",
+      "Häckar ska klippas 2 gånger per år för optimal form",
+      "Gräsklippning varje vecka under högsäsong rekommenderas",
+      "Stockholm har 300 soliga dagar per år - perfekt för rosor",
+      "Bevattning bör göras tidigt på morgonen eller sent på kvällen",
+      "Kompostering minskar trädgårdsavfall och ger bättre jord",
+      "Plantering bör göras i maj eller september i Stockholm",
+      "Snöskottning ingår inte i RUT-avdrag men snöröjning gör det",
+      "Trädgårdsavfall kan lämnas på Stockholms återvinningscentraler"
+    ],
+    didYouKnow: [
+      "Stockholms innerstad har över 1 000 innergårdar som kräver professionell trädgårdsskötsel",
+      "Takträdgårdar i Stockholm kan minska temperaturen inomhus med 5 grader på sommaren",
+      "Stockholm har Sveriges högsta andel gräsmattor per capita i innerstaden",
+      "En välskött trädgård kan öka fastighetsvärdet med 5-10% i Stockholmsområdet",
+      "Gräsklippning 1 gång för lite kan göra gräsmattan gul och torr - regelbundenhet är nyckeln",
+      "Stockholm har 300 soliga dagar per år - perfekt för rosor och perenna plantor",
+      "BRF-trädgårdar i Stockholm kräver ofta kollektivt godkännande för större förändringar"
+    ],
     faqs: [
       { q: "Arbetar ni i BRF-trädgårdar?", a: "Ja, vi har avtal med flera BRF:er för regelbunden trädgårdsskötsel av gemensamma ytor." },
       { q: "Kan ni sköta takträdgårdar?", a: "Ja, vi har erfarenhet av takträdgårdar och terrasser inklusive bevattning, plantering och underhåll." }
@@ -408,6 +632,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Städtjänster i Uppsala",
     title: "Städning i Uppsala – Hemstäd, Flyttstäd & Byggstäd | RUT 50%",
     description: "Professionell städning i Uppsala. Hemstäd, flyttstäd och byggstäd. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Berätta om städbehov", desc: "Hemstäd, flyttstäd, byggstäd? Storlek och önskemål." },
+      { step: 2, title: "Offert direkt", desc: "Fast pris baserat på typ av städning och storlek. Inga dolda avgifter." },
+      { step: 3, title: "Bokning av tid", desc: "Välj datum som passar dig. Vi kommer med allt städmaterial." },
+      { step: 4, title: "Professionell städning", desc: "Certifierade städare med kvalitetsprodukter städar enligt checklista." },
+      { step: 5, title: "Kontroll & garanti", desc: "Vi kontrollerar resultatet. Flyttstäd har besiktningsgaranti." }
+    ],
+    priceExamples: [
+      { job: "Hemstäd 60 kvm", price: "1 200 kr", duration: "2 timmar" },
+      { job: "Flyttstäd 2:a", price: "3 500 kr", duration: "4 timmar" },
+      { job: "Byggstäd efter badrum", price: "2 800 kr", duration: "3 timmar" },
+      { job: "Fönsterputs 10 fönster", price: "1 500 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Flyttstäd ska följa Svensk Fastighetsförmedlings checklista för godkänd besiktning",
+      "Byggstäd efter renovering är kritiskt för att undvika dammspridning",
+      "RUT-avdrag gäller hemstäd, flyttstäd och fönsterputsning",
+      "Professionella städare städar 50% snabbare än privatpersoner",
+      "Miljövänliga produkter är lika effektiva som traditionella",
+      "Uppsala har över 50 000 hushåll som använder städtjänster regelbundet",
+      "Fönsterputs 2 gånger per år rekommenderas för bästa ljusinsläpp",
+      "Flyttstäd tar vanligtvis 3-6 timmar för en 3:a",
+      "Byggstäd ska göras direkt efter renovering för att undvika permanent smuts",
+      "Hemstäd varannan vecka är vanligast i Uppsala",
+      "Allergiker rekommenderas använda miljömärkta städprodukter",
+      "Professionell städning sparar 4-6 timmar per tillfälle"
+    ],
+    didYouKnow: [
+      "Svenskar städar i genomsnitt 3,5 timmar per vecka - motsvarande 7 arbetsveckor per år",
+      "Dåligt städad bostad kan innehålla 200 bakteriearter på kök sytor",
+      "Flyttstäd som inte godkänns kan kosta 10 000+ kr i efterarbete och försenade inflyttningar",
+      "Uppsala har Sveriges tredje högsta användning av städtjänster per capita",
+      "Fönsterputsning kan öka ljusinsläppet med 30% - sparar elkostnad för belysning",
+      "Byggdamm efter renovering kan orsaka allergi och andningsbesvär i flera månader",
+      "Professionella städare använder 4-stegs metod som är 10x effektivare än vanlig städning"
+    ],
     faqs: [
       { q: "Tar ni med städmaterial?", a: "Ja, vi tar med allt professionellt städmaterial och utrustning. Miljövänliga produkter används." },
       { q: "Gör ni flyttstäd med besiktning?", a: "Ja, vi gör flyttstäd enligt Svensk Fastighetsförmedlings checklista och garanterar godkänd besiktning." },
@@ -425,6 +685,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Städtjänster i Stockholm",
     title: "Städning i Stockholm – Hem, Flytt & Kontor | RUT 50%",
     description: "Professionella städtjänster i Stockholm. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Berätta om städbehov", desc: "Hemstäd, flyttstäd, byggstäd? Storlek och önskemål." },
+      { step: 2, title: "Offert direkt", desc: "Fast pris baserat på typ av städning och storlek. Inga dolda avgifter." },
+      { step: 3, title: "Bokning av tid", desc: "Välj datum som passar dig. Vi kommer med allt städmaterial." },
+      { step: 4, title: "Professionell städning", desc: "Certifierade städare med kvalitetsprodukter städar enligt checklista." },
+      { step: 5, title: "Kontroll & garanti", desc: "Vi kontrollerar resultatet. Flyttstäd har besiktningsgaranti." }
+    ],
+    priceExamples: [
+      { job: "Hemstäd 60 kvm", price: "1 400 kr", duration: "2 timmar" },
+      { job: "Flyttstäd 2:a", price: "4 200 kr", duration: "4 timmar" },
+      { job: "Byggstäd efter badrum", price: "3 200 kr", duration: "3 timmar" },
+      { job: "Fönsterputs 10 fönster", price: "1 800 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Stockholm har Sveriges högsta andel hushåll som använder regelbunden städtjänst - 35%",
+      "Flyttstäd ska följa Svensk Fastighetsförmedlings checklista",
+      "RUT-avdrag ger 50% rabatt på arbetskostnaden (max 75 000 kr/år)",
+      "Professionella städare städar 50% snabbare än privatpersoner",
+      "Miljövänliga produkter rekommenderas för innerstadslägenheter",
+      "BRF-trapphus i Stockholm städas ofta 1 gång per vecka",
+      "Fönsterputs 2 gånger per år rekommenderas för bästa ljusinsläpp",
+      "Kontorsstäd görs ofta efter kontorstid för att inte störa",
+      "Flyttstäd i Stockholm kostar i genomsnitt 5 000 kr för en 3:a",
+      "Byggstäd ska göras direkt efter renovering",
+      "Hemstäd varannan vecka är vanligast i Stockholm",
+      "Sekelskifteslägenheter kräver extra noggrann städning av stuckaturer"
+    ],
+    didYouKnow: [
+      "Stockholm har Sveriges högsta andel hushåll som använder regelbunden städtjänst - 35%",
+      "En genomsnittlig lägenhet i Stockholm har 200 000 damm partiklar per kubikdecimeter",
+      "Städning med fel produkter på parkett kan orsaka skador för 50 000+ kr",
+      "BRF-trapphus i Stockholm städas ofta 1 gång per vecka av professionella städare",
+      "Flyttstäd i Stockholm kostar i genomsnitt 5 000 kr för en 3:a",
+      "Stockholms torra inomhusklimat gör att damm sprids snabbare än i andra städer",
+      "Kontorsstäd i Stockholm sker ofta kl 18-22 för att inte störa arbetet"
+    ],
     faqs: [
       { q: "Städar ni kontor?", a: "Ja, vi städar kontor både engångsstädning och regelbundna städavtal. Vi arbetar efter kontorstid för minimal störning." },
       { q: "Gör ni fönsterputs?", a: "Ja, vi erbjuder fönsterputsning både in- och utvändigt för lägenheter upp till 3:e våningen." },
@@ -444,6 +740,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Markarbeten i Uppsala",
     title: "Markarbeten i Uppsala – Dränering, Grävning & Plattläggning | ROT 50%",
     description: "Professionella markarbeten i Uppsala. Dränering, schaktning, planering och plattläggning. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Beskriv ditt markprojekt", desc: "Dränering, plattläggning, schakt? Vi bokar tid för platsbesök." },
+      { step: 2, title: "Platsbesök & mätning", desc: "Vi bedömer mark, lutning och behov av förberedande arbete." },
+      { step: 3, title: "Detaljerad offert", desc: "Du får offert med materialspecifikation och tidsplan." },
+      { step: 4, title: "Utförande med maskiner", desc: "Vi schaktar, dränerar och planerar med rätt utrustning." },
+      { step: 5, title: "Färdigställande & dokumentation", desc: "Slutbesiktning och garanti. ROT-avdrag ingår." }
+    ],
+    priceExamples: [
+      { job: "Dränering 20 meter", price: "28 000 kr", duration: "2 dagar" },
+      { job: "Plattläggning 30 kvm", price: "45 000 kr", duration: "3-4 dagar" },
+      { job: "Schakt för altan 15 kvm", price: "12 000 kr", duration: "1 dag" },
+      { job: "Kantsten 10 meter", price: "8 500 kr", duration: "1 dag" }
+    ],
+    quickFacts: [
+      "Uppsalas lerjord kräver ofta mer dränering än sandig jord",
+      "Markarbeten kräver ofta bygglov för större projekt",
+      "Dränering runt hus förhindrar fuktskador i källare",
+      "ROT-avdrag gäller markarbeten kopplade till fastigheten",
+      "Plattor ska läggas på stabiliserad sandbädd för långlivad hållbarhet",
+      "Uppsala kommun kräver VA-anmälan för koppling till dagvatten",
+      "Markarbeten bör göras april-oktober när marken inte är frusen",
+      "Dränering kan spara 100 000+ kr i framtida fuktskador",
+      "Plattläggning kräver noggrann planering och lutning för vattenavrinning",
+      "Schaktning djupare än 1 meter kräver ofta grävtillstånd",
+      "Kantsten ger stabilitet och förhindrar att plattor förskjuts",
+      "Uppsalas lerjord kräver extra förberedelse innan plattläggning"
+    ],
+    didYouKnow: [
+      "Uppsalas höga lerinnehåll i jorden orsakar fuktproblem i 60% av alla källare",
+      "Dränering kan minska fuktproblem med 90% och spara 100 000+ kr i framtida skador",
+      "Schaktning till 1 meters djup kräver ofta grävtillstånd från Uppsala kommun",
+      "Markarbeten i Uppsala påverkas starkt av frost - arbeten under vinter undviks",
+      "Äldre fastigheter i Uppsala (före 1960) saknar ofta dränering helt",
+      "Plattläggning i Uppsala kräver 15 cm sandbädd på grund av lerjorden",
+      "Uppsala har över 500 mm nederbörd per år - bra dränering är kritiskt"
+    ],
     faqs: [
       { q: "Gör ni dränering?", a: "Ja, vi installerar dränering runt hus och fastigheter för att förhindra fuktproblem och läckage i källare." },
       { q: "Kan ni schakta för altan?", a: "Ja, vi gräver och planerar marken inför altanbygge, inklusive kantsten och dränering vid behov." },
@@ -461,6 +793,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Markarbeten i Stockholm",
     title: "Markarbeten i Stockholm – Schakt, Dränering & Plattor | ROT 50%",
     description: "Markarbeten i Stockholm med ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Beskriv ditt markprojekt", desc: "Dränering, plattläggning, schakt? Vi bokar tid för platsbesök." },
+      { step: 2, title: "Platsbesök & mätning", desc: "Vi bedömer mark, lutning och behov av förberedande arbete." },
+      { step: 3, title: "Detaljerad offert", desc: "Du får offert med materialspecifikation och tidsplan." },
+      { step: 4, title: "Utförande med maskiner", desc: "Vi schaktar, dränerar och planerar med rätt utrustning." },
+      { step: 5, title: "Färdigställande & dokumentation", desc: "Slutbesiktning och garanti. ROT-avdrag ingår." }
+    ],
+    priceExamples: [
+      { job: "Dränering 20 meter", price: "32 000 kr", duration: "2 dagar" },
+      { job: "Plattläggning 30 kvm", price: "52 000 kr", duration: "3-4 dagar" },
+      { job: "Schakt för altan 15 kvm", price: "14 000 kr", duration: "1 dag" },
+      { job: "Kantsten 10 meter", price: "10 000 kr", duration: "1 dag" }
+    ],
+    quickFacts: [
+      "Stockholm är byggt på lera och morän - markarbeten är ofta komplexa",
+      "Innergårdar kräver ofta handschaktning på grund av begränsat utrymme",
+      "ROT-avdrag gäller markarbeten kopplade till fastigheten",
+      "Dränering runt hus förhindrar fuktskador i källare",
+      "Plattläggning kräver noggrann lutning för vattenavrinning",
+      "Stockholm kommun kräver ofta bokning av lastzon för markarbeten",
+      "Markarbeten bör göras april-oktober när marken inte är frusen",
+      "Schaktning kan stöta på fornlämningar - arkeologisk undersökning krävs ibland",
+      "BRF-innergårdar kräver ofta styrelsegodkännande",
+      "Dränering kan öka fastighetsvärdet med 5-10%",
+      "Kantsten förhindrar att plattor förskjuts över tid",
+      "Stockholms markarbeten kostar ofta 20% mer än i andra städer"
+    ],
+    didYouKnow: [
+      "Stockholm är byggt på lera och morän - markarbeten är ofta komplexa",
+      "Gamla Stans medeltida hus har ofta dränering från 1600-talet som fortfarande fungerar",
+      "Schaktning i Stockholm kan stöta på fornlämningar - arkeologisk undersökning krävs ibland",
+      "Markarbeten i Stockholm kräver ofta bokning av lastzon 4 veckor i förväg",
+      "Stockholms kommuner har olika regler för markarbeten - kolla lokala föreskrifter",
+      "Plattläggning på Södermalm kräver ofta bergsprängning - mycket dyrare än på andra platser",
+      "Dränering runt sekelskiftesfastigheter i Stockholm kan öka värdet med 200 000+ kr"
+    ],
     faqs: [
       { q: "Kan ni arbeta i innergårdar?", a: "Ja, vi har erfarenhet av arbete i innergårdar med begränsat utrymme och tar hänsyn till grannar och tillgänglighet." },
       { q: "Gör ni markberedning för pool?", a: "Ja, vi gräver och förbereder mark för poolinstallation inklusive planering och stabilisering." }
@@ -478,6 +846,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Tekniska installationer i Uppsala",
     title: "Tekniska installationer i Uppsala – Nätverk, Larm & IT",
     description: "Nätverksinstallation, larm och IT-support i Uppsala.",
+    howItWorks: [
+      { step: 1, title: "Beskriv din tekniska installation", desc: "Nätverk, larm, kameror? Telefon eller online-bokning." },
+      { step: 2, title: "Platsbesök & analys", desc: "Tekniker besöker för att bedöma behov och befintlig infrastruktur." },
+      { step: 3, title: "Lösningsförslag & offert", desc: "Vi föreslår bästa lösning med utrustning och kostnad." },
+      { step: 4, title: "Installation & konfiguration", desc: "Certifierad tekniker installerar och testar allt." },
+      { step: 5, title: "Utbildning & dokumentation", desc: "Du får instruktioner och dokumentation för systemet." }
+    ],
+    priceExamples: [
+      { job: "Nätverksinstallation 5 punkter", price: "8 500 kr", duration: "1 dag" },
+      { job: "Larm villa med 8 sensorer", price: "12 000 kr", duration: "1 dag" },
+      { job: "Wifi-mesh 3 accesspunkter", price: "6 500 kr", duration: "0,5 dag" },
+      { job: "Kamerasystem 4 kameror", price: "15 000 kr", duration: "1-2 dagar" }
+    ],
+    quickFacts: [
+      "Nätverkskablar ska vara Cat6 eller bättre för framtidssäkring",
+      "Wifi-täckning i Uppsala påverkas av tjocka tegelväggar",
+      "Larmsystem kräver abonnemang hos larmcentral (200-400 kr/mån)",
+      "Kameror med molnlagring kostar 50-150 kr/mån per kamera",
+      "ROT-avdrag gäller inte för tekniska installationer (undantag: belysningsstyrning)",
+      "Uppsala har god 4G/5G-täckning för backup-lösningar",
+      "Wifi-mesh är bättre än repeaters för stora hus",
+      "Nätverksinstallation ökar fastighetsvärdet med 1-3%",
+      "Smart home-integration kan spara 15% på elräkningen",
+      "Uppsala har 5 000+ smarta hem med automation",
+      "Kamerasystem kräver GDPR-compliance vid utomhusinstallation",
+      "Säkerhetssystem med app-styrning ökar tryggheten"
+    ],
+    didYouKnow: [
+      "Uppsala universitet har Sveriges snabbaste forskningsnätverk - 100 Gbit/s",
+      "En genomsnittlig villa i Uppsala har 25 uppkopplade enheter (IoT)",
+      "Wifi i betongväggar tappar 60% styrka jämfört med träväggar",
+      "Larmsystem minskar inbrottsrisken med 90% enligt Folksam",
+      "Kamerasystem i Uppsala måste följa Datainspektionens regler för integritet",
+      "Cat6-kablar kan leverera 10 Gbit/s över 55 meter - mycket snabbare än wifi",
+      "Smart home-automation i Uppsala växer med 30% per år"
+    ],
     faqs: [
       { q: "Installerar ni nätverk?", a: "Ja, vi drar nätverkskablar, installerar routrar, switches och wifi-accesspunkter för hemma och kontor." },
       { q: "Kan ni sätta upp larm?", a: "Ja, vi installerar och programmerar larmsystem för villor, lägenheter och företag." },
@@ -495,6 +899,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Tekniska installationer i Stockholm",
     title: "Tekniska installationer i Stockholm – Nätverk & Larm",
     description: "Professionella tekniska installationer i Stockholm.",
+    howItWorks: [
+      { step: 1, title: "Beskriv din tekniska installation", desc: "Nätverk, larm, kameror? Telefon eller online-bokning." },
+      { step: 2, title: "Platsbesök & analys", desc: "Tekniker besöker för att bedöma behov och befintlig infrastruktur." },
+      { step: 3, title: "Lösningsförslag & offert", desc: "Vi föreslår bästa lösning med utrustning och kostnad." },
+      { step: 4, title: "Installation & konfiguration", desc: "Certifierad tekniker installerar och testar allt." },
+      { step: 5, title: "Utbildning & dokumentation", desc: "Du får instruktioner och dokumentation för systemet." }
+    ],
+    priceExamples: [
+      { job: "Nätverksinstallation 5 punkter", price: "10 000 kr", duration: "1 dag" },
+      { job: "Larm villa med 8 sensorer", price: "14 000 kr", duration: "1 dag" },
+      { job: "Wifi-mesh 3 accesspunkter", price: "7 500 kr", duration: "0,5 dag" },
+      { job: "Kamerasystem 4 kameror", price: "18 000 kr", duration: "1-2 dagar" }
+    ],
+    quickFacts: [
+      "Stockholm har Sveriges bästa fiberinfrastruktur - 95% täckning",
+      "Nätverksinstallation i BRF kräver ofta styrelsegodkännande",
+      "Wifi i sekelskifteslägenheter påverkas av tjocka murarväggar",
+      "Kamerasystem utomhus kräver tillstånd från byggnadsnämnden",
+      "Larmsystem med rörelsedetektorer rekommenderas för Stockholms lägenheter",
+      "Tekniska installationer i Stockholm måste följa BBR 2011:6",
+      "Mesh-wifi täcker 300 kvm med 3 accesspunkter",
+      "Cat7-kablar rekommenderas för framtidssäkra installationer",
+      "Stockholm har 80 000+ smarta hem med automation",
+      "Larm med kameraverifiering minskar falsklarm med 95%",
+      "Nätverksinstallation i Stockholm kostar 20% mer än Uppsala",
+      "GDPR kräver tydlig skyltning vid kameraövervakning"
+    ],
+    didYouKnow: [
+      "Stockholm har Sveriges snabbaste hemanslutningar - upp till 10 Gbit/s fiber",
+      "En genomsnittlig Stockholmslägenhet har 30+ uppkopplade enheter",
+      "Wifi-störningar i Stockholm orsakas ofta av grannars nätverk - rätt kanal är kritiskt",
+      "Stockholms polisstation använder samma larmcentraler som finns för privatpersoner",
+      "Cat6-kabling i Stockholm ökar lägenhetsvärdet med 50 000+ kr",
+      "Smart home i Stockholm kan spara 2 000-4 000 kr/år på el och värme",
+      "Kamerasystem i Stockholm minskar inbrottsförsök med 85% enligt försäkringsbolag"
+    ],
     faqs: [
       { q: "Arbetar ni med företag?", a: "Ja, vi har stor erfarenhet av företagsinstallationer inklusive nätverk, larmsystem och kamerasystem." },
       { q: "Installerar ni kamerasystem?", a: "Ja, vi installerar kamerasystem för övervakning av fastigheter och företag med molnlagring." }
@@ -512,6 +952,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Flytthjälp i Uppsala",
     title: "Flytthjälp i Uppsala – Bärhjälp, Packning & Transport | RUT 50%",
     description: "Professionell flytthjälp i Uppsala. Bärhjälp, packning och transport. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Berätta om din flytt", desc: "Storlek, distans, extra tjänster som packning? Ring eller boka online." },
+      { step: 2, title: "Offert & inventering", desc: "Vi ger fast pris baserat på volym och distans. Platsbesök vid behov." },
+      { step: 3, title: "Bokning & förberedelse", desc: "Vi bokar lastbil, personal och skyddsmaterial för flytten." },
+      { step: 4, title: "Flyttdagen", desc: "Proffs bär, lastar och transporterar säkert. Vi skyddar trappor och väggar." },
+      { step: 5, title: "Uppackning & RUT-avdrag", desc: "Vi packar upp vid behov. RUT 50% ingår i priset." }
+    ],
+    priceExamples: [
+      { job: "Flytt 2:a (40 kvm) inom Uppsala", price: "6 500 kr", duration: "4 timmar" },
+      { job: "Flytt 3:a med packning", price: "12 000 kr", duration: "1 dag" },
+      { job: "Kontorsflytt 100 kvm", price: "18 000 kr", duration: "1 dag" },
+      { job: "Pianoflytt", price: "4 500 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Flytt kräver bokning av flyttlastzon på trafikerade gator",
+      "RUT-avdrag gäller 50% av arbetskostnaden för flytt",
+      "Packning av glas och porslin ska göras med bubbelplast",
+      "Piano kräver specialutrustning och 3 personer",
+      "Flyttkartonger kostar 25-35 kr/st och kan återvinnas",
+      "Uppsala har 8 000 flyttar per år i genomsnitt",
+      "Flytt mellan våningar utan hiss kostar 30% mer",
+      "Försäkring täcker skador under flytt - spara kvitton",
+      "Flytt tar i genomsnitt 4-8 timmar för en 3:a",
+      "Vinterflytt kräver extra skydd mot kyla och snö",
+      "Bästa tiden för flytt i Uppsala är maj-september",
+      "Kontorsflytt kräver ofta IT-flytt med specialkompetens"
+    ],
+    didYouKnow: [
+      "Svenskar flyttar i genomsnitt 9 gånger under sitt liv",
+      "Felaktig bärning av tunga föremål orsakar 3 000 arbetsskador per år i Sverige",
+      "En 3:a i Uppsala har i genomsnitt 30 kubikmeter volym att flytta",
+      "Flytt utan proffs tar 3x längre tid och riskerar skador på möbler",
+      "Uppsala kommun kräver flytttillstånd för stora flyttbilar på vissa gator",
+      "Piano kan väga 200-400 kg och kräver 3-4 personer för säker flytt",
+      "Packningstid för en 3:a är 10-15 timmar för en person - proffs gör det på 4 timmar"
+    ],
     faqs: [
       { q: "Har ni egen lastbil?", a: "Ja, vi har lastbilar i olika storlekar för allt från mindre lägenhetsflyttar till stora villor." },
       { q: "Packar ni också?", a: "Ja, vi erbjuder packhjälp med professionellt packmaterial och kan packa hela hushållet åt dig." },
@@ -529,6 +1005,42 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Flytthjälp i Stockholm",
     title: "Flytthjälp i Stockholm – Bärhjälp & Transport | RUT 50%",
     description: "Pålitlig flytthjälp i Stockholm med RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Berätta om din flytt", desc: "Storlek, distans, extra tjänster som packning? Ring eller boka online." },
+      { step: 2, title: "Offert & inventering", desc: "Vi ger fast pris baserat på volym och distans. Platsbesök vid behov." },
+      { step: 3, title: "Bokning & förberedelse", desc: "Vi bokar lastbil, personal och skyddsmaterial för flytten." },
+      { step: 4, title: "Flyttdagen", desc: "Proffs bär, lastar och transporterar säkert. Vi skyddar trappor och väggar." },
+      { step: 5, title: "Uppackning & RUT-avdrag", desc: "Vi packar upp vid behov. RUT 50% ingår i priset." }
+    ],
+    priceExamples: [
+      { job: "Flytt 2:a (40 kvm) inom Stockholm", price: "8 500 kr", duration: "4 timmar" },
+      { job: "Flytt 3:a med packning", price: "15 000 kr", duration: "1 dag" },
+      { job: "Kontorsflytt 100 kvm", price: "22 000 kr", duration: "1 dag" },
+      { job: "Pianoflytt", price: "5 500 kr", duration: "2 timmar" }
+    ],
+    quickFacts: [
+      "Stockholm har Sveriges högsta flytt densitet - 35 000 flyttar/år",
+      "Lastzon måste bokas 2-4 veckor i förväg i innerstaden",
+      "Flytt utan hiss i Gamla Stan kan kosta dubbelt så mycket",
+      "RUT-avdrag ger 50% rabatt på arbetskostnad (max 75 000 kr/år)",
+      "Sekelskifteslägenheter har ofta trånga trapphus - mät innan flytt",
+      "Försäkring täcker skador upp till 100 000 kr vid professionell flytt",
+      "Packmaterial kan återvinnas hos Stockholms återvinningscentraler",
+      "Flytt mellan städer (Uppsala-Stockholm) tar 4-6 timmar",
+      "Piano i Stockholm kostar 5 500-8 000 kr beroende på våning",
+      "Flytt på sommaren är 20% dyrare på grund av högre efterfrågan",
+      "Stockholm har 15 flyttfirmor med miljöcertifiering",
+      "Kontorsflytt i Stockholm kräver ofta nattarbete för att inte störa verksamhet"
+    ],
+    didYouKnow: [
+      "Stockholm har Sveriges smalaste gränd (Mårten Trotzigs gränd, 90 cm) - omöjlig för stora möbler",
+      "Genomsnittlig Stockholmsflytt kostar 12 000 kr för en 3:a",
+      "Gamla Stans trapphus från 1600-talet är ofta för smala för moderna möbler - behövs lyftkran",
+      "En sekelskifteslägenhet i Stockholm har ofta dörrar som är 10 cm smalare än moderna standarder",
+      "Flytt i Stockholm utan proffs kan ta 2-3 dagar för en familj",
+      "Stockholms innerstad har parkeringsförbud på 90% av gatorna - lastzon är obligatorisk",
+      "Pianoflytt i Stockholm använder ofta lyftkran för våningar över 3:e - kostar 15 000+ kr"
+    ],
     faqs: [
       { q: "Kan ni flytta piano?", a: "Ja, vi har specialutrustning och erfarenhet av att flytta pianon och andra tunga instrument säkert." },
       { q: "Arbetar ni helger?", a: "Ja, vi erbjuder flytthjälp även på helger för de som behöver flytta då. Boka i god tid." },
@@ -549,6 +1061,42 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "Målare i Uppsala – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Professionella målare i Uppsala för målning av rum, tak, fasad och tapetsering. Snabb start, ROT-avdrag 30%. Vi täcker hela Uppsala.",
     priceHint: "Från 450 kr/h",
+    howItWorks: [
+      { step: 1, title: "Kontakt & konsultation", desc: "Berätta om målningsprojekt. Rum, fasad, färgval? Vi bokar hembesök." },
+      { step: 2, title: "Platsbesök & färgkonsultation", desc: "Målare bedömer yta, skick och behov. Hjälper med färgval." },
+      { step: 3, title: "Offert med tidsplan", desc: "Fast pris med material och arbetskostnad. Tydlig tidsplan." },
+      { step: 4, title: "Förberedelse & målning", desc: "Vi täcker golv, spackling, slipning, grundning och målning." },
+      { step: 5, title: "Slutbesiktning & garanti", desc: "Kontroll och städning. Du får garanti och ROT-avdrag 30%." }
+    ],
+    priceExamples: [
+      { job: "Målning rum 15 kvm", price: "6 500 kr", duration: "1 dag" },
+      { job: "Målning kök inkl. luckor", price: "12 000 kr", duration: "2 dagar" },
+      { job: "Fasadmålning 100 kvm", price: "45 000 kr", duration: "1 vecka" },
+      { job: "Tapetsering sovrum", price: "5 500 kr", duration: "1 dag" }
+    ],
+    quickFacts: [
+      "ROT-avdrag för målning är 30% av arbetskostnaden (inte 50% som VVS/El)",
+      "Uppsala har många villor med träfasader som behöver målning vart 8-10 år",
+      "Spackling och slipning är 40% av arbetet - viktigt för bra resultat",
+      "Färgval påverkar rumskänsla - ljusa färger gör rum större",
+      "Målning av köksluckor kostar 60% mindre än nya luckor",
+      "Fasadmålning kräver torrt väder - undvik oktober-mars",
+      "Grundning är obligatoriskt på nya ytor för långlivad hållbarhet",
+      "Målning ökar fastighetsvärdet med 2-5%",
+      "Uppsala har 12 000+ villor med träfasader",
+      "Tapetsering kräver 24h torktid innan möbler kan flyttas in",
+      "Miljömärkt färg kostar 20% mer men är bättre för inomhusluft",
+      "Professionella målare målar 50% snabbare och snyggare än privatpersoner"
+    ],
+    didYouKnow: [
+      "Färg uppfanns i Sverige 1887 av Alcro-Beckers - Uppsala var bland första städerna att använda färg",
+      "Fel färgval kan göra ett rum 20% mindre - ljusa färger reflekterar ljus",
+      "Spackling och slipning tar längre tid än själva målningen",
+      "En villa i Uppsala målas om var 15:e år i genomsnitt",
+      "Gammal blymålning från före 1970 kräver specialhantering - farlig för barn",
+      "Takmålning kräver 30% mer färg än väggmålning på grund av absorption",
+      "En proffsmålare använder 10 liter färg för 40 kvm väggyta"
+    ],
     faqs: [
       { 
         q: "Hur snabbt kan målare komma ut i Uppsala?", 
@@ -592,6 +1140,42 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "Målare i Stockholm – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Erfarna målare i Stockholm för målning av rum, fasader och tapetsering. Snabb hjälp, ROT-avdrag 30%. Täcker hela Stockholms stad.",
     priceHint: "Från 500 kr/h",
+    howItWorks: [
+      { step: 1, title: "Första kontakt", desc: "Beskriv målningsprojekt och område i Stockholm. Vi bokar tid för besök." },
+      { step: 2, title: "Hembesök & färgrådgivning", desc: "Målare mäter upp, bedömer skick och ger färgrekommendationer." },
+      { step: 3, title: "Detaljerad offert", desc: "Du får fast pris med material, arbetskostnad och tidsplan. ROT-avdrag 30% ingår." },
+      { step: 4, title: "Målningsarbete", desc: "Vi täcker, spackar, slipar, grundar och målar. Minimal störning." },
+      { step: 5, title: "Slutkontroll & städning", desc: "Vi kontrollerar kvalitet, städar och du får garanti." }
+    ],
+    priceExamples: [
+      { job: "Målning rum 15 kvm", price: "8 000 kr", duration: "1 dag" },
+      { job: "Målning kök inkl. luckor", price: "15 000 kr", duration: "2 dagar" },
+      { job: "Fasadmålning 100 kvm", price: "55 000 kr", duration: "1 vecka" },
+      { job: "Tapetsering sovrum", price: "7 000 kr", duration: "1 dag" }
+    ],
+    quickFacts: [
+      "ROT-avdrag för målning är 30% (gäller arbetskostnad, ej material)",
+      "Stockholm har 80% lägenheter - målning av väggar i lägenheter är vanligast",
+      "BRF-regler i Stockholm kräver ofta godkännande för fasadmålning",
+      "Sekelskifteslägenheter har ofta vackra stuckaturer som ska bevaras",
+      "Målning av köksluckor är 70% billigare än att köpa nytt kök",
+      "Spackling av sprickor är kritiskt i gamla Stockholmshus",
+      "Färgval i Stockholm påverkas av ljusinsläpp - Södermalm har mindre ljus än Östermalm",
+      "Takmålning i Stockholm är vanligare än i andra städer - höga tak",
+      "Målning kan minska värdet om fel färg väljs - konsultera proffs",
+      "Stockholm har 500+ målare - välj certifierade för ROT-avdrag",
+      "Fasadmålning i Stockholm kräver bygglov i vissa områden",
+      "Miljömärkt färg (Svanen) rekommenderas för innerstadslägenheter"
+    ],
+    didYouKnow: [
+      "Stockholms sekelskifteslägenheter målades ursprungligen med linoljefärg som höll i 50+ år",
+      "Fel färgval kan minska lägenhetsvärdet med 100 000+ kr vid försäljning",
+      "Gamla Stan har 600+ fastigheter med originalmålning från 1600-1800-talet",
+      "Stuckatur i Stockholms lägenheter kan ha 10+ lager färg - avspolning kan ta dagar",
+      "Målning av trapphus i BRF kostar 50 000-150 000 kr beroende på storlek",
+      "Stockholms torra inomhusklimat gör att färg torkar 30% snabbare än i kustnära städer",
+      "Professionell målning i Stockholm kan spara 20 000+ kr i skador jämfört med egen målning"
+    ],
     faqs: [
       { 
         q: "Hur snabbt kan målare komma ut i Stockholm?", 
