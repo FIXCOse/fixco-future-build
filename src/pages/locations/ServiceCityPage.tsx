@@ -7,6 +7,7 @@ import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
 import { CheckCircle2, Phone, Calendar, MapPin, Zap, FileText } from "lucide-react";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
+// Force rebuild 
 interface ServiceCityPageProps {
   service: ServiceKey;
   city: "Uppsala" | "Stockholm";
