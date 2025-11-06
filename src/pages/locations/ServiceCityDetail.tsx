@@ -65,6 +65,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
   const [howItWorksVariant, setHowItWorksVariant] = useState<'timeline' | 'glass' | 'zigzag'>('timeline');
+  
+  console.log('ServiceCityDetail rendered, howItWorksVariant:', howItWorksVariant);
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
