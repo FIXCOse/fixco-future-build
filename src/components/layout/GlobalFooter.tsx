@@ -119,8 +119,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/tjanster" className="text-primary hover:text-primary/80 transition-colors font-medium">
-                    Alla tjänster →
+                  <Link to="/tjanster" className="text-primary hover:text-primary/80 transition-colors font-bold text-base">
+                    🔧 Alla tjänster och priser →
                   </Link>
                 </li>
               </ul>

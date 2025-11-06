@@ -126,7 +126,7 @@
     <loc>https://fixco.se/rot-info</loc>
     <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info" />
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info" />
   </url>
@@ -136,7 +136,7 @@
     <loc>https://fixco.se/rut</loc>
     <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut" />
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut" />
   </url>
@@ -166,7 +166,7 @@
     <loc>https://fixco.se/boka-hembesok</loc>
     <lastmod>2025-01-10</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok" />
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit" />
   </url>

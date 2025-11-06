@@ -164,6 +164,32 @@ export const getOrganizationSchema = () => ({
     "https://www.facebook.com/fixco",
     "https://www.instagram.com/fixco_se",
     "https://www.linkedin.com/company/fixco"
+  ],
+  "hasPart": [
+    {
+      "@type": "WebPage",
+      "name": "Tjänster",
+      "url": `${baseUrl}/tjanster`,
+      "description": "Alla våra tjänster med ROT & RUT-avdrag"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Kontakt",
+      "url": `${baseUrl}/kontakt`,
+      "description": "Ta kontakt för offert eller frågor"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Om oss",
+      "url": `${baseUrl}/om-oss`,
+      "description": "Läs mer om Fixco"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Boka hembesök",
+      "url": `${baseUrl}/boka-hembesok`,
+      "description": "Boka gratis hembesök direkt"
+    }
   ]
 });
 

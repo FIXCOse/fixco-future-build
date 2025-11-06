@@ -147,6 +147,25 @@ const Home = () => {
         </div>
       </section>
 
+      {/* All Services CTA Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Alla Tjänster med ROT & RUT-avdrag
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Utforska hela vårt tjänsteutbud – från elmontör och VVS till måleri, snickeri och städning. 
+            Alla med 50% rabatt via ROT/RUT-avdrag.
+          </p>
+          <Button asChild size="lg" className="font-semibold">
+            <Link to="/tjanster">
+              Se alla tjänster och priser
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
         <ContextualEditor contentId="comparison-section">
