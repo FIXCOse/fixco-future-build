@@ -128,6 +128,29 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
             </div>
           </div>
 
+          {/* How It Works Section */}
+          {item.howItWorks && (
+            <div className="mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-3">Så här går det till</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Från första kontakt till färdigt jobb – enkelt och tryggt
+                </p>
+              </div>
+              <div className="grid md:grid-cols-5 gap-4">
+                {item.howItWorks.map((step) => (
+                  <div key={step.step} className="relative p-6 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
+                    <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+                      {step.step}
+                    </div>
+                    <h3 className="font-bold mb-2 mt-2">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Cases and FAQ Grid */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Cases */}
@@ -159,6 +182,54 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
               </div>
             </div>
           </div>
+
+          {/* Price Examples Section */}
+          {item.priceExamples && (
+            <div className="mb-12 p-6 rounded-lg border border-border bg-card">
+              <h2 className="text-2xl font-bold mb-4">Prisexempel för {item.service.toLowerCase()} i {city}</h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                Alla priser inkluderar material, arbete och ROT-avdrag. Exakta priser får du i din offert.
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-3 px-4 font-semibold">Jobb</th>
+                      <th className="text-left py-3 px-4 font-semibold">Pris (efter ROT)</th>
+                      <th className="text-left py-3 px-4 font-semibold">Tid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {item.priceExamples.map((ex, i) => (
+                      <tr key={i} className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
+                        <td className="py-3 px-4 font-medium">{ex.job}</td>
+                        <td className="py-3 px-4 text-primary font-bold">{ex.price}</td>
+                        <td className="py-3 px-4 text-sm text-muted-foreground">{ex.duration}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Quick Facts Section */}
+          {item.quickFacts && (
+            <div className="mb-12 p-6 rounded-lg border-2 border-dashed border-primary/30 bg-primary/5">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-primary" />
+                Bra att veta om {item.service.toLowerCase()} i {city}
+              </h3>
+              <ul className="space-y-2">
+                {item.quickFacts.map((fact, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                    <span>{fact}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Related Services */}
           <div className="p-6 rounded-lg border border-border bg-card mb-12">

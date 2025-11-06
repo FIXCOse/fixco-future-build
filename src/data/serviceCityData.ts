@@ -20,6 +20,9 @@ export interface ServiceCityItem {
   priceHint?: string;
   faqs: Array<{ q: string; a: string }>;
   cases: Array<{ title: string; desc: string }>;
+  howItWorks?: Array<{ step: number; title: string; desc: string }>;
+  priceExamples?: Array<{ job: string; price: string; duration: string }>;
+  quickFacts?: Array<string>;
 }
 
 export const serviceCityData: ServiceCityItem[] = [
@@ -32,6 +35,26 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "Elmontör i Uppsala – Installation & Felsökning | ROT 50%",
     description:
       "Auktoriserade elektriker i Uppsala för belysning, uttag, laddbox och felsökning. Snabb hjälp, ROT-avdrag 50%. Start inom 24h.",
+    howItWorks: [
+      { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Vi återkommer inom 2 timmar på vardagar." },
+      { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer hem till dig i Uppsala för att se över jobbet. Ofta samma dag." },
+      { step: 3, title: "Tydlig offert", desc: "Du får en detaljerad offert med fast pris. Inga dolda kostnader." },
+      { step: 4, title: "Vi genomför jobbet", desc: "Auktoriserade elektriker utför arbetet enligt avtalad tid. Start inom 24-48h." },
+      { step: 5, title: "Dokumentation & garanti", desc: "Du får besiktningsprotokoll och garanti. ROT-avdraget sköter vi." }
+    ],
+    priceExamples: [
+      { job: "Byte av 5 st eluttag", price: "2 500 kr", duration: "1-2 timmar" },
+      { job: "Installation av taklampa", price: "1 200 kr", duration: "30-60 min" },
+      { job: "Laddbox 11 kW inkl. installation", price: "12 500 kr", duration: "4-6 timmar" },
+      { job: "Felsökning jordfel", price: "från 1 800 kr", duration: "1-3 timmar" }
+    ],
+    quickFacts: [
+      "90% av Uppsalas fastigheter behöver eluppgradering inom 10 år",
+      "Laddbox kan öka fastighetsvärdet med 2-5%",
+      "ROT-avdrag ger 50% rabatt på arbetskostnaden",
+      "Uppsala kommun kräver installationstillstånd för laddboxar",
+      "LED-belysning sparar 80% energi jämfört med glödlampor"
+    ],
     faqs: [
       { 
         q: "Hur snabbt kan elektriker komma ut i Uppsala?", 
@@ -69,6 +92,26 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "Elmontör i Stockholm – Elektriker för Hem & Företag | ROT 50%",
     description:
       "Elinstallation, belysning, laddbox och felsökning i Stockholm. Auktoriserade elektriker med tydliga priser och ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Svar inom 2 timmar på vardagar." },
+      { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer till dig i Stockholm för att bedöma jobbet. Ofta samma dag." },
+      { step: 3, title: "Fast pris-offert", desc: "Du får en detaljerad offert med fast pris och tidsplan. Inga överraskningar." },
+      { step: 4, title: "Auktoriserad elektriker", desc: "Vi utför arbetet enligt avtalad tid. Start inom 24-48h." },
+      { step: 5, title: "Besiktning & garanti", desc: "Besiktningsprotokoll och garanti ingår. Vi hanterar ROT-avdraget åt dig." }
+    ],
+    priceExamples: [
+      { job: "Byte av 5 st eluttag", price: "2 800 kr", duration: "1-2 timmar" },
+      { job: "Installation av taklampa", price: "1 400 kr", duration: "30-60 min" },
+      { job: "Laddbox 11 kW inkl. installation", price: "13 500 kr", duration: "4-6 timmar" },
+      { job: "Elfelsökning", price: "från 2 000 kr", duration: "1-3 timmar" }
+    ],
+    quickFacts: [
+      "80% av Stockholms sekelskifteslägenheter har ursprunglig el",
+      "Laddbox i Stockholm kräver anmälan till Ellevio 4-6 veckor innan",
+      "ROT-avdrag ger 50% rabatt på arbetskostnaden (max 50 000 kr/år)",
+      "Stockholm har Sveriges högsta efterfrågan på elbilsladdning",
+      "Modern belysning kan spara 500-800 kr/år per rum"
+    ],
     faqs: [
       { 
         q: "Kan ni arbeta i Stockholms innerstad?", 
@@ -100,6 +143,26 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "VVS i Uppsala – Rörmokare för Badrum & Akut läcka | ROT 50%",
     description:
       "Rörmokare i Uppsala för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabb hjälp vid akuta läckor och ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Ring vid akut läcka", desc: "Vid akuta läckor - ring direkt. Vi prioriterar nödfall och kommer ofta samma dag." },
+      { step: 2, title: "Snabb utryckning", desc: "Vi kommer till din fastighet i Uppsala med verktyg och reservdelar." },
+      { step: 3, title: "Felsökning & åtgärd", desc: "Vi hittar problemet, förklarar vad som behövs och ger dig ett fast pris." },
+      { step: 4, title: "Professionell utförande", desc: "Certifierad rörmokare utför arbetet enligt branschstandard." },
+      { step: 5, title: "Test & garanti", desc: "Vi testar allt noga och ger garanti. Försäkringsintyg vid behov." }
+    ],
+    priceExamples: [
+      { job: "Byte av blandare", price: "2 200 kr", duration: "1 timme" },
+      { job: "Installation av WC-stol", price: "3 500 kr", duration: "2-3 timmar" },
+      { job: "Akut läcka (utryckning)", price: "från 2 500 kr", duration: "1-2 timmar" },
+      { job: "Badrumsrenovering liten", price: "från 85 000 kr", duration: "2-3 veckor" }
+    ],
+    quickFacts: [
+      "Uppsala har många läckor vintertid på grund av äldre rör",
+      "BRF-badrumsrenoveringar kräver ofta godkännande från styrelse",
+      "ROT-avdrag gäller både arbetskostnad och viss materiel",
+      "Försäkring kan täcka akuta läckor - spara alltid kvitton",
+      "Moderna termostatblandare sparar vatten och energi"
+    ],
     faqs: [
       { 
         q: "Fixar ni akuta läckor i Uppsala?", 
@@ -133,6 +196,26 @@ export const serviceCityData: ServiceCityItem[] = [
     title: "VVS i Stockholm – Rörmokare & Badrum | ROT 50%",
     description:
       "VVS-hjälp i Stockholm för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabbt på plats och tydliga prisexempel. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Kontakt & bokning", desc: "Ring oss för akuta läckor eller boka tid för planerade jobb. Svar inom 2h." },
+      { step: 2, title: "Hembesök", desc: "Certifierad rörmokare kommer till dig i Stockholm med verktyg och vanliga reservdelar." },
+      { step: 3, title: "Offert på plats", desc: "Vi bedömer jobbet och ger dig ett fast pris direkt. Inga dolda avgifter." },
+      { step: 4, title: "Utförande", desc: "Vi utför arbetet snabbt och professionellt med kvalitetsmaterial." },
+      { step: 5, title: "Test & dokumentation", desc: "Funktionstest och dokumentation ingår. Försäkringsintyg vid skador." }
+    ],
+    priceExamples: [
+      { job: "Byte av blandare", price: "2 500 kr", duration: "1 timme" },
+      { job: "Installation av WC-stol", price: "3 800 kr", duration: "2-3 timmar" },
+      { job: "Akut läcka (jourtid)", price: "från 3 000 kr", duration: "1-2 timmar" },
+      { job: "Badrumsrenovering liten", price: "från 95 000 kr", duration: "2-3 veckor" }
+    ],
+    quickFacts: [
+      "Stockholm har Sveriges äldsta vattenledningsnät",
+      "BRF-badrum kräver ofta fuktsäkerhetsprojektering",
+      "Vattentryck i Stockholm varierar mellan 2-6 bar",
+      "ROT-avdrag gäller upp till 50 000 kr per person och år",
+      "Moderna duschblandare kan spara 30% vatten"
+    ],
     faqs: [
       { 
         q: "Arbetar ni i BRF:er i Stockholm?", 
@@ -163,6 +246,26 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Snickare i Uppsala",
     title: "Snickare i Uppsala – Kök, Garderober & Inredning | ROT 50%",
     description: "Erfarna snickare i Uppsala för köksmontering, platsbyggda garderober, lister och alla typer av snickeriarbeten. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Planering", desc: "Berätta om ditt projekt. Vi bokar tid för mätning och diskussion om design och material." },
+      { step: 2, title: "Mätning hemma", desc: "Vi kommer hem till dig i Uppsala för att mäta upp och diskutera lösningar." },
+      { step: 3, title: "Offert & ritning", desc: "Du får en detaljerad offert med ritning och materialspecifikation." },
+      { step: 4, title: "Beställning & produktion", desc: "Efter godkänt underlag beställs material och produktionen planeras." },
+      { step: 5, title: "Montering & färdigställande", desc: "Erfaren snickare monterar och justerar. Du får ROT-avdrag på arbetskostnaden." }
+    ],
+    priceExamples: [
+      { job: "IKEA-köksmontering 10 skåp", price: "18 000 kr", duration: "2-3 dagar" },
+      { job: "Platsbyggd garderob 2 meter", price: "25 000 kr", duration: "3-4 dagar" },
+      { job: "Montering av lister 50 m", price: "8 500 kr", duration: "1 dag" },
+      { job: "Köksbänkskiva montering", price: "4 500 kr", duration: "3-4 timmar" }
+    ],
+    quickFacts: [
+      "Uppsalas sekelskifteslägenheter har ofta kök från 60-70-talet",
+      "Platsbyggt är ofta billigare än färdiga lösningar för sneda rum",
+      "ROT-avdrag gäller montering men inte själva möblerna",
+      "Köksbyte tar vanligtvis 2-4 dagar beroende på storlek",
+      "Moderna kök ökar lägenhetsvärdet med upp till 10%"
+    ],
     faqs: [
       { q: "Bygger ni platsbyggda garderober?", a: "Ja, vi bygger skräddarsydda garderober, bokhyllor och förvaringslösningar anpassade efter dina behov och utrymme." },
       { q: "Monterar ni IKEA-kök?", a: "Ja, vi monterar IKEA-kök och andra kökslösningar. Vi hanterar även vattenanslutningar och elinstallationer i samarbete med våra elektriker." },
@@ -180,6 +283,26 @@ export const serviceCityData: ServiceCityItem[] = [
     h1: "Snickare i Stockholm",
     title: "Snickare i Stockholm – Kök, Garderober & Renovering | ROT 50%",
     description: "Professionella snickare i Stockholm för alla snickeriarbeten. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Initial konsultation", desc: "Kontakta oss för att diskutera ditt projekt. Vi bokar tid för hembesök." },
+      { step: 2, title: "Mätning & design", desc: "Snickare besöker dig i Stockholm för mätning och designdiskussion." },
+      { step: 3, title: "Offert med ritning", desc: "Du får en detaljerad offert med 3D-ritning och materialförslag." },
+      { step: 4, title: "Material & produktion", desc: "Vi beställer material och förbereder alla komponenter i verkstad." },
+      { step: 5, title: "Installation & finish", desc: "Professionell montering på plats. Vi städar efter oss och ROT-avdrag ingår." }
+    ],
+    priceExamples: [
+      { job: "IKEA-köksmontering 12 skåp", price: "22 000 kr", duration: "2-4 dagar" },
+      { job: "Platsbyggd walk-in closet", price: "35 000 kr", duration: "4-5 dagar" },
+      { job: "Montering av lister 60 m", price: "10 500 kr", duration: "1-2 dagar" },
+      { job: "Altandörr + karm", price: "12 000 kr", duration: "1 dag" }
+    ],
+    quickFacts: [
+      "80% av Stockholms sekelskifteslägenheter har originaldetaljer att bevara",
+      "BRF-arbete kräver ofta styrelsegodkännande innan start",
+      "Stockholm har strängare bullerkrav - ljudisolering kan behövas",
+      "ROT-avdrag gäller arbetskostnad men inte material",
+      "Platsbyggda lösningar är perfekta för Stockholms sneda väggar"
+    ],
     faqs: [
       { q: "Arbetar ni i BRF:er?", a: "Ja, vi har stor erfarenhet av BRF-arbete och följer husets rutiner för bokning, tillträde och städning." },
       { q: "Kan ni göra soundproof väggar?", a: "Ja, vi bygger ljudisolerade väggar med dubbelreglar och isolering för optimal ljuddämpning mellan rum eller lägenheter." }
