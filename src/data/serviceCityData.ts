@@ -1,3 +1,5 @@
+import type { CopyKey } from '@/copy/keys';
+
 export type ServiceKey =
   | "Elmontör"
   | "VVS"
@@ -10,26 +12,20 @@ export type ServiceKey =
   | "Trädgård"
   | "Tekniska installationer";
 
-// Multilingual string type
-export interface LocalizedString {
-  sv: string;
-  en: string;
-}
-
 export interface ServiceCityItem {
   service: ServiceKey;
   city: "Uppsala" | "Stockholm";
-  slug: string | LocalizedString; // Can be simple string (old) or multilingual (new)
-  h1: string | LocalizedString;
-  title: string | LocalizedString;
-  description: string | LocalizedString;
-  priceHint?: string | LocalizedString;
-  faqs: Array<{ q: string | LocalizedString; a: string | LocalizedString }>;
-  cases: Array<{ title: string | LocalizedString; desc: string | LocalizedString }>;
-  howItWorks?: Array<{ step: number; title: string | LocalizedString; desc: string | LocalizedString }>;
-  priceExamples?: Array<{ job: string | LocalizedString; price: string; duration: string | LocalizedString }>;
-  quickFacts?: Array<string | LocalizedString>;
-  didYouKnow?: Array<string | LocalizedString>;
+  slug: string;
+  h1Key: CopyKey;
+  titleKey: CopyKey;
+  descriptionKey: CopyKey;
+  priceHintKey?: CopyKey;
+  faqKeys: Array<{ qKey: CopyKey; aKey: CopyKey }>;
+  caseKeys: Array<{ titleKey: CopyKey; descKey: CopyKey }>;
+  howItWorksKeys?: Array<{ step: number; titleKey: CopyKey; descKey: CopyKey }>;
+  priceExampleKeys?: Array<{ jobKey: CopyKey; price: string; durationKey: CopyKey }>;
+  quickFactKeys?: CopyKey[];
+  didYouKnowKeys?: CopyKey[];
 }
 
 export const serviceCityData: ServiceCityItem[] = [
@@ -37,291 +33,107 @@ export const serviceCityData: ServiceCityItem[] = [
   {
     service: "Elmontör",
     city: "Uppsala",
-    slug: { sv: "elmontor-uppsala", en: "electrician-uppsala" },
-    h1: { 
-      sv: "Elmontör i Uppsala", 
-      en: "Electrician in Uppsala" 
-    },
-    title: { 
-      sv: "Elmontör i Uppsala – Installation & Felsökning | ROT 50%", 
-      en: "Electrician in Uppsala – Installation & Troubleshooting | ROT 50%" 
-    },
-    description: {
-      sv: "Auktoriserade elektriker i Uppsala för belysning, uttag, laddbox och felsökning. Snabb hjälp, ROT-avdrag 50%. Start inom 24h.",
-      en: "Certified electricians in Uppsala for lighting, outlets, charging boxes and troubleshooting. Fast help, ROT deduction 50%. Start within 24h."
-    },
-    howItWorks: [
-      { 
-        step: 1, 
-        title: { sv: "Kontakta oss", en: "Contact us" }, 
-        desc: { 
-          sv: "Ring eller begär offert online. Vi återkommer inom 2 timmar på vardagar.", 
-          en: "Call or request a quote online. We respond within 2 hours on weekdays." 
-        }
-      },
-      { 
-        step: 2, 
-        title: { sv: "Kostnadsfri besiktning", en: "Free inspection" }, 
-        desc: { 
-          sv: "Vi kommer hem till dig i Uppsala för att se över jobbet. Ofta samma dag.", 
-          en: "We come to your home in Uppsala to inspect the job. Often same day." 
-        }
-      },
-      { 
-        step: 3, 
-        title: { sv: "Tydlig offert", en: "Clear quote" }, 
-        desc: { 
-          sv: "Du får en detaljerad offert med fast pris. Inga dolda kostnader.", 
-          en: "You get a detailed quote with fixed price. No hidden costs." 
-        }
-      },
-      { 
-        step: 4, 
-        title: { sv: "Vi genomför jobbet", en: "We complete the job" }, 
-        desc: { 
-          sv: "Auktoriserade elektriker utför arbetet enligt avtalad tid. Start inom 24-48h.", 
-          en: "Certified electricians perform the work according to agreed time. Start within 24-48h." 
-        }
-      },
-      { 
-        step: 5, 
-        title: { sv: "Dokumentation & garanti", en: "Documentation & warranty" }, 
-        desc: { 
-          sv: "Du får besiktningsprotokoll och garanti. ROT-avdraget sköter vi.", 
-          en: "You get inspection report and warranty. We handle the ROT deduction." 
-        }
-      }
+    slug: "elmontor-uppsala",
+    h1Key: 'serviceCity.el.uppsala.h1',
+    titleKey: 'serviceCity.el.uppsala.title',
+    descriptionKey: 'serviceCity.el.uppsala.description',
+    howItWorksKeys: [
+      { step: 1, titleKey: 'serviceCity.el.uppsala.howItWorks.0.title', descKey: 'serviceCity.el.uppsala.howItWorks.0.desc' },
+      { step: 2, titleKey: 'serviceCity.el.uppsala.howItWorks.1.title', descKey: 'serviceCity.el.uppsala.howItWorks.1.desc' },
+      { step: 3, titleKey: 'serviceCity.el.uppsala.howItWorks.2.title', descKey: 'serviceCity.el.uppsala.howItWorks.2.desc' },
+      { step: 4, titleKey: 'serviceCity.el.uppsala.howItWorks.3.title', descKey: 'serviceCity.el.uppsala.howItWorks.3.desc' },
+      { step: 5, titleKey: 'serviceCity.el.uppsala.howItWorks.4.title', descKey: 'serviceCity.el.uppsala.howItWorks.4.desc' }
     ],
-    priceExamples: [
-      { 
-        job: { sv: "Byte av 5 st eluttag", en: "Replacement of 5 electrical outlets" }, 
-        price: "2 500 kr", 
-        duration: { sv: "1-2 timmar", en: "1-2 hours" }
-      },
-      { 
-        job: { sv: "Installation av taklampa", en: "Installation of ceiling lamp" }, 
-        price: "1 200 kr", 
-        duration: { sv: "30-60 min", en: "30-60 min" }
-      },
-      { 
-        job: { sv: "Laddbox 11 kW inkl. installation", en: "Charging box 11 kW incl. installation" }, 
-        price: "12 500 kr", 
-        duration: { sv: "4-6 timmar", en: "4-6 hours" }
-      },
-      { 
-        job: { sv: "Felsökning jordfel", en: "Ground fault troubleshooting" }, 
-        price: "från 1 800 kr", 
-        duration: { sv: "1-3 timmar", en: "1-3 hours" }
-      }
+    priceExampleKeys: [
+      { jobKey: 'serviceCity.el.uppsala.priceExample.0.job', price: "2 500 kr", durationKey: 'serviceCity.el.uppsala.priceExample.0.duration' },
+      { jobKey: 'serviceCity.el.uppsala.priceExample.1.job', price: "1 200 kr", durationKey: 'serviceCity.el.uppsala.priceExample.1.duration' },
+      { jobKey: 'serviceCity.el.uppsala.priceExample.2.job', price: "12 500 kr", durationKey: 'serviceCity.el.uppsala.priceExample.2.duration' },
+      { jobKey: 'serviceCity.el.uppsala.priceExample.3.job', price: "från 1 800 kr", durationKey: 'serviceCity.el.uppsala.priceExample.3.duration' }
     ],
-    quickFacts: [
-      { 
-        sv: "90% av Uppsalas fastigheter behöver eluppgradering inom 10 år",
-        en: "90% of Uppsala's properties need electrical upgrades within 10 years"
-      },
-      {
-        sv: "Laddbox kan öka fastighetsvärdet med 2-5%",
-        en: "Charging box can increase property value by 2-5%"
-      },
-      {
-        sv: "ROT-avdrag ger 50% rabatt på arbetskostnaden",
-        en: "ROT deduction gives 50% discount on labor costs"
-      },
-      {
-        sv: "Uppsala kommun kräver installationstillstånd för laddboxar",
-        en: "Uppsala municipality requires installation permit for charging boxes"
-      },
-      {
-        sv: "LED-belysning sparar 80% energi jämfört med glödlampor",
-        en: "LED lighting saves 80% energy compared to incandescent bulbs"
-      },
-      {
-        sv: "Elinstallationer får endast utföras av auktoriserad elektriker enligt ellagen",
-        en: "Electrical installations may only be performed by certified electricians according to law"
-      },
-      {
-        sv: "En elsäkerhetsbesiktning kostar 2 500-4 500 kr och rekommenderas vart 10:e år",
-        en: "An electrical safety inspection costs 2,500-4,500 kr and is recommended every 10 years"
-      },
-      {
-        sv: "Uppsala har över 15 000 villor byggda före 1970 med behov av eluppgradering",
-        en: "Uppsala has over 15,000 houses built before 1970 in need of electrical upgrades"
-      },
-      {
-        sv: "Modernisering av elcentral inkl. 10 nya automatsäkringar kostar ca 15 000-25 000 kr",
-        en: "Modernization of electrical panel incl. 10 new circuit breakers costs approx. 15,000-25,000 kr"
-      },
-      {
-        sv: "Jordfelsvarnare är obligatoriska i våtutrymmen sedan 1994",
-        en: "Ground fault circuit interrupters have been mandatory in wet rooms since 1994"
-      },
-      {
-        sv: "Uppsala Energi erbjuder bidrag för installation av solceller på villatak",
-        en: "Uppsala Energi offers grants for solar panel installation on house roofs"
-      },
-      {
-        sv: "En 3-rums lägenhet i Uppsala använder i snitt 2 000-3 000 kWh el per år",
-        en: "A 3-room apartment in Uppsala uses on average 2,000-3,000 kWh electricity per year"
-      }
+    quickFactKeys: [
+      'serviceCity.el.uppsala.quickFact.0',
+      'serviceCity.el.uppsala.quickFact.1',
+      'serviceCity.el.uppsala.quickFact.2',
+      'serviceCity.el.uppsala.quickFact.3',
+      'serviceCity.el.uppsala.quickFact.4',
+      'serviceCity.el.uppsala.quickFact.5',
+      'serviceCity.el.uppsala.quickFact.6',
+      'serviceCity.el.uppsala.quickFact.7',
+      'serviceCity.el.uppsala.quickFact.8',
+      'serviceCity.el.uppsala.quickFact.9',
+      'serviceCity.el.uppsala.quickFact.10',
+      'serviceCity.el.uppsala.quickFact.11'
     ],
-    didYouKnow: [
-      {
-        sv: "Uppsala universitet installerade Sveriges första elledning för gatubelysning år 1893",
-        en: "Uppsala University installed Sweden's first electrical wiring for street lighting in 1893"
-      },
-      {
-        sv: "Ett hushåll i Uppsala lämnar i snitt apparater i standby-läge som drar 500 kWh/år – motsvarande 800 kr",
-        en: "A household in Uppsala leaves appliances on standby that consume 500 kWh/year – equivalent to 800 kr"
-      },
-      {
-        sv: "Blixtnedslag orsakar varje år skador på elsystem i Uppsala län för över 50 miljoner kronor",
-        en: "Lightning strikes cause electrical system damage in Uppsala county for over 50 million kr annually"
-      },
-      {
-        sv: "En smart termostat kan sänka din elräkning med 15-20% genom optimerad styrning",
-        en: "A smart thermostat can reduce your electricity bill by 15-20% through optimized control"
-      },
-      {
-        sv: "Uppsala har Sveriges högsta andel laddboxar per capita – 1 laddbox per 12 invånare",
-        en: "Uppsala has Sweden's highest proportion of charging boxes per capita – 1 charging box per 12 residents"
-      },
-      {
-        sv: "En typisk villa i Uppsala kan spara 8 000-12 000 kr/år genom byte till LED-belysning",
-        en: "A typical house in Uppsala can save 8,000-12,000 kr/year by switching to LED lighting"
-      },
-      {
-        sv: "Elsäkerhetsverket kontrollerar ca 15% av alla elanläggningar i Sverige årligen",
-        en: "The Swedish Electrical Safety Authority inspects approximately 15% of all electrical installations in Sweden annually"
-      }
+    didYouKnowKeys: [
+      'serviceCity.el.uppsala.didYouKnow.0',
+      'serviceCity.el.uppsala.didYouKnow.1',
+      'serviceCity.el.uppsala.didYouKnow.2',
+      'serviceCity.el.uppsala.didYouKnow.3',
+      'serviceCity.el.uppsala.didYouKnow.4',
+      'serviceCity.el.uppsala.didYouKnow.5',
+      'serviceCity.el.uppsala.didYouKnow.6'
     ],
-    faqs: [
-      { 
-        q: { 
-          sv: "Hur snabbt kan elektriker komma ut i Uppsala?", 
-          en: "How fast can an electrician come out in Uppsala?" 
-        },
-        a: { 
-          sv: "Vid akuta fel försöker vi komma samma dag. För planerade installationer kan vi ofta starta inom 24-48 timmar.", 
-          en: "For urgent issues we try to come the same day. For planned installations we can often start within 24-48 hours." 
-        }
-      },
-      { 
-        q: { 
-          sv: "Installerar ni laddboxar i Uppsala?", 
-          en: "Do you install charging boxes in Uppsala?" 
-        },
-        a: { 
-          sv: "Ja, vi installerar laddboxar för elbilar inklusive effektvakt, jordning och dokumentation enligt Elsäkerhetsverkets krav.", 
-          en: "Yes, we install charging boxes for electric cars including load guard, grounding and documentation according to Swedish Electrical Safety Authority requirements." 
-        }
-      },
-      {
-        q: { 
-          sv: "Är era elektriker auktoriserade?", 
-          en: "Are your electricians certified?" 
-        },
-        a: { 
-          sv: "Ja, alla våra elektriker är auktoriserade av Elsäkerhetsverket och arbetar enligt gällande standarder (SS 436 40 00).", 
-          en: "Yes, all our electricians are certified by the Swedish Electrical Safety Authority and work according to current standards (SS 436 40 00)." 
-        }
-      }
+    faqKeys: [
+      { qKey: 'serviceCity.el.uppsala.faq.0.q', aKey: 'serviceCity.el.uppsala.faq.0.a' },
+      { qKey: 'serviceCity.el.uppsala.faq.1.q', aKey: 'serviceCity.el.uppsala.faq.1.a' },
+      { qKey: 'serviceCity.el.uppsala.faq.2.q', aKey: 'serviceCity.el.uppsala.faq.2.a' }
     ],
-    cases: [
-      { 
-        title: { 
-          sv: "Felsökning jordfel Svartbäcken", 
-          en: "Ground fault troubleshooting Svartbäcken" 
-        },
-        desc: { 
-          sv: "Spårning och åtgärd av jordfel i villa, byte av 3 st dvärgbrytare och dokumentation. Genomfört på 2 timmar.", 
-          en: "Tracking and fixing ground fault in house, replacement of 3 miniature circuit breakers and documentation. Completed in 2 hours." 
-        }
-      },
-      { 
-        title: { 
-          sv: "LED-belysning kök Luthagen", 
-          en: "LED lighting kitchen Luthagen" 
-        },
-        desc: { 
-          sv: "Installation av 8 st LED-spotlights med dimmers och ny strömförsörjning. Snyggt, energieffektivt och med ROT-avdrag.", 
-          en: "Installation of 8 LED spotlights with dimmers and new power supply. Clean, energy efficient and with ROT deduction." 
-        }
-      },
-      {
-        title: { 
-          sv: "Laddbox installation Gottsunda", 
-          en: "Charging box installation Gottsunda" 
-        },
-        desc: { 
-          sv: "Installation av 11 kW laddbox för elbil, inkl. effektvakt, jordning och besiktningsprotokoll.", 
-          en: "Installation of 11 kW charging box for electric car, incl. load guard, grounding and inspection protocol." 
-        }
-      }
+    caseKeys: [
+      { titleKey: 'serviceCity.el.uppsala.case.0.title', descKey: 'serviceCity.el.uppsala.case.0.desc' },
+      { titleKey: 'serviceCity.el.uppsala.case.1.title', descKey: 'serviceCity.el.uppsala.case.1.desc' },
+      { titleKey: 'serviceCity.el.uppsala.case.2.title', descKey: 'serviceCity.el.uppsala.case.2.desc' }
     ]
   },
   {
     service: "Elmontör",
     city: "Stockholm",
     slug: "elmontor-stockholm",
-    h1: "Elmontör i Stockholm",
-    title: "Elmontör i Stockholm – Elektriker för Hem & Företag | ROT 50%",
-    description:
-      "Elinstallation, belysning, laddbox och felsökning i Stockholm. Auktoriserade elektriker med tydliga priser och ROT-avdrag 50%.",
-    howItWorks: [
-      { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Svar inom 2 timmar på vardagar." },
-      { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer till dig i Stockholm för att bedöma jobbet. Ofta samma dag." },
-      { step: 3, title: "Fast pris-offert", desc: "Du får en detaljerad offert med fast pris och tidsplan. Inga överraskningar." },
-      { step: 4, title: "Auktoriserad elektriker", desc: "Vi utför arbetet enligt avtalad tid. Start inom 24-48h." },
-      { step: 5, title: "Besiktning & garanti", desc: "Besiktningsprotokoll och garanti ingår. Vi hanterar ROT-avdraget åt dig." }
+    h1Key: 'serviceCity.el.stockholm.h1',
+    titleKey: 'serviceCity.el.stockholm.title',
+    descriptionKey: 'serviceCity.el.stockholm.description',
+    howItWorksKeys: [
+      { step: 1, titleKey: 'serviceCity.el.stockholm.howItWorks.0.title', descKey: 'serviceCity.el.stockholm.howItWorks.0.desc' },
+      { step: 2, titleKey: 'serviceCity.el.stockholm.howItWorks.1.title', descKey: 'serviceCity.el.stockholm.howItWorks.1.desc' },
+      { step: 3, titleKey: 'serviceCity.el.stockholm.howItWorks.2.title', descKey: 'serviceCity.el.stockholm.howItWorks.2.desc' },
+      { step: 4, titleKey: 'serviceCity.el.stockholm.howItWorks.3.title', descKey: 'serviceCity.el.stockholm.howItWorks.3.desc' },
+      { step: 5, titleKey: 'serviceCity.el.stockholm.howItWorks.4.title', descKey: 'serviceCity.el.stockholm.howItWorks.4.desc' }
     ],
-    priceExamples: [
-      { job: "Byte av 5 st eluttag", price: "2 800 kr", duration: "1-2 timmar" },
-      { job: "Installation av taklampa", price: "1 400 kr", duration: "30-60 min" },
-      { job: "Laddbox 11 kW inkl. installation", price: "13 500 kr", duration: "4-6 timmar" },
-      { job: "Elfelsökning", price: "från 2 000 kr", duration: "1-3 timmar" }
+    priceExampleKeys: [
+      { jobKey: 'serviceCity.el.stockholm.priceExample.0.job', price: "2 800 kr", durationKey: 'serviceCity.el.stockholm.priceExample.0.duration' },
+      { jobKey: 'serviceCity.el.stockholm.priceExample.1.job', price: "1 400 kr", durationKey: 'serviceCity.el.stockholm.priceExample.1.duration' },
+      { jobKey: 'serviceCity.el.stockholm.priceExample.2.job', price: "13 500 kr", durationKey: 'serviceCity.el.stockholm.priceExample.2.duration' },
+      { jobKey: 'serviceCity.el.stockholm.priceExample.3.job', price: "från 2 000 kr", durationKey: 'serviceCity.el.stockholm.priceExample.3.duration' }
     ],
-    quickFacts: [
-      "80% av Stockholms sekelskifteslägenheter har ursprunglig el",
-      "Laddbox i Stockholm kräver anmälan till Ellevio 4-6 veckor innan",
-      "ROT-avdrag ger 50% rabatt på arbetskostnaden (max 50 000 kr/år)",
-      "Stockholm har Sveriges högsta efterfrågan på elbilsladdning",
-      "Modern belysning kan spara 500-800 kr/år per rum",
-      "Sekelskifteslägenheter har ofta schukuttag som ska bytas till jordat uttag",
-      "Stockholm Energi erbjuder bidrag för smart elmätare och energioptimering",
-      "Elbilar i Stockholm har ökat med 400% sedan 2019 - laddbox är nödvändigt",
-      "En lägenhet i Stockholm förbrukar i snitt 2 500-3 500 kWh el per år",
-      "Felaktig elinstallation orsakar 5 000 bostadsbränder i Sverige årligen",
-      "LED-konvertering av en 3:a i Stockholm sparar 3 000-4 000 kr/år",
-      "Jordfelsbrytare ska testas månadsvis enligt Elsäkerhetsverkets rekommendation"
+    quickFactKeys: [
+      'serviceCity.el.stockholm.quickFact.0',
+      'serviceCity.el.stockholm.quickFact.1',
+      'serviceCity.el.stockholm.quickFact.2',
+      'serviceCity.el.stockholm.quickFact.3',
+      'serviceCity.el.stockholm.quickFact.4',
+      'serviceCity.el.stockholm.quickFact.5',
+      'serviceCity.el.stockholm.quickFact.6',
+      'serviceCity.el.stockholm.quickFact.7',
+      'serviceCity.el.stockholm.quickFact.8',
+      'serviceCity.el.stockholm.quickFact.9',
+      'serviceCity.el.stockholm.quickFact.10',
+      'serviceCity.el.stockholm.quickFact.11'
     ],
-    didYouKnow: [
-      "Kungliga Slottet fick Sveriges första elbelysning år 1883 med gatubelysning längs Slottsbacken",
-      "Stockholm konsumerar 8 TWh el årligen - mer än hela Norrbottens industri",
-      "Gamla Stan har fortfarande äldre elledningar från 1930-talet som behöver moderniseras",
-      "En lägenhet på Östermalm använder i snitt 40% mer el än motsvarande lägenhet i förorten",
-      "Stockholm har Sveriges högsta koncentration av datahallar vilket påverkar elnätet",
-      "Blixtnedslag orsakar skador på elektronik i Stockholms innerstad för 80 miljoner kr/år",
-      "Ett hushåll i Stockholm kan spara 15 000-20 000 kr/år genom att byta till energieffektiv belysning och smart styrning"
+    didYouKnowKeys: [
+      'serviceCity.el.stockholm.didYouKnow.0',
+      'serviceCity.el.stockholm.didYouKnow.1',
+      'serviceCity.el.stockholm.didYouKnow.2',
+      'serviceCity.el.stockholm.didYouKnow.3',
+      'serviceCity.el.stockholm.didYouKnow.4',
+      'serviceCity.el.stockholm.didYouKnow.5',
+      'serviceCity.el.stockholm.didYouKnow.6'
     ],
-    faqs: [
-      { 
-        q: "Kan ni arbeta i Stockholms innerstad?", 
-        a: "Ja, vi planerar parkering/lastzon i förväg och tar med skyddsmaterial för att skydda trappor och golv i lägenheter." 
-      },
-      {
-        q: "Gör ni felsökning på äldre elinstallationer?",
-        a: "Ja, vi har stor erfarenhet av äldre installationer i sekelskifteslägenheter och kan både felsöka och modernisera enligt gällande standard."
-      }
+    faqKeys: [
+      { qKey: 'serviceCity.el.stockholm.faq.0.q', aKey: 'serviceCity.el.stockholm.faq.0.a' },
+      { qKey: 'serviceCity.el.stockholm.faq.1.q', aKey: 'serviceCity.el.stockholm.faq.1.a' }
     ],
-    cases: [
-      { 
-        title: "Kontorsbelysning Vasastan", 
-        desc: "Byte till LED-paneler i kontorslokal, installation av närvarostyrning och zonindelning för energieffektiv belysning." 
-      },
-      {
-        title: "Elfelsökning Östermalm",
-        desc: "Felsökning av utlösta säkringar, byte av defekt jordfelsbrytare och dokumentation."
-      }
+    caseKeys: [
+      { titleKey: 'serviceCity.el.stockholm.case.0.title', descKey: 'serviceCity.el.stockholm.case.0.desc' },
+      { titleKey: 'serviceCity.el.stockholm.case.1.title', descKey: 'serviceCity.el.stockholm.case.1.desc' }
     ]
   },
 
