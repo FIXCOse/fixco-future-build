@@ -89,7 +89,7 @@ export const CareersHero = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
-                  className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+                  className="flex justify-center mb-12"
                 >
                   <MagneticButton
                     size="lg"
@@ -97,14 +97,6 @@ export const CareersHero = () => {
                     className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
                   >
                     Ansök nu
-                  </MagneticButton>
-                  <MagneticButton
-                    size="lg"
-                    variant="outline"
-                    onClick={() => window.location.href = 'tel:+46701234567'}
-                    className="text-lg px-8 py-6 border-2"
-                  >
-                    Ring oss
                   </MagneticButton>
                 </motion.div>
 
