@@ -204,7 +204,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center">
-            <div className="animate-pulse">Loading...</div>
+            <div className="animate-pulse">{t('serviceCity.loading')}</div>
           </div>
         </div>
       </div>
@@ -377,22 +377,23 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                💡 Utforska vårt utbud
+                {t('serviceCity.exploreRange')}
               </div>
-              <h2 className="text-3xl font-bold mb-4">Se alla våra tjänster</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('serviceCity.seeAllServices')}</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Fixco erbjuder ett komplett utbud av hantverkstjänster med ROT/RUT-avdrag. 
-                Utforska alla våra tjänster och se priser, avdragsmöjligheter och mer.
+                {locale === 'sv' 
+                  ? 'Fixco erbjuder ett komplett utbud av hantverkstjänster med ROT/RUT-avdrag. Utforska alla våra tjänster och se priser, avdragsmöjligheter och mer.'
+                  : 'Fixco offers a complete range of craftsmanship services with ROT/RUT deduction. Explore all our services and see prices, deduction options and more.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
-                  <Link to="/tjanster">
-                    Visa alla tjänster
+                  <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>
+                    {t('serviceCity.showAllServices')}
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <Link to="/tjanster#priser">
-                    Se priser & ROT/RUT-avdrag
+                  <Link to={locale === 'en' ? '/en/services#prices' : '/tjanster#priser'}>
+                    {t('serviceCity.seePricesDeductions')}
                   </Link>
                 </Button>
               </div>
@@ -405,7 +406,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           <section className="py-12 bg-muted/5">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold mb-8 text-center">
-                Populära {categoryName?.toLowerCase()}-tjänster i {city}
+                {t('serviceCity.popularServices', { category: categoryName?.toLowerCase(), city })}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 {serviceContent.popularServices.map((service, idx) => {
@@ -428,13 +429,10 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-4">
-                  {locale === 'sv' ? `Prisexempel för ${categoryName?.toLowerCase()} i ${city}` : `Price examples for ${categoryName?.toLowerCase()} in ${city}`}
+                  {t('serviceCity.priceExamplesTitle', { category: categoryName?.toLowerCase(), city })}
                 </h2>
                 <p className="text-center text-muted-foreground mb-8">
-                  {locale === 'sv' 
-                    ? 'Alla priser inkluderar material, arbete och ROT-avdrag. Exakta priser får du i din offert.' 
-                    : 'All prices include materials, labor and ROT deduction. Exact prices will be provided in your quote.'
-                  }
+                  {t('serviceCity.priceExamplesSubtitle')}
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full bg-card border rounded-lg">
