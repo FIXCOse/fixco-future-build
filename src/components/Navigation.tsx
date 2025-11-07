@@ -82,14 +82,16 @@ export default function Navigation() {
       references: '/en/references',
       about: '/en/about',
       contact: '/en/contact',
-      ai: '/en/ai'
+      ai: '/en/ai',
+      careers: '/en/careers'
     } : {
       services: '/tjanster',
       smartHome: '/smart-hem',
       references: '/referenser', 
       about: '/om-oss',
       contact: '/kontakt',
-      ai: '/ai'
+      ai: '/ai',
+      careers: '/karriar'
     };
     
     // Base navigation items for everyone (no admin dropdown here anymore)
@@ -100,6 +102,7 @@ export default function Navigation() {
       { href: paths.ai, label: <span className="flex items-center gap-1"><Bot className="h-3.5 w-3.5" />AI</span>, highlight: true },
       { href: paths.references, label: t('nav.references') },
       { href: paths.about, label: t('nav.about') },
+      { href: paths.careers, label: currentLanguage === 'en' ? 'Careers' : 'Karriär' },
       { href: paths.contact, label: t('nav.contact') },
     ];
   };

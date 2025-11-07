@@ -224,6 +224,7 @@ const App = () => {
                     <Route path="translations" element={<AdminTranslations />} />
                     <Route path="leads" element={<AdminLeads />} />
                     <Route path="worker-analytics" element={<AdminWorkerAnalytics />} />
+                    <Route path="applications" element={<AdminApplications />} />
                   </Route>
 
                   {/* Worker Routes */}
@@ -289,6 +290,7 @@ const App = () => {
                     <Route path="rut" element={<RUT />} />
                     <Route path="referenser" element={<Referenser />} />
                     <Route path="ai" element={<AI />} />
+                    <Route path="karriar" element={<Careers />} />
                     <Route path="smart-hem" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
@@ -326,6 +328,7 @@ const App = () => {
                     <Route path="rut" element={<RUT />} />
                     <Route path="book-visit" element={<BookVisit />} />
                     <Route path="ai" element={<AI />} />
+                    <Route path="careers" element={<Careers />} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">

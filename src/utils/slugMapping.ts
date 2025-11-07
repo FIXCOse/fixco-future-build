@@ -13,6 +13,7 @@ export const svToEnRoutes: Record<string, string> = {
   '/tjanster/flytt': '/en/services/flytt',
   '/kontakt': '/en/contact',
   '/om-oss': '/en/about',
+  '/karriar': '/en/careers',
   '/referenser': '/en/references',
   '/smart-hem': '/en/smart-home',
   '/ai': '/en/ai',

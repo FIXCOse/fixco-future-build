@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO";
+import { Seo as SEO } from "@/components/SEO";
 import { CareersHero } from "@/components/careers/CareersHero";
 import { WhyFixco } from "@/components/careers/WhyFixco";
 import { ProfessionGrid } from "@/components/careers/ProfessionGrid";
@@ -12,7 +12,6 @@ const Careers = () => {
       <SEO
         title="Karriär - Jobba hos Fixco | Snickare, Elektriker, VVS"
         description="Bli en del av Fixco-familjen! Vi söker skickliga hantverkare inom snickeri, el, VVS, måleri och mer. Kollektivavtal, konkurrenskraftig lön och flexibla arbetstider."
-        keywords="fixco karriär, jobba som snickare, elektriker jobb, vvs jobb, hantverkare stockholm, byggarbeten jobb, kollektivavtal, fixco rekrytering"
       />
       
       <main className="min-h-screen">
