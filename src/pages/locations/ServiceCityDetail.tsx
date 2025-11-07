@@ -54,16 +54,10 @@ interface ServiceCityDetailProps {
 }
 
 const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
-  const { t: copyT, locale } = useCopy();
+  const { t, locale } = useCopy();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
-
-  // Helper function to get localized text from serviceCityData
-  const t = (text: string | { sv: string; en: string }): string => {
-    if (typeof text === 'string') return text;
-    return text[locale] || text.sv;
-  };
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
@@ -175,11 +169,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     const faqs = cityServiceData?.faqs && cityServiceData.faqs.length > 0 
       ? cityServiceData.faqs 
       : cityDataItem.faqs;
-    return getFAQSchema(faqs.map(faq => ({ 
-      question: t(faq.q), 
-      answer: t(faq.a) 
-    })));
-  }, [cityServiceData, cityDataItem, locale]);
+    return getFAQSchema(faqs.map(faq => ({ question: faq.q, answer: faq.a })));
+  }, [cityServiceData, cityDataItem]);
 
   const aggregateRatingSchema = useMemo(() => ({
     "@context": "https://schema.org",

@@ -1,5 +1,3 @@
-import type { CopyKey } from '@/copy/keys';
-
 export type ServiceKey =
   | "Elmontör"
   | "VVS"
@@ -16,16 +14,16 @@ export interface ServiceCityItem {
   service: ServiceKey;
   city: "Uppsala" | "Stockholm";
   slug: string;
-  h1Key: CopyKey;
-  titleKey: CopyKey;
-  descriptionKey: CopyKey;
-  priceHintKey?: CopyKey;
-  faqKeys: Array<{ qKey: CopyKey; aKey: CopyKey }>;
-  caseKeys: Array<{ titleKey: CopyKey; descKey: CopyKey }>;
-  howItWorksKeys?: Array<{ step: number; titleKey: CopyKey; descKey: CopyKey }>;
-  priceExampleKeys?: Array<{ jobKey: CopyKey; price: string; durationKey: CopyKey }>;
-  quickFactKeys?: CopyKey[];
-  didYouKnowKeys?: CopyKey[];
+  h1: string;
+  title: string;
+  description: string;
+  priceHint?: string;
+  faqs: Array<{ q: string; a: string }>;
+  cases: Array<{ title: string; desc: string }>;
+  howItWorks?: Array<{ step: number; title: string; desc: string }>;
+  priceExamples?: Array<{ job: string; price: string; duration: string }>;
+  quickFacts?: Array<string>;
+  didYouKnow?: Array<string>;
 }
 
 export const serviceCityData: ServiceCityItem[] = [
@@ -34,106 +32,138 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "Elmontör",
     city: "Uppsala",
     slug: "elmontor-uppsala",
-    h1Key: 'serviceCity.el.uppsala.h1',
-    titleKey: 'serviceCity.el.uppsala.title',
-    descriptionKey: 'serviceCity.el.uppsala.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.el.uppsala.howItWorks.0.title', descKey: 'serviceCity.el.uppsala.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.el.uppsala.howItWorks.1.title', descKey: 'serviceCity.el.uppsala.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.el.uppsala.howItWorks.2.title', descKey: 'serviceCity.el.uppsala.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.el.uppsala.howItWorks.3.title', descKey: 'serviceCity.el.uppsala.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.el.uppsala.howItWorks.4.title', descKey: 'serviceCity.el.uppsala.howItWorks.4.desc' }
+    h1: "Elmontör i Uppsala",
+    title: "Elmontör i Uppsala – Installation & Felsökning | ROT 50%",
+    description:
+      "Auktoriserade elektriker i Uppsala för belysning, uttag, laddbox och felsökning. Snabb hjälp, ROT-avdrag 50%. Start inom 24h.",
+    howItWorks: [
+      { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Vi återkommer inom 2 timmar på vardagar." },
+      { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer hem till dig i Uppsala för att se över jobbet. Ofta samma dag." },
+      { step: 3, title: "Tydlig offert", desc: "Du får en detaljerad offert med fast pris. Inga dolda kostnader." },
+      { step: 4, title: "Vi genomför jobbet", desc: "Auktoriserade elektriker utför arbetet enligt avtalad tid. Start inom 24-48h." },
+      { step: 5, title: "Dokumentation & garanti", desc: "Du får besiktningsprotokoll och garanti. ROT-avdraget sköter vi." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.el.uppsala.priceExample.0.job', price: "2 500 kr", durationKey: 'serviceCity.el.uppsala.priceExample.0.duration' },
-      { jobKey: 'serviceCity.el.uppsala.priceExample.1.job', price: "1 200 kr", durationKey: 'serviceCity.el.uppsala.priceExample.1.duration' },
-      { jobKey: 'serviceCity.el.uppsala.priceExample.2.job', price: "12 500 kr", durationKey: 'serviceCity.el.uppsala.priceExample.2.duration' },
-      { jobKey: 'serviceCity.el.uppsala.priceExample.3.job', price: "från 1 800 kr", durationKey: 'serviceCity.el.uppsala.priceExample.3.duration' }
+    priceExamples: [
+      { job: "Byte av 5 st eluttag", price: "2 500 kr", duration: "1-2 timmar" },
+      { job: "Installation av taklampa", price: "1 200 kr", duration: "30-60 min" },
+      { job: "Laddbox 11 kW inkl. installation", price: "12 500 kr", duration: "4-6 timmar" },
+      { job: "Felsökning jordfel", price: "från 1 800 kr", duration: "1-3 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.el.uppsala.quickFact.0',
-      'serviceCity.el.uppsala.quickFact.1',
-      'serviceCity.el.uppsala.quickFact.2',
-      'serviceCity.el.uppsala.quickFact.3',
-      'serviceCity.el.uppsala.quickFact.4',
-      'serviceCity.el.uppsala.quickFact.5',
-      'serviceCity.el.uppsala.quickFact.6',
-      'serviceCity.el.uppsala.quickFact.7',
-      'serviceCity.el.uppsala.quickFact.8',
-      'serviceCity.el.uppsala.quickFact.9',
-      'serviceCity.el.uppsala.quickFact.10',
-      'serviceCity.el.uppsala.quickFact.11'
+    quickFacts: [
+      "90% av Uppsalas fastigheter behöver eluppgradering inom 10 år",
+      "Laddbox kan öka fastighetsvärdet med 2-5%",
+      "ROT-avdrag ger 50% rabatt på arbetskostnaden",
+      "Uppsala kommun kräver installationstillstånd för laddboxar",
+      "LED-belysning sparar 80% energi jämfört med glödlampor",
+      "Elinstallationer får endast utföras av auktoriserad elektriker enligt ellagen",
+      "En elsäkerhetsbesiktning kostar 2 500-4 500 kr och rekommenderas vart 10:e år",
+      "Uppsala har över 15 000 villor byggda före 1970 med behov av eluppgradering",
+      "Modernisering av elcentral inkl. 10 nya automatsäkringar kostar ca 15 000-25 000 kr",
+      "Jordfelsvarnare är obligatoriska i våtutrymmen sedan 1994",
+      "Uppsala Energi erbjuder bidrag för installation av solceller på villatak",
+      "En 3-rums lägenhet i Uppsala använder i snitt 2 000-3 000 kWh el per år"
     ],
-    didYouKnowKeys: [
-      'serviceCity.el.uppsala.didYouKnow.0',
-      'serviceCity.el.uppsala.didYouKnow.1',
-      'serviceCity.el.uppsala.didYouKnow.2',
-      'serviceCity.el.uppsala.didYouKnow.3',
-      'serviceCity.el.uppsala.didYouKnow.4',
-      'serviceCity.el.uppsala.didYouKnow.5',
-      'serviceCity.el.uppsala.didYouKnow.6'
+    didYouKnow: [
+      "Uppsala universitet installerade Sveriges första elledning för gatubelysning år 1893",
+      "Ett hushåll i Uppsala lämnar i snitt apparater i standby-läge som drar 500 kWh/år – motsvarande 800 kr",
+      "Blixtnedslag orsakar varje år skador på elsystem i Uppsala län för över 50 miljoner kronor",
+      "En smart termostat kan sänka din elräkning med 15-20% genom optimerad styrning",
+      "Uppsala har Sveriges högsta andel laddboxar per capita – 1 laddbox per 12 invånare",
+      "En typisk villa i Uppsala kan spara 8 000-12 000 kr/år genom byte till LED-belysning",
+      "Elsäkerhetsverket kontrollerar ca 15% av alla elanläggningar i Sverige årligen"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.el.uppsala.faq.0.q', aKey: 'serviceCity.el.uppsala.faq.0.a' },
-      { qKey: 'serviceCity.el.uppsala.faq.1.q', aKey: 'serviceCity.el.uppsala.faq.1.a' },
-      { qKey: 'serviceCity.el.uppsala.faq.2.q', aKey: 'serviceCity.el.uppsala.faq.2.a' }
+    faqs: [
+      { 
+        q: "Hur snabbt kan elektriker komma ut i Uppsala?", 
+        a: "Vid akuta fel försöker vi komma samma dag. För planerade installationer kan vi ofta starta inom 24-48 timmar." 
+      },
+      { 
+        q: "Installerar ni laddboxar i Uppsala?", 
+        a: "Ja, vi installerar laddboxar för elbilar inklusive effektvakt, jordning och dokumentation enligt Elsäkerhetsverkets krav." 
+      },
+      {
+        q: "Är era elektriker auktoriserade?",
+        a: "Ja, alla våra elektriker är auktoriserade av Elsäkerhetsverket och arbetar enligt gällande standarder (SS 436 40 00)."
+      }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.el.uppsala.case.0.title', descKey: 'serviceCity.el.uppsala.case.0.desc' },
-      { titleKey: 'serviceCity.el.uppsala.case.1.title', descKey: 'serviceCity.el.uppsala.case.1.desc' },
-      { titleKey: 'serviceCity.el.uppsala.case.2.title', descKey: 'serviceCity.el.uppsala.case.2.desc' }
+    cases: [
+      { 
+        title: "Felsökning jordfel Svartbäcken", 
+        desc: "Spårning och åtgärd av jordfel i villa, byte av 3 st dvärgbrytare och dokumentation. Genomfört på 2 timmar." 
+      },
+      { 
+        title: "LED-belysning kök Luthagen", 
+        desc: "Installation av 8 st LED-spotlights med dimmers och ny strömförsörjning. Snyggt, energieffektivt och med ROT-avdrag." 
+      },
+      {
+        title: "Laddbox installation Gottsunda",
+        desc: "Installation av 11 kW laddbox för elbil, inkl. effektvakt, jordning och besiktningsprotokoll."
+      }
     ]
   },
   {
     service: "Elmontör",
     city: "Stockholm",
     slug: "elmontor-stockholm",
-    h1Key: 'serviceCity.el.stockholm.h1',
-    titleKey: 'serviceCity.el.stockholm.title',
-    descriptionKey: 'serviceCity.el.stockholm.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.el.stockholm.howItWorks.0.title', descKey: 'serviceCity.el.stockholm.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.el.stockholm.howItWorks.1.title', descKey: 'serviceCity.el.stockholm.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.el.stockholm.howItWorks.2.title', descKey: 'serviceCity.el.stockholm.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.el.stockholm.howItWorks.3.title', descKey: 'serviceCity.el.stockholm.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.el.stockholm.howItWorks.4.title', descKey: 'serviceCity.el.stockholm.howItWorks.4.desc' }
+    h1: "Elmontör i Stockholm",
+    title: "Elmontör i Stockholm – Elektriker för Hem & Företag | ROT 50%",
+    description:
+      "Elinstallation, belysning, laddbox och felsökning i Stockholm. Auktoriserade elektriker med tydliga priser och ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Svar inom 2 timmar på vardagar." },
+      { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer till dig i Stockholm för att bedöma jobbet. Ofta samma dag." },
+      { step: 3, title: "Fast pris-offert", desc: "Du får en detaljerad offert med fast pris och tidsplan. Inga överraskningar." },
+      { step: 4, title: "Auktoriserad elektriker", desc: "Vi utför arbetet enligt avtalad tid. Start inom 24-48h." },
+      { step: 5, title: "Besiktning & garanti", desc: "Besiktningsprotokoll och garanti ingår. Vi hanterar ROT-avdraget åt dig." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.el.stockholm.priceExample.0.job', price: "2 800 kr", durationKey: 'serviceCity.el.stockholm.priceExample.0.duration' },
-      { jobKey: 'serviceCity.el.stockholm.priceExample.1.job', price: "1 400 kr", durationKey: 'serviceCity.el.stockholm.priceExample.1.duration' },
-      { jobKey: 'serviceCity.el.stockholm.priceExample.2.job', price: "13 500 kr", durationKey: 'serviceCity.el.stockholm.priceExample.2.duration' },
-      { jobKey: 'serviceCity.el.stockholm.priceExample.3.job', price: "från 2 000 kr", durationKey: 'serviceCity.el.stockholm.priceExample.3.duration' }
+    priceExamples: [
+      { job: "Byte av 5 st eluttag", price: "2 800 kr", duration: "1-2 timmar" },
+      { job: "Installation av taklampa", price: "1 400 kr", duration: "30-60 min" },
+      { job: "Laddbox 11 kW inkl. installation", price: "13 500 kr", duration: "4-6 timmar" },
+      { job: "Elfelsökning", price: "från 2 000 kr", duration: "1-3 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.el.stockholm.quickFact.0',
-      'serviceCity.el.stockholm.quickFact.1',
-      'serviceCity.el.stockholm.quickFact.2',
-      'serviceCity.el.stockholm.quickFact.3',
-      'serviceCity.el.stockholm.quickFact.4',
-      'serviceCity.el.stockholm.quickFact.5',
-      'serviceCity.el.stockholm.quickFact.6',
-      'serviceCity.el.stockholm.quickFact.7',
-      'serviceCity.el.stockholm.quickFact.8',
-      'serviceCity.el.stockholm.quickFact.9',
-      'serviceCity.el.stockholm.quickFact.10',
-      'serviceCity.el.stockholm.quickFact.11'
+    quickFacts: [
+      "80% av Stockholms sekelskifteslägenheter har ursprunglig el",
+      "Laddbox i Stockholm kräver anmälan till Ellevio 4-6 veckor innan",
+      "ROT-avdrag ger 50% rabatt på arbetskostnaden (max 50 000 kr/år)",
+      "Stockholm har Sveriges högsta efterfrågan på elbilsladdning",
+      "Modern belysning kan spara 500-800 kr/år per rum",
+      "Sekelskifteslägenheter har ofta schukuttag som ska bytas till jordat uttag",
+      "Stockholm Energi erbjuder bidrag för smart elmätare och energioptimering",
+      "Elbilar i Stockholm har ökat med 400% sedan 2019 - laddbox är nödvändigt",
+      "En lägenhet i Stockholm förbrukar i snitt 2 500-3 500 kWh el per år",
+      "Felaktig elinstallation orsakar 5 000 bostadsbränder i Sverige årligen",
+      "LED-konvertering av en 3:a i Stockholm sparar 3 000-4 000 kr/år",
+      "Jordfelsbrytare ska testas månadsvis enligt Elsäkerhetsverkets rekommendation"
     ],
-    didYouKnowKeys: [
-      'serviceCity.el.stockholm.didYouKnow.0',
-      'serviceCity.el.stockholm.didYouKnow.1',
-      'serviceCity.el.stockholm.didYouKnow.2',
-      'serviceCity.el.stockholm.didYouKnow.3',
-      'serviceCity.el.stockholm.didYouKnow.4',
-      'serviceCity.el.stockholm.didYouKnow.5',
-      'serviceCity.el.stockholm.didYouKnow.6'
+    didYouKnow: [
+      "Kungliga Slottet fick Sveriges första elbelysning år 1883 med gatubelysning längs Slottsbacken",
+      "Stockholm konsumerar 8 TWh el årligen - mer än hela Norrbottens industri",
+      "Gamla Stan har fortfarande äldre elledningar från 1930-talet som behöver moderniseras",
+      "En lägenhet på Östermalm använder i snitt 40% mer el än motsvarande lägenhet i förorten",
+      "Stockholm har Sveriges högsta koncentration av datahallar vilket påverkar elnätet",
+      "Blixtnedslag orsakar skador på elektronik i Stockholms innerstad för 80 miljoner kr/år",
+      "Ett hushåll i Stockholm kan spara 15 000-20 000 kr/år genom att byta till energieffektiv belysning och smart styrning"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.el.stockholm.faq.0.q', aKey: 'serviceCity.el.stockholm.faq.0.a' },
-      { qKey: 'serviceCity.el.stockholm.faq.1.q', aKey: 'serviceCity.el.stockholm.faq.1.a' }
+    faqs: [
+      { 
+        q: "Kan ni arbeta i Stockholms innerstad?", 
+        a: "Ja, vi planerar parkering/lastzon i förväg och tar med skyddsmaterial för att skydda trappor och golv i lägenheter." 
+      },
+      {
+        q: "Gör ni felsökning på äldre elinstallationer?",
+        a: "Ja, vi har stor erfarenhet av äldre installationer i sekelskifteslägenheter och kan både felsöka och modernisera enligt gällande standard."
+      }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.el.stockholm.case.0.title', descKey: 'serviceCity.el.stockholm.case.0.desc' },
-      { titleKey: 'serviceCity.el.stockholm.case.1.title', descKey: 'serviceCity.el.stockholm.case.1.desc' }
+    cases: [
+      { 
+        title: "Kontorsbelysning Vasastan", 
+        desc: "Byte till LED-paneler i kontorslokal, installation av närvarostyrning och zonindelning för energieffektiv belysning." 
+      },
+      {
+        title: "Elfelsökning Östermalm",
+        desc: "Felsökning av utlösta säkringar, byte av defekt jordfelsbrytare och dokumentation."
+      }
     ]
   },
 
@@ -142,105 +172,134 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "VVS",
     city: "Uppsala",
     slug: "vvs-uppsala",
-    h1Key: 'serviceCity.vvs.uppsala.h1',
-    titleKey: 'serviceCity.vvs.uppsala.title',
-    descriptionKey: 'serviceCity.vvs.uppsala.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.vvs.uppsala.howItWorks.0.title', descKey: 'serviceCity.vvs.uppsala.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.vvs.uppsala.howItWorks.1.title', descKey: 'serviceCity.vvs.uppsala.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.vvs.uppsala.howItWorks.2.title', descKey: 'serviceCity.vvs.uppsala.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.vvs.uppsala.howItWorks.3.title', descKey: 'serviceCity.vvs.uppsala.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.vvs.uppsala.howItWorks.4.title', descKey: 'serviceCity.vvs.uppsala.howItWorks.4.desc' }
+    h1: "VVS-montör i Uppsala",
+    title: "VVS i Uppsala – Rörmokare för Badrum & Akut läcka | ROT 50%",
+    description:
+      "Rörmokare i Uppsala för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabb hjälp vid akuta läckor och ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Ring vid akut läcka", desc: "Vid akuta läckor - ring direkt. Vi prioriterar nödfall och kommer ofta samma dag." },
+      { step: 2, title: "Snabb utryckning", desc: "Vi kommer till din fastighet i Uppsala med verktyg och reservdelar." },
+      { step: 3, title: "Felsökning & åtgärd", desc: "Vi hittar problemet, förklarar vad som behövs och ger dig ett fast pris." },
+      { step: 4, title: "Professionell utförande", desc: "Certifierad rörmokare utför arbetet enligt branschstandard." },
+      { step: 5, title: "Test & garanti", desc: "Vi testar allt noga och ger garanti. Försäkringsintyg vid behov." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.vvs.uppsala.priceExample.0.job', price: "2 200 kr", durationKey: 'serviceCity.vvs.uppsala.priceExample.0.duration' },
-      { jobKey: 'serviceCity.vvs.uppsala.priceExample.1.job', price: "3 500 kr", durationKey: 'serviceCity.vvs.uppsala.priceExample.1.duration' },
-      { jobKey: 'serviceCity.vvs.uppsala.priceExample.2.job', price: "från 2 500 kr", durationKey: 'serviceCity.vvs.uppsala.priceExample.2.duration' },
-      { jobKey: 'serviceCity.vvs.uppsala.priceExample.3.job', price: "från 85 000 kr", durationKey: 'serviceCity.vvs.uppsala.priceExample.3.duration' }
+    priceExamples: [
+      { job: "Byte av blandare", price: "2 200 kr", duration: "1 timme" },
+      { job: "Installation av WC-stol", price: "3 500 kr", duration: "2-3 timmar" },
+      { job: "Akut läcka (utryckning)", price: "från 2 500 kr", duration: "1-2 timmar" },
+      { job: "Badrumsrenovering liten", price: "från 85 000 kr", duration: "2-3 veckor" }
     ],
-    quickFactKeys: [
-      'serviceCity.vvs.uppsala.quickFact.0',
-      'serviceCity.vvs.uppsala.quickFact.1',
-      'serviceCity.vvs.uppsala.quickFact.2',
-      'serviceCity.vvs.uppsala.quickFact.3',
-      'serviceCity.vvs.uppsala.quickFact.4',
-      'serviceCity.vvs.uppsala.quickFact.5',
-      'serviceCity.vvs.uppsala.quickFact.6',
-      'serviceCity.vvs.uppsala.quickFact.7',
-      'serviceCity.vvs.uppsala.quickFact.8',
-      'serviceCity.vvs.uppsala.quickFact.9',
-      'serviceCity.vvs.uppsala.quickFact.10',
-      'serviceCity.vvs.uppsala.quickFact.11'
+    quickFacts: [
+      "Uppsala har många läckor vintertid på grund av äldre rör",
+      "BRF-badrumsrenoveringar kräver ofta godkännande från styrelse",
+      "ROT-avdrag gäller både arbetskostnad och viss materiel",
+      "Försäkring kan täcka akuta läckor - spara alltid kvitton",
+      "Moderna termostatblandare sparar vatten och energi",
+      "VVS-installationer kräver certifiering enligt Byggvarudeklaration",
+      "En droppande kran slösar 20 liter vatten per dag (motsvarande 150 kr/år)",
+      "Uppsala vatten har hög hårdhet vilket kräver regelbunden avkalkning",
+      "Fuktskador kostar svenska husägare 9 miljarder kr årligen",
+      "Golvvärme i badrum kan spara 20% på uppvärmningskostnaden",
+      "Uppsala kommun kräver VA-anmälan för större badrumsrenoveringar",
+      "Moderna duschsystem använder 50% mindre vatten än äldre modeller"
     ],
-    didYouKnowKeys: [
-      'serviceCity.vvs.uppsala.didYouKnow.0',
-      'serviceCity.vvs.uppsala.didYouKnow.1',
-      'serviceCity.vvs.uppsala.didYouKnow.2',
-      'serviceCity.vvs.uppsala.didYouKnow.3',
-      'serviceCity.vvs.uppsala.didYouKnow.4',
-      'serviceCity.vvs.uppsala.didYouKnow.5',
-      'serviceCity.vvs.uppsala.didYouKnow.6'
+    didYouKnow: [
+      "Uppsala fick sitt första vattenledningssystem år 1867 - ett av Sveriges äldsta",
+      "En genomsnittlig familj i Uppsala använder 150 liter vatten per person och dag",
+      "Uppsalas vattenledningsnät är 600 km långt - det är längre än från Uppsala till Malmö",
+      "Köldknäpp kan orsaka läckor i ovärmda sommarstugor runt Uppsala - över 200 fall per vinter",
+      "En standard WC-spolning använder 6 liter vatten - äldre modeller använde 9-12 liter",
+      "Vattenläckor i Uppsala upptäcks i genomsnitt efter 3 dagar - mycket senare än Stockholm",
+      "Uppsala Vatten har Sveriges modernaste reningsverk med 99,7% reningsgrad"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.vvs.uppsala.faq.0.q', aKey: 'serviceCity.vvs.uppsala.faq.0.a' },
-      { qKey: 'serviceCity.vvs.uppsala.faq.1.q', aKey: 'serviceCity.vvs.uppsala.faq.1.a' },
-      { qKey: 'serviceCity.vvs.uppsala.faq.2.q', aKey: 'serviceCity.vvs.uppsala.faq.2.a' }
+    faqs: [
+      { 
+        q: "Fixar ni akuta läckor i Uppsala?", 
+        a: "Ja, ring oss direkt vid akuta läckor. Vi prioriterar nödfall och försöker komma ut samma dag." 
+      },
+      { 
+        q: "Hjälper ni med intyg till försäkringsbolag?", 
+        a: "Ja, vi dokumenterar alla vattenrelaterade skador och kan skriva intyg enligt försäkringsbolagens krav." 
+      },
+      {
+        q: "Gör ni badrumsrenoveringar?",
+        a: "Ja, vi gör kompletta badrumsrenoveringar inklusive VVS, kakel, golvvärme och ventilation. ROT-avdrag gäller."
+      }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.vvs.uppsala.case.0.title', descKey: 'serviceCity.vvs.uppsala.case.0.desc' },
-      { titleKey: 'serviceCity.vvs.uppsala.case.1.title', descKey: 'serviceCity.vvs.uppsala.case.1.desc' }
+    cases: [
+      { 
+        title: "Byte av WC Gottsunda", 
+        desc: "Demontering av gammal WC-stol, installation av ny med mjukstängande sits, test och bortforsling av gamla enheten." 
+      },
+      {
+        title: "Akut läcka Luthagen",
+        desc: "Snabb insats vid läckande blandare i kök, byte av packningar och kontroll av alla anslutningar."
+      }
     ]
   },
   {
     service: "VVS",
     city: "Stockholm",
     slug: "vvs-stockholm",
-    h1Key: 'serviceCity.vvs.stockholm.h1',
-    titleKey: 'serviceCity.vvs.stockholm.title',
-    descriptionKey: 'serviceCity.vvs.stockholm.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.vvs.stockholm.howItWorks.0.title', descKey: 'serviceCity.vvs.stockholm.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.vvs.stockholm.howItWorks.1.title', descKey: 'serviceCity.vvs.stockholm.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.vvs.stockholm.howItWorks.2.title', descKey: 'serviceCity.vvs.stockholm.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.vvs.stockholm.howItWorks.3.title', descKey: 'serviceCity.vvs.stockholm.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.vvs.stockholm.howItWorks.4.title', descKey: 'serviceCity.vvs.stockholm.howItWorks.4.desc' }
+    h1: "VVS-montör i Stockholm",
+    title: "VVS i Stockholm – Rörmokare & Badrum | ROT 50%",
+    description:
+      "VVS-hjälp i Stockholm för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabbt på plats och tydliga prisexempel. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Kontakt & bokning", desc: "Ring oss för akuta läckor eller boka tid för planerade jobb. Svar inom 2h." },
+      { step: 2, title: "Hembesök", desc: "Certifierad rörmokare kommer till dig i Stockholm med verktyg och vanliga reservdelar." },
+      { step: 3, title: "Offert på plats", desc: "Vi bedömer jobbet och ger dig ett fast pris direkt. Inga dolda avgifter." },
+      { step: 4, title: "Utförande", desc: "Vi utför arbetet snabbt och professionellt med kvalitetsmaterial." },
+      { step: 5, title: "Test & dokumentation", desc: "Funktionstest och dokumentation ingår. Försäkringsintyg vid skador." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.vvs.stockholm.priceExample.0.job', price: "2 500 kr", durationKey: 'serviceCity.vvs.stockholm.priceExample.0.duration' },
-      { jobKey: 'serviceCity.vvs.stockholm.priceExample.1.job', price: "3 800 kr", durationKey: 'serviceCity.vvs.stockholm.priceExample.1.duration' },
-      { jobKey: 'serviceCity.vvs.stockholm.priceExample.2.job', price: "från 3 000 kr", durationKey: 'serviceCity.vvs.stockholm.priceExample.2.duration' },
-      { jobKey: 'serviceCity.vvs.stockholm.priceExample.3.job', price: "från 95 000 kr", durationKey: 'serviceCity.vvs.stockholm.priceExample.3.duration' }
+    priceExamples: [
+      { job: "Byte av blandare", price: "2 500 kr", duration: "1 timme" },
+      { job: "Installation av WC-stol", price: "3 800 kr", duration: "2-3 timmar" },
+      { job: "Akut läcka (jourtid)", price: "från 3 000 kr", duration: "1-2 timmar" },
+      { job: "Badrumsrenovering liten", price: "från 95 000 kr", duration: "2-3 veckor" }
     ],
-    quickFactKeys: [
-      'serviceCity.vvs.stockholm.quickFact.0',
-      'serviceCity.vvs.stockholm.quickFact.1',
-      'serviceCity.vvs.stockholm.quickFact.2',
-      'serviceCity.vvs.stockholm.quickFact.3',
-      'serviceCity.vvs.stockholm.quickFact.4',
-      'serviceCity.vvs.stockholm.quickFact.5',
-      'serviceCity.vvs.stockholm.quickFact.6',
-      'serviceCity.vvs.stockholm.quickFact.7',
-      'serviceCity.vvs.stockholm.quickFact.8',
-      'serviceCity.vvs.stockholm.quickFact.9',
-      'serviceCity.vvs.stockholm.quickFact.10',
-      'serviceCity.vvs.stockholm.quickFact.11'
+    quickFacts: [
+      "Stockholm har Sveriges äldsta vattenledningsnät",
+      "BRF-badrum kräver ofta fuktsäkerhetsprojektering",
+      "Vattentryck i Stockholm varierar mellan 2-6 bar",
+      "ROT-avdrag gäller upp till 50 000 kr per person och år",
+      "Moderna duschblandare kan spara 30% vatten",
+      "Stockholm vatten levererar 350 000 m³ dricksvatten per dag",
+      "Äldre fastigheter i Stockholm har ofta blyrör som bör bytas",
+      "BRF-renovering av stammar kostar typiskt 15 000-30 000 kr per lägenhet",
+      "Vattentryck i Stockholm kan variera mellan 1,5 och 6 bar beroende på våning",
+      "Läckor i stamledningar är vanligt i fastigheter byggda före 1980",
+      "Försäkringsbolag kräver ofta dokumentation från certifierad VVS-montör",
+      "Installationsbesiktning kostar 3 000-5 000 kr och rekommenderas efter större renoveringar"
     ],
-    didYouKnowKeys: [
-      'serviceCity.vvs.stockholm.didYouKnow.0',
-      'serviceCity.vvs.stockholm.didYouKnow.1',
-      'serviceCity.vvs.stockholm.didYouKnow.2',
-      'serviceCity.vvs.stockholm.didYouKnow.3',
-      'serviceCity.vvs.stockholm.didYouKnow.4',
-      'serviceCity.vvs.stockholm.didYouKnow.5',
-      'serviceCity.vvs.stockholm.didYouKnow.6'
+    didYouKnow: [
+      "Stockholms första vattenledning byggdes 1861 från Årsta sjön till Norr Mälarstrand",
+      "Stockholm förlorar 12% av allt dricksvatten genom läckor i ledningsnätet - motsvarande 42 000 m³/dag",
+      "En genomsnittlig lägenhet i Stockholm har 15 vattenpunkter (kranar, toaletter, tvättmaskin)",
+      "Gamla Stans medeltida källare får ofta problem med grundvatten och kräver avancerad dränering",
+      "Stambyte i en BRF kan öka lägenhetsvärdet med 5-8% direkt",
+      "Stockholm använder värmeåtervinning från avloppsvatten som värmer 400 000 bostäder",
+      "Vattenskador är den vanligaste försäkringsskadan i Stockholm - över 15 000 ärenden per år"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.vvs.stockholm.faq.0.q', aKey: 'serviceCity.vvs.stockholm.faq.0.a' },
-      { qKey: 'serviceCity.vvs.stockholm.faq.1.q', aKey: 'serviceCity.vvs.stockholm.faq.1.a' }
+    faqs: [
+      { 
+        q: "Arbetar ni i BRF:er i Stockholm?", 
+        a: "Ja, vi har stor erfarenhet av BRF-arbete. Vi bokar tid via styrelse eller förvaltare och följer husets rutiner." 
+      },
+      {
+        q: "Kan ni hjälpa till vid vattenläcka från lägenhet ovan?",
+        a: "Ja, vi kan göra akuta insatser för att begränsa skador och dokumentera för försäkringsärenden."
+      }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.vvs.stockholm.case.0.title', descKey: 'serviceCity.vvs.stockholm.case.0.desc' },
-      { titleKey: 'serviceCity.vvs.stockholm.case.1.title', descKey: 'serviceCity.vvs.stockholm.case.1.desc' }
+    cases: [
+      { 
+        title: "Byte blandare Södermalm", 
+        desc: "Installation av ny termostatblandare i dusch, kontroll av tätskikt och funktionsprov. Genomfört på 1 timme." 
+      },
+      {
+        title: "Badrumsrenovering Vasastan",
+        desc: "Total renovering av badrum i 60-talslägenhet med ny VVS, golvvärme och kakelsättning. ROT-avdrag tillämpades."
+      }
     ]
   },
 
@@ -249,105 +308,105 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "Snickare",
     city: "Uppsala",
     slug: "snickare-uppsala",
-    h1Key: 'serviceCity.snickare.uppsala.h1',
-    titleKey: 'serviceCity.snickare.uppsala.title',
-    descriptionKey: 'serviceCity.snickare.uppsala.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.snickare.uppsala.howItWorks.0.title', descKey: 'serviceCity.snickare.uppsala.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.snickare.uppsala.howItWorks.1.title', descKey: 'serviceCity.snickare.uppsala.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.snickare.uppsala.howItWorks.2.title', descKey: 'serviceCity.snickare.uppsala.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.snickare.uppsala.howItWorks.3.title', descKey: 'serviceCity.snickare.uppsala.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.snickare.uppsala.howItWorks.4.title', descKey: 'serviceCity.snickare.uppsala.howItWorks.4.desc' }
+    h1: "Snickare i Uppsala",
+    title: "Snickare i Uppsala – Kök, Garderober & Inredning | ROT 50%",
+    description: "Erfarna snickare i Uppsala för köksmontering, platsbyggda garderober, lister och alla typer av snickeriarbeten. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Planering", desc: "Berätta om ditt projekt. Vi bokar tid för mätning och diskussion om design och material." },
+      { step: 2, title: "Mätning hemma", desc: "Vi kommer hem till dig i Uppsala för att mäta upp och diskutera lösningar." },
+      { step: 3, title: "Offert & ritning", desc: "Du får en detaljerad offert med ritning och materialspecifikation." },
+      { step: 4, title: "Beställning & produktion", desc: "Efter godkänt underlag beställs material och produktionen planeras." },
+      { step: 5, title: "Montering & färdigställande", desc: "Erfaren snickare monterar och justerar. Du får ROT-avdrag på arbetskostnaden." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.snickare.uppsala.priceExample.0.job', price: "18 000 kr", durationKey: 'serviceCity.snickare.uppsala.priceExample.0.duration' },
-      { jobKey: 'serviceCity.snickare.uppsala.priceExample.1.job', price: "25 000 kr", durationKey: 'serviceCity.snickare.uppsala.priceExample.1.duration' },
-      { jobKey: 'serviceCity.snickare.uppsala.priceExample.2.job', price: "8 500 kr", durationKey: 'serviceCity.snickare.uppsala.priceExample.2.duration' },
-      { jobKey: 'serviceCity.snickare.uppsala.priceExample.3.job', price: "4 500 kr", durationKey: 'serviceCity.snickare.uppsala.priceExample.3.duration' }
+    priceExamples: [
+      { job: "IKEA-köksmontering 10 skåp", price: "18 000 kr", duration: "2-3 dagar" },
+      { job: "Platsbyggd garderob 2 meter", price: "25 000 kr", duration: "3-4 dagar" },
+      { job: "Montering av lister 50 m", price: "8 500 kr", duration: "1 dag" },
+      { job: "Köksbänkskiva montering", price: "4 500 kr", duration: "3-4 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.snickare.uppsala.quickFact.0',
-      'serviceCity.snickare.uppsala.quickFact.1',
-      'serviceCity.snickare.uppsala.quickFact.2',
-      'serviceCity.snickare.uppsala.quickFact.3',
-      'serviceCity.snickare.uppsala.quickFact.4',
-      'serviceCity.snickare.uppsala.quickFact.5',
-      'serviceCity.snickare.uppsala.quickFact.6',
-      'serviceCity.snickare.uppsala.quickFact.7',
-      'serviceCity.snickare.uppsala.quickFact.8',
-      'serviceCity.snickare.uppsala.quickFact.9',
-      'serviceCity.snickare.uppsala.quickFact.10',
-      'serviceCity.snickare.uppsala.quickFact.11'
+    quickFacts: [
+      "Uppsalas sekelskifteslägenheter har ofta kök från 60-70-talet",
+      "Platsbyggt är ofta billigare än färdiga lösningar för sneda rum",
+      "ROT-avdrag gäller montering men inte själva möblerna",
+      "Köksbyte tar vanligtvis 2-4 dagar beroende på storlek",
+      "Moderna kök ökar lägenhetsvärdet med upp till 10%",
+      "Platsbyggda lösningar kan spara 30-40% jämfört med standardlösningar från stora kedjor",
+      "Snickeriarbeten ska följa BFS 2011:6 - BBR (Boverkets Byggregler)",
+      "Massivt trä ökar i värde över tid och håller i generationer",
+      "Köksskåp från 60-70-talet innehåller ofta asbest i baksidor - ska hanteras av proffs",
+      "Uppsala har många snickerier som kan specialtillverka komponenter",
+      "Träfukt ska vara under 16% vid montering för att undvika sprickor",
+      "Moderna MDF-skivor är stabilare än massivt trä men tål inte fukt lika bra"
     ],
-    didYouKnowKeys: [
-      'serviceCity.snickare.uppsala.didYouKnow.0',
-      'serviceCity.snickare.uppsala.didYouKnow.1',
-      'serviceCity.snickare.uppsala.didYouKnow.2',
-      'serviceCity.snickare.uppsala.didYouKnow.3',
-      'serviceCity.snickare.uppsala.didYouKnow.4',
-      'serviceCity.snickare.uppsala.didYouKnow.5',
-      'serviceCity.snickare.uppsala.didYouKnow.6'
+    didYouKnow: [
+      "Uppsala har en 400 år gammal snickeritradition kopplad till slottsbygget på 1500-talet",
+      "En välbyggd platsbyggd garderob kan hålla i 50+ år - längre än byggnaden själv ibland",
+      "IKEA-köksmontering tar en proffs 6-8 timmar - en oerfaren person kan behöva 20-30 timmar",
+      "Gamla Uppsalahus från 1800-talet har ofta trädetaljer som kräver specialanpassad snickeri",
+      "Listmontering runt fönster och dörrar förbättrar energieffektiviteten genom att täta springor",
+      "Snickeriarbeten utomhus (altaner, plank) kräver impregnerat eller hyvlat tryckimpregnerat trä",
+      "Moderna limträbalkar kan spänna över 12 meter utan mellanstöd - perfekt för öppna planlösningar"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.snickare.uppsala.faq.0.q', aKey: 'serviceCity.snickare.uppsala.faq.0.a' },
-      { qKey: 'serviceCity.snickare.uppsala.faq.1.q', aKey: 'serviceCity.snickare.uppsala.faq.1.a' },
-      { qKey: 'serviceCity.snickare.uppsala.faq.2.q', aKey: 'serviceCity.snickare.uppsala.faq.2.a' }
+    faqs: [
+      { q: "Bygger ni platsbyggda garderober?", a: "Ja, vi bygger skräddarsydda garderober, bokhyllor och förvaringslösningar anpassade efter dina behov och utrymme." },
+      { q: "Monterar ni IKEA-kök?", a: "Ja, vi monterar IKEA-kök och andra kökslösningar. Vi hanterar även vattenanslutningar och elinstallationer i samarbete med våra elektriker." },
+      { q: "Hur lång tid tar ett köksmontage?", a: "Ett standardkök tar vanligtvis 2-4 dagar beroende på storlek och komplexitet. Vi ger en tydlig tidsplan innan start." }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.snickare.uppsala.case.0.title', descKey: 'serviceCity.snickare.uppsala.case.0.desc' },
-      { titleKey: 'serviceCity.snickare.uppsala.case.1.title', descKey: 'serviceCity.snickare.uppsala.case.1.desc' }
+    cases: [
+      { title: "Platsbyggd bokhylla Luthagen", desc: "Bokhylla från golv till tak med integrerad belysning och skräddarsydda hyllplan. Målad i vit kulör för elegant look." },
+      { title: "Köksrenovering Gottsunda", desc: "Komplett köksmontering med nya skåp, bänkskivor i laminat, kakel och installation av vitvaror." }
     ]
   },
   {
     service: "Snickare",
     city: "Stockholm",
     slug: "snickare-stockholm",
-    h1Key: 'serviceCity.snickare.stockholm.h1',
-    titleKey: 'serviceCity.snickare.stockholm.title',
-    descriptionKey: 'serviceCity.snickare.stockholm.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.snickare.stockholm.howItWorks.0.title', descKey: 'serviceCity.snickare.stockholm.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.snickare.stockholm.howItWorks.1.title', descKey: 'serviceCity.snickare.stockholm.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.snickare.stockholm.howItWorks.2.title', descKey: 'serviceCity.snickare.stockholm.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.snickare.stockholm.howItWorks.3.title', descKey: 'serviceCity.snickare.stockholm.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.snickare.stockholm.howItWorks.4.title', descKey: 'serviceCity.snickare.stockholm.howItWorks.4.desc' }
+    h1: "Snickare i Stockholm",
+    title: "Snickare i Stockholm – Kök, Garderober & Renovering | ROT 50%",
+    description: "Professionella snickare i Stockholm för alla snickeriarbeten. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Initial konsultation", desc: "Kontakta oss för att diskutera ditt projekt. Vi bokar tid för hembesök." },
+      { step: 2, title: "Mätning & design", desc: "Snickare besöker dig i Stockholm för mätning och designdiskussion." },
+      { step: 3, title: "Offert med ritning", desc: "Du får en detaljerad offert med 3D-ritning och materialförslag." },
+      { step: 4, title: "Material & produktion", desc: "Vi beställer material och förbereder alla komponenter i verkstad." },
+      { step: 5, title: "Installation & finish", desc: "Professionell montering på plats. Vi städar efter oss och ROT-avdrag ingår." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.snickare.stockholm.priceExample.0.job', price: "22 000 kr", durationKey: 'serviceCity.snickare.stockholm.priceExample.0.duration' },
-      { jobKey: 'serviceCity.snickare.stockholm.priceExample.1.job', price: "35 000 kr", durationKey: 'serviceCity.snickare.stockholm.priceExample.1.duration' },
-      { jobKey: 'serviceCity.snickare.stockholm.priceExample.2.job', price: "10 500 kr", durationKey: 'serviceCity.snickare.stockholm.priceExample.2.duration' },
-      { jobKey: 'serviceCity.snickare.stockholm.priceExample.3.job', price: "12 000 kr", durationKey: 'serviceCity.snickare.stockholm.priceExample.3.duration' }
+    priceExamples: [
+      { job: "IKEA-köksmontering 12 skåp", price: "22 000 kr", duration: "2-4 dagar" },
+      { job: "Platsbyggd walk-in closet", price: "35 000 kr", duration: "4-5 dagar" },
+      { job: "Montering av lister 60 m", price: "10 500 kr", duration: "1-2 dagar" },
+      { job: "Altandörr + karm", price: "12 000 kr", duration: "1 dag" }
     ],
-    quickFactKeys: [
-      'serviceCity.snickare.stockholm.quickFact.0',
-      'serviceCity.snickare.stockholm.quickFact.1',
-      'serviceCity.snickare.stockholm.quickFact.2',
-      'serviceCity.snickare.stockholm.quickFact.3',
-      'serviceCity.snickare.stockholm.quickFact.4',
-      'serviceCity.snickare.stockholm.quickFact.5',
-      'serviceCity.snickare.stockholm.quickFact.6',
-      'serviceCity.snickare.stockholm.quickFact.7',
-      'serviceCity.snickare.stockholm.quickFact.8',
-      'serviceCity.snickare.stockholm.quickFact.9',
-      'serviceCity.snickare.stockholm.quickFact.10',
-      'serviceCity.snickare.stockholm.quickFact.11'
+    quickFacts: [
+      "80% av Stockholms sekelskifteslägenheter har originaldetaljer att bevara",
+      "BRF-arbete kräver ofta styrelsegodkännande innan start",
+      "Stockholm har strängare bullerkrav - ljudisolering kan behövas",
+      "ROT-avdrag gäller arbetskostnad men inte material",
+      "Platsbyggda lösningar är perfekta för Stockholms sneda väggar",
+      "Sekelskifteslägenheter har ofta 3,2 meter i takhöjd - perfekt för höga bokhyllor",
+      "Parkettgolv i Stockholm är ofta 100+ år gamla och kan slipas många gånger",
+      "Ljudisolering mellan rum kräver dubbelreglar med mineralull",
+      "Platsbyggda hyllor kan utnyttja takvinklar och sneda väggar perfekt",
+      "Måttsydda lösningar passar perfekt för Stockholms ojämna väggar",
+      "Ekparkett kostar 800-1 500 kr/kvm inklusive slipning och lackering",
+      "BRF-regler i Stockholm kräver ofta tillstånd för större ombyggnationer"
     ],
-    didYouKnowKeys: [
-      'serviceCity.snickare.stockholm.didYouKnow.0',
-      'serviceCity.snickare.stockholm.didYouKnow.1',
-      'serviceCity.snickare.stockholm.didYouKnow.2',
-      'serviceCity.snickare.stockholm.didYouKnow.3',
-      'serviceCity.snickare.stockholm.didYouKnow.4',
-      'serviceCity.snickare.stockholm.didYouKnow.5',
-      'serviceCity.snickare.stockholm.didYouKnow.6'
+    didYouKnow: [
+      "Gamla Stans hus från 1600-talet har timmerkonstruktioner som fortfarande är starka",
+      "Stockholms sekelskifteslägenheter har ofta 3,2 meter i takhöjd - perfekt för höga bokhyllor",
+      "Originaldetaljer från 1890-talet som dörrar och lister kan vara värda 50 000+ kr på auktion",
+      "En genomsnittlig Stockholmslägenhet har 3-5 skeva väggar - platsbyggt är enda lösningen",
+      "Sveriges första standardiserade kök byggdes i Stockholm 1922 - 'Stockholmsköket'",
+      "Träpanel i sekelskifteshus är ofta av furu från Norrland - håller i 200+ år med rätt underhåll",
+      "Snickare i Stockholm måste ofta hantera eldragning i gamla väggar med kanalisation"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.snickare.stockholm.faq.0.q', aKey: 'serviceCity.snickare.stockholm.faq.0.a' },
-      { qKey: 'serviceCity.snickare.stockholm.faq.1.q', aKey: 'serviceCity.snickare.stockholm.faq.1.a' }
+    faqs: [
+      { q: "Arbetar ni i BRF:er?", a: "Ja, vi har stor erfarenhet av BRF-arbete och följer husets rutiner för bokning, tillträde och städning." },
+      { q: "Kan ni göra soundproof väggar?", a: "Ja, vi bygger ljudisolerade väggar med dubbelreglar och isolering för optimal ljuddämpning mellan rum eller lägenheter." }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.snickare.stockholm.case.0.title', descKey: 'serviceCity.snickare.stockholm.case.0.desc' },
-      { titleKey: 'serviceCity.snickare.stockholm.case.1.title', descKey: 'serviceCity.snickare.stockholm.case.1.desc' }
+    cases: [
+      { title: "Garderob Vasastan", desc: "Platsbyggd walk-in closet med belysning, klädstänger och hyllsystem i sekelskifteslägenhet." },
+      { title: "Köksmontage Östermalm", desc: "Montering av exklusivt kök med massivt trä, stenbänkskiva och integrerade vitvaror." }
     ]
   },
 
@@ -356,105 +415,105 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "Montering",
     city: "Uppsala",
     slug: "montering-uppsala",
-    h1Key: 'serviceCity.montering.uppsala.h1',
-    titleKey: 'serviceCity.montering.uppsala.title',
-    descriptionKey: 'serviceCity.montering.uppsala.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.montering.uppsala.howItWorks.0.title', descKey: 'serviceCity.montering.uppsala.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.montering.uppsala.howItWorks.1.title', descKey: 'serviceCity.montering.uppsala.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.montering.uppsala.howItWorks.2.title', descKey: 'serviceCity.montering.uppsala.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.montering.uppsala.howItWorks.3.title', descKey: 'serviceCity.montering.uppsala.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.montering.uppsala.howItWorks.4.title', descKey: 'serviceCity.montering.uppsala.howItWorks.4.desc' }
+    h1: "Montering i Uppsala",
+    title: "Montering i Uppsala – IKEA-möbler, TV-fästen & Mer | ROT 50%",
+    description: "Snabb och professionell montering i Uppsala. IKEA-möbler, vitvaror, TV-fästen. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
+      { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
+      { step: 3, title: "Vi kommer hem till dig", desc: "Montör kommer med verktyg och kunnande. Ofta klart samma dag." },
+      { step: 4, title: "Professionell montering", desc: "Vi monterar enligt tillverkarens instruktioner och testar allt." },
+      { step: 5, title: "Städning & bortforsling", desc: "Vi städar och tar hand om emballage. ROT/RUT-avdrag inkluderat." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.montering.uppsala.priceExample.0.job', price: "1 200 kr", durationKey: 'serviceCity.montering.uppsala.priceExample.0.duration' },
-      { jobKey: 'serviceCity.montering.uppsala.priceExample.1.job', price: "2 500 kr", durationKey: 'serviceCity.montering.uppsala.priceExample.1.duration' },
-      { jobKey: 'serviceCity.montering.uppsala.priceExample.2.job', price: "12 000 kr", durationKey: 'serviceCity.montering.uppsala.priceExample.2.duration' },
-      { jobKey: 'serviceCity.montering.uppsala.priceExample.3.job', price: "1 800 kr", durationKey: 'serviceCity.montering.uppsala.priceExample.3.duration' }
+    priceExamples: [
+      { job: "TV-fäste på vägg", price: "1 200 kr", duration: "1 timme" },
+      { job: "IKEA PAX-garderob 3 dörrar", price: "2 500 kr", duration: "2-3 timmar" },
+      { job: "Köksmontage IKEA 8 skåp", price: "12 000 kr", duration: "1-2 dagar" },
+      { job: "Säng + 2 nattduksbord", price: "1 800 kr", duration: "1,5 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.montering.uppsala.quickFact.0',
-      'serviceCity.montering.uppsala.quickFact.1',
-      'serviceCity.montering.uppsala.quickFact.2',
-      'serviceCity.montering.uppsala.quickFact.3',
-      'serviceCity.montering.uppsala.quickFact.4',
-      'serviceCity.montering.uppsala.quickFact.5',
-      'serviceCity.montering.uppsala.quickFact.6',
-      'serviceCity.montering.uppsala.quickFact.7',
-      'serviceCity.montering.uppsala.quickFact.8',
-      'serviceCity.montering.uppsala.quickFact.9',
-      'serviceCity.montering.uppsala.quickFact.10',
-      'serviceCity.montering.uppsala.quickFact.11'
+    quickFacts: [
+      "IKEA-instruktioner är ofta otydliga - proffs gör jobbet 3x snabbare",
+      "Felaktig montering kan göra möbler farliga - särskilt barnsäkring",
+      "TV-fästen på betongvägg kräver specialborr och pluggar",
+      "ROT/RUT-avdrag gäller monteringsarbete i hemmet",
+      "Moderna möbler är ofta tyngre än äldre - rätt väggfäste är kritiskt",
+      "Emballage från IKEA ska till återvinningen - vi tar hand om det",
+      "PAX-garderober med spegeldörrar kräver noggrann vågrätjustering",
+      "Vitvaror måste anslutas enligt tillverkarens instruktioner för garanti",
+      "Felmontering av köksskåp kan orsaka vattenskador senare",
+      "TV-montering kräver studsare för att hitta reglar i väggen",
+      "IKEA-möbler från samma serie passar ofta inte exakt ihop - justering behövs",
+      "Professionell montering sparar 4-6 timmar frustration för genomsnittlig IKEA-möbel"
     ],
-    didYouKnowKeys: [
-      'serviceCity.montering.uppsala.didYouKnow.0',
-      'serviceCity.montering.uppsala.didYouKnow.1',
-      'serviceCity.montering.uppsala.didYouKnow.2',
-      'serviceCity.montering.uppsala.didYouKnow.3',
-      'serviceCity.montering.uppsala.didYouKnow.4',
-      'serviceCity.montering.uppsala.didYouKnow.5',
-      'serviceCity.montering.uppsala.didYouKnow.6'
+    didYouKnow: [
+      "IKEA-möbler kommer med 19 000 olika skruvar och beslag - lätt att blanda ihop",
+      "En felaktigt monterad bokhylla kan rasa och orsaka skador på 50 000+ kr",
+      "Uppsala har Sveriges högsta andel IKEA-möbler per capita efter Stockholm",
+      "Genomsnittlig IKEA-kund spenderar 4-6 timmar på montering - proffs gör samma jobb på 1-2 timmar",
+      "TV-fästen på gipsväggar kräver specialfästen som klarar 50+ kg",
+      "IKEA-kök har 45 olika delar per skåp i genomsnitt",
+      "Felaktig montering av vitvaror kan orsaka vattenskador som inte täcks av försäkring"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.montering.uppsala.faq.0.q', aKey: 'serviceCity.montering.uppsala.faq.0.a' },
-      { qKey: 'serviceCity.montering.uppsala.faq.1.q', aKey: 'serviceCity.montering.uppsala.faq.1.a' },
-      { qKey: 'serviceCity.montering.uppsala.faq.2.q', aKey: 'serviceCity.montering.uppsala.faq.2.a' }
+    faqs: [
+      { q: "Monterar ni IKEA-möbler samma dag?", a: "Ja, för mindre monteringsjobb kan vi ofta komma samma dag. Kontakta oss för aktuell tillgänglighet." },
+      { q: "Tar ni hand om emballage?", a: "Ja, vi tar med oss alla kartonger och emballage och ser till att det lämnas på återvinningsstation." },
+      { q: "Monterar ni vitvaror?", a: "Ja, vi monterar vitvaror som ugnar, diskmaskin, kylskåp och ansluter dem enligt tillverkarens specifikationer." }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.montering.uppsala.case.0.title', descKey: 'serviceCity.montering.uppsala.case.0.desc' },
-      { titleKey: 'serviceCity.montering.uppsala.case.1.title', descKey: 'serviceCity.montering.uppsala.case.1.desc' }
+    cases: [
+      { title: "PAX-garderob 4 dörrar Luthagen", desc: "Montering av stor PAX-garderob med spegeldörrar, inredning och belysning. Klart på 3 timmar." },
+      { title: "Köksmontage IKEA Gottsunda", desc: "Montering av komplett IKEA-kök med skåp, bänkskivor och installation av spis och fläkt." }
     ]
   },
   {
     service: "Montering",
     city: "Stockholm",
     slug: "montering-stockholm",
-    h1Key: 'serviceCity.montering.stockholm.h1',
-    titleKey: 'serviceCity.montering.stockholm.title',
-    descriptionKey: 'serviceCity.montering.stockholm.description',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.montering.stockholm.howItWorks.0.title', descKey: 'serviceCity.montering.stockholm.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.montering.stockholm.howItWorks.1.title', descKey: 'serviceCity.montering.stockholm.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.montering.stockholm.howItWorks.2.title', descKey: 'serviceCity.montering.stockholm.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.montering.stockholm.howItWorks.3.title', descKey: 'serviceCity.montering.stockholm.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.montering.stockholm.howItWorks.4.title', descKey: 'serviceCity.montering.stockholm.howItWorks.4.desc' }
+    h1: "Montering i Stockholm",
+    title: "Montering i Stockholm – IKEA, Vitvaror & Fästen | ROT 50%",
+    description: "Professionell monteringshjälp i Stockholm. IKEA-möbler, vitvaror och fästen. ROT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
+      { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
+      { step: 3, title: "Vi kommer hem till dig", desc: "Montör kommer med verktyg och kunnande. Ofta klart samma dag." },
+      { step: 4, title: "Professionell montering", desc: "Vi monterar enligt tillverkarens instruktioner och testar allt." },
+      { step: 5, title: "Städning & bortforsling", desc: "Vi städar och tar hand om emballage. ROT/RUT-avdrag inkluderat." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.montering.stockholm.priceExample.0.job', price: "1 400 kr", durationKey: 'serviceCity.montering.stockholm.priceExample.0.duration' },
-      { jobKey: 'serviceCity.montering.stockholm.priceExample.1.job', price: "2 800 kr", durationKey: 'serviceCity.montering.stockholm.priceExample.1.duration' },
-      { jobKey: 'serviceCity.montering.stockholm.priceExample.2.job', price: "14 000 kr", durationKey: 'serviceCity.montering.stockholm.priceExample.2.duration' },
-      { jobKey: 'serviceCity.montering.stockholm.priceExample.3.job', price: "2 000 kr", durationKey: 'serviceCity.montering.stockholm.priceExample.3.duration' }
+    priceExamples: [
+      { job: "TV-fäste på vägg", price: "1 400 kr", duration: "1 timme" },
+      { job: "IKEA PAX-garderob 3 dörrar", price: "2 800 kr", duration: "2-3 timmar" },
+      { job: "Köksmontage IKEA 8 skåp", price: "14 000 kr", duration: "1-2 dagar" },
+      { job: "Säng + 2 nattduksbord", price: "2 000 kr", duration: "1,5 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.montering.stockholm.quickFact.0',
-      'serviceCity.montering.stockholm.quickFact.1',
-      'serviceCity.montering.stockholm.quickFact.2',
-      'serviceCity.montering.stockholm.quickFact.3',
-      'serviceCity.montering.stockholm.quickFact.4',
-      'serviceCity.montering.stockholm.quickFact.5',
-      'serviceCity.montering.stockholm.quickFact.6',
-      'serviceCity.montering.stockholm.quickFact.7',
-      'serviceCity.montering.stockholm.quickFact.8',
-      'serviceCity.montering.stockholm.quickFact.9',
-      'serviceCity.montering.stockholm.quickFact.10',
-      'serviceCity.montering.stockholm.quickFact.11'
+    quickFacts: [
+      "IKEA-instruktioner är ofta otydliga - proffs gör jobbet 3x snabbare",
+      "Felaktig montering kan göra möbler farliga - särskilt barnsäkring",
+      "TV-fästen på betongvägg kräver specialborr och pluggar",
+      "ROT/RUT-avdrag gäller monteringsarbete i hemmet",
+      "Moderna möbler är ofta tyngre än äldre - rätt väggfäste är kritiskt",
+      "Emballage från IKEA ska till återvinningen - vi tar hand om det",
+      "PAX-garderober med spegeldörrar kräver noggrann vågrätjustering",
+      "Sekelskifteslägenheter har ofta betongväggar som kräver slagborr",
+      "Stockholm har strängare bullerkrav - monteringar efter 18.00 kan störa grannar",
+      "BRF-regler kan begränsa vad som får monteras - kontrollera innan",
+      "Gamla Stans smala trapphus kräver ofta demontering av stora möbler för transport",
+      "TV-montering i Stockholm kostar ofta mer på grund av betongväggar"
     ],
-    didYouKnowKeys: [
-      'serviceCity.montering.stockholm.didYouKnow.0',
-      'serviceCity.montering.stockholm.didYouKnow.1',
-      'serviceCity.montering.stockholm.didYouKnow.2',
-      'serviceCity.montering.stockholm.didYouKnow.3',
-      'serviceCity.montering.stockholm.didYouKnow.4',
-      'serviceCity.montering.stockholm.didYouKnow.5',
-      'serviceCity.montering.stockholm.didYouKnow.6'
+    didYouKnow: [
+      "Stockholms tightaste utrymmen är i Gamla Stan - montering kräver ofta specialverktyg",
+      "Sekelskifteslägenheter har ofta ojämna golv - möbler behöver justeras noggrannt",
+      "IKEA Kungens Kurva säljer 2,5 miljoner Billy-bokhyllor per år",
+      "En felaktigt monterad spegel kan falla och orsaka skador - alltid säkra tunga föremål",
+      "Betongväggar i nybyggen i Stockholm kräver slagborr - vanlig borr funkar inte",
+      "Stockholm har flest hyreslägenheter där BRF-regler kan begränsa monteringar",
+      "Genomsnittlig Stockholmare monterar 3-4 IKEA-möbler per år"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.montering.stockholm.faq.0.q', aKey: 'serviceCity.montering.stockholm.faq.0.a' },
-      { qKey: 'serviceCity.montering.stockholm.faq.1.q', aKey: 'serviceCity.montering.stockholm.faq.1.a' }
+    faqs: [
+      { q: "Kan ni hämta möbler från IKEA?", a: "Ja, vi kan hämta möbler från IKEA Kungens Kurva eller Barkarby och leverera direkt till dig för montering." },
+      { q: "Arbetar ni på kvällar?", a: "Ja, vi erbjuder kvällstider för de som behöver monteringshjälp efter kontorstid. Boka i förväg för bästa tid." }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.montering.stockholm.case.0.title', descKey: 'serviceCity.montering.stockholm.case.0.desc' },
-      { titleKey: 'serviceCity.montering.stockholm.case.1.title', descKey: 'serviceCity.montering.stockholm.case.1.desc' }
+    cases: [
+      { title: "TV-vägg Södermalm", desc: "Montering av 65\" TV påvägg med dold kabelföring och soundbar. Snyggt och stabilt resultat." },
+      { title: "Kontorsmöbler Kungsholmen", desc: "Montering av skrivbord, stolar och förvaringsskåp för hemmakontor." }
     ]
   },
 
@@ -463,54 +522,53 @@ export const serviceCityData: ServiceCityItem[] = [
     service: "Trädgård",
     city: "Uppsala",
     slug: "tradgard-uppsala",
-    h1Key: 'serviceCity.tradgard.uppsala.h1',
-    titleKey: 'serviceCity.tradgard.uppsala.title',
-    descriptionKey: 'serviceCity.tradgard.uppsala.description',
-    priceHintKey: 'serviceCity.tradgard.uppsala.priceHint',
-    howItWorksKeys: [
-      { step: 1, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.0.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.0.desc' },
-      { step: 2, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.1.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.1.desc' },
-      { step: 3, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.2.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.2.desc' },
-      { step: 4, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.3.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.3.desc' },
-      { step: 5, titleKey: 'serviceCity.tradgard.uppsala.howItWorks.4.title', descKey: 'serviceCity.tradgard.uppsala.howItWorks.4.desc' }
+    h1: "Trädgårdstjänster i Uppsala",
+    title: "Trädgård i Uppsala – Gräsklippning, Häckar & Plantering | RUT 50%",
+    description: "Trädgårdshjälp i Uppsala. Gräsklippning, häckklippning, ogräsrensning och plantering. RUT-avdrag 50%.",
+    howItWorks: [
+      { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
+      { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
+      { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
+      { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
+      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
     ],
-    priceExampleKeys: [
-      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.0.job', price: "800 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.0.duration' },
-      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.1.job', price: "1 500 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.1.duration' },
-      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.2.job', price: "600 kr/timme", durationKey: 'serviceCity.tradgard.uppsala.priceExample.2.duration' },
-      { jobKey: 'serviceCity.tradgard.uppsala.priceExample.3.job', price: "2 200 kr", durationKey: 'serviceCity.tradgard.uppsala.priceExample.3.duration' }
+    priceExamples: [
+      { job: "Gräsklippning 300 kvm", price: "800 kr", duration: "1 timme" },
+      { job: "Häckklippning 20 meter", price: "1 500 kr", duration: "2 timmar" },
+      { job: "Ogräsrensning rabatter", price: "600 kr/timme", duration: "2-4 timmar" },
+      { job: "Plantering 10 buskar", price: "2 200 kr", duration: "2 timmar" }
     ],
-    quickFactKeys: [
-      'serviceCity.tradgard.uppsala.quickFact.0',
-      'serviceCity.tradgard.uppsala.quickFact.1',
-      'serviceCity.tradgard.uppsala.quickFact.2',
-      'serviceCity.tradgard.uppsala.quickFact.3',
-      'serviceCity.tradgard.uppsala.quickFact.4',
-      'serviceCity.tradgard.uppsala.quickFact.5',
-      'serviceCity.tradgard.uppsala.quickFact.6',
-      'serviceCity.tradgard.uppsala.quickFact.7',
-      'serviceCity.tradgard.uppsala.quickFact.8',
-      'serviceCity.tradgard.uppsala.quickFact.9',
-      'serviceCity.tradgard.uppsala.quickFact.10',
-      'serviceCity.tradgard.uppsala.quickFact.11'
+    quickFacts: [
+      "Uppsalas lera kräver kompost för bättre dränering",
+      "Gräsklippning april-oktober rekommenderas varannan vecka",
+      "Häckar ska klippas 2 gånger per år - juni och augusti",
+      "RUT-avdrag gäller trädgårdsskötsel på tomten",
+      "Mulchning sparar vatten och minskar ogräs",
+      "Uppsala har kyligare nätter än Stockholm - vissa växter trivs sämre",
+      "Kompostering minskar trädgårdsavfall med 50%",
+      "Gräsmattor i Uppsala behöver kalkgödsling på grund av sur jord",
+      "Snöskottning ingår inte i RUT-avdrag men snöröjning gör det",
+      "Trädgårdsavfall kan lämnas på Rosendals återvinningscentral",
+      "Bevattning av gräsmattan bör göras tidigt på morgonen för bäst effekt",
+      "Plantering bör göras i maj eller september i Uppsala"
     ],
-    didYouKnowKeys: [
-      'serviceCity.tradgard.uppsala.didYouKnow.0',
-      'serviceCity.tradgard.uppsala.didYouKnow.1',
-      'serviceCity.tradgard.uppsala.didYouKnow.2',
-      'serviceCity.tradgard.uppsala.didYouKnow.3',
-      'serviceCity.tradgard.uppsala.didYouKnow.4',
-      'serviceCity.tradgard.uppsala.didYouKnow.5',
-      'serviceCity.tradgard.uppsala.didYouKnow.6'
+    didYouKnow: [
+      "Uppsala botaniska trädgård grundades 1655 - en av världens äldsta",
+      "Uppsalas leriga jord är perfekt för äppelträd - staden hade 10 000+ äppelträd på 1800-talet",
+      "Gräsklippning på rätt höjd (5-6 cm) gör gräsmattan tätare och grönare",
+      "En trädgård i Uppsala behöver 30-40 liter vatten per kvm under torr sommar",
+      "Häckar av thuja växer 30-40 cm per år och behöver regelbunden klippning",
+      "Uppsala har 15 000+ privata trädgårdar som kräver regelbunden skötsel",
+      "Rätt tid för plantering i Uppsala är maj (efter sista frosten) och september"
     ],
-    faqKeys: [
-      { qKey: 'serviceCity.tradgard.uppsala.faq.0.q', aKey: 'serviceCity.tradgard.uppsala.faq.0.a' },
-      { qKey: 'serviceCity.tradgard.uppsala.faq.1.q', aKey: 'serviceCity.tradgard.uppsala.faq.1.a' },
-      { qKey: 'serviceCity.tradgard.uppsala.faq.2.q', aKey: 'serviceCity.tradgard.uppsala.faq.2.a' }
+    faqs: [
+      { q: "Hur ofta klipps gräset?", a: "Vi rekommenderar gräsklippning var 7-10 dag under högsäsong. Vi kan sätta upp regelbundna besök efter ditt schema." },
+      { q: "Tar ni med utrustning?", a: "Ja, vi tar med all nödvändig utrustning som gräsklippare, häcksax, kratta och trädgårdssäckar." },
+      { q: "Gör ni snöskottning vintertid?", a: "Ja, vi erbjuder snöskottning av uppfarter, gångvägar och trappor under vintersäsongen." }
     ],
-    caseKeys: [
-      { titleKey: 'serviceCity.tradgard.uppsala.case.0.title', descKey: 'serviceCity.tradgard.uppsala.case.0.desc' },
-      { titleKey: 'serviceCity.tradgard.uppsala.case.1.title', descKey: 'serviceCity.tradgard.uppsala.case.1.desc' }
+    cases: [
+      { title: "Regelbunden trädgårdsskötsel Svartbäcken", desc: "Gräsklippning varannan vecka, häckklippning 2 ggr/år och ogräsrensning i rabatter." },
+      { title: "Häckbeskärning Luthagen", desc: "Beskärning av 30 meter thujahaeck med formklippning och bortforsling av grenar." }
     ]
   },
   {

@@ -7,9 +7,6 @@ export const svToEnRoutes: Record<string, string> = {
   '/tjanster': '/en/services',
   '/tjanster/el': '/en/services/el',
   '/tjanster/vvs': '/en/services/vvs',
-  
-  // Service+City routes - Proof of concept
-  '/tjanster/elmontor-uppsala': '/en/services/electrician-uppsala',
   '/tjanster/snickeri': '/en/services/snickeri',
   '/tjanster/montering': '/en/services/montering',
   '/tjanster/tradgard': '/en/services/tradgard',

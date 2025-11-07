@@ -312,10 +312,6 @@ const App = () => {
                     <Route path="home-v2" element={<HomeV2 />} />
                     <Route path="services" element={<Services />} />
                     <Route path="services/:slug" element={<ServiceDetail />} />
-                    
-                    {/* English Service+City routes - Proof of concept: Electrician Uppsala */}
-                    <Route path="services/electrician-uppsala" element={<ServiceCityPage service="Elmontör" city="Uppsala" slug="electrician-uppsala" locale="en" />} />
-                    
                     <Route path="contact" element={<Contact />} />
                     <Route path="faq" element={<FAQ />} />
                     <Route path="about" element={<AboutUs />} />
