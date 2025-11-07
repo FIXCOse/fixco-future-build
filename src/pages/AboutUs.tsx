@@ -4,9 +4,28 @@ import { Home, Building2, Briefcase, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
+import { useSEO } from '@/hooks/useSEO';
+import { getOrganizationSchema } from '@/components/SEOSchemaEnhanced';
 
 const AboutUs = () => {
   const { t, locale } = useCopy();
+  
+  const organizationSchema = getOrganizationSchema();
+  
+  useSEO({
+    title: locale === 'sv' 
+      ? "Om Fixco | Vår historia, team & värderingar | Uppsala & Stockholm"
+      : "About Fixco | Our history, team & values | Uppsala & Stockholm",
+    description: locale === 'sv'
+      ? "Fixco grundades 2015 och har hjälpt 15 000+ nöjda kunder. Läs om vår historia, möt vårt team och lär känna våra värderingar kring kvalitet, transparens och respekt."
+      : "Fixco was founded in 2015 and has helped 15,000+ satisfied customers. Read about our history, meet our team and learn about our values of quality, transparency and respect.",
+    canonicalPath: locale === 'sv' ? '/om-oss' : '/en/about',
+    schema: organizationSchema,
+    alternateLanguages: [
+      { locale: 'sv', url: 'https://fixco.se/om-oss' },
+      { locale: 'en', url: 'https://fixco.se/en/about' }
+    ]
+  });
   
   return (
     <div className="min-h-screen">
