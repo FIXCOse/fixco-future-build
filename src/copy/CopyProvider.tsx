@@ -6,7 +6,7 @@ import type { CopyKey } from './keys';
 const dictionaries = { sv, en } as const;
 
 interface CopyContextType {
-  t: (key: CopyKey, variables?: Record<string, string | number>) => string;
+  t: (key: CopyKey) => string;
   locale: 'sv' | 'en';
 }
 
@@ -20,17 +20,8 @@ interface CopyProviderProps {
 export const CopyProvider: React.FC<CopyProviderProps> = ({ locale, children }) => {
   const dict = dictionaries[locale];
   
-  const t = (key: CopyKey, variables?: Record<string, string | number>): string => {
-    let text = dict[key] || key;
-    
-    // Replace variables like {city}, {category}, {count}, etc.
-    if (variables) {
-      Object.entries(variables).forEach(([key, value]) => {
-        text = text.replace(new RegExp(`\\{${key}\\}`, 'g'), String(value));
-      });
-    }
-    
-    return text;
+  const t = (key: CopyKey): string => {
+    return dict[key] || key;
   };
 
   return (

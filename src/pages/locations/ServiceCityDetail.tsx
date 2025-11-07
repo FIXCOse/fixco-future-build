@@ -37,8 +37,8 @@ import {
   getFAQSchema,
   getBreadcrumbSchema 
 } from "@/components/SEOSchemaEnhanced";
+import { generateCityServiceData } from "@/utils/cityServiceTemplates";
 import { serviceCityContent } from "@/data/serviceCityContent";
-import { renderServiceCity } from "@/utils/renderServiceCity";
 import { ServiceComparisonCard } from "@/components/ServiceComparisonCard";
 import { 
   Collapsible,
@@ -106,8 +106,13 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const serviceKey = service ? serviceKeyMap[service] : undefined;
   const cityDataItem = cityData[city];
 
-  // Use renderServiceCity for localized content (Single Source of Truth with local translation)
-  const renderedData = useMemo(() => renderServiceCity(service, city, locale), [service, city, locale]);
+  // Get city-specific service data (for FAQs and cases only)
+  const cityServiceData = serviceCityData.find(
+    item => item.service === serviceKey && item.city === city
+  );
+
+  // Generate metadata dynamically from main service data (Single Source of Truth)
+  const generatedMeta = generateCityServiceData(service, city);
   
   // Get service content for "Om tjänsten" section
   const serviceContent = serviceKey && serviceCityContent[serviceKey]?.[city];
@@ -131,22 +136,18 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
 
   // SEO Schema - must be before any early returns
-  const breadcrumbSchema = useMemo(() => {
-    const basePath = locale === 'en' ? '/en' : '';
-    const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
-    return getBreadcrumbSchema([
-      { name: locale === 'en' ? 'Home' : 'Hem', url: `https://fixco.se${basePath}` },
-      { name: locale === 'en' ? 'Services' : 'Tjänster', url: `https://fixco.se${servicesPath}` },
-      { name: serviceData?.title || '', url: `https://fixco.se${servicesPath}/${service}` },
-      { name: city, url: `https://fixco.se${servicesPath}/${renderedData?.slug || ''}` }
-    ]);
-  }, [serviceData, service, renderedData, city, locale]);
+  const breadcrumbSchema = useMemo(() => getBreadcrumbSchema([
+    { name: 'Hem', url: 'https://fixco.se' },
+    { name: 'Tjänster', url: 'https://fixco.se/tjanster' },
+    { name: serviceData?.title || '', url: `https://fixco.se/tjanster/${service}` },
+    { name: city, url: `https://fixco.se/tjanster/${cityServiceData?.slug || ''}` }
+  ]), [serviceData, service, cityServiceData, city]);
 
   const localBusinessSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": `Fixco ${renderedData?.h1 || ''}`,
-    "description": renderedData?.description || '',
+    "name": `Fixco ${generatedMeta?.h1 || ''}`,
+    "description": generatedMeta?.description || '',
     "areaServed": {
       "@type": "City",
       "name": city,
@@ -162,29 +163,29 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
       "addressLocality": city,
       "addressCountry": "SE"
     }
-  }), [renderedData, city, cityDataItem]);
+  }), [generatedMeta, city, cityDataItem]);
 
   const faqSchema = useMemo(() => {
-    const faqs = renderedData?.faqs && renderedData.faqs.length > 0 
-      ? renderedData.faqs 
+    const faqs = cityServiceData?.faqs && cityServiceData.faqs.length > 0 
+      ? cityServiceData.faqs 
       : cityDataItem.faqs;
     return getFAQSchema(faqs.map(faq => ({ question: faq.q, answer: faq.a })));
-  }, [renderedData, cityDataItem]);
+  }, [cityServiceData, cityDataItem]);
 
   const aggregateRatingSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "AggregateRating",
     "itemReviewed": {
       "@type": "ProfessionalService",
-      "name": renderedData?.h1 || '',
+      "name": generatedMeta?.h1 || '',
     },
     "ratingValue": "4.8",
     "bestRating": "5",
     "ratingCount": "247"
-  }), [renderedData]);
+  }), [generatedMeta]);
 
   // Handle loading and error states AFTER all hooks
-  if (!serviceData || !renderedData) {
+  if (!serviceData || !generatedMeta) {
     return (
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-20">
@@ -204,7 +205,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center">
-            <div className="animate-pulse">{t('serviceCity.loading')}</div>
+            <div className="animate-pulse">Loading...</div>
           </div>
         </div>
       </div>
@@ -216,10 +217,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   return (
     <>
       <Helmet>
-        <title>{renderedData.title}</title>
-        <meta name="description" content={renderedData.description} />
-        <link rel="canonical" href={`https://fixco.se${locale === 'en' ? '/en/services/' : '/tjanster/'}${renderedData.slug}`} />
-        <link rel="alternate" hrefLang={locale === 'sv' ? 'en' : 'sv'} href={`https://fixco.se${renderedData.altSlug}`} />
+        <title>{generatedMeta.title}</title>
+        <meta name="description" content={generatedMeta.description} />
         <script type="application/ld+json">
           {JSON.stringify(breadcrumbSchema)}
         </script>
@@ -263,21 +262,24 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 </div>
                 <div>
                   <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-                    {renderedData.h1}
+                    {generatedMeta.h1}
                   </h1>
                 </div>
               </div>
               <p className="text-xl text-muted-foreground mb-6">
-                {renderedData.description}
+                {generatedMeta.description}
               </p>
               
               {/* City-specific paragraph */}
               <div className="bg-muted/20 rounded-lg p-6 mb-8 border border-primary/10">
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  {locale === 'sv' 
-                    ? `Vi på Fixco täcker hela ${city} kommun och är redo att hjälpa dig med ${categoryName?.toLowerCase()} i områden som ${cityDataItem.districts.slice(0, 4).join(', ')} och alla övriga stadsdelar. ${cityDataItem.travelFee === "0 kr" ? `Du betalar ingen resekostnad för uppdrag i ${city}.` : `Resekostnad: ${cityDataItem.travelFee}.`} Start inom 24-48 timmar och ROT/RUT-avdrag på 50% av arbetskostnaden.`
-                    : `We at Fixco cover all of ${city} municipality and are ready to help you with ${categoryName?.toLowerCase()} in areas such as ${cityDataItem.districts.slice(0, 4).join(', ')} and all other districts. ${cityDataItem.travelFee === "0 kr" ? `You pay no travel fee for assignments in ${city}.` : `Travel fee: ${cityDataItem.travelFee}.`} Start within 24-48 hours with 50% ROT/RUT deduction on labor costs.`
+                  Vi på Fixco täcker hela {city} kommun och är redo att hjälpa dig med {categoryName?.toLowerCase()} i områden som{' '}
+                  <strong>{cityDataItem.districts.slice(0, 4).join(', ')}</strong> och alla övriga stadsdelar. 
+                  {cityDataItem.travelFee === "0 kr" 
+                    ? ` Du betalar ingen resekostnad för uppdrag i ${city}.`
+                    : ` Resekostnad: ${cityDataItem.travelFee}.`
                   }
+                  {' '}Start inom 24-48 timmar och ROT/RUT-avdrag på 50% av arbetskostnaden.
                 </p>
               </div>
               
@@ -289,7 +291,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                     openServiceRequestModal({
                       serviceSlug: serviceData.slug,
                       prefill: { 
-                        service_name: renderedData.h1 
+                        service_name: generatedMeta.h1 
                       }
                     });
                   }}
@@ -377,21 +379,22 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                {t('serviceCity.exploreRange')}
+                💡 Utforska vårt utbud
               </div>
-              <h2 className="text-3xl font-bold mb-4">{t('serviceCity.seeAllServices')}</h2>
+              <h2 className="text-3xl font-bold mb-4">Se alla våra tjänster</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                {t('serviceCity.ui.completeRangeCTA')}
+                Fixco erbjuder ett komplett utbud av hantverkstjänster med ROT/RUT-avdrag. 
+                Utforska alla våra tjänster och se priser, avdragsmöjligheter och mer.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
-                  <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>
-                    {t('serviceCity.showAllServices')}
+                  <Link to="/tjanster">
+                    Visa alla tjänster
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <Link to={locale === 'en' ? '/en/services#prices' : '/tjanster#priser'}>
-                    {t('serviceCity.seePricesDeductions')}
+                  <Link to="/tjanster#priser">
+                    Se priser & ROT/RUT-avdrag
                   </Link>
                 </Button>
               </div>
@@ -404,7 +407,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           <section className="py-12 bg-muted/5">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold mb-8 text-center">
-                {t('serviceCity.popularServices', { category: categoryName?.toLowerCase() || '', city: city })}
+                Populära {categoryName?.toLowerCase()}-tjänster i {city}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 {serviceContent.popularServices.map((service, idx) => {
@@ -422,27 +425,27 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         )}
 
         {/* Price Examples Section */}
-        {renderedData?.priceExamples && renderedData.priceExamples.length > 0 && (
+        {cityServiceData?.priceExamples && cityServiceData.priceExamples.length > 0 && (
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-4">
-                  {t('serviceCity.priceExamplesTitle', { category: categoryName?.toLowerCase() || '', city: city })}
+                  Prisexempel för {categoryName?.toLowerCase()} i {city}
                 </h2>
                 <p className="text-center text-muted-foreground mb-8">
-                  {t('serviceCity.priceExamplesSubtitle')}
+                  Alla priser inkluderar material, arbete och ROT-avdrag. Exakta priser får du i din offert.
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full bg-card border rounded-lg">
                     <thead className="bg-muted/50">
                       <tr className="border-b border-border">
-                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.job')}</th>
-                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.priceAfterROT')}</th>
-                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.time')}</th>
+                        <th className="text-left py-4 px-6 font-semibold">Jobb</th>
+                        <th className="text-left py-4 px-6 font-semibold">Pris (efter ROT)</th>
+                        <th className="text-left py-4 px-6 font-semibold">Tid</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {renderedData.priceExamples.map((ex, i) => (
+                      {cityServiceData.priceExamples.map((ex, i) => (
                         <tr key={i} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
                           <td className="py-4 px-6 font-medium">{ex.job}</td>
                           <td className="py-4 px-6 text-primary font-bold text-lg">{ex.price}</td>
@@ -723,8 +726,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
 
 
         {/* How It Works Section */}
-        {renderedData?.howItWorks && renderedData.howItWorks.length > 0 ? (
-          <HowItWorksTimeline steps={renderedData.howItWorks} />
+        {cityServiceData?.howItWorks && cityServiceData.howItWorks.length > 0 ? (
+          <HowItWorksTimeline steps={cityServiceData.howItWorks} />
         ) : (
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
@@ -935,8 +938,8 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               </div>
               
               <div className="space-y-4">
-                {(renderedData?.faqs && renderedData.faqs.length > 0 
-                  ? renderedData.faqs 
+                {(cityServiceData?.faqs && cityServiceData.faqs.length > 0 
+                  ? cityServiceData.faqs 
                   : cityDataItem.faqs
                 ).map((faq, idx) => (
                   <Collapsible key={idx}>
@@ -960,17 +963,17 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         </section>
 
         {/* Quick Facts Section */}
-        {renderedData?.quickFacts && renderedData.quickFacts.length > 0 && (
+        {cityServiceData?.quickFacts && cityServiceData.quickFacts.length > 0 && (
           <section className="py-12 bg-background">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-dashed border-primary/30 rounded-lg p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                     <Zap className="w-7 h-7 text-primary" />
-                    {locale === 'sv' ? `Bra att veta om ${categoryName?.toLowerCase()} i ${city}` : `Good to know about ${categoryName?.toLowerCase()} in ${city}`}
+                    Bra att veta om {categoryName?.toLowerCase()} i {city}
                   </h3>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-                    {renderedData.quickFacts.map((fact, i) => (
+                    {cityServiceData.quickFacts.map((fact, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                         <span className="text-sm leading-tight">{fact}</span>
@@ -984,17 +987,17 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         )}
 
         {/* Did You Know Section */}
-        {renderedData?.didYouKnow && renderedData.didYouKnow.length > 0 && (
+        {cityServiceData?.didYouKnow && cityServiceData.didYouKnow.length > 0 && (
           <section className="py-12 bg-muted/30">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
                   <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                     <Lightbulb className="w-7 h-7 text-amber-500" />
-                    {locale === 'sv' ? 'Visste du att...' : 'Did you know...'}
+                    Visste du att...
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {renderedData.didYouKnow.map((fact, i) => (
+                    {cityServiceData.didYouKnow.map((fact, i) => (
                       <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
                         <Sparkles className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                         <p className="text-sm leading-tight">{fact}</p>
@@ -1123,19 +1126,17 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
         )}
 
         {/* Cases Section - Using service-specific cases */}
-        {renderedData?.cases && renderedData.cases.length > 0 && (
+        {cityServiceData?.cases && cityServiceData.cases.length > 0 && (
           <section className="py-16 bg-background">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">
-                  {locale === 'sv' ? `Tidigare uppdrag – ${categoryName} i ${city}` : `Previous projects – ${categoryName} in ${city}`}
-                </h2>
+                <h2 className="text-3xl font-bold mb-4">Tidigare uppdrag – {categoryName} i {city}</h2>
                 <p className="text-muted-foreground">
-                  {locale === 'sv' ? 'Exempel på genomförda projekt från nöjda kunder' : 'Examples of completed projects from satisfied customers'}
+                  Exempel på genomförda projekt från nöjda kunder
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                {renderedData.cases.map((caseItem, idx) => (
+                {cityServiceData.cases.map((caseItem, idx) => (
                   <div key={idx} className="bg-card border rounded-lg p-6 hover:border-primary/50 transition-colors">
                     <div className="flex items-start mb-3">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 flex-shrink-0">

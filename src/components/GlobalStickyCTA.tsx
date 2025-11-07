@@ -5,10 +5,8 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import OfferWizardModal from './OfferWizardModal';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
-import { useCopy } from '@/copy/CopyProvider';
 
 const GlobalStickyCTA = () => {
-  const { t } = useCopy();
   const [isVisible, setIsVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -37,24 +35,24 @@ const GlobalStickyCTA = () => {
   }, [location.pathname]);
 
   const getContextualCta = () => {
-    if (location.pathname.startsWith('/tjanster/') || location.pathname.startsWith('/en/services/')) {
+    if (location.pathname.startsWith('/tjanster/')) {
       return {
-        text: t('stickyCta.bookThisService'),
+        text: "Boka denna tjänst",
         icon: ArrowRight,
         variant: "default" as const
       };
     }
     
-    if (location.pathname === '/kontakt' || location.pathname === '/en/contact') {
+    if (location.pathname === '/kontakt') {
       return {
-        text: t('stickyCta.callNow'),
+        text: "Ring nu",
         icon: Phone,
         variant: "default" as const
       };
     }
 
     return {
-      text: t('stickyCta.requestQuote'),
+      text: "Begär offert",
       icon: Calculator,
       variant: "default" as const
     };
@@ -128,10 +126,10 @@ const GlobalStickyCTA = () => {
                       <span className="text-muted-foreground">08-123 456 78</span>
                     </div>
                   <div className="text-muted-foreground">
-                    {t('stickyCta.locations')}
+                    Uppsala & Stockholm
                   </div>
                   <div className="text-primary font-medium">
-                    {t('stickyCta.rotDeduction')}
+                    ROT-avdrag 50%
                   </div>
                 </div>
 
@@ -155,7 +153,7 @@ const GlobalStickyCTA = () => {
                     onClick={() => window.open('tel:08-123-456-78')}
                   >
                     <Phone className="h-4 w-4 mr-2" />
-                    {t('stickyCta.callNow')}
+                    Ring nu
                   </Button>
 
                   {/* Main CTA */}

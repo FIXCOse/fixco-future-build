@@ -34,25 +34,25 @@ export default function Navigation() {
   const { theme } = useTheme();
 
   const adminMenuItems = [
-    { href: "/admin", label: t('nav.admin.dashboard') },
-    { href: "/admin/services", label: t('nav.admin.services') },
-    { href: "/admin/quotes", label: t('nav.admin.quotes') },
-    { href: "/admin/quote-questions", label: t('nav.admin.quoteQuestions') },
-    { href: "/admin/bookings", label: t('nav.admin.bookings') },
-    { href: "/admin/jobs", label: t('nav.admin.jobs') },
-    { href: "/admin/job-requests", label: t('nav.admin.jobRequests') },
-    { href: "/admin/ongoing-projects", label: t('nav.admin.ongoingProjects') },
-    { href: "/admin/invoices", label: t('nav.admin.invoices') },
-    { href: "/admin/customers", label: t('nav.admin.customers') },
-    { href: "/admin/users", label: t('nav.admin.users') },
-    { href: "/admin/staff", label: t('nav.admin.staff') },
-    { href: "/admin/worker-analytics", label: t('nav.admin.workerAnalytics') },
-    { href: "/admin/leads", label: t('nav.admin.aiLeads') },
-    { href: "/admin/translations", label: t('nav.admin.translations') },
-    { href: "/admin/reports", label: t('nav.admin.reports') },
-    { href: "/admin/database", label: t('nav.admin.database') },
-    { href: "/admin/security", label: t('nav.admin.security') },
-    { href: "/admin/settings", label: t('nav.admin.settings') },
+    { href: "/admin", label: "Översikt" },
+    { href: "/admin/services", label: "Tjänster" },
+    { href: "/admin/quotes", label: "Offerter" },
+    { href: "/admin/quote-questions", label: "Offertfrågor" },
+    { href: "/admin/bookings", label: "Bokningar" },
+    { href: "/admin/jobs", label: "Arbetsordrar" },
+    { href: "/admin/job-requests", label: "Jobbförfrågningar" },
+    { href: "/admin/ongoing-projects", label: "Pågående projekt" },
+    { href: "/admin/invoices", label: "Fakturor" },
+    { href: "/admin/customers", label: "Kunder" },
+    { href: "/admin/users", label: "Användare" },
+    { href: "/admin/staff", label: "Personal" },
+    { href: "/admin/worker-analytics", label: "Worker Analytics" },
+    { href: "/admin/leads", label: "AI Leads" },
+    { href: "/admin/translations", label: "Översättningar" },
+    { href: "/admin/reports", label: "Rapporter" },
+    { href: "/admin/database", label: "Databas" },
+    { href: "/admin/security", label: "Säkerhet" },
+    { href: "/admin/settings", label: "Inställningar" },
   ];
 
   const { data: user } = useQuery({
@@ -194,12 +194,12 @@ export default function Navigation() {
                         className="h-9 px-3 inline-flex items-center space-x-2"
                       >
                         <User className="h-4 w-4" />
-                        <span className="hidden xl:inline">{t('nav.admin.panel')}</span>
+                        <span className="hidden xl:inline">Admin Panel</span>
                         <ChevronDown className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56 bg-card border-border shadow-card z-50">
-                      <DropdownMenuLabel>{t('nav.admin.panel')}</DropdownMenuLabel>
+                      <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {adminMenuItems.slice(0, 6).map((adminItem) => (
                         <DropdownMenuItem key={adminItem.href} asChild>
@@ -215,7 +215,7 @@ export default function Navigation() {
                         </DropdownMenuItem>
                       ))}
                       <DropdownMenuSeparator />
-                      <DropdownMenuLabel>{t('nav.admin.management')}</DropdownMenuLabel>
+                      <DropdownMenuLabel>Hantering</DropdownMenuLabel>
                       {adminMenuItems.slice(6, 12).map((adminItem) => (
                         <DropdownMenuItem key={adminItem.href} asChild>
                           <Link
@@ -230,7 +230,7 @@ export default function Navigation() {
                         </DropdownMenuItem>
                       ))}
                       <DropdownMenuSeparator />
-                      <DropdownMenuLabel>{t('nav.admin.system')}</DropdownMenuLabel>
+                      <DropdownMenuLabel>System</DropdownMenuLabel>
                       {adminMenuItems.slice(12).map((adminItem) => (
                         <DropdownMenuItem key={adminItem.href} asChild>
                           <Link
@@ -355,7 +355,7 @@ export default function Navigation() {
                   <div className="space-y-2 px-4">
                     {(isAdmin || isOwner) ? (
                       <>
-                        <div className="text-sm font-medium text-muted-foreground">{t('nav.admin.panel')}</div>
+                        <div className="text-sm font-medium text-muted-foreground">Admin Panel</div>
                         {adminMenuItems.map((item) => (
                           <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                             <Button 
