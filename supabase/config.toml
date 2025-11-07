@@ -134,3 +134,6 @@ verify_jwt = true
 [functions.translate-site-content]
 verify_jwt = false
 
+[functions.ping-google-sitemap]
+verify_jwt = false
+

@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-import { Settings, Mail, Bell, Shield, Database, Save } from 'lucide-react';
+import { Settings, Mail, Bell, Shield, Database, Save, Globe } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
@@ -22,6 +23,29 @@ const AdminSettings = () => {
     maintenanceMode: false,
   });
 
+  const [isPinging, setIsPinging] = useState(false);
+  const [lastPing, setLastPing] = useState<{ pinged_at: string; status: string } | null>(null);
+
+  useEffect(() => {
+    loadLastPing();
+  }, []);
+
+  const loadLastPing = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sitemap_pings')
+        .select('pinged_at, status')
+        .order('pinged_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) throw error;
+      if (data) setLastPing(data);
+    } catch (error) {
+      console.error('Error loading last ping:', error);
+    }
+  };
+
   const handleSave = () => {
     // Mock save functionality
     toast.success('Inställningar sparade');
@@ -29,6 +53,31 @@ const AdminSettings = () => {
 
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handlePingGoogle = async () => {
+    setIsPinging(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('ping-google-sitemap');
+
+      if (error) throw error;
+
+      if (data?.success) {
+        toast.success('✅ Google Sitemap pingad!', {
+          description: 'Google Search Console har meddelats om sitemap-uppdateringen.'
+        });
+        await loadLastPing();
+      } else {
+        throw new Error(data?.message || 'Ping misslyckades');
+      }
+    } catch (error) {
+      console.error('Ping error:', error);
+      toast.error('❌ Kunde inte pinga Google', {
+        description: error instanceof Error ? error.message : 'Ett oväntat fel uppstod'
+      });
+    } finally {
+      setIsPinging(false);
+    }
   };
 
   return (
@@ -200,6 +249,44 @@ const AdminSettings = () => {
             <Button variant="outline" className="w-full">
               Visa säkerhetslogg
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Globe className="h-5 w-5" />
+              SEO & Indexering
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Google Search Console</Label>
+              <p className="text-sm text-muted-foreground">
+                Meddela Google om sitemap-uppdateringar för snabbare indexering
+              </p>
+            </div>
+            <Button 
+              onClick={handlePingGoogle} 
+              disabled={isPinging}
+              className="w-full"
+            >
+              {isPinging ? 'Pingar...' : '🔔 Pinga Google Sitemap'}
+            </Button>
+            {lastPing && (
+              <div className="text-sm text-muted-foreground pt-2 border-t">
+                <p>
+                  <strong>Senast pingad:</strong>{' '}
+                  {new Date(lastPing.pinged_at).toLocaleString('sv-SE')}
+                </p>
+                <p>
+                  <strong>Status:</strong>{' '}
+                  <span className={lastPing.status === 'success' ? 'text-green-600' : 'text-red-600'}>
+                    {lastPing.status === 'success' ? '✅ Lyckad' : '❌ Misslyckad'}
+                  </span>
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
