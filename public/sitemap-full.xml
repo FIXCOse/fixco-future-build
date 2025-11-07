@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- ==================== HUVUDSIDOR ==================== -->
+  
+  <!-- Landing SV -->
+  <url>
+    <loc>https://fixco.se/</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/"/>
+  </url>
+
+  <!-- Landing EN -->
+  <url>
+    <loc>https://fixco.se/en/</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/"/>
+  </url>
+
+  <!-- Tjänster Hub SV -->
+  <url>
+    <loc>https://fixco.se/tjanster</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster"/>
+  </url>
+
+  <!-- Services Hub EN -->
+  <url>
+    <loc>https://fixco.se/en/services</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster"/>
+  </url>
+
+  <!-- Referenser SV -->
+  <url>
+    <loc>https://fixco.se/referenser</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
+  </url>
+
+  <!-- References EN -->
+  <url>
+    <loc>https://fixco.se/en/references</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
+  </url>
+
+  <!-- Kontakt SV -->
+  <url>
+    <loc>https://fixco.se/kontakt</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
+  </url>
+
+  <!-- Contact EN -->
+  <url>
+    <loc>https://fixco.se/en/contact</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
+  </url>
+
+  <!-- Om Oss SV -->
+  <url>
+    <loc>https://fixco.se/om-oss</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
+  </url>
+
+  <!-- About EN -->
+  <url>
+    <loc>https://fixco.se/en/about</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
+  </url>
+
+  <!-- Boka Hembesök SV -->
+  <url>
+    <loc>https://fixco.se/boka-hembesok</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
+  </url>
+
+  <!-- Book Visit EN -->
+  <url>
+    <loc>https://fixco.se/en/book-visit</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.78</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
+  </url>
+
+  <!-- FAQ SV -->
+  <url>
+    <loc>https://fixco.se/faq</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
+  </url>
+
+  <!-- FAQ EN -->
+  <url>
+    <loc>https://fixco.se/en/faq</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
+  </url>
+
+  <!-- ROT Info SV -->
+  <url>
+    <loc>https://fixco.se/rot-info</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
+  </url>
+
+  <!-- ROT Info EN -->
+  <url>
+    <loc>https://fixco.se/en/rot-info</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
+  </url>
+
+  <!-- RUT SV -->
+  <url>
+    <loc>https://fixco.se/rut</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
+  </url>
+
+  <!-- RUT EN -->
+  <url>
+    <loc>https://fixco.se/en/rut</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
+  </url>
+
+  <!-- Smart Hem SV -->
+  <url>
+    <loc>https://fixco.se/smart-hem</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
+  </url>
+
+  <!-- Smart Home EN -->
+  <url>
+    <loc>https://fixco.se/en/smart-home</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
+  </url>
+
+  <!-- AI SV -->
+  <url>
+    <loc>https://fixco.se/ai</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
+  </url>
+
+  <!-- AI EN -->
+  <url>
+    <loc>https://fixco.se/en/ai</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
+  </url>
+
+  <!-- ==================== ELMONTÖR / ELECTRICIAN ==================== -->
+  
+  <!-- Elmontör Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/elmontor-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/elmontor-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/electrician-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/elmontor-uppsala"/>
+  </url>
+
+  <!-- Electrician Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/electrician-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/electrician-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/elmontor-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/elmontor-uppsala"/>
+  </url>
+
+  <!-- Elmontör Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/elmontor-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/elmontor-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/electrician-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/elmontor-stockholm"/>
+  </url>
+
+  <!-- Electrician Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/electrician-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/electrician-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/elmontor-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/elmontor-stockholm"/>
+  </url>
+
+  <!-- ==================== VVS / PLUMBER ==================== -->
+  
+  <!-- VVS Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/vvs-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/plumber-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/vvs-uppsala"/>
+  </url>
+
+  <!-- Plumber Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/plumber-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/plumber-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/vvs-uppsala"/>
+  </url>
+
+  <!-- VVS Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/vvs-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/plumber-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/vvs-stockholm"/>
+  </url>
+
+  <!-- Plumber Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/plumber-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/plumber-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/vvs-stockholm"/>
+  </url>
+
+  <!-- ==================== SNICKARE / CARPENTER ==================== -->
+  
+  <!-- Snickare Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/snickare-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/carpenter-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare-uppsala"/>
+  </url>
+
+  <!-- Carpenter Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/carpenter-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/carpenter-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare-uppsala"/>
+  </url>
+
+  <!-- Snickare Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/snickare-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/carpenter-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare-stockholm"/>
+  </url>
+
+  <!-- Carpenter Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/carpenter-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/carpenter-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare-stockholm"/>
+  </url>
+
+  <!-- ==================== MONTERING / ASSEMBLY ==================== -->
+  
+  <!-- Montering Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/montering-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/assembly-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/montering-uppsala"/>
+  </url>
+
+  <!-- Assembly Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/assembly-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/assembly-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/montering-uppsala"/>
+  </url>
+
+  <!-- Montering Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/montering-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/assembly-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/montering-stockholm"/>
+  </url>
+
+  <!-- Assembly Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/assembly-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/assembly-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/montering-stockholm"/>
+  </url>
+
+  <!-- ==================== TRÄDGÅRD / GARDENING ==================== -->
+  
+  <!-- Trädgård Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tradgard-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/gardening-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tradgard-uppsala"/>
+  </url>
+
+  <!-- Gardening Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/gardening-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/gardening-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tradgard-uppsala"/>
+  </url>
+
+  <!-- Trädgård Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tradgard-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/gardening-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tradgard-stockholm"/>
+  </url>
+
+  <!-- Gardening Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/gardening-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/gardening-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tradgard-stockholm"/>
+  </url>
+
+  <!-- ==================== STÄD / CLEANING ==================== -->
+  
+  <!-- Städ Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/stad-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/cleaning-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/stad-uppsala"/>
+  </url>
+
+  <!-- Cleaning Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/cleaning-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/cleaning-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/stad-uppsala"/>
+  </url>
+
+  <!-- Städ Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/stad-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/cleaning-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/stad-stockholm"/>
+  </url>
+
+  <!-- Cleaning Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/cleaning-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/cleaning-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/stad-stockholm"/>
+  </url>
+
+  <!-- ==================== MARKARBETEN / GROUNDWORK ==================== -->
+  
+  <!-- Markarbeten Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/markarbeten-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/groundwork-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/markarbeten-uppsala"/>
+  </url>
+
+  <!-- Groundwork Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/groundwork-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/groundwork-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/markarbeten-uppsala"/>
+  </url>
+
+  <!-- Markarbeten Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/markarbeten-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/groundwork-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/markarbeten-stockholm"/>
+  </url>
+
+  <!-- Groundwork Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/groundwork-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/groundwork-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/markarbeten-stockholm"/>
+  </url>
+
+  <!-- ==================== TEKNISKA INSTALLATIONER / TECHNICAL INSTALLATIONS ==================== -->
+  
+  <!-- Tekniska Installationer Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tekniska-installationer-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/technical-installations-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tekniska-installationer-uppsala"/>
+  </url>
+
+  <!-- Technical Installations Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/technical-installations-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/technical-installations-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tekniska-installationer-uppsala"/>
+  </url>
+
+  <!-- Tekniska Installationer Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tekniska-installationer-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/technical-installations-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tekniska-installationer-stockholm"/>
+  </url>
+
+  <!-- Technical Installations Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/technical-installations-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/technical-installations-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tekniska-installationer-stockholm"/>
+  </url>
+
+  <!-- ==================== FLYTT / MOVING ==================== -->
+  
+  <!-- Flytt Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/flytt-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/moving-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/flytt-uppsala"/>
+  </url>
+
+  <!-- Moving Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/moving-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/moving-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/flytt-uppsala"/>
+  </url>
+
+  <!-- Flytt Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/flytt-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/moving-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/flytt-stockholm"/>
+  </url>
+
+  <!-- Moving Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/moving-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/moving-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/flytt-stockholm"/>
+  </url>
+
+  <!-- ==================== MÅLNING / PAINTER ==================== -->
+  
+  <!-- Målning Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/malning-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-uppsala"/>
+  </url>
+
+  <!-- Painter Uppsala EN -->
+  <url>
+    <loc>https://fixco.se/en/services/painter-uppsala</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-uppsala"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-uppsala"/>
+  </url>
+
+  <!-- Målning Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/malning-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-stockholm"/>
+  </url>
+
+  <!-- Painter Stockholm EN -->
+  <url>
+    <loc>https://fixco.se/en/services/painter-stockholm</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-stockholm"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-stockholm"/>
+  </url>
+
+</urlset>
