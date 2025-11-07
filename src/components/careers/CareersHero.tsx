@@ -4,7 +4,7 @@ import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
 import ParticleCanvas from "@/components/ParticleCanvas";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
-import { Briefcase, Users, Award, TrendingUp, Phone } from "lucide-react";
+import { Briefcase, Users, Award, TrendingUp } from "lucide-react";
 
 const stats = [
   { key: "workers", label: "Nöjda hantverkare", value: 500, suffix: "+" },
@@ -104,7 +104,6 @@ export const CareersHero = () => {
                     onClick={() => window.location.href = 'tel:+46701234567'}
                     className="text-lg px-8 py-6 border-2"
                   >
-                    <Phone className="w-5 h-5 mr-2" />
                     Ring oss
                   </MagneticButton>
                 </motion.div>
