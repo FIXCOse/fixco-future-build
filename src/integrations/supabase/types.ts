@@ -728,6 +728,149 @@ export type Database = {
           },
         ]
       }
+      job_applications: {
+        Row: {
+          address: string | null
+          admin_notes: string | null
+          availability: string | null
+          certificates: Json | null
+          city: string | null
+          company_name: string | null
+          created_at: string
+          cv_file_path: string | null
+          date_of_birth: string
+          email: string
+          experience_years: number | null
+          first_name: string
+          gdpr_consent: boolean
+          has_company: boolean | null
+          has_drivers_license: boolean | null
+          has_own_tools: boolean | null
+          id: string
+          interview_date: string | null
+          last_name: string
+          linkedin_url: string | null
+          marketing_consent: boolean | null
+          motivation: string | null
+          org_number: string | null
+          phone: string
+          portfolio_url: string | null
+          postal_code: string | null
+          preferred_start_date: string | null
+          profession: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          skills: Json | null
+          status: string | null
+          updated_at: string
+          work_references: Json | null
+        }
+        Insert: {
+          address?: string | null
+          admin_notes?: string | null
+          availability?: string | null
+          certificates?: Json | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          cv_file_path?: string | null
+          date_of_birth: string
+          email: string
+          experience_years?: number | null
+          first_name: string
+          gdpr_consent?: boolean
+          has_company?: boolean | null
+          has_drivers_license?: boolean | null
+          has_own_tools?: boolean | null
+          id?: string
+          interview_date?: string | null
+          last_name: string
+          linkedin_url?: string | null
+          marketing_consent?: boolean | null
+          motivation?: string | null
+          org_number?: string | null
+          phone: string
+          portfolio_url?: string | null
+          postal_code?: string | null
+          preferred_start_date?: string | null
+          profession: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: Json | null
+          status?: string | null
+          updated_at?: string
+          work_references?: Json | null
+        }
+        Update: {
+          address?: string | null
+          admin_notes?: string | null
+          availability?: string | null
+          certificates?: Json | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          cv_file_path?: string | null
+          date_of_birth?: string
+          email?: string
+          experience_years?: number | null
+          first_name?: string
+          gdpr_consent?: boolean
+          has_company?: boolean | null
+          has_drivers_license?: boolean | null
+          has_own_tools?: boolean | null
+          id?: string
+          interview_date?: string | null
+          last_name?: string
+          linkedin_url?: string | null
+          marketing_consent?: boolean | null
+          motivation?: string | null
+          org_number?: string | null
+          phone?: string
+          portfolio_url?: string | null
+          postal_code?: string | null
+          preferred_start_date?: string | null
+          profession?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: Json | null
+          status?: string | null
+          updated_at?: string
+          work_references?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "worker_detailed_statistics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "worker_performance_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "worker_statistics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_events: {
         Row: {
           actor: string | null
@@ -2654,6 +2797,36 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
           value?: Json | null
+        }
+        Relationships: []
+      }
+      sitemap_pings: {
+        Row: {
+          id: string
+          pinged_at: string
+          pinged_by: string | null
+          response_code: number | null
+          response_message: string | null
+          sitemap_url: string
+          status: string
+        }
+        Insert: {
+          id?: string
+          pinged_at?: string
+          pinged_by?: string | null
+          response_code?: number | null
+          response_message?: string | null
+          sitemap_url?: string
+          status: string
+        }
+        Update: {
+          id?: string
+          pinged_at?: string
+          pinged_by?: string | null
+          response_code?: number | null
+          response_message?: string | null
+          sitemap_url?: string
+          status?: string
         }
         Relationships: []
       }

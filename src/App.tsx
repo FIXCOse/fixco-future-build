@@ -84,6 +84,8 @@ import InvoicePublic from "./pages/InvoicePublic";
 import LocationCityPage from "./pages/locations/LocationCityPage";
 import ServiceCityPage from "./pages/locations/ServiceCityPage";
 import ServiceCityDetail from "./pages/locations/ServiceCityDetail";
+import Careers from "./pages/Careers";
+import AdminApplications from "./pages/admin/AdminApplications";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
