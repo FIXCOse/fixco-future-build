@@ -53,7 +53,7 @@
     <loc>https://fixco.se/referenser</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
@@ -64,7 +64,7 @@
     <loc>https://fixco.se/en/references</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
@@ -75,7 +75,7 @@
     <loc>https://fixco.se/kontakt</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
@@ -86,7 +86,7 @@
     <loc>https://fixco.se/en/contact</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
@@ -97,7 +97,7 @@
     <loc>https://fixco.se/om-oss</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
@@ -108,7 +108,7 @@
     <loc>https://fixco.se/en/about</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
@@ -119,7 +119,7 @@
     <loc>https://fixco.se/boka-hembesok</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.78</priority>
+    <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
@@ -130,7 +130,7 @@
     <loc>https://fixco.se/en/book-visit</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.78</priority>
+    <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
@@ -141,7 +141,7 @@
     <loc>https://fixco.se/faq</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
@@ -152,7 +152,7 @@
     <loc>https://fixco.se/en/faq</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
@@ -163,7 +163,7 @@
     <loc>https://fixco.se/rot-info</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
@@ -174,7 +174,7 @@
     <loc>https://fixco.se/en/rot-info</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
@@ -185,7 +185,7 @@
     <loc>https://fixco.se/rut</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
@@ -196,7 +196,7 @@
     <loc>https://fixco.se/en/rut</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
@@ -207,7 +207,7 @@
     <loc>https://fixco.se/smart-hem</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
+    <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
@@ -218,7 +218,7 @@
     <loc>https://fixco.se/en/smart-home</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
+    <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
@@ -229,7 +229,7 @@
     <loc>https://fixco.se/ai</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
+    <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
@@ -240,7 +240,7 @@
     <loc>https://fixco.se/en/ai</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
+    <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
