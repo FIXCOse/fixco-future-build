@@ -253,7 +253,7 @@
     <loc>https://fixco.se/tjanster/elmontor-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
   <!-- Elmontör Stockholm SV -->
@@ -261,7 +261,7 @@
     <loc>https://fixco.se/tjanster/elmontor-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
   <!-- VVS Uppsala SV -->
@@ -269,7 +269,7 @@
     <loc>https://fixco.se/tjanster/vvs-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
   <!-- VVS Stockholm SV -->
@@ -277,7 +277,7 @@
     <loc>https://fixco.se/tjanster/vvs-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
   <!-- Snickare Uppsala SV -->
@@ -301,7 +301,7 @@
     <loc>https://fixco.se/tjanster/montering-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.85</priority>
   </url>
 
   <!-- Montering Stockholm SV -->
@@ -309,7 +309,7 @@
     <loc>https://fixco.se/tjanster/montering-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.85</priority>
   </url>
 
   <!-- Trädgård Uppsala SV -->
@@ -397,7 +397,7 @@
     <loc>https://fixco.se/tjanster/malning-uppsala</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
   <!-- Målning Stockholm SV -->
@@ -405,7 +405,7 @@
     <loc>https://fixco.se/tjanster/malning-stockholm</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.80</priority>
   </url>
 
 </urlset>
