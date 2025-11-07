@@ -18,7 +18,8 @@ import {
   BarChart3,
   Activity,
   PlusCircle,
-  Building2
+  Building2,
+  UserPlus
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -48,6 +49,19 @@ export function AdminSidebar() {
         .from('quote_questions')
         .select('*', { count: 'exact', head: true })
         .eq('answered', false);
+      return count || 0;
+    },
+    refetchInterval: 30000,
+  });
+
+  // Fetch pending job applications count
+  const { data: pendingApplicationsCount = 0 } = useQuery({
+    queryKey: ['pending-applications-count'],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('job_applications')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
       return count || 0;
     },
     refetchInterval: 30000,
@@ -130,7 +144,7 @@ export function AdminSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Dashboard Link (not in a group) */}
+        {/* Dashboard & Quick Links */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -139,6 +153,22 @@ export function AdminSidebar() {
                   <Link to="/admin">
                     <LayoutDashboard className="h-4 w-4" />
                     <span>Dashboard</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive('/admin/applications')}>
+                  <Link to="/admin/applications" className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      <span>Jobbansökningar</span>
+                    </div>
+                    {pendingApplicationsCount > 0 && (
+                      <Badge variant="destructive" className="ml-auto h-5 min-w-5 flex items-center justify-center px-1 text-xs">
+                        {pendingApplicationsCount > 9 ? '9+' : pendingApplicationsCount}
+                      </Badge>
+                    )}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
