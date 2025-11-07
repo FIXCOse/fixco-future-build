@@ -12,10 +12,12 @@ import { Eye, Mail, Calendar, FileText, Loader2, Users, Clock, CheckCircle } fro
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { toast } from "sonner";
+import { ApplicationDetailModal } from "@/components/admin/ApplicationDetailModal";
 
 const AdminApplications = () => {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedApplication, setSelectedApplication] = useState<any | null>(null);
 
   const { data: applications, isLoading, refetch } = useQuery({
     queryKey: ['job-applications'],
@@ -187,6 +189,13 @@ const AdminApplications = () => {
                   <TableCell>{getStatusBadge(app.status)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setSelectedApplication(app)}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
                       {app.cv_file_path && (
                         <Button
                           size="sm"
@@ -222,6 +231,13 @@ const AdminApplications = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <ApplicationDetailModal
+        application={selectedApplication}
+        isOpen={!!selectedApplication}
+        onClose={() => setSelectedApplication(null)}
+        onUpdate={refetch}
+      />
     </div>
   );
 };
