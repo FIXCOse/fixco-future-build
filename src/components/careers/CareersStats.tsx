@@ -3,6 +3,7 @@ import useCountUpOnce from "@/hooks/useCountUpOnce";
 import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
 import { Users, Briefcase, TrendingUp, Award } from "lucide-react";
+import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
 
 const stats = [
   { 
@@ -64,11 +65,19 @@ export const CareersStats = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {stats.map((stat, index) => (
-            <StatCard key={stat.key} stat={stat} index={index} />
+            <motion.div key={stat.key} variants={itemVariants}>
+              <StatCard stat={stat} index={index} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -91,13 +100,7 @@ const StatCard = ({ stat, index }: StatCardProps) => {
   const Icon = stat.icon;
 
   return (
-    <motion.div
-      ref={observe}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
+    <div ref={observe}>
       <GlassCard 
         className="p-6 text-center h-full flex flex-col justify-center"
         hoverEffect={true}
@@ -126,6 +129,6 @@ const StatCard = ({ stat, index }: StatCardProps) => {
           {stat.label}
         </div>
       </GlassCard>
-    </motion.div>
+    </div>
   );
 };

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
-import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Quote, Star } from "lucide-react";
+import { containerVariants, scaleUp, viewportConfig } from "@/utils/scrollAnimations";
 
 const testimonials = [
   {
@@ -60,18 +60,17 @@ export const CareersTeam = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-5xl mx-auto"
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <Carousel
             opts={{
               align: "start",
               loop: true,
             }}
-            className="w-full"
+            className="w-full max-w-5xl mx-auto mb-16"
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
@@ -82,28 +81,39 @@ export const CareersTeam = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
+            <CarouselPrevious className="left-2 bg-background/80 backdrop-blur-sm hover:bg-background z-10" />
+            <CarouselNext className="right-2 bg-background/80 backdrop-blur-sm hover:bg-background z-10" />
           </Carousel>
         </motion.div>
 
-        {/* Team Grid */}
+        {/* Team Grid with Cascade Effect */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
           className="mt-20"
         >
           <h3 className="text-3xl font-bold text-center mb-10">
             <GradientText gradient="blue">Bli en del av familjen</GradientText>
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                whileHover={{ scale: 1.05, rotate: 2 }}
-                transition={{ duration: 0.2 }}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8, filter: "blur(10px)" },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    transition: {
+                      duration: 0.5,
+                      delay: i * 0.05
+                    }
+                  }
+                }}
+                whileHover={{ scale: 1.05, rotate: 2, zIndex: 10 }}
                 className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer"
               >
                 <img 

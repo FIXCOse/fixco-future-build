@@ -3,6 +3,7 @@ import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Hammer, Zap, Droplet, Paintbrush, TreePine, SparklesIcon, Wrench, Mountain, Truck } from "lucide-react";
+import { containerVariants, rotateIn, viewportConfig } from "@/utils/scrollAnimations";
 
 const professions = [
   { icon: Hammer, title: "Snickare", description: "Bygg, renovering, kök & badrum" },
@@ -40,18 +41,31 @@ export const ProfessionGrid = () => {
           </p>
         </motion.div>
 
-        {/* Consistent Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        {/* Consistent Grid Layout with Wave Effect */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
+        >
           {professions.map((profession, index) => {
             const Icon = profession.icon;
 
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
+                variants={{
+                  hidden: rotateIn.hidden,
+                  visible: {
+                    ...rotateIn.visible,
+                    transition: {
+                      ...rotateIn.visible?.transition,
+                      delay: (index % 3) * 0.1 // Wave effect per row
+                    }
+                  }
+                }}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <GlassCard 
                   className="p-6 h-full group relative overflow-hidden"
@@ -108,7 +122,7 @@ export const ProfessionGrid = () => {
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

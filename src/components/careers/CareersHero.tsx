@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import MagneticButton from "@/components/MagneticButton";
 import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
@@ -13,6 +13,10 @@ const stats = [
 ];
 
 export const CareersHero = () => {
+  const { scrollYProgress } = useScroll();
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const scaleProgress = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+
   const scrollToForm = () => {
     const formElement = document.getElementById('application-form');
     formElement?.scrollIntoView({ behavior: 'smooth' });
@@ -20,18 +24,19 @@ export const CareersHero = () => {
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Particle Background */}
-      <ParticleCanvas />
-      
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-primary/5 to-secondary/5 -z-10" />
+      {/* Background with Parallax */}
+      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+        <ParticleCanvas />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-primary/5 to-secondary/5" />
+      </motion.div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            style={{ scale: scaleProgress }}
+            transition={{ delay: 0.3, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <GlassCard className="p-8 md:p-12 lg:p-16" hoverEffect={false}>
               <div className="text-center">

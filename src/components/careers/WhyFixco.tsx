@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
 import { CheckCircle, Wallet, Clock, Shield, GraduationCap, Smartphone, Banknote, Calendar } from "lucide-react";
+import { containerVariants, slideFromLeft, slideFromRight, viewportConfig } from "@/utils/scrollAnimations";
 
 const benefits = [
   {
@@ -71,16 +72,22 @@ export const WhyFixco = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
+        >
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
+            const isEven = index % 2 === 0;
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                variants={isEven ? slideFromLeft : slideFromRight}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 <GlassCard className="p-6 h-full" hoverEffect={true}>
                   <motion.div
@@ -99,7 +106,7 @@ export const WhyFixco = () => {
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
+import { flipIn, flipOut, burstIn } from "@/utils/scrollAnimations";
 
 const questions = [
   {
@@ -150,67 +151,76 @@ export const CareerQuiz = () => {
         <AnimatePresence mode="wait">
           {!showResult ? (
             <motion.div
-              key={currentQuestion}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.3 }}
+              key="quiz"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
             >
-              <GlassCard className="p-8 md:p-12">
-                {/* Progress bar */}
-                <div className="mb-8">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-muted-foreground">
-                      Fråga {currentQuestion + 1} av {questions.length}
-                    </span>
-                    <span className="text-sm font-semibold text-primary">
-                      {Math.round(progress)}%
-                    </span>
-                  </div>
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                  <span>Fråga {currentQuestion + 1} av {questions.length}</span>
+                  <span>{Math.round(progress)}%</span>
+                </div>
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="origin-left"
+                >
                   <Progress value={progress} className="h-2" />
-                </div>
+                </motion.div>
+              </div>
 
-                {/* Question */}
-                <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center">
-                  {questions[currentQuestion].question}
-                </h3>
+              <motion.div
+                key={currentQuestion}
+                variants={flipIn}
+                initial="hidden"
+                animate="visible"
+                exit={flipOut.exit}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <GlassCard className="p-8 md:p-12">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+                    {questions[currentQuestion].question}
+                  </h3>
 
-                {/* Options */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {questions[currentQuestion].options.map((option, index) => (
-                    <motion.button
-                      key={index}
-                      onClick={() => handleAnswer(option.professions, index)}
-                      className={`p-6 rounded-xl border-2 transition-all text-left ${
-                        selectedOption === index
-                          ? 'border-primary bg-primary/10 scale-95'
-                          : 'border-border hover:border-primary/50 hover:bg-primary/5'
-                      }`}
-                      whileHover={{ scale: selectedOption === null ? 1.02 : 1 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {questions[currentQuestion].options.map((option, index) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => handleAnswer(option.professions, index)}
+                        className={`p-6 rounded-xl border-2 transition-all text-left ${
                           selectedOption === index
-                            ? 'border-primary bg-primary'
-                            : 'border-border'
-                        }`}>
-                          {selectedOption === index && (
-                            <CheckCircle2 className="w-4 h-4 text-primary-foreground" />
-                          )}
+                            ? 'border-primary bg-primary/10 scale-95'
+                            : 'border-border hover:border-primary/50 hover:bg-primary/5'
+                        }`}
+                        whileHover={{ scale: selectedOption === null ? 1.02 : 1 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                            selectedOption === index
+                              ? 'border-primary bg-primary'
+                              : 'border-border'
+                          }`}>
+                            {selectedOption === index && (
+                              <CheckCircle2 className="w-4 h-4 text-primary-foreground" />
+                            )}
+                          </div>
+                          <span className="text-base font-medium">{option.text}</span>
                         </div>
-                        <span className="text-base font-medium">{option.text}</span>
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
-              </GlassCard>
+                      </motion.button>
+                    ))}
+                  </div>
+                </GlassCard>
+              </motion.div>
             </motion.div>
           ) : (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
+              key="result"
+              variants={burstIn}
+              initial="hidden"
+              animate="visible"
             >
               <GlassCard className="p-8 md:p-12 text-center">
                 <motion.div

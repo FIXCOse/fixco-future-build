@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Upload } from "lucide-react";
+import { viewportConfig } from "@/utils/scrollAnimations";
 
 const professions = ["Snickare", "Elektriker", "VVS", "Målare", "Trädgård", "Städ", "Montering", "Markarbeten", "Flytt"];
 const availabilities = ["Heltid", "Deltid", "Projekt", "Flexibelt"];
@@ -131,7 +133,13 @@ export const ApplicationForm = () => {
   return (
     <section id="application-form" className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportConfig}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mx-auto"
+        >
           <Card>
             <CardHeader>
               <CardTitle className="text-3xl">Ansök till Fixco</CardTitle>
@@ -142,9 +150,17 @@ export const ApplicationForm = () => {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  {/* Step 1: Personal Info */}
-                  {step === 1 && (
-                    <div className="space-y-4">
+                  <AnimatePresence mode="wait">
+                    {/* Step 1: Personal Info */}
+                    {step === 1 && (
+                      <motion.div
+                        key="step-1"
+                        initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+                        transition={{ duration: 0.4 }}
+                        className="space-y-4"
+                      >
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
@@ -260,15 +276,22 @@ export const ApplicationForm = () => {
                         />
                       </div>
 
-                      <Button type="button" onClick={nextStep} className="w-full">
-                        Nästa steg
-                      </Button>
-                    </div>
-                  )}
+                        <Button type="button" onClick={nextStep} className="w-full">
+                          Nästa steg
+                        </Button>
+                      </motion.div>
+                    )}
 
-                  {/* Step 2: Professional Info */}
-                  {step === 2 && (
-                    <div className="space-y-4">
+                    {/* Step 2: Professional Info */}
+                    {step === 2 && (
+                      <motion.div
+                        key="step-2"
+                        initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+                        transition={{ duration: 0.4 }}
+                        className="space-y-4"
+                      >
                       <FormField
                         control={form.control}
                         name="profession"
@@ -476,7 +499,7 @@ export const ApplicationForm = () => {
                           Nästa steg
                         </Button>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
 
                   {/* Step 3: Motivation & Consent */}
@@ -559,13 +582,14 @@ export const ApplicationForm = () => {
                           )}
                         </Button>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
+                  </AnimatePresence>
                 </form>
               </Form>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
