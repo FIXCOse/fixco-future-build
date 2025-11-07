@@ -104,6 +104,27 @@ export const CareersHero = () => {
                   </MagneticButton>
                 </motion.div>
 
+                {/* Trust Indicators Bar */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55, duration: 0.8 }}
+                  className="flex flex-wrap justify-center gap-3 mb-8"
+                >
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
+                    <Award className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-medium">Kollektivavtal</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
+                    <Users className="w-4 h-4 text-secondary" />
+                    <span className="text-sm font-medium">500+ Medarbetare</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
+                    <TrendingUp className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-medium">Snabb tillväxt</span>
+                  </div>
+                </motion.div>
+
                 {/* Stats */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -120,49 +141,6 @@ export const CareersHero = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Floating trust badges */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.8, duration: 0.8 }}
-        className="absolute left-4 top-1/4 hidden lg:block"
-      >
-        <GlassCard className="p-4" hoverEffect={false}>
-          <div className="flex items-center gap-2">
-            <Award className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium">Kollektivavtal</span>
-          </div>
-        </GlassCard>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.9, duration: 0.8 }}
-        className="absolute right-4 top-1/3 hidden lg:block"
-      >
-        <GlassCard className="p-4" hoverEffect={false}>
-          <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-secondary" />
-            <span className="text-sm font-medium">500+ Medarbetare</span>
-          </div>
-        </GlassCard>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1, duration: 0.8 }}
-        className="absolute left-4 bottom-1/4 hidden lg:block"
-      >
-        <GlassCard className="p-4" hoverEffect={false}>
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium">Snabb tillväxt</span>
-          </div>
-        </GlassCard>
-      </motion.div>
     </section>
   );
 };

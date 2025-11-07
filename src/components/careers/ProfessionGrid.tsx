@@ -40,15 +40,10 @@ export const ProfessionGrid = () => {
           </p>
         </motion.div>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+        {/* Consistent Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {professions.map((profession, index) => {
             const Icon = profession.icon;
-            // Featured professions get larger sizes
-            const isFeatured = index === 0 || index === 3 || index === 6;
-            const gridClass = isFeatured 
-              ? "md:col-span-2 md:row-span-2" 
-              : "md:col-span-2";
 
             return (
               <motion.div
@@ -57,10 +52,9 @@ export const ProfessionGrid = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className={gridClass}
               >
                 <GlassCard 
-                  className={`p-6 h-full group relative overflow-hidden ${isFeatured ? 'md:p-8' : ''}`}
+                  className="p-6 h-full group relative overflow-hidden"
                   hoverEffect={true}
                 >
                   {/* Animated gradient background */}
@@ -79,18 +73,18 @@ export const ProfessionGrid = () => {
                         scale: 1.1,
                       }}
                       transition={{ duration: 0.6, type: "spring" }}
-                      className={`${isFeatured ? 'w-20 h-20' : 'w-14 h-14'} bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center mb-4 shadow-lg`}
+                      className="w-16 h-16 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
                       style={{
                         boxShadow: `0 10px 30px -5px hsl(${index * 40}, 80%, 60%, 0.3)`
                       }}
                     >
-                      <Icon className={`${isFeatured ? 'w-10 h-10' : 'w-7 h-7'} text-primary`} />
+                      <Icon className="w-8 h-8 text-primary" />
                     </motion.div>
 
-                    <h3 className={`${isFeatured ? 'text-2xl md:text-3xl' : 'text-xl'} font-bold mb-3`}>
+                    <h3 className="text-xl font-bold mb-3">
                       {profession.title}
                     </h3>
-                    <p className={`text-muted-foreground ${isFeatured ? 'text-base mb-6' : 'text-sm mb-4'}`}>
+                    <p className="text-muted-foreground text-sm mb-4">
                       {profession.description}
                     </p>
 
@@ -102,7 +96,7 @@ export const ProfessionGrid = () => {
                     >
                       <Button
                         variant="default"
-                        size={isFeatured ? "default" : "sm"}
+                        size="sm"
                         onClick={scrollToForm}
                         className="w-full"
                       >

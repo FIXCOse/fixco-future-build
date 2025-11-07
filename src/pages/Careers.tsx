@@ -17,7 +17,7 @@ const Careers = () => {
         description="Bli en del av Fixco-familjen! Vi söker skickliga hantverkare inom snickeri, el, VVS, måleri och mer. Kollektivavtal, konkurrenskraftig lön och flexibla arbetstider."
       />
       
-      <main className="min-h-screen">
+      <main className="min-h-screen overflow-x-hidden">
         <CareersHero />
         <CareersStats />
         <WhyFixco />
