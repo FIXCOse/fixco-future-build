@@ -406,7 +406,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
           <section className="py-12 bg-muted/5">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold mb-8 text-center">
-                {t('serviceCity.popularServices', { category: categoryName?.toLowerCase(), city })}
+                {t('serviceCity.popularServices', { category: categoryName?.toLowerCase() || '', city: city })}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 {serviceContent.popularServices.map((service, idx) => {
@@ -429,7 +429,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-4">
-                  {t('serviceCity.priceExamplesTitle', { category: categoryName?.toLowerCase(), city })}
+                  {t('serviceCity.priceExamplesTitle', { category: categoryName?.toLowerCase() || '', city: city })}
                 </h2>
                 <p className="text-center text-muted-foreground mb-8">
                   {t('serviceCity.priceExamplesSubtitle')}

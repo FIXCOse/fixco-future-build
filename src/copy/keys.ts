@@ -404,8 +404,11 @@ export type CopyKey =
      | 'stickyCta.bookThisService' | 'stickyCta.callNow' | 'stickyCta.requestQuote'
      | 'stickyCta.rotDeduction' | 'stickyCta.locations'
      
-     // Navigation admin menu
-     | 'nav.admin.dashboard' | 'nav.admin.bookings' | 'nav.admin.projects' | 'nav.admin.quotes'
-     | 'nav.admin.customers' | 'nav.admin.invoices' | 'nav.admin.staff' | 'nav.admin.analytics'
-     | 'nav.admin.reports' | 'nav.admin.settings' | 'nav.admin.security' | 'nav.admin.workers'
-     | 'nav.admin.schedule' | 'nav.admin.services' | 'nav.admin.translations';
+      // Navigation admin menu
+      | 'nav.admin.dashboard' | 'nav.admin.bookings' | 'nav.admin.projects' | 'nav.admin.quotes'
+      | 'nav.admin.customers' | 'nav.admin.invoices' | 'nav.admin.staff' | 'nav.admin.analytics'
+      | 'nav.admin.reports' | 'nav.admin.settings' | 'nav.admin.security' | 'nav.admin.workers'
+      | 'nav.admin.schedule' | 'nav.admin.services' | 'nav.admin.translations'
+      | 'nav.admin.quoteQuestions' | 'nav.admin.jobs' | 'nav.admin.jobRequests' | 'nav.admin.ongoingProjects'
+      | 'nav.admin.users' | 'nav.admin.workerAnalytics' | 'nav.admin.aiLeads' | 'nav.admin.database'
+      | 'nav.admin.panel' | 'nav.admin.management' | 'nav.admin.system';

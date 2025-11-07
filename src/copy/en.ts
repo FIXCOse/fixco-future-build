@@ -968,5 +968,16 @@ export const en: Record<CopyKey, string> = {
   'nav.admin.workers': 'Workers',
   'nav.admin.schedule': 'Schedule',
   'nav.admin.services': 'Services',
-  'nav.admin.translations': 'Translations'
+  'nav.admin.translations': 'Translations',
+  'nav.admin.quoteQuestions': 'Quote Questions',
+  'nav.admin.jobs': 'Work Orders',
+  'nav.admin.jobRequests': 'Job Requests',
+  'nav.admin.ongoingProjects': 'Ongoing Projects',
+  'nav.admin.users': 'Users',
+  'nav.admin.workerAnalytics': 'Worker Analytics',
+  'nav.admin.aiLeads': 'AI Leads',
+  'nav.admin.database': 'Database',
+  'nav.admin.panel': 'Admin Panel',
+  'nav.admin.management': 'Management',
+  'nav.admin.system': 'System'
 };
