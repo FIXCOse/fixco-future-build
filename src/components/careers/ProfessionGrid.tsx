@@ -1,4 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { GradientText } from "@/components/v2/GradientText";
+import { GlassCard } from "@/components/v2/GlassCard";
+import { Button } from "@/components/ui/button";
 import { Hammer, Zap, Droplet, Paintbrush, TreePine, SparklesIcon, Wrench, Mountain, Truck } from "lucide-react";
 
 const professions = [
@@ -14,35 +17,103 @@ const professions = [
 ];
 
 export const ProfessionGrid = () => {
-  return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Vilka vi söker
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Vi söker kompetenta hantverkare inom flera olika områden
-            </p>
-          </div>
+  const scrollToForm = () => {
+    const formElement = document.getElementById('application-form');
+    formElement?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {professions.map((profession, index) => {
-              const Icon = profession.icon;
-              return (
-                <Card key={index} className="border-2 hover:border-primary transition-colors cursor-pointer">
-                  <CardContent className="p-6 text-center">
-                    <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary">
-                      <Icon className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">{profession.title}</h3>
-                    <p className="text-sm text-muted-foreground">{profession.description}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+  return (
+    <section className="py-20 px-4 bg-gradient-to-br from-background via-muted/30 to-background">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <GradientText gradient="blue">Lediga tjänster</GradientText>
+          </h2>
+          <p className="text-xl text-muted-foreground">
+            Vi söker skickliga yrkesmänniskor inom flera olika områden
+          </p>
+        </motion.div>
+
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+          {professions.map((profession, index) => {
+            const Icon = profession.icon;
+            // Featured professions get larger sizes
+            const isFeatured = index === 0 || index === 3 || index === 6;
+            const gridClass = isFeatured 
+              ? "md:col-span-2 md:row-span-2" 
+              : "md:col-span-2";
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className={gridClass}
+              >
+                <GlassCard 
+                  className={`p-6 h-full group relative overflow-hidden ${isFeatured ? 'md:p-8' : ''}`}
+                  hoverEffect={true}
+                >
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `radial-gradient(circle at 50% 50%, hsl(${index * 40}, 80%, 60%, 0.1), transparent 70%)`
+                    }}
+                  />
+
+                  <div className="relative z-10">
+                    {/* Icon with 3D effect */}
+                    <motion.div
+                      whileHover={{ 
+                        rotateY: 180,
+                        scale: 1.1,
+                      }}
+                      transition={{ duration: 0.6, type: "spring" }}
+                      className={`${isFeatured ? 'w-20 h-20' : 'w-14 h-14'} bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center mb-4 shadow-lg`}
+                      style={{
+                        boxShadow: `0 10px 30px -5px hsl(${index * 40}, 80%, 60%, 0.3)`
+                      }}
+                    >
+                      <Icon className={`${isFeatured ? 'w-10 h-10' : 'w-7 h-7'} text-primary`} />
+                    </motion.div>
+
+                    <h3 className={`${isFeatured ? 'text-2xl md:text-3xl' : 'text-xl'} font-bold mb-3`}>
+                      {profession.title}
+                    </h3>
+                    <p className={`text-muted-foreground ${isFeatured ? 'text-base mb-6' : 'text-sm mb-4'}`}>
+                      {profession.description}
+                    </p>
+
+                    {/* Quick apply button appears on hover */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      className="opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    >
+                      <Button
+                        variant="default"
+                        size={isFeatured ? "default" : "sm"}
+                        onClick={scrollToForm}
+                        className="w-full"
+                      >
+                        Ansök direkt
+                      </Button>
+                    </motion.div>
+                  </div>
+                </GlassCard>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
