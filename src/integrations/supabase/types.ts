@@ -2657,36 +2657,6 @@ export type Database = {
         }
         Relationships: []
       }
-      sitemap_pings: {
-        Row: {
-          id: string
-          pinged_at: string
-          pinged_by: string | null
-          response_code: number | null
-          response_message: string | null
-          sitemap_url: string
-          status: string
-        }
-        Insert: {
-          id?: string
-          pinged_at?: string
-          pinged_by?: string | null
-          response_code?: number | null
-          response_message?: string | null
-          sitemap_url?: string
-          status: string
-        }
-        Update: {
-          id?: string
-          pinged_at?: string
-          pinged_by?: string | null
-          response_code?: number | null
-          response_message?: string | null
-          sitemap_url?: string
-          status?: string
-        }
-        Relationships: []
-      }
       skills: {
         Row: {
           category: string
