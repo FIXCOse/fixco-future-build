@@ -381,9 +381,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               </div>
               <h2 className="text-3xl font-bold mb-4">{t('serviceCity.seeAllServices')}</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                {locale === 'sv' 
-                  ? 'Fixco erbjuder ett komplett utbud av hantverkstjänster med ROT/RUT-avdrag. Utforska alla våra tjänster och se priser, avdragsmöjligheter och mer.'
-                  : 'Fixco offers a complete range of craftsmanship services with ROT/RUT deduction. Explore all our services and see prices, deduction options and more.'}
+                {t('serviceCity.ui.completeRangeCTA')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
@@ -438,9 +436,9 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                   <table className="w-full bg-card border rounded-lg">
                     <thead className="bg-muted/50">
                       <tr className="border-b border-border">
-                        <th className="text-left py-4 px-6 font-semibold">{locale === 'sv' ? 'Jobb' : 'Job'}</th>
-                        <th className="text-left py-4 px-6 font-semibold">{locale === 'sv' ? 'Pris (efter ROT)' : 'Price (after ROT)'}</th>
-                        <th className="text-left py-4 px-6 font-semibold">{locale === 'sv' ? 'Tid' : 'Time'}</th>
+                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.job')}</th>
+                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.priceAfterROT')}</th>
+                        <th className="text-left py-4 px-6 font-semibold">{t('serviceCity.ui.time')}</th>
                       </tr>
                     </thead>
                     <tbody>
