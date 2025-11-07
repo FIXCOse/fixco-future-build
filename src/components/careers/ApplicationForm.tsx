@@ -504,7 +504,14 @@ export const ApplicationForm = () => {
 
                   {/* Step 3: Motivation & Consent */}
                   {step === 3 && (
-                    <div className="space-y-4">
+                    <motion.div
+                      key="step-3"
+                      initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+                      transition={{ duration: 0.4 }}
+                      className="space-y-4"
+                    >
                       <FormField
                         control={form.control}
                         name="motivation"

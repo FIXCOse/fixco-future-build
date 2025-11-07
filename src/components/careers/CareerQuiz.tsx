@@ -173,10 +173,28 @@ export const CareerQuiz = () => {
 
               <motion.div
                 key={currentQuestion}
-                variants={flipIn}
-                initial="hidden"
-                animate="visible"
-                exit={flipOut.exit}
+                initial={{ 
+                  opacity: 0, 
+                  rotateY: -90,
+                  scale: 0.8,
+                  filter: "blur(10px)"
+                }}
+                animate={{ 
+                  opacity: 1, 
+                  rotateY: 0,
+                  scale: 1,
+                  filter: "blur(0px)"
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  rotateY: 90,
+                  scale: 0.8,
+                  filter: "blur(10px)"
+                }}
+                transition={{ 
+                  duration: 0.5,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
                 style={{ transformStyle: "preserve-3d" }}
               >
                 <GlassCard className="p-8 md:p-12">

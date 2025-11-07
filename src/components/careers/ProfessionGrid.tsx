@@ -55,15 +55,22 @@ export const ProfessionGrid = () => {
             return (
               <motion.div
                 key={index}
-                variants={{
-                  hidden: rotateIn.hidden,
-                  visible: {
-                    ...rotateIn.visible,
-                    transition: {
-                      ...rotateIn.visible?.transition,
-                      delay: (index % 3) * 0.1 // Wave effect per row
-                    }
-                  }
+                initial={{ 
+                  opacity: 0, 
+                  y: 50,
+                  rotateX: -15,
+                  filter: "blur(10px)"
+                }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  rotateX: 0,
+                  filter: "blur(0px)"
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: (index % 3) * 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
                 style={{ transformStyle: "preserve-3d" }}
               >
