@@ -312,6 +312,29 @@ const App = () => {
                     <Route path="home-v2" element={<HomeV2 />} />
                     <Route path="services" element={<Services />} />
                     <Route path="services/:slug" element={<ServiceDetail />} />
+                    
+                    {/* English Service+City pages - Full detail pages like main service pages */}
+                    <Route path="services/electrician-uppsala" element={<ServiceCityDetail service="el" city="Uppsala" />} />
+                    <Route path="services/electrician-stockholm" element={<ServiceCityDetail service="el" city="Stockholm" />} />
+                    <Route path="services/plumber-uppsala" element={<ServiceCityDetail service="vvs" city="Uppsala" />} />
+                    <Route path="services/plumber-stockholm" element={<ServiceCityDetail service="vvs" city="Stockholm" />} />
+                    <Route path="services/carpenter-uppsala" element={<ServiceCityDetail service="snickeri" city="Uppsala" />} />
+                    <Route path="services/carpenter-stockholm" element={<ServiceCityDetail service="snickeri" city="Stockholm" />} />
+                    <Route path="services/painter-uppsala" element={<ServiceCityDetail service="maleri" city="Uppsala" />} />
+                    <Route path="services/painter-stockholm" element={<ServiceCityDetail service="maleri" city="Stockholm" />} />
+                    <Route path="services/assembly-uppsala" element={<ServiceCityDetail service="montering" city="Uppsala" />} />
+                    <Route path="services/assembly-stockholm" element={<ServiceCityDetail service="montering" city="Stockholm" />} />
+                    <Route path="services/gardening-uppsala" element={<ServiceCityDetail service="tradgard" city="Uppsala" />} />
+                    <Route path="services/gardening-stockholm" element={<ServiceCityDetail service="tradgard" city="Stockholm" />} />
+                    <Route path="services/cleaning-uppsala" element={<ServiceCityDetail service="stadning" city="Uppsala" />} />
+                    <Route path="services/cleaning-stockholm" element={<ServiceCityDetail service="stadning" city="Stockholm" />} />
+                    <Route path="services/groundwork-uppsala" element={<ServiceCityDetail service="markarbeten" city="Uppsala" />} />
+                    <Route path="services/groundwork-stockholm" element={<ServiceCityDetail service="markarbeten" city="Stockholm" />} />
+                    <Route path="services/technical-installations-uppsala" element={<ServiceCityDetail service="tekniska-installationer" city="Uppsala" />} />
+                    <Route path="services/technical-installations-stockholm" element={<ServiceCityDetail service="tekniska-installationer" city="Stockholm" />} />
+                    <Route path="services/moving-uppsala" element={<ServiceCityDetail service="flytt" city="Uppsala" />} />
+                    <Route path="services/moving-stockholm" element={<ServiceCityDetail service="flytt" city="Stockholm" />} />
+                    
                     <Route path="contact" element={<Contact />} />
                     <Route path="faq" element={<FAQ />} />
                     <Route path="about" element={<AboutUs />} />
