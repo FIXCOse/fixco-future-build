@@ -2552,68 +2552,98 @@ export type Database = {
       reference_projects: {
         Row: {
           category: string
+          category_en: string | null
+          category_sv: string
           client_initials: string
           completed_date: string
           created_at: string | null
           created_by: string | null
           description: string
+          description_en: string | null
+          description_sv: string
           duration: string
           features: string[] | null
+          features_en: string[] | null
+          features_sv: string[]
           id: string
           images: string[] | null
           is_active: boolean | null
           is_featured: boolean | null
           location: string
+          location_en: string | null
+          location_sv: string
           price_amount: number
           rating: number
           rot_saving_amount: number
           rut_saving_amount: number
           sort_order: number | null
           title: string
+          title_en: string | null
+          title_sv: string
           updated_at: string | null
         }
         Insert: {
           category: string
+          category_en?: string | null
+          category_sv: string
           client_initials: string
           completed_date: string
           created_at?: string | null
           created_by?: string | null
           description: string
+          description_en?: string | null
+          description_sv: string
           duration: string
           features?: string[] | null
+          features_en?: string[] | null
+          features_sv?: string[]
           id?: string
           images?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           location: string
+          location_en?: string | null
+          location_sv: string
           price_amount: number
           rating?: number
           rot_saving_amount?: number
           rut_saving_amount?: number
           sort_order?: number | null
           title: string
+          title_en?: string | null
+          title_sv: string
           updated_at?: string | null
         }
         Update: {
           category?: string
+          category_en?: string | null
+          category_sv?: string
           client_initials?: string
           completed_date?: string
           created_at?: string | null
           created_by?: string | null
           description?: string
+          description_en?: string | null
+          description_sv?: string
           duration?: string
           features?: string[] | null
+          features_en?: string[] | null
+          features_sv?: string[]
           id?: string
           images?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           location?: string
+          location_en?: string | null
+          location_sv?: string
           price_amount?: number
           rating?: number
           rot_saving_amount?: number
           rut_saving_amount?: number
           sort_order?: number | null
           title?: string
+          title_en?: string | null
+          title_sv?: string
           updated_at?: string | null
         }
         Relationships: []

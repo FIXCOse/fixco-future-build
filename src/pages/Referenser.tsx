@@ -16,8 +16,24 @@ import { EditableText } from '@/components/EditableText';
 import { GradientText } from '@/components/v2/GradientText';
 import { useState } from 'react';
 
+// Helper function to get localized field
+const getLocalizedField = (
+  project: ReferenceProject, 
+  field: 'title' | 'description' | 'location' | 'category' | 'features',
+  locale: string
+): string | string[] => {
+  const svField = `${field}_sv` as keyof ReferenceProject;
+  const enField = `${field}_en` as keyof ReferenceProject;
+  
+  if (locale === 'en' && project[enField]) {
+    return project[enField] as string | string[];
+  }
+  
+  return project[svField] as string | string[];
+};
+
 const Referenser = () => {
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   const { isEditMode } = useEditMode();
   const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -169,7 +185,7 @@ const Referenser = () => {
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
-                      alt={project.title}
+                      alt={getLocalizedField(project, 'title', locale) as string}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
                     />
@@ -212,7 +228,7 @@ const Referenser = () => {
                     </div>
                     
                     <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground shadow-lg">
-                      {project.category}
+                      {getLocalizedField(project, 'category', locale) as string}
                     </Badge>
                     
                     {(project.rot_saving_amount > 0 || project.rut_saving_amount > 0) && (
@@ -231,29 +247,29 @@ const Referenser = () => {
                   <CardContent className="p-6">
                     {/* Project Header */}
                     <div className="mb-4">
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{getLocalizedField(project, 'title', locale) as string}</h3>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1">
                           <MapPin className="h-4 w-4" />
-                          <span>{project.location}</span>
+                          <span>{getLocalizedField(project, 'location', locale) as string}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Calendar className="h-4 w-4" />
-                          <span>{new Date(project.completed_date).toLocaleDateString('sv-SE')}</span>
+                          <span>{new Date(project.completed_date).toLocaleDateString(locale === 'en' ? 'en-US' : 'sv-SE')}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Euro className="h-4 w-4" />
-                          <span>{project.price_amount.toLocaleString('sv-SE')} kr</span>
+                          <span>{project.price_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Description */}
-                    <p className="text-muted-foreground mb-4">{project.description}</p>
+                    <p className="text-muted-foreground mb-4">{getLocalizedField(project, 'description', locale) as string}</p>
 
                     {/* Features */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.features.map(feature => (
+                      {(getLocalizedField(project, 'features', locale) as string[]).map(feature => (
                         <Badge key={feature} variant="secondary">{feature}</Badge>
                       ))}
                     </div>
@@ -265,13 +281,13 @@ const Referenser = () => {
                           {project.rot_saving_amount > 0 && (
                             <div>
                               <span className="text-muted-foreground">{t('pages.references.rotSaving')}</span>
-                              <span className="font-bold text-primary">{project.rot_saving_amount.toLocaleString('sv-SE')} kr</span>
+                              <span className="font-bold text-primary">{project.rot_saving_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
                             </div>
                           )}
                           {project.rut_saving_amount > 0 && (
                             <div>
                               <span className="text-muted-foreground">{t('pages.references.rutSaving')}</span>
-                              <span className="font-bold text-primary">{project.rut_saving_amount.toLocaleString('sv-SE')} kr</span>
+                              <span className="font-bold text-primary">{project.rut_saving_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
                             </div>
                           )}
                         </div>

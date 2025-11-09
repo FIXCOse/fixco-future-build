@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { X, Plus, Upload, Trash2, Star, Calendar, Loader2 } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { supabase } from '@/integrations/supabase/client';
@@ -45,6 +46,17 @@ export default function ProjectEditModal({
     description: '',
     location: '',
     category: categories[0],
+    features: [],
+    title_sv: '',
+    title_en: '',
+    description_sv: '',
+    description_en: '',
+    location_sv: '',
+    location_en: '',
+    category_sv: categories[0],
+    category_en: '',
+    features_sv: [],
+    features_en: [],
     duration: '',
     completed_date: new Date().toISOString().split('T')[0],
     price_amount: 0,
@@ -52,7 +64,6 @@ export default function ProjectEditModal({
     rut_saving_amount: 0,
     rating: 5,
     client_initials: '',
-    features: [],
     images: [],
     is_featured: false,
     sort_order: 0,
@@ -72,6 +83,17 @@ export default function ProjectEditModal({
         description: project.description,
         location: project.location,
         category: project.category,
+        features: project.features || [],
+        title_sv: project.title_sv,
+        title_en: project.title_en || '',
+        description_sv: project.description_sv,
+        description_en: project.description_en || '',
+        location_sv: project.location_sv,
+        location_en: project.location_en || '',
+        category_sv: project.category_sv,
+        category_en: project.category_en || '',
+        features_sv: project.features_sv || [],
+        features_en: project.features_en || [],
         duration: project.duration,
         completed_date: project.completed_date,
         price_amount: project.price_amount,
@@ -79,7 +101,6 @@ export default function ProjectEditModal({
         rut_saving_amount: project.rut_saving_amount,
         rating: project.rating,
         client_initials: project.client_initials,
-        features: project.features || [],
         images: project.images || [],
         is_featured: project.is_featured,
         sort_order: project.sort_order,
@@ -91,6 +112,17 @@ export default function ProjectEditModal({
         description: '',
         location: '',
         category: categories[0],
+        features: [],
+        title_sv: '',
+        title_en: '',
+        description_sv: '',
+        description_en: '',
+        location_sv: '',
+        location_en: '',
+        category_sv: categories[0],
+        category_en: '',
+        features_sv: [],
+        features_en: [],
         duration: '',
         completed_date: new Date().toISOString().split('T')[0],
         price_amount: 0,
@@ -98,7 +130,6 @@ export default function ProjectEditModal({
         rut_saving_amount: 0,
         rating: 5,
         client_initials: '',
-        features: [],
         images: [],
         is_featured: false,
         sort_order: 0,
@@ -107,20 +138,22 @@ export default function ProjectEditModal({
     }
   }, [project, isCreating]);
 
-  const handleAddFeature = () => {
-    if (newFeature.trim() && !formData.features?.includes(newFeature.trim())) {
+  const handleAddFeature = (lang: 'sv' | 'en') => {
+    const field = lang === 'sv' ? 'features_sv' : 'features_en';
+    if (newFeature.trim() && !formData[field]?.includes(newFeature.trim())) {
       setFormData(prev => ({
         ...prev,
-        features: [...(prev.features || []), newFeature.trim()]
+        [field]: [...(prev[field] || []), newFeature.trim()]
       }));
       setNewFeature('');
     }
   };
 
-  const handleRemoveFeature = (featureToRemove: string) => {
+  const handleRemoveFeature = (featureToRemove: string, lang: 'sv' | 'en') => {
+    const field = lang === 'sv' ? 'features_sv' : 'features_en';
     setFormData(prev => ({
       ...prev,
-      features: prev.features?.filter(f => f !== featureToRemove) || []
+      [field]: prev[field]?.filter(f => f !== featureToRemove) || []
     }));
   };
 
@@ -231,46 +264,50 @@ export default function ProjectEditModal({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Basic Information */}
-          <div className="space-y-4">
+        <Tabs defaultValue="sv" className="mb-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="sv">🇸🇪 Svenska</TabsTrigger>
+            <TabsTrigger value="en">🇬🇧 English</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="sv" className="space-y-4 mt-4">
             <div>
-              <Label htmlFor="title">Projekttitel *</Label>
+              <Label htmlFor="title_sv">Projekttitel (Svenska) *</Label>
               <Input
-                id="title"
-                value={formData.title || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                id="title_sv"
+                value={formData.title_sv || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, title_sv: e.target.value }))}
                 placeholder="t.ex. Moderna köksrenovering"
               />
             </div>
 
             <div>
-              <Label htmlFor="description">Beskrivning *</Label>
+              <Label htmlFor="description_sv">Beskrivning (Svenska) *</Label>
               <Textarea
-                id="description"
-                value={formData.description || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                id="description_sv"
+                value={formData.description_sv || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, description_sv: e.target.value }))}
                 placeholder="Detaljerad beskrivning av projektet"
-                rows={3}
+                rows={4}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="location">Plats *</Label>
+                <Label htmlFor="location_sv">Plats (Svenska) *</Label>
                 <Input
-                  id="location"
-                  value={formData.location || ''}
-                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                  id="location_sv"
+                  value={formData.location_sv || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, location_sv: e.target.value }))}
                   placeholder="t.ex. Östermalm, Stockholm"
                 />
               </div>
 
               <div>
-                <Label htmlFor="category">Kategori *</Label>
+                <Label htmlFor="category_sv">Kategori (Svenska) *</Label>
                 <Select 
-                  value={formData.category} 
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
+                  value={formData.category_sv} 
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, category_sv: value }))}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -285,6 +322,109 @@ export default function ProjectEditModal({
                 </Select>
               </div>
             </div>
+
+            <div>
+              <Label>Projektfunktioner (Svenska) *</Label>
+              <div className="flex gap-2 mb-2">
+                <Input
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="Lägg till ny funktion..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleAddFeature('sv')}
+                />
+                <Button onClick={() => handleAddFeature('sv')} size="sm" type="button">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.features_sv?.map((feature, index) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {feature}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-destructive" 
+                      onClick={() => handleRemoveFeature(feature, 'sv')}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="en" className="space-y-4 mt-4">
+            <div>
+              <Label htmlFor="title_en">Project Title (English)</Label>
+              <Input
+                id="title_en"
+                value={formData.title_en || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, title_en: e.target.value }))}
+                placeholder="e.g. Modern Kitchen Renovation"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description_en">Description (English)</Label>
+              <Textarea
+                id="description_en"
+                value={formData.description_en || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, description_en: e.target.value }))}
+                placeholder="Detailed project description"
+                rows={4}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="location_en">Location (English)</Label>
+                <Input
+                  id="location_en"
+                  value={formData.location_en || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, location_en: e.target.value }))}
+                  placeholder="e.g. Östermalm, Stockholm"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="category_en">Category (English)</Label>
+                <Input
+                  id="category_en"
+                  value={formData.category_en || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category_en: e.target.value }))}
+                  placeholder="e.g. Kitchen & Bathroom"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>Project Features (English)</Label>
+              <div className="flex gap-2 mb-2">
+                <Input
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="Add new feature..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleAddFeature('en')}
+                />
+                <Button onClick={() => handleAddFeature('en')} size="sm" type="button">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.features_en?.map((feature, index) => (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    {feature}
+                    <X 
+                      className="w-3 h-3 cursor-pointer hover:text-destructive" 
+                      onClick={() => handleRemoveFeature(feature, 'en')}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Basic Information */}
+          <div className="space-y-4">
 
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -411,32 +551,6 @@ export default function ProjectEditModal({
               </label>
             </div>
 
-            {/* Features Management */}
-            <div>
-              <Label>Projektfunktioner</Label>
-              <div className="flex gap-2 mb-2">
-                <Input
-                  value={newFeature}
-                  onChange={(e) => setNewFeature(e.target.value)}
-                  placeholder="Lägg till ny funktion..."
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddFeature()}
-                />
-                <Button onClick={handleAddFeature} size="sm">
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.features?.map((feature, index) => (
-                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                    {feature}
-                    <X 
-                      className="w-3 h-3 cursor-pointer hover:text-destructive" 
-                      onClick={() => handleRemoveFeature(feature)}
-                    />
-                  </Badge>
-                ))}
-              </div>
-            </div>
 
             {/* Images Management */}
             <div>

@@ -16,6 +16,23 @@ import {
   Award
 } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
+import { useCopy } from '@/copy/CopyProvider';
+
+// Helper function to get localized field
+const getLocalizedField = (
+  project: ReferenceProject, 
+  field: 'title' | 'description' | 'location' | 'category' | 'features',
+  locale: string
+): string | string[] => {
+  const svField = `${field}_sv` as keyof ReferenceProject;
+  const enField = `${field}_en` as keyof ReferenceProject;
+  
+  if (locale === 'en' && project[enField]) {
+    return project[enField] as string | string[];
+  }
+  
+  return project[svField] as string | string[];
+};
 
 interface ProjectDetailModalProps {
   project: ReferenceProject | null;
@@ -29,6 +46,7 @@ export default function ProjectDetailModal({
   onClose 
 }: ProjectDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { locale } = useCopy();
 
   if (!project) return null;
 
@@ -68,7 +86,7 @@ export default function ProjectDetailModal({
               <>
                 <img
                   src={project.images[currentImageIndex]}
-                  alt={`${project.title} - Bild ${currentImageIndex + 1}`}
+                  alt={`${getLocalizedField(project, 'title', locale)} - Bild ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop';
@@ -129,14 +147,14 @@ export default function ProjectDetailModal({
             ) : (
               <img
                 src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop"
-                alt={project.title}
+                alt={getLocalizedField(project, 'title', locale) as string}
                 className="w-full h-full object-cover"
               />
             )}
 
             {/* Project Category Badge */}
             <Badge className="absolute top-4 right-16 bg-primary text-primary-foreground shadow-lg">
-              {project.category}
+              {getLocalizedField(project, 'category', locale) as string}
             </Badge>
           </div>
 
@@ -145,7 +163,7 @@ export default function ProjectDetailModal({
             {/* Header */}
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
+                <h1 className="text-3xl font-bold mb-2">{getLocalizedField(project, 'title', locale) as string}</h1>
                 <div className="flex items-center gap-2 mb-2">
                   {[...Array(project.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -170,7 +188,7 @@ export default function ProjectDetailModal({
                     <MapPin className="w-5 h-5 text-primary" />
                     <div>
                       <div className="text-sm text-muted-foreground">Plats</div>
-                      <div className="font-medium">{project.location}</div>
+                      <div className="font-medium">{getLocalizedField(project, 'location', locale) as string}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -218,15 +236,15 @@ export default function ProjectDetailModal({
             {/* Description */}
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-4">Projektbeskrivning</h3>
-              <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+              <p className="text-muted-foreground leading-relaxed">{getLocalizedField(project, 'description', locale) as string}</p>
             </div>
 
             {/* Features */}
-            {project.features && project.features.length > 0 && (
+            {(getLocalizedField(project, 'features', locale) as string[]) && (getLocalizedField(project, 'features', locale) as string[]).length > 0 && (
               <div className="mb-8">
                 <h3 className="text-xl font-semibold mb-4">Funktioner & Detaljer</h3>
                 <div className="flex flex-wrap gap-2">
-                  {project.features.map((feature, index) => (
+                  {(getLocalizedField(project, 'features', locale) as string[]).map((feature, index) => (
                     <Badge key={index} variant="secondary" className="px-3 py-1">
                       {feature}
                     </Badge>

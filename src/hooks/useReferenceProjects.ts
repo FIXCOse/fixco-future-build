@@ -8,6 +8,17 @@ export interface ReferenceProject {
   description: string;
   location: string;
   category: string;
+  features: string[];
+  title_sv: string;
+  title_en: string | null;
+  description_sv: string;
+  description_en: string | null;
+  location_sv: string;
+  location_en: string | null;
+  category_sv: string;
+  category_en: string | null;
+  features_sv: string[];
+  features_en: string[] | null;
   duration: string;
   completed_date: string;
   price_amount: number;
@@ -15,7 +26,6 @@ export interface ReferenceProject {
   rut_saving_amount: number;
   rating: number;
   client_initials: string;
-  features: string[];
   images: string[];
   is_featured: boolean;
   sort_order: number;
