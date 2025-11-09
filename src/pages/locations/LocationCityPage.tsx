@@ -5,12 +5,14 @@ import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { cityData, CityKey } from "@/data/cityData";
 import { CheckCircle2, MapPin, Phone, Calendar } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface LocationCityPageProps {
   city: CityKey;
 }
 
 export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
+  const { locale } = useCopy();
   const data = cityData[city];
 
   const breadcrumb = getBreadcrumbSchema([
@@ -75,6 +77,16 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{data.title}</h1>
             <p className="text-lg text-muted-foreground mb-6 max-w-3xl">{data.description}</p>
             
+            {/* View Services CTA */}
+            <div className="mb-6">
+              <Link
+                to={locale === 'en' ? '/en/services' : '/tjanster'}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-bold hover:bg-secondary/90 transition-colors shadow-sm"
+              >
+                {locale === 'en' ? 'VIEW SERVICES' : 'VISA TJÄNSTER'}
+              </Link>
+            </div>
+
             {/* Trust badges */}
             <div className="flex flex-wrap gap-3 mb-8">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">

@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
 import { CheckCircle2, Phone, Calendar, MapPin, Zap, FileText } from "lucide-react";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import { useCopy } from "@/copy/CopyProvider";
 
 // Force rebuild 
 interface ServiceCityPageProps {
@@ -15,6 +16,7 @@ interface ServiceCityPageProps {
 }
 
 export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city, slug }) => {
+  const { locale } = useCopy();
   const item = serviceCityData.find((i) => i.service === service && i.city === city && i.slug === slug);
   
   if (!item) {
@@ -85,6 +87,16 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{item.h1}</h1>
             <p className="text-lg text-muted-foreground mb-6 max-w-3xl">{item.description}</p>
             
+            {/* View Services CTA */}
+            <div className="mb-6">
+              <Link
+                to={locale === 'en' ? '/en/services' : '/tjanster'}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-bold hover:bg-secondary/90 transition-colors shadow-sm"
+              >
+                {locale === 'en' ? 'VIEW SERVICES' : 'VISA TJÄNSTER'}
+              </Link>
+            </div>
+
             {/* Trust badges */}
             <div className="flex flex-wrap gap-3 mb-8">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
