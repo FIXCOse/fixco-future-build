@@ -284,6 +284,11 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <Button asChild variant="ghost-premium" size="lg">
+                  <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>
+                    {locale === 'en' ? 'VIEW SERVICES' : 'VISA TJÄNSTER'}
+                  </Link>
+                </Button>
                 <Button 
                   variant="cta" 
                   size="lg"
