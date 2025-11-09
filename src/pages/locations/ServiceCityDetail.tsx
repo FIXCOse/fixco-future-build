@@ -24,7 +24,8 @@ import {
   Zap,
   CheckCircle2,
   Lightbulb,
-  Sparkles
+  Sparkles,
+  ArrowRight
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -284,9 +285,10 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <Button asChild variant="ghost-premium" size="lg">
+                <Button asChild size="lg" className="font-semibold">
                   <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>
-                    {locale === 'en' ? 'VIEW SERVICES' : 'VISA TJÄNSTER'}
+                    {locale === 'en' ? 'View all services' : 'Se alla tjänster och priser'}
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
                 <Button 
