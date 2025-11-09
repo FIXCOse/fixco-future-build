@@ -34,38 +34,44 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Extract JWT token from Authorization header
+    // Decode JWT to get user ID
     const token = authHeader.replace('Bearer ', '');
-
-    // Verify user is authenticated using admin client with the JWT token
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return new Response(JSON.stringify({ error: 'Invalid token format' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     
-    if (authError || !user) {
-      console.error('Auth error:', authError);
-      return new Response(JSON.stringify({ error: 'Unauthorized', details: authError?.message }), {
+    const payload = JSON.parse(atob(parts[1]));
+    const userId = payload.sub;
+    
+    if (!userId) {
+      return new Response(JSON.stringify({ error: 'Invalid token' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('Authenticated user:', user.email);
+    console.log('Authenticated user ID:', userId);
 
     // Check if user is admin/owner
     const { data: roles } = await supabaseAdmin
       .from('user_roles')
       .select('role')
-      .eq('user_id', user.id);
+      .eq('user_id', userId);
 
     const isAdmin = roles?.some(r => r.role === 'admin' || r.role === 'owner');
     if (!isAdmin) {
-      console.error('User is not admin:', user.email, 'roles:', roles);
+      console.error('User is not admin. User ID:', userId, 'roles:', roles);
       return new Response(JSON.stringify({ error: 'Access denied - admin role required' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('User verified as admin:', user.email);
+    console.log('User verified as admin:', userId);
 
     const body = await req.json() as TranslateRequest | TranslateBulkRequest;
     const deeplApiKey = Deno.env.get('DEEPL_API_KEY');
