@@ -34,6 +34,7 @@ import AppLayout from "./components/layouts/AppLayout";
 
 // MyFixco pages
 import DashboardOverview from "./pages/MyFixco/DashboardOverview";
+import CustomerDashboard from "./pages/MyFixco/CustomerDashboard";
 import PropertiesPage from "./pages/MyFixco/PropertiesPage";
 import InvoicesPage from "./pages/MyFixco/InvoicesPage";
 import HistoryPage from "./pages/MyFixco/HistoryPage";
@@ -179,7 +180,7 @@ const App = () => {
                       <MyFixcoLayout />
                     </Suspense>
                   }>
-                    <Route index element={<DashboardOverview />} />
+                    <Route index element={<CustomerDashboard />} />
                     <Route path="properties" element={<PropertiesPage />} />
                     <Route path="invoices" element={<InvoicesPage />} />
                     <Route path="history" element={<HistoryPage />} />
