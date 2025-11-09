@@ -45,7 +45,7 @@ const Referenser = () => {
   };
 
   const handleDeleteProject = (projectId: string) => {
-    if (confirm('Är du säker på att du vill radera detta projekt?')) {
+    if (confirm(t('pages.references.deleteConfirm'))) {
       deleteProject.mutate(projectId);
     }
   };
@@ -73,13 +73,13 @@ const Referenser = () => {
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Nytt projekt
+                    {t('pages.references.newProject')}
                   </Button>
                 )}
               </div>
               <EditableText 
                 id="references-description"
-                initialContent="Se exempel på våra senaste projekt och läs vad våra nöjda kunder säger om oss."
+                initialContent={t('pages.references.description')}
                 as="p"
                 className="text-xl text-muted-foreground mb-8"
               />
@@ -99,7 +99,7 @@ const Referenser = () => {
                 <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
                 <EditableText 
                   id="stat-projects-label"
-                  initialContent="Slutförda projekt"
+                  initialContent={t('pages.references.stats.completed')}
                   className="text-muted-foreground"
                 />
               </div>
@@ -107,7 +107,7 @@ const Referenser = () => {
                 <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
                 <EditableText 
                   id="stat-rating-label"
-                  initialContent="Medelbetyg"
+                  initialContent={t('pages.references.stats.avgRating')}
                   className="text-muted-foreground"
                 />
               </div>
@@ -117,7 +117,7 @@ const Referenser = () => {
                 </div>
                 <EditableText 
                   id="stat-savings-label"
-                  initialContent="ROT/RUT-besparingar"
+                  initialContent={t('pages.references.stats.savings')}
                   className="text-muted-foreground"
                 />
               </div>
@@ -125,7 +125,7 @@ const Referenser = () => {
                 <div className="text-3xl font-bold gradient-text mb-2">100%</div>
                 <EditableText 
                   id="stat-satisfaction-label"
-                  initialContent="Nöjda kunder"
+                  initialContent={t('pages.references.stats.satisfaction')}
                   className="text-muted-foreground"
                 />
               </div>
@@ -141,12 +141,12 @@ const Referenser = () => {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">
                 <GradientText gradient="rainbow">
-                  Våra Referensprojekt
+                  {t('pages.references.heading')}
                 </GradientText>
               </h2>
               <EditableText 
                 id="grid-description"
-                initialContent="Här är alla våra projekt som visar bredden och kvaliteten i vårt arbete."
+                initialContent={t('pages.references.gridDescription')}
                 as="p"
                 className="text-muted-foreground max-w-2xl mx-auto"
               />
@@ -155,7 +155,7 @@ const Referenser = () => {
           {isLoading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Laddar projekt...</p>
+              <p className="text-muted-foreground">{t('pages.references.loading')}</p>
             </div>
           ) : (
             <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -207,7 +207,7 @@ const Referenser = () => {
                         className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg backdrop-blur-sm border-2 border-white/20"
                       >
                         <Eye className="w-4 h-4 mr-2" />
-                        Se alla bilder
+                        {t('pages.references.viewAllImages')}
                       </Button>
                     </div>
                     
@@ -264,13 +264,13 @@ const Referenser = () => {
                         <div className="text-sm">
                           {project.rot_saving_amount > 0 && (
                             <div>
-                              <span className="text-muted-foreground">ROT-besparing: </span>
+                              <span className="text-muted-foreground">{t('pages.references.rotSaving')}</span>
                               <span className="font-bold text-primary">{project.rot_saving_amount.toLocaleString('sv-SE')} kr</span>
                             </div>
                           )}
                           {project.rut_saving_amount > 0 && (
                             <div>
-                              <span className="text-muted-foreground">RUT-besparing: </span>
+                              <span className="text-muted-foreground">{t('pages.references.rutSaving')}</span>
                               <span className="font-bold text-primary">{project.rut_saving_amount.toLocaleString('sv-SE')} kr</span>
                             </div>
                           )}
@@ -281,11 +281,11 @@ const Referenser = () => {
                     {/* Project Details */}
                     <div className="grid grid-cols-2 gap-4 text-sm pt-4 border-t">
                       <div>
-                        <span className="text-muted-foreground">Projekttid:</span>
+                        <span className="text-muted-foreground">{t('pages.references.duration')}</span>
                         <div className="font-medium">{project.duration}</div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Klient:</span>
+                        <span className="text-muted-foreground">{t('pages.references.client')}</span>
                         <div className="font-medium">{project.client_initials}</div>
                       </div>
                     </div>
