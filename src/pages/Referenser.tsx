@@ -3,7 +3,9 @@ import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Quote, ArrowRight, MapPin, Calendar, Euro, Plus, Edit, Trash2, Eye } from "lucide-react";
+import { Star, Quote, ArrowRight, MapPin, Calendar, Euro, Plus, Edit, Trash2, Eye, Languages, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { useCopy } from '@/copy/CopyProvider';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { useAllReferenceProjects, useUpdateReferenceProject, useCreateReferenceProject, useDeleteReferenceProject, ReferenceProject } from '@/hooks/useReferenceProjects';
@@ -38,6 +40,7 @@ const Referenser = () => {
   const [editingProject, setEditingProject] = useState<ReferenceProject | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
+  const [isBulkTranslating, setIsBulkTranslating] = useState(false);
   
   const { data: projects = [], isLoading } = useAllReferenceProjects();
   const { user } = useAuth();
@@ -65,6 +68,30 @@ const Referenser = () => {
       deleteProject.mutate(projectId);
     }
   };
+
+  const handleBulkTranslate = async () => {
+    if (!window.confirm('Translate all projects without English translations? This may take a few minutes.')) return;
+
+    setIsBulkTranslating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('translate-reference-project', {
+        body: { project_ids: [] } // Empty array means translate all missing
+      });
+
+      if (error) throw error;
+
+      const result = data as { total: number; successful: number; failed: number };
+      toast.success(`Bulk translation complete: ${result.successful}/${result.total} projects translated`);
+      
+      // Refresh projects list
+      window.location.reload();
+    } catch (error) {
+      console.error('Bulk translation error:', error);
+      toast.error('Failed to bulk translate projects');
+    } finally {
+      setIsBulkTranslating(false);
+    }
+  };
   
   return (
     <div className="min-h-screen">
@@ -84,13 +111,33 @@ const Referenser = () => {
                   </GradientText>
                 </h1>
                 {isAdmin && (
-                  <Button 
-                    onClick={() => setIsCreateModalOpen(true)}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    {t('pages.references.newProject')}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleBulkTranslate}
+                      disabled={isBulkTranslating}
+                      variant="secondary"
+                      className="border-2 border-primary/20"
+                    >
+                      {isBulkTranslating ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Translating...
+                        </>
+                      ) : (
+                        <>
+                          <Languages className="mr-2 h-4 w-4" />
+                          Bulk Translate All
+                        </>
+                      )}
+                    </Button>
+                    <Button 
+                      onClick={() => setIsCreateModalOpen(true)}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      {t('pages.references.newProject')}
+                    </Button>
+                  </div>
                 )}
               </div>
               <EditableText 

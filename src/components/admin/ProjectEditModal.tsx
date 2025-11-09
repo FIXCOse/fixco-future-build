@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { X, Plus, Upload, Trash2, Star, Calendar, Loader2 } from 'lucide-react';
+import { X, Plus, Upload, Trash2, Star, Calendar, Loader2, Languages } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -73,6 +73,7 @@ export default function ProjectEditModal({
   const [newFeature, setNewFeature] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
   const [uploadingImages, setUploadingImages] = useState<Set<string>>(new Set());
+  const [isTranslating, setIsTranslating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -254,6 +255,51 @@ export default function ProjectEditModal({
     onClose();
   };
 
+  const handleAutoTranslate = async () => {
+    if (!project?.id) {
+      toast({
+        title: "Error",
+        description: "Project ID required for translation",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsTranslating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('translate-reference-project', {
+        body: { project_id: project.id }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Project translated successfully!",
+      });
+      
+      // Reload form data
+      const { data: updatedProject } = await supabase
+        .from('reference_projects')
+        .select('*')
+        .eq('id', project.id)
+        .single();
+
+      if (updatedProject) {
+        setFormData(updatedProject);
+      }
+    } catch (error) {
+      console.error('Translation error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to translate project",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -351,6 +397,33 @@ export default function ProjectEditModal({
           </TabsContent>
 
           <TabsContent value="en" className="space-y-4 mt-4">
+            {project?.id && (
+              <div className="mb-4 p-3 bg-muted rounded-lg">
+                <Button
+                  type="button"
+                  onClick={handleAutoTranslate}
+                  disabled={isTranslating}
+                  variant="secondary"
+                  className="w-full"
+                >
+                  {isTranslating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Translating...
+                    </>
+                  ) : (
+                    <>
+                      <Languages className="mr-2 h-4 w-4" />
+                      🤖 Auto-translate from Swedish
+                    </>
+                  )}
+                </Button>
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  Uses AI to translate all Swedish fields to English
+                </p>
+              </div>
+            )}
+
             <div>
               <Label htmlFor="title_en">Project Title (English)</Label>
               <Input
