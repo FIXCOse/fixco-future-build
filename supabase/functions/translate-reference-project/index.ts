@@ -19,37 +19,61 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
+    // Create Supabase client with service role for admin operations
+    const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: req.headers.get('Authorization')! },
-        },
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
 
-    // Verify user is admin
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    // Get authenticated user from request
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'No authorization header' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const { data: roles } = await supabaseClient
+    // Create client with user's auth for permission checks
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      }
+    );
+
+    // Verify user is authenticated
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return new Response(JSON.stringify({ error: 'Unauthorized', details: authError?.message }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log('Authenticated user:', user.email);
+
+    // Check if user is admin/owner
+    const { data: roles } = await supabaseAdmin
       .from('user_roles')
       .select('role')
       .eq('user_id', user.id);
 
     const isAdmin = roles?.some(r => r.role === 'admin' || r.role === 'owner');
     if (!isAdmin) {
-      return new Response(JSON.stringify({ error: 'Access denied' }), {
+      console.error('User is not admin:', user.email, 'roles:', roles);
+      return new Response(JSON.stringify({ error: 'Access denied - admin role required' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    console.log('User verified as admin:', user.email);
 
     const body = await req.json() as TranslateRequest | TranslateBulkRequest;
     const deeplApiKey = Deno.env.get('DEEPL_API_KEY');
@@ -85,8 +109,8 @@ Deno.serve(async (req) => {
     const translateProject = async (projectId: string) => {
       console.log(`Translating project ${projectId}...`);
 
-      // Fetch project Swedish data
-      const { data: project, error: fetchError } = await supabaseClient
+      // Fetch project Swedish data (use admin client for database operations)
+      const { data: project, error: fetchError } = await supabaseAdmin
         .from('reference_projects')
         .select('title_sv, description_sv, location_sv, category_sv, features_sv')
         .eq('id', projectId)
@@ -109,8 +133,8 @@ Deno.serve(async (req) => {
         ? await Promise.all(project.features_sv.map((f: string) => translateText(f)))
         : [];
 
-      // Update project with English translations
-      const { error: updateError } = await supabaseClient
+      // Update project with English translations (use admin client)
+      const { error: updateError } = await supabaseAdmin
         .from('reference_projects')
         .update({
           title_en,
@@ -146,7 +170,7 @@ Deno.serve(async (req) => {
 
       // If no IDs provided, get all projects without English translations
       if (!projectIds || projectIds.length === 0) {
-        const { data: projects, error: fetchError } = await supabaseClient
+        const { data: projects, error: fetchError } = await supabaseAdmin
           .from('reference_projects')
           .select('id')
           .is('title_en', null)
