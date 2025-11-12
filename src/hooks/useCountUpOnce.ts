@@ -141,6 +141,11 @@ const useCountUpOnce = (config: CountUpConfig): CountUpResult => {
       }
     );
 
+    // If element was already set before observer was ready, observe it now
+    if (elementRef.current) {
+      observerRef.current.observe(elementRef.current);
+    }
+
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
@@ -153,9 +158,12 @@ const useCountUpOnce = (config: CountUpConfig): CountUpResult => {
     if (!element || hasAnimatedRef.current) return;
     
     elementRef.current = element;
+    
+    // If observer is ready, observe immediately
     if (observerRef.current) {
       observerRef.current.observe(element);
     }
+    // Observer will be set up in useEffect and will observe the stored elementRef
   }, []);
 
   // Cleanup on unmount
