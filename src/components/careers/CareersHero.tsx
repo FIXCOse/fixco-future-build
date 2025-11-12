@@ -7,7 +7,7 @@ import useCountUpOnce from "@/hooks/useCountUpOnce";
 import { Briefcase, Users, Award, TrendingUp } from "lucide-react";
 
 const stats = [
-  { key: "workers", label: "Nöjda hantverkare", value: 500, suffix: "+" },
+  { key: "workers", label: "Nöjda hantverkare", value: 20, suffix: "+" },
   { key: "projects", label: "Genomförda projekt", value: 1000, suffix: "+" },
   { key: "rating", label: "Kundbetyg", value: 4.9, suffix: "/5", decimals: 1 }
 ];
