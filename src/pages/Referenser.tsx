@@ -16,6 +16,7 @@ import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
 import { EditableSection } from '@/components/EditableSection';
 import { EditableText } from '@/components/EditableText';
 import { GradientText } from '@/components/v2/GradientText';
+import { ProjectsComingSoon } from '@/components/ProjectsComingSoon';
 import { useState } from 'react';
 
 // Helper function to get localized field
@@ -154,48 +155,50 @@ const Referenser = () => {
       </EditableSection>
 
       {/* Statistics */}
-      <EditableSection id="references-stats" title="Statistik sektion">
-        <section className="py-12 bg-muted/10">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
-                <EditableText 
-                  id="stat-projects-label"
-                  initialContent={t('pages.references.stats.completed')}
-                  className="text-muted-foreground"
-                />
-              </div>
-              <div>
-                <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
-                <EditableText 
-                  id="stat-rating-label"
-                  initialContent={t('pages.references.stats.avgRating')}
-                  className="text-muted-foreground"
-                />
-              </div>
-              <div>
-                <div className="text-3xl font-bold gradient-text mb-2">
-                  {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
+      {projects.length > 0 && (
+        <EditableSection id="references-stats" title="Statistik sektion">
+          <section className="py-12 bg-muted/10">
+            <div className="container mx-auto px-4">
+              <div className="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                  <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
+                  <EditableText 
+                    id="stat-projects-label"
+                    initialContent={t('pages.references.stats.completed')}
+                    className="text-muted-foreground"
+                  />
                 </div>
-                <EditableText 
-                  id="stat-savings-label"
-                  initialContent={t('pages.references.stats.savings')}
-                  className="text-muted-foreground"
-                />
-              </div>
-              <div>
-                <div className="text-3xl font-bold gradient-text mb-2">100%</div>
-                <EditableText 
-                  id="stat-satisfaction-label"
-                  initialContent={t('pages.references.stats.satisfaction')}
-                  className="text-muted-foreground"
-                />
+                <div>
+                  <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
+                  <EditableText 
+                    id="stat-rating-label"
+                    initialContent={t('pages.references.stats.avgRating')}
+                    className="text-muted-foreground"
+                  />
+                </div>
+                <div>
+                  <div className="text-3xl font-bold gradient-text mb-2">
+                    {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
+                  </div>
+                  <EditableText 
+                    id="stat-savings-label"
+                    initialContent={t('pages.references.stats.savings')}
+                    className="text-muted-foreground"
+                  />
+                </div>
+                <div>
+                  <div className="text-3xl font-bold gradient-text mb-2">100%</div>
+                  <EditableText 
+                    id="stat-satisfaction-label"
+                    initialContent={t('pages.references.stats.satisfaction')}
+                    className="text-muted-foreground"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      </EditableSection>
+          </section>
+        </EditableSection>
+      )}
 
       {/* Projects Grid */}
       <EditableSection id="references-grid" title="Projekt grid">
@@ -215,148 +218,7 @@ const Referenser = () => {
               />
             </div>
 
-          {isLoading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">{t('pages.references.loading')}</p>
-            </div>
-          ) : (
-            <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <Card 
-                  key={project.id} 
-                  className="overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer"
-                  onClick={() => setSelectedProject(project)}
-                >
-                  {/* Project Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
-                      alt={getLocalizedField(project, 'title', locale) as string}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                    
-                    {/* Admin Controls */}
-                    {isAdmin && (
-                      <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingProject(project);
-                          }}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteProject(project.id);
-                          }}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                    
-                    {/* View Details Overlay */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <Button 
-                        size="sm" 
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg backdrop-blur-sm border-2 border-white/20"
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        {t('pages.references.viewAllImages')}
-                      </Button>
-                    </div>
-                    
-                    <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground shadow-lg">
-                      {getLocalizedField(project, 'category', locale) as string}
-                    </Badge>
-                    
-                    {(project.rot_saving_amount > 0 || project.rut_saving_amount > 0) && (
-                      <Badge className="absolute bottom-4 right-4 bg-green-600 text-white shadow-lg">
-                        {project.rot_saving_amount > 0 && `ROT: -${project.rot_saving_amount.toLocaleString('sv-SE')} kr`}
-                        {project.rut_saving_amount > 0 && `RUT: -${project.rut_saving_amount.toLocaleString('sv-SE')} kr`}
-                      </Badge>
-                    )}
-                    
-                    <div className="absolute bottom-4 left-4 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                      <Star className="h-3 w-3 fill-current text-yellow-500" />
-                      <span className="text-xs font-medium">{project.rating}.0</span>
-                    </div>
-                  </div>
-
-                  <CardContent className="p-6">
-                    {/* Project Header */}
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{getLocalizedField(project, 'title', locale) as string}</h3>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-1">
-                          <MapPin className="h-4 w-4" />
-                          <span>{getLocalizedField(project, 'location', locale) as string}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{new Date(project.completed_date).toLocaleDateString(locale === 'en' ? 'en-US' : 'sv-SE')}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Euro className="h-4 w-4" />
-                          <span>{project.price_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-muted-foreground mb-4">{getLocalizedField(project, 'description', locale) as string}</p>
-
-                    {/* Features */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {(getLocalizedField(project, 'features', locale) as string[]).map(feature => (
-                        <Badge key={feature} variant="secondary">{feature}</Badge>
-                      ))}
-                    </div>
-
-                    {/* ROT/RUT Savings */}
-                    {(project.rot_saving_amount > 0 || project.rut_saving_amount > 0) && (
-                      <div className="p-3 bg-primary/10 rounded-lg mb-4">
-                        <div className="text-sm">
-                          {project.rot_saving_amount > 0 && (
-                            <div>
-                              <span className="text-muted-foreground">{t('pages.references.rotSaving')}</span>
-                              <span className="font-bold text-primary">{project.rot_saving_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
-                            </div>
-                          )}
-                          {project.rut_saving_amount > 0 && (
-                            <div>
-                              <span className="text-muted-foreground">{t('pages.references.rutSaving')}</span>
-                              <span className="font-bold text-primary">{project.rut_saving_amount.toLocaleString(locale === 'en' ? 'en-US' : 'sv-SE')} kr</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Project Details */}
-                    <div className="grid grid-cols-2 gap-4 text-sm pt-4 border-t">
-                      <div>
-                        <span className="text-muted-foreground">{t('pages.references.duration')}</span>
-                        <div className="font-medium">{project.duration}</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">{t('pages.references.client')}</span>
-                        <div className="font-medium">{project.client_initials}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+            <ProjectsComingSoon />
         </div>
       </section>
       </EditableSection>
