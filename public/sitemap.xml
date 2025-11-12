@@ -246,6 +246,108 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
   </url>
 
+  <!-- ==================== TJÄNSTESIDOR (ALLMÄNNA) - LÅG PRIORITET ==================== -->
+  
+  <!-- El SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/el</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/el"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/el"/>
+  </url>
+
+  <!-- VVS SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/vvs</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/vvs"/>
+  </url>
+
+  <!-- Snickare SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/snickare</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare"/>
+  </url>
+
+  <!-- Målare SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/malare</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malare"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malare"/>
+  </url>
+
+  <!-- Trädgård SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tradgard</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tradgard"/>
+  </url>
+
+  <!-- Städ SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/stad</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/stad"/>
+  </url>
+
+  <!-- Markarbeten SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/markarbeten</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/markarbeten"/>
+  </url>
+
+  <!-- Tekniska Installationer SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/tekniska-installationer</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/tekniska-installationer"/>
+  </url>
+
+  <!-- Flytt SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/flytt</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/flytt"/>
+  </url>
+
+  <!-- Montering SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/montering</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/montering"/>
+  </url>
+
   <!-- ==================== SVENSKA TJÄNSTESIDOR (UTAN ENGELSKA HREFLANG) ==================== -->
   
   <!-- Elmontör Uppsala SV -->

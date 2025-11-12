@@ -364,6 +364,12 @@ export const getSiteNavigationSchema = () => ({
   "hasPart": [
     {
       "@type": "WebPageElement",
+      "name": "Boka Hembesök",
+      "url": `${baseUrl}/boka-hembesok`,
+      "description": "Boka gratis hembesök direkt"
+    },
+    {
+      "@type": "WebPageElement",
       "name": "Våra Tjänster",
       "url": `${baseUrl}/tjanster`,
       "description": "Alla våra tjänster med ROT & RUT-avdrag"
@@ -376,33 +382,21 @@ export const getSiteNavigationSchema = () => ({
     },
     {
       "@type": "WebPageElement",
-      "name": "ROT-avdrag",
-      "url": `${baseUrl}/rot-info`,
-      "description": "Allt om ROT-avdrag 50% rabatt"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "RUT-avdrag", 
-      "url": `${baseUrl}/rut`,
-      "description": "Allt om RUT-avdrag för hemtjänster"
-    },
-    {
-      "@type": "WebPageElement",
       "name": "Referenser",
       "url": `${baseUrl}/referenser`,
       "description": "Se våra tidigare projekt"
     },
     {
       "@type": "WebPageElement",
-      "name": "Vanliga Frågor",
-      "url": `${baseUrl}/faq`,
-      "description": "Svar på vanliga frågor"
+      "name": "ROT-avdrag",
+      "url": `${baseUrl}/rot-info`,
+      "description": "Allt om ROT-avdrag 50% rabatt"
     },
     {
       "@type": "WebPageElement",
-      "name": "Boka Hembesök",
-      "url": `${baseUrl}/boka-hembesok`,
-      "description": "Boka gratis hembesök direkt"
+      "name": "Vanliga Frågor",
+      "url": `${baseUrl}/faq`,
+      "description": "Svar på vanliga frågor"
     },
     {
       "@type": "WebPageElement",
