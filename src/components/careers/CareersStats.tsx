@@ -9,7 +9,7 @@ const stats = [
   { 
     key: "employees", 
     label: "Anställda hantverkare", 
-    value: 500, 
+    value: 20, 
     suffix: "+",
     icon: Users,
     color: "hsl(262 83% 58%)"
@@ -17,15 +17,15 @@ const stats = [
   { 
     key: "professions", 
     label: "Olika yrken", 
-    value: 15, 
+    value: 9, 
     suffix: "",
     icon: Briefcase,
     color: "hsl(200 100% 50%)"
   },
   { 
     key: "satisfaction", 
-    label: "Nöjd-medarbetar-index", 
-    value: 98, 
+    label: "Nöjda Privatperson-Index", 
+    value: 99, 
     suffix: "%",
     icon: Award,
     color: "hsl(320 100% 65%)"
@@ -33,7 +33,7 @@ const stats = [
   { 
     key: "growth", 
     label: "Tillväxt senaste året", 
-    value: 45, 
+    value: 22, 
     suffix: "%",
     icon: TrendingUp,
     color: "hsl(280 100% 60%)"

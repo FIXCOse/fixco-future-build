@@ -15,7 +15,7 @@ interface CountUpResult {
   observe: (element: HTMLElement | null) => void;
 }
 
-const STORAGE_PREFIX = 'ac2_metric_';
+const STORAGE_PREFIX = 'ac3_metric_';
 
 const useCountUpOnce = (config: CountUpConfig): CountUpResult => {
   const { key, from = 0, to, duration = 900, formatter } = config;
