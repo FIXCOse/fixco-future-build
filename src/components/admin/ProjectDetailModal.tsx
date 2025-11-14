@@ -253,13 +253,13 @@ export default function ProjectDetailModal({
                 <h3 className="text-xl font-semibold mb-4">Skattebesparingar</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {project.rot_saving_amount > 0 && (
-                    <Card className="border-green-200 bg-green-50/50">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <Award className="w-6 h-6 text-green-600" />
+                    <Card className="border-green-300 bg-green-100 shadow-md">
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-4">
+                          <Award className="w-8 h-8 text-green-700" />
                           <div>
-                            <div className="font-semibold text-green-800">ROT-avdrag</div>
-                            <div className="text-xl font-bold text-green-600">
+                            <div className="font-semibold text-green-900 text-lg">ROT-avdrag</div>
+                            <div className="text-2xl font-bold text-green-700">
                               -{project.rot_saving_amount.toLocaleString('sv-SE')} kr
                             </div>
                           </div>
