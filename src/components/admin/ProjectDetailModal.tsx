@@ -297,7 +297,6 @@ export default function ProjectDetailModal({
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t">
               <Button size="lg" className="group">
                 Begär liknande projekt
-                <Euro className="ml-2 h-5 w-5" />
               </Button>
               <Button size="lg" variant="outline">
                 Kontakta oss
