@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				'laptop': '900px',
+			},
 			fontFamily: {
 				'inter': ['Inter', 'sans-serif'],
 				'space-grotesk': ['Space Grotesk', 'sans-serif'],
