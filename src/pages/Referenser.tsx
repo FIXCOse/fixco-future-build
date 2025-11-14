@@ -17,6 +17,7 @@ import { EditableSection } from '@/components/EditableSection';
 import { EditableText } from '@/components/EditableText';
 import { GradientText } from '@/components/v2/GradientText';
 import { ProjectsComingSoon } from '@/components/ProjectsComingSoon';
+import { ReferenceProjectCard } from '@/components/ReferenceProjectCard';
 import { useState } from 'react';
 
 // Helper function to get localized field
@@ -218,7 +219,28 @@ const Referenser = () => {
               />
             </div>
 
-            <ProjectsComingSoon />
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : projects.length === 0 ? (
+              <ProjectsComingSoon />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projects.map((project) => (
+                  <ReferenceProjectCard
+                    key={project.id}
+                    project={project}
+                    locale={locale}
+                    isAdmin={isAdmin}
+                    isEditMode={isEditMode}
+                    onEdit={() => setEditingProject(project)}
+                    onDelete={() => handleDeleteProject(project.id)}
+                    onView={() => setSelectedProject(project)}
+                  />
+                ))}
+              </div>
+            )}
         </div>
       </section>
       </EditableSection>
