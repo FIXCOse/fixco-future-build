@@ -81,13 +81,13 @@ export default function ProjectDetailModal({
           </Button>
 
           {/* Image Gallery */}
-          <div className="relative h-96 bg-muted">
+          <div className="relative h-[600px] bg-muted">
             {project.images && project.images.length > 0 ? (
               <>
                 <img
                   src={project.images[currentImageIndex]}
                   alt={`${getLocalizedField(project, 'title', locale)} - Bild ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                   onError={(e) => {
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop';
                   }}
