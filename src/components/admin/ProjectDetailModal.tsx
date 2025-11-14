@@ -230,7 +230,7 @@ export default function ProjectDetailModal({
             {/* Description */}
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-4">Projektbeskrivning</h3>
-              <p className="text-muted-foreground leading-relaxed">{getLocalizedField(project, 'description', locale) as string}</p>
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{getLocalizedField(project, 'description', locale) as string}</p>
             </div>
 
             {/* Features */}
