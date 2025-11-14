@@ -113,29 +113,6 @@ export default function ProjectDetailModal({
                       <ChevronRight className="w-4 h-4" />
                     </Button>
 
-                    {/* Thumbnails */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 backdrop-blur-sm rounded-lg p-2">
-                      {project.images.map((image, index) => (
-                        <button
-                          key={index}
-                          onClick={() => goToImage(index)}
-                          className={`w-12 h-8 rounded overflow-hidden border-2 transition-all ${
-                            index === currentImageIndex 
-                              ? 'border-white scale-110' 
-                              : 'border-transparent opacity-70 hover:opacity-100'
-                          }`}
-                        >
-                          <img
-                            src={image}
-                            alt={`Miniatyr ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop';
-                            }}
-                          />
-                        </button>
-                      ))}
-                    </div>
 
                     {/* Image Counter */}
                     <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-sm">
@@ -157,6 +134,38 @@ export default function ProjectDetailModal({
               {getLocalizedField(project, 'category', locale) as string}
             </Badge>
           </div>
+
+          {/* Thumbnails Grid */}
+          {project.images && project.images.length > 1 && (
+            <div className="px-8 py-6 bg-muted/30 border-t border-border">
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3 max-w-5xl mx-auto">
+                {project.images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToImage(index)}
+                    className={`
+                      relative w-full aspect-video rounded-lg overflow-hidden 
+                      border-2 transition-all duration-200 cursor-pointer
+                      hover:scale-105 hover:shadow-lg
+                      ${index === currentImageIndex 
+                        ? 'border-primary ring-2 ring-primary/50 shadow-xl scale-105' 
+                        : 'border-border hover:border-primary/50'
+                      }
+                    `}
+                  >
+                    <img
+                      src={image}
+                      alt={`${getLocalizedField(project, 'title', locale)} - Miniatyr ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop';
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Content */}
           <div className="p-8">
