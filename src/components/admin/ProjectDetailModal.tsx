@@ -81,7 +81,7 @@ export default function ProjectDetailModal({
           </Button>
 
           {/* Image Gallery */}
-          <div className="relative h-[600px] bg-muted">
+          <div className="relative h-64 md:h-96 bg-muted">
             {project.images && project.images.length > 0 ? (
               <>
                 <img
