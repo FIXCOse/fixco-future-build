@@ -5,9 +5,19 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown } from 'lucide-react';
-import { useServices, useAddService, useUpdateService, Service } from '@/hooks/useServices';
+import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff } from 'lucide-react';
+import { useAllServicesForAdmin, useAddService, useUpdateService, useDeleteService, useToggleServiceActive, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
@@ -16,9 +26,11 @@ import { supabase } from '@/integrations/supabase/client';
 
 const ServiceManagement = () => {
   const queryClient = useQueryClient();
-  const { data: services = [], isLoading } = useServices('sv');
+  const { data: services = [], isLoading } = useAllServicesForAdmin('sv');
   const addService = useAddService();
   const updateService = useUpdateService();
+  const deleteService = useDeleteService();
+  const toggleServiceActive = useToggleServiceActive();
   
   // Hook for reordering services
   const reorderServices = useMutation({
@@ -46,6 +58,9 @@ const ServiceManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [showInactive, setShowInactive] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     id: string;
     category: string;
@@ -184,9 +199,9 @@ const ServiceManagement = () => {
 
   const categories = ['el', 'vvs', 'snickeri', 'montering', 'tradgard', 'stadning', 'markarbeten', 'tekniska-installationer', 'flytt'];
   
-  const filteredServices = selectedCategory === 'all' 
-    ? services 
-    : services.filter(service => service.category === selectedCategory);
+  const filteredServices = services
+    .filter(s => selectedCategory === 'all' || s.category === selectedCategory)
+    .filter(s => showInactive || s.is_active);
 
   if (isLoading) {
     return (
@@ -207,7 +222,7 @@ const ServiceManagement = () => {
         </Button>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap">
         <Label htmlFor="category-filter">Filtrera efter kategori:</Label>
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger className="w-[200px]">
@@ -227,19 +242,66 @@ const ServiceManagement = () => {
             {filteredServices.length} tjänster i {selectedCategory}
           </Badge>
         )}
+        
+        <div className="flex items-center gap-2 ml-auto">
+          <Switch
+            id="show-inactive"
+            checked={showInactive}
+            onCheckedChange={setShowInactive}
+          />
+          <Label htmlFor="show-inactive">Visa dolda tjänster</Label>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredServices.map((service, index) => (
-          <Card key={service.id} className="h-fit">
+          <Card key={service.id} className={`h-fit ${!service.is_active ? 'opacity-50' : ''}`}>
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-xs">{service.category}</Badge>
                   <Badge variant="secondary" className="text-xs">#{service.sort_order}</Badge>
+                  {!service.is_active && (
+                    <Badge variant="secondary" className="text-xs">
+                      <EyeOff className="h-3 w-3 mr-1" />
+                      Dold
+                    </Badge>
+                  )}
                 </div>
                 <div className="flex items-center gap-1">
                   {getTranslationStatusBadge(service.translation_status)}
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleServiceActive.mutate({ 
+                      id: service.id, 
+                      is_active: !service.is_active 
+                    })}
+                    disabled={toggleServiceActive.isPending}
+                    className="h-8 w-8 p-0"
+                    title={service.is_active ? "Dölj tjänst" : "Visa tjänst"}
+                  >
+                    {service.is_active ? (
+                      <Eye className="h-3 w-3" />
+                    ) : (
+                      <EyeOff className="h-3 w-3" />
+                    )}
+                  </Button>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setServiceToDelete(service.id);
+                      setDeleteDialogOpen(true);
+                    }}
+                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                    title="Ta bort tjänst"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                  
                   <div className="flex flex-col">
                     <Button 
                       variant="ghost" 
@@ -484,6 +546,32 @@ const ServiceManagement = () => {
           </form>
         </DialogContent>
       </Dialog>
+      
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Ta bort tjänst?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Detta kommer att dölja tjänsten från alla användare. Tjänsten kommer fortfarande finnas kvar i databasen men syns inte längre på webbplatsen.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (serviceToDelete) {
+                  deleteService.mutate(serviceToDelete);
+                  setDeleteDialogOpen(false);
+                  setServiceToDelete(null);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Ta bort
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
