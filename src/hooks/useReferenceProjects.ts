@@ -65,6 +65,8 @@ export const useAllReferenceProjects = () => {
       if (error) throw error;
       return data as ReferenceProject[];
     },
+    staleTime: 0,
+    gcTime: 0,
   });
 };
 
