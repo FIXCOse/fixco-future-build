@@ -18,6 +18,8 @@ import { EditableText } from '@/components/EditableText';
 import { GradientText } from '@/components/v2/GradientText';
 import { ProjectsComingSoon } from '@/components/ProjectsComingSoon';
 import { ReferenceProjectCard } from '@/components/ReferenceProjectCard';
+import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 // Helper function to get localized field
@@ -239,6 +241,41 @@ const Referenser = () => {
                     onView={() => setSelectedProject(project)}
                   />
                 ))}
+                
+                {/* Coming Soon Card */}
+                <Card className="group relative overflow-hidden border-2 border-dashed border-primary/20 hover:border-primary/40 transition-all duration-300 bg-muted/30">
+                  <CardContent className="flex flex-col items-center justify-center p-12 h-full min-h-[400px]">
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "reverse"
+                      }}
+                      className="mb-6"
+                    >
+                      <AnimatedFixcoFIcon className="h-20 w-20 opacity-50" />
+                    </motion.div>
+                    
+                    <h3 className="text-2xl font-bold mb-3 text-center">
+                      <GradientText gradient="rainbow">
+                        Fler projekt kommer snart
+                      </GradientText>
+                    </h3>
+                    
+                    <p className="text-muted-foreground text-center max-w-xs">
+                      Vi har genomfört många fler projekt som kommer att visas här inom kort
+                    </p>
+                    
+                    <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Förbereder innehåll...</span>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             )}
         </div>
