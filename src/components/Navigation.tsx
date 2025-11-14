@@ -144,7 +144,7 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden xl:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl mx-2 lg:mx-6 xl:mx-12">
+          <div className="hidden laptop:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl mx-2 lg:mx-6 xl:mx-12">
             <nav className="flex items-center gap-x-2 lg:gap-x-4 xl:gap-x-6">
               {navItems.map((item) => (
                 <Link
@@ -309,7 +309,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="xl:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
+              className="laptop:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
               aria-label={currentLanguage === 'en' ? 'Open menu' : 'Öppna meny'}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
