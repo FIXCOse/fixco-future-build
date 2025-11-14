@@ -75,9 +75,9 @@ const TrustChips = ({
     const chipContent = (
         <Badge 
           variant="secondary" 
-          className={`inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 border-0 hover:scale-105 transition-all duration-300 cursor-pointer group text-white text-xs sm:text-sm ${config.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
+          className={`inline-flex items-center gap-1.5 sm:gap-2 whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 border-0 hover:scale-105 transition-all duration-300 cursor-pointer group text-white text-xs ${config.backgroundGradient || 'bg-gradient-to-r from-gray-600 to-gray-700'}`}
         >
-        <IconComponent className="h-4 w-4 shrink-0 text-white group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
+        <IconComponent className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-white group-hover:scale-110 transition-transform duration-200" aria-hidden="true" />
         <span className="font-medium">{t(chip)}</span>
       </Badge>
     );
@@ -109,7 +109,7 @@ const TrustChips = ({
   // When showAll is true, use unified layout for all variants
   if (showAll || forceShowAll || variant === 'minimal') {
     return (
-      <div className={`flex flex-wrap items-center justify-center gap-2 px-4 sm:gap-3 sm:px-0 ${className}`}>
+      <div className={`flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 md:gap-3 px-2 sm:px-4 md:px-0 ${className}`}>
         {visibleChips.map((chip) => (
           <ChipComponent key={chip} chip={chip} />
         ))}
@@ -120,7 +120,7 @@ const TrustChips = ({
   return (
     <div className={`${className}`}>
       {/* Unified cloud layout for all screens */}
-      <div className="flex flex-wrap items-center justify-center gap-2 px-4 sm:gap-3 sm:px-0">
+      <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 md:gap-3 px-2 sm:px-4 md:px-0">
         {visibleChips.map((chip) => (
           <ChipComponent key={chip} chip={chip} />
         ))}
