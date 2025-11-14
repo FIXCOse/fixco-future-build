@@ -94,17 +94,21 @@ export default function Navigation() {
       careers: '/karriar'
     };
     
-    // Base navigation items for everyone (no admin dropdown here anymore)
-    return [
+    const primaryNavItems = [
       { href: currentLanguage === 'en' ? "/en" : "/", label: t('nav.home') },
       { href: paths.services, label: t('nav.services') },
-      { href: paths.smartHome, label: t('nav.smartHome') },
-      { href: paths.ai, label: <span className="flex items-center gap-1"><Bot className="h-3.5 w-3.5" />AI</span>, highlight: true },
-      { href: paths.references, label: t('nav.references') },
-      { href: paths.about, label: t('nav.about') },
-      { href: paths.careers, label: currentLanguage === 'en' ? 'Careers' : 'Karriär' },
       { href: paths.contact, label: t('nav.contact') },
     ];
+
+    const secondaryNavItems = [
+      { href: paths.ai, label: currentLanguage === 'en' ? 'AI Lab' : 'AI Lab', icon: <Bot className="h-4 w-4" /> },
+      { href: paths.smartHome, label: t('nav.smartHome'), icon: null },
+      { href: paths.references, label: t('nav.references'), icon: null },
+      { href: paths.about, label: t('nav.about'), icon: null },
+      { href: paths.careers, label: currentLanguage === 'en' ? 'Careers' : 'Karriär', icon: null },
+    ];
+
+    return { primaryNavItems, secondaryNavItems };
   };
 
   const navItems = getNavItems();
@@ -146,7 +150,8 @@ export default function Navigation() {
           {/* Center: Navigation - Desktop Only */}
           <div className="hidden laptop:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl mx-2 lg:mx-6 xl:mx-12">
             <nav className="flex items-center gap-x-2 lg:gap-x-4 xl:gap-x-6">
-              {navItems.map((item) => (
+              {/* Primary navigation items */}
+              {navItems.primaryNavItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
@@ -154,13 +159,45 @@ export default function Navigation() {
                     "inline-flex items-center px-1.5 lg:px-2.5 xl:px-3 py-1.5 lg:py-2 text-xs lg:text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
                     "text-foreground hover:text-primary hover:bg-primary/10",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                    isActive(item.href) && "text-primary bg-primary/10 font-semibold",
-                    (item as any).highlight && "bg-primary/5 border border-primary/20"
+                    isActive(item.href) && "text-primary bg-primary/10 font-semibold"
                   )}
                 >
                   {item.label}
                 </Link>
               ))}
+
+              {/* Secondary navigation items in dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 lg:h-9 xl:h-10 px-2 lg:px-3 xl:px-4 text-xs lg:text-sm font-medium inline-flex items-center gap-1 hover:bg-primary/10 hover:text-primary"
+                  >
+                    {currentLanguage === 'en' ? 'More' : 'Mer'}
+                    <ChevronDown className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="center"
+                  className="w-48 bg-background/95 backdrop-blur-sm border border-border shadow-lg z-[9999]"
+                >
+                  {navItems.secondaryNavItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link
+                        to={item.href}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer w-full",
+                          isActive(item.href) && "bg-primary/10 text-primary font-semibold"
+                        )}
+                      >
+                        {item.icon}
+                        {item.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </nav>
           </div>
 
@@ -321,9 +358,9 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="lg:hidden border-t border-border bg-background">
             <div className="py-4 space-y-2">
-              {/* Navigation Links */}
+              {/* Primary Navigation Links */}
               <nav className="space-y-1">
-                {navItems.map((item) => (
+                {navItems.primaryNavItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
@@ -333,6 +370,27 @@ export default function Navigation() {
                     )}
                     onClick={() => setIsMenuOpen(false)}
                   >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Separator */}
+              <div className="border-t border-border my-2" />
+
+              {/* Secondary Navigation Links */}
+              <nav className="space-y-1">
+                {navItems.secondaryNavItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center gap-2 py-3 px-4 text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors",
+                      isActive(item.href) && "text-primary font-medium bg-muted"
+                    )}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.icon}
                     {item.label}
                   </Link>
                 ))}
