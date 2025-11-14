@@ -310,8 +310,16 @@ export const useToggleServiceActive = () => {
       queryClient.refetchQueries({ queryKey: ['services'] });
       toast.success(data.is_active ? 'Tjänst aktiverad!' : 'Tjänst dold!');
     },
-    onError: (error) => {
-      toast.error('Fel vid uppdatering: ' + error.message);
+    onError: (error: any) => {
+      console.error('Toggle active error:', error);
+      
+      if (error.message?.includes('row-level security') || error.message?.includes('policy')) {
+        toast.error('Behörighetsfel: Du saknar rättigheter att uppdatera tjänster. Försök logga ut och in igen för att uppdatera din session.');
+      } else if (error.code === 'PGRST301') {
+        toast.error('Behörighetsfel: Åtkomst nekad. Kontrollera att du har admin- eller owner-rättigheter.');
+      } else {
+        toast.error('Fel vid uppdatering: ' + (error.message || 'Okänt fel'));
+      }
     }
   });
 };
