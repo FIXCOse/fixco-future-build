@@ -104,6 +104,35 @@ export const useServicesByCategory = (category: string, locale: 'sv' | 'en' = 's
   });
 };
 
+// Hook to get all services including inactive (admin only)
+export const useAllServicesForAdmin = (locale: 'sv' | 'en' = 'sv') => {
+  return useQuery({
+    queryKey: ['services', 'admin', locale],
+    queryFn: async (): Promise<ServiceWithTranslations[]> => {
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .order('category')
+        .order('sort_order');
+
+      if (error) throw error;
+
+      return data.map(service => ({
+        ...service,
+        title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
+        description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
+        price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
+        location: service.location as 'inomhus' | 'utomhus' | 'båda',
+        translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
+      }));
+    },
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  });
+};
+
 // Hook to add new service (admin only)
 export const useAddService = () => {
   const queryClient = useQueryClient();
@@ -253,6 +282,36 @@ export const useDeleteService = () => {
     onError: (error) => {
       console.error('Delete service error:', error);
       toast.error('Fel vid borttagning: ' + error.message);
+    }
+  });
+};
+
+// Hook to toggle service active status
+export const useToggleServiceActive = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { data, error } = await supabase
+        .from('services')
+        .update({ 
+          is_active,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      queryClient.refetchQueries({ queryKey: ['services'] });
+      toast.success(data.is_active ? 'Tjänst aktiverad!' : 'Tjänst dold!');
+    },
+    onError: (error) => {
+      toast.error('Fel vid uppdatering: ' + error.message);
     }
   });
 };
