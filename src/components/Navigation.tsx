@@ -144,14 +144,14 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden xl:flex items-center justify-center flex-1 max-w-3xl mx-12">
-            <nav className="flex items-center gap-x-6">
+          <div className="hidden xl:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl mx-2 lg:mx-6 xl:mx-12">
+            <nav className="flex items-center gap-x-2 lg:gap-x-4 xl:gap-x-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "inline-flex items-center px-3 py-2 text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                    "inline-flex items-center px-1.5 lg:px-2.5 xl:px-3 py-1.5 lg:py-2 text-xs lg:text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
                     "text-foreground hover:text-primary hover:bg-primary/10",
                     "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                     isActive(item.href) && "text-primary bg-primary/10 font-semibold",
@@ -165,7 +165,7 @@ export default function Navigation() {
           </div>
 
           {/* Right: Actions with Proper Spacing */}
-          <div className="flex items-center gap-x-3 lg:gap-x-5">
+          <div className="flex items-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5">
             
             {/* Language & Theme Switchers */}
             <div className="flex items-center gap-x-2">
@@ -194,7 +194,7 @@ export default function Navigation() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-9 px-3 inline-flex items-center space-x-2"
+                        className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm inline-flex items-center space-x-1 xl:space-x-2"
                       >
                         <User className="h-4 w-4" />
                         <span className="hidden xl:inline">Admin Panel</span>
@@ -254,7 +254,7 @@ export default function Navigation() {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="h-9 px-3 inline-flex items-center space-x-2"
+                      className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm inline-flex items-center space-x-1 xl:space-x-2"
                     >
                       <User className="h-4 w-4" />
                       <span className="hidden xl:inline">Arbetare</span>
@@ -265,7 +265,7 @@ export default function Navigation() {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="h-9 px-3 inline-flex items-center space-x-2"
+                      className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm inline-flex items-center space-x-1 xl:space-x-2"
                     >
                       <User className="h-4 w-4" />
                       <span className="hidden xl:inline">{t('nav.myFixco')}</span>
@@ -276,7 +276,7 @@ export default function Navigation() {
                   variant="ghost" 
                   size="sm" 
                   onClick={handleLogout}
-                  className="h-9 px-3 inline-flex items-center space-x-2"
+                  className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm inline-flex items-center space-x-1 xl:space-x-2"
                 >
                   <LogOut className="h-4 w-4" />
                   <span className="hidden xl:inline">{currentLanguage === 'en' ? 'Log out' : 'Logga ut'}</span>
@@ -287,7 +287,7 @@ export default function Navigation() {
                     <Link to="/auth">
                       <Button 
                         size="sm"
-                        className="h-9 px-3 bg-gradient-rainbow text-white hover:opacity-90 transition-opacity border-0"
+                        className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity border-0"
                       >
                         <span className="hidden xl:inline">{t('cta.login')}</span>
                         <span className="xl:hidden">Login</span>
@@ -297,7 +297,7 @@ export default function Navigation() {
                       <Button 
                         variant="default" 
                         size="sm"
-                        className="h-9 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
+                        className="h-8 xl:h-9 px-3 xl:px-4 text-xs xl:text-sm bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
                       >
                         <span className="hidden xl:inline">{t('cta.request_quote')}</span>
                         <span className="xl:hidden">{t('cta.get_quote')}</span>
