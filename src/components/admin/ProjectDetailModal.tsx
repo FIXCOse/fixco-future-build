@@ -144,7 +144,7 @@ export default function ProjectDetailModal({
                     key={index}
                     onClick={() => goToImage(index)}
                     className={`
-                      relative w-full aspect-video rounded-lg overflow-hidden 
+                      relative w-full h-20 md:h-24 rounded-lg overflow-hidden 
                       border-2 transition-all duration-200 cursor-pointer
                       hover:scale-105 hover:shadow-lg
                       ${index === currentImageIndex 
@@ -156,7 +156,7 @@ export default function ProjectDetailModal({
                     <img
                       src={image}
                       alt={`${getLocalizedField(project, 'title', locale)} - Miniatyr ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-muted/50"
                       onError={(e) => {
                         e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop';
                       }}
