@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { 
   X, 
   MapPin, 
-  Calendar, 
   Euro, 
   Clock, 
   Star, 
@@ -190,7 +189,7 @@ export default function ProjectDetailModal({
             </div>
 
             {/* Project Info Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
@@ -210,20 +209,6 @@ export default function ProjectDetailModal({
                     <div>
                       <div className="text-sm text-muted-foreground">Projekttid</div>
                       <div className="font-medium">{project.duration}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-primary" />
-                    <div>
-                      <div className="text-sm text-muted-foreground">Färdigställt</div>
-                      <div className="font-medium">
-                        {new Date(project.completed_date).toLocaleDateString('sv-SE')}
-                      </div>
                     </div>
                   </div>
                 </CardContent>
