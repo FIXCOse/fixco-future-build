@@ -260,7 +260,7 @@ const HeroUltra = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10 w-full">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10 w-full">
         <div className="max-w-4xl mx-auto text-center">
           <div>
             <EditableText
@@ -268,7 +268,7 @@ const HeroUltra = () => {
               initialContent={t('home.hero.title')}
               type="heading"
               as="h1"
-              className="text-2xl sm:text-3xl md:text-6xl xl:text-7xl font-bold leading-tight mb-6 px-2 text-foreground"
+              className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 sm:mb-6 px-2 text-foreground"
               placeholder="Klicka för att redigera rubrik"
             />
             
@@ -277,21 +277,21 @@ const HeroUltra = () => {
               initialContent={t('home.hero.subtitle')}
               type="text"
               as="p"
-              className="text-base md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2 sm:px-4"
               placeholder="Klicka för att redigera undertext"
             />
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-12 justify-center px-2">
               <Link to={t('nav.home') === 'Home' ? '/en/contact' : '/kontakt'}>
-                <MagneticButton className="bg-primary text-primary-foreground text-lg px-8 py-4">
+                <MagneticButton className="bg-primary text-primary-foreground text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                   {t('home.hero.primaryCta')}
                 </MagneticButton>
               </Link>
               <Link to={t('nav.home') === 'Home' ? '/en/services' : '/tjanster'}>
                 <MagneticButton
                   variant="outline"
-                  className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"
+                  className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-primary/30 hover:bg-primary/10 w-full sm:w-auto"
                 >
                   {t('common.services')}
                 </MagneticButton>
@@ -299,21 +299,21 @@ const HeroUltra = () => {
             </div>
 
             {/* Trust Indicators - 4 Column Grid */}
-            <div className="grid gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch max-w-6xl mx-auto mb-8 px-4">
+            <div className="grid gap-3 sm:gap-4 lg:gap-6 grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 items-stretch max-w-6xl mx-auto mb-6 sm:mb-8 px-2 sm:px-4">
               {trustIndicators.map((item, index) => {
                 return (
                   <div
                     key={item.title}
                     className="h-full"
                   >
-              <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-6 text-center">
-                <div className="w-12 h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+              <div className="h-full rounded-xl bg-surface border border-border shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto bg-primary/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
                   {item.icon === "image" ? (
-                    <AnimatedFixcoFIcon className="h-10 w-10" />
+                    <AnimatedFixcoFIcon className="h-8 w-8 sm:h-10 sm:w-10" />
                   ) : (
                     (() => {
                       const IconComponent = item.icon as any;
-                      return <IconComponent className="h-6 w-6 text-primary" />;
+                      return <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />;
                     })()
                   )}
                 </div>
@@ -322,7 +322,7 @@ const HeroUltra = () => {
                         initialContent={item.title}
                         type="heading"
                         as="h3"
-                        className="font-bold text-sm mb-2"
+                        className="font-bold text-xs sm:text-sm mb-1 sm:mb-2"
                         placeholder="Redigera titel"
                       />
                       <EditableText
@@ -330,7 +330,7 @@ const HeroUltra = () => {
                         initialContent={item.description}
                         type="text"
                         as="p"
-                        className="text-xs text-muted-foreground"
+                        className="text-[10px] sm:text-xs text-muted-foreground"
                         placeholder="Redigera beskrivning"
                       />
                     </div>

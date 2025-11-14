@@ -144,7 +144,7 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden lg:flex items-center justify-center flex-1 max-w-3xl mx-12">
+          <div className="hidden xl:flex items-center justify-center flex-1 max-w-3xl mx-12">
             <nav className="flex items-center gap-x-6">
               {navItems.map((item) => (
                 <Link
@@ -176,7 +176,7 @@ export default function Navigation() {
             {/* Contact - Desktop Only */}
             <a 
               href="tel:+46812345678" 
-              className="hidden lg:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
+              className="hidden xl:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
               <Phone className="h-4 w-4" />
               <span className="hidden xl:inline font-medium">08-123 456 78</span>
@@ -184,7 +184,7 @@ export default function Navigation() {
             
             {/* User Actions - Desktop */}
             {user ? (
-              <div className="hidden lg:flex items-center space-x-2">
+              <div className="hidden xl:flex items-center space-x-2">
                 {/* Notifikation för offertfrågor (endast för admin) */}
                 {(isAdmin || isOwner) && <QuoteQuestionsNotification />}
                 
@@ -283,7 +283,7 @@ export default function Navigation() {
                 </Button>
               </div>
             ) : (
-              <div className="hidden lg:flex items-center space-x-2">
+              <div className="hidden xl:flex items-center space-x-2">
                     <Link to="/auth">
                       <Button 
                         size="sm"
@@ -309,7 +309,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
+              className="xl:hidden inline-flex items-center h-10 px-4 hover:bg-muted rounded-md transition-colors ml-2"
               aria-label={currentLanguage === 'en' ? 'Open menu' : 'Öppna meny'}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
