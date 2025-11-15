@@ -8,7 +8,6 @@ import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
 import EditModeIndicator from '../EditModeIndicator';
 import { ContentLoadingIndicator } from '../ContentLoadingIndicator';
-import { ModalHost } from '../ActionWizard';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useContentLoader } from '@/hooks/useContentLoader';
 import { useAutoTranslate } from '@/hooks/useAutoTranslate';
@@ -50,7 +49,6 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <GlobalContentEditor />
           <EditModeIndicator />
           <ContentLoadingIndicator />
-          <ModalHost />
           <FloatingAIWidget />
           <ServiceRequestModal />
         </div>

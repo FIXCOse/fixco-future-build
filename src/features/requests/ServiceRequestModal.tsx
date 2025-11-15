@@ -6,6 +6,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
 import { User, Building2, Home } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { 
   serviceRequestSchema,
   nameSchema,
@@ -38,6 +42,10 @@ export default function ServiceRequestModal() {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
+
+  // Hämta tillgängliga add-ons för vald tjänst
+  const { data: addons = [] } = useServiceAddons(service?.slug || null, 'sv');
 
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -135,23 +143,47 @@ export default function ServiceRequestModal() {
     setFiles(f => ({ ...f, [key]: list ? Array.from(list) : [] }));
   }
 
+  // Toggle add-on selection
+  const toggleAddon = useCallback((addon: any) => {
+    setSelectedAddons(prev => {
+      const exists = prev.find(a => a.addon_id === addon.id);
+      if (exists) {
+        return prev.filter(a => a.addon_id !== addon.id);
+      } else {
+        return [...prev, {
+          addon_id: addon.id,
+          title: addon.title,
+          price: addon.addon_price,
+          quantity: 1
+        }];
+      }
+    });
+  }, []);
+
   const isQuote = service?.pricingMode === "quote";
   const isUnit = service?.pricingMode === "unit";
   const isFixed = service?.pricingMode === "fixed";
 
   const pricePreview = useMemo(() => {
     if (!service) return null;
+    
+    let basePrice = 0;
     if (isUnit && service.unitPriceSek && values["antal"]) {
       const qty = Number(values["antal"] || 0);
       if (!qty) return null;
-      const total = qty * service.unitPriceSek;
-      return `${total.toLocaleString("sv-SE")} kr`;
+      basePrice = qty * service.unitPriceSek;
+    } else if (isFixed && service.fixedPriceSek) {
+      basePrice = service.fixedPriceSek;
+    } else {
+      return null;
     }
-    if (isFixed && service.fixedPriceSek) {
-      return `${service.fixedPriceSek.toLocaleString("sv-SE")} kr`;
-    }
-    return null;
-  }, [service, values, isUnit, isFixed]);
+    
+    // Lägg till add-ons i totalpriset
+    const addonsTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
+    const total = basePrice + addonsTotal;
+    
+    return `${total.toLocaleString("sv-SE")} kr`;
+  }, [service, values, isUnit, isFixed, selectedAddons]);
 
   async function onSubmit() {
     if (!service) {
@@ -214,6 +246,7 @@ export default function ServiceRequestModal() {
           uploaded_files: fileUrls
         },
         fileUrls,
+        selected_addons: selectedAddons.length > 0 ? JSON.stringify(selectedAddons) : undefined,
       };
 
       console.log('[ServiceRequestModal] Sending JSON:', jsonPayload);
@@ -587,12 +620,83 @@ export default function ServiceRequestModal() {
                 </div>
               )}
 
+              {/* Tilläggstjänster */}
+              {addons.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Tilläggstjänster (valfritt)
+                  </h4>
+                  <div className="space-y-2">
+                    {addons.map((addon) => {
+                      const isSelected = selectedAddons.some(a => a.addon_id === addon.id);
+                      return (
+                        <div 
+                          key={addon.id} 
+                          className="flex items-start gap-3 p-3 rounded-xl border border-border/50 bg-background/50 hover:border-primary/50 transition-all cursor-pointer"
+                          onClick={() => toggleAddon(addon)}
+                        >
+                          <Checkbox 
+                            checked={isSelected}
+                            onCheckedChange={() => toggleAddon(addon)}
+                            className="mt-1"
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              {addon.icon && <span className="text-lg">{addon.icon}</span>}
+                              <span className="font-medium text-foreground">{addon.title}</span>
+                              <Badge variant="secondary" className="ml-auto">
+                                +{addon.addon_price.toLocaleString('sv-SE')} kr
+                              </Badge>
+                            </div>
+                            {addon.description && (
+                              <p className="text-sm text-muted-foreground">{addon.description}</p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Pris & Policy */}
               <div className="rounded-xl bg-muted/30 border border-border/30 p-4 space-y-2">
                 {!isQuote && pricePreview && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Uppskattat totalpris:</span>
-                    <span className="text-lg font-bold text-primary">{pricePreview}</span>
+                  <div className="space-y-2">
+                    {selectedAddons.length > 0 && (
+                      <>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Grundtjänst:</span>
+                          <span className="text-foreground font-medium">
+                            {(() => {
+                              let basePrice = 0;
+                              if (isUnit && service?.unitPriceSek && values["antal"]) {
+                                basePrice = Number(values["antal"] || 0) * service.unitPriceSek;
+                              } else if (isFixed && service?.fixedPriceSek) {
+                                basePrice = service.fixedPriceSek;
+                              }
+                              return `${basePrice.toLocaleString("sv-SE")} kr`;
+                            })()}
+                          </span>
+                        </div>
+                        {selectedAddons.map((addon) => (
+                          <div key={addon.addon_id} className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">+ {addon.title}:</span>
+                            <span className="text-foreground font-medium">
+                              {addon.price.toLocaleString('sv-SE')} kr
+                            </span>
+                          </div>
+                        ))}
+                        <div className="h-px bg-border/50 my-2" />
+                      </>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Uppskattat totalpris:</span>
+                      <span className="text-lg font-bold text-primary">{pricePreview}</span>
+                    </div>
                   </div>
                 )}
                 <div className="flex items-start gap-2 text-xs text-muted-foreground">
