@@ -1,8 +1,11 @@
 import AdminBack from '@/components/admin/AdminBack';
 import ServiceManagement from '@/components/admin/ServiceManagement';
 import { SessionFixButton } from '@/components/admin/SessionFixButton';
+import { SessionDebugPanel } from '@/components/admin/SessionDebugPanel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Wrench } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Button } from '@/components/ui/button';
+import { Wrench, Bug } from 'lucide-react';
 
 const AdminServices = () => {
   return (
@@ -18,6 +21,19 @@ const AdminServices = () => {
         </div>
         <SessionFixButton />
       </div>
+
+      {/* Debug Panel - Collapsible */}
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <Button variant="outline" className="w-full gap-2">
+            <Bug className="h-4 w-4" />
+            Visa Session Debug Info
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-4">
+          <SessionDebugPanel />
+        </CollapsibleContent>
+      </Collapsible>
       
       <Card>
         <CardHeader>
