@@ -2577,6 +2577,7 @@ export type Database = {
           rot_saving_amount: number
           rut_saving_amount: number
           sort_order: number | null
+          thumbnail_image: string | null
           title: string
           title_en: string | null
           title_sv: string
@@ -2609,6 +2610,7 @@ export type Database = {
           rot_saving_amount?: number
           rut_saving_amount?: number
           sort_order?: number | null
+          thumbnail_image?: string | null
           title: string
           title_en?: string | null
           title_sv: string
@@ -2641,6 +2643,7 @@ export type Database = {
           rot_saving_amount?: number
           rut_saving_amount?: number
           sort_order?: number | null
+          thumbnail_image?: string | null
           title?: string
           title_en?: string | null
           title_sv?: string

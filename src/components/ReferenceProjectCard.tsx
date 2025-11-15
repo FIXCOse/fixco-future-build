@@ -21,6 +21,7 @@ interface ReferenceProject {
   rut_savings?: number;
   price?: number;
   images: string[];
+  thumbnail_image?: string;
 }
 
 interface ReferenceProjectCardProps {
@@ -43,7 +44,7 @@ export const ReferenceProjectCard = ({
   onView,
 }: ReferenceProjectCardProps) => {
   const title = locale === "en" && project.title_en ? project.title_en : project.title_sv;
-  const firstImage = project.images[0] || "/placeholder.svg";
+  const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
 
   const formattedDate = project.completion_date
@@ -60,7 +61,7 @@ export const ReferenceProjectCard = ({
       {/* Image with gradient overlay */}
       <div className="relative aspect-video overflow-hidden">
         <img
-          src={firstImage}
+          src={thumbnailImage}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

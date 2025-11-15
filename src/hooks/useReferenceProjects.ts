@@ -27,6 +27,7 @@ export interface ReferenceProject {
   rating: number;
   client_initials: string;
   images: string[];
+  thumbnail_image?: string | null;
   is_featured: boolean;
   sort_order: number;
   is_active: boolean;
