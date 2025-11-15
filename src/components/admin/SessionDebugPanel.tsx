@@ -30,6 +30,7 @@ interface SessionDebugInfo {
     hasRoleWorks: boolean | null;
     servicesTableAccess: boolean | null;
     servicesTableUpdateAccess: boolean | null;
+    isActiveToggleAccess: boolean | null;
     error: string | null;
   };
 }
@@ -78,6 +79,7 @@ export const SessionDebugPanel = () => {
         hasRoleWorks: null as boolean | null,
         servicesTableAccess: null as boolean | null,
         servicesTableUpdateAccess: null as boolean | null,
+        isActiveToggleAccess: null as boolean | null,
         error: null as string | null,
       };
 
@@ -134,7 +136,58 @@ export const SessionDebugPanel = () => {
         } else {
           rlsTests.servicesTableUpdateAccess = false;
         }
-        
+
+        // Test 6: Testa SPECIFIKT att ändra is_active fältet
+        let isActiveToggleWorks = false;
+        let isActiveToggleError = null;
+
+        if (servicesData && servicesData.length > 0) {
+          const testService = servicesData[0];
+          
+          // Hämta aktuell is_active status först
+          const { data: currentServiceData } = await supabase
+            .from('services')
+            .select('id, is_active')
+            .eq('id', testService.id)
+            .single();
+          
+          if (currentServiceData) {
+            const newActiveStatus = !currentServiceData.is_active;
+            
+            console.log('🧪 Testing is_active toggle:', {
+              serviceId: currentServiceData.id,
+              currentActive: currentServiceData.is_active,
+              newActive: newActiveStatus
+            });
+            
+            // Försök toggle:a is_active
+            const { data: toggleData, error: toggleErr } = await supabase
+              .from('services')
+              .update({ is_active: newActiveStatus })
+              .eq('id', currentServiceData.id)
+              .select()
+              .single();
+            
+            if (!toggleErr && toggleData) {
+              // Toggle tillbaka till original
+              await supabase
+                .from('services')
+                .update({ is_active: currentServiceData.is_active })
+                .eq('id', currentServiceData.id);
+                
+              isActiveToggleWorks = true;
+              console.log('✅ is_active toggle test: SUCCESS');
+            } else {
+              isActiveToggleError = toggleErr;
+              console.error('❌ is_active toggle failed:', toggleErr);
+            }
+          }
+        }
+
+        rlsTests.isActiveToggleAccess = isActiveToggleWorks;
+        if (isActiveToggleError) {
+          rlsTests.error = `is_active TOGGLE BLOCKED: ${isActiveToggleError.code} - ${isActiveToggleError.message}`;
+        }
         
         if (servicesError) {
           rlsTests.error = `${servicesError.code}: ${servicesError.message}`;
@@ -191,7 +244,8 @@ export const SessionDebugPanel = () => {
     debugInfo.session.isExpired ||
     !debugInfo.rlsTests.authUidWorks ||
     !debugInfo.rlsTests.isAdminOrOwnerWorks ||
-    !debugInfo.rlsTests.servicesTableAccess;
+    !debugInfo.rlsTests.servicesTableAccess ||
+    !debugInfo.rlsTests.isActiveToggleAccess;
 
   return (
     <Card className="border-2">
@@ -321,6 +375,14 @@ export const SessionDebugPanel = () => {
                 <StatusBadge 
                   status={debugInfo.rlsTests.servicesTableUpdateAccess} 
                   label={debugInfo.rlsTests.servicesTableUpdateAccess ? 'TILLÅTEN' : 'BLOCKERAD'} 
+                />
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">is_active Toggle-åtkomst:</span>
+                <StatusBadge 
+                  status={debugInfo.rlsTests.isActiveToggleAccess} 
+                  label={debugInfo.rlsTests.isActiveToggleAccess ? 'FUNGERAR' : 'BLOCKERAD'} 
                 />
               </div>
             {debugInfo.rlsTests.error && (
