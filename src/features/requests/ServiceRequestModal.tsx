@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { getIconComponent } from "@/utils/iconMapper";
 import { 
   serviceRequestSchema,
   nameSchema,
@@ -397,7 +398,10 @@ export default function ServiceRequestModal() {
                           }`}
                         >
                           <div className="flex items-start gap-4">
-                            <div className="text-3xl">{addon.icon || '✨'}</div>
+                            {(() => {
+                              const IconComponent = getIconComponent(addon.icon);
+                              return <IconComponent className="h-8 w-8 text-primary flex-shrink-0 mt-1" />;
+                            })()}
                             
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
@@ -472,12 +476,19 @@ export default function ServiceRequestModal() {
                         <span className="font-medium">{pricePreview}</span>
                       </div>
                     )}
-                    {selectedAddons.map(addon => (
-                      <div key={addon.addon_id} className="flex justify-between text-muted-foreground">
-                        <span>+ {addon.title}</span>
-                        <span>+{addon.price.toLocaleString('sv-SE')} kr</span>
-                      </div>
-                    ))}
+                    {selectedAddons.map(addon => {
+                      const originalAddon = addons.find(a => a.id === addon.addon_id);
+                      const IconComponent = getIconComponent(originalAddon?.icon);
+                      return (
+                        <div key={addon.addon_id} className="flex justify-between items-center text-muted-foreground">
+                          <span className="flex items-center gap-2">
+                            <IconComponent className="h-4 w-4 text-primary" />
+                            + {addon.title}
+                          </span>
+                          <span>+{addon.price.toLocaleString('sv-SE')} kr</span>
+                        </div>
+                      );
+                    })}
                     {pricePreview && selectedAddons.length > 0 && (
                       <div className="flex justify-between font-bold text-base pt-2 border-t border-border/50">
                         <span>Totalt</span>
