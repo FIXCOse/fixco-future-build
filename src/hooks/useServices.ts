@@ -309,6 +309,21 @@ export const useToggleServiceActive = () => {
         throw new Error('Session utgången. Logga in igen.');
       }
 
+      // WORKAROUND: RLS prewarm - Tvinga en SELECT först för att "värma upp" RLS context
+      console.log('🔍 RLS prewarm: SELECT före UPDATE');
+      const { data: preCheck, error: preCheckError } = await supabase
+        .from('services')
+        .select('id, is_active')
+        .eq('id', id)
+        .single();
+        
+      console.log('🔍 Pre-check result:', { preCheck, preCheckError });
+
+      if (preCheckError) {
+        console.error('❌ Pre-check failed:', preCheckError);
+        throw preCheckError;
+      }
+
       console.log('📤 Attempting UPDATE:', { id, is_active });
       
       const { data, error } = await supabase
