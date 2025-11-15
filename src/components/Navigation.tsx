@@ -377,7 +377,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation Overlay */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-background">
+          <div className="laptop:hidden border-t border-border bg-background">
             <div className="py-4 space-y-2">
               {/* Primary Navigation Links */}
               <nav className="space-y-1">
