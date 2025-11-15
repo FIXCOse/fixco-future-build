@@ -208,6 +208,7 @@ export type Database = {
           id: string
           mode: string | null
           payload: Json | null
+          selected_addons: Json | null
           service_slug: string | null
           status: string | null
         }
@@ -219,6 +220,7 @@ export type Database = {
           id?: string
           mode?: string | null
           payload?: Json | null
+          selected_addons?: Json | null
           service_slug?: string | null
           status?: string | null
         }
@@ -230,6 +232,7 @@ export type Database = {
           id?: string
           mode?: string | null
           payload?: Json | null
+          selected_addons?: Json | null
           service_slug?: string | null
           status?: string | null
         }
@@ -2650,6 +2653,68 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      service_addons: {
+        Row: {
+          addon_price: number
+          created_at: string | null
+          description_en: string | null
+          description_sv: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          price_unit: string | null
+          rot_eligible: boolean | null
+          rut_eligible: boolean | null
+          service_id: string
+          sort_order: number | null
+          title_en: string | null
+          title_sv: string
+          updated_at: string | null
+        }
+        Insert: {
+          addon_price: number
+          created_at?: string | null
+          description_en?: string | null
+          description_sv?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_unit?: string | null
+          rot_eligible?: boolean | null
+          rut_eligible?: boolean | null
+          service_id: string
+          sort_order?: number | null
+          title_en?: string | null
+          title_sv: string
+          updated_at?: string | null
+        }
+        Update: {
+          addon_price?: number
+          created_at?: string | null
+          description_en?: string | null
+          description_sv?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_unit?: string | null
+          rot_eligible?: boolean | null
+          rut_eligible?: boolean | null
+          service_id?: string
+          sort_order?: number | null
+          title_en?: string | null
+          title_sv?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_addons_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_skills: {
         Row: {
