@@ -114,8 +114,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/tjanster/maleri" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Måleri
+                  <Link to="/tjanster/malning" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Målning
                   </Link>
                 </li>
                 <li>
@@ -188,10 +188,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Målare */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Målare</div>
-                    <Link to="/tjanster/maleri-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/malning-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Målare Uppsala
                     </Link>
-                    <Link to="/tjanster/maleri-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/malning-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Målare Stockholm
                     </Link>
                   </div>

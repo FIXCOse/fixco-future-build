@@ -84,9 +84,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     'fonster-dorrar': 'fonster-dorrar',
     'golv': 'golv',
     'kok': 'kok',
-    'malning': 'malning',
-    'maleri': 'maleri',
-    'takarbeten': 'takarbeten'
+    'malning': 'malning'
   };
 
   // Map slug to ServiceKey
@@ -94,7 +92,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
     'el': 'Elmontör',
     'vvs': 'VVS',
     'snickeri': 'Snickare',
-    'maleri': 'Måleri',
+    'malning': 'Målning',
     'stadning': 'Städ',
     'markarbeten': 'Markarbeten',
     'flytt': 'Flytt',

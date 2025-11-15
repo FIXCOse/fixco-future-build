@@ -87,7 +87,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     ]
   },
   {
-    slug: "maleri",
+    slug: "malning",
     name: "Målning",
     pricingMode: "quote",
     rotEligible: true,

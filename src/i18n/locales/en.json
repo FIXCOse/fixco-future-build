@@ -25,8 +25,8 @@
     "adminPanel": "Admin Panel"
   },
   "services": {
-    "maleri": "Painting",
-    "maleri_desc": "Professional painting indoors and outdoors"
+    "malning": "Painting",
+    "malning_desc": "Professional painting indoors and outdoors"
   },
   "home": {
     "hero": {
