@@ -2,6 +2,10 @@
 /tjanster/maleri                /tjanster              301!
 /cleaning-organization/         /tjanster/stadning     301!
 
+# Måleri URL-korrigering (malning -> maleri)
+/tjanster/malning-uppsala        /tjanster/maleri-uppsala       301!
+/tjanster/malning-stockholm      /tjanster/maleri-stockholm     301!
+
 # Tvinga bort trailing slashes - Svenska routes
 /tjanster/              /tjanster              301!
 /tjanster/*/            /tjanster/:splat       301!
