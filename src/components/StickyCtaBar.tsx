@@ -54,7 +54,7 @@ const StickyCtaBar = () => {
             <div className="hidden sm:flex items-center space-x-4 text-sm">
               <div className="flex items-center space-x-1 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>08-123 456 78</span>
+                <span>+46 79 335 02 28</span>
               </div>
               <div className="text-muted-foreground">
                 Uppsala & Stockholm
@@ -69,7 +69,7 @@ const StickyCtaBar = () => {
                 variant="ghost-premium" 
                 size="sm" 
                 className="sm:hidden flex-1"
-                onClick={() => window.open('tel:+46812345678')}
+                onClick={() => window.open('tel:+46793350228')}
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Ring oss
@@ -81,7 +81,7 @@ const StickyCtaBar = () => {
                 variant="ghost-premium" 
                 size="sm" 
                 className="hidden sm:flex"
-                onClick={() => window.open('tel:+46812345678')}
+                onClick={() => window.open('tel:+46793350228')}
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Ring oss

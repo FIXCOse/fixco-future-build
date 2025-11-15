@@ -16,7 +16,7 @@ const WhatsAppButton = ({
 }: WhatsAppButtonProps) => {
   const handleWhatsApp = () => {
     const encodedMessage = encodeURIComponent(message);
-    const phoneNumber = "46701234567"; // Swedish format without +
+    const phoneNumber = "46793350228"; // Swedish format without +
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     
     // Track analytics

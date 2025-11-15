@@ -102,9 +102,9 @@ export const HeroV2 = () => {
               className="text-lg px-8 py-6 h-auto border-white/20 hover:bg-white/10 group"
               asChild
             >
-              <a href="tel:08-123 456 78">
+              <a href="tel:+46793350228">
                 <Phone className="mr-2 w-5 h-5" />
-                Ring: 08-123 456 78
+                Ring: +46 79 335 02 28
               </a>
             </Button>
           </motion.div>

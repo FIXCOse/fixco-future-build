@@ -515,7 +515,7 @@ function Step2Content({ form }: { form: any }) {
             }
           })}
           type="tel"
-          placeholder="08-123 456 78"
+          placeholder="+46 79 335 02 28"
         />
         {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone.message as string}</p>}
       </div>

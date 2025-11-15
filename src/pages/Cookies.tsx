@@ -100,8 +100,8 @@ export default function Cookies() {
             </h2>
             <p className="text-muted-foreground leading-relaxed">
               {isEnglish
-                ? "If you have any questions about our use of cookies, please contact us at support@fixco.se or call 08-123 456 78."
-                : "Om du har några frågor om vår användning av cookies, kontakta oss på support@fixco.se eller ring 08-123 456 78."
+                ? "If you have any questions about our use of cookies, please contact us at support@fixco.se or call +46 79 335 02 28."
+                : "Om du har några frågor om vår användning av cookies, kontakta oss på support@fixco.se eller ring +46 79 335 02 28."
               }
             </p>
           </section>

@@ -269,9 +269,9 @@ export default function Insurance() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="tel:+46812345678" className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors">
+              <a href="tel:+46793350228" className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors">
                 <Phone className="w-4 h-4" />
-                08-123 456 78
+                +46 79 335 02 28
               </a>
               <a href="mailto:support@fixco.se" className="inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-3 rounded-lg font-medium transition-colors">
                 <Mail className="w-4 h-4" />

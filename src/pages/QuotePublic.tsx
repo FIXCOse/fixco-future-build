@@ -1192,9 +1192,9 @@ export default function QuotePublic() {
                 info@fixco.se
               </a>
               <span>eller</span>
-              <a href="tel:081234567" className="hover:text-primary flex items-center gap-1">
+              <a href="tel:+46793350228" className="hover:text-primary flex items-center gap-1">
                 <Phone className="h-3 w-3" />
-                08-123 456 78
+                +46 79 335 02 28
               </a>
             </p>
           </div>

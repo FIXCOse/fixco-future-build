@@ -34,8 +34,8 @@ export const CareersContact = () => {
                   <Phone className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold mb-2">Telefon</h3>
-                <a href="tel:018123456" className="text-primary hover:underline">
-                  018-12 34 56
+                <a href="tel:+46793350228" className="text-primary hover:underline">
+                  +46 79 335 02 28
                 </a>
               </CardContent>
             </Card>

@@ -233,11 +233,11 @@ export default function Navigation() {
             
             {/* Contact - Desktop Only */}
             <a 
-              href="tel:+46812345678" 
+              href="tel:+46793350228" 
               className="hidden xl:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline font-medium">08-123 456 78</span>
+              <span className="hidden xl:inline font-medium">+46 79 335 02 28</span>
             </a>
             
             {/* User Actions - Desktop */}
@@ -420,11 +420,11 @@ export default function Navigation() {
               {/* Mobile Actions */}
               <div className="pt-4 space-y-3 border-t border-border">
                 <a 
-                  href="tel:+46812345678" 
+                  href="tel:+46793350228" 
                   className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Phone className="h-4 w-4" />
-                  <span>08-123 456 78</span>
+                  <span>+46 79 335 02 28</span>
                 </a>
 
                 {/* Mobile Language & Theme Switchers */}
