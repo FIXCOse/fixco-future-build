@@ -304,6 +304,11 @@ const Referenser = () => {
         project={selectedProject}
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
+        onEdit={() => {
+          setEditingProject(selectedProject);
+          setSelectedProject(null);
+        }}
+        isAdmin={isAdmin}
       />
     </div>
   );

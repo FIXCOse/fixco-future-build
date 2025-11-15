@@ -12,7 +12,8 @@ import {
   ChevronLeft, 
   ChevronRight,
   User,
-  Award
+  Award,
+  Edit
 } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { useCopy } from '@/copy/CopyProvider';
@@ -37,12 +38,16 @@ interface ProjectDetailModalProps {
   project: ReferenceProject | null;
   isOpen: boolean;
   onClose: () => void;
+  onEdit?: () => void;
+  isAdmin?: boolean;
 }
 
 export default function ProjectDetailModal({ 
   project, 
   isOpen, 
-  onClose 
+  onClose,
+  onEdit,
+  isAdmin
 }: ProjectDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { locale } = useCopy();
@@ -69,6 +74,22 @@ export default function ProjectDetailModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0">
         <div className="relative">
+          {/* Edit Button (endast för admins) */}
+          {isAdmin && onEdit && (
+            <Button
+              variant="default"
+              size="sm"
+              className="absolute top-4 right-16 z-50 bg-primary/90 backdrop-blur-sm hover:bg-primary"
+              onClick={() => {
+                onEdit();
+                onClose();
+              }}
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Redigera
+            </Button>
+          )}
+
           {/* Close Button */}
           <Button
             variant="ghost"
