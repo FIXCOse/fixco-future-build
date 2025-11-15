@@ -29,7 +29,6 @@ import Insurance from "./pages/Insurance";
 import ScrollToTop from "./components/ScrollToTop";
 
 import SecurityWrapper from "./components/SecurityWrapper";
-import { ModalHost } from "./components/ActionWizard";
 import AppLayout from "./components/layouts/AppLayout";
 
 // MyFixco pages
@@ -349,7 +348,6 @@ const App = () => {
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-                <ModalHost />
               </BrowserRouter>
             </div>
           </TooltipProvider>
