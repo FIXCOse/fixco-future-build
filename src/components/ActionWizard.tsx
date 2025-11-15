@@ -65,6 +65,14 @@ function ActionWizardInner({
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
   const { data: addons = [] } = useServiceAddons(payload?.serviceId || null);
 
+  // Debug logging
+  console.log('🔍 [ActionWizard] Opened with:', { 
+    serviceId: payload?.serviceId, 
+    serviceName: payload?.serviceName,
+    addonsCount: addons.length,
+    addons: addons.map((a: any) => ({ id: a.id, title: a.title, price: a.addon_price }))
+  });
+
   const [form, setForm] = useState({
     contact_name: "",
     contact_email: "",
@@ -247,7 +255,10 @@ function ActionWizardInner({
           </div>
 
           {/* Tilläggstjänster - Add-ons Section */}
-          {addons.length > 0 && (
+          {(() => {
+            console.log('🎨 [ActionWizard] Checking if addons section should render, addons.length:', addons.length);
+            return addons.length > 0;
+          })() && (
             <div className="space-y-3 border-t pt-4">
               <Label className="text-base font-semibold">
                 Lägg till extra tjänster (valfritt)
