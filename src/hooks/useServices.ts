@@ -292,15 +292,25 @@ export const useToggleServiceActive = () => {
 
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
-      // Försök refresha session först
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      console.log('🔄 Toggle service START:', { id, is_active });
       
-      if (sessionError || !session) {
-        // Session ogiltig - logga ut
+      // FORCE session refresh (inte bara getSession)
+      const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
+      console.log('🔑 Session after refresh:', {
+        userId: session?.user?.id,
+        hasToken: !!session?.access_token,
+        expiresAt: session?.expires_at,
+        error: refreshError
+      });
+      
+      if (refreshError || !session) {
+        console.error('❌ Session refresh failed:', refreshError);
         await supabase.auth.signOut();
         throw new Error('Session utgången. Logga in igen.');
       }
 
+      console.log('📤 Attempting UPDATE:', { id, is_active });
+      
       const { data, error } = await supabase
         .from('services')
         .update({ 
@@ -311,7 +321,19 @@ export const useToggleServiceActive = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      console.log('📥 UPDATE result:', { data, error });
+
+      if (error) {
+        console.error('❌ UPDATE ERROR:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
+        throw error;
+      }
+      
+      console.log('✅ Toggle service SUCCESS:', data);
       return data;
     },
     onSuccess: (data) => {
@@ -320,14 +342,23 @@ export const useToggleServiceActive = () => {
       toast.success(data.is_active ? 'Tjänst aktiverad!' : 'Tjänst dold!');
     },
     onError: (error: any) => {
-      console.error('Toggle active error:', error);
+      console.error('🚨 Toggle active ERROR HANDLER:', {
+        error,
+        code: error?.code,
+        message: error?.message,
+        details: error?.details
+      });
       
+      // Visa detaljerat felmeddelande
       if (error.message?.includes('row-level security') || error.message?.includes('policy')) {
-        toast.error('Behörighetsfel: Du saknar rättigheter att uppdatera tjänster. Försök logga ut och in igen för att uppdatera din session.');
+        toast.error('RLS-fel: ' + error.message, { duration: 5000 });
       } else if (error.code === 'PGRST301') {
-        toast.error('Behörighetsfel: Åtkomst nekad. Kontrollera att du har admin- eller owner-rättigheter.');
+        toast.error(`PGRST301: ${error.message} - ${error.details || ''}`, { duration: 5000 });
+      } else if (error.message?.includes('Session utgången')) {
+        toast.error('Session utgången - omdirigerar till login...', { duration: 3000 });
+        setTimeout(() => window.location.href = '/auth', 1000);
       } else {
-        toast.error('Fel vid uppdatering: ' + (error.message || 'Okänt fel'));
+        toast.error(`Okänt fel: ${error.message || JSON.stringify(error)}`, { duration: 5000 });
       }
     }
   });
