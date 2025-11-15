@@ -4,12 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { 
   serviceRequestSchema,
   nameSchema,
@@ -43,6 +44,15 @@ export default function ServiceRequestModal() {
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+
+  // Navigation functions
+  const goToStep2 = () => setCurrentStep(2);
+  const goToStep1 = () => setCurrentStep(1);
+  const skipAddons = () => {
+    setSelectedAddons([]);
+    setCurrentStep(2);
+  };
 
   // Hämta tillgängliga add-ons för vald tjänst
   const { data: addons = [] } = useServiceAddons(service?.slug || null, 'sv');
@@ -86,6 +96,8 @@ export default function ServiceRequestModal() {
       setValues(prefill);
       setFiles({});
       setDone(false);
+      setSelectedAddons([]);
+      setCurrentStep(1);
       setOpen(true);
     };
     
@@ -289,6 +301,31 @@ export default function ServiceRequestModal() {
       
       {/* Modal */}
       <div className="relative w-full md:w-[680px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
+        {/* Progress Indicator */}
+        {!done && (
+          <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30">
+            <div className={`flex items-center gap-2 ${currentStep === 1 ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 text-sm font-bold transition-colors ${
+                currentStep === 1 ? 'border-primary bg-primary text-primary-foreground' : 'border-muted'
+              }`}>
+                1
+              </div>
+              <span className="text-sm font-medium hidden md:inline">Välj tillägg</span>
+            </div>
+            
+            <div className="w-8 md:w-12 h-0.5 bg-border" />
+            
+            <div className={`flex items-center gap-2 ${currentStep === 2 ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 text-sm font-bold transition-colors ${
+                currentStep === 2 ? 'border-primary bg-primary text-primary-foreground' : 'border-muted'
+              }`}>
+                2
+              </div>
+              <span className="text-sm font-medium hidden md:inline">Dina uppgifter</span>
+            </div>
+          </div>
+        )}
+        
         {/* Header */}
         <div className="relative border-b border-border/50 p-6 pb-5">
           <div className="flex items-start justify-between gap-4">
@@ -297,7 +334,7 @@ export default function ServiceRequestModal() {
                 {service?.name ?? "Begär offert"}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {isQuote ? "Vi återkommer med offert inom 24h" : "Bekräftelse skickas direkt till din e-post"}
+                {done ? "Tack för din förfrågan!" : currentStep === 1 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
               </p>
             </div>
             <button
@@ -324,8 +361,153 @@ export default function ServiceRequestModal() {
               <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
               <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
             </div>
+          ) : currentStep === 1 ? (
+            // STEG 1: VÄLJ TILLÄGG
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-6"
+            >
+              {addons.length > 0 ? (
+                <>
+                  <div className="text-center">
+                    <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
+                      <Sparkles className="w-5 h-5 text-primary" />
+                      Vill du lägga till något mer?
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      🔥 De flesta kunder väljer 1-2 tillägg
+                    </p>
+                  </div>
+
+                  <div className="grid gap-3">
+                    {addons.map(addon => {
+                      const isSelected = selectedAddons.some(a => a.addon_id === addon.id);
+                      return (
+                        <motion.div
+                          key={addon.id}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => toggleAddon(addon)}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                            isSelected 
+                              ? 'border-primary bg-primary/10 shadow-lg' 
+                              : 'border-border hover:border-primary/50'
+                          }`}
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className="text-3xl">{addon.icon || '✨'}</div>
+                            
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h5 className="font-semibold text-foreground">{addon.title}</h5>
+                                {addon.is_popular && (
+                                  <Badge variant="secondary" className="bg-orange-500 text-white text-xs">
+                                    Populär
+                                  </Badge>
+                                )}
+                              </div>
+                              
+                              <p className="text-sm text-muted-foreground mb-2">
+                                {addon.description}
+                              </p>
+                              
+                              <p className="text-lg font-bold text-primary">
+                                +{addon.addon_price.toLocaleString('sv-SE')} kr
+                              </p>
+                            </div>
+                            
+                            <Checkbox checked={isSelected} className="mt-1" />
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">Inga tillägg tillgängliga för denna tjänst</p>
+                </div>
+              )}
+
+              <div className="flex gap-3 pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  onClick={skipAddons}
+                  className="flex-1"
+                >
+                  Hoppa över
+                </Button>
+                <Button 
+                  onClick={goToStep2}
+                  className="flex-1"
+                >
+                  Fortsätt
+                  {selectedAddons.length > 0 && (
+                    <Badge className="ml-2 bg-primary-foreground text-primary">
+                      {selectedAddons.length}
+                    </Badge>
+                  )}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+            </motion.div>
           ) : (
-            <div className="space-y-6">
+            // STEG 2: FYLL I UPPGIFTER
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              {/* Order Summary */}
+              {(selectedAddons.length > 0 || pricePreview) && (
+                <div className="bg-primary/5 p-4 rounded-lg border border-primary/20">
+                  <h4 className="font-semibold mb-3 text-foreground">Din beställning</h4>
+                  <div className="space-y-2 text-sm">
+                    {pricePreview && (
+                      <div className="flex justify-between">
+                        <span>{service?.name}</span>
+                        <span className="font-medium">{pricePreview}</span>
+                      </div>
+                    )}
+                    {selectedAddons.map(addon => (
+                      <div key={addon.addon_id} className="flex justify-between text-muted-foreground">
+                        <span>+ {addon.title}</span>
+                        <span>+{addon.price.toLocaleString('sv-SE')} kr</span>
+                      </div>
+                    ))}
+                    {pricePreview && selectedAddons.length > 0 && (
+                      <div className="flex justify-between font-bold text-base pt-2 border-t border-border/50">
+                        <span>Totalt</span>
+                        <span>
+                          {(
+                            (isUnit && service?.unitPriceSek && values["antal"] 
+                              ? Number(values["antal"] || 0) * service.unitPriceSek 
+                              : isFixed && service?.fixedPriceSek 
+                                ? service.fixedPriceSek 
+                                : 0) +
+                            selectedAddons.reduce((sum, addon) => sum + addon.price, 0)
+                          ).toLocaleString("sv-SE")} kr
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {selectedAddons.length > 0 && (
+                    <Button 
+                      variant="link" 
+                      onClick={goToStep1}
+                      className="p-0 h-auto text-xs mt-3"
+                    >
+                      <ArrowLeft className="w-3 h-3 mr-1" />
+                      Ändra tillägg
+                    </Button>
+                  )}
+                </div>
+              )}
+
               {/* Kontaktinformation */}
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
@@ -564,191 +746,100 @@ export default function ServiceRequestModal() {
                     Projektdetaljer
                   </h4>
                   <div className="space-y-3">
-                    {service.fields.map((f, idx) => {
-                      if (f.kind === "text")
+                    {service.fields.map((field) => {
+                      if (field.kind === "text") {
                         return (
-                          <input
-                            key={idx}
-                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                            placeholder={f.label}
-                            value={values[f.key] || ""}
-                            onChange={e => onChange(f.key, e.target.value)}
-                          />
-                        );
-                      if (f.kind === "number")
-                        return (
-                          <input
-                            key={idx}
-                            type="number"
-                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                            placeholder={f.label}
-                            min={f.min}
-                            max={f.max}
-                            value={values[f.key] || ""}
-                            onChange={e => onChange(f.key, e.target.value)}
-                          />
-                        );
-                      if (f.kind === "textarea")
-                        return (
-                          <textarea
-                            key={idx}
-                            className="w-full px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
-                            rows={4}
-                            placeholder={f.placeholder ?? f.label}
-                            value={values[f.key] || ""}
-                            onChange={e => onChange(f.key, e.target.value)}
-                          />
-                        );
-                      if (f.kind === "file")
-                        return (
-                          <div key={idx} className="space-y-2">
-                            <label className="text-xs font-medium text-muted-foreground">{f.label}</label>
-                            <div className="relative">
-                              <input
-                                type="file"
-                                accept={f.accept ?? "*/*"}
-                                multiple={f.multiple}
-                                onChange={e => onFiles(f.key, e.target.files)}
-                                className="w-full px-4 py-3 rounded-xl border-2 border-dashed border-border/50 bg-background/50 text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 transition-all cursor-pointer"
-                              />
-                            </div>
+                          <div key={field.key}>
+                            <input
+                              className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full"
+                              type="text"
+                              placeholder={field.placeholder ?? field.label}
+                              value={values[field.key] ?? ""}
+                              onChange={e => onChange(field.key, e.target.value)}
+                            />
                           </div>
                         );
+                      } else if (field.kind === "number") {
+                        return (
+                          <div key={field.key}>
+                            <input
+                              className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full"
+                              type="number"
+                              placeholder={field.label}
+                              min={field.min}
+                              max={field.max}
+                              value={values[field.key] ?? ""}
+                              onChange={e => onChange(field.key, Number(e.target.value))}
+                            />
+                          </div>
+                        );
+                      } else if (field.kind === "textarea") {
+                        return (
+                          <div key={field.key}>
+                            <textarea
+                              className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full min-h-[100px] resize-y"
+                              placeholder={field.placeholder ?? field.label}
+                              value={values[field.key] ?? ""}
+                              onChange={e => onChange(field.key, e.target.value)}
+                            />
+                          </div>
+                        );
+                      } else if (field.kind === "file") {
+                        return (
+                          <div key={field.key}>
+                            <label className="block">
+                              <span className="text-sm text-muted-foreground mb-2 block">{field.label}</span>
+                              <input
+                                className="block w-full text-sm text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 file:cursor-pointer cursor-pointer"
+                                type="file"
+                                accept={field.accept}
+                                multiple={field.multiple}
+                                onChange={e => onFiles(field.key, e.target.files)}
+                              />
+                            </label>
+                          </div>
+                        );
+                      }
                       return null;
                     })}
                   </div>
                 </div>
               )}
 
-              {/* Tilläggstjänster */}
-              {addons.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Tilläggstjänster (valfritt)
-                  </h4>
-                  <div className="space-y-2">
-                    {addons.map((addon) => {
-                      const isSelected = selectedAddons.some(a => a.addon_id === addon.id);
-                      return (
-                        <div 
-                          key={addon.id} 
-                          className="flex items-start gap-3 p-3 rounded-xl border border-border/50 bg-background/50 hover:border-primary/50 transition-all cursor-pointer"
-                          onClick={() => toggleAddon(addon)}
-                        >
-                          <Checkbox 
-                            checked={isSelected}
-                            onCheckedChange={() => toggleAddon(addon)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              {addon.icon && <span className="text-lg">{addon.icon}</span>}
-                              <span className="font-medium text-foreground">{addon.title}</span>
-                              <Badge variant="secondary" className="ml-auto">
-                                +{addon.addon_price.toLocaleString('sv-SE')} kr
-                              </Badge>
-                            </div>
-                            {addon.description && (
-                              <p className="text-sm text-muted-foreground">{addon.description}</p>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Pris & Policy */}
-              <div className="rounded-xl bg-muted/30 border border-border/30 p-4 space-y-2">
-                {!isQuote && pricePreview && (
-                  <div className="space-y-2">
-                    {selectedAddons.length > 0 && (
-                      <>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Grundtjänst:</span>
-                          <span className="text-foreground font-medium">
-                            {(() => {
-                              let basePrice = 0;
-                              if (isUnit && service?.unitPriceSek && values["antal"]) {
-                                basePrice = Number(values["antal"] || 0) * service.unitPriceSek;
-                              } else if (isFixed && service?.fixedPriceSek) {
-                                basePrice = service.fixedPriceSek;
-                              }
-                              return `${basePrice.toLocaleString("sv-SE")} kr`;
-                            })()}
-                          </span>
-                        </div>
-                        {selectedAddons.map((addon) => (
-                          <div key={addon.addon_id} className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">+ {addon.title}:</span>
-                            <span className="text-foreground font-medium">
-                              {addon.price.toLocaleString('sv-SE')} kr
-                            </span>
-                          </div>
-                        ))}
-                        <div className="h-px bg-border/50 my-2" />
-                      </>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Uppskattat totalpris:</span>
-                      <span className="text-lg font-bold text-primary">{pricePreview}</span>
-                    </div>
-                  </div>
-                )}
-                <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p>
-                    {isQuote 
-                      ? "Vi skickar offert inom 24h. Pris bekräftas efter platsbesök. ROT-avdrag kan vara aktuellt."
-                      : "Bokning bekräftas via e-post. Pris bekräftas efter platsbesök. ROT-avdrag kan vara aktuellt."}
-                  </p>
-                </div>
+              {/* Action buttons */}
+              <div className="flex gap-3 pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  onClick={goToStep1}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Tillbaka
+                </Button>
+                <Button 
+                  onClick={onSubmit}
+                  disabled={busy || Object.keys(errors).length > 0}
+                  className="flex-1"
+                >
+                  {busy ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Skickar…
+                    </>
+                  ) : (
+                    <>
+                      {isQuote ? "Skicka offertförfrågan" : "Skicka bokning"}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
-
-        {/* Footer med knappar */}
-        {!done && (
-          <div className="border-t border-border/50 p-6 pt-4 bg-muted/10">
-            <div className="flex justify-end gap-3">
-              <button
-                className="px-6 py-2.5 rounded-xl border border-border hover:bg-muted transition-colors font-medium text-foreground"
-                onClick={() => setOpen(false)}
-              >
-                Avbryt
-              </button>
-              <button
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all font-semibold flex items-center gap-2"
-                disabled={busy || Object.keys(errors).length > 0}
-                onClick={onSubmit}
-              >
-                {busy ? (
-                  <>
-                    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Skickar…
-                  </>
-                ) : (
-                  <>
-                    {isQuote ? "Skicka offertförfrågan" : "Skicka bokning"}
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ export interface ServiceAddon {
   rot_eligible: boolean;
   rut_eligible: boolean;
   is_active: boolean;
+  is_popular?: boolean;
   sort_order: number;
   icon?: string;
   created_at: string;
