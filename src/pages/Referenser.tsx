@@ -56,12 +56,18 @@ const Referenser = () => {
   const isAdmin = role === 'owner' || role === 'admin';
 
   const handleSaveProject = (projectData: Partial<ReferenceProject>) => {
+    console.log('📝 handleSaveProject called with:', projectData);
+    console.log('📝 Editing project ID:', editingProject?.id);
+    console.log('📝 Is creating new:', !editingProject);
+    
     if (editingProject) {
+      console.log('📝 Updating existing project...');
       updateProject.mutate({ 
         id: editingProject.id, 
         updates: projectData 
       });
     } else {
+      console.log('📝 Creating new project...');
       createProject.mutate(projectData as any);
     }
     setEditingProject(null);

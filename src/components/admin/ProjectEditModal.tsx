@@ -12,6 +12,7 @@ import { X, Plus, Upload, Trash2, Star, Calendar, Loader2, Languages, ArrowUp, A
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ProjectEditModalProps {
   project: ReferenceProject | null;
@@ -86,6 +87,30 @@ export default function ProjectEditModal({
   const [isTranslating, setIsTranslating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
+
+  // Check user permissions on modal open
+  useEffect(() => {
+    const checkPermissions = async () => {
+      if (!isOpen || !user) return;
+      
+      console.log('🔐 Checking permissions for user:', user.id);
+      console.log('🔐 User email:', user.email);
+      
+      const { data: roles, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id);
+      
+      if (error) {
+        console.error('🔐 Error fetching roles:', error);
+      } else {
+        console.log('🔐 User roles:', roles);
+      }
+    };
+    
+    checkPermissions();
+  }, [isOpen, user]);
 
   useEffect(() => {
     if (project) {
@@ -283,6 +308,58 @@ export default function ProjectEditModal({
   };
 
   const handleSave = () => {
+    console.log('💾 handleSave called with formData:', formData);
+    
+    // Validera obligatoriska fält
+    const requiredFields = {
+      title_sv: formData.title_sv,
+      description_sv: formData.description_sv,
+      location_sv: formData.location_sv,
+      category_sv: formData.category_sv,
+      duration: formData.duration,
+      completed_date: formData.completed_date,
+      price_amount: formData.price_amount,
+      rating: formData.rating,
+      client_initials: formData.client_initials,
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([key, value]) => !value || value === '')
+      .map(([key]) => key);
+
+    if (missingFields.length > 0) {
+      console.error('❌ Missing required fields:', missingFields);
+      toast({
+        title: "Obligatoriska fält saknas",
+        description: `Vänligen fyll i: ${missingFields.join(', ')}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validera rating
+    if (formData.rating < 1 || formData.rating > 5) {
+      console.error('❌ Invalid rating:', formData.rating);
+      toast({
+        title: "Ogiltigt betyg",
+        description: "Betyget måste vara mellan 1 och 5",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validera att features_sv är en array
+    if (!Array.isArray(formData.features_sv)) {
+      console.error('❌ features_sv is not an array:', formData.features_sv);
+      toast({
+        title: "Ogiltigt format",
+        description: "Egenskaper måste vara en lista",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log('✅ All validations passed, saving project...');
     onSave(formData);
     onClose();
   };

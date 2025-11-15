@@ -133,10 +133,16 @@ export const useUpdateReferenceProject = () => {
         description: "Referensprojektet har uppdaterats framgångsrikt.",
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      console.error('❌ Update error details:', error);
+      console.error('Error message:', error?.message);
+      console.error('Error details:', error?.details);
+      console.error('Error hint:', error?.hint);
+      console.error('Error code:', error?.code);
+      
       toast({
         title: "Fel vid uppdatering",
-        description: "Kunde inte uppdatera projektet. Försök igen.",
+        description: error?.message || "Kunde inte uppdatera projektet. Försök igen.",
         variant: "destructive",
       });
     },
