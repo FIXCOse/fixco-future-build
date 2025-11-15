@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useAllServicesForAdmin, useAddService, useUpdateService, useDeleteService, useToggleServiceActive, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ServiceAddonsManagement from './ServiceAddonsManagement';
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -61,6 +63,8 @@ const ServiceManagement = () => {
   const [showInactive, setShowInactive] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'services' | 'addons'>('services');
+  const [selectedServiceForAddons, setSelectedServiceForAddons] = useState<Service | null>(null);
   const [formData, setFormData] = useState<{
     id: string;
     category: string;
@@ -546,7 +550,17 @@ const ServiceManagement = () => {
               <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
                 Avbryt
               </Button>
-              <Button 
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedServiceForAddons(service);
+                      setActiveTab('addons');
+                    }}
+                  >
+                    Tillägg
+                  </Button>
+                  <Button
                 type="submit" 
                 disabled={addService.isPending || updateService.isPending}
               >
@@ -585,7 +599,17 @@ const ServiceManagement = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+      </TabsContent>
+
+      <TabsContent value="addons">
+        {selectedServiceForAddons && (
+          <ServiceAddonsManagement 
+            serviceId={selectedServiceForAddons.id}
+            serviceName={selectedServiceForAddons.title_sv}
+          />
+        )}
+      </TabsContent>
+    </Tabs>
   );
 };
 

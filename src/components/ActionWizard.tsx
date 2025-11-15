@@ -10,6 +10,9 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { X } from "lucide-react";
 import { GradientText } from "@/components/v2/GradientText";
+import { Checkbox } from "./ui/checkbox";
+import { Badge } from "./ui/badge";
+import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
 
 export function ModalHost() {
   const { isOpen, mode, payload, close } = useActionWizard();
@@ -59,6 +62,8 @@ function ActionWizardInner({
   const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
+  const { data: addons = [] } = useServiceAddons(payload?.serviceId || null);
 
   const [form, setForm] = useState({
     contact_name: "",
@@ -76,6 +81,28 @@ function ActionWizardInner({
   });
 
   const onChange = (k: string, v: any) => setForm((s) => ({ ...s, [k]: v }));
+
+  const toggleAddon = (addon: any) => {
+    setSelectedAddons(prev => {
+      const exists = prev.find(a => a.addon_id === addon.id);
+      if (exists) {
+        return prev.filter(a => a.addon_id !== addon.id);
+      } else {
+        return [...prev, {
+          addon_id: addon.id,
+          title: addon.title,
+          price: addon.addon_price,
+          quantity: 1,
+        }];
+      }
+    });
+  };
+
+  const calculateTotal = () => {
+    const basePrice = form.hourly_rate || 0;
+    const addonsTotal = selectedAddons.reduce((sum, addon) => sum + (addon.price * addon.quantity), 0);
+    return basePrice + addonsTotal;
+  };
 
   async function submit() {
     console.log("[WIZARD] Submit started", { mode, form, user });
@@ -104,6 +131,9 @@ function ActionWizardInner({
         customer_id: user?.id ?? null,
         created_by_type: user ? "user" : "guest",
         source: user ? "user" : "guest",
+        selected_addons: JSON.stringify(selectedAddons),
+        base_price: form.hourly_rate ?? 0,
+        final_price: calculateTotal(),
         // Required fields for anonymous insert
         name: form.contact_name?.trim() || null,
         email: form.contact_email?.trim() || null,  
@@ -216,8 +246,77 @@ function ActionWizardInner({
             </div>
           </div>
 
+          {/* Tilläggstjänster - Add-ons Section */}
+          {addons.length > 0 && (
+            <div className="space-y-3 border-t pt-4">
+              <Label className="text-base font-semibold">
+                Lägg till extra tjänster (valfritt)
+              </Label>
+              
+              <div className="space-y-2">
+                {addons.map((addon) => {
+                  const isSelected = selectedAddons.some(a => a.addon_id === addon.id);
+                  
+                  return (
+                    <div 
+                      key={addon.id}
+                      className="flex items-start gap-3 p-3 border rounded-lg hover:bg-accent/50 cursor-pointer transition-colors"
+                      onClick={() => toggleAddon(addon)}
+                    >
+                      <Checkbox 
+                        checked={isSelected}
+                        onCheckedChange={() => toggleAddon(addon)}
+                        className="mt-1"
+                      />
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {addon.icon && <span className="text-lg">{addon.icon}</span>}
+                          <span className="font-medium">{addon.title}</span>
+                          <Badge variant="secondary" className="ml-auto">
+                            +{addon.addon_price} {addon.price_unit}
+                          </Badge>
+                        </div>
+                        
+                        {addon.description && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {addon.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Prissammanfattning - Price Summary */}
+          {(form.hourly_rate || selectedAddons.length > 0) && (
+            <div className="border-t pt-4 space-y-2 bg-muted/30 p-4 rounded-lg">
+              {form.hourly_rate && form.hourly_rate > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span>Grundtjänst</span>
+                  <span className="font-medium">{form.hourly_rate} kr</span>
+                </div>
+              )}
+              
+              {selectedAddons.map((addon) => (
+                <div key={addon.addon_id} className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">+ {addon.title}</span>
+                  <span className="font-medium">{addon.price} kr</span>
+                </div>
+              ))}
+              
+              <div className="flex justify-between font-semibold border-t pt-2 text-base">
+                <span>Total uppskattad kostnad</span>
+                <span className="text-primary">{calculateTotal()} kr</span>
+              </div>
+            </div>
+          )}
+
           <div>
-            <Label>ROT/RUT-avdrag</Label>
+            <Label>ROT/RUT-avdrag (valfritt)</Label>
             <Select value={form.rot_rut_type || "none"} onValueChange={(v) => onChange("rot_rut_type", v === "none" ? null : v)}>
               <SelectTrigger>
                 <SelectValue placeholder="Välj avdrag" />
