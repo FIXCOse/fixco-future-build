@@ -148,7 +148,7 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden laptop:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl mx-2 lg:mx-6 xl:mx-12">
+          <div className="hidden laptop:flex items-center justify-center flex-1 max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl mx-2 lg:mx-4 xl:mx-12">
             <nav className="flex items-center gap-x-2 lg:gap-x-3 xl:gap-x-4 2xl:gap-x-5">
               {/* Primary navigation items */}
               {navItems.primaryNavItems.map((item) => (
