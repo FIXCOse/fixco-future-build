@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { X, Plus, Upload, Trash2, Star, Calendar, Loader2, Languages } from 'lucide-react';
+import { X, Plus, Upload, Trash2, Star, Calendar, Loader2, Languages, ArrowUp, ArrowDown } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -173,6 +173,28 @@ export default function ProjectEditModal({
       ...prev,
       images: prev.images?.filter(img => img !== imageToRemove) || []
     }));
+  };
+
+  const handleMoveImageUp = (index: number) => {
+    if (index === 0) return;
+    const newImages = [...(formData.images || [])];
+    [newImages[index - 1], newImages[index]] = [newImages[index], newImages[index - 1]];
+    setFormData(prev => ({ ...prev, images: newImages }));
+    toast({
+      title: "Ordning uppdaterad",
+      description: `Bild flyttad uppåt till position ${index}.`,
+    });
+  };
+
+  const handleMoveImageDown = (index: number) => {
+    if (!formData.images || index === formData.images.length - 1) return;
+    const newImages = [...formData.images];
+    [newImages[index], newImages[index + 1]] = [newImages[index + 1], newImages[index]];
+    setFormData(prev => ({ ...prev, images: newImages }));
+    toast({
+      title: "Ordning uppdaterad",
+      description: `Bild flyttad nedåt till position ${index + 2}.`,
+    });
   };
 
   const handleFileUpload = async (files: FileList) => {
@@ -672,30 +694,78 @@ export default function ProjectEditModal({
                 </Button>
               </div>
               
-              <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                {formData.images?.map((image, index) => (
-                  <Card key={index} className="relative group">
-                    <CardContent className="p-2">
-                      <img 
-                        src={image} 
-                        alt={`Project ${index + 1}`}
-                        className="w-full h-20 object-cover rounded"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop';
-                        }}
-                      />
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
-                        onClick={() => handleRemoveImage(image)}
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {formData.images && formData.images.length > 0 ? (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    💡 Använd pilarna för att ändra ordning. Första bilden används som huvudbild.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                    {formData.images.map((image, index) => (
+                      <Card key={index} className="relative group">
+                        <CardContent className="p-2">
+                          <img 
+                            src={image} 
+                            alt={`Project ${index + 1}`}
+                            className="w-full h-20 object-cover rounded"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop';
+                            }}
+                          />
+                          
+                          {/* Image Number Badge */}
+                          <Badge 
+                            variant="secondary" 
+                            className="absolute bottom-2 left-2 text-xs"
+                          >
+                            {index + 1}
+                          </Badge>
+
+                          {/* Move Up Button */}
+                          {index > 0 && (
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                              onClick={() => handleMoveImageUp(index)}
+                              type="button"
+                            >
+                              <ArrowUp className="w-3 h-3" />
+                            </Button>
+                          )}
+
+                          {/* Move Down Button */}
+                          {index < formData.images.length - 1 && (
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="absolute top-8 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                              onClick={() => handleMoveImageDown(index)}
+                              type="button"
+                            >
+                              <ArrowDown className="w-3 h-3" />
+                            </Button>
+                          )}
+                          
+                          {/* Delete Button */}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                            onClick={() => handleRemoveImage(image)}
+                            type="button"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Inga bilder uppladdade än
+                </p>
+              )}
             </div>
           </div>
         </div>
