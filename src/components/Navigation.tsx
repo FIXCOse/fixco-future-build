@@ -148,8 +148,8 @@ export default function Navigation() {
           </div>
 
           {/* Center: Navigation - Desktop Only */}
-          <div className="hidden laptop:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl mx-2 lg:mx-6 xl:mx-12">
-            <nav className="flex items-center gap-x-2 lg:gap-x-4 xl:gap-x-6">
+          <div className="hidden laptop:flex items-center justify-center flex-1 max-w-xl lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl mx-2 lg:mx-6 xl:mx-12">
+            <nav className="flex items-center gap-x-2 lg:gap-x-3 xl:gap-x-4 2xl:gap-x-5">
               {/* Primary navigation items */}
               {navItems.primaryNavItems.map((item) => (
                 <Link
@@ -166,38 +166,59 @@ export default function Navigation() {
                 </Link>
               ))}
 
-              {/* Secondary navigation items in dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 lg:h-9 xl:h-10 px-2 lg:px-3 xl:px-4 text-xs lg:text-sm font-medium inline-flex items-center gap-1 hover:bg-primary/10 hover:text-primary"
+              {/* Secondary navigation items in dropdown - Only on laptop/lg screens */}
+              <div className="xl:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 lg:h-9 px-2 lg:px-3 text-xs lg:text-sm font-medium inline-flex items-center gap-1 hover:bg-primary/10 hover:text-primary"
+                    >
+                      {currentLanguage === 'en' ? 'More' : 'Mer'}
+                      <ChevronDown className="h-3 w-3" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    align="center"
+                    className="w-48 bg-background/95 backdrop-blur-sm border border-border shadow-lg z-[9999]"
                   >
-                    {currentLanguage === 'en' ? 'More' : 'Mer'}
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  align="center"
-                  className="w-48 bg-background/95 backdrop-blur-sm border border-border shadow-lg z-[9999]"
-                >
-                  {navItems.secondaryNavItems.map((item) => (
-                    <DropdownMenuItem key={item.href} asChild>
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer w-full",
-                          isActive(item.href) && "bg-primary/10 text-primary font-semibold"
-                        )}
-                      >
-                        {item.icon}
-                        {item.label}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    {navItems.secondaryNavItems.map((item) => (
+                      <DropdownMenuItem key={item.href} asChild>
+                        <Link
+                          to={item.href}
+                          className={cn(
+                            "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer w-full",
+                            isActive(item.href) && "bg-primary/10 text-primary font-semibold"
+                          )}
+                        >
+                          {item.icon}
+                          {item.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              {/* Secondary navigation items directly - Only on XL+ screens */}
+              <div className="hidden xl:flex items-center gap-x-2 xl:gap-x-3 2xl:gap-x-4">
+                {navItems.secondaryNavItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-2 xl:px-2.5 2xl:px-3 py-1.5 lg:py-2 text-xs lg:text-sm font-medium whitespace-nowrap rounded-md transition-all duration-200",
+                      "text-foreground hover:text-primary hover:bg-primary/10",
+                      "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      isActive(item.href) && "text-primary bg-primary/10 font-semibold"
+                    )}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             </nav>
           </div>
 
