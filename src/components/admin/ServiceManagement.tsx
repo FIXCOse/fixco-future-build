@@ -274,10 +274,23 @@ const ServiceManagement = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => toggleServiceActive.mutate({ 
-                      id: service.id, 
-                      is_active: !service.is_active 
-                    })}
+                    onClick={async () => {
+                      console.log('🖱️ Toggle clicked:', { 
+                        serviceId: service.id, 
+                        currentActive: service.is_active,
+                        newActive: !service.is_active 
+                      });
+                      
+                      try {
+                        await toggleServiceActive.mutateAsync({ 
+                          id: service.id, 
+                          is_active: !service.is_active 
+                        });
+                        console.log('✅ Toggle mutation completed');
+                      } catch (err) {
+                        console.error('❌ Toggle mutation failed:', err);
+                      }
+                    }}
                     disabled={toggleServiceActive.isPending}
                     className="h-8 w-8 p-0"
                     title={service.is_active ? "Dölj tjänst" : "Visa tjänst"}
