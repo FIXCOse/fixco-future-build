@@ -22,8 +22,11 @@ interface ProjectEditModalProps {
 }
 
 const categories = [
+  'Totalrenovering',
+  'Köksrenovering',
   'Kök & Badrum',
   'Badrum',
+  'Badrumstotalrenovering',
   'Vardagsrum',
   'Sovrum',
   'Barnrum',
@@ -31,7 +34,14 @@ const categories = [
   'Trädgård & Utomhus',
   'Balkong & Altan',
   'Entré & Hall',
-  'Förråd & Garage'
+  'Förråd & Garage',
+  'Fasad & Exteriör',
+  'Golvläggning',
+  'Målning & Tapetsering',
+  'El & Belysning',
+  'VVS & Rör',
+  'Fönster & Dörrar',
+  'Plattläggning'
 ];
 
 export default function ProjectEditModal({ 
