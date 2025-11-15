@@ -29,6 +29,7 @@ interface SessionDebugInfo {
     isAdminOrOwnerWorks: boolean | null;
     hasRoleWorks: boolean | null;
     servicesTableAccess: boolean | null;
+    servicesTableUpdateAccess: boolean | null;
     error: string | null;
   };
 }
@@ -76,6 +77,7 @@ export const SessionDebugPanel = () => {
         isAdminOrOwnerWorks: null as boolean | null,
         hasRoleWorks: null as boolean | null,
         servicesTableAccess: null as boolean | null,
+        servicesTableUpdateAccess: null as boolean | null,
         error: null as string | null,
       };
 
@@ -106,13 +108,33 @@ export const SessionDebugPanel = () => {
           rlsTests.hasRoleWorks = !hasRoleError && hasRoleData === true;
         }
 
-        // Test 4: Testa faktisk services-tabell access
+        // Test 4: Testa services-tabell SELECT åtkomst
         const { data: servicesData, error: servicesError } = await supabase
           .from('services')
-          .select('id')
+          .select('id, updated_at')
           .limit(1);
 
         rlsTests.servicesTableAccess = !servicesError;
+
+        // Test 5: Testa services-tabell UPDATE åtkomst
+        if (servicesData && servicesData.length > 0) {
+          const testService = servicesData[0];
+          
+          // Försök uppdatera till samma värde (påverkar inte data)
+          const { error: updateErr } = await supabase
+            .from('services')
+            .update({ updated_at: testService.updated_at })
+            .eq('id', testService.id);
+          
+          rlsTests.servicesTableUpdateAccess = !updateErr;
+          
+          if (updateErr) {
+            rlsTests.error = `UPDATE BLOCKED: ${updateErr.code} - ${updateErr.message}`;
+          }
+        } else {
+          rlsTests.servicesTableUpdateAccess = false;
+        }
+        
         
         if (servicesError) {
           rlsTests.error = `${servicesError.code}: ${servicesError.message}`;
@@ -286,13 +308,21 @@ export const SessionDebugPanel = () => {
                 label={debugInfo.rlsTests.hasRoleWorks ? 'TRUE' : 'FALSE'} 
               />
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Services-tabell åtkomst:</span>
-              <StatusBadge 
-                status={debugInfo.rlsTests.servicesTableAccess} 
-                label={debugInfo.rlsTests.servicesTableAccess ? 'TILLÅTEN' : 'BLOCKERAD'} 
-              />
-            </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Services SELECT-åtkomst:</span>
+                <StatusBadge 
+                  status={debugInfo.rlsTests.servicesTableAccess} 
+                  label={debugInfo.rlsTests.servicesTableAccess ? 'TILLÅTEN' : 'BLOCKERAD'} 
+                />
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Services UPDATE-åtkomst:</span>
+                <StatusBadge 
+                  status={debugInfo.rlsTests.servicesTableUpdateAccess} 
+                  label={debugInfo.rlsTests.servicesTableUpdateAccess ? 'TILLÅTEN' : 'BLOCKERAD'} 
+                />
+              </div>
             {debugInfo.rlsTests.error && (
               <Alert variant="destructive" className="mt-4">
                 <AlertDescription className="text-xs font-mono">
