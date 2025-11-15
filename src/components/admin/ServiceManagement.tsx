@@ -217,14 +217,22 @@ const ServiceManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Tjänsthantering</h1>
-        <Button onClick={handleAdd}>
-          <Plus className="h-4 w-4 mr-2" />
-          Lägg till tjänst
-        </Button>
-      </div>
+    <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'services' | 'addons')}>
+      <TabsList className="mb-6">
+        <TabsTrigger value="services">Huvudtjänster</TabsTrigger>
+        <TabsTrigger value="addons" disabled={!selectedServiceForAddons}>
+          Tilläggstjänster {selectedServiceForAddons && `(${selectedServiceForAddons.title_sv})`}
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="services" className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold">Tjänstehantering</h2>
+          <Button onClick={handleAdd}>
+            <Plus className="h-4 w-4 mr-2" />
+            Lägg till tjänst
+          </Button>
+        </div>
 
       <div className="flex items-center gap-4 flex-wrap">
         <Label htmlFor="category-filter">Filtrera efter kategori:</Label>
@@ -341,6 +349,18 @@ const ServiceManagement = () => {
                   </div>
                   <Button variant="ghost" size="sm" onClick={() => handleEdit(service)} className="h-8 w-8 p-0">
                     <Edit className="h-3 w-3" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedServiceForAddons(service);
+                      setActiveTab('addons');
+                    }}
+                    className="h-8 px-2 text-xs"
+                    title="Hantera tilläggstjänster"
+                  >
+                    Tillägg
                   </Button>
                 </div>
               </div>
@@ -550,17 +570,7 @@ const ServiceManagement = () => {
               <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>
                 Avbryt
               </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedServiceForAddons(service);
-                      setActiveTab('addons');
-                    }}
-                  >
-                    Tillägg
-                  </Button>
-                  <Button
+              <Button
                 type="submit" 
                 disabled={addService.isPending || updateService.isPending}
               >
