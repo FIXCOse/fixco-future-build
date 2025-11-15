@@ -292,6 +292,15 @@ export const useToggleServiceActive = () => {
 
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      // Försök refresha session först
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        // Session ogiltig - logga ut
+        await supabase.auth.signOut();
+        throw new Error('Session utgången. Logga in igen.');
+      }
+
       const { data, error } = await supabase
         .from('services')
         .update({ 

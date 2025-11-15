@@ -1,5 +1,6 @@
 import AdminBack from '@/components/admin/AdminBack';
 import ServiceManagement from '@/components/admin/ServiceManagement';
+import { SessionFixButton } from '@/components/admin/SessionFixButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wrench } from 'lucide-react';
 
@@ -15,6 +16,7 @@ const AdminServices = () => {
             Hantera alla tjänster och priser
           </p>
         </div>
+        <SessionFixButton />
       </div>
       
       <Card>
