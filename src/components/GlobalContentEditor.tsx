@@ -187,7 +187,7 @@ export const GlobalContentEditor: React.FC = () => {
                     type="tel"
                     value={settings.contactPhone}
                     onChange={(e) => updateSetting('contactPhone', e.target.value)}
-                    placeholder="08-123 456 78"
+                    placeholder="+46 79 335 02 28"
                   />
                 </div>
               </div>

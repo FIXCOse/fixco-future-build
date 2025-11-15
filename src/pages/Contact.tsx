@@ -292,13 +292,13 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6">{t('pages.contact.contactInfo')}</h3>
                 
                 <div className="space-y-6">
-                  <a href="tel:08-123456789" className="flex items-center space-x-4 hover:text-primary transition-colors">
+                  <a href="tel:+46793350228" className="flex items-center space-x-4 hover:text-primary transition-colors">
                     <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle">
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
                     <div>
                       <div className="font-semibold">{t('pages.contact.telephone')}</div>
-                      <div className="text-muted-foreground">08-123 456 78</div>
+                      <div className="text-muted-foreground">+46 79 335 02 28</div>
                       <div className="text-sm text-green-400">{t('pages.contact.callNow')}</div>
                     </div>
                   </a>

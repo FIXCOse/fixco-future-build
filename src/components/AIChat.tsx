@@ -122,7 +122,7 @@ const AIChat = () => {
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Ursäkta, något gick fel. Försök igen eller ring oss direkt på 070-123 45 67.',
+        content: 'Ursäkta, något gick fel. Försök igen eller ring oss direkt på +46 79 335 02 28.',
         type: 'bot',
         timestamp: new Date()
       };

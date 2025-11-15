@@ -12,7 +12,7 @@ export const en: Record<CopyKey, string> = {
   'nav.adminPanel': 'Admin Panel',
   
   // Common
-  'common.phone': '08-123 456 78',
+  'common.phone': '+46 79 335 02 28',
   'common.services': 'Services',
   
   // Trust chips
@@ -131,7 +131,7 @@ export const en: Record<CopyKey, string> = {
   // FAQ Teaser
   'faq.no_answer_title': 'Can\'t find the answer to your question?',
   'faq.contact_response': 'Contact us directly and we\'ll respond within 30 minutes',
-  'faq.call_us_with_phone': 'Call us: 08-123 456 78',
+  'faq.call_us_with_phone': 'Call us: +46 79 335 02 28',
   'faq.tell_project': 'Tell us about your project',
   
   // Categories
@@ -396,7 +396,7 @@ export const en: Record<CopyKey, string> = {
   'serviceDetail.notFound': 'Service not found',
   'serviceDetail.backToServices': 'Back to services',
   'serviceDetail.requestQuote': 'Request quote',
-  'serviceDetail.callUs': 'Call 08-123 456 78',
+  'serviceDetail.callUs': 'Call +46 79 335 02 28',
   'serviceDetail.differentServices': 'Different services',
   'serviceDetail.projectStart': 'Project start',
   'serviceDetail.guaranteed': 'Guaranteed',
@@ -479,7 +479,7 @@ export const en: Record<CopyKey, string> = {
   'pages.faq.title': 'Frequently Asked Questions',
   'pages.faq.subtitle': 'Here you can find answers to the most common questions about our services, prices, and work methods.',
   'pages.faq.askQuestion': 'Ask a question',
-  'pages.faq.callUs': 'Call us: 08-123 456 78',
+  'pages.faq.callUs': 'Call us: +46 79 335 02 28',
   'pages.faq.rotPrices': 'ROT Deduction & Prices',
   'pages.faq.bookingTime': 'Booking & Time Frames',
   'pages.faq.qualityGuarantee': 'Quality & Guarantee',
@@ -532,7 +532,7 @@ export const en: Record<CopyKey, string> = {
   'pages.rot.hero.title': 'Save 50% with ROT Tax Deduction',
   'pages.rot.hero.subtitle': 'We help you get maximum ROT tax deduction and handle all applications for you. Simple.',
   'pages.rot.hero.bookVisit': 'Book home visit',
-  'pages.rot.hero.phone': 'Call: 08-123 456 78',
+  'pages.rot.hero.phone': 'Call: +46 79 335 02 28',
   'pages.rot.what.title': 'What is ROT tax deduction?',
   'pages.rot.what.description1': 'ROT tax deduction is a tax reduction that gives you 50% discount on labor costs for repairs, renovations and maintenance work in your home.',
   'pages.rot.what.description2': 'The deduction is made directly from your taxes and you can get a maximum of 50,000 SEK per person per year. For couples, that\'s a total of 100,000 SEK per household.',
@@ -573,7 +573,7 @@ export const en: Record<CopyKey, string> = {
   'pages.rut.hero.title': 'Save 50% with RUT Tax Deduction',
   'pages.rut.hero.subtitle': 'We help you get maximum RUT tax deduction for home services and handle all applications for you. Simple.',
   'pages.rut.hero.bookVisit': 'Book home visit',
-  'pages.rut.hero.phone': 'Call: 08-123 456 78',
+  'pages.rut.hero.phone': 'Call: +46 79 335 02 28',
   'pages.rut.what.title': 'What is RUT tax deduction?',
   'pages.rut.what.description1': 'RUT tax deduction is a tax reduction that gives you 50% discount on labor costs for cleaning, maintenance and laundry services in your home.',
   'pages.rut.what.description2': 'The deduction is made directly from your taxes and you can get a maximum of 50,000 SEK per person per year. For couples, that\'s a total of 100,000 SEK per household.',
@@ -618,7 +618,7 @@ export const en: Record<CopyKey, string> = {
   'home.finalCta.title': 'Ready to start your project?',
   'home.finalCta.subtitle': 'Get a free quote within 24 hours and see why thousands of customers choose Fixco',
   'home.finalCta.primaryButton': 'Book now - free quote',
-  'home.finalCta.secondaryButton': 'Call: 08-123 456 78',
+  'home.finalCta.secondaryButton': 'Call: +46 79 335 02 28',
   'services.el.title': 'Electrical',
   'services.el.description': 'Outlets, lighting, charging stations',
   'services.vvs.title': 'Plumbing',
@@ -712,7 +712,7 @@ export const en: Record<CopyKey, string> = {
   'ai.hero_subtitle': 'Your smart assistant for home renovations. Get advice, visualizations and quotes directly.',
   'ai.chat_title': 'Chat with Fixco AI',
   'ai.chat_greeting': 'Hi! I\'m Fixco AI Concierge. How can I help you today? I can answer questions about our services, help you visualize changes in your home, or prepare a preliminary quote.',
-  'ai.chat_error': 'Sorry, something went wrong. Please try again or contact us directly at 08-123 456 78.',
+  'ai.chat_error': 'Sorry, something went wrong. Please try again or contact us directly at +46 79 335 02 28.',
   'ai.chat_placeholder': 'Type your message...',
   'ai.chat_send': 'Send',
   'ai.image_title': 'Image & Proposal',

@@ -94,7 +94,7 @@ const GlobalStickyCTA = () => {
                 variant="outline"
                 size="sm"
                 className="shrink-0 border-primary/30 hover:bg-primary/10"
-                onClick={() => window.open('tel:08-123-456-78')}
+                onClick={() => window.open('tel:+46793350228')}
               >
                 <Phone className="h-4 w-4" />
               </Button>
@@ -123,7 +123,7 @@ const GlobalStickyCTA = () => {
                         <FixcoFIcon className="h-6 w-6" />
                       </div>
                       <Phone className="h-4 w-4 text-primary" />
-                      <span className="text-muted-foreground">08-123 456 78</span>
+                      <span className="text-muted-foreground">+46 79 335 02 28</span>
                     </div>
                   <div className="text-muted-foreground">
                     Uppsala & Stockholm

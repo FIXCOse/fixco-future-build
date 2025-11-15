@@ -25,11 +25,11 @@ const StickyCTA = () => {
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent('Hej! Jag är intresserad av era tjänster.');
-    window.open(`https://wa.me/46701234567?text=${message}`, '_blank');
+    window.open(`https://wa.me/46793350228?text=${message}`, '_blank');
   };
 
   const handleCall = () => {
-    window.location.href = 'tel:+46701234567';
+    window.location.href = 'tel:+46793350228';
   };
 
   const handleDismiss = () => {

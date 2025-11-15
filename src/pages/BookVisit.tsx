@@ -154,7 +154,7 @@ const BookVisit = () => {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => handleInputChange("phone", e.target.value)}
-                      placeholder="08-123 456 78"
+                      placeholder="+46 79 335 02 28"
                       required
                     />
                   </div>
@@ -273,8 +273,8 @@ const BookVisit = () => {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
                     <Phone className="h-5 w-5 text-primary" />
-                    <a href="tel:08-123456789" className="hover:text-primary transition-colors">
-                      08-123 456 78
+                    <a href="tel:+46793350228" className="hover:text-primary transition-colors">
+                      +46 79 335 02 28
                     </a>
                   </div>
                   <div className="flex items-center space-x-3">

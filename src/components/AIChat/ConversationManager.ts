@@ -145,9 +145,9 @@ export class ConversationManager {
     
     if (!phone) {
       return {
-        response: `🚨 Jag förstår att du har ett akut ärende! För omedelbar hjälp, ring oss direkt på **070-123 45 67**. Vi har jour 24/7 för akuta situationer.\n\nKan du också lämna ditt nummer så vi kan kontakta dig direkt?`,
+        response: `🚨 Jag förstår att du har ett akut ärende! För omedelbar hjälp, ring oss direkt på **+46 79 335 02 28**. Vi har jour 24/7 för akuta situationer.\n\nKan du också lämna ditt nummer så vi kan kontakta dig direkt?`,
         actions: [
-          { type: 'highlight_phone', phone: '070-123 45 67' },
+          { type: 'highlight_phone', phone: '+46 79 335 02 28' },
           { type: 'show_emergency_form' }
         ]
       };
@@ -230,7 +230,7 @@ export class ConversationManager {
     }
 
     return {
-      response: `Jag kunde inte hitta exakt den tjänsten du söker. Kan du berätta mer specifikt, eller vill du prata med en av våra experter direkt?\n\n📞 **Ring:** 070-123 45 67\n💬 **WhatsApp:** [Starta chat](https://wa.me/46701234567)`,
+      response: `Jag kunde inte hitta exakt den tjänsten du söker. Kan du berätta mer specifikt, eller vill du prata med en av våra experter direkt?\n\n📞 **Ring:** +46 79 335 02 28\n💬 **WhatsApp:** [Starta chat](https://wa.me/46793350228)`,
       actions: [
         { type: 'show_contact_options' }
       ]
@@ -348,7 +348,7 @@ export class ConversationManager {
 
     // Fallback svar
     return {
-      response: `Jag försöker hitta svar på din fråga. Här är vad jag vet:\n\n• **Starttid:** Vanligtvis inom 5 dagar\n• **Områden:** Uppsala & Stockholm län\n• **Försäkring:** Fullständig ansvarsförsäkring\n• **Garanti:** På allt arbete vi utför\n\nVill du prata med en expert direkt? Ring **070-123 45 67**`,
+      response: `Jag försöker hitta svar på din fråga. Här är vad jag vet:\n\n• **Starttid:** Vanligtvis inom 5 dagar\n• **Områden:** Uppsala & Stockholm län\n• **Försäkring:** Fullständig ansvarsförsäkring\n• **Garanti:** På allt arbete vi utför\n\nVill du prata med en expert direkt? Ring **+46 79 335 02 28**`,
       actions: [
         { type: 'show_contact_options' }
       ]
@@ -357,7 +357,7 @@ export class ConversationManager {
 
   private handleHandoff(intent: ChatIntent, message: string) {
     return {
-      response: `Självklart! Här är flera sätt att komma i kontakt med oss:\n\n📞 **Ring direkt:** 070-123 45 67\n💬 **WhatsApp:** [Starta chat](https://wa.me/46701234567)\n📧 **E-post:** info@fixco.se\n\nVi svarar vanligtvis inom 30 minuter under kontorstid (08:00-17:00).`,
+      response: `Självklart! Här är flera sätt att komma i kontakt med oss:\n\n📞 **Ring direkt:** +46 79 335 02 28\n💬 **WhatsApp:** [Starta chat](https://wa.me/46793350228)\n📧 **E-post:** info@fixco.se\n\nVi svarar vanligtvis inom 30 minuter under kontorstid (08:00-17:00).`,
       actions: [
         { type: 'highlight_contact_methods' },
         { type: 'track_handoff_request' }

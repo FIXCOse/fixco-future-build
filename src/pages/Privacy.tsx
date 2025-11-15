@@ -39,7 +39,7 @@ export default function Privacy() {
                 <p className="font-semibold mb-2">Fixco AB</p>
                 <p className="text-muted-foreground">{isEnglish ? "Org. number:" : "Organisationsnummer:"} 559123-4567</p>
                 <p className="text-muted-foreground">{isEnglish ? "Address:" : "Adress:"} Storgatan 1, 111 22 Stockholm</p>
-                <p className="text-muted-foreground">{isEnglish ? "Phone:" : "Telefon:"} 08-123 456 78</p>
+                <p className="text-muted-foreground">{isEnglish ? "Phone:" : "Telefon:"} +46 79 335 02 28</p>
                 <p className="text-muted-foreground">E-post: privacy@fixco.se</p>
               </div>
             </section>
@@ -368,9 +368,9 @@ export default function Privacy() {
                   <Mail className="w-4 h-4" />
                   privacy@fixco.se
                 </a>
-                <a href="tel:+46812345678" className="inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-3 rounded-lg font-medium transition-colors">
+                <a href="tel:+46793350228" className="inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/90 px-6 py-3 rounded-lg font-medium transition-colors">
                   <Phone className="w-4 h-4" />
-                  08-123 456 78
+                  +46 79 335 02 28
                 </a>
               </div>
             </section>

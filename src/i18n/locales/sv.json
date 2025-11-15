@@ -12,7 +12,7 @@
     "login": "Logga in",
     "getQuote": "Begär offert",
     "callUs": "Ring oss",
-    "phone": "08-123 456 78"
+    "phone": "+46 79 335 02 28"
   },
   "navigation": {
     "home": "Hem",
@@ -33,13 +33,13 @@
       "title": "Bygg- & fastighetstjänster för privat, BRF & företag",
       "subtitle": "Från elmontörer till målare - vi löser allt inom hem & byggnad. Över 15 000 nöjda kunder och garanterat ROT & RUT-avdrag.",
       "primaryCta": "Begär kostnadsfri offert",
-      "secondaryCta": "Ring: 08-123 456 78"
+      "secondaryCta": "Ring: +46 79 335 02 28"
     },
     "finalCta": {
       "title": "Redo att starta ditt projekt?",
       "subtitle": "Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco",
       "primaryButton": "Boka nu - gratis offert",
-      "secondaryButton": "Ring: 08-123 456 78"
+      "secondaryButton": "Ring: +46 79 335 02 28"
     }
   }
 }

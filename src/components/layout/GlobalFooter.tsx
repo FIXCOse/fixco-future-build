@@ -313,8 +313,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
                 <li>
-                  <a href="tel:08-123 456 78" className="text-muted-foreground hover:text-foreground transition-colors">
-                    08-123 456 78
+                  <a href="tel:+46793350228" className="text-muted-foreground hover:text-foreground transition-colors">
+                    +46 79 335 02 28
                   </a>
                 </li>
                 <li>

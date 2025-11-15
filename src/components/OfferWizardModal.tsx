@@ -327,7 +327,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
                           contact: {...wizardData.contact, phone: e.target.value}
                         })}
                         className="w-full p-3 rounded-lg border border-border bg-input focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                        placeholder="08-123 456 78"
+                        placeholder="+46 79 335 02 28"
                       />
                     </div>
                   </div>

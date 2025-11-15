@@ -12,7 +12,7 @@ export const sv: Record<CopyKey, string> = {
   'nav.adminPanel': 'Adminpanel',
   
   // Common
-  'common.phone': '08-123 456 78',
+  'common.phone': '+46 79 335 02 28',
   'common.services': 'Tjänster',
   
   // Trust chips
@@ -131,7 +131,7 @@ export const sv: Record<CopyKey, string> = {
   // FAQ Teaser
   'faq.no_answer_title': 'Hittar du inte svar på din fråga?',
   'faq.contact_response': 'Kontakta oss direkt så svarar vi inom 30 minuter',
-  'faq.call_us_with_phone': 'Ring oss: 08-123 456 78',
+  'faq.call_us_with_phone': 'Ring oss: +46 79 335 02 28',
   'faq.tell_project': 'Berätta om ditt projekt',
   
   // Categories
@@ -396,7 +396,7 @@ export const sv: Record<CopyKey, string> = {
   'serviceDetail.notFound': 'Tjänsten hittades inte',
   'serviceDetail.backToServices': 'Tillbaka till tjänster',
   'serviceDetail.requestQuote': 'Begär offert',
-  'serviceDetail.callUs': 'Ring 08-123 456 78',
+  'serviceDetail.callUs': 'Ring +46 79 335 02 28',
   'serviceDetail.differentServices': 'Olika tjänster',
   'serviceDetail.projectStart': 'Projektstart',
   'serviceDetail.guaranteed': 'Garanterat',
@@ -479,7 +479,7 @@ export const sv: Record<CopyKey, string> = {
   'pages.faq.title': 'Vanliga frågor',
   'pages.faq.subtitle': 'Här hittar du svar på de vanligaste frågorna om våra tjänster, priser och arbetssätt.',
   'pages.faq.askQuestion': 'Ställ en fråga',
-  'pages.faq.callUs': 'Ring oss: 08-123 456 78',
+  'pages.faq.callUs': 'Ring oss: +46 79 335 02 28',
   'pages.faq.rotPrices': 'ROT-avdrag & Priser',
   'pages.faq.bookingTime': 'Bokning & Tidsramar',
   'pages.faq.qualityGuarantee': 'Kvalitet & Garanti',
@@ -532,7 +532,7 @@ export const sv: Record<CopyKey, string> = {
   'pages.rot.hero.title': 'Spara 50% med ROT-avdrag',
   'pages.rot.hero.subtitle': 'Vi hjälper dig få maximalt ROT-avdrag och sköter alla ansökningar åt dig. Helt enkelt.',
   'pages.rot.hero.bookVisit': 'Boka hembesök',
-  'pages.rot.hero.phone': 'Ring: 08-123 456 78',
+  'pages.rot.hero.phone': 'Ring: +46 79 335 02 28',
   'pages.rot.what.title': 'Vad är ROT-avdrag?',
   'pages.rot.what.description1': 'ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för reparation, om- och tillbyggnad samt underhållsarbeten i din bostad.',
   'pages.rot.what.description2': 'Avdraget görs direkt från din skatt och du kan få maximalt 50 000 kr per person och år. För sambor blir det totalt 100 000 kr per hushåll.',
@@ -573,7 +573,7 @@ export const sv: Record<CopyKey, string> = {
   'pages.rut.hero.title': 'Spara 50% med RUT-avdrag',
   'pages.rut.hero.subtitle': 'Vi hjälper dig få maximalt RUT-avdrag för hemservice och sköter alla ansökningar åt dig. Helt enkelt.',
   'pages.rut.hero.bookVisit': 'Boka hembesök',
-  'pages.rut.hero.phone': 'Ring: 08-123 456 78',
+  'pages.rut.hero.phone': 'Ring: +46 79 335 02 28',
   'pages.rut.what.title': 'Vad är RUT-avdrag?',
   'pages.rut.what.description1': 'RUT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för rengöring, underhåll och tvätt i din bostad.',
   'pages.rut.what.description2': 'Avdraget görs direkt från din skatt och du kan få maximalt 50 000 kr per person och år. För sambor blir det totalt 100 000 kr per hushåll.',
@@ -618,7 +618,7 @@ export const sv: Record<CopyKey, string> = {
   'home.finalCta.title': 'Redo att starta ditt projekt?',
   'home.finalCta.subtitle': 'Få en kostnadsfri offert inom 24 timmar och se varför tusentals kunder väljer Fixco',
   'home.finalCta.primaryButton': 'Boka nu - gratis offert',
-  'home.finalCta.secondaryButton': 'Ring: 08-123 456 78',
+  'home.finalCta.secondaryButton': 'Ring: +46 79 335 02 28',
   'services.el.title': 'El',
   'services.el.description': 'Uttag, belysning, laddbox',
   'services.vvs.title': 'VVS',
@@ -712,7 +712,7 @@ export const sv: Record<CopyKey, string> = {
   'ai.hero_subtitle': 'Din smarta assistent för hemrenoveringar. Få råd, visualiseringar och offerter direkt.',
   'ai.chat_title': 'Chatta med Fixco AI',
   'ai.chat_greeting': 'Hej! Jag är Fixco AI Concierge. Hur kan jag hjälpa dig idag? Jag kan svara på frågor om våra tjänster, hjälpa dig visualisera förändringar i ditt hem, eller ta fram en preliminär offert.',
-  'ai.chat_error': 'Förlåt, något gick fel. Försök igen eller kontakta oss direkt på 08-123 456 78.',
+  'ai.chat_error': 'Förlåt, något gick fel. Försök igen eller kontakta oss direkt på +46 79 335 02 28.',
   'ai.chat_placeholder': 'Skriv ditt meddelande...',
   'ai.chat_send': 'Skicka',
   'ai.image_title': 'Bild & Förslag',

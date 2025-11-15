@@ -64,11 +64,11 @@ export const CTAV2 = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <a 
-              href="tel:08-123 456 78"
+              href="tel:+46793350228"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Phone className="w-4 h-4" />
-              <span>08-123 456 78</span>
+              <span>+46 79 335 02 28</span>
             </a>
             <span className="hidden sm:block text-muted-foreground">•</span>
             <a 
