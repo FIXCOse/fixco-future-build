@@ -167,7 +167,7 @@ export default function Navigation() {
               ))}
 
               {/* Secondary navigation items in dropdown - Only on laptop/lg screens */}
-              <div className="xl:hidden">
+              <div className="2xl:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -202,7 +202,7 @@ export default function Navigation() {
               </div>
 
               {/* Secondary navigation items directly - Only on XL+ screens */}
-              <div className="hidden xl:flex items-center gap-x-2 xl:gap-x-3 2xl:gap-x-4">
+              <div className="hidden 2xl:flex items-center gap-x-2 xl:gap-x-3 2xl:gap-x-4">
                 {navItems.secondaryNavItems.map((item) => (
                   <Link
                     key={item.href}
