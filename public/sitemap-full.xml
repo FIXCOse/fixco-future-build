@@ -662,48 +662,5 @@
 
   <!-- ==================== MÅLNING / PAINTER ==================== -->
   
-  <!-- Målning Uppsala SV -->
-  <url>
-    <loc>https://fixco.se/tjanster/malning-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-uppsala"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-uppsala"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-uppsala"/>
-  </url>
-
-  <!-- Painter Uppsala EN -->
-  <url>
-    <loc>https://fixco.se/en/services/painter-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-uppsala"/>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-uppsala"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-uppsala"/>
-  </url>
-
-  <!-- Målning Stockholm SV -->
-  <url>
-    <loc>https://fixco.se/tjanster/malning-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-stockholm"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-stockholm"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-stockholm"/>
-  </url>
-
-  <!-- Painter Stockholm EN -->
-  <url>
-    <loc>https://fixco.se/en/services/painter-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services/painter-stockholm"/>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malning-stockholm"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/malning-stockholm"/>
-  </url>
 
 </urlset>

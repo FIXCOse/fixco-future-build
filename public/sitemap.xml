@@ -494,20 +494,5 @@
     <priority>0.75</priority>
   </url>
 
-  <!-- Målning Uppsala SV -->
-  <url>
-    <loc>https://fixco.se/tjanster/malning-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Målning Stockholm SV -->
-  <url>
-    <loc>https://fixco.se/tjanster/malning-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
 
 </urlset>
