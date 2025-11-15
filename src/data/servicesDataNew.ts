@@ -49,8 +49,8 @@ export const mainServices: ServicePricing[] = [
     laborShare: 1.0
   },
   {
-    id: "maleri",
-    title: "Måleri",
+    id: "malning",
+    title: "Målning",
     basePrice: 759,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
@@ -117,9 +117,9 @@ export const serviceCategories = [
     eligible: { rot: true, rut: false }
   },
   {
-    id: "maleri",
-    title: "Måleri",
-    slug: "maleri",
+    id: "malning",
+    title: "Målning",
+    slug: "malning",
     description: "Professionell målning in- och utvändigt",
     icon: Paintbrush,
     eligible: { rot: true, rut: false }
@@ -609,8 +609,8 @@ export const servicesDataNew = [
     ]
   },
   {
-    title: "Måleri",
-    slug: "maleri",
+    title: "Målning",
+    slug: "malning",
     description: "Professionell målning inomhus och utomhus",
     icon: Paintbrush,
     basePrice: 759,
@@ -619,7 +619,7 @@ export const servicesDataNew = [
     subServices: [
       // VÄGGAR & TAK
       {
-        id: "maleri-1",
+        id: "malning-1",
         title: "Måla rum/väggar",
         description: "Målning av väggar. Antal rum och typ av yta väljs vid bokning",
         basePrice: 759,
@@ -631,7 +631,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-2",
+        id: "malning-2",
         title: "Måla tak",
         description: "Målning av tak. Rum och typ väljs vid bokning",
         basePrice: 759,
@@ -643,7 +643,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-3",
+        id: "malning-3",
         title: "Tapetsera",
         description: "Tapetsering av väggar. Typ av tapet och yta väljs vid bokning",
         basePrice: 759,
@@ -655,7 +655,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-4",
+        id: "malning-4",
         title: "Spackling & förberedelse",
         description: "Spackling av väggar och förberedelse innan målning",
         basePrice: 759,
@@ -669,7 +669,7 @@ export const servicesDataNew = [
       
       // SPECIALMÅLNING
       {
-        id: "maleri-5",
+        id: "malning-5",
         title: "Måla foder & lister",
         description: "Målning av dörrfoder, lister och snickerier",
         basePrice: 759,
@@ -681,7 +681,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-6",
+        id: "malning-6",
         title: "Måla köksluckor",
         description: "Målning av köksluckor och skåp",
         basePrice: 759,
@@ -695,7 +695,7 @@ export const servicesDataNew = [
       
       // UTOMHUS
       {
-        id: "maleri-7",
+        id: "malning-7",
         title: "Måla fasad",
         description: "Målning av fasad. Yta och typ väljs vid bokning",
         basePrice: 759,
@@ -707,7 +707,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-8",
+        id: "malning-8",
         title: "Måla staket/plank",
         description: "Målning av staket eller plank. Längd väljs vid bokning",
         basePrice: 759,
@@ -719,7 +719,7 @@ export const servicesDataNew = [
         laborShare: 1.0
       },
       {
-        id: "maleri-9",
+        id: "malning-9",
         title: "Måla dörrar/fönster utvändigt",
         description: "Målning av utvändiga dörrar och fönsterbågar",
         basePrice: 759,
@@ -733,7 +733,7 @@ export const servicesDataNew = [
       
       // STÖRRE PROJEKT
       {
-        id: "maleri-10",
+        id: "malning-10",
         title: "Helrenovering målning",
         description: "Komplett målning av hela lägenheten/huset",
         basePrice: 759,

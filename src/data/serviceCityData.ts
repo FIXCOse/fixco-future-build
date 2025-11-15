@@ -2,7 +2,7 @@ export type ServiceKey =
   | "Elmontör"
   | "VVS"
   | "Snickare"
-  | "Måleri"
+  | "Målning"
   | "Städ"
   | "Markarbeten"
   | "Flytt"
@@ -1052,11 +1052,11 @@ export const serviceCityData: ServiceCityItem[] = [
     ]
   },
 
-  // ========== MÅLERI - UPPSALA ==========
+  // ========== MÅLNING - UPPSALA ==========
   {
-    service: "Måleri",
+    service: "Målning",
     city: "Uppsala",
-    slug: "maleri-uppsala",
+    slug: "malning-uppsala",
     h1: "Målare i Uppsala",
     title: "Målare i Uppsala – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Professionella målare i Uppsala för målning av rum, tak, fasad och tapetsering. Snabb start, ROT-avdrag 30%. Vi täcker hela Uppsala.",
@@ -1131,11 +1131,11 @@ export const serviceCityData: ServiceCityItem[] = [
     ]
   },
 
-  // ========== MÅLERI - STOCKHOLM ==========
+  // ========== MÅLNING - STOCKHOLM ==========
   {
-    service: "Måleri",
+    service: "Målning",
     city: "Stockholm",
-    slug: "maleri-stockholm",
+    slug: "malning-stockholm",
     h1: "Målare i Stockholm",
     title: "Målare i Stockholm – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Erfarna målare i Stockholm för målning av rum, fasader och tapetsering. Snabb hjälp, ROT-avdrag 30%. Täcker hela Stockholms stad.",

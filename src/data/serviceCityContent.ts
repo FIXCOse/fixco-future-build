@@ -622,9 +622,9 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
       ]
     }
   },
-  "Måleri": {
+  "Målning": {
     "Uppsala": {
-      aboutTitle: "Om måleri i Uppsala",
+      aboutTitle: "Om målning i Uppsala",
       aboutParagraphs: [
         "Måleriarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela hus.",
         "I Uppsala arbetar vi ofta med både invändiga och utvändiga målningsarbeten. Många villor i området behöver regelbundet underhåll av fasader, fönster och altaner."
@@ -663,7 +663,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi skrapar bort lös färg, spackling av ojämnheter och grundmålar innan vi applicerar nya lager med högkvalitativ färg. Resultatet blir slätt och hållbart.",
           relatedService: {
             name: "Invändig målning",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {
@@ -672,7 +672,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi använder isoleringsprimer som blockerar fläckar innan vi målar. För omfattande vattenskador åtgärdar vi orsaken först och sedan renoverar vi taket.",
           relatedService: {
             name: "Takmålning",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {
@@ -681,7 +681,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi river tapeter, åtgärdar fuktorsaken, behandlar mögel och installerar fuktspärr om nödvändigt. Sedan målar eller tapetserar vi på nytt med rätt material.",
           relatedService: {
             name: "Fuktskaderepar",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {
@@ -690,7 +690,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi river gamla tapeter, slätspackling av väggen och målar eller lägger nya moderna tapeter. ROT-avdrag gäller för arbetet.",
           relatedService: {
             name: "Tapetsering",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {
@@ -701,7 +701,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
       ]
     },
     "Stockholm": {
-      aboutTitle: "Om måleri i Stockholm",
+      aboutTitle: "Om målning i Stockholm",
       aboutParagraphs: [
         "Måleriarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela lägenheter.",
         "I Stockholm arbetar vi ofta i BRF:er och lägenheter där vi tar hänsyn till originaldetaljer och använder rätt färgkulörer för sekelskiftesmiljöer."
@@ -740,7 +740,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi skrapar bort lös färg, spackling av ojämnheter och grundmålar innan vi applicerar nya lager med högkvalitativ färg. Resultatet blir slätt och hållbart.",
           relatedService: {
             name: "Invändig målning",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {
@@ -749,7 +749,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
           solution: "Vi använder isoleringsprimer som blockerar fläckar innan vi målar. För omfattande vattenskador åtgärdar vi orsaken först och sedan renoverar vi taket.",
           relatedService: {
             name: "Takmålning",
-            slug: "/tjanster/måleri"
+            slug: "/tjanster/malning"
           }
         },
         {

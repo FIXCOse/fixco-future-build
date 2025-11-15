@@ -16,7 +16,7 @@ export const serviceCategoryNames: Record<string, string> = {
   'el': 'elektriker',
   'vvs': 'VVS-installatörer',
   'snickeri': 'snickare',
-  'maleri': 'målare',
+  'malning': 'målare',
   'montering': 'monteringsservice',
   'tradgard': 'trädgårdstjänster',
   'stadning': 'städservice',
@@ -159,7 +159,7 @@ export const serviceComparisonData: ServiceComparisonData = {
       competitorBad: false
     }
   ],
-  maleri: [
+  malning: [
     {
       label: 'Pris per timme',
       fixco: '600 kr',
