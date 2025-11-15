@@ -494,7 +494,7 @@ export const sv: Record<CopyKey, string> = {
   'pages.about.founded_vision': 'Fixco grundades av tre hantverkare som var trötta på dålig kommunikation och opålitliga entreprenörer i branschen. Visionen var enkel: skapa ett företag där kvalitet, transparens och respekt för kundens tid står i centrum.',
   'pages.about.growth_story': 'Efter två år växte vi från 3 till 12 anställda. Vi började specialisera oss på både små akuta reparationer och större renoveringsprojekt.',
   'pages.about.pandemic_adapt': 'Under pandemin såg vi en ökning av efterfrågan på hemarbeten. Vi anpassade oss snabbt och investerade i digital projektstyrning för att kunna arbeta säkert och effektivt.',
-  'pages.about.today_team': 'Idag är vi ett team på 25+ certifierade hantverkare med bred kompetens inom el, VVS, bygg, måleri och smart hem-lösningar.',
+  'pages.about.today_team': 'Idag är vi ett team på 25+ certifierade hantverkare med bred kompetens inom el, VVS, bygg, målning och smart hem-lösningar.',
   'pages.about.current_status': 'Vi fortsätter växa och har nu hjälpt över 2000 familjer, BRF:er och företag i Uppsala och Stockholm med deras fastighetsprojekt.',
   'pages.about.what_we_offer_title': 'Vad vi erbjuder',
   'pages.about.for_private_title': 'För Privatpersoner',

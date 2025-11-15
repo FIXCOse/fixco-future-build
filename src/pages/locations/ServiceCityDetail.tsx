@@ -1168,7 +1168,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                     Behöver du hjälp med något annat?
                   </h2>
                   <p className="text-lg text-muted-foreground mb-6">
-                    Fixco erbjuder ett komplett utbud av hantverkstjänster. Från el och VVS till snickeri, måleri, städ och mycket mer.
+                    Fixco erbjuder ett komplett utbud av hantverkstjänster. Från el och VVS till snickeri, målning, städ och mycket mer.
                   </p>
                   <ul className="space-y-3">
                     <li className="flex items-start">

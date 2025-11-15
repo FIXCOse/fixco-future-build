@@ -19,7 +19,7 @@ const services = [
   },
   {
     icon: Paintbrush,
-    title: "Måleri",
+    title: "Målning",
     description: "In- och utvändig målning med ROT-avdrag",
     size: "medium",
     gradient: "from-purple-500/20 to-pink-500/20"

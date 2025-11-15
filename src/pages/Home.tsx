@@ -72,7 +72,7 @@ const Home = () => {
   const offerCatalogSchema = getOfferCatalogSchema([
     { name: "Elmontörtjänster", price: 880, description: "Professionella eltjänster med ROT-avdrag" },
     { name: "VVS-tjänster", price: 920, description: "Alla typer av VVS-arbeten med ROT-avdrag" },
-    { name: "Måleri", price: 680, description: "Målning och tapetsering med ROT-avdrag" },
+    { name: "Målning", price: 680, description: "Målning och tapetsering med ROT-avdrag" },
     { name: "Snickeri", price: 760, description: "Snickeri och byggnadsarbeten med ROT-avdrag" },
     { name: "Städning", price: 480, description: "RUT-berättigad städservice" },
     { name: "Trädgård", price: 520, description: "Trädgårdsarbeten med RUT-avdrag" }
@@ -96,7 +96,7 @@ const Home = () => {
   useSEO({
     title: "Fixco | Privat • BRF • Företag",
     description: "Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 50% rabatt med ROT-avdrag. Över 15 000 nöjda kunder i Uppsala och Stockholm.",
-    keywords: "ROT-avdrag, RUT-avdrag, byggtjänster, renovering, elmontör, VVS, måleri, snickare, Uppsala, Stockholm, hemtjänster, hantverkare, byggfirma",
+    keywords: "ROT-avdrag, RUT-avdrag, byggtjänster, renovering, elmontör, VVS, målning, snickare, Uppsala, Stockholm, hemtjänster, hantverkare, byggfirma",
     image: "https://fixco.se/assets/hero-construction.jpg",
     type: "website",
     schema: combinedSchema,
@@ -130,7 +130,7 @@ const Home = () => {
             Alla Tjänster med ROT & RUT-avdrag
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Utforska hela vårt tjänsteutbud – från elmontör och VVS till måleri, snickeri och städning. 
+            Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. 
             Alla med 50% rabatt via ROT/RUT-avdrag.
           </p>
           <Button asChild size="lg" className="font-semibold">

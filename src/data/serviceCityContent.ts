@@ -626,7 +626,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
     "Uppsala": {
       aboutTitle: "Om målning i Uppsala",
       aboutParagraphs: [
-        "Måleriarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela hus.",
+        "Målningsarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela hus.",
         "I Uppsala arbetar vi ofta med både invändiga och utvändiga målningsarbeten. Många villor i området behöver regelbundet underhåll av fasader, fönster och altaner."
       ],
       localAspects: "Uppsala har många villor som behöver fasadmålning och inomhusrenovering.",
@@ -703,7 +703,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
     "Stockholm": {
       aboutTitle: "Om målning i Stockholm",
       aboutParagraphs: [
-        "Måleriarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela lägenheter.",
+        "Målningsarbeten inkluderar målning av väggar, tak, lister, dörrar och fasader. Vi hanterar allt från mindre uppdrag som ett rum till kompletta renoveringar av hela lägenheter.",
         "I Stockholm arbetar vi ofta i BRF:er och lägenheter där vi tar hänsyn till originaldetaljer och använder rätt färgkulörer för sekelskiftesmiljöer."
       ],
       localAspects: "Stockholm har många sekelskifteslägenheter där vi tar hänsyn till originaldetaljer och färgval.",
