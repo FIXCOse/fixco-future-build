@@ -76,6 +76,7 @@ export default function ProjectEditModal({
     rating: 5,
     client_initials: '',
     images: [],
+    thumbnail_image: null,
     is_featured: false,
     sort_order: 0,
     is_active: true,
@@ -123,6 +124,7 @@ export default function ProjectEditModal({
         title_sv: project.title_sv,
         title_en: project.title_en || '',
         description_sv: project.description_sv,
+        thumbnail_image: project.thumbnail_image || null,
         description_en: project.description_en || '',
         location_sv: project.location_sv,
         location_en: project.location_en || '',
@@ -167,6 +169,7 @@ export default function ProjectEditModal({
         rating: 5,
         client_initials: '',
         images: [],
+        thumbnail_image: null,
         is_featured: false,
         sort_order: 0,
         is_active: true,
@@ -784,7 +787,7 @@ export default function ProjectEditModal({
               {formData.images && formData.images.length > 0 ? (
                 <div>
                   <p className="text-xs text-muted-foreground mb-2">
-                    💡 Använd pilarna för att ändra ordning. Första bilden används som huvudbild.
+                    💡 Använd pilarna för att ändra ordning. Klicka på "Sätt som thumbnail" för att välja huvudbild.
                   </p>
                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                     {formData.images.map((image, index) => (
@@ -806,6 +809,16 @@ export default function ProjectEditModal({
                           >
                             {index + 1}
                           </Badge>
+
+                          {/* Thumbnail Badge */}
+                          {formData.thumbnail_image === image && (
+                            <Badge 
+                              variant="default" 
+                              className="absolute top-1 left-1 bg-green-500 text-white hover:bg-green-600 text-xs px-2 py-0.5"
+                            >
+                              Thumbnail
+                            </Badge>
+                          )}
 
                           {/* Move Up Button */}
                           {index > 0 && (
@@ -833,6 +846,17 @@ export default function ProjectEditModal({
                             </Button>
                           )}
                           
+                          {/* Set as Thumbnail Button */}
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs py-1 px-2 h-auto"
+                            onClick={() => setFormData(prev => ({ ...prev, thumbnail_image: image }))}
+                            type="button"
+                          >
+                            Sätt som thumbnail
+                          </Button>
+
                           {/* Delete Button */}
                           <Button
                             variant="destructive"
