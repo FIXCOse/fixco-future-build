@@ -25,6 +25,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { generateServiceId } from '@/utils/serviceHelpers';
 
 const ServiceManagement = () => {
   const queryClient = useQueryClient();
@@ -139,7 +140,7 @@ const ServiceManagement = () => {
     setIsAddModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (editingService) {
@@ -153,7 +154,11 @@ const ServiceManagement = () => {
         }
       });
     } else {
-      addService.mutate(formData, {
+      // Generera ID automatiskt för nya tjänster
+      const serviceId = await generateServiceId(formData.category, formData.title_sv);
+      const newServiceData = { ...formData, id: serviceId };
+      
+      addService.mutate(newServiceData, {
         onSuccess: () => {
           setIsAddModalOpen(false);
           resetForm();
@@ -416,19 +421,22 @@ const ServiceManagement = () => {
           </DialogHeader>
           
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            {editingService && (
               <div>
                 <Label htmlFor="id">Tjänst-ID</Label>
                 <Input
                   id="id"
                   value={formData.id}
-                  onChange={(e) => setFormData(prev => ({ ...prev, id: e.target.value }))}
-                  placeholder="t.ex. el-12"
-                  required
-                  disabled={!!editingService}
+                  disabled
+                  className="bg-muted"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  ID genereras automatiskt och kan inte ändras
+                </p>
               </div>
-              
+            )}
+            
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="category">Kategori</Label>
                 <Select
