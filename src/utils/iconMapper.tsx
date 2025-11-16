@@ -13,6 +13,17 @@ import {
   Plus, 
   Square, 
   Flame,
+  Shield,
+  Droplet,
+  Paintbrush,
+  Thermometer,
+  Smartphone,
+  FileText,
+  Clock,
+  Camera,
+  Settings,
+  VolumeX,
+  Plug,
   LucideIcon
 } from 'lucide-react';
 
@@ -32,6 +43,17 @@ const iconMap: Record<string, LucideIcon> = {
   'plus': Plus,
   'square': Square,
   'flame': Flame,
+  'shield': Shield,
+  'droplet': Droplet,
+  'paintbrush': Paintbrush,
+  'thermometer': Thermometer,
+  'smartphone': Smartphone,
+  'file-text': FileText,
+  'clock': Clock,
+  'camera': Camera,
+  'settings': Settings,
+  'volume-x': VolumeX,
+  'plug': Plug,
 };
 
 export const getIconComponent = (iconName: string | null | undefined): LucideIcon => {
