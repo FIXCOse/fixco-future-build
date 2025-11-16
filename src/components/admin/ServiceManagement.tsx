@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff, Settings } from 'lucide-react';
 import { useAllServicesForAdmin, useAddService, useUpdateService, useDeleteService, useToggleServiceActive, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -261,7 +261,9 @@ const ServiceManagement = () => {
             checked={showInactive}
             onCheckedChange={setShowInactive}
           />
-          <Label htmlFor="show-inactive">Visa dolda tjänster</Label>
+          <Label htmlFor="show-inactive" className="cursor-pointer">
+            Visa dolda tjänster {showInactive && `(${services.filter(s => !s.is_active).length})`}
+          </Label>
         </div>
       </div>
 
@@ -304,13 +306,17 @@ const ServiceManagement = () => {
                       }
                     }}
                     disabled={toggleServiceActive.isPending}
-                    className="h-8 w-8 p-0"
-                    title={service.is_active ? "Dölj tjänst" : "Visa tjänst"}
+                    className={`h-8 w-8 p-0 ${
+                      !service.is_active 
+                        ? 'bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800' 
+                        : ''
+                    }`}
+                    title={service.is_active ? "Dölj tjänst" : "Aktivera tjänst igen"}
                   >
                     {service.is_active ? (
                       <Eye className="h-3 w-3" />
                     ) : (
-                      <EyeOff className="h-3 w-3" />
+                      <EyeOff className="h-3 w-3 text-green-600 dark:text-green-400" />
                     )}
                   </Button>
                   
@@ -357,10 +363,10 @@ const ServiceManagement = () => {
                       setSelectedServiceForAddons(service);
                       setActiveTab('addons');
                     }}
-                    className="h-8 px-2 text-xs"
+                    className="h-8 w-8 p-0"
                     title="Hantera tilläggstjänster"
                   >
-                    Tillägg
+                    <Settings className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
