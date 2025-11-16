@@ -249,3 +249,32 @@ export const useToggleAddonActive = () => {
     },
   });
 };
+
+// Hook to bulk toggle all add-ons
+export const useBulkToggleAllAddons = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (is_active: boolean) => {
+      const { error } = await supabase
+        .from('service_addons')
+        .update({ is_active })
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Update all
+      
+      if (error) throw error;
+      return is_active;
+    },
+    onSuccess: (is_active) => {
+      queryClient.invalidateQueries({ queryKey: ['service-addons'] });
+      queryClient.invalidateQueries({ queryKey: ['addons-status'] });
+      toast.success(is_active ? 
+        '✅ Alla tilläggstjänster aktiverade!' : 
+        '🔒 Alla tilläggstjänster avaktiverade!'
+      );
+    },
+    onError: (error) => {
+      console.error('Error bulk toggling addons:', error);
+      toast.error('Fel vid bulk-uppdatering av tilläggstjänster');
+    },
+  });
+};

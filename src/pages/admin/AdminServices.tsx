@@ -2,6 +2,7 @@ import AdminBack from '@/components/admin/AdminBack';
 import ServiceManagement from '@/components/admin/ServiceManagement';
 import { SessionFixButton } from '@/components/admin/SessionFixButton';
 import { SessionDebugPanel } from '@/components/admin/SessionDebugPanel';
+import { BulkToggleAddonsButton } from '@/components/admin/BulkToggleAddonsButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,10 @@ const AdminServices = () => {
             Hantera alla tjänster och priser
           </p>
         </div>
-        <SessionFixButton />
+        <div className="flex gap-2">
+          <BulkToggleAddonsButton />
+          <SessionFixButton />
+        </div>
       </div>
 
       {/* Debug Panel - Collapsible */}
