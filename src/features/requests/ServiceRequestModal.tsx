@@ -58,6 +58,14 @@ export default function ServiceRequestModal() {
   // Hämta tillgängliga add-ons för vald tjänst
   const { data: addons = [] } = useServiceAddons(service?.slug || null, 'sv');
 
+  // Automatiskt hoppa över Steg 1 om inga tillägg finns
+  useEffect(() => {
+    if (currentStep === 1 && addons.length === 0 && open) {
+      setCurrentStep(2);
+      setSelectedAddons([]);
+    }
+  }, [addons.length, currentStep, open]);
+
   useEffect(() => {
     const onOpen = (e: Event) => {
       const ce = e as CustomEvent<OpenModalDetail>;
@@ -98,6 +106,7 @@ export default function ServiceRequestModal() {
       setFiles({});
       setDone(false);
       setSelectedAddons([]);
+      // Sätt initialt steg baserat på om addons finns (kommer justeras av useEffect om addons=0)
       setCurrentStep(1);
       setOpen(true);
     };
@@ -303,7 +312,7 @@ export default function ServiceRequestModal() {
       {/* Modal */}
       <div className="relative w-full md:w-[680px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
         {/* Progress Indicator */}
-        {!done && (
+        {!done && addons.length > 0 && (
           <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30">
             <div className={`flex items-center gap-2 ${currentStep === 1 ? 'text-primary' : 'text-muted-foreground'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 text-sm font-bold transition-colors ${
@@ -335,7 +344,7 @@ export default function ServiceRequestModal() {
                 {service?.name ?? "Begär offert"}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {done ? "Tack för din förfrågan!" : currentStep === 1 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
+                {done ? "Tack för din förfrågan!" : currentStep === 1 && addons.length > 0 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
               </p>
             </div>
             <button
@@ -362,7 +371,7 @@ export default function ServiceRequestModal() {
               <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
               <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
             </div>
-          ) : currentStep === 1 ? (
+          ) : currentStep === 1 && addons.length > 0 ? (
             // STEG 1: VÄLJ TILLÄGG
             <motion.div
               initial={{ opacity: 0, x: -20 }}
