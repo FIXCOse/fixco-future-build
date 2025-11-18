@@ -86,6 +86,7 @@ import ServiceCityPage from "./pages/locations/ServiceCityPage";
 import ServiceCityDetail from "./pages/locations/ServiceCityDetail";
 import Careers from "./pages/Careers";
 import AdminApplications from "./pages/admin/AdminApplications";
+import AdminFeatureFlags from "./pages/admin/AdminFeatureFlags";
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -214,6 +215,7 @@ const App = () => {
                     <Route path="jobs/trash" element={<AdminJobsTrash />} />
                     <Route path="schedule" element={<AdminSchedule />} />
                     <Route path="settings" element={<AdminSettings />} />
+                    <Route path="feature-flags" element={<AdminFeatureFlags />} />
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
                     <Route path="payroll" element={<AdminPayroll />} />

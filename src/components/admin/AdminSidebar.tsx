@@ -121,6 +121,7 @@ export function AdminSidebar() {
       items: [
         { title: 'Tjänster', icon: Wrench, path: '/admin/services' },
         { title: 'Användare', icon: Users, path: '/admin/users' },
+        { title: 'Feature Flags', icon: Settings, path: '/admin/feature-flags' },
         { title: 'Inställningar', icon: Settings, path: '/admin/settings' },
         { title: 'Säkerhet', icon: Shield, path: '/admin/security' },
         { title: 'Databas', icon: Database, path: '/admin/database' },
