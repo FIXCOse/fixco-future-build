@@ -6,20 +6,46 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { UserPlus } from 'lucide-react';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { UserPlus, Check, ChevronsUpDown } from 'lucide-react';
 import { useFeatureFlags, useCreateFeatureFlagOverride } from '@/hooks/useFeatureFlag';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 export function CreateOverrideDialog() {
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState('');
   const [flagKey, setFlagKey] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userSearchOpen, setUserSearchOpen] = useState(false);
+  const [userSearch, setUserSearch] = useState('');
   const [enabled, setEnabled] = useState(true);
   const [expiresAt, setExpiresAt] = useState('');
   const [reason, setReason] = useState('');
   
   const { data: flags = [] } = useFeatureFlags();
   const createOverride = useCreateFeatureFlagOverride();
+
+  const { data: searchResults } = useQuery({
+    queryKey: ['search-users', userSearch],
+    queryFn: async () => {
+      if (!userSearch || userSearch.length < 2) return [];
+      
+      const { data, error } = await supabase
+        .from('customers')
+        .select('id, name, email')
+        .or(`name.ilike.%${userSearch}%,email.ilike.%${userSearch}%`)
+        .limit(10);
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: userSearch.length >= 2,
+  });
+
+  const selectedUser = searchResults?.find(u => u.id === userId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,6 +73,7 @@ export function CreateOverrideDialog() {
       setEnabled(true);
       setExpiresAt('');
       setReason('');
+      setUserSearch('');
     } catch (error) {
       toast.error('Failed to create override');
       console.error(error);
@@ -88,17 +115,55 @@ export function CreateOverrideDialog() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="userId">User ID</Label>
-              <Input
-                id="userId"
-                placeholder="uuid-of-user"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                Enter the UUID of the user (from profiles table)
-              </p>
+              <Label htmlFor="userId">User</Label>
+              <Popover open={userSearchOpen} onOpenChange={setUserSearchOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={userSearchOpen}
+                    className="w-full justify-between"
+                  >
+                    {selectedUser ? `${selectedUser.name} (${selectedUser.email})` : "Search for user..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput 
+                      placeholder="Search users by name or email..." 
+                      value={userSearch}
+                      onValueChange={setUserSearch}
+                    />
+                    <CommandEmpty>
+                      {userSearch.length < 2 ? 'Type at least 2 characters to search' : 'No users found.'}
+                    </CommandEmpty>
+                    <CommandGroup>
+                      {searchResults?.map((user) => (
+                        <CommandItem
+                          key={user.id}
+                          value={user.id}
+                          onSelect={(currentValue) => {
+                            setUserId(currentValue === userId ? "" : currentValue);
+                            setUserSearchOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              userId === user.id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          <div>
+                            <div className="font-medium">{user.name}</div>
+                            <div className="text-xs text-muted-foreground">{user.email}</div>
+                          </div>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="flex items-center justify-between">

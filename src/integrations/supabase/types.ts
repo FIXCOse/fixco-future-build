@@ -2723,6 +2723,59 @@ export type Database = {
         }
         Relationships: []
       }
+      scheduled_feature_flag_changes: {
+        Row: {
+          cancelled: boolean | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string | null
+          executed: boolean | null
+          executed_at: string | null
+          flag_key: string
+          id: string
+          reason: string | null
+          scheduled_by: string | null
+          scheduled_for: string
+          target_enabled: boolean
+        }
+        Insert: {
+          cancelled?: boolean | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string | null
+          executed?: boolean | null
+          executed_at?: string | null
+          flag_key: string
+          id?: string
+          reason?: string | null
+          scheduled_by?: string | null
+          scheduled_for: string
+          target_enabled: boolean
+        }
+        Update: {
+          cancelled?: boolean | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string | null
+          executed?: boolean | null
+          executed_at?: string | null
+          flag_key?: string
+          id?: string
+          reason?: string | null
+          scheduled_by?: string | null
+          scheduled_for?: string
+          target_enabled?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_feature_flag_changes_flag_key_fkey"
+            columns: ["flag_key"]
+            isOneToOne: false
+            referencedRelation: "feature_flags"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
       service_addons: {
         Row: {
           addon_price: number

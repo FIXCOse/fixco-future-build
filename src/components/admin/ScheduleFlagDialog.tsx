@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from 'lucide-react';
-import { useToggleFeatureFlag } from '@/hooks/useFeatureFlag';
+import { useCreateScheduledChange } from '@/hooks/useScheduledFlagChanges';
 import { toast } from 'sonner';
 
 interface Props {
@@ -20,7 +20,7 @@ export function ScheduleFlagDialog({ flagKey, currentEnabled }: Props) {
   const [scheduleAt, setScheduleAt] = useState('');
   const [reason, setReason] = useState('');
   
-  const toggleFlag = useToggleFeatureFlag();
+  const createScheduledChange = useCreateScheduledChange();
 
   const handleSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,31 +38,25 @@ export function ScheduleFlagDialog({ flagKey, currentEnabled }: Props) {
       return;
     }
 
-    // Calculate delay in milliseconds
-    const delay = scheduledDate.getTime() - now.getTime();
+    try {
+      await createScheduledChange.mutateAsync({
+        flag_key: flagKey,
+        target_enabled: targetEnabled,
+        scheduled_for: scheduledDate.toISOString(),
+        reason: reason || undefined,
+      });
 
-    // Schedule the toggle
-    setTimeout(async () => {
-      try {
-        await toggleFlag.mutateAsync({
-          flagKey,
-          enabled: targetEnabled,
-          reason: `Scheduled toggle: ${reason}`,
-        });
-        toast.success(`Feature "${flagKey}" ${targetEnabled ? 'enabled' : 'disabled'} as scheduled`);
-      } catch (error) {
-        toast.error('Failed to execute scheduled toggle');
-        console.error(error);
-      }
-    }, delay);
-
-    toast.success(
-      `Scheduled to ${targetEnabled ? 'enable' : 'disable'} "${flagKey}" at ${scheduledDate.toLocaleString('sv-SE')}`
-    );
-    
-    setOpen(false);
-    setScheduleAt('');
-    setReason('');
+      toast.success(
+        `✅ Scheduled to ${targetEnabled ? 'enable' : 'disable'} "${flagKey}" at ${scheduledDate.toLocaleString('sv-SE')}`
+      );
+      
+      setOpen(false);
+      setScheduleAt('');
+      setReason('');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to schedule change');
+    }
   };
 
   return (
@@ -136,8 +130,8 @@ export function ScheduleFlagDialog({ flagKey, currentEnabled }: Props) {
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">
-              Schedule Change
+            <Button type="submit" disabled={createScheduledChange.isPending}>
+              {createScheduledChange.isPending ? 'Scheduling...' : 'Schedule Change'}
             </Button>
           </DialogFooter>
         </form>
