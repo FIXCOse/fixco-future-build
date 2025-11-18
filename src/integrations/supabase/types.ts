@@ -609,6 +609,75 @@ export type Database = {
           },
         ]
       }
+      feature_flag_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          flag_key: string
+          id: string
+          new_enabled: boolean
+          new_meta: Json | null
+          old_enabled: boolean | null
+          old_meta: Json | null
+          reason: string | null
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          flag_key: string
+          id?: string
+          new_enabled: boolean
+          new_meta?: Json | null
+          old_enabled?: boolean | null
+          old_meta?: Json | null
+          reason?: string | null
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          flag_key?: string
+          id?: string
+          new_enabled?: boolean
+          new_meta?: Json | null
+          old_enabled?: boolean | null
+          old_meta?: Json | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      feature_flag_overrides: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          expires_at: string | null
+          flag_key: string
+          id: string
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled: boolean
+          expires_at?: string | null
+          flag_key: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          expires_at?: string | null
+          flag_key?: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       feature_flags: {
         Row: {
           enabled: boolean
@@ -3804,6 +3873,7 @@ export type Database = {
       }
       check_user_is_worker: { Args: never; Returns: boolean }
       claim_job: { Args: { p_job_id: string }; Returns: Json }
+      cleanup_expired_feature_flag_overrides: { Args: never; Returns: number }
       cleanup_old_deleted_quotes: { Args: never; Returns: undefined }
       cleanup_old_deleted_records: { Args: never; Returns: undefined }
       complete_job: { Args: { p_job_id: string }; Returns: boolean }
@@ -3842,6 +3912,10 @@ export type Database = {
       has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
       is_admin: { Args: { user_uuid?: string }; Returns: boolean }
       is_admin_or_owner: { Args: { user_uuid?: string }; Returns: boolean }
+      is_feature_enabled: {
+        Args: { flag_key: string; user_uuid?: string }
+        Returns: boolean
+      }
       is_organization_admin: {
         Args: { org_uuid: string; user_uuid: string }
         Returns: boolean
@@ -3926,6 +4000,10 @@ export type Database = {
       rpc_release_lock: { Args: { p_scope: string }; Returns: boolean }
       rpc_update_service_partial: {
         Args: { p_id: string; p_patch: Json }
+        Returns: boolean
+      }
+      toggle_feature_flag: {
+        Args: { change_reason?: string; flag_key: string; new_enabled: boolean }
         Returns: boolean
       }
       track_product_view: { Args: { p_product_id: string }; Returns: undefined }
