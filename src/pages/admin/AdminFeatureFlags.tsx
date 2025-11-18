@@ -127,6 +127,10 @@ const AdminFeatureFlags = () => {
             <Users className="h-4 w-4 mr-2" />
             User Overrides ({overrides.length})
           </TabsTrigger>
+          <TabsTrigger value="scheduled">
+            <Calendar className="h-4 w-4 mr-2" />
+            Scheduled Changes
+          </TabsTrigger>
           <TabsTrigger value="history">
             <History className="h-4 w-4 mr-2" />
             Change History
@@ -166,8 +170,27 @@ const AdminFeatureFlags = () => {
                           {flag.meta.description}
                         </p>
                       )}
+                      <div className="flex items-center gap-2 mt-1">
+                        {flag.meta?.impact_level && (
+                          <Badge 
+                            variant={
+                              flag.meta.impact_level === 'critical' ? 'destructive' :
+                              flag.meta.impact_level === 'high' ? 'default' :
+                              'outline'
+                            }
+                            className="text-xs"
+                          >
+                            {flag.meta.impact_level}
+                          </Badge>
+                        )}
+                        {flag.meta?.affected_users && (
+                          <span className="text-xs text-muted-foreground">
+                            Affects: {flag.meta.affected_users}
+                          </span>
+                        )}
+                      </div>
                       {flag.updated_at && (
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-muted-foreground mt-1">
                           Last updated: {new Date(flag.updated_at).toLocaleString('sv-SE')}
                         </p>
                       )}
@@ -191,6 +214,11 @@ const AdminFeatureFlags = () => {
         {/* User Overrides Table */}
         <TabsContent value="overrides">
           <FeatureFlagOverridesTable overrides={overrides} />
+        </TabsContent>
+
+        {/* Scheduled Changes Table */}
+        <TabsContent value="scheduled">
+          <ScheduledChangesTable />
         </TabsContent>
 
         {/* History Table */}
