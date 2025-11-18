@@ -146,11 +146,13 @@ export function useToggleFeatureFlag() {
       });
 
       if (error) throw error;
-      return data;
+      return flagKey;
     },
-    onSuccess: () => {
+    onSuccess: (flagKey) => {
       queryClient.invalidateQueries({ queryKey: ['feature-flags'] });
       queryClient.invalidateQueries({ queryKey: ['feature-flag-history'] });
+      queryClient.invalidateQueries({ queryKey: ['feature-flag', flagKey] });
+      queryClient.invalidateQueries({ queryKey: ['feature-flag'] });
     },
   });
 }
@@ -181,8 +183,10 @@ export function useCreateFeatureFlagOverride() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['feature-flag-overrides'] });
+      queryClient.invalidateQueries({ queryKey: ['feature-flag', data.flag_key] });
+      queryClient.invalidateQueries({ queryKey: ['feature-flag'] });
     },
   });
 }
@@ -193,15 +197,26 @@ export function useDeleteFeatureFlagOverride() {
 
   return useMutation({
     mutationFn: async (overrideId: string) => {
+      const { data: override } = await supabase
+        .from('feature_flag_overrides')
+        .select('flag_key')
+        .eq('id', overrideId)
+        .single();
+
       const { error } = await supabase
         .from('feature_flag_overrides')
         .delete()
         .eq('id', overrideId);
 
       if (error) throw error;
+      return override?.flag_key;
     },
-    onSuccess: () => {
+    onSuccess: (flagKey) => {
       queryClient.invalidateQueries({ queryKey: ['feature-flag-overrides'] });
+      if (flagKey) {
+        queryClient.invalidateQueries({ queryKey: ['feature-flag', flagKey] });
+        queryClient.invalidateQueries({ queryKey: ['feature-flag'] });
+      }
     },
   });
 }

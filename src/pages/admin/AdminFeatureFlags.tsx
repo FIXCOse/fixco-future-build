@@ -16,6 +16,7 @@ import { FeatureFlagHistoryTable } from '@/components/admin/FeatureFlagHistoryTa
 import { FeatureFlagOverridesTable } from '@/components/admin/FeatureFlagOverridesTable';
 import { CreateOverrideDialog } from '@/components/admin/CreateOverrideDialog';
 import { ScheduleFlagDialog } from '@/components/admin/ScheduleFlagDialog';
+import { ScheduledChangesTable } from '@/components/admin/ScheduledChangesTable';
 
 const AdminFeatureFlags = () => {
   const { data: flags = [], isLoading } = useFeatureFlags();
