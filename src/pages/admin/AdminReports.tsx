@@ -13,8 +13,11 @@ import { ConversionFunnelChart } from '@/components/admin/analytics/ConversionFu
 import { TrafficSourcesChart } from '@/components/admin/analytics/TrafficSourcesChart';
 import { exportAnalyticsCSV, type AnalyticsFilters as Filters } from '@/lib/api/analytics';
 import { toast } from 'sonner';
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 
 const AdminReports = () => {
+  const { data: advancedEnabled } = useFeatureFlag('advanced_reporting');
+  
   const [filters, setFilters] = useState<Filters>({
     startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     endDate: new Date().toISOString(),

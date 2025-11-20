@@ -63,7 +63,8 @@ export function useFeatureFlag(flagKey: string) {
 
       return flag?.enabled ?? false;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0, // No cache - always fresh for realtime
+    refetchOnWindowFocus: true, // Refetch on window focus
   });
 }
 
@@ -80,6 +81,8 @@ export function useFeatureFlags() {
       if (error) throw error;
       return data as FeatureFlag[];
     },
+    staleTime: 0, // No cache - always fresh for realtime
+    refetchOnWindowFocus: true, // Refetch on window focus
   });
 }
 

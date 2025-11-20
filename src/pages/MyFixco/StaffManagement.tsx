@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { 
   Plus, 
   Mail, 
@@ -38,6 +40,7 @@ interface Staff {
 }
 
 const StaffManagement = () => {
+  const { data: staffMgmtEnabled, isLoading: flagLoading } = useFeatureFlag('staff_management');
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState<Staff | null>(null);
@@ -51,6 +54,18 @@ const StaffManagement = () => {
     notes: '',
     starts_at: ''
   });
+
+  if (flagLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!staffMgmtEnabled) {
+    return <Navigate to="/mitt-fixco" replace />;
+  }
 
   const { data: staff = [], isLoading, refetch } = useQuery({
     queryKey: ['staff'],

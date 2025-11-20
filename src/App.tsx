@@ -97,6 +97,9 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { useEventTracking } from '@/hooks/useEventTracking';
 import { useLocation } from 'react-router-dom';
+import { useFeatureFlagRealtime } from './hooks/useFeatureFlagRealtime';
+import { MaintenanceGate } from './components/MaintenanceGate';
+import { useTwoFactorEnforcement } from './hooks/useTwoFactorEnforcement';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -127,6 +130,12 @@ const PageViewTracker = () => {
 };
 
 const App = () => {
+  // Enable realtime for feature flags
+  useFeatureFlagRealtime();
+  
+  // Enforce 2FA if feature flag is enabled
+  useTwoFactorEnforcement();
+  
   // Global event handling for wizard actions
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -156,9 +165,10 @@ const App = () => {
                 <Toaster />
                 <Sonner />
                 <BrowserRouter>
-                <PageViewTracker />
-                <ScrollToTop />
-                <Routes>
+                <MaintenanceGate>
+                  <PageViewTracker />
+                  <ScrollToTop />
+                  <Routes>
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
@@ -349,8 +359,9 @@ const App = () => {
                   
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
+                  </Routes>
+                </MaintenanceGate>
+                </BrowserRouter>
             </div>
           </TooltipProvider>
         </SecurityWrapper>
