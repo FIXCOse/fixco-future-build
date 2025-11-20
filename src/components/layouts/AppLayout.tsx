@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 
 import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
@@ -23,6 +24,9 @@ interface AppLayoutProps {
 const AppLayout: React.FC<AppLayoutProps> = () => {
   const location = useLocation();
   const locale = getLanguageFromPath(location.pathname);
+  
+  // Check if AI chat is enabled
+  const { data: chatEnabled } = useFeatureFlag('chat_ai_enabled');
   
   // Initialize language persistence and content loading
   useLanguagePersistence();
@@ -49,7 +53,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <GlobalContentEditor />
           <EditModeIndicator />
           <ContentLoadingIndicator />
-          <FloatingAIWidget />
+          {chatEnabled && <FloatingAIWidget />}
           <ServiceRequestModal />
         </div>
       </EditModeProvider>

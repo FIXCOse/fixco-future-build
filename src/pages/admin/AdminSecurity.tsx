@@ -7,17 +7,23 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Shield, Eye, Search, AlertTriangle } from 'lucide-react';
-import { getAuditLog, setSetting, getSettings } from '@/lib/admin';
+import { getAuditLog } from '@/lib/admin';
 import { useToast } from '@/hooks/use-toast';
 import AdminBack from '@/components/admin/AdminBack';
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
+import { useToggleFeatureFlag } from '@/hooks/useFeatureFlag';
+import { toast } from 'sonner';
 
 const AdminSecurity = () => {
   const [auditLog, setAuditLog] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionFilter, setActionFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [force2FA, setForce2FA] = useState(false);
-  const { toast } = useToast();
+  const { toast: toastHook } = useToast();
+  
+  // Use feature flag instead of settings
+  const { data: force2FA } = useFeatureFlag('force_2fa');
+  const toggleFlag = useToggleFeatureFlag();
 
   useEffect(() => {
     loadData();
@@ -25,20 +31,16 @@ const AdminSecurity = () => {
 
   const loadData = async () => {
     try {
-      const [auditData, settings] = await Promise.all([
-        getAuditLog({ 
-          action: actionFilter === 'all' ? undefined : actionFilter, 
-          search: searchQuery || undefined,
-          limit: 50 
-        }),
-        getSettings(['force_2fa'])
-      ]);
+      const auditData = await getAuditLog({ 
+        action: actionFilter === 'all' ? undefined : actionFilter, 
+        search: searchQuery || undefined,
+        limit: 50 
+      });
       
       setAuditLog(auditData || []);
-      setForce2FA(settings['force_2fa'] === true);
     } catch (error) {
       console.error('Error loading security data:', error);
-      toast({
+      toastHook({
         title: 'Fel',
         description: 'Kunde inte ladda säkerhetsdata',
         variant: 'destructive'
@@ -50,19 +52,15 @@ const AdminSecurity = () => {
 
   const toggle2FA = async (enabled: boolean) => {
     try {
-      await setSetting('force_2fa', enabled);
-      setForce2FA(enabled);
-      toast({
-        title: enabled ? 'Aktiverat' : 'Inaktiverat',
-        description: `2FA ${enabled ? 'krävs nu' : 'är nu valfritt'} för alla användare`
+      await toggleFlag.mutateAsync({
+        flagKey: 'force_2fa',
+        enabled,
+        reason: 'Toggled from Admin Security page'
       });
+      toast.success(`2FA ${enabled ? 'aktiverat' : 'inaktiverat'}`);
     } catch (error) {
       console.error('Error updating 2FA setting:', error);
-      toast({
-        title: 'Fel',
-        description: 'Kunde inte uppdatera 2FA-inställning',
-        variant: 'destructive'
-      });
+      toast.error('Kunde inte uppdatera 2FA-inställning');
     }
   };
 
