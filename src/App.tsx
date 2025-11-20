@@ -97,9 +97,8 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { useEventTracking } from '@/hooks/useEventTracking';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlagRealtime } from './hooks/useFeatureFlagRealtime';
 import { MaintenanceGate } from './components/MaintenanceGate';
-import { useTwoFactorEnforcement } from './hooks/useTwoFactorEnforcement';
+import { FeatureFlagInitializer } from './components/FeatureFlagInitializer';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -130,12 +129,6 @@ const PageViewTracker = () => {
 };
 
 const App = () => {
-  // Enable realtime for feature flags
-  useFeatureFlagRealtime();
-  
-  // Enforce 2FA if feature flag is enabled
-  useTwoFactorEnforcement();
-  
   // Global event handling for wizard actions
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -158,17 +151,18 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <CopyProvider locale="sv">
-          <SecurityWrapper>
-            <TooltipProvider>
-              <div className="min-h-screen bg-background font-inter">
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                <MaintenanceGate>
-                  <PageViewTracker />
-                  <ScrollToTop />
-                  <Routes>
+        <FeatureFlagInitializer>
+          <CopyProvider locale="sv">
+            <SecurityWrapper>
+              <TooltipProvider>
+                <div className="min-h-screen bg-background font-inter">
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                  <MaintenanceGate>
+                    <PageViewTracker />
+                    <ScrollToTop />
+                    <Routes>
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
@@ -358,14 +352,15 @@ const App = () => {
                   </Route>
                   
                   {/* Catch-all route */}
-                  <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </MaintenanceGate>
-                </BrowserRouter>
-            </div>
-          </TooltipProvider>
-        </SecurityWrapper>
-        </CopyProvider>
+                    <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </MaintenanceGate>
+                  </BrowserRouter>
+                </div>
+              </TooltipProvider>
+            </SecurityWrapper>
+          </CopyProvider>
+        </FeatureFlagInitializer>
       </QueryClientProvider>
     </HelmetProvider>
   );
