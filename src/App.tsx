@@ -151,18 +151,18 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <FeatureFlagInitializer>
-          <CopyProvider locale="sv">
-            <SecurityWrapper>
-              <TooltipProvider>
-                <div className="min-h-screen bg-background font-inter">
-                  <Toaster />
-                  <Sonner />
-                  <BrowserRouter>
-                  <MaintenanceGate>
-                    <PageViewTracker />
-                    <ScrollToTop />
-                    <Routes>
+        <CopyProvider locale="sv">
+          <SecurityWrapper>
+            <TooltipProvider>
+              <div className="min-h-screen bg-background font-inter">
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <FeatureFlagInitializer>
+                    <MaintenanceGate>
+                      <PageViewTracker />
+                      <ScrollToTop />
+                      <Routes>
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/auth/error" element={<AuthError />} />
@@ -354,13 +354,13 @@ const App = () => {
                   {/* Catch-all route */}
                     <Route path="*" element={<NotFound />} />
                     </Routes>
-                  </MaintenanceGate>
+                    </MaintenanceGate>
+                  </FeatureFlagInitializer>
                   </BrowserRouter>
                 </div>
               </TooltipProvider>
             </SecurityWrapper>
           </CopyProvider>
-        </FeatureFlagInitializer>
       </QueryClientProvider>
     </HelmetProvider>
   );
