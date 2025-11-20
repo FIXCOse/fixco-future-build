@@ -16,8 +16,8 @@ export function useFeatureFlagRealtime() {
         table: 'feature_flags'
       }, (payload) => {
         console.log('🔥 Feature flag changed:', payload);
-        queryClient.invalidateQueries({ queryKey: ['feature-flags'] });
-        queryClient.invalidateQueries({ queryKey: ['feature-flag'] });
+        queryClient.refetchQueries({ queryKey: ['feature-flags'] });
+        queryClient.refetchQueries({ queryKey: ['feature-flag'] });
       })
       .on('postgres_changes', {
         event: '*',
@@ -25,8 +25,8 @@ export function useFeatureFlagRealtime() {
         table: 'feature_flag_overrides'
       }, (payload) => {
         console.log('🔥 Feature flag override changed:', payload);
-        queryClient.invalidateQueries({ queryKey: ['feature-flag-overrides'] });
-        queryClient.invalidateQueries({ queryKey: ['feature-flag'] });
+        queryClient.refetchQueries({ queryKey: ['feature-flag-overrides'] });
+        queryClient.refetchQueries({ queryKey: ['feature-flag'] });
       })
       .on('postgres_changes', {
         event: '*',
@@ -34,7 +34,7 @@ export function useFeatureFlagRealtime() {
         table: 'scheduled_feature_flag_changes'
       }, (payload) => {
         console.log('🔥 Scheduled change updated:', payload);
-        queryClient.invalidateQueries({ queryKey: ['scheduled-flag-changes'] });
+        queryClient.refetchQueries({ queryKey: ['scheduled-flag-changes'] });
       })
       .subscribe((status) => {
         console.log('🔥 Realtime subscription status:', status);

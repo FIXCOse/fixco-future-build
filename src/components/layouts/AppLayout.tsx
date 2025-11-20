@@ -26,7 +26,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   const locale = getLanguageFromPath(location.pathname);
   
   // Check if AI chat is enabled
-  const { data: chatEnabled } = useFeatureFlag('chat_ai_enabled');
+  const { data: chatEnabled, isLoading: chatLoading } = useFeatureFlag('chat_ai_enabled');
   
   // Initialize language persistence and content loading
   useLanguagePersistence();
@@ -39,6 +39,10 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   useEffect(() => {
     console.log('[AppLayout] Current locale:', locale, 'Path:', location.pathname);
   }, [locale, location.pathname]);
+  
+  useEffect(() => {
+    console.log('💬 [AppLayout] chatEnabled:', chatEnabled, 'isLoading:', chatLoading);
+  }, [chatEnabled, chatLoading]);
   
   return (
     <CopyProvider locale={locale} key={locale}>
