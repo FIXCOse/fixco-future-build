@@ -236,58 +236,12 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
               </motion.div>
             </motion.div>
 
-            {/* Contact Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
-              <GlassCard 
-                className="p-8 max-w-md mx-auto"
-                hoverEffect
-                glowColor="hsl(var(--primary) / 0.2)"
-                innerGlow
-              >
-                <h3 className="text-lg font-semibold mb-6">Behöver du akut hjälp?</h3>
-                <div className="space-y-4">
-                  <motion.a
-                    href="tel:073-394 56 50"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-3 p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors group"
-                  >
-                    <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className="text-sm text-muted-foreground">Ring oss</p>
-                      <p className="font-medium text-foreground">073-394 56 50</p>
-                    </div>
-                  </motion.a>
-                  
-                  <motion.a
-                    href="mailto:info@fixco.se"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-3 p-4 rounded-lg bg-accent/5 hover:bg-accent/10 transition-colors group"
-                  >
-                    <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-colors">
-                      <Mail className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className="text-sm text-muted-foreground">Email</p>
-                      <p className="font-medium text-foreground">info@fixco.se</p>
-                    </div>
-                  </motion.a>
-                </div>
-              </GlassCard>
-            </motion.div>
 
             {/* Emergency Quote Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
+              transition={{ duration: 0.6, delay: 1 }}
             >
               <GlassCard 
                 className="p-8 max-w-md mx-auto bg-gradient-to-br from-orange-500/5 to-red-500/5 border-orange-500/20"
@@ -295,12 +249,11 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                 glowColor="hsl(25 95% 53% / 0.3)"
                 innerGlow
               >
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-6">
+                  {/* Animated Zap Icon */}
                   <motion.div 
                     className="flex justify-center"
-                    animate={{
-                      scale: [1, 1.1, 1],
-                    }}
+                    animate={{ scale: [1, 1.1, 1] }}
                     transition={{
                       duration: 2,
                       repeat: Infinity,
@@ -329,10 +282,36 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                   </h3>
                   
                   <p className="text-sm text-muted-foreground">
-                    Även under underhåll kan du begära offert! 
-                    Vi behandlar din förfrågan så snart vi är tillbaka.
+                    Vi är här för dig! Ring oss direkt eller begär offert så hör vi av oss så snart vi är tillbaka.
                   </p>
 
+                  {/* Telefonnummer */}
+                  <motion.a
+                    href="tel:0733945650"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center justify-center gap-3 p-4 rounded-lg bg-orange-500/10 hover:bg-orange-500/15 transition-colors group"
+                  >
+                    <div className="p-2 rounded-full bg-orange-500/20 group-hover:bg-orange-500/30 transition-colors">
+                      <Phone className="h-5 w-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Ring oss nu</p>
+                      <p className="font-semibold text-lg text-foreground">073-394 56 50</p>
+                    </div>
+                  </motion.a>
+
+                  {/* Divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-orange-500/20"></div>
+                    </div>
+                    <div className="relative flex justify-center text-xs">
+                      <span className="bg-background px-2 text-muted-foreground">eller</span>
+                    </div>
+                  </div>
+
+                  {/* Offert Button */}
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
