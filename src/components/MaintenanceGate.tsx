@@ -1,10 +1,13 @@
 import { ReactNode } from 'react';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { useRole } from '@/hooks/useRole';
-import { Wrench, Shield, Phone, Mail, Clock, Zap } from 'lucide-react';
+import { Wrench, Shield, Phone, Mail, Clock, Zap, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { GlassCard } from '@/components/v2/GlassCard';
 import { GradientText } from '@/components/v2/GradientText';
+import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
+import { Button } from '@/components/ui/button';
 
 interface MaintenanceGateProps {
   children: ReactNode;
@@ -27,6 +30,25 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
   if (shouldShowMaintenancePage) {
     return (
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+        {/* Admin Login Button - Fixed Top Right */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          className="fixed top-6 right-6 z-50"
+        >
+          <Link to="/auth">
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-background/80 backdrop-blur-md border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+            >
+              <Shield className="h-4 w-4 mr-2" />
+              Admin Login
+            </Button>
+          </Link>
+        </motion.div>
+
         {/* Animated Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
@@ -69,6 +91,33 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
             transition={{ duration: 0.6 }}
             className="text-center space-y-8"
           >
+            {/* Animated Fixco Logo */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 200,
+                damping: 20,
+                delay: 0.1
+              }}
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              className="mb-8"
+            >
+              <motion.div
+                animate={{
+                  scale: [1, 1.02, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <AnimatedFixcoFIcon className="h-32 w-32 mx-auto" />
+              </motion.div>
+            </motion.div>
+
             {/* Animated Icon Section */}
             <motion.div 
               className="flex justify-center"
@@ -202,7 +251,7 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                 <h3 className="text-lg font-semibold mb-6">Behöver du akut hjälp?</h3>
                 <div className="space-y-4">
                   <motion.a
-                    href="tel:08-123 456 78"
+                    href="tel:073-394 56 50"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-3 p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors group"
@@ -212,7 +261,7 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                     </div>
                     <div className="flex-1 text-left">
                       <p className="text-sm text-muted-foreground">Ring oss</p>
-                      <p className="font-medium text-foreground">08-123 456 78</p>
+                      <p className="font-medium text-foreground">073-394 56 50</p>
                     </div>
                   </motion.a>
                   
@@ -230,6 +279,78 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                       <p className="font-medium text-foreground">info@fixco.se</p>
                     </div>
                   </motion.a>
+                </div>
+              </GlassCard>
+            </motion.div>
+
+            {/* Emergency Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
+              <GlassCard 
+                className="p-8 max-w-md mx-auto bg-gradient-to-br from-orange-500/5 to-red-500/5 border-orange-500/20"
+                hoverEffect
+                glowColor="hsl(25 95% 53% / 0.3)"
+                innerGlow
+              >
+                <div className="text-center space-y-4">
+                  <motion.div 
+                    className="flex justify-center"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <div className="p-3 rounded-full bg-orange-500/10 relative">
+                      <Zap className="h-8 w-8 text-orange-500" />
+                      <motion.div
+                        className="absolute inset-0 rounded-full bg-orange-500/20"
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          opacity: [0.5, 0, 0.5],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeOut"
+                        }}
+                      />
+                    </div>
+                  </motion.div>
+                  
+                  <h3 className="text-xl font-semibold">
+                    Har du <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">bråttom</span>?
+                  </h3>
+                  
+                  <p className="text-sm text-muted-foreground">
+                    Även under underhåll kan du begära offert! 
+                    Vi behandlar din förfrågan så snart vi är tillbaka.
+                  </p>
+
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      onClick={() => window.open('/offert/standard', '_blank')}
+                      size="lg"
+                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <FileText className="h-5 w-5 mr-2" />
+                      Begär Offert Nu
+                    </Button>
+                  </motion.div>
+
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3" />
+                    <span>Svar inom 24h efter vi är tillbaka</span>
+                  </div>
                 </div>
               </GlassCard>
             </motion.div>
