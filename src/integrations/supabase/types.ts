@@ -3962,6 +3962,23 @@ export type Database = {
       generate_quote_number_new: { Args: never; Returns: string }
       get_invoice_statistics: { Args: never; Returns: Json }
       get_next_staff_id: { Args: never; Returns: number }
+      get_workers: {
+        Args: never
+        Returns: {
+          address_line: string
+          avatar_url: string
+          city: string
+          created_at: string
+          email: string
+          first_name: string
+          full_name: string
+          id: string
+          last_name: string
+          phone: string
+          postal_code: string
+          user_type: string
+        }[]
+      }
       has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
       is_admin: { Args: { user_uuid?: string }; Returns: boolean }
       is_admin_or_owner: { Args: { user_uuid?: string }; Returns: boolean }
