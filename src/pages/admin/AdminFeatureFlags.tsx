@@ -32,7 +32,17 @@ const AdminFeatureFlags = () => {
         enabled: newValue,
         reason: 'Manual toggle from admin panel',
       });
-      toast.success(`Feature "${flagKey}" ${newValue ? 'enabled' : 'disabled'}`);
+      
+      if (flagKey === 'maintenance_mode') {
+        if (newValue) {
+          toast.warning('⚠️ Maintenance mode aktiverat! Endast admins kan nu komma åt sidan.');
+        } else {
+          toast.success('✅ Maintenance mode avaktiverat! Sidan är nu tillgänglig för alla.');
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      } else {
+        toast.success(`Feature "${flagKey}" ${newValue ? 'enabled' : 'disabled'}`);
+      }
     } catch (error) {
       toast.error('Failed to toggle feature flag');
       console.error(error);

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { useRole } from '@/hooks/useRole';
 import { Wrench, Shield, Phone, Mail, Clock, Zap, FileText } from 'lucide-react';
@@ -14,8 +14,13 @@ interface MaintenanceGateProps {
 }
 
 export function MaintenanceGate({ children }: MaintenanceGateProps) {
-  const { data: maintenanceEnabled, isLoading: flagLoading } = useFeatureFlag('maintenance_mode');
+  const { data: maintenanceEnabled, isLoading: flagLoading, refetch } = useFeatureFlag('maintenance_mode');
   const { isAdmin, isOwner, loading: roleLoading } = useRole();
+
+  // Force refetch when component mounts to ensure we have the latest value
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   if (flagLoading || roleLoading) {
     return (

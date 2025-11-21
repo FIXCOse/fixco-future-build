@@ -17,7 +17,10 @@ export function useFeatureFlagRealtime() {
       }, (payload) => {
         console.log('🔥 Feature flag changed:', payload);
         queryClient.refetchQueries({ queryKey: ['feature-flags'] });
-        queryClient.refetchQueries({ queryKey: ['feature-flag'] });
+        queryClient.invalidateQueries({ 
+          predicate: (query) => query.queryKey[0] === 'feature-flag',
+          refetchType: 'all'
+        });
       })
       .on('postgres_changes', {
         event: '*',
@@ -26,7 +29,10 @@ export function useFeatureFlagRealtime() {
       }, (payload) => {
         console.log('🔥 Feature flag override changed:', payload);
         queryClient.refetchQueries({ queryKey: ['feature-flag-overrides'] });
-        queryClient.refetchQueries({ queryKey: ['feature-flag'] });
+        queryClient.invalidateQueries({ 
+          predicate: (query) => query.queryKey[0] === 'feature-flag',
+          refetchType: 'all'
+        });
       })
       .on('postgres_changes', {
         event: '*',
