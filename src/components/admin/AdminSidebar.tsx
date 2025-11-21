@@ -77,27 +77,23 @@ export function AdminSidebar() {
       exact: true,
     },
     {
-      category: 'Jobb & Projekt',
+      category: 'Förfrågningar & Offerter',
       items: [
-        { title: 'Jobbförfrågningar', icon: ClipboardList, path: '/admin/job-requests' },
-        { title: 'Alla jobb', icon: Briefcase, path: '/admin/jobs' },
-        { title: 'Pågående projekt', icon: Building2, path: '/admin/ongoing-projects' },
-        { title: 'Schemaläggning', icon: Calendar, path: '/admin/schedule' },
-      ],
-    },
-    {
-      category: 'Offerter & Bokningar',
-      items: [
-        { title: 'Skapa offert', icon: PlusCircle, path: '/admin/quotes?new=true' },
-        { title: 'Förfrågningar & Offerter', icon: FileText, path: '/admin/requests-quotes' },
+        { title: 'Alla Förfrågningar & Offerter', icon: FileText, path: '/admin/quotes' },
         { 
           title: 'Offertfrågor', 
           icon: MessageSquare, 
           path: '/admin/quote-questions',
           badge: unansweredCount > 0 ? unansweredCount : null 
         },
-        { title: 'Bokningar', icon: Calendar, path: '/admin/bookings' },
-        { title: 'Papperskorgen', icon: Trash2, path: '/admin/quotes-trash' },
+      ],
+    },
+    {
+      category: 'Jobbhantering',
+      items: [
+        { title: 'Alla Jobb', icon: Briefcase, path: '/admin/jobs' },
+        { title: 'Skicka Jobbförfrågningar', icon: ClipboardList, path: '/admin/job-requests' },
+        { title: 'Schemaläggning', icon: Calendar, path: '/admin/schedule' },
       ],
     },
     {

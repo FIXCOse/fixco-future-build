@@ -213,9 +213,9 @@ const App = () => {
                     <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
                     <Route path="bookings/:id" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
                     <Route path="bookings/trash" element={<AdminBookingsTrash />} />
+                    <Route path="ongoing-projects" element={<Navigate to="/admin/jobs" replace />} />
                     <Route path="quote-questions" element={<AdminQuoteQuestions />} />
                     <Route path="invoices" element={<AdminInvoices />} />
-                    <Route path="ongoing-projects" element={<AdminOngoingProjects />} />
                     <Route path="projects/trash" element={<AdminProjectsTrash />} />
                     <Route path="customers" element={<AdminCustomers />} />
                     <Route path="users" element={<AdminUsers />} />
@@ -232,7 +232,6 @@ const App = () => {
                     <Route path="payroll" element={<AdminPayroll />} />
                     <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="job-requests-trash" element={<AdminJobRequestsTrash />} />
-                    <Route path="jobs" element={<AdminJobs />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                     <Route path="translations" element={<AdminTranslations />} />
                     <Route path="leads" element={<AdminLeads />} />
