@@ -99,6 +99,7 @@ import { useEventTracking } from '@/hooks/useEventTracking';
 import { useLocation } from 'react-router-dom';
 import { MaintenanceGate } from './components/MaintenanceGate';
 import { FeatureFlagInitializer } from './components/FeatureFlagInitializer';
+import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -157,6 +158,7 @@ const App = () => {
               <div className="min-h-screen bg-background font-inter">
                 <Toaster />
                 <Sonner />
+                <ServiceRequestModal />
                 <BrowserRouter>
                   <FeatureFlagInitializer>
                     <PageViewTracker />
