@@ -69,8 +69,7 @@ import JobDetail from "./pages/worker/JobDetail";
 import WorkerDashboard from "./pages/worker/WorkerDashboard";
 import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
 import WorkerSettings from "./pages/worker/WorkerSettings";
-import AdminJobs from "./pages/admin/AdminJobs";
-import AdminJobRequests from "./pages/admin/AdminJobRequests";
+import AdminJobsUnified from "./pages/admin/AdminJobsUnified";
 import AdminTranslations from "./pages/admin/AdminTranslations";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminLeads from "./pages/admin/AdminLeads";
@@ -221,7 +220,7 @@ const App = () => {
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="database" element={<AdminDatabase />} />
                     <Route path="reports" element={<AdminReports />} />
-                    <Route path="jobs" element={<AdminJobs />} />
+                    <Route path="jobs" element={<AdminJobsUnified />} />
                     <Route path="jobs/:jobId" element={<AdminJobDetail />} />
                     <Route path="jobs/trash" element={<AdminJobsTrash />} />
                     <Route path="schedule" element={<AdminSchedule />} />
@@ -230,7 +229,6 @@ const App = () => {
                     <Route path="security" element={<AdminSecurity />} />
                     <Route path="staff" element={<AdminStaff />} />
                     <Route path="payroll" element={<AdminPayroll />} />
-                    <Route path="job-requests" element={<AdminJobRequests />} />
                     <Route path="job-requests-trash" element={<AdminJobRequestsTrash />} />
                     <Route path="analytics/detailed" element={<AdminReports />} />
                     <Route path="translations" element={<AdminTranslations />} />

@@ -91,8 +91,7 @@ export function AdminSidebar() {
     {
       category: 'Jobbhantering',
       items: [
-        { title: 'Alla Jobb', icon: Briefcase, path: '/admin/jobs' },
-        { title: 'Skicka Jobbförfrågningar', icon: ClipboardList, path: '/admin/job-requests' },
+        { title: 'Jobbhantering', icon: Briefcase, path: '/admin/jobs' },
         { title: 'Schemaläggning', icon: Calendar, path: '/admin/schedule' },
       ],
     },
