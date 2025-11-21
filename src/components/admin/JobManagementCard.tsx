@@ -233,9 +233,17 @@ export function JobManagementCard({ job, workers, onRefresh }: JobManagementCard
                 <SelectValue placeholder="Välj worker..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="worker-1">Anna Svensson</SelectItem>
-                <SelectItem value="worker-2">Erik Mattsson</SelectItem>
-                <SelectItem value="worker-3">Lisa Andersson</SelectItem>
+                {availableWorkers.length > 0 ? (
+                  availableWorkers.map((worker) => (
+                    <SelectItem key={worker.id} value={worker.id}>
+                      {worker.full_name || `${worker.first_name || ''} ${worker.last_name || ''}`.trim() || worker.email}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="no-workers" disabled>
+                    Inga workers tillgängliga
+                  </SelectItem>
+                )}
               </SelectContent>
             </Select>
             <Button
