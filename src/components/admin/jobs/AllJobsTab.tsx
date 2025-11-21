@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { JobManagementCard } from '@/components/admin/JobManagementCard';
-import { useUsersData } from '@/hooks/useUsersData';
+import { useWorkersData } from '@/hooks/useWorkersData';
 import { Search, Filter } from 'lucide-react';
 
 export const AllJobsTab = () => {
@@ -14,7 +14,7 @@ export const AllJobsTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   
-  const { users: workers } = useUsersData();
+  const { workers, loading: workersLoading } = useWorkersData();
 
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ['jobs-management', searchTerm, statusFilter],
