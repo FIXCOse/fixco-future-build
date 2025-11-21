@@ -21,7 +21,6 @@ import Auth from "./pages/Auth";
 import AI from "./pages/AI";
 import AuthCallback from "./pages/AuthCallback";
 import AuthError from "./pages/AuthError";
-import OffertPublic from "./pages/OffertPublic";
 import Dashboard from "./pages/Dashboard";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -167,13 +166,6 @@ const App = () => {
                       <Route path="/auth" element={<Auth />} />
                       <Route path="/auth/callback" element={<AuthCallback />} />
                       <Route path="/auth/error" element={<AuthError />} />
-                      
-                      {/* Offert route OUTSIDE MaintenanceGate so customers can request quotes during maintenance */}
-                      <Route path="/offert/standard" element={
-                        <Suspense fallback={<SuspenseFallback />}>
-                          <OffertPublic />
-                        </Suspense>
-                      } />
                       
                       {/* All other routes INSIDE MaintenanceGate */}
                       <Route path="*" element={

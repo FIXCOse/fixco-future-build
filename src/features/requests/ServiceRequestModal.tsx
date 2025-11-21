@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { getServiceBySlug, ServiceConfig } from "./serviceConfig";
+import { getServiceBySlug, ServiceConfig, SERVICE_CONFIG } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -45,11 +45,12 @@ export default function ServiceRequestModal() {
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
-  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
 
   // Navigation functions
-  const goToStep2 = () => setCurrentStep(2);
+  const goToStep0 = () => setCurrentStep(0);
   const goToStep1 = () => setCurrentStep(1);
+  const goToStep2 = () => setCurrentStep(2);
   const skipAddons = () => {
     setSelectedAddons([]);
     setCurrentStep(2);
@@ -60,17 +61,30 @@ export default function ServiceRequestModal() {
 
   // Automatiskt hoppa över Steg 1 om inga tillägg finns
   useEffect(() => {
-    if (currentStep === 1 && addons.length === 0 && open) {
+    if (currentStep === 1 && addons.length === 0 && open && service) {
       setCurrentStep(2);
       setSelectedAddons([]);
     }
-  }, [addons.length, currentStep, open]);
+  }, [addons.length, currentStep, open, service]);
 
   useEffect(() => {
     const onOpen = (e: Event) => {
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
+      
+      // Om ingen serviceSlug anges, visa tjänstväljare (steg 0)
+      if (!slug) {
+        setService(null);
+        setCustomerType('private');
+        setValues(prefill);
+        setFiles({});
+        setDone(false);
+        setSelectedAddons([]);
+        setCurrentStep(0);
+        setOpen(true);
+        return;
+      }
       
       // Try to find predefined config
       let svc = slug ? getServiceBySlug(slug) : null;
@@ -312,7 +326,7 @@ export default function ServiceRequestModal() {
       {/* Modal */}
       <div className="relative w-full md:w-[680px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
         {/* Progress Indicator */}
-        {!done && addons.length > 0 && (
+        {!done && service && addons.length > 0 && (
           <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30">
             <div className={`flex items-center gap-2 ${currentStep === 1 ? 'text-primary' : 'text-muted-foreground'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 text-sm font-bold transition-colors ${
@@ -371,6 +385,60 @@ export default function ServiceRequestModal() {
               <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
               <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
             </div>
+          ) : currentStep === 0 ? (
+            // STEG 0: VÄLJ TJÄNST
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-6"
+            >
+              <div className="text-center mb-6">
+                <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
+                  <Wrench className="w-5 h-5 text-primary" />
+                  Välj den tjänst du behöver
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  Vi hjälper dig med allt från el till målning
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {SERVICE_CONFIG.map(svc => (
+                  <motion.div
+                    key={svc.slug}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setService(svc);
+                      setCurrentStep(1);
+                    }}
+                    className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Wrench className="w-6 h-6 text-primary" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-foreground mb-1">{svc.name}</h5>
+                        <p className="text-xs text-muted-foreground">
+                          {svc.pricingMode === 'quote' 
+                            ? 'Offert efter behov' 
+                            : svc.pricingMode === 'unit' 
+                              ? `${svc.unitPriceSek} kr/${svc.unitLabel}`
+                              : `${svc.fixedPriceSek} kr`
+                          }
+                          {svc.rotEligible && ' • ROT-berättigad'}
+                        </p>
+                      </div>
+
+                      <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           ) : currentStep === 1 && addons.length > 0 ? (
             // STEG 1: VÄLJ TILLÄGG
             <motion.div
