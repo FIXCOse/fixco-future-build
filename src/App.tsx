@@ -159,13 +159,18 @@ const App = () => {
                 <Sonner />
                 <BrowserRouter>
                   <FeatureFlagInitializer>
-                    <MaintenanceGate>
-                      <PageViewTracker />
-                      <ScrollToTop />
-                      <Routes>
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
-                  <Route path="/auth/error" element={<AuthError />} />
+                    <PageViewTracker />
+                    <ScrollToTop />
+                    <Routes>
+                      {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/auth/callback" element={<AuthCallback />} />
+                      <Route path="/auth/error" element={<AuthError />} />
+                      
+                      {/* All other routes INSIDE MaintenanceGate */}
+                      <Route path="*" element={
+                        <MaintenanceGate>
+                          <Routes>
                   <Route path="/dashboard" element={<Dashboard />} />
                   
                   {/* Public Quote View */}
@@ -352,11 +357,13 @@ const App = () => {
                   </Route>
                   
                   {/* Catch-all route */}
-                    <Route path="*" element={<NotFound />} />
+                            <Route path="*" element={<NotFound />} />
+                          </Routes>
+                        </MaintenanceGate>
+                      } />
                     </Routes>
-                    </MaintenanceGate>
                   </FeatureFlagInitializer>
-                  </BrowserRouter>
+                </BrowserRouter>
                 </div>
               </TooltipProvider>
             </SecurityWrapper>
