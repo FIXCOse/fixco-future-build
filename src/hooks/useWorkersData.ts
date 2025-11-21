@@ -6,17 +6,10 @@ export const useWorkersData = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initial fetch
+    // Initial fetch using RPC function to bypass RLS issues
     const fetchWorkers = async () => {
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select(`
-            *,
-            user_roles!inner(role)
-          `)
-          .eq('user_roles.role', 'worker')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_workers');
 
         if (error) throw error;
         setWorkers(data || []);
