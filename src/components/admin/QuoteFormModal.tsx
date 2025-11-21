@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2, Info, Calculator } from 'lucide-react';
+import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
@@ -21,6 +21,9 @@ type LineItem = {
   quantity: number;
   unit?: string;
   price: number;
+  productUrl?: string;
+  imageUrl?: string;
+  supplierName?: string;
 };
 
 type QuoteFormModalProps = {
@@ -57,6 +60,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   
   const [title, setTitle] = useState('');
   const [items, setItems] = useState<LineItem[]>([{ type: 'work', description: '', quantity: 1, unit: 'tim', price: 0 }]);
+  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
   const [pdfUrl, setPdfUrl] = useState('');
   const [validUntil, setValidUntil] = useState('');
   const [notes, setNotes] = useState('');
@@ -212,6 +216,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     const newItems = [...items];
     newItems[index] = { ...newItems[index], [field]: value };
     setItems(newItems);
+  };
+
+  const toggleItemExpanded = (index: number) => {
+    const newExpanded = new Set(expandedItems);
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index);
+    } else {
+      newExpanded.add(index);
+    }
+    setExpandedItems(newExpanded);
   };
 
   const calculateSubtotalWork = () => {
@@ -473,71 +487,144 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-12 gap-2 p-3 border rounded-lg bg-muted/20">
-                  <div className="col-span-2">
-                    <Select
-                      value={item.type}
-                      onValueChange={(value: any) => updateItem(index, 'type', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="work">Arbete</SelectItem>
-                        <SelectItem value="material">Material</SelectItem>
-                      </SelectContent>
-                    </Select>
+              {items.map((item, index) => {
+                const isExpanded = expandedItems.has(index);
+                const hasProductInfo = item.productUrl || item.imageUrl || item.supplierName;
+                
+                return (
+                  <div key={index} className="border rounded-lg bg-muted/20">
+                    <div className="grid grid-cols-12 gap-2 p-3">
+                      <div className="col-span-2">
+                        <Select
+                          value={item.type}
+                          onValueChange={(value: any) => updateItem(index, 'type', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="work">Arbete</SelectItem>
+                            <SelectItem value="material">Material</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="col-span-4">
+                        <Input
+                          placeholder="Beskrivning"
+                          value={item.description}
+                          onChange={(e) => updateItem(index, 'description', e.target.value)}
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.1"
+                          placeholder="Antal"
+                          value={item.quantity}
+                          onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <Input
+                          placeholder="Enh"
+                          value={item.unit || ''}
+                          onChange={(e) => updateItem(index, 'unit', e.target.value)}
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <Input
+                          type="number"
+                          min="0"
+                          placeholder="À-pris"
+                          value={item.price}
+                          onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                      <div className="col-span-1 flex items-center justify-between gap-2">
+                        <span className="font-semibold text-sm whitespace-nowrap">
+                          {Math.round(item.quantity * item.price).toLocaleString()} kr
+                        </span>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => removeItem(index)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* Expandable product info section */}
+                    <div className="px-3 pb-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => toggleItemExpanded(index)}
+                        className="h-8 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        {isExpanded ? (
+                          <ChevronUp className="h-4 w-4 mr-1" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 mr-1" />
+                        )}
+                        {hasProductInfo ? 'Produktinfo tillagd' : 'Lägg till produktinfo'}
+                        {hasProductInfo && <Link className="h-3 w-3 ml-1 text-primary" />}
+                      </Button>
+                      
+                      {isExpanded && (
+                        <div className="mt-2 space-y-2 p-3 bg-background rounded-md border border-border">
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Link className="h-3 w-3" />
+                              Produktlänk (t.ex. från Byggmax, Jula)
+                            </Label>
+                            <Input
+                              placeholder="https://www.byggmax.se/..."
+                              value={item.productUrl || ''}
+                              onChange={(e) => updateItem(index, 'productUrl', e.target.value)}
+                              className="text-sm"
+                            />
+                          </div>
+                          
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Image className="h-3 w-3" />
+                              Bildlänk (valfritt)
+                            </Label>
+                            <Input
+                              placeholder="https://..."
+                              value={item.imageUrl || ''}
+                              onChange={(e) => updateItem(index, 'imageUrl', e.target.value)}
+                              className="text-sm"
+                            />
+                          </div>
+                          
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Store className="h-3 w-3" />
+                              Leverantör (valfritt)
+                            </Label>
+                            <Input
+                              placeholder="Byggmax, Jula, etc."
+                              value={item.supplierName || ''}
+                              onChange={(e) => updateItem(index, 'supplierName', e.target.value)}
+                              className="text-sm"
+                            />
+                          </div>
+                          
+                          <p className="text-xs text-muted-foreground pt-1">
+                            💡 Kunden kan klicka på länkarna för att se vilka produkter som ingår
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="col-span-4">
-                    <Input
-                      placeholder="Beskrivning"
-                      value={item.description}
-                      onChange={(e) => updateItem(index, 'description', e.target.value)}
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <Input
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      placeholder="Antal"
-                      value={item.quantity}
-                      onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <Input
-                      placeholder="Enh"
-                      value={item.unit || ''}
-                      onChange={(e) => updateItem(index, 'unit', e.target.value)}
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <Input
-                      type="number"
-                      min="0"
-                      placeholder="À-pris"
-                      value={item.price}
-                      onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
-                    />
-                  </div>
-                  <div className="col-span-1 flex items-center justify-between gap-2">
-                    <span className="font-semibold text-sm whitespace-nowrap">
-                      {Math.round(item.quantity * item.price).toLocaleString()} kr
-                    </span>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => removeItem(index)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
 
