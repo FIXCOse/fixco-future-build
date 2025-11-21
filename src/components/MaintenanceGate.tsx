@@ -322,12 +322,8 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button
-                      onClick={() => {
-                        console.log('[MaintenanceGate] Button clicked!');
-                        openServiceRequestModal({ serviceSlug: undefined });
-                        console.log('[MaintenanceGate] openServiceRequestModal called');
-                      }}
+                  <Button
+                      onClick={() => openServiceRequestModal({ serviceSlug: undefined })}
                       size="lg"
                       className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-xl transition-all"
                     >
