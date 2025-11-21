@@ -8,6 +8,7 @@ import { GlassCard } from '@/components/v2/GlassCard';
 import { GradientText } from '@/components/v2/GradientText';
 import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
 import { Button } from '@/components/ui/button';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 interface MaintenanceGateProps {
   children: ReactNode;
@@ -322,10 +323,7 @@ export function MaintenanceGate({ children }: MaintenanceGateProps) {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Button
-                      onClick={() => {
-                        const { openServiceRequestModal } = require('@/features/requests/ServiceRequestModal');
-                        openServiceRequestModal({ serviceSlug: undefined });
-                      }}
+                      onClick={() => openServiceRequestModal({ serviceSlug: undefined })}
                       size="lg"
                       className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-xl transition-all"
                     >
