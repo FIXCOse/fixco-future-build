@@ -32,7 +32,9 @@ export type OpenModalDetail = {
 };
 
 export function openServiceRequestModal(detail: OpenModalDetail) {
+  console.log('[openServiceRequestModal] Dispatching event with detail:', detail);
   window.dispatchEvent(new CustomEvent("openServiceRequestModal", { detail }));
+  console.log('[openServiceRequestModal] Event dispatched');
 }
 
 export default function ServiceRequestModal() {
@@ -68,13 +70,18 @@ export default function ServiceRequestModal() {
   }, [addons.length, currentStep, open, service]);
 
   useEffect(() => {
+    console.log('[ServiceRequestModal] Component mounted, registering event listener');
+    
     const onOpen = (e: Event) => {
+      console.log('[ServiceRequestModal] Event received!', e);
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
+      console.log('[ServiceRequestModal] serviceSlug:', slug, 'prefill:', prefill);
       
       // Om ingen serviceSlug anges, visa tjänstväljare (steg 0)
       if (!slug) {
+        console.log('[ServiceRequestModal] No slug, showing service selector (step 0)');
         setService(null);
         setCustomerType('private');
         setValues(prefill);
@@ -83,6 +90,7 @@ export default function ServiceRequestModal() {
         setSelectedAddons([]);
         setCurrentStep(0);
         setOpen(true);
+        console.log('[ServiceRequestModal] Modal should now be open!');
         return;
       }
       
@@ -126,7 +134,11 @@ export default function ServiceRequestModal() {
     };
     
     window.addEventListener("openServiceRequestModal", onOpen);
-    return () => window.removeEventListener("openServiceRequestModal", onOpen);
+    console.log('[ServiceRequestModal] Event listener registered');
+    return () => {
+      console.log('[ServiceRequestModal] Cleaning up event listener');
+      window.removeEventListener("openServiceRequestModal", onOpen);
+    };
   }, []);
 
   const [fieldToValidate, setFieldToValidate] = useState<{ key: string; value: any } | null>(null);
@@ -311,10 +323,14 @@ export default function ServiceRequestModal() {
     }
   }
 
+  console.log('[ServiceRequestModal] Rendering, open:', open, 'currentStep:', currentStep, 'service:', service);
+
   if (!open) {
+    console.log('[ServiceRequestModal] Not rendering (open=false)');
     return null;
   }
 
+  console.log('[ServiceRequestModal] Rendering modal!');
   return (
     <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center animate-fade-in">
       {/* Backdrop with blur */}
