@@ -21,10 +21,7 @@ export const AllJobsTab = () => {
     queryFn: async () => {
       let query = supabase
         .from('jobs')
-        .select(`
-          *,
-          customer:customer_id(id, full_name, email, phone, address_line, postal_code, city)
-        `)
+        .select('*')
         .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
