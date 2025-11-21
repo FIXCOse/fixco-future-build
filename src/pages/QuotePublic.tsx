@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
   FileText, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Download,
-  XCircle, MessageCircle, Bell, CreditCard, List, Shield, Copy, Mail, Phone
+  XCircle, MessageCircle, Bell, CreditCard, List, Shield, Copy, Mail, Phone,
+  Wrench, Package, Link as LinkIcon, Image as ImageIcon, Store
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -510,6 +511,138 @@ export default function QuotePublic() {
                   </p>
                 </div>
               </div>
+
+              {/* Line Items with Product Links */}
+              {(() => {
+                let parsedItems: any[] = [];
+                try {
+                  parsedItems = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
+                } catch (e) {
+                  console.error('Failed to parse items:', e);
+                }
+                
+                if (parsedItems.length === 0) return null;
+                
+                const workItems = parsedItems.filter((item: any) => item.type === 'work');
+                const materialItems = parsedItems.filter((item: any) => item.type === 'material');
+                
+                return (
+                  <div className="space-y-2 pt-4 pb-2 border-b border-border">
+                    <div className="flex items-center gap-2 pb-2">
+                      <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <List className="h-4 w-4 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-foreground">Vad ingår i offerten</h3>
+                    </div>
+                    
+                    {workItems.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                          <Wrench className="h-4 w-4 text-primary" />
+                          <span>Arbete</span>
+                        </div>
+                        {workItems.map((item: any, idx: number) => (
+                          <div key={`work-${idx}`} className="ml-6 text-sm">
+                            <div className="flex justify-between items-start gap-2">
+                              <span className="text-foreground">
+                                {item.description} ({item.quantity} {item.unit || 'st'} × {item.price.toLocaleString('sv-SE')} kr)
+                              </span>
+                              <span className="font-semibold text-foreground whitespace-nowrap">
+                                {(item.quantity * item.price).toLocaleString('sv-SE')} kr
+                              </span>
+                            </div>
+                            {(item.productUrl || item.imageUrl || item.supplierName) && (
+                              <div className="mt-1 flex flex-wrap items-center gap-2">
+                                {item.supplierName && (
+                                  <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                                    <Store className="h-3 w-3" />
+                                    {item.supplierName}
+                                  </span>
+                                )}
+                                {item.productUrl && (
+                                  <a
+                                    href={item.productUrl.startsWith('http') ? item.productUrl : `https://${item.productUrl}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  >
+                                    <LinkIcon className="h-3 w-3" />
+                                    Se produkt
+                                  </a>
+                                )}
+                                {item.imageUrl && (
+                                  <a
+                                    href={item.imageUrl.startsWith('http') ? item.imageUrl : `https://${item.imageUrl}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  >
+                                    <ImageIcon className="h-3 w-3" />
+                                    Visa bild
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {materialItems.length > 0 && (
+                      <div className="space-y-2 pt-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                          <Package className="h-4 w-4 text-primary" />
+                          <span>Material</span>
+                        </div>
+                        {materialItems.map((item: any, idx: number) => (
+                          <div key={`material-${idx}`} className="ml-6 text-sm">
+                            <div className="flex justify-between items-start gap-2">
+                              <span className="text-foreground">
+                                {item.description} ({item.quantity} {item.unit || 'st'} × {item.price.toLocaleString('sv-SE')} kr)
+                              </span>
+                              <span className="font-semibold text-foreground whitespace-nowrap">
+                                {(item.quantity * item.price).toLocaleString('sv-SE')} kr
+                              </span>
+                            </div>
+                            {(item.productUrl || item.imageUrl || item.supplierName) && (
+                              <div className="mt-1 flex flex-wrap items-center gap-2">
+                                {item.supplierName && (
+                                  <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                                    <Store className="h-3 w-3" />
+                                    {item.supplierName}
+                                  </span>
+                                )}
+                                {item.productUrl && (
+                                  <a
+                                    href={item.productUrl.startsWith('http') ? item.productUrl : `https://${item.productUrl}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  >
+                                    <LinkIcon className="h-3 w-3" />
+                                    Se produkt
+                                  </a>
+                                )}
+                                {item.imageUrl && (
+                                  <a
+                                    href={item.imageUrl.startsWith('http') ? item.imageUrl : `https://${item.imageUrl}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  >
+                                    <ImageIcon className="h-3 w-3" />
+                                    Visa bild
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Price breakdown */}
               <div className="space-y-2 pt-2">
