@@ -356,27 +356,61 @@ p {
 
 /* CTA Link Styling */
 .rd-navbar_dropdown_cta {
+  position: relative;
   display: block;
   text-align: center;
   padding: 1.25rem 2rem;
-  background: linear-gradient(135deg, rgba(48, 255, 151, 0.1) 0%, rgba(48, 255, 151, 0.05) 100%);
-  border: 2px solid rgba(48, 255, 151, 0.3);
+  background: linear-gradient(135deg, rgba(48, 255, 151, 0.15) 0%, rgba(48, 255, 151, 0.08) 100%);
+  border: 2px solid transparent;
   border-radius: 12px;
   transition: all 0.3s ease;
   text-decoration: none;
+  box-shadow: 
+    0 4px 20px rgba(48, 255, 151, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.rd-navbar_dropdown_cta::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    #30FF97 0deg,
+    #4ecdc4 90deg,
+    #30FF97 180deg,
+    #1fb268 270deg,
+    #30FF97 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: gradient-angle-rotate 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .rd-navbar_dropdown_cta:hover {
-  background: linear-gradient(135deg, rgba(48, 255, 151, 0.15) 0%, rgba(48, 255, 151, 0.08) 100%);
-  border-color: #30FF97;
+  background: linear-gradient(135deg, rgba(48, 255, 151, 0.25) 0%, rgba(48, 255, 151, 0.15) 100%);
   transform: translateY(-2px);
+  box-shadow: 
+    0 6px 30px rgba(48, 255, 151, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .rd-navbar_dropdown_cta_text {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #30FF97;
   letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(48, 255, 151, 0.3);
 }
 
 /* Two Column Layout for Services */
