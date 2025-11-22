@@ -147,42 +147,39 @@ const Navbar2 = () => {
           <div className="rd-navbar_dropdown_block_wrapper">
             <div className="rd-navbar_dropdown_block_gradient"></div>
             <div data-wf--navbar-dropdown-block--variant="regular" className="rd-navbar_dropdown_block">
-              <div className="rd-navbar_block_list">
-                {services.map((service) => (
-                  <a key={service.href} href={service.href} className="rd-navbar_block_link w-inline-block">
-                    <div>
-                      <div className="rd-navbar_block_link_title">{service.title}</div>
-                      <p className="rd-navbar_block_link_text">{service.desc}</p>
-                    </div>
-                    <div className="rd-navbar_block_link_icon"></div>
-                  </a>
-                ))}
-              </div>
-              <a href={paths.smartHome} className="rd-navbar_block_card w-inline-block">
-                <div className="rd-navbar_block_card_header">
-                  <div className="rd-navbar_block_card_header_top">
-                    <div className="rd-navbar_block_card_title">
-                      {currentLanguage === 'en' ? 'Smart Home of the Future' : 'Framtidens Hem'}
-                    </div>
-                    <ArrowUpRight className="rd-navbar_block_card_header_arrow" size={24} />
-                  </div>
-                  <p className="rd-navbar_block_card_text">
-                    {currentLanguage === 'en' 
-                      ? 'Automate your home with smart solutions that save energy and increase comfort'
-                      : 'Automatisera ditt hem med smarta lösningar som sparar energi och ökar bekvämligheten'}
-                  </p>
+              <a href={paths.services} className="rd-navbar_dropdown_cta">
+                <div className="rd-navbar_dropdown_cta_text">
+                  {currentLanguage === 'en' 
+                    ? 'View all our services →' 
+                    : 'Se alla våra tjänster →'}
                 </div>
-                <figure className="rd-navbar_block_card_media">
-                  <img 
-                    src="https://images.unsplash.com/photo-1558002038-1055907df827?w=800&auto=format&fit=crop" 
-                    loading="lazy" 
-                    width="356" 
-                    height="302" 
-                    alt={currentLanguage === 'en' ? 'Smart Home' : 'Smart Hem'} 
-                    className="rd-navbar_block_card_image" 
-                  />
-                </figure>
               </a>
+              
+              <div className="rd-navbar_block_columns">
+                <div className="rd-navbar_block_list">
+                  {services.slice(0, 4).map((service) => (
+                    <a key={service.href} href={service.href} className="rd-navbar_block_link w-inline-block">
+                      <div>
+                        <div className="rd-navbar_block_link_title">{service.title}</div>
+                        <p className="rd-navbar_block_link_text">{service.desc}</p>
+                      </div>
+                      <div className="rd-navbar_block_link_icon"></div>
+                    </a>
+                  ))}
+                </div>
+                
+                <div className="rd-navbar_block_list">
+                  {services.slice(4, 8).map((service) => (
+                    <a key={service.href} href={service.href} className="rd-navbar_block_link w-inline-block">
+                      <div>
+                        <div className="rd-navbar_block_link_title">{service.title}</div>
+                        <p className="rd-navbar_block_link_text">{service.desc}</p>
+                      </div>
+                      <div className="rd-navbar_block_link_icon"></div>
+                    </a>
+                  ))}
+                </div>
+              </div>
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="24" viewBox="0 0 36 24" fill="none" className="rd-navbar_dropdown_block_shape">
                 <path d="M20.9984 22.6044C19.4061 24.4076 16.5939 24.4076 15.0016 22.6043L1.3532 7.14759C-0.927141 4.56511 0.906416 0.5 4.35158 0.5L31.6484 0.500003C35.0936 0.500003 36.9271 4.56511 34.6468 7.14759L20.9984 22.6044Z" fill="#FAFAFA"></path>
               </svg>
