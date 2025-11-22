@@ -284,7 +284,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(10, 10, 10, 0.85);
+  background-color: rgba(10, 10, 10, 0.02);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 998;
