@@ -277,30 +277,20 @@ p {
   transition-behavior: normal;
 }
 
-.rd-navbar_dropdown_list::before {
-  content: '';
+/* Fullskärms backdrop för dropdown */
+.rd-navbar_dropdown_backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(10, 10, 10, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  pointer-events: none;
-}
-
-.rd-navbar_dropdown_list.w--open::before {
-  opacity: 1;
+  background-color: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 998;
+  animation: fade-in 0.3s ease-out;
   pointer-events: auto;
-}
-
-.rd-navbar_dropdown_list > * {
-  position: relative;
-  z-index: 2;
+  cursor: pointer;
 }
 
 .rd-navbar_dropdown_block {
@@ -325,7 +315,6 @@ p {
   padding: 3px;
   background: transparent;
   overflow: hidden;
-  z-index: 2;
 }
 
 .rd-navbar_dropdown_block_gradient {
