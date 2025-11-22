@@ -154,13 +154,9 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 
 const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
+  const [isReady, setIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useCopy();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Clear old hero content from localStorage on first load
   useEffect(() => {
@@ -170,29 +166,27 @@ const HeroUltra = () => {
       if (store) {
         try {
           const parsed = JSON.parse(store);
-          let needsReload = false;
+          let needsClear = false;
           
           if (parsed?.state?.content?.sv?.['hero-title']) {
             delete parsed.state.content.sv['hero-title'];
-            needsReload = true;
+            needsClear = true;
           }
           if (parsed?.state?.content?.sv?.['hero-subtitle']) {
             delete parsed.state.content.sv['hero-subtitle'];
-            needsReload = true;
+            needsClear = true;
           }
           if (parsed?.state?.content?.en?.['hero-title']) {
             delete parsed.state.content.en['hero-title'];
-            needsReload = true;
+            needsClear = true;
           }
           if (parsed?.state?.content?.en?.['hero-subtitle']) {
             delete parsed.state.content.en['hero-subtitle'];
-            needsReload = true;
+            needsClear = true;
           }
           
-          if (needsReload) {
+          if (needsClear) {
             localStorage.setItem('fixco-content-store', JSON.stringify(parsed));
-            sessionStorage.setItem('hero-content-cleared', 'true');
-            window.location.reload();
           }
         } catch (error) {
           console.error('Failed to clear hero content:', error);
@@ -200,7 +194,15 @@ const HeroUltra = () => {
       }
       sessionStorage.setItem('hero-content-cleared', 'true');
     }
+    setIsReady(true);
   }, []);
+
+  useEffect(() => {
+    if (isReady) {
+      const timer = setTimeout(() => setIsVisible(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isReady]);
 
   const trustIndicators = [
     { icon: "image", src: "/assets/fixco-f-icon-new.png", fallback: "/assets/fixco-icon.webp", title: t('hero.trust_quality'), description: t('hero.trust_quality_desc') },
@@ -210,7 +212,7 @@ const HeroUltra = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         {/* Background System - Progressive Enhancement */}
         <div className="absolute inset-0">
           {/* Base gradient (always visible) */}
