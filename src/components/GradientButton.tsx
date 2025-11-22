@@ -10,7 +10,7 @@ const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
   ({ children, className, ...props }, ref) => {
     return (
       <button ref={ref} className={cn("gradient-button", className)} {...props}>
-        <span className="gradient-text">{children}</span>
+        <span className="gradient-button-text">{children}</span>
       </button>
     );
   }
