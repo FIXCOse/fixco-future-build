@@ -362,10 +362,10 @@ p {
   padding: 1.25rem 2rem;
   background: linear-gradient(
     135deg, 
-    rgba(48, 255, 151, 0.35) 0%,
-    rgba(78, 205, 196, 0.35) 33%,
-    rgba(31, 178, 104, 0.35) 66%,
-    rgba(48, 255, 151, 0.25) 100%
+    rgba(48, 255, 151, 0.65) 0%,
+    rgba(78, 205, 196, 0.75) 33%,
+    rgba(31, 178, 104, 0.7) 66%,
+    rgba(48, 255, 151, 0.6) 100%
   );
   border: 3px solid #30FF97;
   border-radius: 12px;
@@ -391,10 +391,10 @@ p {
 .rd-navbar_dropdown_cta:hover {
   background: linear-gradient(
     135deg, 
-    rgba(48, 255, 151, 0.5) 0%,
-    rgba(78, 205, 196, 0.5) 33%,
-    rgba(31, 178, 104, 0.5) 66%,
-    rgba(48, 255, 151, 0.35) 100%
+    rgba(48, 255, 151, 0.85) 0%,
+    rgba(78, 205, 196, 0.9) 33%,
+    rgba(31, 178, 104, 0.88) 66%,
+    rgba(48, 255, 151, 0.8) 100%
   );
   transform: translateY(-3px) scale(1.02);
   border-color: #1fb268;
