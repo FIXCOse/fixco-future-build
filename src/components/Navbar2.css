@@ -362,18 +362,18 @@ p {
   padding: 1.25rem 2rem;
   background: linear-gradient(
     135deg, 
-    rgba(48, 255, 151, 0.65) 0%,
-    rgba(78, 205, 196, 0.75) 33%,
-    rgba(31, 178, 104, 0.7) 66%,
-    rgba(48, 255, 151, 0.6) 100%
+    rgba(172, 100, 247, 0.65) 0%,
+    rgba(78, 205, 247, 0.75) 33%,
+    rgba(255, 100, 204, 0.7) 66%,
+    rgba(172, 100, 247, 0.6) 100%
   );
-  border: 3px solid #30FF97;
+  border: 3px solid hsl(262, 83%, 58%);
   border-radius: 12px;
   transition: all 0.3s ease;
   text-decoration: none;
   box-shadow: 
-    0 8px 32px rgba(48, 255, 151, 0.5),
-    0 4px 16px rgba(48, 255, 151, 0.3),
+    0 8px 32px rgba(172, 100, 247, 0.5),
+    0 4px 16px rgba(172, 100, 247, 0.3),
     inset 0 2px 4px rgba(255, 255, 255, 0.2);
 }
 
@@ -391,16 +391,16 @@ p {
 .rd-navbar_dropdown_cta:hover {
   background: linear-gradient(
     135deg, 
-    rgba(48, 255, 151, 0.85) 0%,
-    rgba(78, 205, 196, 0.9) 33%,
-    rgba(31, 178, 104, 0.88) 66%,
-    rgba(48, 255, 151, 0.8) 100%
+    rgba(172, 100, 247, 0.85) 0%,
+    rgba(78, 205, 247, 0.9) 33%,
+    rgba(255, 100, 204, 0.88) 66%,
+    rgba(172, 100, 247, 0.8) 100%
   );
   transform: translateY(-3px) scale(1.02);
-  border-color: #1fb268;
+  border-color: hsl(262, 83%, 48%);
   box-shadow: 
-    0 12px 48px rgba(48, 255, 151, 0.7),
-    0 6px 24px rgba(48, 255, 151, 0.5),
+    0 12px 48px rgba(172, 100, 247, 0.7),
+    0 6px 24px rgba(172, 100, 247, 0.5),
     inset 0 2px 6px rgba(255, 255, 255, 0.3);
 }
 
@@ -409,10 +409,10 @@ p {
   z-index: 1;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #0b4227;
+  color: hsl(262, 83%, 58%);
   letter-spacing: 0.02em;
   text-shadow: 
-    0 2px 8px rgba(48, 255, 151, 0.6),
+    0 2px 8px rgba(172, 100, 247, 0.6),
     0 0 20px rgba(255, 255, 255, 0.8);
 }
 
