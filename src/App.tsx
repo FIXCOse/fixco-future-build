@@ -112,6 +112,7 @@ import { FeatureFlagInitializer } from './components/FeatureFlagInitializer';
 import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
 import { AuthProfileProvider } from './contexts/AuthProfileProvider';
 import { useContentLoader } from '@/hooks/useContentLoader';
+import { lazyElement } from './components/LazyRoute';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -183,26 +184,26 @@ const App = () => {
                       <ScrollToTop />
                       <Routes>
                       {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
-                      <Route path="/auth" element={<Auth />} />
-                      <Route path="/en/auth" element={<Auth />} />
-                      <Route path="/auth/callback" element={<AuthCallback />} />
-                      <Route path="/auth/error" element={<AuthError />} />
+                      <Route path="/auth" element={lazyElement(Auth)} />
+                      <Route path="/en/auth" element={lazyElement(Auth)} />
+                      <Route path="/auth/callback" element={lazyElement(AuthCallback)} />
+                      <Route path="/auth/error" element={lazyElement(AuthError)} />
                       
                       {/* All other routes INSIDE MaintenanceGate */}
                       <Route path="*" element={
                         <MaintenanceGate>
                           <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dashboard" element={lazyElement(Dashboard)} />
                   
                   {/* Public Quote View */}
-                  <Route path="/q/:token" element={<QuotePublic />} />
+                  <Route path="/q/:token" element={lazyElement(QuotePublic)} />
                   
                   {/* Public Invoice View */}
-                  <Route path="/invoice/:token" element={<InvoicePublic />} />
+                  <Route path="/invoice/:token" element={lazyElement(InvoicePublic)} />
 
                   {/* City pages */}
-                  <Route path="/omraden/uppsala" element={<LocationCityPage city="Uppsala" />} />
-                  <Route path="/omraden/stockholm" element={<LocationCityPage city="Stockholm" />} />
+                  <Route path="/omraden/uppsala" element={lazyElement(LocationCityPage, { city: "Uppsala" })} />
+                  <Route path="/omraden/stockholm" element={lazyElement(LocationCityPage, { city: "Stockholm" })} />
 
                   {/* MyFixco Layout with nested routes */}
                   <Route path="/mitt-fixco" element={
@@ -210,51 +211,51 @@ const App = () => {
                       <MyFixcoLayout />
                     </Suspense>
                   }>
-                    <Route index element={<CustomerDashboard />} />
-                    <Route path="properties" element={<PropertiesPage />} />
-                    <Route path="invoices" element={<InvoicesPage />} />
-                    <Route path="history" element={<HistoryPage />} />
-                    <Route path="activity" element={<ActivityPage />} />
-                    <Route path="rot-rut" element={<RotRutPage />} />
-                    <Route path="settings" element={<AccountSettings />} />
-                    <Route path="staff" element={<StaffManagement />} />
+                    <Route index element={lazyElement(CustomerDashboard)} />
+                    <Route path="properties" element={lazyElement(PropertiesPage)} />
+                    <Route path="invoices" element={lazyElement(InvoicesPage)} />
+                    <Route path="history" element={lazyElement(HistoryPage)} />
+                    <Route path="activity" element={lazyElement(ActivityPage)} />
+                    <Route path="rot-rut" element={lazyElement(RotRutPage)} />
+                    <Route path="settings" element={lazyElement(AccountSettings)} />
+                    <Route path="staff" element={lazyElement(StaffManagement)} />
                   </Route>
 
                   {/* Admin Routes */}
                   <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                    <Route index element={<DashboardOverview />} />
-                    <Route path="services" element={<AdminServices />} />
+                    <Route index element={lazyElement(DashboardOverview)} />
+                    <Route path="services" element={lazyElement(AdminServices)} />
                     {/* Unified quotes page */}
-                    <Route path="quotes" element={<AdminQuotesUnified />} />
-                    <Route path="quotes/trash" element={<AdminQuotesTrash />} />
+                    <Route path="quotes" element={lazyElement(AdminQuotesUnified)} />
+                    <Route path="quotes/trash" element={lazyElement(AdminQuotesTrash)} />
                     {/* Redirects for old routes */}
                     <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
                     <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
                     <Route path="bookings/:id" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
-                    <Route path="bookings/trash" element={<AdminBookingsTrash />} />
+                    <Route path="bookings/trash" element={lazyElement(AdminBookingsTrash)} />
                     <Route path="ongoing-projects" element={<Navigate to="/admin/jobs" replace />} />
-                    <Route path="quote-questions" element={<AdminQuoteQuestions />} />
-                    <Route path="invoices" element={<AdminInvoices />} />
-                    <Route path="projects/trash" element={<AdminProjectsTrash />} />
-                    <Route path="customers" element={<AdminCustomers />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="database" element={<AdminDatabase />} />
-                    <Route path="reports" element={<AdminReports />} />
-                    <Route path="jobs" element={<AdminJobsUnified />} />
-                    <Route path="jobs/:jobId" element={<AdminJobDetail />} />
-                    <Route path="jobs/trash" element={<AdminJobsTrash />} />
-                    <Route path="schedule" element={<AdminSchedule />} />
-                    <Route path="settings" element={<AdminSettings />} />
-                    <Route path="feature-flags" element={<AdminFeatureFlags />} />
-                    <Route path="security" element={<AdminSecurity />} />
-                    <Route path="staff" element={<AdminStaff />} />
-                    <Route path="payroll" element={<AdminPayroll />} />
-                    <Route path="job-requests-trash" element={<AdminJobRequestsTrash />} />
-                    <Route path="analytics/detailed" element={<AdminReports />} />
-                    <Route path="translations" element={<AdminTranslations />} />
-                    <Route path="leads" element={<AdminLeads />} />
-                    <Route path="worker-analytics" element={<AdminWorkerAnalytics />} />
-                    <Route path="applications" element={<AdminApplications />} />
+                    <Route path="quote-questions" element={lazyElement(AdminQuoteQuestions)} />
+                    <Route path="invoices" element={lazyElement(AdminInvoices)} />
+                    <Route path="projects/trash" element={lazyElement(AdminProjectsTrash)} />
+                    <Route path="customers" element={lazyElement(AdminCustomers)} />
+                    <Route path="users" element={lazyElement(AdminUsers)} />
+                    <Route path="database" element={lazyElement(AdminDatabase)} />
+                    <Route path="reports" element={lazyElement(AdminReports)} />
+                    <Route path="jobs" element={lazyElement(AdminJobsUnified)} />
+                    <Route path="jobs/:jobId" element={lazyElement(AdminJobDetail)} />
+                    <Route path="jobs/trash" element={lazyElement(AdminJobsTrash)} />
+                    <Route path="schedule" element={lazyElement(AdminSchedule)} />
+                    <Route path="settings" element={lazyElement(AdminSettings)} />
+                    <Route path="feature-flags" element={lazyElement(AdminFeatureFlags)} />
+                    <Route path="security" element={lazyElement(AdminSecurity)} />
+                    <Route path="staff" element={lazyElement(AdminStaff)} />
+                    <Route path="payroll" element={lazyElement(AdminPayroll)} />
+                    <Route path="job-requests-trash" element={lazyElement(AdminJobRequestsTrash)} />
+                    <Route path="analytics/detailed" element={lazyElement(AdminReports)} />
+                    <Route path="translations" element={lazyElement(AdminTranslations)} />
+                    <Route path="leads" element={lazyElement(AdminLeads)} />
+                    <Route path="worker-analytics" element={lazyElement(AdminWorkerAnalytics)} />
+                    <Route path="applications" element={lazyElement(AdminApplications)} />
                   </Route>
 
                   {/* Worker Routes */}
@@ -263,13 +264,13 @@ const App = () => {
                       <WorkerLayout />
                     </Suspense>
                   }>
-                  <Route index element={<WorkerDashboard />} />
-                    <Route path="pool" element={<JobPool />} />
-                    <Route path="jobs" element={<MyJobs />} />
-                    <Route path="jobs/:jobId" element={<JobDetail />} />
-                    <Route path="schedule" element={<WorkerSchedule />} />
-                    <Route path="timesheet" element={<WorkerTimesheet />} />
-                    <Route path="settings" element={<WorkerSettings />} />
+                  <Route index element={lazyElement(WorkerDashboard)} />
+                    <Route path="pool" element={lazyElement(JobPool)} />
+                    <Route path="jobs" element={lazyElement(MyJobs)} />
+                    <Route path="jobs/:jobId" element={lazyElement(JobDetail)} />
+                    <Route path="schedule" element={lazyElement(WorkerSchedule)} />
+                    <Route path="timesheet" element={lazyElement(WorkerTimesheet)} />
+                    <Route path="settings" element={lazyElement(WorkerSettings)} />
                   </Route>
 
                   {/* Booking Route */}
@@ -281,46 +282,46 @@ const App = () => {
                   
                   {/* Main Swedish Routes */}
                   <Route path="/" element={<AppLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="home-v2" element={<HomeV2 />} />
-                    <Route path="tjanster" element={<Services />} />
-                    <Route path="tjanster/:slug" element={<ServiceDetail />} />
+                    <Route index element={lazyElement(Home)} />
+                    <Route path="home-v2" element={lazyElement(HomeV2)} />
+                    <Route path="tjanster" element={lazyElement(Services)} />
+                    <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
                     
                     {/* Service+City pages - Full detail pages like main service pages */}
-                    <Route path="tjanster/elmontor-uppsala" element={<ServiceCityDetail service="el" city="Uppsala" />} />
-                    <Route path="tjanster/vvs-uppsala" element={<ServiceCityDetail service="vvs" city="Uppsala" />} />
-                    <Route path="tjanster/snickare-uppsala" element={<ServiceCityDetail service="snickeri" city="Uppsala" />} />
-                    <Route path="tjanster/montering-uppsala" element={<ServiceCityDetail service="montering" city="Uppsala" />} />
-                    <Route path="tjanster/tradgard-uppsala" element={<ServiceCityDetail service="tradgard" city="Uppsala" />} />
-                    <Route path="tjanster/stad-uppsala" element={<ServiceCityDetail service="stadning" city="Uppsala" />} />
-                    <Route path="tjanster/markarbeten-uppsala" element={<ServiceCityDetail service="markarbeten" city="Uppsala" />} />
-                    <Route path="tjanster/tekniska-installationer-uppsala" element={<ServiceCityDetail service="tekniska-installationer" city="Uppsala" />} />
-                    <Route path="tjanster/flytt-uppsala" element={<ServiceCityDetail service="flytt" city="Uppsala" />} />
-                    <Route path="tjanster/malning-uppsala" element={<ServiceCityDetail service="malning" city="Uppsala" />} />
+                    <Route path="tjanster/elmontor-uppsala" element={lazyElement(ServiceCityDetail, { service: "el", city: "Uppsala" })} />
+                    <Route path="tjanster/vvs-uppsala" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Uppsala" })} />
+                    <Route path="tjanster/snickare-uppsala" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Uppsala" })} />
+                    <Route path="tjanster/montering-uppsala" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Uppsala" })} />
+                    <Route path="tjanster/tradgard-uppsala" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Uppsala" })} />
+                    <Route path="tjanster/stad-uppsala" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Uppsala" })} />
+                    <Route path="tjanster/markarbeten-uppsala" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Uppsala" })} />
+                    <Route path="tjanster/tekniska-installationer-uppsala" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Uppsala" })} />
+                    <Route path="tjanster/flytt-uppsala" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Uppsala" })} />
+                    <Route path="tjanster/malning-uppsala" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Uppsala" })} />
                     
-                    <Route path="tjanster/elmontor-stockholm" element={<ServiceCityDetail service="el" city="Stockholm" />} />
-                    <Route path="tjanster/vvs-stockholm" element={<ServiceCityDetail service="vvs" city="Stockholm" />} />
-                    <Route path="tjanster/snickare-stockholm" element={<ServiceCityDetail service="snickeri" city="Stockholm" />} />
-                    <Route path="tjanster/montering-stockholm" element={<ServiceCityDetail service="montering" city="Stockholm" />} />
-                    <Route path="tjanster/tradgard-stockholm" element={<ServiceCityDetail service="tradgard" city="Stockholm" />} />
-                    <Route path="tjanster/stad-stockholm" element={<ServiceCityDetail service="stadning" city="Stockholm" />} />
-                    <Route path="tjanster/markarbeten-stockholm" element={<ServiceCityDetail service="markarbeten" city="Stockholm" />} />
-                    <Route path="tjanster/tekniska-installationer-stockholm" element={<ServiceCityDetail service="tekniska-installationer" city="Stockholm" />} />
-                    <Route path="tjanster/flytt-stockholm" element={<ServiceCityDetail service="flytt" city="Stockholm" />} />
-                    <Route path="tjanster/malning-stockholm" element={<ServiceCityDetail service="malning" city="Stockholm" />} />
+                    <Route path="tjanster/elmontor-stockholm" element={lazyElement(ServiceCityDetail, { service: "el", city: "Stockholm" })} />
+                    <Route path="tjanster/vvs-stockholm" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Stockholm" })} />
+                    <Route path="tjanster/snickare-stockholm" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Stockholm" })} />
+                    <Route path="tjanster/montering-stockholm" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Stockholm" })} />
+                    <Route path="tjanster/tradgard-stockholm" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Stockholm" })} />
+                    <Route path="tjanster/stad-stockholm" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Stockholm" })} />
+                    <Route path="tjanster/markarbeten-stockholm" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Stockholm" })} />
+                    <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
+                    <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
+                    <Route path="tjanster/malning-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
                     
-                    <Route path="kontakt" element={<Contact />} />
-                    <Route path="faq" element={<FAQ />} />
-                    <Route path="om-oss" element={<AboutUs />} />
-                    <Route path="boka-hembesok" element={<BookVisit />} />
-                    <Route path="rot-info" element={<ROTInfo />} />
-                    <Route path="cookies" element={<Cookies />} />
-                    <Route path="ansvar-forsakring" element={<Insurance />} />
-                    <Route path="rot" element={<ROTInfo />} />
-                    <Route path="rut" element={<RUT />} />
-                    <Route path="referenser" element={<Referenser />} />
-                    <Route path="ai" element={<AI />} />
-                    <Route path="karriar" element={<Careers />} />
+                    <Route path="kontakt" element={lazyElement(Contact)} />
+                    <Route path="faq" element={lazyElement(FAQ)} />
+                    <Route path="om-oss" element={lazyElement(AboutUs)} />
+                    <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
+                    <Route path="rot-info" element={lazyElement(ROTInfo)} />
+                    <Route path="cookies" element={lazyElement(Cookies)} />
+                    <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
+                    <Route path="rot" element={lazyElement(ROTInfo)} />
+                    <Route path="rut" element={lazyElement(RUT)} />
+                    <Route path="referenser" element={lazyElement(Referenser)} />
+                    <Route path="ai" element={lazyElement(AI)} />
+                    <Route path="karriar" element={lazyElement(Careers)} />
                     <Route path="smart-hem" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
@@ -335,30 +336,30 @@ const App = () => {
                         </Suspense>
                       </ErrorBoundary>
                     } />
-                    <Route path="terms" element={<Terms />} />
-                    <Route path="privacy" element={<Privacy />} />
-                    <Route path="cookies" element={<Cookies />} />
-                    <Route path="ansvar-forsakring" element={<Insurance />} />
+                    <Route path="terms" element={lazyElement(Terms)} />
+                    <Route path="privacy" element={lazyElement(Privacy)} />
+                    <Route path="cookies" element={lazyElement(Cookies)} />
+                    <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
                   </Route>
                   
                   <Route path="/en/*" element={<AppLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="home-v2" element={<HomeV2 />} />
-                    <Route path="services" element={<Services />} />
-                    <Route path="services/:slug" element={<ServiceDetail />} />
-                    <Route path="contact" element={<Contact />} />
-                    <Route path="faq" element={<FAQ />} />
-                    <Route path="about" element={<AboutUs />} />
-                    <Route path="references" element={<Referenser />} />
-                    <Route path="terms" element={<Terms />} />
-                    <Route path="privacy" element={<Privacy />} />
-                    <Route path="cookies" element={<Cookies />} />
-                    <Route path="insurance" element={<Insurance />} />
-                    <Route path="rot" element={<ROTInfo />} />
-                    <Route path="rut" element={<RUT />} />
-                    <Route path="book-visit" element={<BookVisit />} />
-                    <Route path="ai" element={<AI />} />
-                    <Route path="careers" element={<Careers />} />
+                    <Route index element={lazyElement(Home)} />
+                    <Route path="home-v2" element={lazyElement(HomeV2)} />
+                    <Route path="services" element={lazyElement(Services)} />
+                    <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
+                    <Route path="contact" element={lazyElement(Contact)} />
+                    <Route path="faq" element={lazyElement(FAQ)} />
+                    <Route path="about" element={lazyElement(AboutUs)} />
+                    <Route path="references" element={lazyElement(Referenser)} />
+                    <Route path="terms" element={lazyElement(Terms)} />
+                    <Route path="privacy" element={lazyElement(Privacy)} />
+                    <Route path="cookies" element={lazyElement(Cookies)} />
+                    <Route path="insurance" element={lazyElement(Insurance)} />
+                    <Route path="rot" element={lazyElement(ROTInfo)} />
+                    <Route path="rut" element={lazyElement(RUT)} />
+                    <Route path="book-visit" element={lazyElement(BookVisit)} />
+                    <Route path="ai" element={lazyElement(AI)} />
+                    <Route path="careers" element={lazyElement(Careers)} />
                     <Route path="smart-home" element={
                       <ErrorBoundary fallback={
                         <div className="min-h-screen flex items-center justify-center">
@@ -376,7 +377,7 @@ const App = () => {
                   </Route>
                   
                   {/* Catch-all route */}
-                            <Route path="*" element={<NotFound />} />
+                            <Route path="*" element={lazyElement(NotFound)} />
                           </Routes>
                         </MaintenanceGate>
                       } />
