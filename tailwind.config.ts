@@ -21,10 +21,12 @@ export default {
 			screens: {
 				'laptop': '900px',
 			},
-			fontFamily: {
-				'inter': ['Inter', 'sans-serif'],
-				'space-grotesk': ['Space Grotesk', 'sans-serif'],
-			},
+      fontFamily: {
+        'sans': ['Outfit', 'sans-serif'],
+        'heading': ['"Red Hat Display"', 'sans-serif'],
+        'brand': ['"Playfair Display"', 'serif'],
+        'body': ['Outfit', 'sans-serif'],
+      },
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

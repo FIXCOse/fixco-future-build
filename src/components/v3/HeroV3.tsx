@@ -31,9 +31,6 @@ const HeroV3 = () => {
         <div className="absolute bottom-20 left-10 w-[350px] h-[350px] bg-[#4a2490] opacity-20 blur-[100px] rounded-full" />
       </div>
 
-      {/* Right Shade Overlay */}
-      <div className="absolute top-0 bottom-0 right-0 w-[16.875rem] bg-gradient-to-l from-[#0a0a0a] from-60% to-transparent 2xl:right-[-1%] md:w-[16.875rem] max-md:w-[8.125rem] max-[479px]:right-[-10%]" />
-      
       {/* Fixco Logo - Absolute positioned with fade-in animation */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-8 md:py-10 z-[99] pointer-events-none animate-logo-fade-in">
         <div className="pointer-events-auto">
