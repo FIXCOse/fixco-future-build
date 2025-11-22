@@ -8,6 +8,7 @@ import useProgressiveEnhancement from "@/hooks/useProgressiveEnhancement";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableText } from "@/components/EditableText";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
+import { useContentStore } from "@/stores/contentStore";
 import { AnimatedFixcoFIcon } from "@/components/icons/AnimatedFixcoFIcon";
 
 interface ParticleSystemProps {
@@ -157,6 +158,7 @@ const HeroUltra = () => {
   const [isReady, setIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useCopy();
+  const { isHydrated } = useContentStore();
 
   // Clear old hero content from localStorage on first load
   useEffect(() => {
@@ -198,11 +200,11 @@ const HeroUltra = () => {
   }, []);
 
   useEffect(() => {
-    if (isReady) {
+    if (isReady && isHydrated) {
       const timer = setTimeout(() => setIsVisible(true), 100);
       return () => clearTimeout(timer);
     }
-  }, [isReady]);
+  }, [isReady, isHydrated]);
 
   const trustIndicators = [
     { icon: "image", src: "/assets/fixco-f-icon-new.png", fallback: "/assets/fixco-icon.webp", title: t('hero.trust_quality'), description: t('hero.trust_quality_desc') },

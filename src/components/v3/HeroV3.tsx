@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Star } from "lucide-react";
+import { useContentStore } from "@/stores/contentStore";
 import logoBauhaus from "@/assets/bauhaus-logo-red.png";
 import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
@@ -10,8 +12,23 @@ import logoNordgren from "@/assets/nordgren-logo-white.png";
 import logoFixco from "@/assets/fixco-logo-white.png";
 
 const HeroV3 = () => {
+  const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const { isHydrated } = useContentStore();
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (isReady && isHydrated) {
+      const timer = setTimeout(() => setIsVisible(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isReady, isHydrated]);
+
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: '980px' }}>
+    <section className={`relative w-full overflow-hidden transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ height: '980px' }}>
       {/* Background Gradient */}
       <div 
         className="absolute inset-0 animate-gradient-shift" 
