@@ -1,4 +1,6 @@
+import { motion } from "framer-motion";
 import GradientButton from "@/components/GradientButton";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Star } from "lucide-react";
 import logoBauhaus from "@/assets/bauhaus-logo-red.png";
 import logoByggmax from "@/assets/byggmax-logo-red.png";
@@ -66,7 +68,7 @@ const HeroV3 = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <GradientButton href="/boka/standard">
+          <GradientButton onClick={() => openServiceRequestModal({ showCategories: true })}>
             Begär Kostnadsfri Offert
           </GradientButton>
           <GradientButton href="/tjanster">
