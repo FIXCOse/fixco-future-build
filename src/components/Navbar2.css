@@ -543,8 +543,7 @@ p {
 .rd-navbar_block_settings {
   padding: 1.5rem;
   border-left: 1px solid hsl(var(--border) / 0.2);
-  background: hsl(var(--muted) / 0.3);
-  backdrop-filter: blur(8px);
+  background: transparent;
   border-radius: 0.75rem;
   min-width: 280px;
   display: flex;
