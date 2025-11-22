@@ -360,7 +360,13 @@ p {
   display: block;
   text-align: center;
   padding: 1.25rem 2rem;
-  background: linear-gradient(135deg, rgba(48, 255, 151, 0.35) 0%, rgba(48, 255, 151, 0.25) 100%);
+  background: linear-gradient(
+    135deg, 
+    rgba(48, 255, 151, 0.35) 0%,
+    rgba(78, 205, 196, 0.35) 33%,
+    rgba(31, 178, 104, 0.35) 66%,
+    rgba(48, 255, 151, 0.25) 100%
+  );
   border: 3px solid #30FF97;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -383,7 +389,13 @@ p {
 }
 
 .rd-navbar_dropdown_cta:hover {
-  background: linear-gradient(135deg, rgba(48, 255, 151, 0.5) 0%, rgba(48, 255, 151, 0.35) 100%);
+  background: linear-gradient(
+    135deg, 
+    rgba(48, 255, 151, 0.5) 0%,
+    rgba(78, 205, 196, 0.5) 33%,
+    rgba(31, 178, 104, 0.5) 66%,
+    rgba(48, 255, 151, 0.35) 100%
+  );
   transform: translateY(-3px) scale(1.02);
   border-color: #1fb268;
   box-shadow: 
