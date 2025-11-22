@@ -66,10 +66,10 @@ const HeroV3 = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 items-center">
-          <GradientButton>
+          <GradientButton href="/boka/standard">
             Begär Kostnadsfri Offert
           </GradientButton>
-          <GradientButton>
+          <GradientButton href="/tjanster">
             Våra Tjänster
           </GradientButton>
         </div>
