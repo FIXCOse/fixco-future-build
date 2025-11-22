@@ -294,14 +294,17 @@ p {
 }
 
 .rd-navbar_dropdown_block {
-  background-color: var(--background--background-surface);
-  border-radius: 1.5rem;
-  column-gap: 1rem;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  padding: 1.75rem;
+  flex-direction: column;
+  max-height: 600px;
+  border-radius: 20px;
+  background: var(--background--background-surface);
+  padding: 2rem;
+  gap: 1.5rem;
   position: relative;
-  row-gap: 1rem;
+  z-index: 999;
+  overflow-y: auto;
 }
 
 .rd-navbar_dropdown_block:where(.w-variant-4f1623ae-01ab-18ff-1ad3-6b7bb43febb5) {
@@ -349,6 +352,38 @@ p {
 .rd-navbar_block_card, .rd-navbar_block_list {
   max-width: 22.25rem;
   width: 100%;
+}
+
+/* CTA Link Styling */
+.rd-navbar_dropdown_cta {
+  display: block;
+  text-align: center;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, rgba(48, 255, 151, 0.1) 0%, rgba(48, 255, 151, 0.05) 100%);
+  border: 2px solid rgba(48, 255, 151, 0.3);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.rd-navbar_dropdown_cta:hover {
+  background: linear-gradient(135deg, rgba(48, 255, 151, 0.15) 0%, rgba(48, 255, 151, 0.08) 100%);
+  border-color: #30FF97;
+  transform: translateY(-2px);
+}
+
+.rd-navbar_dropdown_cta_text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #30FF97;
+  letter-spacing: 0.02em;
+}
+
+/* Two Column Layout for Services */
+.rd-navbar_block_columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 .rd-navbar_block_card {
@@ -496,6 +531,8 @@ p {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     overflow: hidden;
+    padding: 1.5rem;
+    gap: 1.5rem;
   }
 
   .rd-navbar_block_list {
@@ -514,6 +551,19 @@ p {
 
   .rd-navbar_block_link_icon, .rd-navbar_dropdown_block_shape {
     display: none;
+  }
+
+  .rd-navbar_block_columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .rd-navbar_dropdown_cta {
+    padding: 1rem 1.5rem;
+  }
+
+  .rd-navbar_dropdown_cta_text {
+    font-size: 1rem;
   }
 }
 
