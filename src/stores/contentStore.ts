@@ -58,6 +58,7 @@ interface ContentStore {
   sections: Record<string, SectionData>;
   globalSettings: GlobalSettings;
   isLoading: boolean;
+  isHydrated: boolean;
   
   // Content methods
   updateContent: (id: string, data: Partial<ContentItem>, locale?: string) => Promise<void>;
@@ -105,6 +106,7 @@ export const useContentStore = create<ContentStore>()(
       sections: {},
       globalSettings: initialGlobalSettings,
       isLoading: false,
+      isHydrated: false,
       
       updateContent: async (id: string, data: Partial<ContentItem>, locale: string = 'sv') => {
         const currentLocaleContent = get().content[locale] || {};
@@ -504,7 +506,12 @@ export const useContentStore = create<ContentStore>()(
       name: 'fixco-content-store',
       version: 1,
         onRehydrateStorage: () => {
-          return async (state) => {
+          return async (state, error) => {
+            if (error) {
+              console.error('Error rehydrating store:', error);
+              return;
+            }
+            
             if (state) {
               // NUCLEAR OPTION v5: Reset gradient content from ALL sources (including database)
               const hasMigrated = sessionStorage.getItem('gradient-reset-v5');
@@ -526,6 +533,9 @@ export const useContentStore = create<ContentStore>()(
                 setTimeout(() => {
                   window.location.reload();
                 }, 500); // Longer delay for database deletion + localStorage flush
+              } else {
+                // Mark as hydrated when rehydration is complete and no migration needed
+                state.isHydrated = true;
               }
             }
           };

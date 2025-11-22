@@ -30,7 +30,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const { locale } = useCopy();
   const [content, setContent] = useState(initialContent);
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
-  const { updateContent, getContent } = useContentStore();
+  const { updateContent, getContent, isHydrated } = useContentStore();
 
   // Update content when initialContent changes (for translations)
   React.useEffect(() => {
@@ -40,6 +40,11 @@ export const EditableText: React.FC<EditableTextProps> = ({
       setContent(initialContent);
     }
   }, [initialContent, id, locale, getContent]);
+
+  // Wait for hydration before showing content to prevent flash
+  if (!isHydrated) {
+    return null;
+  }
 
   // Load saved content and styles for current locale
   const savedContent = getContent(id, locale);

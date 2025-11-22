@@ -121,7 +121,7 @@ const Home = () => {
       {/* Hero Section - ULTRA Enhanced */}
       <EditableSection id="hero" title="Hero sektion">
         <ContextualEditor contentId="hero-section" type="heading">
-          {(useNewHero ?? false) ? <HeroV3 /> : <HeroUltra />}
+          {(useNewHero ?? false) ? <HeroV3 key="hero-v3" /> : <HeroUltra key="hero-ultra" />}
         </ContextualEditor>
       </EditableSection>
 
