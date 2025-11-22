@@ -285,8 +285,8 @@ p {
   right: 0;
   bottom: 0;
   background-color: rgba(10, 10, 10, 0.02);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 998;
   animation: fade-in 0.3s ease-out;
   pointer-events: auto;
