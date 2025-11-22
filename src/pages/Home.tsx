@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import HeroUltra from "@/components/HeroUltra";
-import HeroV3 from "@/components/v3/HeroV3";
+
+// Lazy load heroes - bara en av dem kommer att laddas!
+const HeroUltra = lazy(() => import("@/components/HeroUltra"));
+const HeroV3 = lazy(() => import("@/components/v3/HeroV3"));
 import TrustBar from "@/components/TrustBar";
 import { Button } from "@/components/ui/button";
 import { usePriceStore } from "@/stores/priceStore";
@@ -107,7 +109,13 @@ const Home = () => {
       {/* Hero Section - ULTRA Enhanced */}
       <EditableSection id="hero" title="Hero sektion">
         <ContextualEditor contentId="hero-section" type="heading">
-          {(useNewHero ?? false) ? <HeroV3 /> : <HeroUltra />}
+          <Suspense fallback={
+            <div className="h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/20">
+              <div className="animate-pulse text-muted-foreground">Laddar...</div>
+            </div>
+          }>
+            {(useNewHero ?? false) ? <HeroV3 /> : <HeroUltra />}
+          </Suspense>
         </ContextualEditor>
       </EditableSection>
 
