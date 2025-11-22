@@ -134,7 +134,7 @@ p {
   border-radius: 1rem;
   padding: .5rem;
   position: fixed;
-  bottom: 0;
+  bottom: 1rem;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -708,6 +708,7 @@ p {
   .rd-navbar {
     grid-template-columns: 1fr 1fr var(--_middle-size) 1fr 1fr;
     padding: 16px 0 8px;
+    bottom: 0;
   }
 
   .rd-navbar_curve-shape {
