@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight, UserCircle, LogIn } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
@@ -10,6 +10,7 @@ import "./Navbar2.css";
 
 const Navbar2 = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null);
   const { t } = useCopy();
   const { currentLanguage } = useLanguagePersistence();
   const { theme, setTheme } = useTheme();
@@ -21,15 +22,30 @@ const Navbar2 = () => {
 
   const handleMouseEnter = (dropdownId: string) => {
     if (window.innerWidth >= 768) {
+      if (closeTimeout) {
+        clearTimeout(closeTimeout);
+        setCloseTimeout(null);
+      }
       setOpenDropdown(dropdownId);
     }
   };
 
   const handleMouseLeave = () => {
     if (window.innerWidth >= 768) {
-      setOpenDropdown(null);
+      const timeout = setTimeout(() => {
+        setOpenDropdown(null);
+      }, 200);
+      setCloseTimeout(timeout);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeout) {
+        clearTimeout(closeTimeout);
+      }
+    };
+  }, [closeTimeout]);
 
   const closeDropdown = () => {
     setOpenDropdown(null);
