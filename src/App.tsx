@@ -112,6 +112,7 @@ import { FeatureFlagInitializer } from './components/FeatureFlagInitializer';
 import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
 import { AuthProfileProvider } from './contexts/AuthProfileProvider';
 import { useContentLoader } from '@/hooks/useContentLoader';
+import { usePreloadRoutes } from '@/hooks/usePreloadRoutes';
 import { lazyElement } from './components/LazyRoute';
 
 // Suspense fallback component
@@ -147,6 +148,9 @@ const PageViewTracker = () => {
 const App = () => {
   // Load content globally ONCE instead of per-route
   useContentLoader();
+  
+  // Preload routes in background for instant page transitions
+  usePreloadRoutes();
   
   // Global event handling for wizard actions
   useEffect(() => {
