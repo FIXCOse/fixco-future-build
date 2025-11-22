@@ -182,14 +182,14 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter overflow-x-hidden;
+    @apply bg-background text-foreground font-body overflow-x-hidden;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-space-grotesk font-bold;
+    @apply font-heading font-bold;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
