@@ -134,7 +134,7 @@ p {
   border-radius: 1rem;
   padding: .5rem;
   position: fixed;
-  bottom: 1rem;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -707,7 +707,7 @@ p {
 @media screen and (max-width: 767px) {
   .rd-navbar {
     grid-template-columns: 1fr 1fr var(--_middle-size) 1fr 1fr;
-    padding: 16px 0 22px;
+    padding: 16px 0 8px;
   }
 
   .rd-navbar_curve-shape {
@@ -779,7 +779,7 @@ p {
 
 @media screen and (max-width: 350px) {
   .rd-navbar {
-    padding: 4px 0;
+    padding: 4px 0 4px;
   }
 
   .rd-navbar_link_text {
