@@ -20,10 +20,12 @@ import {
   getOfferCatalogSchema,
   getSiteNavigationSchema
 } from "@/components/SEOSchemaEnhanced";
-import ComparisonUltra from "@/components/ComparisonUltra";
-import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
-import ProjectShowcase from "@/components/ProjectShowcase";
-import FAQTeaser from "@/components/FAQTeaser";
+import { 
+  LazyComparisonUltra, 
+  LazyServiceTeaserGrid, 
+  LazyProjectShowcase, 
+  LazyFAQTeaser
+} from "@/components/LazyComponents";
 
 const Home = () => {
   const { t } = useCopy();
@@ -148,28 +150,28 @@ const Home = () => {
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
         <ContextualEditor contentId="comparison-section">
-          <ComparisonUltra />
+          <LazyComparisonUltra />
         </ContextualEditor>
       </EditableSection>
 
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
         <ContextualEditor contentId="services-section">
-          <ServiceTeaserGrid />
+          <LazyServiceTeaserGrid />
         </ContextualEditor>
       </EditableSection>
 
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
         <ContextualEditor contentId="projects-section">
-          <ProjectShowcase />
+          <LazyProjectShowcase />
         </ContextualEditor>
       </EditableSection>
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
         <ContextualEditor contentId="faq-section">
-          <FAQTeaser />
+          <LazyFAQTeaser />
         </ContextualEditor>
       </EditableSection>
 
