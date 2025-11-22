@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
+import { ThemeSwitcher } from './ThemeSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 import "./Navbar2.css";
 
 const Navbar2 = () => {
@@ -237,31 +239,18 @@ const Navbar2 = () => {
                   </Link>
                 ))}
               </div>
-              <Link to={paths.references} className="rd-navbar_block_card w-inline-block" onClick={closeDropdown}>
-                <div className="rd-navbar_block_card_header">
-                  <div className="rd-navbar_block_card_header_top">
-                    <div className="rd-navbar_block_card_title">
-                      {currentLanguage === 'en' ? '2000+ Satisfied Customers' : '2000+ Nöjda Kunder'}
-                    </div>
-                    <ArrowUpRight className="rd-navbar_block_card_header_arrow" size={24} />
-                  </div>
-                  <p className="rd-navbar_block_card_text">
-                    {currentLanguage === 'en'
-                      ? 'See our completed projects in Uppsala, Stockholm and the rest of Sweden'
-                      : 'Se våra genomförda projekt i Uppsala, Stockholm och övriga Sverige'}
-                  </p>
+              
+              {/* Tema och språkinställningar */}
+              <div className="rd-navbar_block_settings">
+                <div className="rd-navbar_block_settings_title">
+                  {currentLanguage === 'en' ? 'Settings' : 'Inställningar'}
                 </div>
-                <figure className="rd-navbar_block_card_media">
-                  <img 
-                    src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop" 
-                    loading="lazy" 
-                    width="356" 
-                    height="302" 
-                    alt={currentLanguage === 'en' ? 'References' : 'Referenser'} 
-                    className="rd-navbar_block_card_image" 
-                  />
-                </figure>
-              </Link>
+                
+                <div className="rd-navbar_block_settings_group">
+                  <ThemeSwitcher />
+                  <LanguageSwitcher />
+                </div>
+              </div>
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="24" viewBox="0 0 36 24" fill="none" className="rd-navbar_dropdown_block_shape">
                 <path d="M20.9984 22.6044C19.4061 24.4076 16.5939 24.4076 15.0016 22.6043L1.3532 7.14759C-0.927141 4.56511 0.906416 0.5 4.35158 0.5L31.6484 0.500003C35.0936 0.500003 36.9271 4.56511 34.6468 7.14759L20.9984 22.6044Z" fill="#FAFAFA"></path>
               </svg>
