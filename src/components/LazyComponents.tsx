@@ -2,10 +2,10 @@ import { lazy, Suspense, ComponentType } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Lazy load heavy components for better initial load
-export const LazyProjectShowcase = lazy(() => import('@/components/ProjectShowcase'));
-export const LazyComparisonUltra = lazy(() => import('@/components/ComparisonUltra'));
-export const LazyServiceTeaserGrid = lazy(() => import('@/components/ServiceTeaserGrid'));
-export const LazyFAQTeaser = lazy(() => import('@/components/FAQTeaser'));
+const LazyProjectShowcaseBase = lazy(() => import('@/components/ProjectShowcase'));
+const LazyComparisonUltraBase = lazy(() => import('@/components/ComparisonUltra'));
+const LazyServiceTeaserGridBase = lazy(() => import('@/components/ServiceTeaserGrid'));
+const LazyFAQTeaserBase = lazy(() => import('@/components/FAQTeaser'));
 
 // Loading fallback component
 const ComponentSkeleton = () => (
@@ -31,3 +31,28 @@ export const withLazyLoading = <P extends object>(
     </Suspense>
   );
 };
+
+// Export Suspense-wrapped versions ready to use
+export const LazyProjectShowcase = () => (
+  <Suspense fallback={<ComponentSkeleton />}>
+    <LazyProjectShowcaseBase />
+  </Suspense>
+);
+
+export const LazyComparisonUltra = () => (
+  <Suspense fallback={<ComponentSkeleton />}>
+    <LazyComparisonUltraBase />
+  </Suspense>
+);
+
+export const LazyServiceTeaserGrid = () => (
+  <Suspense fallback={<ComponentSkeleton />}>
+    <LazyServiceTeaserGridBase />
+  </Suspense>
+);
+
+export const LazyFAQTeaser = () => (
+  <Suspense fallback={<ComponentSkeleton />}>
+    <LazyFAQTeaserBase />
+  </Suspense>
+);
