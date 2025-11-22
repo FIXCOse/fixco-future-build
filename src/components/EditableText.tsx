@@ -41,14 +41,12 @@ export const EditableText: React.FC<EditableTextProps> = ({
     }
   }, [initialContent, id, locale, getContent]);
 
-  // Wait for hydration before showing content to prevent flash
-  if (!isHydrated) {
-    return null;
-  }
+  // Show initialContent immediately, update with saved content when hydrated
+  const isReady = isHydrated;
 
   // Load saved content and styles for current locale
-  const savedContent = getContent(id, locale);
-  const displayContent = savedContent?.value as string || content;
+  const savedContent = isReady ? getContent(id, locale) : null;
+  const displayContent = (savedContent?.value as string) || content || initialContent;
   const textStyles = savedContent?.styles || {};
 
   const handleSave = async (newContent: any) => {

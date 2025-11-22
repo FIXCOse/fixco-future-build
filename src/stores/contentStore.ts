@@ -513,30 +513,8 @@ export const useContentStore = create<ContentStore>()(
             }
             
             if (state) {
-              // NUCLEAR OPTION v5: Reset gradient content from ALL sources (including database)
-              const hasMigrated = sessionStorage.getItem('gradient-reset-v5');
-              if (!hasMigrated) {
-                console.log('🗑️ Running NUCLEAR gradient reset v5 (ALL sources)...');
-                
-                // Clear ALL old session flags
-                sessionStorage.removeItem('gradient-colors-cleared');
-                sessionStorage.removeItem('gradient-colors-cleared-v2');
-                sessionStorage.removeItem('gradient-colors-cleared-v3');
-                sessionStorage.removeItem('gradient-reset-v4');
-                
-                // Run reset (including database deletion) - WAIT for completion
-                await state.resetGradientContent();
-                sessionStorage.setItem('gradient-reset-v5', 'true');
-                
-                // Force reload after giving database time to delete + localStorage to flush
-                console.log('🔄 Reloading page in 500ms to rebuild gradient content from CSS...');
-                setTimeout(() => {
-                  window.location.reload();
-                }, 500); // Longer delay for database deletion + localStorage flush
-              } else {
-                // Mark as hydrated when rehydration is complete and no migration needed
-                state.isHydrated = true;
-              }
+              // Mark as hydrated when rehydration is complete
+              state.isHydrated = true;
             }
           };
         }

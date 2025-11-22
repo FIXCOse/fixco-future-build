@@ -1,11 +1,10 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import HeroUltra from "@/components/HeroUltra";
 import HeroV3 from "@/components/v3/HeroV3";
 import TrustBar from "@/components/TrustBar";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { usePriceStore } from "@/stores/priceStore";
 import { useCopy } from "@/copy/CopyProvider";
 import { EditableSection } from "@/components/EditableSection";
@@ -19,23 +18,10 @@ import {
   getOfferCatalogSchema,
   getSiteNavigationSchema
 } from "@/components/SEOSchemaEnhanced";
-
-// Lazy load non-critical components for better initial load
-const ComparisonUltra = lazy(() => import("@/components/ComparisonUltra"));
-const ServiceTeaserGrid = lazy(() => import("@/components/ServiceTeaserGrid"));
-const ProjectShowcase = lazy(() => import("@/components/ProjectShowcase"));
-const FAQTeaser = lazy(() => import("@/components/FAQTeaser"));
-
-// Loading component
-const SectionSkeleton = () => (
-  <div className="py-24">
-    <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
-    <Skeleton className="h-6 w-1/2 mx-auto mb-8" />
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {[1, 2, 3].map(i => <Skeleton key={i} className="h-64" />)}
-    </div>
-  </div>
-);
+import ComparisonUltra from "@/components/ComparisonUltra";
+import ServiceTeaserGrid from "@/components/ServiceTeaserGrid";
+import ProjectShowcase from "@/components/ProjectShowcase";
+import FAQTeaser from "@/components/FAQTeaser";
 
 const Home = () => {
   const { t } = useCopy();
@@ -154,36 +140,28 @@ const Home = () => {
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
         <ContextualEditor contentId="comparison-section">
-          <Suspense fallback={<SectionSkeleton />}>
-            <ComparisonUltra />
-          </Suspense>
+          <ComparisonUltra />
         </ContextualEditor>
       </EditableSection>
 
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
         <ContextualEditor contentId="services-section">
-          <Suspense fallback={<SectionSkeleton />}>
-            <ServiceTeaserGrid />
-          </Suspense>
+          <ServiceTeaserGrid />
         </ContextualEditor>
       </EditableSection>
 
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
         <ContextualEditor contentId="projects-section">
-          <Suspense fallback={<SectionSkeleton />}>
-            <ProjectShowcase />
-          </Suspense>
+          <ProjectShowcase />
         </ContextualEditor>
       </EditableSection>
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
         <ContextualEditor contentId="faq-section">
-          <Suspense fallback={<SectionSkeleton />}>
-            <FAQTeaser />
-          </Suspense>
+          <FAQTeaser />
         </ContextualEditor>
       </EditableSection>
 

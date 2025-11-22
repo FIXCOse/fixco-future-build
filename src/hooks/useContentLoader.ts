@@ -8,10 +8,10 @@ export const useContentLoader = () => {
     // Load content from database on app start
     loadContent();
     
-    // Set hydrated to true after a short delay to ensure localStorage has been read
+    // Set hydrated to true immediately after loadContent
     const timer = setTimeout(() => {
       useContentStore.setState({ isHydrated: true });
-    }, 10);
+    }, 0);
     
     return () => clearTimeout(timer);
   }, [loadContent]);

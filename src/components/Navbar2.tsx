@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
@@ -115,15 +116,15 @@ const Navbar2 = () => {
         </defs>
       </svg>
 
-      <a href={paths.home} className="rd-navbar_link w-inline-block">
+      <Link to={paths.home} className="rd-navbar_link w-inline-block">
         <Home className="rd-navbar_link_icon" />
         <span className="rd-navbar_link_text">{t('nav.home')}</span>
-      </a>
+      </Link>
 
-      <a href={paths.services} className="rd-navbar_link cc-hide_desktop w-inline-block">
+      <Link to={paths.services} className="rd-navbar_link cc-hide_desktop w-inline-block">
         <Wrench className="rd-navbar_link_icon" />
         <span className="rd-navbar_link_text">{t('nav.services')}</span>
-      </a>
+      </Link>
 
       <div 
         className="rd-navbar_dropdown cc-hide_mobile w-dropdown"
@@ -145,36 +146,36 @@ const Navbar2 = () => {
           <div className="rd-navbar_dropdown_block_wrapper">
             <div className="rd-navbar_dropdown_block_gradient"></div>
             <div data-wf--navbar-dropdown-block--variant="regular" className="rd-navbar_dropdown_block">
-              <a href={paths.services} className="rd-navbar_dropdown_cta">
+              <Link to={paths.services} className="rd-navbar_dropdown_cta">
                 <div className="rd-navbar_dropdown_cta_text">
                   {currentLanguage === 'en' 
                     ? 'View all our services →' 
                     : 'Se alla våra tjänster →'}
                 </div>
-              </a>
+              </Link>
               
               <div className="rd-navbar_block_columns">
                 <div className="rd-navbar_block_list">
                   {services.slice(0, 4).map((service) => (
-                    <a key={service.href} href={service.href} className="rd-navbar_block_link w-inline-block">
+                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block">
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
                         <p className="rd-navbar_block_link_text">{service.desc}</p>
                       </div>
                       <div className="rd-navbar_block_link_icon"></div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 
                 <div className="rd-navbar_block_list">
                   {services.slice(4, 8).map((service) => (
-                    <a key={service.href} href={service.href} className="rd-navbar_block_link w-inline-block">
+                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block">
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
                         <p className="rd-navbar_block_link_text">{service.desc}</p>
                       </div>
                       <div className="rd-navbar_block_link_icon"></div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -186,7 +187,7 @@ const Navbar2 = () => {
         </nav>
       </div>
 
-      <a href={paths.bookVisit} className="rd-navbar_btn w-inline-block">
+      <Link to={paths.bookVisit} className="rd-navbar_btn w-inline-block">
         <div className="rd-navbar_btn_bg"></div>
         <div className="rd-navbar_btn_content">
           <div className="rd-navbar_btn_content_bg" style={{ opacity: 0 }}></div>
@@ -198,12 +199,12 @@ const Navbar2 = () => {
             <path d="M32 0L32.9939 28.2908L48 4.28719L34.7153 29.2847L59.7128 16L35.7092 31.0061L64 32L35.7092 32.9939L59.7128 48L34.7153 34.7153L48 59.7128L32.9939 35.7092L32 64L31.0061 35.7092L16 59.7128L29.2847 34.7153L4.28719 48L28.2908 32.9939L0 32L28.2908 31.0061L4.28719 16L29.2847 29.2847L16 4.28719L31.0061 28.2908L32 0Z" fill="currentColor"></path>
           </svg>
         </div>
-      </a>
+      </Link>
 
-      <a href={paths.smartHome} className="rd-navbar_link w-inline-block">
+      <Link to={paths.smartHome} className="rd-navbar_link w-inline-block">
         <Zap className="rd-navbar_link_icon" />
         <span className="rd-navbar_link_text">{t('nav.smartHome')}</span>
-      </a>
+      </Link>
 
       <div 
         className="rd-navbar_dropdown w-dropdown"
@@ -223,16 +224,16 @@ const Navbar2 = () => {
             <div data-wf--navbar-dropdown-block--variant="reversed" className="rd-navbar_dropdown_block w-variant-4f1623ae-01ab-18ff-1ad3-6b7bb43febb5">
               <div className="rd-navbar_block_list">
                 {moreLinks.map((link) => (
-                  <a key={link.href} href={link.href} className="rd-navbar_block_link w-inline-block">
+                  <Link key={link.href} to={link.href} className="rd-navbar_block_link w-inline-block">
                     <div>
                       <div className="rd-navbar_block_link_title">{link.title}</div>
                       <p className="rd-navbar_block_link_text">{link.desc}</p>
                     </div>
                     <div className="rd-navbar_block_link_icon"></div>
-                  </a>
+                  </Link>
                 ))}
               </div>
-              <a href={paths.references} className="rd-navbar_block_card w-inline-block">
+              <Link to={paths.references} className="rd-navbar_block_card w-inline-block">
                 <div className="rd-navbar_block_card_header">
                   <div className="rd-navbar_block_card_header_top">
                     <div className="rd-navbar_block_card_title">
@@ -256,7 +257,7 @@ const Navbar2 = () => {
                     className="rd-navbar_block_card_image" 
                   />
                 </figure>
-              </a>
+              </Link>
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="24" viewBox="0 0 36 24" fill="none" className="rd-navbar_dropdown_block_shape">
                 <path d="M20.9984 22.6044C19.4061 24.4076 16.5939 24.4076 15.0016 22.6043L1.3532 7.14759C-0.927141 4.56511 0.906416 0.5 4.35158 0.5L31.6484 0.500003C35.0936 0.500003 36.9271 4.56511 34.6468 7.14759L20.9984 22.6044Z" fill="#FAFAFA"></path>
               </svg>
