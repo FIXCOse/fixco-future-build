@@ -26,6 +26,10 @@ const Navbar2 = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setOpenDropdown(null);
+  };
+
   // Language-specific paths
   const paths = currentLanguage === 'en' ? {
     home: '/en',
@@ -146,7 +150,7 @@ const Navbar2 = () => {
           <div className="rd-navbar_dropdown_block_wrapper">
             <div className="rd-navbar_dropdown_block_gradient"></div>
             <div data-wf--navbar-dropdown-block--variant="regular" className="rd-navbar_dropdown_block">
-              <Link to={paths.services} className="rd-navbar_dropdown_cta">
+              <Link to={paths.services} className="rd-navbar_dropdown_cta" onClick={closeDropdown}>
                 <div className="rd-navbar_dropdown_cta_text">
                   {currentLanguage === 'en' 
                     ? 'View all our services →' 
@@ -157,7 +161,7 @@ const Navbar2 = () => {
               <div className="rd-navbar_block_columns">
                 <div className="rd-navbar_block_list">
                   {services.slice(0, 4).map((service) => (
-                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block">
+                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
                         <p className="rd-navbar_block_link_text">{service.desc}</p>
@@ -169,7 +173,7 @@ const Navbar2 = () => {
                 
                 <div className="rd-navbar_block_list">
                   {services.slice(4, 8).map((service) => (
-                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block">
+                    <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
                         <p className="rd-navbar_block_link_text">{service.desc}</p>
@@ -224,7 +228,7 @@ const Navbar2 = () => {
             <div data-wf--navbar-dropdown-block--variant="reversed" className="rd-navbar_dropdown_block w-variant-4f1623ae-01ab-18ff-1ad3-6b7bb43febb5">
               <div className="rd-navbar_block_list">
                 {moreLinks.map((link) => (
-                  <Link key={link.href} to={link.href} className="rd-navbar_block_link w-inline-block">
+                  <Link key={link.href} to={link.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
                     <div>
                       <div className="rd-navbar_block_link_title">{link.title}</div>
                       <p className="rd-navbar_block_link_text">{link.desc}</p>
@@ -233,7 +237,7 @@ const Navbar2 = () => {
                   </Link>
                 ))}
               </div>
-              <Link to={paths.references} className="rd-navbar_block_card w-inline-block">
+              <Link to={paths.references} className="rd-navbar_block_card w-inline-block" onClick={closeDropdown}>
                 <div className="rd-navbar_block_card_header">
                   <div className="rd-navbar_block_card_header_top">
                     <div className="rd-navbar_block_card_title">
