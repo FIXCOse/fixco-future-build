@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight, UserCircle, LogIn } from "lucide-react";
+import { Home, Wrench, Calendar, Star, Menu, ArrowUpRight, UserCircle, LogIn } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useTheme } from '@/theme/useTheme';
@@ -237,9 +237,9 @@ const Navbar2 = () => {
         </div>
       </Link>
 
-      <Link to={paths.smartHome} className="rd-navbar_link w-inline-block">
-        <Zap className="rd-navbar_link_icon" />
-        <span className="rd-navbar_link_text">{t('nav.smartHome')}</span>
+      <Link to={paths.references} className="rd-navbar_link w-inline-block">
+        <Star className="rd-navbar_link_icon" />
+        <span className="rd-navbar_link_text">{t('nav.references')}</span>
       </Link>
 
       <div 
