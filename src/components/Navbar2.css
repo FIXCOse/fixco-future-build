@@ -324,10 +324,10 @@ p {
 .rd-navbar_dropdown_block_wrapper::after {
   content: '';
   position: absolute;
-  bottom: -100px;
+  bottom: -85px;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 85px;
   pointer-events: auto;
   z-index: 998;
   background: transparent;
@@ -991,7 +991,7 @@ p {
   }
 
   .rd-navbar_dropdown_list {
-    bottom: 20px;
+    bottom: 100px;
     transition: all 0.6s cubic-bezier(0.45, 0, 0.55, 1);
   }
 }
