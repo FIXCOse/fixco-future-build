@@ -542,23 +542,23 @@ p {
 /* Settings section (Theme and Language switchers) */
 .rd-navbar_block_settings {
   padding: 1.5rem;
-  border-left: 1px solid hsl(var(--border));
-  background: hsl(var(--card) / 0.5);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border-radius: 0.75rem;
   min-width: 280px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .rd-navbar_block_settings_title {
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: hsl(var(--foreground));
+  color: #0a0a0a;
   font-family: var(--text--outfit);
 }
 
@@ -571,7 +571,7 @@ p {
 
 .rd-navbar_block_settings_label {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: #525252;
   font-weight: 500;
   font-family: var(--text--outfit);
 }
