@@ -99,6 +99,16 @@ export default {
 					'50%': {
 						backgroundPosition: '100% 50%'
 					}
+				},
+				'logoFadeIn': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(-10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
@@ -108,7 +118,8 @@ export default {
 				'scale-in': 'scaleIn 0.4s ease-out',
 				'slide-in-left': 'slideInLeft 0.6s ease-out',
 				'slide-in-right': 'slideInRight 0.6s ease-out',
-				'gradient-shift': 'gradientShift 3s ease infinite',
+				'gradient-shift': 'gradient-shift 15s ease infinite',
+				'logo-fade-in': 'logoFadeIn 0.8s ease-out forwards',
 				'float': 'float 6s ease-in-out infinite',
 				'glow': 'glow 2s ease-in-out infinite alternate',
 				'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
