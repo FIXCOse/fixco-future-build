@@ -90,12 +90,6 @@ const Navbar2 = () => {
   ];
 
   const moreLinks = [
-    { href: paths.home, title: t('nav.home'), desc: currentLanguage === 'en' ? 'Back to homepage' : 'Tillbaka till startsidan' },
-    { href: paths.about, title: t('nav.about'), desc: currentLanguage === 'en' ? 'Our story and team' : 'Vår historia och vårt team' },
-    { href: paths.references, title: t('nav.references'), desc: currentLanguage === 'en' ? 'See our previous projects' : 'Se våra tidigare projekt' },
-    { href: paths.ai, title: 'AI Lab', desc: currentLanguage === 'en' ? 'Discover AI-assisted solutions' : 'Upptäck AI-assisterade lösningar' },
-    { href: paths.careers, title: currentLanguage === 'en' ? 'Careers' : 'Karriär', desc: currentLanguage === 'en' ? 'Work with us' : 'Jobba hos oss' },
-    { href: paths.contact, title: t('nav.contact'), desc: currentLanguage === 'en' ? 'Get in touch with our team' : 'Kom i kontakt med vårt team' },
     ...(user ? [{
       href: paths.home === '/en' ? '/en/mitt-fixco' : '/mitt-fixco',
       title: currentLanguage === 'en' ? 'My Fixco' : 'Mitt Fixco',
@@ -106,7 +100,13 @@ const Navbar2 = () => {
       title: currentLanguage === 'en' ? 'Login' : 'Logga in',
       desc: currentLanguage === 'en' ? 'Sign in to your account' : 'Logga in på ditt konto',
       icon: LogIn
-    }])
+    }]),
+    { href: paths.home, title: t('nav.home'), desc: currentLanguage === 'en' ? 'Back to homepage' : 'Tillbaka till startsidan' },
+    { href: paths.about, title: t('nav.about'), desc: currentLanguage === 'en' ? 'Our story and team' : 'Vår historia och vårt team' },
+    { href: paths.references, title: t('nav.references'), desc: currentLanguage === 'en' ? 'See our previous projects' : 'Se våra tidigare projekt' },
+    { href: paths.ai, title: 'AI Lab', desc: currentLanguage === 'en' ? 'Discover AI-assisted solutions' : 'Upptäck AI-assisterade lösningar' },
+    { href: paths.careers, title: currentLanguage === 'en' ? 'Careers' : 'Karriär', desc: currentLanguage === 'en' ? 'Work with us' : 'Jobba hos oss' },
+    { href: paths.contact, title: t('nav.contact'), desc: currentLanguage === 'en' ? 'Get in touch with our team' : 'Kom i kontakt med vårt team' }
   ];
 
   return (
