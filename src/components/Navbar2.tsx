@@ -131,13 +131,11 @@ const Navbar2 = () => {
         onMouseLeave={handleMouseLeave}
       >
         <div 
-          className="rd-navbar_dropdown_toggle w-dropdown-toggle"
+          className="rd-navbar_link w-dropdown-toggle"
           onClick={() => toggleDropdown('services')}
         >
-          <a href={paths.services} className="rd-navbar_link w-inline-block">
-            <Wrench className="rd-navbar_link_icon" />
-            <div className="rd-navbar_link_text">{t('nav.services')}</div>
-          </a>
+          <Wrench className="rd-navbar_link_icon" />
+          <div className="rd-navbar_link_text">{t('nav.services')}</div>
         </div>
         <nav 
           className={`rd-navbar_dropdown_list w-dropdown-list ${openDropdown === 'services' ? 'w--open' : ''}`}
