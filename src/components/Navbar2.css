@@ -284,10 +284,10 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: -1;
+  background-color: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
   pointer-events: none;
@@ -296,6 +296,11 @@ p {
 .rd-navbar_dropdown_list.w--open::before {
   opacity: 1;
   pointer-events: auto;
+}
+
+.rd-navbar_dropdown_list > * {
+  position: relative;
+  z-index: 2;
 }
 
 .rd-navbar_dropdown_block {
@@ -320,6 +325,7 @@ p {
   padding: 3px;
   background: transparent;
   overflow: hidden;
+  z-index: 2;
 }
 
 .rd-navbar_dropdown_block_gradient {
