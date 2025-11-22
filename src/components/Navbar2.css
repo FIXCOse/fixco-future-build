@@ -543,7 +543,8 @@ p {
 .rd-navbar_block_settings {
   padding: 1.5rem;
   border-left: 1px solid hsl(var(--border) / 0.2);
-  background: hsl(var(--card));
+  background: hsl(var(--muted) / 0.3);
+  backdrop-filter: blur(8px);
   border-radius: 0.75rem;
   min-width: 280px;
   display: flex;
@@ -559,13 +560,49 @@ p {
   font-family: var(--text--outfit);
 }
 
-.rd-navbar_block_settings_group {
+.rd-navbar_block_settings_row {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.rd-navbar_block_settings_label {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  font-family: var(--text--outfit);
+}
+
+.rd-navbar_theme_buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.rd-navbar_theme_btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--background));
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rd-navbar_theme_btn:hover {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.rd-navbar_theme_btn.active {
+  border-color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.1);
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
 }
 
 @media screen and (max-width: 767px) {

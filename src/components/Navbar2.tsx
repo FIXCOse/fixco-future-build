@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight } from "lucide-react";
+import { Home, Wrench, Calendar, Zap, Menu, ArrowUpRight, UserCircle, LogIn } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { useTheme } from '@/theme/useTheme';
+import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
 import "./Navbar2.css";
 
@@ -11,6 +12,8 @@ const Navbar2 = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { t } = useCopy();
   const { currentLanguage } = useLanguagePersistence();
+  const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
 
   const toggleDropdown = (dropdownId: string) => {
     setOpenDropdown(openDropdown === dropdownId ? null : dropdownId);
@@ -93,6 +96,17 @@ const Navbar2 = () => {
     { href: paths.ai, title: 'AI Lab', desc: currentLanguage === 'en' ? 'Discover AI-assisted solutions' : 'Upptäck AI-assisterade lösningar' },
     { href: paths.careers, title: currentLanguage === 'en' ? 'Careers' : 'Karriär', desc: currentLanguage === 'en' ? 'Work with us' : 'Jobba hos oss' },
     { href: paths.contact, title: t('nav.contact'), desc: currentLanguage === 'en' ? 'Get in touch with our team' : 'Kom i kontakt med vårt team' },
+    ...(user ? [{
+      href: paths.home === '/en' ? '/en/mitt-fixco' : '/mitt-fixco',
+      title: currentLanguage === 'en' ? 'My Fixco' : 'Mitt Fixco',
+      desc: currentLanguage === 'en' ? 'View your dashboard' : 'Se din översikt',
+      icon: UserCircle
+    }] : [{
+      href: paths.home === '/en' ? '/en/auth' : '/auth',
+      title: currentLanguage === 'en' ? 'Login' : 'Logga in',
+      desc: currentLanguage === 'en' ? 'Sign in to your account' : 'Logga in på ditt konto',
+      icon: LogIn
+    }])
   ];
 
   return (
@@ -229,15 +243,21 @@ const Navbar2 = () => {
             <div className="rd-navbar_dropdown_block_gradient"></div>
             <div data-wf--navbar-dropdown-block--variant="reversed" className="rd-navbar_dropdown_block w-variant-4f1623ae-01ab-18ff-1ad3-6b7bb43febb5">
               <div className="rd-navbar_block_list">
-                {moreLinks.map((link) => (
-                  <Link key={link.href} to={link.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
-                    <div>
-                      <div className="rd-navbar_block_link_title">{link.title}</div>
-                      <p className="rd-navbar_block_link_text">{link.desc}</p>
-                    </div>
-                    <div className="rd-navbar_block_link_icon"></div>
-                  </Link>
-                ))}
+                {moreLinks.map((link) => {
+                  const Icon = 'icon' in link ? link.icon : null;
+                  return (
+                    <Link key={link.href} to={link.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
+                      <div>
+                        <div className="rd-navbar_block_link_title">
+                          {Icon && <Icon className="inline-block mr-2 h-4 w-4" />}
+                          {link.title}
+                        </div>
+                        <p className="rd-navbar_block_link_text">{link.desc}</p>
+                      </div>
+                      <div className="rd-navbar_block_link_icon"></div>
+                    </Link>
+                  );
+                })}
               </div>
               
               {/* Tema och språkinställningar */}
@@ -246,8 +266,42 @@ const Navbar2 = () => {
                   {currentLanguage === 'en' ? 'Settings' : 'Inställningar'}
                 </div>
                 
-                <div className="rd-navbar_block_settings_group">
-                  <ThemeSwitcher />
+                <div className="rd-navbar_block_settings_row">
+                  <span className="rd-navbar_block_settings_label">
+                    {currentLanguage === 'en' ? 'Theme' : 'Tema'}
+                  </span>
+                  <div className="rd-navbar_theme_buttons">
+                    <button 
+                      onClick={() => setTheme('dark')}
+                      className={`rd-navbar_theme_btn ${theme === 'dark' ? 'active' : ''}`}
+                      title="Dark"
+                      type="button"
+                    >
+                      🌙
+                    </button>
+                    <button 
+                      onClick={() => setTheme('light')}
+                      className={`rd-navbar_theme_btn ${theme === 'light' ? 'active' : ''}`}
+                      title="Light"
+                      type="button"
+                    >
+                      ☀️
+                    </button>
+                    <button 
+                      onClick={() => setTheme('ocean')}
+                      className={`rd-navbar_theme_btn ${theme === 'ocean' ? 'active' : ''}`}
+                      title="Ocean"
+                      type="button"
+                    >
+                      🌊
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="rd-navbar_block_settings_row">
+                  <span className="rd-navbar_block_settings_label">
+                    {currentLanguage === 'en' ? 'Language' : 'Språk'}
+                  </span>
                   <LanguageSwitcher />
                 </div>
               </div>
