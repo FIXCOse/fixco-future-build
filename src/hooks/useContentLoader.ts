@@ -11,7 +11,7 @@ export const useContentLoader = () => {
     // Set hydrated to true after a short delay to ensure localStorage has been read
     const timer = setTimeout(() => {
       useContentStore.setState({ isHydrated: true });
-    }, 50);
+    }, 10);
     
     return () => clearTimeout(timer);
   }, [loadContent]);

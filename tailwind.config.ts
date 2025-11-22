@@ -120,7 +120,7 @@ export default {
 				'scale-in': 'scaleIn 0.4s ease-out',
 				'slide-in-left': 'slideInLeft 0.6s ease-out',
 				'slide-in-right': 'slideInRight 0.6s ease-out',
-				'gradient-shift': 'gradient-shift 15s ease infinite',
+				'gradient-shift': 'gradient-shift 30s ease infinite',
 				'logo-fade-in': 'logoFadeIn 0.8s ease-out forwards',
 				'float': 'float 6s ease-in-out infinite',
 				'glow': 'glow 2s ease-in-out infinite alternate',

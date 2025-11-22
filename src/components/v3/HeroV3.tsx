@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -12,20 +12,15 @@ import logoNordgren from "@/assets/nordgren-logo-white.png";
 import logoFixco from "@/assets/fixco-logo-white.png";
 
 const HeroV3 = () => {
-  const [isReady, setIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { isHydrated } = useContentStore();
 
   useEffect(() => {
-    setIsReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (isReady && isHydrated) {
-      const timer = setTimeout(() => setIsVisible(true), 100);
+    if (isHydrated) {
+      const timer = setTimeout(() => setIsVisible(true), 50);
       return () => clearTimeout(timer);
     }
-  }, [isReady, isHydrated]);
+  }, [isHydrated]);
 
   return (
     <section className={`relative w-full overflow-hidden transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ height: '980px' }}>
@@ -189,4 +184,4 @@ const HeroV3 = () => {
   );
 };
 
-export default HeroV3;
+export default React.memo(HeroV3);
