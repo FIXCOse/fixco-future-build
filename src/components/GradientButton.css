@@ -53,22 +53,8 @@
 .gradient-text {
   position: relative;
   z-index: 3;
-  color: transparent;
-  background: conic-gradient(
-    from 0deg,
-    #ffffff,
-    #e0d4ff,
-    #ffffff,
-    #f0e7ff,
-    #ffffff,
-    #e0d4ff,
-    #ffffff
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: hue-rotate(0deg);
-  animation: hue-rotating 5s linear infinite;
+  color: #ffffff;
+  font-weight: bold;
 }
 
 .gradient-button:active {
