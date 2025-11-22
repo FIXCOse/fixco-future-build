@@ -5,6 +5,7 @@ import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
 import logoLimont from "@/assets/limont-logo-white.png";
 import logoNordgren from "@/assets/nordgren-logo-white.png";
+import logoFixco from "@/assets/fixco-logo-white.png";
 
 const HeroV3 = () => {
   return (
@@ -36,6 +37,15 @@ const HeroV3 = () => {
       {/* Content Area */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 -mt-20 px-6">
         <div className="flex flex-col items-center gap-6 max-w-5xl">
+          {/* Fixco Logo */}
+          <div className="mb-4">
+            <img 
+              src={logoFixco} 
+              alt="Fixco" 
+              className="h-12 md:h-16 w-auto mx-auto opacity-95 hover:opacity-100 transition-opacity"
+            />
+          </div>
+          
           <h1 className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
             Sveriges Ledande Hantverkare
           </h1>
