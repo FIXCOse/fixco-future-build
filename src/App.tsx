@@ -166,16 +166,10 @@ const App = () => {
                     <ScrollToTop />
                     <Routes>
                       {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
-                      <Suspense fallback={
-                        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/20">
-                          <div className="animate-pulse text-muted-foreground">Laddar...</div>
-                        </div>
-                      }>
-                        <Route path="/auth" element={<Auth />} />
-                        <Route path="/en/auth" element={<Auth />} />
-                        <Route path="/auth/callback" element={<AuthCallback />} />
-                        <Route path="/auth/error" element={<AuthError />} />
-                      </Suspense>
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/en/auth" element={<Auth />} />
+                      <Route path="/auth/callback" element={<AuthCallback />} />
+                      <Route path="/auth/error" element={<AuthError />} />
                       
                       {/* All other routes INSIDE MaintenanceGate */}
                       <Route path="*" element={
