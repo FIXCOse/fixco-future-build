@@ -5,12 +5,13 @@ import "./GradientButton.css";
 interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   href?: string;
+  onClick?: () => void;
 }
 
 const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
-  ({ children, className, href, ...props }, ref) => {
+  ({ children, className, href, onClick, ...props }, ref) => {
     const buttonElement = (
-      <button ref={ref} className={cn("gradient-button", className)} {...props}>
+      <button ref={ref} className={cn("gradient-button", className)} onClick={onClick} {...props}>
         <span className="gradient-button-text">{children}</span>
       </button>
     );

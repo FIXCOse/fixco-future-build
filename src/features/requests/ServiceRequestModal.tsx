@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { getIconComponent } from "@/utils/iconMapper";
+import { serviceCategories } from "@/data/servicesDataNew";
 import { 
   serviceRequestSchema,
   nameSchema,
@@ -29,6 +30,7 @@ import {
 export type OpenModalDetail = {
   serviceSlug?: string;
   prefill?: Record<string, any>;
+  showCategories?: boolean;
 };
 
 export function openServiceRequestModal(detail: OpenModalDetail) {
@@ -46,6 +48,7 @@ export default function ServiceRequestModal() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
+  const [showCategories, setShowCategories] = useState(false);
 
   // Navigation functions
   const goToStep0 = () => setCurrentStep(0);
@@ -72,9 +75,10 @@ export default function ServiceRequestModal() {
       const ce = e as CustomEvent<OpenModalDetail>;
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
+      const shouldShowCategories = ce.detail?.showCategories ?? false;
       
-      // Om ingen serviceSlug anges, visa tjänstväljare (steg 0)
-      if (!slug) {
+      // Om showCategories eller ingen serviceSlug anges, visa väljare (steg 0)
+      if (shouldShowCategories || !slug) {
         setService(null);
         setCustomerType('private');
         setValues(prefill);
@@ -82,6 +86,7 @@ export default function ServiceRequestModal() {
         setDone(false);
         setSelectedAddons([]);
         setCurrentStep(0);
+        setShowCategories(shouldShowCategories);
         setOpen(true);
         return;
       }
@@ -395,47 +400,105 @@ export default function ServiceRequestModal() {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <Wrench className="w-5 h-5 text-primary" />
-                  Välj den tjänst du behöver
+                  {showCategories ? 'Välj tjänstekategori' : 'Välj den tjänst du behöver'}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Vi hjälper dig med allt från el till målning
+                  {showCategories ? 'Berätta vad du behöver hjälp med' : 'Vi hjälper dig med allt från el till målning'}
                 </p>
               </div>
 
               <div className="grid gap-3">
-                {SERVICE_CONFIG.map(svc => (
-                  <motion.div
-                    key={svc.slug}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setService(svc);
-                      setCurrentStep(1);
-                    }}
-                    className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Wrench className="w-6 h-6 text-primary" />
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h5 className="font-semibold text-foreground mb-1">{svc.name}</h5>
-                        <p className="text-xs text-muted-foreground">
-                          {svc.pricingMode === 'quote' 
-                            ? 'Offert efter behov' 
-                            : svc.pricingMode === 'unit' 
-                              ? `${svc.unitPriceSek} kr/${svc.unitLabel}`
-                              : `${svc.fixedPriceSek} kr`
-                          }
-                          {svc.rotEligible && ' • ROT-berättigad'}
-                        </p>
-                      </div>
+                {showCategories ? (
+                  // Visa kategorier
+                  serviceCategories.map(category => {
+                    const IconComponent = category.icon;
+                    return (
+                      <motion.div
+                        key={category.slug}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => {
+                          // Skapa generisk service för vald kategori
+                          const genericService: ServiceConfig = {
+                            slug: `${category.slug}-offert`,
+                            name: `${category.title}`,
+                            pricingMode: "quote",
+                            rotEligible: true,
+                            fields: [
+                              { 
+                                kind: "textarea", 
+                                key: "beskrivning", 
+                                label: "Beskriv ditt projekt", 
+                                placeholder: `Berätta vad du behöver hjälp med inom ${category.title.toLowerCase()}...`,
+                                required: true 
+                              },
+                              { 
+                                kind: "file", 
+                                key: "bilder", 
+                                label: "Bilder (valfritt)", 
+                                accept: "image/*", 
+                                multiple: true 
+                              }
+                            ]
+                          };
+                          setService(genericService);
+                          setCurrentStep(2); // Hoppa direkt till formulär (inga tillägg)
+                        }}
+                        className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                            <IconComponent className="w-6 h-6 text-primary" />
+                          </div>
+                          
+                          <div className="flex-1">
+                            <h5 className="font-semibold text-foreground mb-1">{category.title}</h5>
+                            <p className="text-xs text-muted-foreground">
+                              {category.description}
+                            </p>
+                          </div>
 
-                      <ArrowRight className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  </motion.div>
-                ))}
+                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                      </motion.div>
+                    );
+                  })
+                ) : (
+                  // Visa specifika tjänster
+                  SERVICE_CONFIG.map(svc => (
+                    <motion.div
+                      key={svc.slug}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setService(svc);
+                        setCurrentStep(1);
+                      }}
+                      className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Wrench className="w-6 h-6 text-primary" />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h5 className="font-semibold text-foreground mb-1">{svc.name}</h5>
+                          <p className="text-xs text-muted-foreground">
+                            {svc.pricingMode === 'quote' 
+                              ? 'Offert efter behov' 
+                              : svc.pricingMode === 'unit' 
+                                ? `${svc.unitPriceSek} kr/${svc.unitLabel}`
+                                : `${svc.fixedPriceSek} kr`
+                            }
+                            {svc.rotEligible && ' • ROT-berättigad'}
+                          </p>
+                        </div>
+
+                        <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                    </motion.div>
+                  ))
+                )}
               </div>
             </motion.div>
           ) : currentStep === 1 && addons.length > 0 ? (
