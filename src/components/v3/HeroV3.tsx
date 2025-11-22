@@ -34,22 +34,23 @@ const HeroV3 = () => {
       {/* Right Shade Overlay */}
       <div className="absolute top-0 bottom-0 right-0 w-[16.875rem] bg-gradient-to-l from-[#0a0a0a] from-60% to-transparent 2xl:right-[-1%] md:w-[16.875rem] max-md:w-[8.125rem] max-[479px]:right-[-10%]" />
       
+      {/* Fixco Logo - Absolute positioned with fade-in animation */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-8 md:py-10 z-[99] pointer-events-none animate-logo-fade-in">
+        <div className="pointer-events-auto">
+          <a href="/" className="inline-block max-w-full transition-transform duration-300 hover:scale-105 no-underline">
+            <img 
+              src={logoFixco} 
+              loading="lazy"
+              alt="Fixco" 
+              className="max-h-12 md:max-h-24 w-auto block"
+            />
+          </a>
+        </div>
+      </div>
+
       {/* Content Area */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 -mt-20 px-6">
         <div className="flex flex-col items-center gap-6 max-w-5xl">
-          {/* Fixco Logo - Absolute positioned with fade-in animation */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-7 md:py-7 z-[99] pointer-events-none animate-logo-fade-in">
-            <div className="pointer-events-auto">
-              <a href="/" className="inline-block max-w-full transition-transform duration-300 hover:scale-105 no-underline">
-                <img 
-                  src={logoFixco} 
-                  loading="lazy"
-                  alt="Fixco" 
-                  className="max-h-12 md:max-h-24 w-auto block"
-                />
-              </a>
-            </div>
-          </div>
           
           <h1 className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
             Sveriges Ledande Hantverkare
