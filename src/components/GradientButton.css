@@ -1,0 +1,91 @@
+/* From Uiverse.io by M4rco592 */
+.gradient-button {
+  position: relative;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.gradient-button:hover {
+  transform: scale(1.03);
+}
+
+.gradient-button::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    #ffffff,
+    #b794ff,
+    #7d40ff,
+    #9d6fff,
+    #ffffff,
+    #e0d4ff,
+    #ffffff
+  );
+  z-index: 1;
+  filter: blur(6px);
+  transform: rotate(0deg);
+  animation: gradient-spin 6s linear infinite;
+}
+
+.gradient-button::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #7d40ff;
+  border-radius: 47px;
+  z-index: 2;
+  filter: blur(5px);
+}
+
+.gradient-text {
+  position: relative;
+  z-index: 3;
+  color: transparent;
+  background: conic-gradient(
+    from 0deg,
+    #ffffff,
+    #e0d4ff,
+    #ffffff,
+    #f0e7ff,
+    #ffffff,
+    #e0d4ff,
+    #ffffff
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: hue-rotate(0deg);
+  animation: hue-rotating 5s linear infinite;
+}
+
+.gradient-button:active {
+  transform: scale(0.99);
+}
+
+@keyframes hue-rotating {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes gradient-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

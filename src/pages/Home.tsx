@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import HeroUltra from "@/components/HeroUltra";
+import HeroV3 from "@/components/v3/HeroV3";
 import TrustBar from "@/components/TrustBar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,6 +11,7 @@ import { useCopy } from "@/copy/CopyProvider";
 import { EditableSection } from "@/components/EditableSection";
 import { ContextualEditor } from "@/components/ContextualEditor";
 import { useSEO } from "@/hooks/useSEO";
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { 
   getOrganizationSchema, 
   getWebsiteSchema, 
@@ -38,10 +40,17 @@ const SectionSkeleton = () => (
 const Home = () => {
   const { t } = useCopy();
   
+  // Check which hero to show (HeroUltra vs HeroV3)
+  const { data: useNewHero, isLoading: heroLoading } = useFeatureFlag('use_new_hero');
+  
   // Initialize pricing store from URL/localStorage
   useEffect(() => {
     usePriceStore.getState().initFromUrlOrStorage();
   }, []);
+  
+  useEffect(() => {
+    console.log('🎨 [Home] useNewHero:', useNewHero, 'isLoading:', heroLoading);
+  }, [useNewHero, heroLoading]);
 
   // Comprehensive SEO setup
   const organizationSchema = getOrganizationSchema();
@@ -112,7 +121,7 @@ const Home = () => {
       {/* Hero Section - ULTRA Enhanced */}
       <EditableSection id="hero" title="Hero sektion">
         <ContextualEditor contentId="hero-section" type="heading">
-          <HeroUltra />
+          {(useNewHero ?? false) ? <HeroV3 /> : <HeroUltra />}
         </ContextualEditor>
       </EditableSection>
 
