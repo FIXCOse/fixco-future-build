@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
+import Navbar2 from '../Navbar2';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 
 import { EditModeToggle } from '../EditModeToggle';
@@ -52,6 +53,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
             <Outlet key={`${locale}-${location.pathname}`} />
           </main>
           <GlobalFooter locale={locale} />
+          <Navbar2 />
           <EditModeToggle />
           <GlobalContentEditor />
           <EditModeIndicator />
