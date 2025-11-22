@@ -17,11 +17,13 @@ import ROTInfo from "./pages/ROTInfo";
 import RUT from "./pages/RUT";
 import Referenser from "./pages/Referenser";
 import NotFound from "./pages/NotFound";
-import Auth from "./pages/Auth";
 import AI from "./pages/AI";
-import AuthCallback from "./pages/AuthCallback";
-import AuthError from "./pages/AuthError";
 import Dashboard from "./pages/Dashboard";
+
+// Lazy load Auth components for faster initial load
+const Auth = lazy(() => import("./pages/Auth"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const AuthError = lazy(() => import("./pages/AuthError"));
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
@@ -164,9 +166,16 @@ const App = () => {
                     <ScrollToTop />
                     <Routes>
                       {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
-                      <Route path="/auth" element={<Auth />} />
-                      <Route path="/auth/callback" element={<AuthCallback />} />
-                      <Route path="/auth/error" element={<AuthError />} />
+                      <Suspense fallback={
+                        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/20">
+                          <div className="animate-pulse text-muted-foreground">Laddar...</div>
+                        </div>
+                      }>
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/en/auth" element={<Auth />} />
+                        <Route path="/auth/callback" element={<AuthCallback />} />
+                        <Route path="/auth/error" element={<AuthError />} />
+                      </Suspense>
                       
                       {/* All other routes INSIDE MaintenanceGate */}
                       <Route path="*" element={

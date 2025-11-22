@@ -342,7 +342,7 @@ export default function Navigation() {
               </div>
             ) : (
               <div className="hidden xl:flex items-center space-x-2">
-                    <Link to="/auth">
+                    <Link to={currentLanguage === 'en' ? '/en/auth' : '/auth'}>
                       <Button 
                         size="sm"
                         className="h-8 xl:h-9 px-2 xl:px-3 text-xs xl:text-sm bg-gradient-rainbow text-white hover:opacity-90 transition-opacity border-0"
@@ -488,7 +488,7 @@ export default function Navigation() {
                   </div>
                 ) : (
                   <div className="space-y-2 px-4">
-                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Link to={currentLanguage === 'en' ? '/en/auth' : '/auth'} onClick={() => setIsMenuOpen(false)}>
                       <Button variant="outline" size="sm" className="w-full">
                         <span>{t('cta.login')}</span>
                       </Button>
