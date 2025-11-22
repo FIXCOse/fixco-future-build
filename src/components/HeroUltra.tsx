@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Award, Users, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -155,7 +155,6 @@ const ParticleSystemULTRA = ({ count = 200, speed = 1 }: ParticleSystemProps) =>
 
 const HeroUltra = () => {
   const { ultraEnabled, capabilities } = useProgressiveEnhancement();
-  const [isReady, setIsReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { t } = useCopy();
   const { isHydrated } = useContentStore();
@@ -196,15 +195,14 @@ const HeroUltra = () => {
       }
       sessionStorage.setItem('hero-content-cleared', 'true');
     }
-    setIsReady(true);
   }, []);
 
   useEffect(() => {
-    if (isReady && isHydrated) {
-      const timer = setTimeout(() => setIsVisible(true), 100);
+    if (isHydrated) {
+      const timer = setTimeout(() => setIsVisible(true), 50);
       return () => clearTimeout(timer);
     }
-  }, [isReady, isHydrated]);
+  }, [isHydrated]);
 
   const trustIndicators = [
     { icon: "image", src: "/assets/fixco-f-icon-new.png", fallback: "/assets/fixco-icon.webp", title: t('hero.trust_quality'), description: t('hero.trust_quality_desc') },
@@ -373,4 +371,4 @@ const HeroUltra = () => {
   );
 };
 
-export default HeroUltra;
+export default React.memo(HeroUltra);

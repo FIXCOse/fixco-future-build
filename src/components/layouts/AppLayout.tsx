@@ -60,7 +60,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           {useTopMenu && <Navigation />}
           
           <main className="min-h-[60vh]">
-            <Outlet key={`${locale}-${location.pathname}`} />
+            <Outlet />
           </main>
           
           <GlobalFooter locale={locale} />
