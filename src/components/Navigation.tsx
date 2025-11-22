@@ -13,6 +13,7 @@ import { useTheme } from "@/theme/useTheme";
 import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import QuoteQuestionsNotification from './admin/QuoteQuestionsNotification';
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function Navigation() {
+function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -511,4 +512,7 @@ export default function Navigation() {
       </nav>
     </header>
   );
-};
+}
+
+// Memoize Navigation to prevent unnecessary re-renders
+export default React.memo(Navigation);

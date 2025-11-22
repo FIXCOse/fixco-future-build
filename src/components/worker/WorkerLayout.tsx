@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
-import { useAuthProfile } from '@/hooks/useAuthProfile';
+import { useAuthProfile } from '@/contexts/AuthProfileProvider';
 
 const WorkerLayout = () => {
   const location = useLocation();

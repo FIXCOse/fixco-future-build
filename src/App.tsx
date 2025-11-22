@@ -5,89 +5,98 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import Home from "./pages/Home";
-import HomeV2 from "./pages/HomeV2";
-import Services from "./pages/Services";
-import ServiceDetail from "./pages/ServiceDetail";
-import Contact from "./pages/Contact";
-import FAQ from "./pages/FAQ";
-import AboutUs from "./pages/AboutUs";
-import BookVisit from "./pages/BookVisit";
-import ROTInfo from "./pages/ROTInfo";
-import RUT from "./pages/RUT";
-import Referenser from "./pages/Referenser";
-import NotFound from "./pages/NotFound";
-import AI from "./pages/AI";
-import Dashboard from "./pages/Dashboard";
 
-// Lazy load Auth components for faster initial load
+// Lazy load ALL pages for optimal performance
+const Home = lazy(() => import("./pages/Home"));
+const HomeV2 = lazy(() => import("./pages/HomeV2"));
+const Services = lazy(() => import("./pages/Services"));
+const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
+const Contact = lazy(() => import("./pages/Contact"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const BookVisit = lazy(() => import("./pages/BookVisit"));
+const ROTInfo = lazy(() => import("./pages/ROTInfo"));
+const RUT = lazy(() => import("./pages/RUT"));
+const Referenser = lazy(() => import("./pages/Referenser"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const AI = lazy(() => import("./pages/AI"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+
+// Auth components
 const Auth = lazy(() => import("./pages/Auth"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const AuthError = lazy(() => import("./pages/AuthError"));
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import Cookies from "./pages/Cookies";
-import Insurance from "./pages/Insurance";
+
+// Legal pages
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Cookies = lazy(() => import("./pages/Cookies"));
+const Insurance = lazy(() => import("./pages/Insurance"));
+
 import ScrollToTop from "./components/ScrollToTop";
 
 import SecurityWrapper from "./components/SecurityWrapper";
 import AppLayout from "./components/layouts/AppLayout";
 
 // MyFixco pages
-import DashboardOverview from "./pages/MyFixco/DashboardOverview";
-import CustomerDashboard from "./pages/MyFixco/CustomerDashboard";
-import PropertiesPage from "./pages/MyFixco/PropertiesPage";
-import InvoicesPage from "./pages/MyFixco/InvoicesPage";
-import HistoryPage from "./pages/MyFixco/HistoryPage";
-import ActivityPage from "./pages/MyFixco/ActivityPage";
-import RotRutPage from "./pages/MyFixco/RotRutPage";
-import AccountSettings from "./pages/MyFixco/AccountSettings";
-import StaffManagement from "./pages/MyFixco/StaffManagement";
+const DashboardOverview = lazy(() => import("./pages/MyFixco/DashboardOverview"));
+const CustomerDashboard = lazy(() => import("./pages/MyFixco/CustomerDashboard"));
+const PropertiesPage = lazy(() => import("./pages/MyFixco/PropertiesPage"));
+const InvoicesPage = lazy(() => import("./pages/MyFixco/InvoicesPage"));
+const HistoryPage = lazy(() => import("./pages/MyFixco/HistoryPage"));
+const ActivityPage = lazy(() => import("./pages/MyFixco/ActivityPage"));
+const RotRutPage = lazy(() => import("./pages/MyFixco/RotRutPage"));
+const AccountSettings = lazy(() => import("./pages/MyFixco/AccountSettings"));
+const StaffManagement = lazy(() => import("./pages/MyFixco/StaffManagement"));
 
 // Admin pages
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
-import AdminQuotesUnified from "./pages/admin/AdminQuotesUnified";
-import AdminQuotesTrash from "./pages/admin/AdminQuotesTrash";
-import AdminBookingsTrash from "./pages/admin/AdminBookingsTrash";
-import AdminJobsTrash from "./pages/admin/AdminJobsTrash";
-import AdminProjectsTrash from "./pages/admin/AdminProjectsTrash";
-import AdminJobRequestsTrash from "./pages/admin/AdminJobRequestsTrash";
-import AdminInvoices from "./pages/admin/AdminInvoices";
-import AdminOngoingProjects from "./pages/admin/AdminOngoingProjects";
-import AdminBookings from "./pages/admin/AdminBookings";
-import AdminBookingDetail from "./pages/admin/AdminBookingDetail";
-import AdminCustomers from "./pages/admin/AdminCustomers";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminDatabase from "./pages/admin/AdminDatabase";
-import AdminReports from "./pages/admin/AdminReports";
-import AdminSettings from "./pages/admin/AdminSettings";
-import AdminSecurity from "./pages/admin/AdminSecurity";
-import AdminStaff from "./pages/admin/AdminStaff";
-import AdminPayroll from "./pages/admin/AdminPayroll";
-import JobPool from "./pages/worker/JobPool";
-import MyJobs from "./pages/worker/MyJobs";
-import JobDetail from "./pages/worker/JobDetail";
-import WorkerDashboard from "./pages/worker/WorkerDashboard";
-import WorkerTimesheet from "./pages/worker/WorkerTimesheet";
-import WorkerSettings from "./pages/worker/WorkerSettings";
-import AdminJobsUnified from "./pages/admin/AdminJobsUnified";
-import AdminTranslations from "./pages/admin/AdminTranslations";
-import AdminServices from "./pages/admin/AdminServices";
-import AdminLeads from "./pages/admin/AdminLeads";
-import AdminQuoteQuestions from "./pages/admin/AdminQuoteQuestions";
-import QuotePublic from "./pages/QuotePublic";
-import WorkerSchedule from "./pages/worker/WorkerSchedule";
-import AdminSchedule from "./pages/admin/AdminSchedule";
-import AdminWorkerAnalytics from "./pages/admin/AdminWorkerAnalytics";
-import AdminJobDetail from "./pages/admin/AdminJobDetail";
-import InvoicePublic from "./pages/InvoicePublic";
-import LocationCityPage from "./pages/locations/LocationCityPage";
-import ServiceCityPage from "./pages/locations/ServiceCityPage";
-import ServiceCityDetail from "./pages/locations/ServiceCityDetail";
-import Careers from "./pages/Careers";
-import AdminApplications from "./pages/admin/AdminApplications";
-import AdminFeatureFlags from "./pages/admin/AdminFeatureFlags";
+const AdminQuotesUnified = lazy(() => import("./pages/admin/AdminQuotesUnified"));
+const AdminQuotesTrash = lazy(() => import("./pages/admin/AdminQuotesTrash"));
+const AdminBookingsTrash = lazy(() => import("./pages/admin/AdminBookingsTrash"));
+const AdminJobsTrash = lazy(() => import("./pages/admin/AdminJobsTrash"));
+const AdminProjectsTrash = lazy(() => import("./pages/admin/AdminProjectsTrash"));
+const AdminJobRequestsTrash = lazy(() => import("./pages/admin/AdminJobRequestsTrash"));
+const AdminInvoices = lazy(() => import("./pages/admin/AdminInvoices"));
+const AdminOngoingProjects = lazy(() => import("./pages/admin/AdminOngoingProjects"));
+const AdminBookings = lazy(() => import("./pages/admin/AdminBookings"));
+const AdminBookingDetail = lazy(() => import("./pages/admin/AdminBookingDetail"));
+const AdminCustomers = lazy(() => import("./pages/admin/AdminCustomers"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminDatabase = lazy(() => import("./pages/admin/AdminDatabase"));
+const AdminReports = lazy(() => import("./pages/admin/AdminReports"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminSecurity = lazy(() => import("./pages/admin/AdminSecurity"));
+const AdminStaff = lazy(() => import("./pages/admin/AdminStaff"));
+const AdminPayroll = lazy(() => import("./pages/admin/AdminPayroll"));
+const AdminJobsUnified = lazy(() => import("./pages/admin/AdminJobsUnified"));
+const AdminTranslations = lazy(() => import("./pages/admin/AdminTranslations"));
+const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
+const AdminQuoteQuestions = lazy(() => import("./pages/admin/AdminQuoteQuestions"));
+const AdminSchedule = lazy(() => import("./pages/admin/AdminSchedule"));
+const AdminWorkerAnalytics = lazy(() => import("./pages/admin/AdminWorkerAnalytics"));
+const AdminJobDetail = lazy(() => import("./pages/admin/AdminJobDetail"));
+const AdminApplications = lazy(() => import("./pages/admin/AdminApplications"));
+const AdminFeatureFlags = lazy(() => import("./pages/admin/AdminFeatureFlags"));
+
+// Worker pages
+const JobPool = lazy(() => import("./pages/worker/JobPool"));
+const MyJobs = lazy(() => import("./pages/worker/MyJobs"));
+const JobDetail = lazy(() => import("./pages/worker/JobDetail"));
+const WorkerDashboard = lazy(() => import("./pages/worker/WorkerDashboard"));
+const WorkerTimesheet = lazy(() => import("./pages/worker/WorkerTimesheet"));
+const WorkerSettings = lazy(() => import("./pages/worker/WorkerSettings"));
+const WorkerSchedule = lazy(() => import("./pages/worker/WorkerSchedule"));
+
+// Public pages
+const QuotePublic = lazy(() => import("./pages/QuotePublic"));
+const InvoicePublic = lazy(() => import("./pages/InvoicePublic"));
+const LocationCityPage = lazy(() => import("./pages/locations/LocationCityPage"));
+const ServiceCityPage = lazy(() => import("./pages/locations/ServiceCityPage"));
+const ServiceCityDetail = lazy(() => import("./pages/locations/ServiceCityDetail"));
+const Careers = lazy(() => import("./pages/Careers"));
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -101,6 +110,8 @@ import { useLocation } from 'react-router-dom';
 import { MaintenanceGate } from './components/MaintenanceGate';
 import { FeatureFlagInitializer } from './components/FeatureFlagInitializer';
 import ServiceRequestModal from '@/features/requests/ServiceRequestModal';
+import { AuthProfileProvider } from './contexts/AuthProfileProvider';
+import { useContentLoader } from '@/hooks/useContentLoader';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -114,6 +125,8 @@ const queryClient = new QueryClient({
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes - queries stay fresh longer
+      gcTime: 1000 * 60 * 30, // 30 minutes - keep in cache longer
     },
   },
 });
@@ -131,6 +144,9 @@ const PageViewTracker = () => {
 };
 
 const App = () => {
+  // Load content globally ONCE instead of per-route
+  useContentLoader();
+  
   // Global event handling for wizard actions
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -153,18 +169,19 @@ const App = () => {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <CopyProvider locale="sv">
-          <SecurityWrapper>
-            <TooltipProvider>
-              <div className="min-h-screen bg-background font-inter">
-                <Toaster />
-                <Sonner />
-                <ServiceRequestModal />
-                <BrowserRouter>
-                  <FeatureFlagInitializer>
-                    <PageViewTracker />
-                    <ScrollToTop />
-                    <Routes>
+        <AuthProfileProvider>
+          <CopyProvider locale="sv">
+            <SecurityWrapper>
+              <TooltipProvider>
+                <div className="min-h-screen bg-background font-inter">
+                  <Toaster />
+                  <Sonner />
+                  <ServiceRequestModal />
+                  <BrowserRouter>
+                    <FeatureFlagInitializer>
+                      <PageViewTracker />
+                      <ScrollToTop />
+                      <Routes>
                       {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
                       <Route path="/auth" element={<Auth />} />
                       <Route path="/en/auth" element={<Auth />} />
@@ -365,14 +382,15 @@ const App = () => {
                       } />
                     </Routes>
                   </FeatureFlagInitializer>
-                </BrowserRouter>
-                </div>
-              </TooltipProvider>
-            </SecurityWrapper>
-          </CopyProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
-  );
-};
-
-export default App;
+                    </BrowserRouter>
+                  </div>
+                </TooltipProvider>
+              </SecurityWrapper>
+            </CopyProvider>
+          </AuthProfileProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    );
+  };
+  
+  export default App;

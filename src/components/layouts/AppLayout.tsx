@@ -32,9 +32,9 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   // Check which menu to show (TOP Navigation vs BOTTOM Navbar2)
   const { data: useTopMenu } = usePersistedFeatureFlag('use_top_menu', true);
   
-  // Initialize language persistence and content loading
+  // Initialize language persistence
   useLanguagePersistence();
-  useContentLoader();
+  // Note: useContentLoader moved to App.tsx for global loading
   
   // Automatically translate services when on English locale
   useAutoTranslate(locale);

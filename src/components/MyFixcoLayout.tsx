@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useState, useEffect } from 'react';
 import { OwnerCongrats } from '@/components/OwnerCongrats';
 import { useOwnerCongrats } from '@/hooks/useOwnerCongrats';
-import { useAuthProfile } from '@/hooks/useAuthProfile';
+import { useAuthProfile } from '@/contexts/AuthProfileProvider';
 import { useRoleGate } from '@/hooks/useRoleGate';
 import { useRole } from '@/hooks/useRole';
 import AdminDashboardContent from '@/components/AdminDashboardContent';
@@ -94,7 +94,7 @@ const MyFixcoLayout = () => {
     <LocaleProvider locale={currentLanguage}>
       <CopyProvider locale={currentLanguage}>
         <div className="min-h-screen bg-background">
-          <Navigation />
+          {/* Navigation already loaded by AppLayout */}
           <div className="pt-[calc(64px+2rem)] md:pt-[calc(64px+2rem)]">
             <div className="container mx-auto px-4 py-8 max-w-6xl">
               <Outlet />
