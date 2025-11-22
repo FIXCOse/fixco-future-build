@@ -5,6 +5,7 @@ import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
 import Navbar2 from '../Navbar2';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
+import { usePersistedFeatureFlag } from '@/hooks/usePersistedFeatureFlag';
 
 import { EditModeToggle } from '../EditModeToggle';
 import { GlobalContentEditor } from '../GlobalContentEditor';
@@ -29,7 +30,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   const { data: chatEnabled, isLoading: chatLoading } = useFeatureFlag('chat_ai_enabled');
   
   // Check which menu to show (TOP Navigation vs BOTTOM Navbar2)
-  const { data: useTopMenu, isLoading: menuLoading } = useFeatureFlag('use_top_menu');
+  const { data: useTopMenu } = usePersistedFeatureFlag('use_top_menu', true);
   
   // Initialize language persistence and content loading
   useLanguagePersistence();
@@ -48,15 +49,15 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   }, [chatEnabled, chatLoading]);
   
   useEffect(() => {
-    console.log('🎨 [AppLayout] useTopMenu:', useTopMenu, 'isLoading:', menuLoading);
-  }, [useTopMenu, menuLoading]);
+    console.log('🎨 [AppLayout] useTopMenu:', useTopMenu);
+  }, [useTopMenu]);
   
   return (
     <CopyProvider locale={locale} key={locale}>
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
           {/* TOP meny - visa ENDAST om use_top_menu = true */}
-          {(useTopMenu ?? true) && <Navigation />}
+          {useTopMenu && <Navigation />}
           
           <main className="min-h-[60vh]">
             <Outlet key={`${locale}-${location.pathname}`} />
@@ -65,7 +66,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <GlobalFooter locale={locale} />
           
           {/* BOTTOM meny - visa ENDAST om use_top_menu = false */}
-          {!(useTopMenu ?? true) && <Navbar2 />}
+          {!useTopMenu && <Navbar2 />}
           
           <EditModeToggle />
           <GlobalContentEditor />
