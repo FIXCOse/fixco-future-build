@@ -582,18 +582,38 @@ p {
   align-items: center;
 }
 
-.rd-navbar_theme_btn {
-  width: 40px;
-  height: 40px;
+.rd-navbar_theme_buttons {
   display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.rd-navbar_theme_btn {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
   border-radius: 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.8);
-  font-size: 1.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  min-width: 100px;
+  flex: 1;
+}
+
+.rd-navbar_theme_btn_icon {
+  font-size: 1.5rem;
+  display: block;
+}
+
+.rd-navbar_theme_btn_text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text--text-black);
+  letter-spacing: 0.02em;
 }
 
 .rd-navbar_theme_btn:hover {
@@ -605,11 +625,16 @@ p {
 
 .rd-navbar_theme_btn.active {
   border-color: hsl(var(--primary));
-  background: rgba(255, 255, 255, 1);
+  background: hsl(var(--primary) / 0.1);
   box-shadow: 
     0 0 0 2px hsl(var(--primary) / 0.3),
     0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: scale(1.05);
+  transform: scale(1.02);
+}
+
+.rd-navbar_theme_btn.active .rd-navbar_theme_btn_text {
+  color: hsl(var(--primary));
+  font-weight: 600;
 }
 
 @media screen and (max-width: 767px) {

@@ -274,26 +274,32 @@ const Navbar2 = () => {
                     <button 
                       onClick={() => setTheme('dark')}
                       className={`rd-navbar_theme_btn ${theme === 'dark' ? 'active' : ''}`}
-                      title="Dark"
                       type="button"
                     >
-                      🌙
+                      <span className="rd-navbar_theme_btn_icon">🌙</span>
+                      <span className="rd-navbar_theme_btn_text">
+                        {currentLanguage === 'en' ? 'Dark' : 'Mörkt'}
+                      </span>
                     </button>
                     <button 
                       onClick={() => setTheme('light')}
                       className={`rd-navbar_theme_btn ${theme === 'light' ? 'active' : ''}`}
-                      title="Light"
                       type="button"
                     >
-                      ☀️
+                      <span className="rd-navbar_theme_btn_icon">☀️</span>
+                      <span className="rd-navbar_theme_btn_text">
+                        {currentLanguage === 'en' ? 'Light' : 'Ljust'}
+                      </span>
                     </button>
                     <button 
                       onClick={() => setTheme('ocean')}
                       className={`rd-navbar_theme_btn ${theme === 'ocean' ? 'active' : ''}`}
-                      title="Ocean"
                       type="button"
                     >
-                      🌊
+                      <span className="rd-navbar_theme_btn_icon">🌊</span>
+                      <span className="rd-navbar_theme_btn_text">
+                        {currentLanguage === 'en' ? 'Ocean' : 'Ocean'}
+                      </span>
                     </button>
                   </div>
                 </div>
