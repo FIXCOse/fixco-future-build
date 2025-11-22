@@ -28,6 +28,9 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   // Check if AI chat is enabled
   const { data: chatEnabled, isLoading: chatLoading } = useFeatureFlag('chat_ai_enabled');
   
+  // Check which menu to show (TOP Navigation vs BOTTOM Navbar2)
+  const { data: useTopMenu, isLoading: menuLoading } = useFeatureFlag('use_top_menu');
+  
   // Initialize language persistence and content loading
   useLanguagePersistence();
   useContentLoader();
@@ -44,16 +47,26 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
     console.log('💬 [AppLayout] chatEnabled:', chatEnabled, 'isLoading:', chatLoading);
   }, [chatEnabled, chatLoading]);
   
+  useEffect(() => {
+    console.log('🎨 [AppLayout] useTopMenu:', useTopMenu, 'isLoading:', menuLoading);
+  }, [useTopMenu, menuLoading]);
+  
   return (
     <CopyProvider locale={locale} key={locale}>
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
-          <Navigation />
+          {/* TOP meny - visa ENDAST om use_top_menu = true */}
+          {(useTopMenu ?? true) && <Navigation />}
+          
           <main className="min-h-[60vh]">
             <Outlet key={`${locale}-${location.pathname}`} />
           </main>
+          
           <GlobalFooter locale={locale} />
-          <Navbar2 />
+          
+          {/* BOTTOM meny - visa ENDAST om use_top_menu = false */}
+          {!(useTopMenu ?? true) && <Navbar2 />}
+          
           <EditModeToggle />
           <GlobalContentEditor />
           <EditModeIndicator />

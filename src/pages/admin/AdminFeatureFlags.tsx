@@ -73,6 +73,66 @@ const AdminFeatureFlags = () => {
         <CreateOverrideDialog />
       </div>
 
+      {/* Test-kombinationer Guide */}
+      <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200 dark:border-purple-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            🎯 Test-kombinationer för Meny & Hero
+          </CardTitle>
+          <CardDescription>
+            Använd dessa kombinationer för att testa olika varianter
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
+              <div className="font-mono text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">MENY 1</div>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Navigation (TOP) + HeroUltra (gammal)</div>
+                <div className="text-sm text-muted-foreground">
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_top_menu: ✓ ON</code>
+                  {' '} + {' '}
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_new_hero: ✗ OFF</code>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
+              <div className="font-mono text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">MENY 2</div>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Navbar2 (BOTTOM) + HeroUltra (gammal)</div>
+                <div className="text-sm text-muted-foreground">
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_top_menu: ✗ OFF</code>
+                  {' '} + {' '}
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_new_hero: ✗ OFF</code>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg border-2 border-purple-300 dark:border-purple-700">
+              <div className="font-mono text-sm bg-purple-100 dark:bg-purple-900 px-2 py-1 rounded">MENY 5</div>
+              <div className="flex-1">
+                <div className="font-semibold mb-1">Navbar2 (BOTTOM) + HeroV3 (NY lila gradient) ⭐</div>
+                <div className="text-sm text-muted-foreground">
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_top_menu: ✗ OFF</code>
+                  {' '} + {' '}
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">use_new_hero: ✓ ON</code>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+            <p className="text-sm font-medium mb-1">💡 Tips:</p>
+            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <li>Ändringarna träder i kraft omedelbart (realtime)</li>
+              <li>Refresha hemsidan för att se ändringarna</li>
+              <li>Alla ändringar loggas i "Change History"-fliken</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
