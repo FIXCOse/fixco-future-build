@@ -735,152 +735,151 @@ export default function ProjectEditModal({
                   onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))}
                 />
                 Aktivt
-              </label>
-            </div>
-
-
-            {/* Images Management */}
-            <div>
-              <Label>Projektbilder</Label>
-              
-              {/* File Upload */}
-              <div className="mb-3">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
-                  className="hidden"
-                />
-                <Button 
-                  onClick={triggerFileUpload} 
-                  variant="outline" 
-                  className="w-full"
-                  disabled={uploadingImages.size > 0}
-                >
-                  {uploadingImages.size > 0 ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Laddar upp bilder...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-4 h-4 mr-2" />
-                      Ladda upp bilder från enhet
-                    </>
-                  )}
-                </Button>
-              </div>
-
-              {/* URL Input */}
-              <div className="flex gap-2 mb-2">
-                <Input
-                  value={newImageUrl}
-                  onChange={(e) => setNewImageUrl(e.target.value)}
-                  placeholder="Eller ange bildlänk (URL)..."
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddImage()}
-                />
-                <Button onClick={handleAddImage} size="sm">
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {formData.images && formData.images.length > 0 ? (
-                <div>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    💡 Använd pilarna för att ändra ordning. Klicka på "Sätt som thumbnail" för att välja huvudbild.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {formData.images.map((image, index) => (
-                      <Card key={index} className="relative group">
-                        <CardContent className="p-2">
-                          <img 
-                            src={image} 
-                            alt={`Project ${index + 1}`}
-                            className="w-full h-20 object-cover rounded"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop';
-                            }}
-                          />
-                          
-                          {/* Image Number Badge */}
-                          <Badge 
-                            variant="secondary" 
-                            className="absolute bottom-2 left-2 text-xs"
-                          >
-                            {index + 1}
-                          </Badge>
-
-                          {/* Thumbnail Badge */}
-                          {formData.thumbnail_image === image && (
-                            <Badge 
-                              variant="default" 
-                              className="absolute top-1 left-1 bg-green-500 text-white hover:bg-green-600 text-xs px-2 py-0.5"
-                            >
-                              Thumbnail
-                            </Badge>
-                          )}
-
-                          {/* Move Up Button */}
-                          {index > 0 && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
-                              onClick={() => handleMoveImageUp(index)}
-                              type="button"
-                            >
-                              <ArrowUp className="w-3 h-3" />
-                            </Button>
-                          )}
-
-                          {/* Move Down Button */}
-                          {index < formData.images.length - 1 && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              className="absolute top-8 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
-                              onClick={() => handleMoveImageDown(index)}
-                              type="button"
-                            >
-                              <ArrowDown className="w-3 h-3" />
-                            </Button>
-                          )}
-                          
-                          {/* Set as Thumbnail Button */}
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs py-1 px-2 h-auto"
-                            onClick={() => setFormData(prev => ({ ...prev, thumbnail_image: image }))}
-                            type="button"
-                          >
-                            Sätt som thumbnail
-                          </Button>
-
-                          {/* Delete Button */}
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
-                            onClick={() => handleRemoveImage(image)}
-                            type="button"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  Inga bilder uppladdade än
-                </p>
-              )}
+            </label>
             </div>
           </div>
+        </div>
+
+        {/* Images Management - Full Width Section */}
+        <div className="mt-6 pt-6 border-t px-6">
+          <Label className="text-lg font-semibold mb-4 block">Projektbilder</Label>
+          
+          {/* File Upload */}
+          <div className="mb-3">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
+              className="hidden"
+            />
+            <Button 
+              onClick={triggerFileUpload} 
+              variant="outline" 
+              className="w-full"
+              disabled={uploadingImages.size > 0}
+            >
+              {uploadingImages.size > 0 ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Laddar upp bilder...
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Ladda upp bilder från enhet
+                </>
+              )}
+            </Button>
+          </div>
+
+          {/* URL Input */}
+          <div className="flex gap-2 mb-4">
+            <Input
+              value={newImageUrl}
+              onChange={(e) => setNewImageUrl(e.target.value)}
+              placeholder="Eller ange bildlänk (URL)..."
+              onKeyPress={(e) => e.key === 'Enter' && handleAddImage()}
+            />
+            <Button onClick={handleAddImage} size="sm">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          {formData.images && formData.images.length > 0 ? (
+            <div>
+              <p className="text-xs text-muted-foreground mb-3">
+                💡 Använd pilarna för att ändra ordning. Klicka på "Sätt som thumbnail" för att välja huvudbild.
+              </p>
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                {formData.images.map((image, index) => (
+                  <Card key={index} className="relative group">
+                    <CardContent className="p-2">
+                      <img 
+                        src={image} 
+                        alt={`Project ${index + 1}`}
+                        className="w-full h-24 md:h-28 object-cover rounded"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop';
+                        }}
+                      />
+                      
+                      {/* Image Number Badge */}
+                      <Badge 
+                        variant="secondary" 
+                        className="absolute bottom-2 left-2 text-xs"
+                      >
+                        {index + 1}
+                      </Badge>
+
+                      {/* Thumbnail Badge */}
+                      {formData.thumbnail_image === image && (
+                        <Badge 
+                          variant="default" 
+                          className="absolute top-1 left-1 bg-green-500 text-white hover:bg-green-600 text-xs px-2 py-0.5"
+                        >
+                          Thumbnail
+                        </Badge>
+                      )}
+
+                      {/* Move Up Button */}
+                      {index > 0 && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                          onClick={() => handleMoveImageUp(index)}
+                          type="button"
+                        >
+                          <ArrowUp className="w-3 h-3" />
+                        </Button>
+                      )}
+
+                      {/* Move Down Button */}
+                      {index < formData.images.length - 1 && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute top-8 left-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                          onClick={() => handleMoveImageDown(index)}
+                          type="button"
+                        >
+                          <ArrowDown className="w-3 h-3" />
+                        </Button>
+                      )}
+                      
+                      {/* Set as Thumbnail Button */}
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs py-1 px-2 h-auto"
+                        onClick={() => setFormData(prev => ({ ...prev, thumbnail_image: image }))}
+                        type="button"
+                      >
+                        Sätt som thumbnail
+                      </Button>
+
+                      {/* Delete Button */}
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 p-0"
+                        onClick={() => handleRemoveImage(image)}
+                        type="button"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              Inga bilder uppladdade än
+            </p>
+          )}
         </div>
         </div>
 
