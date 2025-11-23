@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import "./GradientButton.css";
 
@@ -17,10 +18,20 @@ const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
     );
 
     if (href) {
+      const isExternal = href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:');
+      
+      if (isExternal) {
+        return (
+          <a href={href} className="inline-block">
+            {buttonElement}
+          </a>
+        );
+      }
+      
       return (
-        <a href={href} className="inline-block">
+        <Link to={href} className="inline-block">
           {buttonElement}
-        </a>
+        </Link>
       );
     }
 
