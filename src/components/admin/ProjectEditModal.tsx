@@ -791,7 +791,7 @@ export default function ProjectEditModal({
                   <p className="text-xs text-muted-foreground mb-2">
                     💡 Använd pilarna för att ändra ordning. Klicka på "Sätt som thumbnail" för att välja huvudbild.
                   </p>
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                  <div className="grid grid-cols-2 gap-2">
                     {formData.images.map((image, index) => (
                       <Card key={index} className="relative group">
                         <CardContent className="p-2">
