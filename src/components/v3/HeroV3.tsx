@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useEffect } from "react";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Star } from "lucide-react";
 import { useContentStore } from "@/stores/contentStore";
+import { gsap, SplitText } from "@/lib/gsap";
 import logoBauhaus from "@/assets/bauhaus-logo-red.png";
 import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
@@ -12,18 +12,130 @@ import logoNordgren from "@/assets/nordgren-logo-white.png";
 import logoFixco from "@/assets/fixco-logo-white.png";
 
 const HeroV3 = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLHeadingElement>(null);
+  const starsRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const glowsRef = useRef<HTMLDivElement>(null);
   const { isHydrated } = useContentStore();
 
   useEffect(() => {
-    if (isHydrated) {
-      const timer = setTimeout(() => setIsVisible(true), 50);
-      return () => clearTimeout(timer);
-    }
+    if (!isHydrated) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.1 });
+
+      // 1. Animate eyebrow text
+      if (eyebrowRef.current) {
+        tl.from(eyebrowRef.current, {
+          opacity: 0,
+          x: -30,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+      }
+
+      // 2. Stagger stars
+      if (starsRef.current) {
+        tl.from(starsRef.current.children, {
+          opacity: 0,
+          scale: 0,
+          duration: 0.3,
+          stagger: 0.1,
+          ease: "back.out(1.7)"
+        }, "-=0.3");
+      }
+
+      // 3. SplitText animation on headline
+      if (headlineRef.current) {
+        const split = new SplitText(headlineRef.current, { 
+          type: "chars,words",
+          charsClass: "split-char",
+          wordsClass: "split-word"
+        });
+
+        tl.from(split.chars, {
+          opacity: 0,
+          y: 50,              // Slide up
+          rotationX: -90,     // 3D rotation X-axis
+          rotationY: 20,      // 3D rotation Y-axis
+          scale: 0.8,         // Scale effect
+          duration: 0.8,
+          stagger: 0.03,      // Delay between each letter
+          ease: "back.out(1.7)" // Bounce effect
+        }, "-=0.2");
+      }
+
+      // 4. Animate paragraph
+      if (paragraphRef.current) {
+        tl.from(paragraphRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
+          ease: "power2.out"
+        }, "-=0.4");
+      }
+
+      // 5. Animate buttons
+      if (buttonsRef.current) {
+        tl.from(buttonsRef.current.children, {
+          opacity: 0,
+          scale: 0.8,
+          duration: 0.5,
+          stagger: 0.15,
+          ease: "back.out(1.7)"
+        }, "-=0.3");
+      }
+
+      // 6. Floating animation for glow effects
+      if (glowsRef.current) {
+        const glows = glowsRef.current.children;
+        
+        gsap.to(glows[0], {
+          y: -20,
+          x: 10,
+          duration: 4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+
+        gsap.to(glows[1], {
+          y: 15,
+          x: -15,
+          duration: 5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+
+        gsap.to(glows[2], {
+          y: -10,
+          x: 12,
+          duration: 4.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+
+        gsap.to(glows[3], {
+          y: 18,
+          x: -8,
+          duration: 5.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+      }
+    }, heroRef);
+
+    return () => ctx.revert();
   }, [isHydrated]);
 
   return (
-    <section className={`relative w-full overflow-hidden transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ height: '980px' }}>
+    <section ref={heroRef} className="relative w-full overflow-hidden" style={{ height: '980px' }}>
       {/* Background Gradient */}
       <div 
         className="absolute inset-0 animate-gradient-shift" 
@@ -34,7 +146,7 @@ const HeroV3 = () => {
       />
       
       {/* Glow Effects */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div ref={glowsRef} className="absolute inset-0 pointer-events-none">
         {/* Deep purple glow - top */}
         <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#592db5] opacity-30 blur-[150px] rounded-full" />
         {/* Bright purple glow - center */}
@@ -63,23 +175,23 @@ const HeroV3 = () => {
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 -mt-20 px-6">
         <div className="flex flex-col items-center gap-6 max-w-5xl">
           
-          <h1 className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
+          <h1 ref={eyebrowRef} className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
             Sveriges Ledande Hantverkare
           </h1>
-          <div className="flex items-center justify-center gap-1 mb-6">
+          <div ref={starsRef} className="flex items-center justify-center gap-1 mb-6">
             <span className="text-sm text-[#fbfaf6] tracking-wide">4.9</span>
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-4 h-4 fill-[#fbbf24] text-[#fbbf24]" />
             ))}
           </div>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-[#fafafa] text-center leading-[120%]">
+          <h1 ref={headlineRef} className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-[#fafafa] text-center leading-[120%]">
             <span className="font-brand italic">Bygg- & fastighetstjänster</span> för privat, BRF & företag
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-[#fafafa] opacity-90 text-center max-w-3xl leading-relaxed">
+          <p ref={paragraphRef} className="text-lg md:text-xl lg:text-2xl text-[#fafafa] opacity-90 text-center max-w-3xl leading-relaxed">
             Expertlösningar för alla fastighetsbehov – från el till målning. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 items-center">
+        <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 items-center">
           <GradientButton onClick={() => openServiceRequestModal({ showCategories: true })}>
             Begär Kostnadsfri Offert
           </GradientButton>

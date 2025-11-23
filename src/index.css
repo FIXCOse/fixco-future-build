@@ -406,3 +406,13 @@
   @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;
   @apply transform rotate-12 translate-x-2 -translate-y-1;
 }
+
+/* GSAP SplitText support - needed for 3D rotations */
+.split-char {
+  display: inline-block;
+  perspective: 1000px;
+}
+
+.split-word {
+  display: inline-block;
+}
