@@ -436,8 +436,17 @@
 .split-char {
   display: inline-block;
   perspective: 1000px;
+  white-space: normal;
 }
 
 .split-word {
   display: inline-block;
+  white-space: normal;
+}
+
+/* Parent container for split text */
+[data-split-parent] {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
