@@ -11,6 +11,7 @@ import { useRole } from '@/hooks/useRole';
 import ProjectEditModal from '@/components/admin/ProjectEditModal';
 import ProjectDetailModal from '@/components/admin/ProjectDetailModal';
 import { useCopy } from '@/copy/CopyProvider';
+import { gsap, SplitText } from '@/lib/gsap';
 
 const ProjectShowcase = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
@@ -18,6 +19,7 @@ const ProjectShowcase = () => {
   const { t, locale } = useCopy();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   
   const { data: projects = [], isLoading } = useReferenceProjects();
   const { user } = useAuth();
@@ -44,6 +46,37 @@ const ProjectShowcase = () => {
       </section>
     );
   }
+
+  // GSAP animation for title
+  useEffect(() => {
+    if (!titleRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const split = new SplitText(titleRef.current, { 
+        type: "chars,words",
+        charsClass: "split-char",
+        wordsClass: "split-word"
+      });
+
+      gsap.from(split.chars, {
+        opacity: 0,
+        y: 50,
+        rotationX: -90,
+        rotationY: 20,
+        scale: 0.8,
+        duration: 0.8,
+        stagger: 0.03,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top 75%",
+          once: true
+        }
+      });
+    }, titleRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSaveProject = (projectData: Partial<ReferenceProject>) => {
     if (editingProject) {
@@ -83,7 +116,7 @@ const ProjectShowcase = () => {
             )}
           </div>
           
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-6">
             {t('projects.latest_title').split(' ').slice(0, 2).join(' ')}{' '}
             <span className="gradient-text">{t('projects.latest_title').split(' ').slice(2).join(' ')}</span>
           </h2>
