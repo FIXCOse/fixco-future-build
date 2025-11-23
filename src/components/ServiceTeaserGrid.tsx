@@ -179,7 +179,8 @@ const ServiceTeaserGrid = () => {
         scrollTrigger: {
           trigger: titleRef.current,
           start: "top 80%",
-          once: true
+          once: true,
+          immediateRender: false
         }
       });
 
@@ -193,7 +194,8 @@ const ServiceTeaserGrid = () => {
         scrollTrigger: {
           trigger: subtitleRef.current,
           start: "top 80%",
-          once: true
+          once: true,
+          immediateRender: false
         }
       });
     });

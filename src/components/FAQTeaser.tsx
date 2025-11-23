@@ -59,45 +59,6 @@ const FAQTeaser = () => {
     return () => ctx.revert();
   }, []);
 
-  // Animate accordion open/close
-  useEffect(() => {
-    faqItemsRef.current.forEach((item, index) => {
-      if (!item) return;
-
-      const content = item.querySelector('.faq-content') as HTMLElement;
-      const arrow = item.querySelector('.faq-arrow') as HTMLElement;
-
-      if (!content || !arrow) return;
-
-      if (openIndex === index) {
-        gsap.to(content, {
-          height: 'auto',
-          opacity: 1,
-          duration: 0.5,
-          ease: "accordionEase"
-        });
-
-        gsap.to(arrow, {
-          rotation: 180,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-      } else {
-        gsap.to(content, {
-          height: 0,
-          opacity: 0,
-          duration: 0.4,
-          ease: "accordionEase"
-        });
-
-        gsap.to(arrow, {
-          rotation: 0,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-      }
-    });
-  }, [openIndex]);
 
   return (
     <section ref={sectionRef} className="py-24 bg-gradient-primary-subtle relative">
@@ -143,17 +104,22 @@ const FAQTeaser = () => {
                     {faq.question}
                   </h3>
                   <ChevronDown
-                    className="faq-arrow h-5 w-5 text-primary shrink-0 will-change-transform"
+                    className={cn(
+                      "h-5 w-5 text-primary shrink-0 transition-transform duration-300",
+                      openIndex === index && "rotate-180"
+                    )}
                   />
                 </button>
                 
-                <div className="faq-content overflow-hidden" style={{ height: 0, opacity: 0 }}>
-                  <div className="px-6 pb-6">
-                    <p className="text-muted-foreground leading-relaxed">
-                      {faq.answer}
-                    </p>
+                {openIndex === index && (
+                  <div className="overflow-hidden animate-accordion-down">
+                    <div className="px-6 pb-6">
+                      <p className="text-muted-foreground leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ))}
           </div>

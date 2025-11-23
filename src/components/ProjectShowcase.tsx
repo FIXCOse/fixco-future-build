@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { ArrowRight, Calendar, MapPin, Clock, Star, ExternalLink, Plus, Edit } from 'lucide-react';
-import { gsap } from '@/lib/gsap';
 import { Button } from '@/components/ui/button';
 import MagneticButton from '@/components/MagneticButton';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,8 +18,6 @@ const ProjectShowcase = () => {
   const { t, locale } = useCopy();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ReferenceProject | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   
   const { data: projects = [], isLoading } = useReferenceProjects();
   const { user } = useAuth();
@@ -34,91 +31,6 @@ const ProjectShowcase = () => {
   const displayedProjects = projects
     .filter(p => p.is_featured)
     .slice(0, 6);
-
-  // GSAP animations
-  useEffect(() => {
-    if (!sectionRef.current || displayedProjects.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      // Stagger entrance for cards
-      gsap.from(cardsRef.current.filter(Boolean), {
-        opacity: 0,
-        y: 80,
-        scale: 0.95,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          once: true
-        }
-      });
-
-      // Image reveal and parallax
-      cardsRef.current.forEach((card) => {
-        if (!card) return;
-
-        const image = card.querySelector('.project-image');
-        if (!image) return;
-
-        // Image reveal animation
-        gsap.from(image, {
-          clipPath: "inset(0 100% 0 0)",
-          duration: 1.2,
-          ease: "power3.inOut",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            once: true
-          }
-        });
-
-        // Parallax scrolling on image
-        gsap.to(image, {
-          yPercent: -15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1
-          }
-        });
-      });
-
-      // Magnetic hover on cards
-      cardsRef.current.forEach((card) => {
-        if (!card) return;
-
-        const xTo = gsap.quickTo(card, "x", { duration: 0.6, ease: "power3.out" });
-        const yTo = gsap.quickTo(card, "y", { duration: 0.6, ease: "power3.out" });
-        const rotateTo = gsap.quickTo(card, "rotateY", { duration: 0.6, ease: "power3.out" });
-
-        card.addEventListener('mousemove', (e: MouseEvent) => {
-          const rect = card.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          
-          const deltaX = (e.clientX - centerX) * 0.15;
-          const deltaY = (e.clientY - centerY) * 0.15;
-          const rotateY = ((e.clientX - centerX) / rect.width) * 8;
-
-          xTo(deltaX);
-          yTo(deltaY);
-          rotateTo(rotateY);
-        });
-
-        card.addEventListener('mouseleave', () => {
-          xTo(0);
-          yTo(0);
-          rotateTo(0);
-        });
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [displayedProjects]);
 
   if (isLoading) {
     return (
@@ -146,7 +58,7 @@ const ProjectShowcase = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
@@ -201,13 +113,11 @@ const ProjectShowcase = () => {
           {displayedProjects.map((project, index) => (
             <Card 
               key={project.id}
-              ref={(el) => { cardsRef.current[index] = el; }}
-              className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 will-change-transform bg-card/80 backdrop-blur-sm perspective-1000 ${
+              className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-card/80 backdrop-blur-sm animate-fade-in ${
                 hoveredProject === project.id ? 'z-10' : ''
               }`}
               style={{ 
-                animationDelay: `${index * 0.1}s`,
-                transformStyle: 'preserve-3d'
+                animationDelay: `${index * 0.1}s`
               }}
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
@@ -343,10 +253,12 @@ const ProjectShowcase = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <MagneticButton size="lg" className="group" magneticStrength={0.3}>
-                Begär kostnadsfri offert
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </MagneticButton>
+              <Link to={locale === 'en' ? '/en/contact' : '/kontakt'}>
+                <MagneticButton size="lg" className="group" magneticStrength={0.3}>
+                  Begär kostnadsfri offert
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </MagneticButton>
+              </Link>
               <Button size="lg" variant="outline">
                 <Link to={locale === 'en' ? '/en/references' : '/referenser'} className="flex items-center">
                   {locale === 'en' ? 'See more projects' : 'Se fler projekt'}
