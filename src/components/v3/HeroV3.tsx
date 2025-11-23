@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Star } from "lucide-react";
 import { useContentStore } from "@/stores/contentStore";
-import { gsap } from "@/lib/gsap";
-import { useFadeIn, useStaggerFadeIn } from "@/hooks/gsap";
 import logoBauhaus from "@/assets/bauhaus-logo-red.png";
 import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
@@ -17,74 +15,12 @@ const HeroV3 = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { isHydrated } = useContentStore();
 
-  // GSAP Animation Refs
-  const mainHeadingRef = useFadeIn({ from: 'left', duration: 0.8, delay: 0.2 });
-  const subHeadingRef = useFadeIn({ from: 'top', duration: 0.6, delay: 0.4 });
-  const titleRef = useFadeIn({ from: 'bottom', duration: 0.8, delay: 0.5 });
-  const paragraphRef = useFadeIn({ from: 'bottom', duration: 0.7, delay: 0.7 });
-  const buttonsRef = useStaggerFadeIn({ stagger: 0.2, delay: 0.9 });
-  const starsRef = useStaggerFadeIn({ stagger: 0.1, delay: 0.5, from: 'top' });
-  const glowRef = useRef<HTMLDivElement>(null);
-  const logoContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (isHydrated) {
       const timer = setTimeout(() => setIsVisible(true), 50);
       return () => clearTimeout(timer);
     }
   }, [isHydrated]);
-
-  // Glow bubbles pulsing animation
-  useEffect(() => {
-    if (!glowRef.current) return;
-    
-    const glows = glowRef.current.querySelectorAll('div');
-    
-    glows.forEach((glow, index) => {
-      gsap.to(glow, {
-        scale: 1.1,
-        opacity: 0.4,
-        duration: 3 + index * 0.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-    });
-  }, []);
-
-  // Logo scroll hover effect
-  useEffect(() => {
-    if (!logoContainerRef.current) return;
-    
-    const scrollContainer = logoContainerRef.current.querySelector('.animate-scroll');
-    const logos = logoContainerRef.current.querySelectorAll('img');
-    
-    logos.forEach(logo => {
-      const onMouseEnter = () => {
-        if (scrollContainer) {
-          gsap.to(scrollContainer, { timeScale: 0, duration: 0.3 });
-        }
-        gsap.to(logo, { scale: 1.15, duration: 0.3, ease: 'back.out(1.7)' });
-      };
-      
-      const onMouseLeave = () => {
-        if (scrollContainer) {
-          gsap.to(scrollContainer, { timeScale: 1, duration: 0.3 });
-        }
-        gsap.to(logo, { scale: 1, duration: 0.3 });
-      };
-      
-      logo.addEventListener('mouseenter', onMouseEnter);
-      logo.addEventListener('mouseleave', onMouseLeave);
-    });
-
-    return () => {
-      logos.forEach(logo => {
-        logo.removeEventListener('mouseenter', () => {});
-        logo.removeEventListener('mouseleave', () => {});
-      });
-    };
-  }, []);
 
   return (
     <section className={`relative w-full overflow-hidden transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ height: '980px' }}>
@@ -98,7 +34,7 @@ const HeroV3 = () => {
       />
       
       {/* Glow Effects */}
-      <div ref={glowRef} className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none">
         {/* Deep purple glow - top */}
         <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#592db5] opacity-30 blur-[150px] rounded-full" />
         {/* Bright purple glow - center */}
@@ -127,23 +63,23 @@ const HeroV3 = () => {
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 -mt-20 px-6">
         <div className="flex flex-col items-center gap-6 max-w-5xl">
           
-          <h1 ref={mainHeadingRef as any} className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
+          <h1 className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
             Sveriges Ledande Hantverkare
           </h1>
-          <div ref={starsRef as any} className="flex items-center justify-center gap-1 mb-6">
+          <div className="flex items-center justify-center gap-1 mb-6">
             <span className="text-sm text-[#fbfaf6] tracking-wide">4.9</span>
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-4 h-4 fill-[#fbbf24] text-[#fbbf24]" />
             ))}
           </div>
-          <h1 ref={titleRef as any} className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-[#fafafa] text-center leading-[120%]">
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-[#fafafa] text-center leading-[120%]">
             <span className="font-brand italic">Bygg- & fastighetstjänster</span> för privat, BRF & företag
           </h1>
-          <p ref={paragraphRef as any} className="text-lg md:text-xl lg:text-2xl text-[#fafafa] opacity-90 text-center max-w-3xl leading-relaxed">
+          <p className="text-lg md:text-xl lg:text-2xl text-[#fafafa] opacity-90 text-center max-w-3xl leading-relaxed">
             Expertlösningar för alla fastighetsbehov – från el till målning. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.
           </p>
         </div>
-        <div ref={buttonsRef as any} className="flex flex-col sm:flex-row gap-4 items-center">
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
           <GradientButton onClick={() => openServiceRequestModal({ showCategories: true })}>
             Begär Kostnadsfri Offert
           </GradientButton>
@@ -153,7 +89,7 @@ const HeroV3 = () => {
         </div>
         
         {/* Client Logos Section */}
-        <div ref={logoContainerRef as any} className="flex flex-col items-center gap-6 mt-8">
+        <div className="flex flex-col items-center gap-6 mt-8">
           <div className="relative w-full max-w-5xl overflow-hidden">
             {/* Scrolling logos container */}
             <div className="flex gap-12 md:gap-16 animate-scroll">

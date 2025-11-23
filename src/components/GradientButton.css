@@ -11,10 +11,11 @@
   border-radius: 50px;
   overflow: hidden;
   transition: transform 0.2s ease;
-  will-change: transform;
 }
 
-/* Hover scale is now handled by GSAP */
+.gradient-button:hover {
+  transform: scale(1.03);
+}
 
 .gradient-button::before {
   content: "";
@@ -37,12 +38,6 @@
   filter: blur(6px);
   transform: rotate(0deg);
   animation: gradient-spin 6s linear infinite;
-  transition: animation-duration 0.3s ease;
-}
-
-/* Speed up spin on hover */
-.gradient-button:hover::before {
-  animation-duration: 3s;
 }
 
 .gradient-button::after {
