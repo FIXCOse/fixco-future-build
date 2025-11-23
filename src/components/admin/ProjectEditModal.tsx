@@ -414,15 +414,17 @@ export default function ProjectEditModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0 px-6 pt-6">
           <DialogTitle className="flex items-center gap-2">
             <Star className="w-5 h-5 text-primary" />
             {isCreating ? 'Skapa nytt referensprojekt' : 'Redigera referensprojekt'}
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="sv" className="mb-6">
+        {/* Scrollable Content Wrapper */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <Tabs defaultValue="sv" className="mb-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sv">🇸🇪 Svenska</TabsTrigger>
             <TabsTrigger value="en">🇬🇧 English</TabsTrigger>
@@ -880,9 +882,10 @@ export default function ProjectEditModal({
             </div>
           </div>
         </div>
+        </div>
 
-        {/* Actions */}
-        <div className="flex justify-end gap-4 pt-4 border-t">
+        {/* Actions - Fixed Footer */}
+        <div className="flex justify-end gap-4 pt-4 border-t px-6 pb-4 flex-shrink-0">
           <Button variant="outline" onClick={onClose}>
             Avbryt
           </Button>
