@@ -30,7 +30,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
   const { data: chatEnabled, isLoading: chatLoading } = useFeatureFlag('chat_ai_enabled');
   
   // Check which menu to show (TOP Navigation vs BOTTOM Navbar2)
-  const { data: useTopMenu } = usePersistedFeatureFlag('use_top_menu', true);
+  const { data: useTopMenu } = usePersistedFeatureFlag('use_top_menu', false);
   
   // Initialize language persistence
   useLanguagePersistence();
