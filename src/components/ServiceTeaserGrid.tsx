@@ -190,7 +190,7 @@ const ServiceTeaserGrid = () => {
       <div className="container mx-auto px-4">
         {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
-          <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 ref={titleRef} data-split-parent className="text-4xl md:text-5xl font-bold mb-6">
             <span>{t('home.services.title').split(' ')[0]} </span>
             <span className="gradient-text">{t('home.services.title').split(' ').slice(1).join(' ')}</span>
           </h2>

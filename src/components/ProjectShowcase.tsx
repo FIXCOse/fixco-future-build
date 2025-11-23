@@ -116,7 +116,7 @@ const ProjectShowcase = () => {
             )}
           </div>
           
-          <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 ref={titleRef} data-split-parent className="text-4xl md:text-5xl font-bold mb-6">
             {t('projects.latest_title').split(' ').slice(0, 2).join(' ')}{' '}
             <span className="gradient-text">{t('projects.latest_title').split(' ').slice(2).join(' ')}</span>
           </h2>
