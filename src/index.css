@@ -188,6 +188,15 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* ScrollSmoother wrapper styles */
+  #smooth-wrapper {
+    overflow: hidden;
+  }
+
+  #smooth-content {
+    overflow: visible;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
     text-rendering: optimizeLegibility;

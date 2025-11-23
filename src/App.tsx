@@ -156,10 +156,12 @@ const App = () => {
   // Initialize ScrollSmoother for ultra-smooth scrolling
   useEffect(() => {
     const smoother = ScrollSmoother.create({
-      smooth: 1.5,           // Smoothness level (1-2 recommended)
-      effects: true,         // Enable data-speed and data-lag attributes
-      smoothTouch: 0.1,      // Smooth scrolling on mobile
-      normalizeScroll: true  // Normalize scroll between different devices
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.5,
+      effects: true,
+      smoothTouch: 0.1,
+      normalizeScroll: true
     });
 
     return () => {
@@ -193,15 +195,16 @@ const App = () => {
           <CopyProvider locale="sv">
             <SecurityWrapper>
               <TooltipProvider>
-                <div className="min-h-screen bg-background font-inter">
-                  <Toaster />
-                  <Sonner />
-                  <ServiceRequestModal />
-                  <BrowserRouter>
-                    <FeatureFlagInitializer>
-                      <PageViewTracker />
-                      <ScrollToTop />
-                      <Routes>
+                <div id="smooth-wrapper">
+                  <div id="smooth-content" className="min-h-screen bg-background font-inter">
+                    <Toaster />
+                    <Sonner />
+                    <ServiceRequestModal />
+                    <BrowserRouter>
+                      <FeatureFlagInitializer>
+                        <PageViewTracker />
+                        <ScrollToTop />
+                        <Routes>
                       {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
                       <Route path="/auth" element={lazyElement(Auth)} />
                       <Route path="/en/auth" element={lazyElement(Auth)} />
@@ -402,14 +405,15 @@ const App = () => {
                       } />
                     </Routes>
                   </FeatureFlagInitializer>
-                    </BrowserRouter>
-                  </div>
-                </TooltipProvider>
-              </SecurityWrapper>
-            </CopyProvider>
-          </AuthProfileProvider>
-        </QueryClientProvider>
-      </HelmetProvider>
+                </BrowserRouter>
+              </div>
+            </div>
+          </TooltipProvider>
+        </SecurityWrapper>
+      </CopyProvider>
+    </AuthProfileProvider>
+  </QueryClientProvider>
+</HelmetProvider>
     );
   };
   
