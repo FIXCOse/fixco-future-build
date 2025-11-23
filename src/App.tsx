@@ -155,16 +155,19 @@ const App = () => {
   // Preload routes in background for instant page transitions
   usePreloadRoutes();
   
-  // Initialize ScrollSmoother for ultra-smooth scrolling
+  // Initialize ScrollSmoother for buttery smooth scrolling with parallax
   useEffect(() => {
     const smoother = ScrollSmoother.create({
       wrapper: '#smooth-wrapper',
       content: '#smooth-content',
-      smooth: 1.5,
-      effects: true,
-      smoothTouch: 0.1,
-      normalizeScroll: true
+      smooth: 2, // Higher = smoother (Apple-like)
+      effects: true, // Enable data-speed parallax
+      smoothTouch: 0.1, // Subtle on mobile
+      normalizeScroll: true, // Better handling of touch devices
+      ignoreMobileResize: true, // Prevent issues on mobile keyboard
     });
+
+    console.log('✨ ScrollSmoother initialized - buttery smooth scrolling active');
 
     return () => {
       if (smoother) smoother.kill();

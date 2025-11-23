@@ -55,37 +55,49 @@ const HomeV2 = () => {
       {/* Hero Section */}
       <HeroV2 />
 
-      {/* Statistics Bar */}
-      <StatisticsBar />
+      {/* Statistics Bar with subtle parallax */}
+      <div data-speed="0.95">
+        <StatisticsBar />
+      </div>
 
-      {/* Services Bento Grid */}
-      <BentoGrid />
+      {/* Services Bento Grid with parallax */}
+      <div data-speed="0.9">
+        <BentoGrid />
+      </div>
 
-      {/* Why Fixco Feature Split */}
-      <FeatureSplit
-        title="Varför välja Fixco?"
-        subtitle="Vi kombinerar kvalitet, snabbhet och transparens för att ge dig den bästa upplevelsen"
-        features={whyFixcoFeatures}
-        imageSrc={finishedProject}
-        imageAlt="Färdigt renoveringsprojekt av Fixco"
-        reverse={false}
-      />
+      {/* Why Fixco Feature Split with parallax */}
+      <div data-speed="0.95">
+        <FeatureSplit
+          title="Varför välja Fixco?"
+          subtitle="Vi kombinerar kvalitet, snabbhet och transparens för att ge dig den bästa upplevelsen"
+          features={whyFixcoFeatures}
+          imageSrc={finishedProject}
+          imageAlt="Färdigt renoveringsprojekt av Fixco"
+          reverse={false}
+        />
+      </div>
 
-      {/* ROT & RUT Feature Split */}
-      <FeatureSplit
-        title="ROT & RUT-avdrag – Vi sköter allt"
-        subtitle="Få upp till 50% rabatt på arbetskostnaden med skattesubventioner"
-        features={rotRutFeatures}
-        imageSrc={toolsProfessional}
-        imageAlt="Professionella verktyg och hantverkare"
-        reverse={true}
-      />
+      {/* ROT & RUT Feature Split with parallax */}
+      <div data-speed="0.9">
+        <FeatureSplit
+          title="ROT & RUT-avdrag – Vi sköter allt"
+          subtitle="Få upp till 50% rabatt på arbetskostnaden med skattesubventioner"
+          features={rotRutFeatures}
+          imageSrc={toolsProfessional}
+          imageAlt="Professionella verktyg och hantverkare"
+          reverse={true}
+        />
+      </div>
 
-      {/* Testimonials */}
-      <TestimonialsV2 />
+      {/* Testimonials with parallax */}
+      <div data-speed="0.95">
+        <TestimonialsV2 />
+      </div>
 
-      {/* Final CTA */}
-      <CTAV2 />
+      {/* Final CTA with parallax */}
+      <div data-speed="0.9">
+        <CTAV2 />
+      </div>
     </div>
   );
 };
