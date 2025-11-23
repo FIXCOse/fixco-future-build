@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ReactDOM from 'react-dom';
 import { Button } from "@/components/ui/button-premium";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -109,7 +110,7 @@ const OfferWizard = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md flex items-center justify-center p-4">
       <Card className="w-full max-w-4xl max-h-[90vh] overflow-auto">
         <div className="p-6">
@@ -397,7 +398,8 @@ const OfferWizard = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           </div>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body
   );
 };
 
