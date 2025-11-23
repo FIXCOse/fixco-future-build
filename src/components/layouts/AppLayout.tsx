@@ -56,8 +56,8 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
     <CopyProvider locale={locale} key={locale}>
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
-          {/* TOP meny - visa ENDAST om use_top_menu = true */}
-          {useTopMenu && <Navigation />}
+          {/* TOP meny - visa alltid som default */}
+          <Navigation />
           
           <main className="min-h-[60vh]">
             <Outlet />
@@ -65,8 +65,8 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           
           <GlobalFooter locale={locale} />
           
-          {/* BOTTOM meny - visa ENDAST om use_top_menu = false */}
-          {!useTopMenu && <Navbar2 />}
+          {/* BOTTOM meny - visa bara om feature flag är explicit false */}
+          {useTopMenu === false && <Navbar2 />}
           
           <EditModeToggle />
           <GlobalContentEditor />
