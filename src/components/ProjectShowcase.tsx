@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ArrowRight, Calendar, MapPin, Clock, Star, ExternalLink, Plus, Edit } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { Button } from '@/components/ui/button';
+import MagneticButton from '@/components/MagneticButton';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -342,10 +343,10 @@ const ProjectShowcase = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="group">
+              <MagneticButton size="lg" className="group" magneticStrength={0.3}>
                 Begär kostnadsfri offert
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+              </MagneticButton>
               <Button size="lg" variant="outline">
                 <Link to={locale === 'en' ? '/en/references' : '/referenser'} className="flex items-center">
                   {locale === 'en' ? 'See more projects' : 'Se fler projekt'}
