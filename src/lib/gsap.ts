@@ -8,12 +8,21 @@ import { Flip } from 'gsap/Flip';
 import { Observer } from 'gsap/Observer';
 import { RoughEase, ExpoScaleEase, SlowMo } from 'gsap/EasePack';
 
+// Premium plugins (now included with Club GreenSock)
+import { SplitText } from 'gsap/SplitText';
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
+import { GSDevTools } from 'gsap/GSDevTools';
+import { CustomEase } from 'gsap/CustomEase';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+
 /**
  * Initialize and register all free GSAP plugins
  * Call this once at app startup
  */
 export const initGSAP = () => {
-  // Register all free plugins
+  // Register all plugins (free + premium)
   gsap.registerPlugin(
     ScrollTrigger,
     ScrollToPlugin,
@@ -24,7 +33,14 @@ export const initGSAP = () => {
     Observer,
     RoughEase,
     ExpoScaleEase,
-    SlowMo
+    SlowMo,
+    SplitText,
+    DrawSVGPlugin,
+    MorphSVGPlugin,
+    ScrollSmoother,
+    GSDevTools,
+    CustomEase,
+    ScrambleTextPlugin
   );
 
   // Configure ScrollTrigger defaults
@@ -39,3 +55,4 @@ export const initGSAP = () => {
 // Export everything for use throughout the app
 export { gsap, ScrollTrigger, ScrollToPlugin, Draggable, MotionPathPlugin, TextPlugin, Flip, Observer };
 export { RoughEase, ExpoScaleEase, SlowMo };
+export { SplitText, DrawSVGPlugin, MorphSVGPlugin, ScrollSmoother, GSDevTools, CustomEase, ScrambleTextPlugin };

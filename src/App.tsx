@@ -114,6 +114,7 @@ import { AuthProfileProvider } from './contexts/AuthProfileProvider';
 import { useContentLoader } from '@/hooks/useContentLoader';
 import { usePreloadRoutes } from '@/hooks/usePreloadRoutes';
 import { lazyElement } from './components/LazyRoute';
+import { ScrollSmoother } from '@/lib/gsap';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -151,6 +152,20 @@ const App = () => {
   
   // Preload routes in background for instant page transitions
   usePreloadRoutes();
+  
+  // Initialize ScrollSmoother for ultra-smooth scrolling
+  useEffect(() => {
+    const smoother = ScrollSmoother.create({
+      smooth: 1.5,           // Smoothness level (1-2 recommended)
+      effects: true,         // Enable data-speed and data-lag attributes
+      smoothTouch: 0.1,      // Smooth scrolling on mobile
+      normalizeScroll: true  // Normalize scroll between different devices
+    });
+
+    return () => {
+      if (smoother) smoother.kill();
+    };
+  }, []);
   
   // Global event handling for wizard actions
   useEffect(() => {
