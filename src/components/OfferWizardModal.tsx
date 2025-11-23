@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { X, ArrowRight, ArrowLeft, Calculator, MapPin, Clock, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -93,7 +94,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div 
@@ -379,7 +380,8 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

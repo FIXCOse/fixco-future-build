@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
+import ReactDOM from 'react-dom';
 import { getServiceBySlug, ServiceConfig, SERVICE_CONFIG } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -319,7 +320,7 @@ export default function ServiceRequestModal() {
   if (!open) {
     return null;
   }
-  return (
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-[70] flex items-end md:items-center justify-center animate-fade-in">
       {/* Backdrop with blur */}
       <div 
@@ -991,6 +992,7 @@ export default function ServiceRequestModal() {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
