@@ -85,7 +85,8 @@ const HeroV3 = () => {
           scale: 0.8,
           duration: 0.5,
           stagger: 0.15,
-          ease: "back.out(1.7)"
+          ease: "back.out(1.7)",
+          clearProps: "transform"
         }, "-=0.3");
       }
 
