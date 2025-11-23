@@ -56,8 +56,8 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
     <CopyProvider locale={locale} key={locale}>
       <EditModeProvider>
         <div className="min-h-screen bg-background" data-header="main">
-          {/* TOP meny - visa alltid som default */}
-          <Navigation />
+        {/* TOP meny - visa ENDAST om toggle INTE är bottom */}
+        {useTopMenu !== false && <Navigation />}
           
           <main className="min-h-[60vh]">
             <Outlet />
