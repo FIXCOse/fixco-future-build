@@ -4,13 +4,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { useCopy } from '@/copy/CopyProvider';
-import { gsap, CustomEase } from '@/lib/gsap';
 
 const FAQTeaser = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { t, locale } = useCopy();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const faqItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const faqs = [
     {
@@ -35,33 +32,10 @@ const FAQTeaser = () => {
     }
   ];
 
-  // Initial stagger entrance animation
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      CustomEase.create("accordionEase", "0.65, 0, 0.35, 1");
-
-      gsap.from(faqItemsRef.current.filter(Boolean), {
-        opacity: 0,
-        x: -60,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          once: true
-        }
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
 
   return (
-    <section ref={sectionRef} className="py-24 bg-gradient-primary-subtle relative">
+    <section className="py-24 bg-gradient-primary-subtle relative">
       {/* F Watermark Background Elements - CSS-based for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
         <div 
@@ -93,8 +67,8 @@ const FAQTeaser = () => {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                ref={(el) => { faqItemsRef.current[index] = el; }}
-                className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative"
+                className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}

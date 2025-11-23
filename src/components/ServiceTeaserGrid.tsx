@@ -7,7 +7,7 @@ import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
 import { useCopy } from '@/copy/CopyProvider';
-import { gsap, SplitText } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -17,8 +17,6 @@ const ServiceTeaserGrid = () => {
   const isEnglish = location.pathname.startsWith('/en');
   const gridRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
 
   const services: Array<{
     id: string;
@@ -155,64 +153,17 @@ const ServiceTeaserGrid = () => {
     return () => ctx.revert();
   }, [filteredServices]);
 
-  // SplitText animation on title and subtitle
-  useEffect(() => {
-    if (!titleRef.current || !subtitleRef.current) return;
-
-    const ctx = gsap.context(() => {
-      // SplitText on title with same effect as HeroV3
-      const titleSplit = new SplitText(titleRef.current, {
-        type: "chars,words",
-        charsClass: "split-char",
-        wordsClass: "split-word"
-      });
-
-      gsap.from(titleSplit.chars, {
-        opacity: 0,
-        y: 50,
-        rotationX: -90,
-        rotationY: 20,
-        scale: 0.8,
-        duration: 0.8,
-        stagger: 0.03,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
-          once: true,
-          immediateRender: false
-        }
-      });
-
-      // Simple fade-in for subtitle
-      gsap.from(subtitleRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 0.4,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: subtitleRef.current,
-          start: "top 80%",
-          once: true,
-          immediateRender: false
-        }
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-4">
         {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
-          <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             <span>{t('home.services.title').split(' ')[0]} </span>
             <span className="gradient-text">{t('home.services.title').split(' ').slice(1).join(' ')}</span>
           </h2>
-          <p ref={subtitleRef} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 animate-fade-in" 
+             style={{ animationDelay: '0.2s' }}>
             {t('home.services.subtitle')}
           </p>
           
