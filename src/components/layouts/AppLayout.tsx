@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CopyProvider } from '@/copy/CopyProvider';
 import { EditModeProvider } from '@/contexts/EditModeContext';
 import Navigation from '../Navigation';
-import Navbar2 from '../Navbar2';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 import { usePersistedFeatureFlag } from '@/hooks/usePersistedFeatureFlag';
 
@@ -17,7 +16,6 @@ import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 import { FloatingAIWidget } from '../FloatingAIWidget';
-import '../Navbar2.css';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -66,11 +64,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           
           <GlobalFooter locale={locale} />
           
-          {/* BOTTOM meny - visa bara om feature flag är explicit false */}
-          {(() => {
-            console.log('🎨 [AppLayout] Should render Navbar2:', useTopMenu === false);
-            return useTopMenu === false && <Navbar2 />;
-          })()}
+          {/* Navbar2 now rendered via Portal in App.tsx */}
           
           <EditModeToggle />
           <GlobalContentEditor />

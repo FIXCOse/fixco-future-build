@@ -115,6 +115,10 @@ import { useContentLoader } from '@/hooks/useContentLoader';
 import { usePreloadRoutes } from '@/hooks/usePreloadRoutes';
 import { lazyElement } from './components/LazyRoute';
 import { ScrollSmoother } from '@/lib/gsap';
+import ReactDOM from 'react-dom';
+import Navbar2 from './components/Navbar2';
+import { usePersistedFeatureFlag } from '@/hooks/usePersistedFeatureFlag';
+import './components/Navbar2.css';
 
 // Suspense fallback component
 const SuspenseFallback = () => (
@@ -152,6 +156,9 @@ const App = () => {
   
   // Preload routes in background for instant page transitions
   usePreloadRoutes();
+  
+  // Check which menu to show (TOP Navigation vs BOTTOM Navbar2)
+  const { data: useTopMenu } = usePersistedFeatureFlag('use_top_menu', false);
   
   // Initialize ScrollSmoother for ultra-smooth scrolling
   useEffect(() => {
@@ -407,6 +414,12 @@ const App = () => {
                   </FeatureFlagInitializer>
                 </BrowserRouter>
               </div>
+              
+              {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
+              {useTopMenu === false && typeof document !== 'undefined' && ReactDOM.createPortal(
+                <Navbar2 />,
+                document.body
+              )}
             </div>
           </TooltipProvider>
         </SecurityWrapper>
