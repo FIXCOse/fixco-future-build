@@ -136,21 +136,9 @@ const Navbar2 = () => {
         />
       )}
       <nav 
-        className="rd-navbar inherited-styles-for-exported-element"
+        className="rd-navbar"
         style={{
-          position: 'fixed',
-          bottom: '1rem',
-          left: 0,
-          right: 0,
           zIndex: 9999,
-          maxWidth: '51.5rem',
-          margin: '0 auto',
-          backgroundColor: '#0a0a0a',
-          border: '1px solid #333',
-          borderRadius: '1rem',
-          padding: '0.5rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr auto 1fr 1fr'
         }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="375" height="92" viewBox="0 0 375 92" fill="none" className="rd-navbar_curve-shape">
