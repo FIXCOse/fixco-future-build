@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,12 +7,16 @@ import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
 import { useCopy } from '@/copy/CopyProvider';
+import { gsap } from '@/lib/gsap';
+
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { mode, shouldShowService } = usePriceStore();
   const { t } = useCopy();
   const location = useLocation();
   const isEnglish = location.pathname.startsWith('/en');
+  const gridRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const services: Array<{
     id: string;
@@ -125,6 +129,59 @@ const ServiceTeaserGrid = () => {
     return services.filter(service => shouldShowService(service.eligible));
   }, [services, shouldShowService, mode]); // Include mode to ensure re-filtering
 
+  // GSAP animations
+  useEffect(() => {
+    if (!gridRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Stagger entrance animation
+      gsap.from(cardsRef.current.filter(Boolean), {
+        opacity: 0,
+        y: 60,
+        scale: 0.9,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "back.out(1.4)",
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: "top 75%",
+          once: true
+        }
+      });
+
+      // Magnetic hover on each card
+      cardsRef.current.forEach((card) => {
+        if (!card) return;
+
+        const xTo = gsap.quickTo(card, "x", { duration: 0.6, ease: "power3.out" });
+        const yTo = gsap.quickTo(card, "y", { duration: 0.6, ease: "power3.out" });
+        const rotateTo = gsap.quickTo(card, "rotateZ", { duration: 0.6, ease: "power3.out" });
+
+        card.addEventListener('mousemove', (e: MouseEvent) => {
+          const rect = card.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          
+          const deltaX = (e.clientX - centerX) * 0.2;
+          const deltaY = (e.clientY - centerY) * 0.2;
+          const rotation = ((e.clientX - centerX) / rect.width) * 5;
+
+          xTo(deltaX);
+          yTo(deltaY);
+          rotateTo(rotation);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          xTo(0);
+          yTo(0);
+          rotateTo(0);
+        });
+      });
+    }, gridRef);
+
+    return () => ctx.revert();
+  }, [filteredServices]);
+
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-4">
@@ -143,14 +200,20 @@ const ServiceTeaserGrid = () => {
         </div>
 
         {/* Service Grid - Force re-render when mode changes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" key={`teaser-grid-${mode}`}>
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" 
+          key={`teaser-grid-${mode}`}
+        >
           {filteredServices.map((service, index) => (
             <Link
               key={`${service.id}-${mode}`}
               to={isEnglish ? `/en/services/${service.slug}` : `/tjanster/${service.slug}`}
               className="group block"
+              ref={(el) => { cardsRef.current[index] = el; }}
             >
-              <ServiceCardV3
+              <div className="will-change-transform">
+                <ServiceCardV3
                 title={service.title}
                 category={t('services.category.main')}
                 description={service.description}
@@ -159,6 +222,7 @@ const ServiceTeaserGrid = () => {
                 eligible={service.eligible}
                 serviceSlug={service.slug}
               />
+              </div>
             </Link>
           ))}
         </div>
