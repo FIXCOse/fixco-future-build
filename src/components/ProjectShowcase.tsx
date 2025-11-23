@@ -40,19 +40,18 @@ const ProjectShowcase = () => {
 
     const ctx = gsap.context(() => {
       const split = new SplitText(titleRef.current, { 
-        type: "chars,words",
-        charsClass: "split-char",
+        type: "words",
         wordsClass: "split-word"
       });
 
-      gsap.from(split.chars, {
+      gsap.from(split.words, {
         opacity: 0,
         y: 50,
         rotationX: -90,
         rotationY: 20,
         scale: 0.8,
         duration: 0.8,
-        stagger: 0.03,
+        stagger: 0.08,
         ease: "back.out(1.7)",
         scrollTrigger: {
           trigger: titleRef.current,
