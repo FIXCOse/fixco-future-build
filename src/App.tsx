@@ -407,12 +407,12 @@ const App = () => {
                       } />
                     </Routes>
                   </FeatureFlagInitializer>
+                  
+                  {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
+                  <NavbarPortal />
                 </BrowserRouter>
               </div>
             </div>
-            
-            {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
-            <NavbarPortal />
           </TooltipProvider>
         </SecurityWrapper>
       </CopyProvider>
