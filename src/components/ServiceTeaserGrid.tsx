@@ -140,6 +140,11 @@ const ServiceTeaserGrid = () => {
         wordsClass: "split-word"
       });
 
+      // Apply gradient class to last word AFTER split
+      if (split.words.length > 0) {
+        split.words[split.words.length - 1].classList.add('gradient-text');
+      }
+
       gsap.from(split.words, {
         opacity: 0,
         y: 50,
@@ -190,8 +195,7 @@ const ServiceTeaserGrid = () => {
         {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
           <h2 ref={titleRef} data-split-parent className="text-4xl md:text-5xl font-bold mb-6">
-            <span>{t('home.services.title').split(' ')[0]} </span>
-            <span className="gradient-text">{t('home.services.title').split(' ').slice(1).join(' ')}</span>
+            {t('home.services.title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 animate-fade-in" 
              style={{ animationDelay: '0.2s' }}>

@@ -44,6 +44,11 @@ const ProjectShowcase = () => {
         wordsClass: "split-word"
       });
 
+      // Apply gradient class to last word AFTER split
+      if (split.words.length > 0) {
+        split.words[split.words.length - 1].classList.add('gradient-text');
+      }
+
       gsap.from(split.words, {
         opacity: 0,
         y: 50,
@@ -116,8 +121,7 @@ const ProjectShowcase = () => {
           </div>
           
           <h2 ref={titleRef} data-split-parent className="text-4xl md:text-5xl font-bold mb-6">
-            {t('projects.latest_title').split(' ').slice(0, 2).join(' ')}{' '}
-            <span className="gradient-text">{t('projects.latest_title').split(' ').slice(2).join(' ')}</span>
+            {t('projects.latest_title')}
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
