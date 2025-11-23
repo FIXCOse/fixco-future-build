@@ -6,7 +6,6 @@ import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useTheme } from '@/theme/useTheme';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
-import "./Navbar2.css";
 
 const Navbar2 = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -143,10 +142,11 @@ const Navbar2 = () => {
           bottom: '1rem',
           left: 0,
           right: 0,
-          zIndex: 1000,
+          zIndex: 9999,
           maxWidth: '51.5rem',
           margin: '0 auto',
-          backgroundColor: 'hsl(var(--background))',
+          backgroundColor: '#0a0a0a',
+          border: '1px solid #333',
           borderRadius: '1rem',
           padding: '0.5rem',
           display: 'grid',
