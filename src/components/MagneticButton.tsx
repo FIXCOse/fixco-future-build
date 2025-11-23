@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from '@/lib/gsap';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -70,10 +71,20 @@ const MagneticButton = ({
   );
 
   if (href) {
+    const isExternal = href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:');
+    
+    if (isExternal) {
+      return (
+        <a href={href} className="inline-block">
+          {buttonElement}
+        </a>
+      );
+    }
+    
     return (
-      <a href={href} className="inline-block">
+      <Link to={href} className="inline-block">
         {buttonElement}
-      </a>
+      </Link>
     );
   }
 
