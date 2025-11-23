@@ -34,19 +34,6 @@ const ProjectShowcase = () => {
     .filter(p => p.is_featured)
     .slice(0, 6);
 
-  if (isLoading) {
-    return (
-      <section className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="text-muted-foreground mt-4">Laddar projekt...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   // GSAP animation for title
   useEffect(() => {
     if (!titleRef.current) return;
@@ -77,6 +64,19 @@ const ProjectShowcase = () => {
 
     return () => ctx.revert();
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-muted/30 via-background to-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-muted-foreground mt-4">Laddar projekt...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handleSaveProject = (projectData: Partial<ReferenceProject>) => {
     if (editingProject) {
