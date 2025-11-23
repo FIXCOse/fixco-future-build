@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { useCopy } from '@/copy/CopyProvider';
+import { gsap, CustomEase } from '@/lib/gsap';
 
 const FAQTeaser = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { t, locale } = useCopy();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const faqItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const faqs = [
     {
@@ -32,8 +35,72 @@ const FAQTeaser = () => {
     }
   ];
 
+  // Initial stagger entrance animation
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      CustomEase.create("accordionEase", "0.65, 0, 0.35, 1");
+
+      gsap.from(faqItemsRef.current.filter(Boolean), {
+        opacity: 0,
+        x: -60,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Animate accordion open/close
+  useEffect(() => {
+    faqItemsRef.current.forEach((item, index) => {
+      if (!item) return;
+
+      const content = item.querySelector('.faq-content') as HTMLElement;
+      const arrow = item.querySelector('.faq-arrow') as HTMLElement;
+
+      if (!content || !arrow) return;
+
+      if (openIndex === index) {
+        gsap.to(content, {
+          height: 'auto',
+          opacity: 1,
+          duration: 0.5,
+          ease: "accordionEase"
+        });
+
+        gsap.to(arrow, {
+          rotation: 180,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      } else {
+        gsap.to(content, {
+          height: 0,
+          opacity: 0,
+          duration: 0.4,
+          ease: "accordionEase"
+        });
+
+        gsap.to(arrow, {
+          rotation: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      }
+    });
+  }, [openIndex]);
+
   return (
-    <section className="py-24 bg-gradient-primary-subtle relative">
+    <section ref={sectionRef} className="py-24 bg-gradient-primary-subtle relative">
       {/* F Watermark Background Elements - CSS-based for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
         <div 
@@ -65,6 +132,7 @@ const FAQTeaser = () => {
             {faqs.map((faq, index) => (
               <div
                 key={index}
+                ref={(el) => { faqItemsRef.current[index] = el; }}
                 className="card-premium overflow-hidden transition-all duration-300 hover:shadow-glow relative"
               >
                 <button
@@ -75,19 +143,11 @@ const FAQTeaser = () => {
                     {faq.question}
                   </h3>
                   <ChevronDown
-                    className={cn(
-                      "h-5 w-5 text-primary transition-transform duration-300 shrink-0",
-                      openIndex === index && "rotate-180"
-                    )}
+                    className="faq-arrow h-5 w-5 text-primary shrink-0 will-change-transform"
                   />
                 </button>
                 
-                <div
-                  className={cn(
-                    "overflow-hidden transition-all duration-300",
-                    openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                  )}
-                >
+                <div className="faq-content overflow-hidden" style={{ height: 0, opacity: 0 }}>
                   <div className="px-6 pb-6">
                     <p className="text-muted-foreground leading-relaxed">
                       {faq.answer}

@@ -9,6 +9,7 @@ import useGlobalROT from "@/hooks/useGlobalROT";
 import useGlobalPricing from "@/hooks/useGlobalPricing";
 import { useCopy } from "@/copy/CopyProvider";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { gsap, CustomEase, ScrollTrigger } from '@/lib/gsap';
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -63,6 +64,51 @@ const ComparisonUltra = () => {
   }, [customerSatisfaction.observe, completionRate.observe, startTime.observe]);
 
   const isInView = useInView(sectionRef, { once: true });
+
+  // GSAP Premium animations
+  useEffect(() => {
+    if (!sectionRef.current || !isInView) return;
+
+    const ctx = gsap.context(() => {
+      // Custom bounce ease
+      CustomEase.create("smoothBounce", "0.68, -0.55, 0.265, 1.55");
+
+      // Magnetic hover on Fixco value cards
+      const fixcoCards = document.querySelectorAll('.fixco-value-card');
+      fixcoCards.forEach((card) => {
+        const element = card as HTMLElement;
+        
+        const xTo = gsap.quickTo(element, "x", { duration: 0.5, ease: "power2.out" });
+        const yTo = gsap.quickTo(element, "y", { duration: 0.5, ease: "power2.out" });
+        const scaleTo = gsap.quickTo(element, "scale", { duration: 0.3, ease: "power2.out" });
+
+        element.addEventListener('mouseenter', () => {
+          scaleTo(1.05);
+        });
+
+        element.addEventListener('mousemove', (e: MouseEvent) => {
+          const rect = element.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          
+          const deltaX = (e.clientX - centerX) * 0.15;
+          const deltaY = (e.clientY - centerY) * 0.15;
+
+          xTo(deltaX);
+          yTo(deltaY);
+        });
+
+        element.addEventListener('mouseleave', () => {
+          xTo(0);
+          yTo(0);
+          scaleTo(1);
+        });
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [isInView]);
 
   // Dynamic metrics based on current counter values
   const metrics: ComparisonMetric[] = [
@@ -238,9 +284,9 @@ const ComparisonUltra = () => {
                     </div>
                   </div>
 
-                   {/* Fixco Value - Mobile Optimized */}
+                   {/* Fixco Value - Magnetic hover */}
                   <motion.div
-                    className="card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[60px] md:min-h-[44px] flex items-center justify-center"
+                    className="fixco-value-card card-premium p-2 md:p-3 border-primary/20 relative bg-primary/5 min-h-[60px] md:min-h-[44px] flex items-center justify-center will-change-transform"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.15 }}
                   >

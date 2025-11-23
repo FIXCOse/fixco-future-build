@@ -1,6 +1,8 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { gsap, ScrambleTextPlugin } from '@/lib/gsap';
+import MagneticButton from '@/components/MagneticButton';
 
 // Lazy load heroes - bara en av dem kommer att laddas!
 const HeroUltra = lazy(() => import("@/components/HeroUltra"));
@@ -29,6 +31,10 @@ import {
 
 const Home = () => {
   const { t } = useCopy();
+  const allServicesRef = useRef<HTMLDivElement>(null);
+  const scrambleHeadingRef = useRef<HTMLHeadingElement>(null);
+  const glow1Ref = useRef<HTMLDivElement>(null);
+  const glow2Ref = useRef<HTMLDivElement>(null);
   
   // Check which hero to show (HeroUltra vs HeroV3)
   const { data: useNewHero, isLoading: heroLoading } = useFeatureFlag('use_new_hero');
@@ -41,6 +47,62 @@ const Home = () => {
   useEffect(() => {
     console.log('🎨 [Home] useNewHero:', useNewHero, 'isLoading:', heroLoading);
   }, [useNewHero, heroLoading]);
+
+  // GSAP ScrambleText animation for All Services CTA
+  useEffect(() => {
+    if (!scrambleHeadingRef.current || !allServicesRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(scrambleHeadingRef.current, {
+        scrollTrigger: {
+          trigger: scrambleHeadingRef.current,
+          start: "top 80%",
+          once: true
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        onComplete: () => {
+          gsap.to(scrambleHeadingRef.current, {
+            duration: 1.2,
+            scrambleText: {
+              text: "Alla Tjänster med ROT & RUT-avdrag",
+              chars: "XO█▓▒░",
+              speed: 0.4,
+              delimiter: " "
+            }
+          });
+        }
+      });
+
+      // Floating glow animations
+      if (glow1Ref.current) {
+        gsap.to(glow1Ref.current, {
+          x: 50,
+          y: -30,
+          scale: 1.2,
+          duration: 8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+      }
+
+      if (glow2Ref.current) {
+        gsap.to(glow2Ref.current, {
+          x: -40,
+          y: 40,
+          scale: 0.9,
+          duration: 10,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+      }
+    }, allServicesRef);
+
+    return () => ctx.revert();
+  }, []);
 
   // Comprehensive SEO setup
   const organizationSchema = getOrganizationSchema();
@@ -128,22 +190,35 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* All Services CTA Section */}
-      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Alla Tjänster med ROT & RUT-avdrag
+      {/* All Services CTA Section - GSAP Enhanced */}
+      <section ref={allServicesRef} className="py-16 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+        {/* Floating glows */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div ref={glow1Ref} className="absolute top-10 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+          <div ref={glow2Ref} className="absolute bottom-10 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 
+            ref={scrambleHeadingRef}
+            className="text-3xl md:text-4xl font-bold mb-4"
+          >
+            {/* Text will be replaced by ScrambleText */}
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. 
             Alla med 50% rabatt via ROT/RUT-avdrag.
           </p>
-          <Button asChild size="lg" className="font-semibold">
-            <Link to="/tjanster">
+          <MagneticButton 
+            size="lg" 
+            className="font-semibold"
+            magneticStrength={0.4}
+          >
+            <Link to="/tjanster" className="flex items-center gap-2">
               Se alla tjänster och priser
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="h-5 w-5" />
             </Link>
-          </Button>
+          </MagneticButton>
         </div>
       </section>
 

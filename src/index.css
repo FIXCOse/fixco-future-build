@@ -197,6 +197,22 @@
     overflow: visible;
   }
 
+  /* GSAP 3D transforms */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Smooth hardware acceleration */
+  .project-image,
+  .faq-arrow {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
     text-rendering: optimizeLegibility;
