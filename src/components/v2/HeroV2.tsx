@@ -7,15 +7,16 @@ import { Button } from "@/components/ui/button";
 export const HeroV2 = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
-      {/* Background Effects */}
-      <div className="absolute inset-0 -z-10">
+      {/* Background Effects with Parallax */}
+      <div className="absolute inset-0 -z-10" data-speed="0.5">
         {/* Dark gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,8%)] via-[hsl(222,47%,11%)] to-background" />
         
-        {/* Animated gradient orbs */}
+        {/* Animated gradient orbs with parallax */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
           style={{ background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)" }}
+          data-speed="0.8"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.2, 0.3, 0.2],
@@ -25,6 +26,7 @@ export const HeroV2 = () => {
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
           style={{ background: "radial-gradient(circle, hsl(200 100% 50%) 0%, transparent 70%)" }}
+          data-speed="0.6"
           animate={{
             scale: [1.2, 1, 1.2],
             opacity: [0.3, 0.2, 0.3],
@@ -43,8 +45,8 @@ export const HeroV2 = () => {
         />
       </div>
 
-      {/* Content */}
-      <div className="max-w-5xl mx-auto text-center z-10">
+      {/* Content with subtle parallax */}
+      <div className="max-w-5xl mx-auto text-center z-10" data-speed="1.1">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
