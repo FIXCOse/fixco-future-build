@@ -7,6 +7,10 @@ import { useTheme } from './theme/useTheme'
 // Import i18n dev guard to ensure SV/EN keys match
 import '@/i18n/index'
 
+// Initialize GSAP with all free plugins
+import { initGSAP } from '@/lib/gsap'
+initGSAP();
+
 function BootTheme() {
   React.useEffect(() => { 
     useTheme.getState().init(); 
