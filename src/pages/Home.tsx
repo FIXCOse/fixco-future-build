@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { gsap, ScrambleTextPlugin } from '@/lib/gsap';
-import MagneticButton from '@/components/MagneticButton';
+import { gsap } from '@/lib/gsap';
 
 // Lazy load heroes - bara en av dem kommer att laddas!
 const HeroUltra = lazy(() => import("@/components/HeroUltra"));
@@ -32,7 +31,6 @@ import {
 const Home = () => {
   const { t } = useCopy();
   const allServicesRef = useRef<HTMLDivElement>(null);
-  const scrambleHeadingRef = useRef<HTMLHeadingElement>(null);
   const glow1Ref = useRef<HTMLDivElement>(null);
   const glow2Ref = useRef<HTMLDivElement>(null);
   
@@ -48,33 +46,11 @@ const Home = () => {
     console.log('🎨 [Home] useNewHero:', useNewHero, 'isLoading:', heroLoading);
   }, [useNewHero, heroLoading]);
 
-  // GSAP ScrambleText animation for All Services CTA
+  // GSAP Floating glow animations
   useEffect(() => {
-    if (!scrambleHeadingRef.current || !allServicesRef.current) return;
+    if (!allServicesRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(scrambleHeadingRef.current, {
-        scrollTrigger: {
-          trigger: scrambleHeadingRef.current,
-          start: "top 80%",
-          once: true
-        },
-        opacity: 0,
-        y: 30,
-        duration: 0.6,
-        onComplete: () => {
-          gsap.to(scrambleHeadingRef.current, {
-            duration: 1.2,
-            scrambleText: {
-              text: "Alla Tjänster med ROT & RUT-avdrag",
-              chars: "XO█▓▒░",
-              speed: 0.4,
-              delimiter: " "
-            }
-          });
-        }
-      });
-
       // Floating glow animations
       if (glow1Ref.current) {
         gsap.to(glow1Ref.current, {
@@ -199,26 +175,19 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 
-            ref={scrambleHeadingRef}
-            className="text-3xl md:text-4xl font-bold mb-4"
-          >
-            {/* Text will be replaced by ScrambleText */}
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Alla Tjänster med ROT & RUT-avdrag
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. 
             Alla med 50% rabatt via ROT/RUT-avdrag.
           </p>
-          <MagneticButton 
-            size="lg" 
-            className="font-semibold"
-            magneticStrength={0.4}
-          >
+          <Button size="lg" className="font-semibold">
             <Link to="/tjanster" className="flex items-center gap-2">
               Se alla tjänster och priser
               <ArrowRight className="h-5 w-5" />
             </Link>
-          </MagneticButton>
+          </Button>
         </div>
       </section>
 

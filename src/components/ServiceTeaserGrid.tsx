@@ -7,7 +7,7 @@ import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { usePriceStore } from '@/stores/priceStore';
 import ServiceCardV3 from "@/components/ServiceCardV3";
 import { useCopy } from '@/copy/CopyProvider';
-import { gsap } from '@/lib/gsap';
+import { gsap, SplitText } from '@/lib/gsap';
 
 const ServiceTeaserGrid = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -17,6 +17,8 @@ const ServiceTeaserGrid = () => {
   const isEnglish = location.pathname.startsWith('/en');
   const gridRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
 
   const services: Array<{
     id: string;
@@ -148,50 +150,67 @@ const ServiceTeaserGrid = () => {
           once: true
         }
       });
-
-      // Magnetic hover on each card
-      cardsRef.current.forEach((card) => {
-        if (!card) return;
-
-        const xTo = gsap.quickTo(card, "x", { duration: 0.6, ease: "power3.out" });
-        const yTo = gsap.quickTo(card, "y", { duration: 0.6, ease: "power3.out" });
-        const rotateTo = gsap.quickTo(card, "rotateZ", { duration: 0.6, ease: "power3.out" });
-
-        card.addEventListener('mousemove', (e: MouseEvent) => {
-          const rect = card.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          
-          const deltaX = (e.clientX - centerX) * 0.2;
-          const deltaY = (e.clientY - centerY) * 0.2;
-          const rotation = ((e.clientX - centerX) / rect.width) * 5;
-
-          xTo(deltaX);
-          yTo(deltaY);
-          rotateTo(rotation);
-        });
-
-        card.addEventListener('mouseleave', () => {
-          xTo(0);
-          yTo(0);
-          rotateTo(0);
-        });
-      });
     }, gridRef);
 
     return () => ctx.revert();
   }, [filteredServices]);
+
+  // SplitText animation on title and subtitle
+  useEffect(() => {
+    if (!titleRef.current || !subtitleRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // SplitText on title with same effect as HeroV3
+      const titleSplit = new SplitText(titleRef.current, {
+        type: "chars,words",
+        charsClass: "split-char",
+        wordsClass: "split-word"
+      });
+
+      gsap.from(titleSplit.chars, {
+        opacity: 0,
+        y: 50,
+        rotationX: -90,
+        rotationY: 20,
+        scale: 0.8,
+        duration: 0.8,
+        stagger: 0.03,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top 80%",
+          once: true
+        }
+      });
+
+      // Simple fade-in for subtitle
+      gsap.from(subtitleRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.4,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: subtitleRef.current,
+          start: "top 80%",
+          once: true
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-4">
         {/* Header with Pricing Toggle */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-6">
             <span>{t('home.services.title').split(' ')[0]} </span>
             <span className="gradient-text">{t('home.services.title').split(' ').slice(1).join(' ')}</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p ref={subtitleRef} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             {t('home.services.subtitle')}
           </p>
           
