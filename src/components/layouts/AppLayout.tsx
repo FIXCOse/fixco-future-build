@@ -17,6 +17,7 @@ import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 import { FloatingAIWidget } from '../FloatingAIWidget';
+import '../Navbar2.css';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -66,7 +67,10 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <GlobalFooter locale={locale} />
           
           {/* BOTTOM meny - visa bara om feature flag är explicit false */}
-          {useTopMenu === false && <Navbar2 />}
+          {(() => {
+            console.log('🎨 [AppLayout] Should render Navbar2:', useTopMenu === false);
+            return useTopMenu === false && <Navbar2 />;
+          })()}
           
           <EditModeToggle />
           <GlobalContentEditor />

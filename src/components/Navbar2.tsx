@@ -16,6 +16,9 @@ const Navbar2 = () => {
   const { theme, setTheme } = useTheme();
   const { user } = useAuth();
 
+  // Debug logging
+  console.log('🔧 [Navbar2] Component rendering!');
+
   const toggleDropdown = (dropdownId: string) => {
     setOpenDropdown(openDropdown === dropdownId ? null : dropdownId);
   };
@@ -133,7 +136,23 @@ const Navbar2 = () => {
           onClick={() => setOpenDropdown(null)}
         />
       )}
-      <nav className="rd-navbar inherited-styles-for-exported-element">
+      <nav 
+        className="rd-navbar inherited-styles-for-exported-element"
+        style={{
+          position: 'fixed',
+          bottom: '1rem',
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          maxWidth: '51.5rem',
+          margin: '0 auto',
+          backgroundColor: 'hsl(var(--background))',
+          borderRadius: '1rem',
+          padding: '0.5rem',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr auto 1fr 1fr'
+        }}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="375" height="92" viewBox="0 0 375 92" fill="none" className="rd-navbar_curve-shape">
         <g filter="url(#filter0_i_14_1436)">
           <path d="M150 8C150 3.58172 146.418 0 142 0H18C8.05908 0 0 8.05859 0 18V92H375V18C375 8.05859 366.941 0 357 0H232C227.582 0 224 3.58172 224 8V21C224 34.8066 218.307 46 204.5 46H170C156.193 46 150 34.8066 150 21V8Z" fill="#0A0A0A"></path>
