@@ -17,6 +17,7 @@ export type QuoteNewRow = {
   discount_value?: number;
   discount_amount_sek?: number;
   total_sek: number;
+  vat_included?: boolean;
   pdf_url?: string | null;
   status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired';
   valid_until?: string | null;
@@ -109,6 +110,7 @@ export async function createQuoteNew(quoteData: {
   discount_value?: number;
   discount_amount_sek?: number;
   total_sek: number;
+  vat_included?: boolean;
   pdf_url?: string;
   valid_until?: string;
   request_id?: string;

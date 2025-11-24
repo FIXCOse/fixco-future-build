@@ -231,28 +231,79 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
         };
       });
 
-      // Apply filters
-      let filtered = combined;
-      if (statusFilter.length > 0) {
-        const filterType = statusFilter[0];
-        
-        if (filterType === 'requests') {
-          // Visa alla med status "new" OCH som inte har offert
-          filtered = combined.filter(item => 
-            item.booking.status === 'new' && !item.quote
-          );
-        } else if (filterType === 'quotes') {
-          // Visa ALLA som har en offert, oavsett booking status
-          filtered = combined.filter(item => !!item.quote);
-        } else if (filterType === 'archived') {
-          // Visa arkiverade
-          filtered = combined.filter(item => 
-            ['completed', 'cancelled'].includes(item.booking.status)
-          );
-        }
-      }
+    const allCombined = combined.filter((item): item is RequestWithQuote => item !== null);
 
-      setData(filtered);
+    // Add standalone quotes (quotes without request_id)
+    const standaloneQuotes = quotes?.filter((q: any) => !q.request_id) || [];
+    const standaloneItems: RequestWithQuote[] = standaloneQuotes.map((quote: any) => {
+      const customer = customers?.find((c: any) => c.id === quote.customer_id);
+      const invoice = invoices?.find((inv: any) => inv.quote_id === quote.id);
+      const job = jobs?.find((j: any) => j.source_type === 'quote' && j.source_id === quote.id);
+      
+      // Create synthetic booking for UI compatibility
+      const syntheticBooking: BookingRow = {
+        id: `synthetic-${quote.id}`,
+        customer_id: quote.customer_id,
+        service_slug: 'standalone-quote',
+        mode: 'quote',
+        status: 'new',
+        payload: { name: customer?.name, email: customer?.email },
+        file_urls: [],
+        created_at: quote.created_at,
+        updated_at: quote.created_at,
+        deleted_at: null
+      };
+
+      const workers = job ? jobWorkers?.filter((jw: any) => jw.job_id === job.id) : [];
+      const jobTimeLogs = job ? timeLogs?.filter((tl: any) => tl.job_id === job.id) : [];
+      const jobMaterialLogs = job ? materialLogs?.filter((ml: any) => ml.job_id === job.id) : [];
+      const jobExpenseLogs = job ? expenseLogs?.filter((el: any) => el.job_id === job.id) : [];
+      
+      const totalHours = jobTimeLogs?.reduce((sum: number, log: any) => sum + (log.hours || 0), 0) || 0;
+      const totalMaterialCost = jobMaterialLogs?.reduce((sum: number, log: any) => sum + ((log.qty || 0) * (log.unit_price || 0)), 0) || 0;
+      const totalExpenses = jobExpenseLogs?.reduce((sum: number, log: any) => sum + (log.amount || 0), 0) || 0;
+
+      return {
+        booking: syntheticBooking,
+        quote,
+        customer,
+        invoice,
+        job,
+        workers,
+        timeLogs: jobTimeLogs,
+        materialLogs: jobMaterialLogs,
+        expenseLogs: jobExpenseLogs,
+        totalHours,
+        totalMaterialCost,
+        totalExpenses,
+      };
+    });
+
+    // Combine all items
+    const allItems = [...allCombined, ...standaloneItems];
+
+    // Apply filters
+    let filtered = allItems;
+    if (statusFilter.length > 0) {
+      const filterType = statusFilter[0];
+      
+      if (filterType === 'requests') {
+        // Visa alla med status "new" OCH som inte har offert
+        filtered = allItems.filter(item => 
+          item.booking.status === 'new' && !item.quote
+        );
+      } else if (filterType === 'quotes') {
+        // Visa ALLA som har en offert, oavsett booking status
+        filtered = allItems.filter(item => !!item.quote);
+      } else if (filterType === 'archived') {
+        // Visa arkiverade
+        filtered = allItems.filter(item => 
+          ['completed', 'cancelled'].includes(item.booking.status)
+        );
+      }
+    }
+
+    setData(filtered);
     } catch (error) {
       console.error('Error loading requests and quotes:', error);
     } finally {
