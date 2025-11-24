@@ -179,12 +179,21 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (expenseLogsError) console.error('Error fetching expense logs:', expenseLogsError);
 
-      // Fetch customers
-      const customerIds = [...new Set(bookings?.map((b: any) => b.customer_id).filter(Boolean))];
-      const { data: customers } = await supabase
-        .from('customers')
-        .select('id, name, email, phone, customer_type, company_name, brf_name, org_number, personnummer')
-        .in('id', customerIds);
+      // Fetch customers from BOTH bookings AND standalone quotes
+      const bookingCustomerIds = bookings?.map((b: any) => b.customer_id).filter(Boolean) || [];
+      const standaloneQuotes = quotes?.filter((q: any) => !q.request_id) || [];
+      const quoteCustomerIds = standaloneQuotes.map((q: any) => q.customer_id).filter(Boolean);
+      const customerIds = [...new Set([...bookingCustomerIds, ...quoteCustomerIds])];
+      
+      console.log('📊 Standalone quotes found:', standaloneQuotes.length);
+      console.log('📊 Total customer IDs to fetch:', customerIds.length);
+      
+      const { data: customers } = customerIds.length > 0
+        ? await supabase
+            .from('customers')
+            .select('id, name, email, phone, customer_type, company_name, brf_name, org_number, personnummer')
+            .in('id', customerIds)
+        : { data: [] };
 
       // Combine data
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
@@ -234,8 +243,11 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
     const allCombined = combined.filter((item): item is RequestWithQuote => item !== null);
 
     // Add standalone quotes (quotes without request_id)
-    const standaloneQuotes = quotes?.filter((q: any) => !q.request_id) || [];
-    const standaloneItems: RequestWithQuote[] = standaloneQuotes.map((quote: any) => {
+    const standaloneQuotesForMapping = quotes?.filter((q: any) => !q.request_id) || [];
+    console.log('🔍 Processing standalone quotes:', standaloneQuotesForMapping.length);
+    
+    const standaloneItems: RequestWithQuote[] = standaloneQuotesForMapping.map((quote: any) => {
+      console.log('🔍 Standalone quote:', quote.id, 'Customer:', quote.customer_id, 'Status:', quote.status);
       const customer = customers?.find((c: any) => c.id === quote.customer_id);
       const invoice = invoices?.find((inv: any) => inv.quote_id === quote.id);
       const job = jobs?.find((j: any) => j.source_type === 'quote' && j.source_id === quote.id);
