@@ -14,17 +14,26 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const pathParts = url.pathname.split('/').filter(p => p);
     
+    // Find the 'get-quote-public' segment and extract parts after it
+    const funcIndex = pathParts.findIndex(p => p === 'get-quote-public');
+    const relevantParts = funcIndex >= 0 ? pathParts.slice(funcIndex + 1) : pathParts;
+    
     // Support both formats: /number/token (new) and /token (legacy)
     let quoteNumber: string | null = null;
     let token: string;
     
-    if (pathParts.length >= 2) {
+    if (relevantParts.length >= 2) {
       // New format: /get-quote-public/Q-2025-042/Xk9m
-      quoteNumber = pathParts[pathParts.length - 2];
-      token = pathParts[pathParts.length - 1];
-    } else {
+      quoteNumber = relevantParts[0];
+      token = relevantParts[1];
+    } else if (relevantParts.length === 1) {
       // Legacy format: /get-quote-public/long-token
-      token = pathParts[pathParts.length - 1];
+      token = relevantParts[0];
+    } else {
+      return new Response(
+        JSON.stringify({ error: 'Token saknas' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     if (!token) {
