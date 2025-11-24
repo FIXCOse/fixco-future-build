@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import Navbar2 from './Navbar2';
@@ -26,9 +26,17 @@ export const NavbarPortal = () => {
   ];
 
   // Kontrollera om current route börjar med någon av de dolda routes
-  const shouldHideMenu = hideMenuRoutes.some(route => 
-    location.pathname.startsWith(route)
-  );
+  const shouldHideMenu = useMemo(() => {
+    const path = location.pathname;
+    const shouldHide = hideMenuRoutes.some(route => path.startsWith(route));
+    console.log('🔍 [NavbarPortal] Path:', path, '| Should hide:', shouldHide);
+    return shouldHide;
+  }, [location.pathname]);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 [NavbarPortal] useTopMenu:', useTopMenu, '| shouldHideMenu:', shouldHideMenu, '| mounted:', mounted);
+  }, [useTopMenu, shouldHideMenu, mounted]);
 
   // Only render if bottom menu is enabled, we're in the browser, and NOT on a hidden route
   if (useTopMenu !== false || !mounted || typeof document === 'undefined' || shouldHideMenu) {
