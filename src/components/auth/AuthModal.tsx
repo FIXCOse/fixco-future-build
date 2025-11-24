@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface AuthModalProps {
   open: boolean;
@@ -13,33 +14,25 @@ export default function AuthModal({ open, onClose, children }: AuthModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const lastActive = useRef<HTMLElement | null>(null);
 
-  // Scroll lock + focus management
+  // Lock scroll when modal is open
+  useScrollLock(open);
+
+  // Focus management
   useEffect(() => {
     if (open) {
       // Store the currently focused element
       lastActive.current = document.activeElement as HTMLElement;
-      
-      // Lock body scroll
-      document.body.style.overflow = "hidden";
       
       // Focus the modal panel
       setTimeout(() => {
         panelRef.current?.focus();
       }, 100);
     } else {
-      // Restore body scroll
-      document.body.style.overflow = "";
-      
       // Restore focus to the previously focused element
       setTimeout(() => {
         lastActive.current?.focus?.();
       }, 100);
     }
-    
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [open]);
 
   // ESC key to close + focus trap
