@@ -62,7 +62,20 @@ const MyFixcoLayout = () => {
     };
 
     checkSession();
-    return () => { mounted = false; };
+
+    // Lyssna på auth state changes för att uppdatera user state direkt
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (mounted) {
+          setUser(session?.user ?? null);
+        }
+      }
+    );
+
+    return () => { 
+      mounted = false; 
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Redirect admin/owner users to admin dashboard, workers to worker dashboard

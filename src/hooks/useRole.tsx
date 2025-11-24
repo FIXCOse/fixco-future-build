@@ -1,9 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 export type UserRole = 'owner' | 'admin' | 'worker' | 'customer';
 
 export function useRole() {
+  const queryClient = useQueryClient();
+  
   const { data: userRoles, isLoading } = useQuery({
     queryKey: ['user-roles'],
     queryFn: async () => {
@@ -26,6 +29,15 @@ export function useRole() {
     refetchOnMount: 'always', // Always refetch when component mounts
     retry: false
   });
+
+  // Lyssna på auth changes och invalidera role-query
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      queryClient.invalidateQueries({ queryKey: ['user-roles'] });
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [queryClient]);
 
   // Get primary role (highest privilege)
   const roles = userRoles?.map(r => r.role) || [];
