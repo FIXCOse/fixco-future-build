@@ -1,5 +1,5 @@
-import { createContext, useContext, ReactNode } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { createContext, useContext, ReactNode, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UserProfile {
@@ -24,6 +24,8 @@ interface AuthProfileContextType {
 const AuthProfileContext = createContext<AuthProfileContextType | undefined>(undefined);
 
 export const AuthProfileProvider = ({ children }: { children: ReactNode }) => {
+  const queryClient = useQueryClient();
+  
   const { data: profile, isLoading, error } = useQuery({
     queryKey: ['auth-profile'],
     queryFn: async () => {
@@ -79,6 +81,15 @@ export const AuthProfileProvider = ({ children }: { children: ReactNode }) => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false
   });
+
+  // Lyssna på auth changes och invalidera profil-query
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      queryClient.invalidateQueries({ queryKey: ['auth-profile'] });
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [queryClient]);
 
   return (
     <AuthProfileContext.Provider value={{ profile: profile || null, loading: isLoading, error: error as Error | null }}>
