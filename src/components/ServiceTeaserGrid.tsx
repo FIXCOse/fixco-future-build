@@ -237,7 +237,13 @@ const ServiceTeaserGrid = () => {
                 title={service.title}
                 category={t('services.category.main')}
                 description={service.description}
-                pricingType={service.priceUnit.includes('/h') ? 'hourly' : 'fixed'}
+              pricingType={
+                service.priceUnit === 'offert' 
+                  ? 'quote' 
+                  : service.priceUnit.includes('/h') 
+                    ? 'hourly' 
+                    : 'fixed'
+              }
                 priceIncl={service.basePrice}
                 eligible={service.eligible}
                 serviceSlug={service.slug}
