@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2, Briefcase, Send, ClipboardList } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AdminBack from '@/components/admin/AdminBack';
+import { LogoUploadButton } from '@/components/admin/quotes/LogoUploadButton';
 
 // Import the existing components' content
 import { AllJobsTab } from '@/components/admin/jobs/AllJobsTab';
@@ -22,12 +23,15 @@ const AdminJobsUnified = () => {
           <h1 className="text-2xl font-bold">Jobbhantering</h1>
           <p className="text-muted-foreground">Hantera alla jobb, skicka förfrågningar och följ status</p>
         </div>
-        <Link to="/admin/job-requests-trash">
-          <Button variant="outline">
-            <Trash2 className="h-4 w-4 mr-2" />
-            Papperskorg
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3">
+          <LogoUploadButton />
+          <Link to="/admin/job-requests-trash">
+            <Button variant="outline">
+              <Trash2 className="h-4 w-4 mr-2" />
+              Papperskorg
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
