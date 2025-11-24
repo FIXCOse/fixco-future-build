@@ -38,15 +38,19 @@ export const NavbarPortal = () => {
     console.log('🔍 [NavbarPortal] useTopMenu:', useTopMenu, '| shouldHideMenu:', shouldHideMenu, '| mounted:', mounted);
   }, [useTopMenu, shouldHideMenu, mounted]);
 
-  // Only render if bottom menu is enabled, we're in the browser, and NOT on a hidden route
-  if (useTopMenu !== false || !mounted || typeof document === 'undefined' || shouldHideMenu) {
+  // Only render if bottom menu is enabled and we're in the browser
+  if (useTopMenu !== false || !mounted || typeof document === 'undefined') {
     return null;
   }
 
+  // Don't render at all on hidden routes
+  if (shouldHideMenu) {
+    return null;
+  }
+
+  // Render navbar directly as child of body (no wrapping div)
   return ReactDOM.createPortal(
-    <div style={shouldHideMenu ? { display: 'none' } : {}}>
-      <Navbar2 />
-    </div>,
+    <Navbar2 />,
     document.body
   );
 };
