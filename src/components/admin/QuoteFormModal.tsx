@@ -389,7 +389,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto overscroll-contain touch-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
             <Calculator className="h-6 w-6" />

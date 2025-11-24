@@ -134,7 +134,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
 
           {/* Content */}
-          <div className="max-h-[60vh] overflow-y-auto p-6">
+          <div className="max-h-[60vh] overflow-y-auto overscroll-contain touch-auto p-6">
             {/* Step 1: Service Selection */}
             {currentStep === 1 && (
               <div>
