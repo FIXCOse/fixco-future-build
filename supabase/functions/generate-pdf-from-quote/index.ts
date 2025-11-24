@@ -43,6 +43,15 @@ serve(async (req) => {
 
     console.log('Quote fetched successfully:', quote.number);
 
+    // Fetch logo from storage
+    const { data: logoData, error: logoError } = await supabaseClient.storage
+      .from('assets')
+      .download('fixco-logo-white.png');
+
+    if (logoError) {
+      console.warn('Logo not found, continuing without logo:', logoError);
+    }
+
     // Create PDF
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
@@ -52,50 +61,94 @@ serve(async (req) => {
 
     let yPos = height - 50;
 
-    // Header with gradient background (simulated with rectangles)
+    // Premium header with gradient background
     page.drawRectangle({
       x: 0,
-      y: height - 120,
+      y: height - 130,
       width: width,
-      height: 120,
-      color: rgb(0.1, 0.2, 0.4),
+      height: 130,
+      color: rgb(0.1, 0.21, 0.36), // Mörk blå #1a365d
     });
 
-    // Company name
-    page.drawText('FIXCO', {
-      x: 50,
-      y: height - 60,
-      size: 32,
+    // Embed and draw logo if available
+    if (logoData) {
+      try {
+        const logoBytes = await logoData.arrayBuffer();
+        const logoImage = await pdfDoc.embedPng(logoBytes);
+        const logoDims = logoImage.scale(0.15);
+        
+        page.drawImage(logoImage, {
+          x: 50,
+          y: height - 100,
+          width: logoDims.width,
+          height: logoDims.height,
+        });
+      } catch (error) {
+        console.warn('Failed to embed logo:', error);
+      }
+    }
+
+    // Company info (right side of header)
+    page.drawText('FIXCO AB', {
+      x: width - 200,
+      y: height - 55,
+      size: 14,
       font: boldFont,
       color: rgb(1, 1, 1),
     });
 
-    page.drawText('Professionella hantverkstjänster', {
-      x: 50,
-      y: height - 85,
-      size: 12,
+    page.drawText('Org.nr: 559123-4567', {
+      x: width - 200,
+      y: height - 72,
+      size: 9,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
+      color: rgb(0.85, 0.85, 0.85),
+    });
+
+    page.drawText('info@fixco.se', {
+      x: width - 200,
+      y: height - 86,
+      size: 9,
+      font: font,
+      color: rgb(0.85, 0.85, 0.85),
+    });
+
+    page.drawText('+46 70 123 45 67', {
+      x: width - 200,
+      y: height - 100,
+      size: 9,
+      font: font,
+      color: rgb(0.85, 0.85, 0.85),
+    });
+
+    page.drawText('www.fixco.se', {
+      x: width - 200,
+      y: height - 114,
+      size: 9,
+      font: font,
+      color: rgb(0.85, 0.85, 0.85),
     });
 
     // Quote title
-    yPos = height - 150;
+    yPos = height - 170;
     page.drawText(`OFFERT ${quote.number}`, {
       x: 50,
       y: yPos,
-      size: 24,
+      size: 28,
       font: boldFont,
-      color: rgb(0.1, 0.2, 0.4),
+      color: rgb(0.1, 0.21, 0.36),
     });
 
-    // Customer information
-    yPos -= 40;
+    // Two-column layout for customer and quote details
+    yPos -= 50;
+    
+    // Left column - Customer information
     page.drawText('KUND', {
       x: 50,
       y: yPos,
-      size: 12,
+      size: 11,
       font: boldFont,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.2, 0.2, 0.2),
     });
 
     yPos -= 20;
@@ -104,7 +157,7 @@ serve(async (req) => {
       x: 50,
       y: yPos,
       size: 11,
-      font: font,
+      font: boldFont,
       color: rgb(0, 0, 0),
     });
 
@@ -130,52 +183,52 @@ serve(async (req) => {
       });
     }
 
-    // Quote details (dates)
-    yPos -= 35;
+    // Right column - Quote details
+    let rightColY = height - 220;
     page.drawText('OFFERTDETALJER', {
-      x: 50,
-      y: yPos,
-      size: 12,
+      x: 350,
+      y: rightColY,
+      size: 11,
       font: boldFont,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.2, 0.2, 0.2),
     });
 
-    yPos -= 20;
+    rightColY -= 20;
     page.drawText(`Datum: ${new Date(quote.created_at).toLocaleDateString('sv-SE')}`, {
-      x: 50,
-      y: yPos,
+      x: 350,
+      y: rightColY,
       size: 10,
       font: font,
       color: rgb(0, 0, 0),
     });
 
-    yPos -= 16;
+    rightColY -= 16;
     page.drawText(`Giltig till: ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}`, {
-      x: 50,
-      y: yPos,
+      x: 350,
+      y: rightColY,
       size: 10,
       font: font,
       color: rgb(0, 0, 0),
     });
 
     // Line items table
-    yPos -= 40;
+    yPos -= 60;
     page.drawText('SPECIFIKATION', {
       x: 50,
       y: yPos,
-      size: 12,
+      size: 13,
       font: boldFont,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.1, 0.21, 0.36),
     });
 
-    // Table header
-    yPos -= 25;
+    // Table header with background
+    yPos -= 30;
     page.drawRectangle({
       x: 40,
       y: yPos - 5,
       width: width - 80,
-      height: 20,
-      color: rgb(0.95, 0.95, 0.95),
+      height: 22,
+      color: rgb(0.1, 0.21, 0.36),
     });
 
     page.drawText('Beskrivning', {
@@ -183,7 +236,7 @@ serve(async (req) => {
       y: yPos,
       size: 10,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(1, 1, 1),
     });
 
     page.drawText('Antal', {
@@ -191,15 +244,15 @@ serve(async (req) => {
       y: yPos,
       size: 10,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(1, 1, 1),
     });
 
     page.drawText('Enhet', {
-      x: 380,
+      x: 375,
       y: yPos,
       size: 10,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(1, 1, 1),
     });
 
     page.drawText('Pris/enhet', {
@@ -207,7 +260,7 @@ serve(async (req) => {
       y: yPos,
       size: 10,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(1, 1, 1),
     });
 
     page.drawText('Totalt', {
@@ -215,14 +268,26 @@ serve(async (req) => {
       y: yPos,
       size: 10,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(1, 1, 1),
     });
 
-    // Table rows
-    yPos -= 20;
+    // Table rows with alternating background
+    yPos -= 25;
     const items = quote.items || [];
+    let rowIndex = 0;
     
     for (const item of items) {
+      // Alternating row background
+      if (rowIndex % 2 === 1) {
+        page.drawRectangle({
+          x: 40,
+          y: yPos - 5,
+          width: width - 80,
+          height: 20,
+          color: rgb(0.97, 0.97, 0.97),
+        });
+      }
+
       const quantity = item.quantity || 0;
       const price = item.price || 0;
       const total = quantity * price;
@@ -245,7 +310,7 @@ serve(async (req) => {
       });
 
       page.drawText(item.unit || 'st', {
-        x: 380,
+        x: 375,
         y: yPos,
         size: 9,
         font: font,
@@ -269,26 +334,35 @@ serve(async (req) => {
       });
 
       yPos -= 20;
+      rowIndex++;
 
       // Add new page if needed
-      if (yPos < 150) {
+      if (yPos < 200) {
         const newPage = pdfDoc.addPage([595.28, 841.89]);
         yPos = height - 50;
       }
     }
 
-    // Summary section
-    yPos -= 30;
+    // Summary section with background
+    yPos -= 20;
+    page.drawRectangle({
+      x: 340,
+      y: yPos - 120,
+      width: width - 390,
+      height: 130,
+      color: rgb(0.98, 0.98, 0.98),
+    });
+
     page.drawLine({
       start: { x: 350, y: yPos },
       end: { x: width - 50, y: yPos },
       thickness: 1,
-      color: rgb(0.7, 0.7, 0.7),
+      color: rgb(0.8, 0.8, 0.8),
     });
 
-    yPos -= 20;
+    yPos -= 25;
     page.drawText('Arbetskostnad:', {
-      x: 350,
+      x: 360,
       y: yPos,
       size: 10,
       font: font,
@@ -302,9 +376,9 @@ serve(async (req) => {
       color: rgb(0, 0, 0),
     });
 
-    yPos -= 16;
+    yPos -= 18;
     page.drawText('Material:', {
-      x: 350,
+      x: 360,
       y: yPos,
       size: 10,
       font: font,
@@ -318,9 +392,9 @@ serve(async (req) => {
       color: rgb(0, 0, 0),
     });
 
-    yPos -= 16;
+    yPos -= 18;
     page.drawText('Moms (25%):', {
-      x: 350,
+      x: 360,
       y: yPos,
       size: 10,
       font: font,
@@ -335,9 +409,9 @@ serve(async (req) => {
     });
 
     if (quote.rot_deduction_sek && quote.rot_deduction_sek > 0) {
-      yPos -= 16;
+      yPos -= 18;
       page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%):`, {
-        x: 350,
+        x: 360,
         y: yPos,
         size: 10,
         font: font,
@@ -352,39 +426,48 @@ serve(async (req) => {
       });
     }
 
-    yPos -= 20;
+    yPos -= 22;
     page.drawLine({
       start: { x: 350, y: yPos },
       end: { x: width - 50, y: yPos },
       thickness: 2,
-      color: rgb(0.1, 0.2, 0.4),
+      color: rgb(0.1, 0.21, 0.36),
     });
 
-    yPos -= 25;
+    yPos -= 28;
     page.drawText('TOTALT ATT BETALA:', {
-      x: 350,
+      x: 360,
       y: yPos,
       size: 12,
       font: boldFont,
-      color: rgb(0.1, 0.2, 0.4),
+      color: rgb(0.1, 0.21, 0.36),
     });
     page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
       x: 480,
       y: yPos,
       size: 12,
       font: boldFont,
-      color: rgb(0.1, 0.2, 0.4),
+      color: rgb(0.1, 0.21, 0.36),
     });
 
-    // Footer
-    yPos = 80;
-    page.drawText('FIXCO AB |Org.nr: 123456-7890', {
+    // Professional footer with separator
+    yPos = 100;
+    page.drawLine({
+      start: { x: 50, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.7, 0.7, 0.7),
+    });
+
+    yPos -= 20;
+    page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {
       x: 50,
       y: yPos,
       size: 8,
       font: font,
       color: rgb(0.5, 0.5, 0.5),
     });
+    
     yPos -= 12;
     page.drawText('info@fixco.se | +46 70 123 45 67 | www.fixco.se', {
       x: 50,
