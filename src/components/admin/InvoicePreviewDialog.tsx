@@ -6,7 +6,8 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { createInvoiceFromJob } from '@/lib/api/invoices';
 import type { Job, TimeLog, MaterialLog, ExpenseLog } from '@/lib/api/jobs';
-import { Loader2 } from 'lucide-react';
+import { Loader2, FileText } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface InvoicePreviewDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ const InvoicePreviewDialog = ({
   onInvoiceCreated
 }: InvoicePreviewDialogProps) => {
   const [creating, setCreating] = useState(false);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const totalHours = timeLogs?.reduce((sum, log) => sum + (log.hours || log.manual_hours || 0), 0) || 0;
   const totalMaterialCost = materialLogs?.reduce((sum, log) => sum + ((log.qty * (log.unit_price || 0))), 0) || 0;
@@ -59,6 +61,44 @@ const InvoicePreviewDialog = ({
       toast.error('Kunde inte skapa faktura');
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleGeneratePdf = async () => {
+    if (!job.customer_id) {
+      toast.error('Jobb saknar kund-ID');
+      return;
+    }
+
+    setGeneratingPdf(true);
+    try {
+      // First create invoice if not exists
+      const { data: invoiceData } = await createInvoiceFromJob(job.id, job.customer_id);
+      
+      if (!invoiceData?.id) {
+        throw new Error('Kunde inte skapa faktura');
+      }
+
+      // Then generate PDF
+      const { data, error } = await supabase.functions.invoke('generate-pdf-from-invoice', {
+        body: { invoiceId: invoiceData.id }
+      });
+
+      if (error) throw error;
+
+      toast.success('PDF genererad!');
+      
+      // Open PDF if available
+      if (data?.pdfUrl) {
+        window.open(data.pdfUrl, '_blank');
+      }
+
+      onInvoiceCreated();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Kunde inte generera PDF');
+    } finally {
+      setGeneratingPdf(false);
     }
   };
 
@@ -187,13 +227,22 @@ const InvoicePreviewDialog = ({
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)}
-              disabled={creating}
+              disabled={creating || generatingPdf}
             >
               Avbryt
             </Button>
             <Button 
+              onClick={handleGeneratePdf}
+              disabled={creating || generatingPdf}
+              variant="outline"
+            >
+              {generatingPdf && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {!generatingPdf && <FileText className="mr-2 h-4 w-4" />}
+              Generera PDF
+            </Button>
+            <Button 
               onClick={handleCreateInvoice}
-              disabled={creating}
+              disabled={creating || generatingPdf}
             >
               {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Skapa faktura

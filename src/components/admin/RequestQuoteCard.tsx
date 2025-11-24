@@ -255,6 +255,25 @@ export function RequestQuoteCard({
                   <Copy className="h-4 w-4 mr-2" />
                   Kopiera
                 </Button>
+                {quote.pdf_url ? (
+                  <Button
+                    onClick={() => window.open(quote.pdf_url, '_blank')}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Ladda ned PDF
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => onViewPdf(quote.id)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Generera PDF
+                  </Button>
+                )}
                 <Button
                   onClick={() => {
                     const publicUrl = `${window.location.origin}/q/${quote.number}/${quote.public_token}`;
