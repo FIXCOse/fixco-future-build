@@ -237,18 +237,8 @@ export default function AdminQuotesUnified() {
   };
 
   const handleViewPdf = async (quoteId: string) => {
-    const item = allData.find(d => d.quote?.id === quoteId);
-    if (!item?.quote) return;
-
-    // If PDF already exists, open it
-    if (item.quote.pdf_url) {
-      window.open(item.quote.pdf_url, '_blank');
-      return;
-    }
-
-    // Otherwise, generate it
     try {
-      toast.loading('Genererar PDF...');
+      toast.loading('Genererar PDF med senaste designen...');
       const { data, error } = await supabase.functions.invoke('generate-pdf-from-quote', {
         body: { quoteId }
       });
