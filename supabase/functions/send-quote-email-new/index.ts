@@ -39,7 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const displayName = customerName || 'Kund';
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
-    const publicUrl = `${frontendUrl}/quote/${quote.public_token}`;
+    const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
 
     const emailHtml = `
       <!DOCTYPE html>

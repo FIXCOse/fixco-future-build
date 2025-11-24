@@ -239,7 +239,7 @@ export default function AdminQuotesUnified() {
   const handleViewPdf = (quoteId: string) => {
     const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
-    const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
+    const publicUrl = `${window.location.origin}/q/${item.quote.number}/${item.quote.public_token}`;
     window.open(publicUrl, '_blank');
   };
 
@@ -283,7 +283,7 @@ export default function AdminQuotesUnified() {
     const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
 
-    const publicUrl = `${window.location.origin}/q/${item.quote.public_token}`;
+    const publicUrl = `${window.location.origin}/q/${item.quote.number}/${item.quote.public_token}`;
     await navigator.clipboard.writeText(publicUrl);
     toast.success('Länk kopierad!');
   };

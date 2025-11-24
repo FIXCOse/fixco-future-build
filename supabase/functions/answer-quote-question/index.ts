@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
     if (emailToSend) {
       try {
         const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
-        const quoteUrl = `https://fixco.se/offert/${question.quote.public_token}`;
+        const quoteUrl = `https://fixco.se/q/${question.quote.number}/${question.quote.public_token}`;
 
         await resend.emails.send({
           from: 'Fixco <info@fixco.se>',

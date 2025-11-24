@@ -257,7 +257,7 @@ export function RequestQuoteCard({
                 </Button>
                 <Button
                   onClick={() => {
-                    const publicUrl = `${window.location.origin}/q/${quote.public_token}`;
+                    const publicUrl = `${window.location.origin}/q/${quote.number}/${quote.public_token}`;
                     window.open(publicUrl, '_blank');
                   }}
                   variant="outline"
