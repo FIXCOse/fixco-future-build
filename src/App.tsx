@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { useScrollSmootherStore } from '@/stores/scrollSmootherStore';
 
 // Lazy load ALL pages for optimal performance
 const Home = lazy(() => import("./pages/Home"));
@@ -168,15 +167,18 @@ const App = () => {
       ignoreMobileResize: true, // Prevent issues on mobile keyboard
     });
 
-    // Save to store so modals can pause/resume it
-    const { setSmoother } = useScrollSmootherStore.getState();
-    setSmoother(smoother);
+    // Import store dynamically to avoid top-level import issues
+    import('@/stores/scrollSmootherStore').then(({ useScrollSmootherStore }) => {
+      useScrollSmootherStore.getState().setSmoother(smoother);
+    });
 
     console.log('✨ ScrollSmoother initialized - buttery smooth scrolling active');
 
     return () => {
       if (smoother) smoother.kill();
-      setSmoother(null);
+      import('@/stores/scrollSmootherStore').then(({ useScrollSmootherStore }) => {
+        useScrollSmootherStore.getState().setSmoother(null);
+      });
     };
   }, []);
   
