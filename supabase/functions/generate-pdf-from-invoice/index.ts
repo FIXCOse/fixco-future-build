@@ -491,6 +491,9 @@ serve(async (req) => {
       .from('invoices')
       .getPublicUrl(fileName);
 
+    // Add cache-busting parameter to force browser reload
+    const cacheBustedUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
     // Update invoice with pdf_url
     const { error: updateError } = await supabaseClient
       .from('invoices')
@@ -507,7 +510,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        pdf_url: urlData.publicUrl,
+        pdf_url: cacheBustedUrl,
         message: 'PDF generated successfully',
       }),
       {
