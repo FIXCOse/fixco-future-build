@@ -673,7 +673,9 @@ export default function QuotePublic() {
                     </div>
                   )}
                   <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">Moms (25%)</span>
+                    <span className="text-muted-foreground">
+                      Moms (25%){(quote as any).vat_included ? ' (ingår i priset)' : ''}
+                    </span>
                     <span className="font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
                   </div>
                   {quote.rot_deduction_sek > 0 && (
