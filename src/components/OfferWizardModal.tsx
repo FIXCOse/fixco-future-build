@@ -103,10 +103,10 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col overflow-hidden">
-        <div className="card-premium bg-background border border-border rounded-xl shadow-glow flex flex-col">
+      <div className="relative w-full max-w-2xl mx-4">
+        <div className="card-premium bg-background border border-border rounded-xl shadow-glow">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border flex-shrink-0">
+          <div className="flex items-center justify-between p-6 border-b border-border">
             <div>
               <h2 className="text-2xl font-bold">Få din offert på 2 minuter</h2>
               <p className="text-muted-foreground text-sm">
@@ -124,7 +124,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
 
           {/* Progress Bar */}
-          <div className="px-6 pt-4 flex-shrink-0">
+          <div className="px-6 pt-4">
             <div className="w-full bg-border rounded-full h-2">
               <div 
                 className="h-2 bg-gradient-primary rounded-full transition-all duration-300"
@@ -134,7 +134,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="max-h-[60vh] overflow-y-auto p-6">
             {/* Step 1: Service Selection */}
             {currentStep === 1 && (
               <div>
@@ -338,7 +338,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
 
           {/* Footer */}
-          <div className="flex justify-between items-center p-6 border-t border-border flex-shrink-0">
+          <div className="flex justify-between items-center p-6 border-t border-border">
             <Button
               variant="ghost"
               onClick={handlePrevious}
