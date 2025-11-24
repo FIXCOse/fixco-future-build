@@ -44,7 +44,9 @@ export const NavbarPortal = () => {
   }
 
   return ReactDOM.createPortal(
-    <Navbar2 />,
+    <div style={shouldHideMenu ? { display: 'none' } : {}}>
+      <Navbar2 />
+    </div>,
     document.body
   );
 };
