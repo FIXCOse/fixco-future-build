@@ -301,6 +301,7 @@ export type CopyKey =
    | 'services.tradgard.title' | 'services.tradgard.description'
    | 'services.stadning.title' | 'services.stadning.description'
    | 'services.flytt.title' | 'services.flytt.description'
+   | 'services.tekniska.title' | 'services.tekniska.description'
    | 'services.category.main'
    | 'location.uppsala_stockholm' | 'location.national_large_projects'
    | 'timing.start_within_5_days' | 'timing.less_than_5_days'

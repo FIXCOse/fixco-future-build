@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck } from 'lucide-react';
+import { ArrowRight, Zap, Droplets, Hammer, Wrench, Shovel, Sparkles, Truck, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
@@ -122,6 +122,19 @@ const ServiceTeaserGrid = () => {
       slug: "flytt",
       gradient: "from-indigo-500/20 to-purple-500/20",
       iconColor: "text-indigo-400"
+    },
+    {
+      id: "tekniska-installationer",
+      title: t('services.tekniska.title'),
+      icon: Cpu,
+      description: t('services.tekniska.description'),
+      basePrice: 0,
+      priceUnit: "offert",
+      eligible: { rot: false, rut: false },
+      laborShare: 1.0,
+      slug: "tekniska-installationer",
+      gradient: "from-cyan-500/20 to-blue-500/20",
+      iconColor: "text-cyan-400"
     }
   ];
 

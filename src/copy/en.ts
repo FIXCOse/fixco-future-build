@@ -633,6 +633,8 @@ export const en: Record<CopyKey, string> = {
   'services.stadning.description': 'Home, construction, office, moving',
   'services.flytt.title': 'Moving',
   'services.flytt.description': 'Carrying help, loading, packing',
+  'services.tekniska.title': 'Technical Installations',
+  'services.tekniska.description': 'Network, security, audio & video',
   'services.category.main': 'Main service',
   'location.uppsala_stockholm': 'Uppsala & Stockholm',
   'location.national_large_projects': 'Nationwide for larger projects',
