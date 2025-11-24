@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface PropertyModalProps {
   open: boolean;
@@ -10,12 +11,11 @@ interface PropertyModalProps {
 }
 
 export function PropertyModal({ open, onClose, children, title = "Lägg till fastighet" }: PropertyModalProps) {
+  // Lock scroll when modal is open
+  useScrollLock(open);
+  
   useEffect(() => {
     if (!open) return;
-    
-    // Lock body scroll
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     
     // Handle ESC key
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,7 +27,6 @@ export function PropertyModal({ open, onClose, children, title = "Lägg till fas
     document.addEventListener('keydown', handleKeyDown);
     
     return () => {
-      document.body.style.overflow = prevOverflow;
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [open, onClose]);

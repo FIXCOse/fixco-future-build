@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { X, ArrowRight, ArrowLeft, Calculator, MapPin, Clock, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface OfferWizardModalProps {
   isOpen: boolean;
@@ -30,6 +31,9 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
     location: '',
     contact: { name: '', email: '', phone: '' }
   });
+
+  // Lock scroll when modal is open
+  useScrollLock(isOpen);
 
   const totalSteps = 5;
 
@@ -134,7 +138,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
           </div>
 
           {/* Content */}
-          <div className="max-h-[60vh] overflow-y-auto overscroll-contain touch-auto p-6">
+          <div className="max-h-[60vh] overflow-y-auto overscroll-contain -webkit-overflow-scrolling-touch p-6">
             {/* Step 1: Service Selection */}
             {currentStep === 1 && (
               <div>

@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { getIconComponent } from "@/utils/iconMapper";
 import { serviceCategories } from "@/data/servicesDataNew";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { 
   serviceRequestSchema,
   nameSchema,
@@ -50,6 +51,9 @@ export default function ServiceRequestModal() {
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
   const [showCategories, setShowCategories] = useState(false);
+
+  // Lock scroll when modal is open
+  useScrollLock(open);
 
   // Navigation functions
   const goToStep0 = () => setCurrentStep(0);

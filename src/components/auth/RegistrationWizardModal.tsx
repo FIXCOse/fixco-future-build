@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { RegistrationWizard } from "./RegistrationWizard";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface RegistrationWizardModalProps {
   open: boolean;
@@ -13,26 +14,22 @@ export function RegistrationWizardModal({ open, onClose }: RegistrationWizardMod
   const panelRef = useRef<HTMLDivElement>(null);
   const lastActive = useRef<HTMLElement | null>(null);
 
-  // Scroll lock + focus management
+  // Lock scroll when modal is open
+  useScrollLock(open);
+
+  // Focus management
   useEffect(() => {
     if (open) {
       lastActive.current = document.activeElement as HTMLElement;
-      document.body.style.overflow = "hidden";
       
       setTimeout(() => {
         panelRef.current?.focus();
       }, 100);
     } else {
-      document.body.style.overflow = "";
-      
       setTimeout(() => {
         lastActive.current?.focus?.();
       }, 100);
     }
-    
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [open]);
 
   // ESC key to close
