@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { ScrollTrigger } from '@/lib/gsap';
 import { useScrollSmootherStore } from '@/stores/scrollSmootherStore';
 
 export const useScrollLock = (isLocked: boolean) => {
@@ -15,9 +14,6 @@ export const useScrollLock = (isLocked: boolean) => {
     const originalTop = document.body.style.top;
     const originalWidth = document.body.style.width;
 
-    // KRITISKT: Inaktivera normalizeScroll helt för att frigöra touch events
-    ScrollTrigger.normalizeScroll(false);
-
     // Pausa ScrollSmoother
     pause();
 
@@ -28,9 +24,6 @@ export const useScrollLock = (isLocked: boolean) => {
     document.body.style.width = '100%';
 
     return () => {
-      // Återaktivera normalizeScroll
-      ScrollTrigger.normalizeScroll(true);
-
       // Återställ ScrollSmoother
       resume();
 

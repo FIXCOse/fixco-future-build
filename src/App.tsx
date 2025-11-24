@@ -163,7 +163,6 @@ const App = () => {
       smooth: 2, // Higher = smoother (Apple-like)
       effects: true, // Enable data-speed parallax
       smoothTouch: 0.1, // Subtle on mobile
-      normalizeScroll: true, // Better handling of touch devices
       ignoreMobileResize: true, // Prevent issues on mobile keyboard
     });
 
