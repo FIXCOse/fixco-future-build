@@ -104,7 +104,7 @@ const OfferWizardModal = ({ isOpen, onClose }: OfferWizardModalProps) => {
       
       {/* Modal */}
       <div className="relative w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col overflow-hidden">
-        <div className="card-premium bg-background border border-border rounded-xl shadow-glow flex flex-col max-h-[90vh]">
+        <div className="card-premium bg-background border border-border rounded-xl shadow-glow flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border flex-shrink-0">
             <div>
