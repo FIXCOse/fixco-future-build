@@ -54,7 +54,7 @@ type PublicQuote = {
 };
 
 export default function QuotePublic() {
-  const { token } = useParams<{ token: string }>();
+  const { token, number } = useParams<{ token: string; number?: string }>();
   const { toast } = useToast();
   const [quote, setQuote] = useState<PublicQuote | null>(null);
   const [loading, setLoading] = useState(true);
@@ -110,7 +110,9 @@ export default function QuotePublic() {
 
     const fetchQuote = async () => {
       try {
-        const { data, error } = await supabase.functions.invoke(`get-quote-public/${token}`);
+        // Construct path: use number/token if available, fallback to token only
+        const path = number ? `get-quote-public/${number}/${token}` : `get-quote-public/${token}`;
+        const { data, error } = await supabase.functions.invoke(path);
 
         if (error) {
           if (error.message?.includes('deleted') || data?.error === 'deleted') {
@@ -162,7 +164,8 @@ export default function QuotePublic() {
     
     setAccepting(true);
     try {
-      const { data, error } = await supabase.functions.invoke(`accept-quote-public/${token}`, {
+      const path = number ? `accept-quote-public/${number}/${token}` : `accept-quote-public/${token}`;
+      const { data, error } = await supabase.functions.invoke(path, {
         method: 'POST',
         body: JSON.stringify({
           signature_name: signatureName,
@@ -228,7 +231,8 @@ export default function QuotePublic() {
 
     setRejectSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke(`reject-quote-public/${token}`, {
+      const path = number ? `reject-quote-public/${number}/${token}` : `reject-quote-public/${token}`;
+      const { error } = await supabase.functions.invoke(path, {
         method: 'POST',
         body: JSON.stringify({
           reason: rejectReason,
@@ -324,7 +328,8 @@ export default function QuotePublic() {
 
     setQuestionSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke(`ask-question-quote/${token}`, {
+      const path = number ? `ask-question-quote/${number}/${token}` : `ask-question-quote/${token}`;
+      const { error } = await supabase.functions.invoke(path, {
         method: 'POST',
         body: JSON.stringify({
           question,
@@ -367,7 +372,8 @@ export default function QuotePublic() {
 
     setReminderSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke(`set-reminder-quote/${token}`, {
+      const path = number ? `set-reminder-quote/${number}/${token}` : `set-reminder-quote/${token}`;
+      const { error } = await supabase.functions.invoke(path, {
         method: 'POST',
         body: JSON.stringify({
           customer_email: reminderEmail,

@@ -230,7 +230,8 @@ const App = () => {
                           <Routes>
                   <Route path="/dashboard" element={lazyElement(Dashboard)} />
                   
-                  {/* Public Quote View */}
+                  {/* Public Quote View - Hybrid format & legacy support */}
+                  <Route path="/q/:number/:token" element={lazyElement(QuotePublic)} />
                   <Route path="/q/:token" element={lazyElement(QuotePublic)} />
                   
                   {/* Public Invoice View */}

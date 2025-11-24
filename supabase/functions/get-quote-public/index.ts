@@ -12,7 +12,20 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const token = url.pathname.split('/').pop();
+    const pathParts = url.pathname.split('/').filter(p => p);
+    
+    // Support both formats: /number/token (new) and /token (legacy)
+    let quoteNumber: string | null = null;
+    let token: string;
+    
+    if (pathParts.length >= 2) {
+      // New format: /get-quote-public/Q-2025-042/Xk9m
+      quoteNumber = pathParts[pathParts.length - 2];
+      token = pathParts[pathParts.length - 1];
+    } else {
+      // Legacy format: /get-quote-public/long-token
+      token = pathParts[pathParts.length - 1];
+    }
 
     if (!token) {
       return new Response(
@@ -25,8 +38,8 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hämta offert via public token
-    const { data: quote, error: fetchError } = await supabase
+    // Hämta offert - stödjer både nummer+token och bara token
+    let query = supabase
       .from('quotes_new')
       .select(`
         id,
@@ -50,9 +63,17 @@ Deno.serve(async (req) => {
         signature_date,
         deleted_at,
         customer:customers(name, email)
-      `)
-      .eq('public_token', token)
-      .single();
+      `);
+    
+    if (quoteNumber) {
+      // New format: verify both number and token
+      query = query.eq('number', quoteNumber).eq('public_token', token);
+    } else {
+      // Legacy format: verify only token
+      query = query.eq('public_token', token);
+    }
+    
+    const { data: quote, error: fetchError } = await query.single();
 
     if (fetchError || !quote) {
       console.error('Quote not found:', fetchError);

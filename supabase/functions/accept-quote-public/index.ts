@@ -29,12 +29,18 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hämta offert
-    const { data: quote, error: fetchError } = await supabase
+    // Hämta offert - stödjer både nummer+token och bara token
+    let query = supabase
       .from('quotes_new')
-      .select('id, status, valid_until, customer_id, title, accepted_at, deleted_at')
-      .eq('public_token', token)
-      .single();
+      .select('id, status, valid_until, customer_id, title, accepted_at, deleted_at');
+    
+    if (quoteNumber) {
+      query = query.eq('number', quoteNumber).eq('public_token', token);
+    } else {
+      query = query.eq('public_token', token);
+    }
+    
+    const { data: quote, error: fetchError } = await query.single();
 
     if (fetchError || !quote) {
       console.error('Quote not found:', fetchError);
