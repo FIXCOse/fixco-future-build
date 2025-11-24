@@ -7,6 +7,14 @@
   }
 }
 
+/* CSS-säkerhet: Dölj navbar på offert/faktura-sidor */
+body[data-page-type="quote"] .rd-navbar,
+body[data-page-type="invoice"] .rd-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 :root {
   --color--navbar--text: #fafafa;
   --background--background-surface: #fafafa;

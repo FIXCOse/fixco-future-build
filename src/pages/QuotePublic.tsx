@@ -92,6 +92,15 @@ export default function QuotePublic() {
   const [reminderDays, setReminderDays] = useState('3');
   const [reminderSubmitting, setReminderSubmitting] = useState(false);
 
+  // Sätt body-attribut för CSS-styling (döljer menyn)
+  useEffect(() => {
+    document.body.setAttribute('data-page-type', 'quote');
+    
+    return () => {
+      document.body.removeAttribute('data-page-type');
+    };
+  }, []);
+
   useEffect(() => {
     if (!token) {
       setError('Ingen token angiven');

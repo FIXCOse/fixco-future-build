@@ -64,6 +64,15 @@ const InvoicePublic = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Sätt body-attribut för CSS-styling (döljer menyn)
+  useEffect(() => {
+    document.body.setAttribute('data-page-type', 'invoice');
+    
+    return () => {
+      document.body.removeAttribute('data-page-type');
+    };
+  }, []);
+
   useEffect(() => {
     if (!token) {
       setError('Ogiltig fakturalänk');
