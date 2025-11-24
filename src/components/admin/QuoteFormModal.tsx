@@ -81,6 +81,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   // VAT settings
   const [customVat, setCustomVat] = useState(false);
   const [customVatRate, setCustomVatRate] = useState(25);
+  const [vatIncluded, setVatIncluded] = useState(false);
   
   const [loading, setLoading] = useState(false);
 
@@ -113,6 +114,11 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       if (quote.rut_percentage && quote.rut_percentage > 0) {
         setEnableRut(true);
         setRutRate(quote.rut_percentage);
+      }
+      
+      // Load VAT included setting
+      if (quote.vat_included) {
+        setVatIncluded(true);
       }
       
       // Load discount settings from quote
@@ -262,7 +268,15 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const calculateVat = () => {
     const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
     const vatRate = customVat ? customVatRate : 25;
-    return Math.round(subtotalAfterDiscount * (vatRate / 100));
+    
+    if (vatIncluded) {
+      // Calculate VAT that's already included in the price
+      // If total is 40,000 kr incl. VAT (25%), then VAT = 40,000 * (25/125) = 8,000 kr
+      return Math.round(subtotalAfterDiscount * (vatRate / (100 + vatRate)));
+    } else {
+      // Add VAT on top (current logic)
+      return Math.round(subtotalAfterDiscount * (vatRate / 100));
+    }
   };
 
   const calculateRotRutDeduction = () => {
@@ -284,7 +298,14 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
     const vat = calculateVat();
     const rotRutDeduction = calculateRotRutDeduction();
-    return subtotalAfterDiscount + vat - rotRutDeduction;
+    
+    if (vatIncluded) {
+      // If VAT is included, subtotal is already the total price
+      return subtotalAfterDiscount - rotRutDeduction;
+    } else {
+      // Add VAT on top (current logic)
+      return subtotalAfterDiscount + vat - rotRutDeduction;
+    }
   };
 
   const handleCreateCustomer = async () => {
@@ -341,6 +362,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         discount_value: discountValue,
         discount_amount_sek: Math.round(calculateDiscount()),
         total_sek: Math.round(total),
+        vat_included: vatIncluded,
         pdf_url: pdfUrl.trim() || undefined,
         valid_until: validUntil || undefined,
       };
@@ -855,8 +877,29 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                 </div>
               </div>
 
-              {/* Custom VAT */}
-              <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
+              {/* VAT Settings */}
+              <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label className="text-base font-semibold">Moms ingår i priset</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Aktivera om angivet pris redan inkluderar moms
+                    </p>
+                  </div>
+                  <Switch
+                    checked={vatIncluded}
+                    onCheckedChange={setVatIncluded}
+                  />
+                </div>
+                
+                {vatIncluded && (
+                  <div className="p-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      ℹ️ Momsen beräknas som ingående i det angivna priset
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-semibold">Anpassad momssats</Label>
                   <Switch checked={customVat} onCheckedChange={setCustomVat} />
@@ -913,8 +956,13 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                 
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Moms ({customVat ? customVatRate : 25}%):</span>
-                  <span className="font-medium">+{calculateVat().toLocaleString()} kr</span>
+                  <span className="font-medium">{vatIncluded ? '' : '+'}{calculateVat().toLocaleString()} kr</span>
                 </div>
+                {vatIncluded && (
+                  <div className="text-xs text-muted-foreground text-right -mt-1">
+                    (ingår i subtotal)
+                  </div>
+                )}
                 
                 {(enableRot || enableRut) && (
                   <div className="flex justify-between text-sm text-green-600 dark:text-green-400">

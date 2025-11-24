@@ -2544,6 +2544,7 @@ export type Database = {
           title: string
           total_sek: number
           valid_until: string | null
+          vat_included: boolean | null
           vat_sek: number | null
           viewed_at: string | null
         }
@@ -2576,6 +2577,7 @@ export type Database = {
           title: string
           total_sek: number
           valid_until?: string | null
+          vat_included?: boolean | null
           vat_sek?: number | null
           viewed_at?: string | null
         }
@@ -2608,6 +2610,7 @@ export type Database = {
           title?: string
           total_sek?: number
           valid_until?: string | null
+          vat_included?: boolean | null
           vat_sek?: number | null
           viewed_at?: string | null
         }
