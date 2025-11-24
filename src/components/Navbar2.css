@@ -8,8 +8,11 @@
 }
 
 /* CSS-säkerhet: Dölj navbar på offert/faktura-sidor */
-body[data-page-type="quote"] .rd-navbar,
-body[data-page-type="invoice"] .rd-navbar {
+/* Använder > (direct child) eftersom portal renderar direkt till body */
+body[data-page-type="quote"] > .rd-navbar,
+body[data-page-type="invoice"] > .rd-navbar,
+body[data-page-type="quote"] nav.rd-navbar,
+body[data-page-type="invoice"] nav.rd-navbar {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
