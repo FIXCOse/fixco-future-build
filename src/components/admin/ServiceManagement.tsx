@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff, Settings } from 'lucide-react';
+import { Plus, Edit, Loader2, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Trash2, Eye, EyeOff, Settings, Search } from 'lucide-react';
 import { useAllServicesForAdmin, useAddService, useUpdateService, useDeleteService, useToggleServiceActive, Service } from '@/hooks/useServices';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -62,6 +62,7 @@ const ServiceManagement = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showInactive, setShowInactive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'services' | 'addons'>('services');
@@ -209,6 +210,20 @@ const ServiceManagement = () => {
   const categories = ['el', 'vvs', 'snickeri', 'montering', 'tradgard', 'stadning', 'markarbeten', 'tekniska-installationer', 'flytt'];
   
   const filteredServices = services
+    .filter(s => {
+      // Sök-filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          s.title_sv?.toLowerCase().includes(query) ||
+          s.description_sv?.toLowerCase().includes(query) ||
+          s.category?.toLowerCase().includes(query) ||
+          s.sub_category?.toLowerCase().includes(query) ||
+          s.id?.toLowerCase().includes(query);
+        if (!matchesSearch) return false;
+      }
+      return true;
+    })
     .filter(s => selectedCategory === 'all' || s.category === selectedCategory)
     .filter(s => showInactive || s.is_active);
 
@@ -240,6 +255,16 @@ const ServiceManagement = () => {
         </div>
 
       <div className="flex items-center gap-4 flex-wrap">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Sök tjänst..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        
         <Label htmlFor="category-filter">Filtrera efter kategori:</Label>
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger className="w-[200px]">
@@ -254,11 +279,9 @@ const ServiceManagement = () => {
             ))}
           </SelectContent>
         </Select>
-        {selectedCategory !== 'all' && (
-          <Badge variant="outline">
-            {filteredServices.length} tjänster i {selectedCategory}
-          </Badge>
-        )}
+        <Badge variant="outline">
+          {filteredServices.length} {searchQuery ? 'sökresultat' : (selectedCategory !== 'all' ? `tjänster i ${selectedCategory}` : 'tjänster')}
+        </Badge>
         
         <div className="flex items-center gap-2 ml-auto">
           <Switch
