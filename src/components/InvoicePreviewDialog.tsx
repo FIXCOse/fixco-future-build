@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
-import { generateInvoicePDF } from '@/lib/pdfGenerator';
 
 interface InvoicePreviewDialogProps {
   invoice: any | null;
@@ -96,15 +95,11 @@ export default function InvoicePreviewDialog({
   const handleGeneratePDF = async () => {
     setGenerating(true);
     try {
-      // Get HTML content from edge function
-      const { data, error } = await supabase.functions.invoke('generate-invoice-pdf', {
+      const { data, error } = await supabase.functions.invoke('generate-pdf-from-invoice', {
         body: { invoiceId: invoice.id }
       });
 
       if (error) throw error;
-
-      // Generate PDF on frontend and upload to storage
-      await generateInvoicePDF(invoice.id, data.htmlContent);
 
       toast({
         title: 'PDF genererad!',
