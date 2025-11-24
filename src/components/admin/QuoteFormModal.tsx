@@ -280,14 +280,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   };
 
   const calculateRotRutDeduction = () => {
-    let workCost = calculateSubtotalWork();
-    
-    // Om moms ingår i priset, ta bort momsen först innan ROT/RUT-avdrag beräknas
-    if (vatIncluded) {
-      const vatRate = customVat ? customVatRate : 25;
-      workCost = Math.round(workCost / (1 + (vatRate / 100)));
-    }
-    
+    const workCost = calculateSubtotalWork();
     let deduction = 0;
     
     if (enableRot) {
@@ -723,42 +716,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                         <div className="p-4 bg-green-500/10 rounded-xl border-2 border-green-500/30">
                           <p className="text-xs text-foreground/70 mb-1">Kundens besparing:</p>
                           <p className="text-3xl font-bold text-green-400">
-                            {(() => {
-                              let workCost = calculateSubtotalWork();
-                              if (vatIncluded) {
-                                const vatRate = customVat ? customVatRate : 25;
-                                workCost = Math.round(workCost / (1 + (vatRate / 100)));
-                              }
-                              return Math.round(workCost * (rotRate / 100)).toLocaleString();
-                            })()} kr
+                            {Math.round(calculateSubtotalWork() * (rotRate / 100)).toLocaleString()} kr
                           </p>
                           <p className="text-xs text-foreground/60 mt-1">
-                            av {(() => {
-                              let workCost = calculateSubtotalWork();
-                              if (vatIncluded) {
-                                const vatRate = customVat ? customVatRate : 25;
-                                workCost = Math.round(workCost / (1 + (vatRate / 100)));
-                              }
-                              return workCost.toLocaleString();
-                            })()} kr arbetskostnad {vatIncluded ? '(exkl. moms)' : ''}
+                            av {calculateSubtotalWork().toLocaleString()} kr arbetskostnad
                           </p>
                         </div>
                         
-                        {vatIncluded && (
+                        {vatIncluded && (enableRot || enableRut) && (
                           <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950/20 p-3 rounded border border-blue-200 dark:border-blue-800">
-                            <div className="flex items-start gap-2">
-                              <span className="text-blue-600 dark:text-blue-400">ℹ️</span>
-                              <div>
-                                <p className="font-medium mb-1">ROT-avdrag beräknas på arbetskostnad exkl. moms</p>
-                                <p className="text-xs">
-                                  Arbetskostnad inkl. moms: {calculateSubtotalWork().toLocaleString()} kr<br />
-                                  Arbetskostnad exkl. moms: {(() => {
-                                    const vatRate = customVat ? customVatRate : 25;
-                                    return Math.round(calculateSubtotalWork() / (1 + (vatRate / 100))).toLocaleString();
-                                  })()} kr
-                                </p>
-                              </div>
-                            </div>
+                            ℹ️ ROT/RUT-avdrag på {rotRate || rutRate}% beräknas på arbetskostnaden
                           </div>
                         )}
                       </div>
