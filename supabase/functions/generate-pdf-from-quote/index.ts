@@ -502,7 +502,9 @@ serve(async (req) => {
       .from('quotes')
       .getPublicUrl(fileName);
 
-    console.log('Public URL:', publicUrl);
+    // Add cache-busting parameter to force browser reload
+    const cacheBustedUrl = `${publicUrl}?t=${Date.now()}`;
+    console.log('Public URL:', cacheBustedUrl);
 
     // Update quote with PDF URL
     const { error: updateError } = await supabaseClient
@@ -520,7 +522,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        pdfUrl: publicUrl,
+        pdfUrl: cacheBustedUrl,
         message: 'PDF genererad och sparad' 
       }),
       {

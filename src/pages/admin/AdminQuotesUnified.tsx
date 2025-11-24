@@ -248,9 +248,17 @@ export default function AdminQuotesUnified() {
       toast.dismiss();
       toast.success('PDF genererad!');
       
-      // Open the PDF
+      console.log('Edge function response:', data);
+      
       if (data?.pdfUrl) {
-        window.open(data.pdfUrl, '_blank');
+        console.log('Opening PDF:', data.pdfUrl);
+        const newWindow = window.open(data.pdfUrl, '_blank');
+        
+        // Fallback om popup blockeras
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          toast.info('Öppnar PDF...');
+          window.location.href = data.pdfUrl;
+        }
       }
       
       refresh();
