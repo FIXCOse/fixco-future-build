@@ -236,11 +236,39 @@ export default function AdminQuotesUnified() {
     }
   };
 
-  const handleViewPdf = (quoteId: string) => {
+  const handleViewPdf = async (quoteId: string) => {
     const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) return;
-    const publicUrl = `${window.location.origin}/q/${item.quote.number}/${item.quote.public_token}`;
-    window.open(publicUrl, '_blank');
+
+    // If PDF already exists, open it
+    if (item.quote.pdf_url) {
+      window.open(item.quote.pdf_url, '_blank');
+      return;
+    }
+
+    // Otherwise, generate it
+    try {
+      toast.loading('Genererar PDF...');
+      const { data, error } = await supabase.functions.invoke('generate-pdf-from-quote', {
+        body: { quoteId }
+      });
+
+      if (error) throw error;
+
+      toast.dismiss();
+      toast.success('PDF genererad!');
+      
+      // Open the PDF
+      if (data?.pdfUrl) {
+        window.open(data.pdfUrl, '_blank');
+      }
+      
+      refresh();
+    } catch (error: any) {
+      toast.dismiss();
+      console.error('Error generating quote PDF:', error);
+      toast.error('Kunde inte generera PDF');
+    }
   };
 
   const handleCreateInvoice = async (quoteId: string) => {
