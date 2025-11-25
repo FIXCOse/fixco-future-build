@@ -261,7 +261,7 @@ export function RequestQuoteCard({
                   size="sm"
                 >
                   <FileText className="h-4 w-4 mr-2" />
-                  Generera PDF
+                  PDF
                 </Button>
                 <Button
                   onClick={() => {

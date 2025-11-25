@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { QuoteFormModal } from "@/components/admin/QuoteFormModal";
 import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
 import { AdvancedInvoiceEditor } from "@/components/admin/AdvancedInvoiceEditor";
+import { PdfPreviewDialog } from "@/components/admin/PdfPreviewDialog";
 import { createCustomer } from "@/lib/api/customers";
 import {
   AlertDialog,
@@ -41,6 +42,8 @@ export default function AdminQuotesUnified() {
   const [bookingDataForQuote, setBookingDataForQuote] = useState<any>(null);
   const [advancedInvoiceOpen, setAdvancedInvoiceOpen] = useState(false);
   const [advancedInvoiceJobData, setAdvancedInvoiceJobData] = useState<any>(null);
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
 
   // Fetch all data without filtering - we'll do client-side filtering
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
@@ -238,7 +241,7 @@ export default function AdminQuotesUnified() {
 
   const handleViewPdf = async (quoteId: string) => {
     try {
-      toast.loading('Genererar PDF med senaste designen...');
+      toast.loading('Genererar PDF...');
       const { data, error } = await supabase.functions.invoke('generate-pdf-from-quote', {
         body: { quoteId }
       });
@@ -248,16 +251,13 @@ export default function AdminQuotesUnified() {
       toast.dismiss();
       toast.success('PDF genererad!');
       
-      console.log('Edge function response:', data);
-      
       if (data?.pdfUrl) {
-        console.log('Opening PDF:', data.pdfUrl);
         const newWindow = window.open(data.pdfUrl, '_blank');
         
-        // Fallback om popup blockeras
+        // Om popup blockeras, visa preview dialog istället
         if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-          toast.info('Öppnar PDF...');
-          window.location.href = data.pdfUrl;
+          setPdfPreviewUrl(data.pdfUrl);
+          setShowPdfDialog(true);
         }
       }
       
@@ -637,6 +637,13 @@ export default function AdminQuotesUnified() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <PdfPreviewDialog
+        open={showPdfDialog}
+        onOpenChange={setShowPdfDialog}
+        pdfUrl={pdfPreviewUrl}
+        title="Offert Preview"
+      />
     </div>
   );
 }
