@@ -58,6 +58,7 @@ export default function QuoteHtmlPreview() {
   const [logoBase64, setLogoBase64] = useState<string>('');
   const [editedHtml, setEditedHtml] = useState<string>('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [useCustomHtml, setUseCustomHtml] = useState(false);
 
   // Load Fixco logo as base64
   useEffect(() => {
@@ -140,6 +141,7 @@ export default function QuoteHtmlPreview() {
 
   const handleResetHtml = () => {
     setEditedHtml('');
+    setUseCustomHtml(false);
     localStorage.removeItem('custom_quote_html');
     toast.success('Återställd till standard');
     setHasUnsavedChanges(false);
@@ -148,8 +150,16 @@ export default function QuoteHtmlPreview() {
   const handleDeleteCustomHtml = () => {
     localStorage.removeItem('custom_quote_html');
     setEditedHtml('');
-    toast.success('Anpassad källkod raderad');
+    setUseCustomHtml(true);
+    toast.success('Anpassad källkod raderad - skriv in ny HTML');
     setHasUnsavedChanges(false);
+  };
+
+  const handleLoadStandardAsBase = () => {
+    setEditedHtml(html);
+    setUseCustomHtml(true);
+    setHasUnsavedChanges(true);
+    toast.success('Standard HTML laddad som bas');
   };
 
   const handleUpdateQuoteData = (field: string, value: any) => {
@@ -267,9 +277,10 @@ export default function QuoteHtmlPreview() {
                 {showSource ? (
                   <div className="space-y-4">
                     <Textarea
-                      value={editedHtml || html}
+                      value={useCustomHtml ? editedHtml : html}
                       onChange={(e) => {
                         setEditedHtml(e.target.value);
+                        setUseCustomHtml(true);
                         setHasUnsavedChanges(true);
                       }}
                       className="font-mono text-xs min-h-[600px]"
@@ -280,6 +291,9 @@ export default function QuoteHtmlPreview() {
                       </Button>
                       <Button variant="outline" onClick={handleResetHtml}>
                         Återställ
+                      </Button>
+                      <Button variant="secondary" onClick={handleLoadStandardAsBase}>
+                        Ladda standard som bas
                       </Button>
                       <Button variant="destructive" onClick={handleDeleteCustomHtml}>
                         Radera anpassad källkod
@@ -370,9 +384,10 @@ export default function QuoteHtmlPreview() {
                 {showSource ? (
                   <div className="space-y-4">
                     <Textarea
-                      value={editedHtml || html}
+                      value={useCustomHtml ? editedHtml : html}
                       onChange={(e) => {
                         setEditedHtml(e.target.value);
+                        setUseCustomHtml(true);
                         setHasUnsavedChanges(true);
                       }}
                       className="font-mono text-xs min-h-[600px]"
@@ -383,6 +398,9 @@ export default function QuoteHtmlPreview() {
                       </Button>
                       <Button variant="outline" onClick={handleResetHtml}>
                         Återställ
+                      </Button>
+                      <Button variant="secondary" onClick={handleLoadStandardAsBase}>
+                        Ladda standard som bas
                       </Button>
                       <Button variant="destructive" onClick={handleDeleteCustomHtml}>
                         Radera anpassad källkod
