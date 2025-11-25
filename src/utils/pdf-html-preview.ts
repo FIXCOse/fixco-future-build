@@ -78,69 +78,32 @@ const baseStyles = `
     background: transparent;
   }
   
-  /* Hero Header with gradient */
+  /* Hero Header with clean white background */
   .hero-header {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
-    border-radius: 20px;
-    padding: 30px;
+    background: #ffffff;
+    border-radius: 20px 20px 0 0;
+    padding: 40px 30px 30px;
     text-align: center;
+    margin-bottom: 0;
+    border-bottom: 3px solid #3b82f6;
+  }
+  
+  .logo-container {
     margin-bottom: 20px;
-    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
-    position: relative;
-    overflow: hidden;
   }
   
-  .hero-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1)),
-                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1));
-    background-size: 30px 30px;
-    background-position: 0 0, 15px 15px;
-    opacity: 0.3;
-  }
-  
-  .header-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1;
-  }
-  
-  .header-icon svg {
-    width: 26px;
-    height: 26px;
-    color: white;
+  .company-logo {
+    max-width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
   
   .hero-header h1 {
-    font-size: 26pt;
+    font-size: 28pt;
     font-weight: 800;
-    color: white;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .from-company {
-    font-size: 10pt;
-    color: rgba(255, 255, 255, 0.9);
-    position: relative;
-    z-index: 1;
-    font-weight: 500;
+    color: #0f172a;
+    margin: 0;
   }
   
   /* Trust Badges */
@@ -593,13 +556,14 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     <body>
       <div class="page">
         <!-- Hero Header -->
-        <div class="hero-header">
-          <div class="header-icon">
-            ${fileIconSVG}
-          </div>
-          <h1>Offert ${quote.number}</h1>
-          <p class="from-company">Från Fixco AB</p>
-        </div>
+    <div class="hero-header">
+      ${logoBase64 ? `
+      <div class="logo-container">
+        <img src="data:image/png;base64,${logoBase64}" alt="Fixco" class="company-logo" />
+      </div>
+      ` : ''}
+      <h1>Offert ${quote.number}</h1>
+    </div>
         
         <!-- Trust Badges -->
         <div class="trust-badges">
@@ -869,11 +833,12 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
       <div class="page">
         <!-- Hero Header -->
         <div class="hero-header">
-          <div class="header-icon">
-            ${fileIconSVG}
+          ${logoBase64 ? `
+          <div class="logo-container">
+            <img src="data:image/png;base64,${logoBase64}" alt="Fixco" class="company-logo" />
           </div>
+          ` : ''}
           <h1>Faktura ${invoice.invoice_number}</h1>
-          <p class="from-company">Från Fixco AB</p>
         </div>
         
         <!-- Trust Badges -->
