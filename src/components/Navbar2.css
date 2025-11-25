@@ -286,8 +286,8 @@ p {
   min-width: 0;
   position: fixed;
   width: 100%;
-  z-index: 999;
-  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out, transform 0.8s ease-in-out;
+  z-index: -1;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out, transform 0.8s ease-in-out, z-index 0s 0.8s;
   transition-behavior: normal;
 }
 
@@ -857,6 +857,16 @@ p {
   visibility: hidden;
   transform: translateY(-10px);
   pointer-events: none !important;
+  z-index: -1;
+}
+
+.rd-navbar_dropdown_list.w--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 999;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out, transform 0.8s ease-in-out, z-index 0s;
 }
 
 .rd-navbar_block_card:is(:hover, :focus-visible) .rd-navbar_block_card_image {
