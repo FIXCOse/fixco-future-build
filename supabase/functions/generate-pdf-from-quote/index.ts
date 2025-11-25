@@ -185,7 +185,7 @@ serve(async (req) => {
     // Right column - GILTIG TILL
     let rightY = height - 163;
     
-    page.drawText('📅 GILTIG TILL', {
+    page.drawText('GILTIG TILL', {
       x: 350,
       y: rightY,
       size: 10,
@@ -205,7 +205,7 @@ serve(async (req) => {
     // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
     yPos -= 65;
     
-    page.drawText('📋 VAD INGÅR I OFFERTEN', {
+    page.drawText('VAD INGÅR I OFFERTEN', {
       x: 50,
       y: yPos,
       size: 12,
@@ -233,7 +233,7 @@ serve(async (req) => {
 
     // 🔧 ARBETE Section
     if (workItems.length > 0) {
-      page.drawText('🔧 ARBETE', {
+      page.drawText('ARBETE', {
         x: 50,
         y: yPos,
         size: 11,
@@ -277,7 +277,7 @@ serve(async (req) => {
 
         // Supplier info (if available)
         if (item.supplier) {
-          page.drawText(`🏪 ${item.supplier}`, {
+          page.drawText(`Leverantör: ${item.supplier}`, {
             x: 80,
             y: yPos,
             size: 8,
@@ -295,7 +295,7 @@ serve(async (req) => {
 
     // 📦 MATERIAL Section
     if (materialItems.length > 0) {
-      page.drawText('📦 MATERIAL', {
+      page.drawText('MATERIAL', {
         x: 50,
         y: yPos,
         size: 11,
@@ -339,7 +339,7 @@ serve(async (req) => {
 
         // Supplier info (if available)
         if (item.supplier) {
-          page.drawText(`🏪 ${item.supplier}`, {
+          page.drawText(`Leverantör: ${item.supplier}`, {
             x: 80,
             y: yPos,
             size: 8,
@@ -358,7 +358,7 @@ serve(async (req) => {
     // === CLEAN COST SPECIFICATION ===
     yPos -= 35;
     
-    page.drawText('💰 KOSTNADSSPECIFIKATION', {
+    page.drawText('KOSTNADSSPECIFIKATION', {
       x: 50,
       y: yPos,
       size: 12,
