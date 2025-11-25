@@ -17,6 +17,7 @@ const Navbar2 = () => {
 
   // Debug logging
   console.log('🔧 [Navbar2] Component rendering!');
+  console.log('🔧 [Navbar2] Window width:', window.innerWidth, 'Mode:', window.innerWidth >= 768 ? 'DESKTOP' : 'MOBILE');
 
   const toggleDropdown = (dropdownId: string) => {
     console.log('🔧 [toggleDropdown] Toggling:', dropdownId, 'Current:', openDropdown);
@@ -32,6 +33,8 @@ const Navbar2 = () => {
       }
       console.log('🔧 [handleMouseEnter] Setting dropdown to:', dropdownId);
       setOpenDropdown(dropdownId);
+    } else {
+      console.log('🔧 [handleMouseEnter] BLOCKED - Window too small for hover (mobile mode)');
     }
   };
 
