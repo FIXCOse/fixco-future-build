@@ -139,18 +139,18 @@ const Navbar2 = () => {
 
   return (
     <>
-      {openDropdown && (
-        <div 
-          className="rd-navbar_dropdown_backdrop"
-          onClick={() => setOpenDropdown(null)}
-        />
-      )}
       <nav 
         className="rd-navbar"
         style={{
           zIndex: 9999,
         }}
       >
+        {openDropdown && (
+          <div 
+            className="rd-navbar_dropdown_backdrop"
+            onClick={() => setOpenDropdown(null)}
+          />
+        )}
         <svg xmlns="http://www.w3.org/2000/svg" width="375" height="92" viewBox="0 0 375 92" fill="none" className="rd-navbar_curve-shape">
         <g filter="url(#filter0_i_14_1436)">
           <path d="M150 8C150 3.58172 146.418 0 142 0H18C8.05908 0 0 8.05859 0 18V92H375V18C375 8.05859 366.941 0 357 0H232C227.582 0 224 3.58172 224 8V21C224 34.8066 218.307 46 204.5 46H170C156.193 46 150 34.8066 150 21V8Z" fill="#0A0A0A"></path>
