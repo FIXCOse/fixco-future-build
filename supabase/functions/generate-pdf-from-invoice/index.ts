@@ -190,7 +190,7 @@ serve(async (req) => {
     // Right column - DATUM & FÖRFALLODATUM
     let rightY = height - 163;
     
-    page.drawText('📅 FAKTURADATUM', {
+    page.drawText('FAKTURADATUM', {
       x: 350,
       y: rightY,
       size: 10,
@@ -208,7 +208,7 @@ serve(async (req) => {
     });
 
     rightY -= 24;
-    page.drawText('⏰ FÖRFALLODATUM', {
+    page.drawText('FÖRFALLODATUM', {
       x: 350,
       y: rightY,
       size: 10,
@@ -228,7 +228,7 @@ serve(async (req) => {
     // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
     yPosition -= 65;
     
-    page.drawText('📋 VAD INGÅR I FAKTURAN', {
+    page.drawText('VAD INGÅR I FAKTURAN', {
       x: 50,
       y: yPosition,
       size: 12,
@@ -263,7 +263,7 @@ serve(async (req) => {
 
     // 🔧 ARBETE Section
     if (workItems.length > 0) {
-      page.drawText('🔧 ARBETE', {
+      page.drawText('ARBETE', {
         x: 50,
         y: yPosition,
         size: 11,
@@ -303,7 +303,7 @@ serve(async (req) => {
 
         // Supplier info (if available)
         if (item.supplier) {
-          page.drawText(`🏪 ${item.supplier}`, {
+          page.drawText(`Leverantör: ${item.supplier}`, {
             x: 80,
             y: yPosition,
             size: 8,
@@ -321,7 +321,7 @@ serve(async (req) => {
 
     // 📦 MATERIAL Section
     if (materialItems.length > 0) {
-      page.drawText('📦 MATERIAL', {
+      page.drawText('MATERIAL', {
         x: 50,
         y: yPosition,
         size: 11,
@@ -361,7 +361,7 @@ serve(async (req) => {
 
         // Supplier info (if available)
         if (item.supplier) {
-          page.drawText(`🏪 ${item.supplier}`, {
+          page.drawText(`Leverantör: ${item.supplier}`, {
             x: 80,
             y: yPosition,
             size: 8,
@@ -380,7 +380,7 @@ serve(async (req) => {
     // === CLEAN COST SPECIFICATION ===
     yPosition -= 35;
     
-    page.drawText('💰 KOSTNADSSPECIFIKATION', {
+    page.drawText('KOSTNADSSPECIFIKATION', {
       x: 50,
       y: yPosition,
       size: 12,
