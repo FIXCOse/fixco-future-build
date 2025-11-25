@@ -24,7 +24,7 @@ serve(async (req) => {
     );
 
     const { invoiceId } = await req.json();
-    console.log('Generating modern PDF for invoice:', invoiceId);
+    console.log('Generating PDF for invoice:', invoiceId);
 
     if (!invoiceId) {
       throw new Error('invoiceId is required');
@@ -41,462 +41,671 @@ serve(async (req) => {
       .single();
 
     if (invoiceError || !invoice) {
+      console.error('Invoice fetch error:', invoiceError);
       throw new Error(`Failed to fetch invoice: ${invoiceError?.message}`);
     }
 
-    // Fetch logo
-    const { data: logoData } = await supabaseClient.storage
+    console.log('Invoice fetched successfully:', invoice.invoice_number);
+
+    // Fetch logo from storage
+    const { data: logoData, error: logoError } = await supabaseClient.storage
       .from('assets')
       .download('fixco-logo-white.png');
 
+    if (logoError) {
+      console.warn('Logo not found, continuing without logo:', logoError);
+    }
+
     // Create PDF
     const pdfDoc = await PDFDocument.create();
-    let page = pdfDoc.addPage([595, 842]); // A4
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size in points
     const { width, height } = page.getSize();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    // ============================================================
-    // HELPER FUNCTIONS (Modern Design System)
-    // ============================================================
+    let yPosition = height - 50;
 
-    const drawText = (text: string, x: number, y: number, size: number, bold = false, color = rgb(0, 0, 0)) => {
-      page.drawText(text, {
-        x,
-        y,
-        size,
-        font: bold ? fontBold : font,
-        color,
-      });
-    };
+    // ============= MINIMAL CLEAN HEADER =============
 
-    const drawGradientRect = (x: number, y: number, w: number, h: number, colors: any[]) => {
-      const steps = 40;
-      for (let i = 0; i < steps; i++) {
-        const ratio = i / (steps - 1);
-        const r = colors[0].red + ratio * (colors[2].red - colors[0].red);
-        const g = colors[0].green + ratio * (colors[2].green - colors[0].green);
-        const b = colors[0].blue + ratio * (colors[2].blue - colors[0].blue);
-
-        page.drawRectangle({
-          x: x + (ratio * w),
-          y,
-          width: w / steps,
-          height: h,
-          color: rgb(r, g, b),
-        });
-      }
-    };
-
-    const drawCard = (x: number, y: number, w: number, h: number) => {
-      // Shadow
-      page.drawRectangle({
-        x: x + 2,
-        y: y - 2,
-        width: w,
-        height: h,
-        color: rgb(0.88, 0.88, 0.90),
-      });
-      // Card
-      page.drawRectangle({
-        x,
-        y,
-        width: w,
-        height: h,
-        color: rgb(0.98, 0.98, 0.99),
-      });
-    };
-
-    const drawDotPattern = (x: number, y: number, count = 60) => {
-      for (let i = 0; i < count; i++) {
-        page.drawCircle({
-          x: x + i * 8,
-          y,
-          size: 1.5,
-          color: rgb(0.75, 0.75, 0.78),
-          opacity: 0.3,
-        });
-      }
-    };
-
-    const gradientFixco = [
-      rgb(176 / 255, 68 / 255, 255 / 255),   // LILA
-      rgb(28 / 255, 206 / 255, 255 / 255),   // CYAN
-      rgb(255 / 255, 91 / 255, 234 / 255),   // ROSA
-    ];
-
-    // ============================================================
-    // HERO HEADER
-    // ============================================================
-
-    let yPos = height - 70;
-
-    // Logo
+    // === CLEAN LOGO (smaller) ===
     if (logoData) {
       try {
         const logoBytes = await logoData.arrayBuffer();
         const logoImage = await pdfDoc.embedPng(logoBytes);
-        const logoDims = logoImage.scale(0.28);
+        const logoDims = logoImage.scale(0.22);
         
         page.drawImage(logoImage, {
-          x: 60,
-          y: height - 75,
+          x: 50,
+          y: height - 65,
           width: logoDims.width,
           height: logoDims.height,
         });
-      } catch (e) {
-        drawText('FIXCO', 60, height - 70, 32, true);
+      } catch (error) {
+        console.warn('Failed to embed logo:', error);
       }
-    } else {
-      drawText('FIXCO', 60, height - 70, 32, true);
     }
 
-    // Dot pattern under logo
-    drawDotPattern(60, height - 95, 60);
+    // === MINIMAL COMPANY INFO (RIGHT SIDE) ===
+    const infoX = width - 180;
+    let infoY = height - 45;
+    const lineSpacing = 14;
 
-    // ============================================================
-    // ASYMMETRISK TITEL + DATUM CARDS
-    // ============================================================
-
-    yPos = height - 150;
-    drawText('FAKTURA', 60, yPos, 38, true, rgb(0.10, 0.10, 0.12));
-    yPos -= 30;
-    drawText(`#${invoice.invoice_number}`, 60, yPos, 18, false, rgb(0.45, 0.45, 0.48));
-
-    // Right cards - FAKTURADATUM & FÖRFALLODATUM
-    const card1X = width - 390;
-    const card2X = width - 190;
-    const cardY = height - 135;
-    const cardW = 170;
-    const cardH = 70;
-
-    // Fakturadatum card
-    drawCard(card1X, cardY, cardW, cardH);
-    drawText('FAKTURADATUM', card1X + 15, cardY + 45, 10, true, rgb(0.50, 0.50, 0.53));
-    drawText(
-      new Date(invoice.issue_date).toLocaleDateString('sv-SE'),
-      card1X + 15,
-      cardY + 25,
-      13,
-      true,
-      rgb(0.10, 0.10, 0.12)
-    );
-
-    // Förfallodatum card
-    drawCard(card2X, cardY, cardW, cardH);
-    drawText('FÖRFALLODATUM', card2X + 15, cardY + 45, 10, true, rgb(0.50, 0.50, 0.53));
-    drawText(
-      new Date(invoice.due_date).toLocaleDateString('sv-SE'),
-      card2X + 15,
-      cardY + 25,
-      13,
-      true,
-      rgb(0.90, 0.20, 0.20)
-    );
-
-    // ============================================================
-    // KUND-CARD MED GRADIENT ACCENT
-    // ============================================================
-
-    yPos -= 60;
-    const custX = 60;
-    const custY = yPos - 100;
-    const custW = width - 120;
-    const custH = 100;
-
-    drawCard(custX, custY, custW, custH);
-
-    // 4px gradient accent bar
-    drawGradientRect(custX, custY, 4, custH, gradientFixco);
-
-    const customer = invoice.customer;
-    const customerName = customer?.company_name || customer?.name || 'Okänd kund';
-
-    drawText('MOTTAGARE', custX + 20, custY + 75, 11, true, rgb(0.50, 0.50, 0.53));
-    drawText(customerName, custX + 20, custY + 55, 12, true, rgb(0.10, 0.10, 0.12));
-    
-    if (customer?.email) {
-      drawText(customer.email, custX + 20, custY + 35, 11, false, rgb(0.40, 0.40, 0.43));
-    }
-    
-    if (customer?.phone) {
-      drawText(customer.phone, custX + 20, custY + 18, 11, false, rgb(0.40, 0.40, 0.43));
-    }
-
-    // ============================================================
-    // LINE ITEMS MED GRADIENT HEADER
-    // ============================================================
-
-    yPos = custY - 50;
-    drawText('VAD INGÅR I FAKTURAN', 60, yPos, 15, true, rgb(0.10, 0.10, 0.12));
-    
-    // Thin line
-    yPos -= 10;
-    page.drawLine({
-      start: { x: 60, y: yPos },
-      end: { x: width - 60, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.85, 0.85, 0.87),
+    page.drawText('FIXCO AB', {
+      x: infoX,
+      y: infoY,
+      size: 11,
+      font: fontBold,
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    yPos -= 30;
-    let tableY = yPos;
+    infoY -= lineSpacing;
+    page.drawText('Org.nr: 559123-4567', {
+      x: infoX,
+      y: infoY,
+      size: 9,
+      font: font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
 
-    // Gradient header
-    const headerH = 28;
-    drawGradientRect(60, tableY, width - 120, headerH, gradientFixco);
+    infoY -= lineSpacing;
+    page.drawText('info@fixco.se', {
+      x: infoX,
+      y: infoY,
+      size: 9,
+      font: font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
 
-    drawText('BESKRIVNING', 70, tableY + 10, 11, true, rgb(1, 1, 1));
-    drawText('ANTAL', 280, tableY + 10, 11, true, rgb(1, 1, 1));
-    drawText('PRIS', 360, tableY + 10, 11, true, rgb(1, 1, 1));
-    drawText('BELOPP', 460, tableY + 10, 11, true, rgb(1, 1, 1));
+    infoY -= lineSpacing;
+    page.drawText('073-123 45 67', {
+      x: infoX,
+      y: infoY,
+      size: 9,
+      font: font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
+    
+    // Thin separator under header
+    page.drawLine({
+      start: { x: 40, y: height - 90 },
+      end: { x: width - 40, y: height - 90 },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
 
-    tableY -= 20;
+    // === CLEAN TITLE SECTION ===
+    yPosition = height - 130;
 
-    // Line items with zebra rows
+    page.drawText(`Faktura #${invoice.invoice_number}`, {
+      x: 50,
+      y: yPosition,
+      size: 24,
+      font: fontBold,
+      color: rgb(0.20, 0.40, 0.70), // Primary blue
+    });
+
+    // Thin separator
+    yPosition -= 15;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // === INFO GRID (Two Columns - Clean) ===
+    yPosition -= 35;
+    const customer = invoice.customer;
+    const customerName = customer?.company_name || customer?.name || 'Okänd kund';
+    
+    // Left column - MOTTAGARE
+    page.drawText('MOTTAGARE', {
+      x: 50,
+      y: yPosition,
+      size: 10,
+      font: fontBold,
+      color: rgb(0.52, 0.54, 0.56), // Muted
+    });
+
+    yPosition -= 18;
+    page.drawText(customerName, {
+      x: 50,
+      y: yPosition,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    if (customer?.email) {
+      yPosition -= 16;
+      page.drawText(customer.email, {
+        x: 50,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.40, 0.42, 0.45),
+      });
+    }
+
+    // Right column - DATUM & FÖRFALLODATUM
+    let rightY = height - 163;
+    
+    page.drawText('FAKTURADATUM', {
+      x: 350,
+      y: rightY,
+      size: 10,
+      font: font,
+      color: rgb(0.52, 0.54, 0.56),
+    });
+
+    rightY -= 18;
+    page.drawText(new Date(invoice.issue_date).toLocaleDateString('sv-SE'), {
+      x: 350,
+      y: rightY,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    rightY -= 24;
+    page.drawText('FÖRFALLODATUM', {
+      x: 350,
+      y: rightY,
+      size: 10,
+      font: font,
+      color: rgb(0.52, 0.54, 0.56),
+    });
+
+    rightY -= 18;
+    page.drawText(new Date(invoice.due_date).toLocaleDateString('sv-SE'), {
+      x: 350,
+      y: rightY,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.80, 0.20, 0.20), // Red for due date
+    });
+
+    // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
+    yPosition -= 65;
+    
+    page.drawText('VAD INGÅR I FAKTURAN', {
+      x: 50,
+      y: yPosition,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.20, 0.40, 0.70),
+    });
+
+    // Separator
+    yPosition -= 8;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    yPosition -= 25;
+
+    // Process line items by category
     const lineItems = invoice.line_items as Array<{
       description: string;
       quantity: number;
       unit_price: number;
       amount: number;
       category?: string;
+      supplier?: string;
     }>;
 
+    // Group items by category
     const workItems = lineItems.filter(item => !item.category || item.category === 'work');
     const materialItems = lineItems.filter(item => item.category === 'material');
 
-    let itemIndex = 0;
-
-    // ARBETE
+    // 🔧 ARBETE Section
     if (workItems.length > 0) {
-      tableY -= 10;
-      drawText('ARBETE', 70, tableY, 10, true, rgb(0.30, 0.30, 0.33));
-      tableY -= 18;
+      page.drawText('ARBETE', {
+        x: 50,
+        y: yPosition,
+        size: 11,
+        font: fontBold,
+        color: rgb(0.10, 0.10, 0.12),
+      });
+
+      yPosition -= 20;
 
       for (const item of workItems) {
-        if (tableY < 200) {
-          page = pdfDoc.addPage([595, 842]);
-          tableY = height - 60;
+        if (yPosition < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPosition = height - 60;
         }
 
-        const isEven = itemIndex % 2 === 0;
-        const rowH = 24;
-
-        page.drawRectangle({
-          x: 60,
-          y: tableY,
-          width: width - 120,
-          height: rowH,
-          color: isEven ? rgb(1, 1, 1) : rgb(0.97, 0.97, 0.98),
+        // Item row
+        const itemDesc = `${item.description} (${item.quantity} st × ${item.unit_price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPosition,
+          size: 10,
+          font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
         });
 
-        drawText(item.description || '', 70, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.quantity}`, 280, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.unit_price.toLocaleString('sv-SE')} kr`, 360, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.amount.toLocaleString('sv-SE')} kr`, 460, tableY + 8, 10, true, rgb(0.10, 0.10, 0.12));
+        // Amount (right-aligned)
+        page.drawText(`${item.amount.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPosition,
+          size: 10,
+          font: fontBold,
+          color: rgb(0.10, 0.10, 0.12),
+        });
 
-        tableY -= rowH;
-        itemIndex++;
+        yPosition -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`Leverantör: ${item.supplier}`, {
+            x: 80,
+            y: yPosition,
+            size: 8,
+            font,
+            color: rgb(0.52, 0.54, 0.56), // Muted
+          });
+          yPosition -= 14;
+        } else {
+          yPosition -= 6;
+        }
       }
+
+      yPosition -= 10;
     }
 
-    // MATERIAL
+    // 📦 MATERIAL Section
     if (materialItems.length > 0) {
-      tableY -= 10;
-      drawText('MATERIAL', 70, tableY, 10, true, rgb(0.30, 0.30, 0.33));
-      tableY -= 18;
+      page.drawText('MATERIAL', {
+        x: 50,
+        y: yPosition,
+        size: 11,
+        font: fontBold,
+        color: rgb(0.10, 0.10, 0.12),
+      });
+
+      yPosition -= 20;
 
       for (const item of materialItems) {
-        if (tableY < 200) {
-          page = pdfDoc.addPage([595, 842]);
-          tableY = height - 60;
+        if (yPosition < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPosition = height - 60;
         }
 
-        const isEven = itemIndex % 2 === 0;
-        const rowH = 24;
-
-        page.drawRectangle({
-          x: 60,
-          y: tableY,
-          width: width - 120,
-          height: rowH,
-          color: isEven ? rgb(1, 1, 1) : rgb(0.97, 0.97, 0.98),
+        // Item row
+        const itemDesc = `${item.description} (${item.quantity} st × ${item.unit_price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPosition,
+          size: 10,
+          font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
         });
 
-        drawText(item.description || '', 70, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.quantity}`, 280, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.unit_price.toLocaleString('sv-SE')} kr`, 360, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
-        drawText(`${item.amount.toLocaleString('sv-SE')} kr`, 460, tableY + 8, 10, true, rgb(0.10, 0.10, 0.12));
+        // Amount (right-aligned)
+        page.drawText(`${item.amount.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPosition,
+          size: 10,
+          font: fontBold,
+          color: rgb(0.10, 0.10, 0.12),
+        });
 
-        tableY -= rowH;
-        itemIndex++;
+        yPosition -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`Leverantör: ${item.supplier}`, {
+            x: 80,
+            y: yPosition,
+            size: 8,
+            font,
+            color: rgb(0.52, 0.54, 0.56),
+          });
+          yPosition -= 14;
+        } else {
+          yPosition -= 6;
+        }
       }
+
+      yPosition -= 10;
     }
 
-    // ============================================================
-    // KOSTNADSSPECIFIKATION (Mini Cards)
-    // ============================================================
+    // === CLEAN COST SPECIFICATION ===
+    yPosition -= 35;
+    
+    page.drawText('KOSTNADSSPECIFIKATION', {
+      x: 50,
+      y: yPosition,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.20, 0.40, 0.70),
+    });
 
-    tableY -= 40;
-    drawText('KOSTNADSSPECIFIKATION', 60, tableY, 13, true, rgb(0.10, 0.10, 0.12));
-    tableY -= 30;
+    // Separator
+    yPosition -= 8;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
 
-    const costX = width - 280;
+    yPosition -= 25;
+    const costX = 350;
 
-    // Subtotal
-    drawText('Delsumma', costX, tableY, 10, false, rgb(0.40, 0.40, 0.43));
-    drawText(
-      `${invoice.subtotal.toLocaleString('sv-SE')} kr`,
-      width - 110,
-      tableY,
-      10,
-      false,
-      rgb(0.10, 0.10, 0.12)
-    );
-    tableY -= 20;
+    // Subtotal row
+    page.drawText('Delsumma', {
+      x: costX,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
+    page.drawText(`${invoice.subtotal.toLocaleString('sv-SE')} kr`, {
+      x: 480,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.10, 0.10, 0.12),
+    });
 
-    // VAT
-    drawText('Moms (25%)', costX, tableY, 10, false, rgb(0.40, 0.40, 0.43));
-    drawText(
-      `${invoice.vat_amount.toLocaleString('sv-SE')} kr`,
-      width - 110,
-      tableY,
-      10,
-      false,
-      rgb(0.10, 0.10, 0.12)
-    );
-    tableY -= 20;
+    yPosition -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
 
-    // ROT deduction (if any)
+    // VAT row
+    yPosition -= 14;
+    page.drawText('Moms (25%)', {
+      x: costX,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
+    page.drawText(`${invoice.vat_amount.toLocaleString('sv-SE')} kr`, {
+      x: 480,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    yPosition -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // ROT-avdrag (GREEN BOX if applicable)
     if (invoice.rot_amount && invoice.rot_amount > 0) {
+      yPosition -= 18;
+      
+      // Green background box
       page.drawRectangle({
-        x: costX - 5,
-        y: tableY - 3,
-        width: 190,
-        height: 18,
-        color: rgb(0.93, 0.98, 0.93),
-        borderColor: rgb(0.50, 0.80, 0.50),
+        x: costX - 12,
+        y: yPosition - 4,
+        width: width - costX - 38,
+        height: 20,
+        color: rgb(0.96, 0.99, 0.96), // Light green bg
+        borderColor: rgb(0.60, 0.80, 0.60), // Green border
         borderWidth: 1,
       });
 
-      drawText('ROT-avdrag (30%)', costX, tableY, 10, true, rgb(0.13, 0.60, 0.13));
-      drawText(
-        `-${invoice.rot_amount.toLocaleString('sv-SE')} kr`,
-        width - 110,
-        tableY,
-        10,
-        true,
-        rgb(0.13, 0.60, 0.13)
-      );
-      tableY -= 25;
+      page.drawText('ROT-avdrag (30%)', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13), // Green text
+      });
+      page.drawText(`-${invoice.rot_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+
+      yPosition -= 18;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
+      });
     }
 
-    // RUT deduction (if any)
+    // RUT-avdrag (GREEN BOX if applicable)
     if (invoice.rut_amount && invoice.rut_amount > 0) {
+      yPosition -= 18;
+      
       page.drawRectangle({
-        x: costX - 5,
-        y: tableY - 3,
-        width: 190,
-        height: 18,
-        color: rgb(0.93, 0.98, 0.93),
-        borderColor: rgb(0.50, 0.80, 0.50),
+        x: costX - 12,
+        y: yPosition - 4,
+        width: width - costX - 38,
+        height: 20,
+        color: rgb(0.96, 0.99, 0.96),
+        borderColor: rgb(0.60, 0.80, 0.60),
         borderWidth: 1,
       });
 
-      drawText('RUT-avdrag (30%)', costX, tableY, 10, true, rgb(0.13, 0.60, 0.13));
-      drawText(
-        `-${invoice.rut_amount.toLocaleString('sv-SE')} kr`,
-        width - 110,
-        tableY,
-        10,
-        true,
-        rgb(0.13, 0.60, 0.13)
-      );
-      tableY -= 25;
+      page.drawText('RUT-avdrag (30%)', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+      page.drawText(`-${invoice.rut_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+
+      yPosition -= 18;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
+      });
     }
 
-    // ============================================================
-    // HERO TOTAL BOX (300×120px!)
-    // ============================================================
+    // Discount (if applicable)
+    if (invoice.discount_amount && invoice.discount_amount > 0) {
+      yPosition -= 14;
+      page.drawText('Rabatt', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.40, 0.42, 0.45),
+      });
+      page.drawText(`-${invoice.discount_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.10, 0.10, 0.12),
+      });
 
-    tableY -= 20;
-    const totalBoxW = 300;
-    const totalBoxH = 110;
-    const totalBoxX = width - totalBoxW - 50;
-    const totalBoxY = tableY - totalBoxH;
+      yPosition -= 14;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
+      });
+    }
 
-    drawGradientRect(totalBoxX, totalBoxY, totalBoxW, totalBoxH, gradientFixco);
+    // === HERO TOTAL BOX - LARGE GRADIENT (LILA → CYAN → ROSA) ===
+    yPosition -= 30;
+    const totalBoxWidth = 250; // STÖRRE!
+    const totalBoxHeight = 70; // STÖRRE!
+    const totalBoxX = width - totalBoxWidth - 50;
 
-    drawText('TOTALT ATT BETALA', totalBoxX + 20, totalBoxY + 80, 13, true, rgb(1, 1, 1));
-    drawText(
-      `${invoice.total_amount.toLocaleString('sv-SE')} kr`,
-      totalBoxX + 20,
-      totalBoxY + 45,
-      30,
-      true,
-      rgb(1, 1, 1)
-    );
-    drawText('inkl. moms', totalBoxX + 20, totalBoxY + 20, 12, false, rgb(1, 1, 1));
+    // Smooth 3-color gradient (LILA → CYAN → ROSA)
+    const gradientSteps = 40;
+    for (let i = 0; i < gradientSteps; i++) {
+      const ratio = i / (gradientSteps - 1);
+      
+      let r, g, b;
+      
+      if (ratio < 0.5) {
+        // First half: LILA → CYAN (0 → 0.5)
+        const localRatio = ratio * 2; // 0 → 1
+        r = 0.52 + (0.00 - 0.52) * localRatio;  // 0.52 → 0.00
+        g = 0.20 + (0.75 - 0.20) * localRatio;  // 0.20 → 0.75
+        b = 0.90 + (1.00 - 0.90) * localRatio;  // 0.90 → 1.00
+      } else {
+        // Second half: CYAN → ROSA (0.5 → 1.0)
+        const localRatio = (ratio - 0.5) * 2; // 0 → 1
+        r = 0.00 + (1.00 - 0.00) * localRatio;  // 0.00 → 1.00
+        g = 0.75 + (0.30 - 0.75) * localRatio;  // 0.75 → 0.30
+        b = 1.00 + (0.90 - 1.00) * localRatio;  // 1.00 → 0.90
+      }
+      
+      page.drawRectangle({
+        x: totalBoxX,
+        y: yPosition - totalBoxHeight + (i * totalBoxHeight / gradientSteps),
+        width: totalBoxWidth,
+        height: (totalBoxHeight / gradientSteps) + 1,
+        color: rgb(r, g, b),
+      });
+    }
 
-    // ============================================================
-    // FOOTER
-    // ============================================================
+    // White text on gradient
+    page.drawText('TOTALT ATT BETALA', {
+      x: totalBoxX + 20,
+      y: yPosition - 20,
+      size: 14,
+      font: fontBold,
+      color: rgb(1, 1, 1),
+    });
 
-    const footerY = 70;
-    drawDotPattern(60, footerY, 60);
+    page.drawText(`${invoice.total_amount.toLocaleString('sv-SE')} kr`, {
+      x: totalBoxX + 20,
+      y: yPosition - 50,
+      size: 26,
+      font: fontBold,
+      color: rgb(1, 1, 1),
+    });
 
-    // Gradient line
-    drawGradientRect(60, footerY - 10, width - 120, 2, gradientFixco);
+    // === MINIMAL FOOTER ===
+    const footerY = 80;
+    
+    // Thin separator line
+    page.drawLine({
+      start: { x: 50, y: footerY },
+      end: { x: width - 50, y: footerY },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
 
-    drawText('Fixco AB • Org.nr: 559123-4567 • Bankgiro: 1234-5678', 60, footerY - 30, 9);
-    drawText('info@fixco.se • 073-123 45 67 • fixco.se', 60, footerY - 45, 9);
+    yPosition = footerY - 18;
+    
+    page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {
+      x: (width - 300) / 2,
+      y: yPosition,
+      size: 8,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
 
-    // ============================================================
-    // SAVE & UPLOAD PDF
-    // ============================================================
+    yPosition -= 12;
+    page.drawText('info@fixco.se | 073-123 45 67 | fixco.se', {
+      x: (width - 230) / 2,
+      y: yPosition,
+      size: 8,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
 
+    yPosition -= 12;
+    page.drawText('Betalningsvillkor: 30 dagar netto. Dröjsmålsränta enligt lag.', {
+      x: (width - 330) / 2,
+      y: yPosition,
+      size: 8,
+      font,
+      color: rgb(0.52, 0.54, 0.56),
+    });
+
+    // Save PDF
     const pdfBytes = await pdfDoc.save();
+    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
 
+    // Upload to Supabase Storage
     const fileName = `invoice-${invoice.invoice_number}-${Date.now()}.pdf`;
     const { data: uploadData, error: uploadError } = await supabaseClient.storage
       .from('invoices')
-      .upload(fileName, pdfBytes, {
+      .upload(fileName, pdfBlob, {
         contentType: 'application/pdf',
-        upsert: true,
+        upsert: false,
       });
 
     if (uploadError) {
-      throw new Error(`Upload failed: ${uploadError.message}`);
+      console.error('Upload error:', uploadError);
+      throw new Error(`Failed to upload PDF: ${uploadError.message}`);
     }
 
-    const { data: publicUrlData } = supabaseClient.storage
+    console.log('PDF uploaded successfully:', fileName);
+
+    // Get public URL
+    const { data: urlData } = supabaseClient.storage
       .from('invoices')
       .getPublicUrl(fileName);
 
-    const pdfUrl = publicUrlData.publicUrl;
+    // Add cache-busting parameter to force browser reload
+    const cacheBustedUrl = `${urlData.publicUrl}?t=${Date.now()}`;
 
-    await supabaseClient
+    // Update invoice with pdf_url
+    const { error: updateError } = await supabaseClient
       .from('invoices')
-      .update({ pdf_url: pdfUrl })
+      .update({ pdf_url: urlData.publicUrl })
       .eq('id', invoiceId);
+
+    if (updateError) {
+      console.error('Update error:', updateError);
+      throw new Error(`Failed to update invoice: ${updateError.message}`);
+    }
+
+    console.log('Invoice updated with PDF URL');
 
     return new Response(
       JSON.stringify({
         success: true,
-        pdf_url: pdfUrl,
-        message: 'Modern invoice PDF generated successfully',
+        pdf_url: cacheBustedUrl,
+        message: 'PDF generated successfully',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
       }
     );
-  } catch (error: any) {
-    console.error('Invoice PDF generation error:', error);
+  } catch (error) {
+    console.error('Error generating PDF:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({
+        error: error.message || 'Failed to generate PDF',
+      }),
       {
-        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500,
       }
     );
   }
