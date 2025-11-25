@@ -36,19 +36,23 @@ interface InvoiceData {
   invoice_number: string;
   issue_date: string;
   due_date: string;
+  paid_at?: string | null;
   line_items: Array<{
     description: string;
     quantity: number;
     unit_price: number;
     amount: number;
+    total_price?: number;
     category?: string;
     supplier?: string;
+    type?: string;
   }>;
   subtotal: number;
   vat_amount: number;
   rot_amount?: number;
   rut_amount?: number;
   total_amount: number;
+  discount_amount?: number;
   customer?: {
     name?: string;
     company_name?: string;
@@ -777,131 +781,256 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
 }
 
 export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): string {
-  // Separate items by type
-  const workItems = invoice.line_items.filter(item => !item.category || item.category === 'work');
-  const materialItems = invoice.line_items.filter(item => item.category === 'material');
-  const customer = invoice.customer;
-  const customerName = customer?.company_name || customer?.name || 'Okänd kund';
+  const isPaid = !!invoice.paid_at;
+  const dueDate = new Date(invoice.due_date);
+  const now = new Date();
+  const isOverdue = dueDate < now && !isPaid;
+  const diffTime = dueDate.getTime() - now.getTime();
+  const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  const formatCurrency = (amount: number) => 
+    new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+  
+  const formatDate = (dateString: string) => 
+    new Date(dateString).toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>${baseStyles}</style>
-</head>
-<body>
-  <div class="header">
-    ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="Fixco Logo" class="logo" />` : '<div style="font-size: 22px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
-    <div class="doc-title">FAKTURA ${invoice.invoice_number}</div>
-  </div>
-
-  <div class="info-grid">
-    <div class="info-section">
-      <h3>Kund</h3>
-      <p><strong>${customerName}</strong></p>
-      ${customer?.email ? `<p>${customer.email}</p>` : ''}
-      ${customer?.phone ? `<p>${customer.phone}</p>` : ''}
-      ${customer?.address ? `<p>${customer.address}</p>` : ''}
-      ${customer?.postal_code || customer?.city ? `<p>${customer?.postal_code || ''} ${customer?.city || ''}</p>` : ''}
-      ${customer?.org_number ? `<p>Org.nr: ${customer.org_number}</p>` : ''}
-    </div>
-    <div class="info-section">
-      <h3>Fakturainformation</h3>
-      <p><strong>Fakturadatum:</strong> ${new Date(invoice.issue_date).toLocaleDateString('sv-SE')}</p>
-      <p><strong>Förfallodatum:</strong> ${new Date(invoice.due_date).toLocaleDateString('sv-SE')}</p>
-      <p><strong>Betalningsvillkor:</strong> 30 dagar</p>
-    </div>
-  </div>
-
-  ${workItems.length > 0 ? `
-    <div class="items-section">
-      <h3>Utfört arbete</h3>
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Beskrivning</th>
-            <th style="width: 100px;">Antal</th>
-            <th style="width: 120px;">à-pris</th>
-            <th style="width: 120px;">Summa</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${workItems.map(item => `
-            <tr>
-              <td>${item.description}</td>
-              <td>${item.quantity} st</td>
-              <td>${item.unit_price.toLocaleString('sv-SE')} kr</td>
-              <td><strong>${item.amount.toLocaleString('sv-SE')} kr</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  ` : ''}
-
-  ${materialItems.length > 0 ? `
-    <div class="items-section">
-      <h3>Material</h3>
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Beskrivning</th>
-            <th style="width: 100px;">Antal</th>
-            <th style="width: 120px;">à-pris</th>
-            <th style="width: 120px;">Summa</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${materialItems.map(item => `
-            <tr>
-              <td>${item.description}</td>
-              <td>${item.quantity} st</td>
-              <td>${item.unit_price.toLocaleString('sv-SE')} kr</td>
-              <td><strong>${item.amount.toLocaleString('sv-SE')} kr</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  ` : ''}
-
-  <div class="cost-breakdown">
-    <h3>Kostnadsspecifikation</h3>
-    
-    <div class="cost-row">
-      <span>Delsumma:</span>
-      <strong>${invoice.subtotal.toLocaleString('sv-SE')} kr</strong>
-    </div>
-    <div class="cost-row">
-      <span>Moms (25%):</span>
-      <strong>${invoice.vat_amount.toLocaleString('sv-SE')} kr</strong>
-    </div>
-    ${invoice.rot_amount && invoice.rot_amount > 0 ? `
-      <div class="cost-row discount">
-        <span>ROT-avdrag (30%):</span>
-        <strong>−${invoice.rot_amount.toLocaleString('sv-SE')} kr</strong>
+    <!DOCTYPE html>
+    <html lang="sv">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Faktura ${invoice.invoice_number}</title>
+      <style>
+        ${baseStyles}
+        
+        /* Invoice-specific gradient header */
+        .invoice-gradient-header {
+          background: linear-gradient(to right, #1e3a5f, #3b82f6, #9333ea);
+          color: white;
+          padding: 32px;
+          border-radius: 12px 12px 0 0;
+        }
+        
+        .invoice-status-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-weight: 600;
+          font-size: 14px;
+        }
+        
+        .badge-paid {
+          background: #16a34a;
+          color: white;
+        }
+        
+        .badge-sent {
+          background: #3b82f6;
+          color: white;
+        }
+        
+        .badge-overdue {
+          background: #dc2626;
+          color: white;
+        }
+        
+        .status-alert {
+          padding: 16px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+        
+        .alert-overdue {
+          border: 2px solid #dc2626;
+          background: #fef2f2;
+          color: #dc2626;
+        }
+        
+        .alert-warning {
+          border: 2px solid #eab308;
+          background: #fefce8;
+          color: #854d0e;
+        }
+        
+        .gradient-table-header {
+          background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+        }
+        
+        .gradient-text {
+          background: linear-gradient(to right, #3b82f6, #3b82f6, #9333ea);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-weight: bold;
+          font-size: 20px;
+        }
+        
+        .paid-badge {
+          padding: 16px;
+          background: rgba(22, 163, 74, 0.1);
+          border: 1px solid rgba(22, 163, 74, 0.2);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="page">
+        <!-- Gradient Header -->
+        <div class="invoice-gradient-header">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="Fixco" style="height: 48px; margin-bottom: 16px;" />` : ''}
+              <h1 style="margin: 0; font-size: 24px; color: white;">Faktura</h1>
+              <p style="margin: 8px 0 0 0; font-size: 18px; color: rgba(255,255,255,0.9);">${invoice.invoice_number}</p>
+            </div>
+            <div>
+              ${isPaid ? `
+                <span class="invoice-status-badge badge-paid">
+                  ✓ Betald
+                </span>
+              ` : isOverdue ? `
+                <span class="invoice-status-badge badge-overdue">
+                  ⚠ Förfallen
+                </span>
+              ` : `
+                <span class="invoice-status-badge badge-sent">
+                  → Skickad
+                </span>
+              `}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Main Card -->
+        <div class="card-wrapper">
+          <!-- Status Alert -->
+          ${!isPaid && daysUntilDue !== null ? `
+            <div class="status-alert ${isOverdue ? 'alert-overdue' : daysUntilDue <= 7 ? 'alert-warning' : ''}" style="margin-top: 24px;">
+              <span style="font-size: 20px;">⏰</span>
+              <div>
+                ${isOverdue ? `
+                  <p style="margin: 0; font-weight: 600;">Förfallen sedan ${Math.abs(daysUntilDue)} ${Math.abs(daysUntilDue) === 1 ? 'dag' : 'dagar'}</p>
+                ` : daysUntilDue === 0 ? `
+                  <p style="margin: 0; font-weight: 600; color: #854d0e;">Förfaller idag!</p>
+                ` : `
+                  <p style="margin: 0; color: #64748b;">${daysUntilDue} ${daysUntilDue === 1 ? 'dag' : 'dagar'} kvar till förfallodatum</p>
+                `}
+              </div>
+            </div>
+          ` : ''}
+          
+          <!-- Invoice Info Header -->
+          <div style="margin-top: 32px; margin-bottom: 24px;">
+            <h2 style="margin: 0 0 8px 0; font-size: 24px;">Fakturauppgifter</h2>
+            <p style="margin: 0; color: #64748b;">Utfärdad: ${formatDate(invoice.issue_date)}</p>
+          </div>
+          
+          <!-- Customer Info -->
+          <div class="info-grid" style="background: rgba(241, 245, 249, 0.5); padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+            <div>
+              <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #3b82f6;">Till:</h3>
+              <p style="margin: 0 0 4px 0; font-weight: 600;">${invoice.customer?.name || 'Okänd kund'}</p>
+              ${invoice.customer?.company_name ? `<p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">${invoice.customer.company_name}</p>` : ''}
+              ${invoice.customer?.org_number ? `<p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">Org.nr: ${invoice.customer.org_number}</p>` : ''}
+              <p style="margin: 8px 0 0 0; color: #64748b; display: flex; align-items: center; gap: 8px;">
+                <span>✉</span> ${invoice.customer?.email || ''}
+              </p>
+              ${invoice.customer?.phone ? `<p style="margin: 4px 0 0 0; color: #64748b; display: flex; align-items: center; gap: 8px;"><span>📞</span> ${invoice.customer.phone}</p>` : ''}
+            </div>
+            <div style="text-align: right;">
+              <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #3b82f6;">Från:</h3>
+              <p style="margin: 0 0 4px 0; font-weight: 600;">Fixco AB</p>
+              <p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">Org.nr: 556789-0123</p>
+              <p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">info@fixco.se</p>
+              <p style="margin: 0; color: #64748b; font-size: 14px;">08-123 45 67</p>
+            </div>
+          </div>
+          
+          <!-- Due Date Box -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: linear-gradient(to bottom right, rgba(241, 245, 249, 0.5), rgba(241, 245, 249, 0.3)); border-radius: 8px; margin-bottom: 32px;">
+            <span style="font-weight: 500;">Förfallodatum</span>
+            <span style="font-weight: bold; ${isOverdue ? 'color: #dc2626;' : ''}">${formatDate(invoice.due_date)}</span>
+          </div>
+          
+          <!-- Articles Section -->
+          <div style="margin-bottom: 32px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #3b82f6; color: white; border-radius: 6px; font-size: 16px;">📄</span>
+              Artiklar
+            </h3>
+            <table class="items-table" style="border: 2px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+              <thead class="gradient-table-header">
+                <tr>
+                  <th style="text-align: left; padding: 16px; font-weight: 600;">Beskrivning</th>
+                  <th style="text-align: right; padding: 16px; font-weight: 600;">Antal</th>
+                  <th style="text-align: right; padding: 16px; font-weight: 600;">Pris</th>
+                  <th style="text-align: right; padding: 16px; font-weight: 600;">Summa</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${invoice.line_items.map((item: any, index: number) => `
+                  <tr style="border-top: 1px solid #e5e7eb;">
+                    <td style="padding: 16px;">${item.description}</td>
+                    <td style="text-align: right; padding: 16px;">${item.quantity}</td>
+                    <td style="text-align: right; padding: 16px;">${formatCurrency(item.unit_price)}</td>
+                    <td style="text-align: right; padding: 16px; font-weight: 600;">${formatCurrency(item.total_price || item.amount)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Totals Section -->
+          <div style="background: linear-gradient(to bottom right, rgba(241, 245, 249, 0.5), rgba(241, 245, 249, 0.3)); border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="max-width: 400px; margin-left: auto;">
+              <div class="cost-row">
+                <span style="color: #64748b;">Delsumma:</span>
+                <span style="font-weight: 600;">${formatCurrency(invoice.subtotal)}</span>
+              </div>
+              ${invoice.discount_amount && invoice.discount_amount > 0 ? `
+                <div class="cost-row">
+                  <span style="color: #64748b;">Rabatt:</span>
+                  <span style="color: #dc2626; font-weight: 600;">- ${formatCurrency(invoice.discount_amount)}</span>
+                </div>
+              ` : ''}
+              <div class="cost-row">
+                <span style="color: #64748b;">Moms (25%):</span>
+                <span style="font-weight: 600;">${formatCurrency(invoice.vat_amount)}</span>
+              </div>
+              <div class="cost-row" style="padding-top: 12px; border-top: 2px solid #cbd5e1; margin-top: 12px;">
+                <span style="font-size: 18px; font-weight: bold;">Totalt att betala:</span>
+                <span class="gradient-text">${formatCurrency(invoice.total_amount)}</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Paid Badge -->
+          ${isPaid && invoice.paid_at ? `
+            <div class="paid-badge" style="margin-top: 24px;">
+              <span style="color: #16a34a; font-size: 20px;">✓</span>
+              <div>
+                <p style="margin: 0; font-weight: 600; color: #16a34a;">Betald</p>
+                <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">${formatDate(invoice.paid_at)}</p>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer" style="margin-top: 32px;">
+          <p style="margin: 0 0 4px 0;">Har du frågor om denna faktura?</p>
+          <p style="margin: 0;">Kontakta oss på <a href="mailto:info@fixco.se" style="color: #3b82f6; text-decoration: none;">info@fixco.se</a> eller 08-123 45 67</p>
+        </div>
       </div>
-    ` : ''}
-    ${invoice.rut_amount && invoice.rut_amount > 0 ? `
-      <div class="cost-row discount">
-        <span>RUT-avdrag (30%):</span>
-        <strong>−${invoice.rut_amount.toLocaleString('sv-SE')} kr</strong>
-      </div>
-    ` : ''}
-    <div class="cost-row total">
-      <span>ATT BETALA:</span>
-      <span>${invoice.total_amount.toLocaleString('sv-SE')} kr</span>
-    </div>
-  </div>
-
-  <div class="footer">
-    <p><strong>Fixco AB</strong></p>
-    <p>Org.nr: 559240-3418 | Bankgiro: 5260-9469</p>
-    <p>E-post: info@fixco.se | Telefon: 08-123 456 78</p>
-    <p>Vasagatan 10, 111 20 Stockholm</p>
-  </div>
-</body>
-</html>
+    </body>
+    </html>
   `.trim();
 }
