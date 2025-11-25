@@ -61,13 +61,34 @@ serve(async (req) => {
 
     let yPos = height - 50;
 
-    // Premium header with gradient background
+    // ============= MODERN GRADIENT HEADER =============
+    const headerHeight = 130;
+    
+    // Create gradient effect with multiple rectangles
+    const gradientSteps = 20;
+    for (let i = 0; i < gradientSteps; i++) {
+      const ratio = i / gradientSteps;
+      const r = 0.1 + (0.15 - 0.1) * ratio;
+      const g = 0.21 + (0.30 - 0.21) * ratio;
+      const b = 0.36 + (0.48 - 0.36) * ratio;
+      
+      page.drawRectangle({
+        x: 0,
+        y: height - headerHeight + (i * headerHeight / gradientSteps),
+        width: width,
+        height: headerHeight / gradientSteps + 1,
+        color: rgb(r, g, b),
+      });
+    }
+    
+    // Subtle shadow below header
     page.drawRectangle({
       x: 0,
-      y: height - 130,
+      y: height - headerHeight - 2,
       width: width,
-      height: 130,
-      color: rgb(0.1, 0.21, 0.36), // Mörk blå #1a365d
+      height: 2,
+      color: rgb(0, 0, 0),
+      opacity: 0.15,
     });
 
     // Embed and draw logo if available
@@ -129,12 +150,12 @@ serve(async (req) => {
       color: rgb(0.85, 0.85, 0.85),
     });
 
-    // Quote title
+    // ============= TITLE =============
     yPos = height - 170;
     page.drawText(`OFFERT ${quote.number}`, {
       x: 50,
       y: yPos,
-      size: 28,
+      size: 32,
       font: boldFont,
       color: rgb(0.1, 0.21, 0.36),
     });
@@ -221,19 +242,22 @@ serve(async (req) => {
       color: rgb(0.1, 0.21, 0.36),
     });
 
-    // Table header with background
+    // ============= TABLE HEADER =============
     yPos -= 30;
+    // Rounded rectangle for table header
+    const tableHeaderY = yPos - 5;
     page.drawRectangle({
       x: 40,
-      y: yPos - 5,
+      y: tableHeaderY,
       width: width - 80,
-      height: 22,
+      height: 25,
       color: rgb(0.1, 0.21, 0.36),
+      borderRadius: 4,
     });
 
     page.drawText('Beskrivning', {
       x: 50,
-      y: yPos,
+      y: yPos + 2,
       size: 10,
       font: boldFont,
       color: rgb(1, 1, 1),
@@ -241,7 +265,7 @@ serve(async (req) => {
 
     page.drawText('Antal', {
       x: 320,
-      y: yPos,
+      y: yPos + 2,
       size: 10,
       font: boldFont,
       color: rgb(1, 1, 1),
@@ -249,7 +273,7 @@ serve(async (req) => {
 
     page.drawText('Enhet', {
       x: 375,
-      y: yPos,
+      y: yPos + 2,
       size: 10,
       font: boldFont,
       color: rgb(1, 1, 1),
@@ -257,7 +281,7 @@ serve(async (req) => {
 
     page.drawText('Pris/enhet', {
       x: 430,
-      y: yPos,
+      y: yPos + 2,
       size: 10,
       font: boldFont,
       color: rgb(1, 1, 1),
@@ -265,7 +289,7 @@ serve(async (req) => {
 
     page.drawText('Totalt', {
       x: 500,
-      y: yPos,
+      y: yPos + 2,
       size: 10,
       font: boldFont,
       color: rgb(1, 1, 1),
@@ -408,24 +432,38 @@ serve(async (req) => {
       color: rgb(0, 0, 0),
     });
 
+    // ============= ROT-AVDRAG HIGHLIGHT =============
     if (quote.rot_deduction_sek && quote.rot_deduction_sek > 0) {
       yPos -= 18;
+      
+      // Green highlight box for ROT savings
+      page.drawRectangle({
+        x: 350,
+        y: yPos - 5,
+        width: width - 400,
+        height: 22,
+        color: rgb(0.9, 0.98, 0.9),
+        borderColor: rgb(0.1, 0.7, 0.1),
+        borderWidth: 1,
+      });
+      
       page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%):`, {
         x: 360,
         y: yPos,
-        size: 10,
-        font: font,
+        size: 11,
+        font: boldFont,
         color: rgb(0.1, 0.6, 0.1),
       });
       page.drawText(`-${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr`, {
         x: 480,
         y: yPos,
-        size: 10,
-        font: font,
+        size: 11,
+        font: boldFont,
         color: rgb(0.1, 0.6, 0.1),
       });
     }
 
+    // ============= TOTAL SUM - PROMINENT BOX =============
     yPos -= 22;
     page.drawLine({
       start: { x: 350, y: yPos },
@@ -434,47 +472,78 @@ serve(async (req) => {
       color: rgb(0.1, 0.21, 0.36),
     });
 
-    yPos -= 28;
+    yPos -= 38;
+    
+    // Prominent box for total amount
+    page.drawRectangle({
+      x: 350,
+      y: yPos - 8,
+      width: width - 400,
+      height: 35,
+      color: rgb(0.1, 0.21, 0.36),
+      borderRadius: 6,
+    });
+    
     page.drawText('TOTALT ATT BETALA:', {
       x: 360,
-      y: yPos,
-      size: 12,
+      y: yPos + 4,
+      size: 14,
       font: boldFont,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(1, 1, 1),
     });
     page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
       x: 480,
-      y: yPos,
-      size: 12,
+      y: yPos + 4,
+      size: 16,
       font: boldFont,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(1, 1, 1),
     });
 
-    // Professional footer with separator
-    yPos = 100;
+    // ============= PROFESSIONAL FOOTER =============
+    yPos = 110;
+    
+    // Subtle footer background
+    page.drawRectangle({
+      x: 0,
+      y: 0,
+      width: width,
+      height: 100,
+      color: rgb(0.97, 0.97, 0.97),
+    });
+    
+    // Top border with brand color
     page.drawLine({
-      start: { x: 50, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.7, 0.7, 0.7),
+      start: { x: 0, y: 100 },
+      end: { x: width, y: 100 },
+      thickness: 2,
+      color: rgb(0.1, 0.21, 0.36),
     });
 
     yPos -= 20;
     page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {
       x: 50,
       y: yPos,
-      size: 8,
+      size: 9,
+      font: boldFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    
+    yPos -= 14;
+    page.drawText('info@fixco.se | +46 70 123 45 67 | www.fixco.se', {
+      x: 50,
+      y: yPos,
+      size: 9,
       font: font,
       color: rgb(0.5, 0.5, 0.5),
     });
     
-    yPos -= 12;
-    page.drawText('info@fixco.se | +46 70 123 45 67 | www.fixco.se', {
+    yPos -= 14;
+    page.drawText('Betalningsvillkor: 30 dagar netto. Dröjsmålsränta enligt lag.', {
       x: 50,
       y: yPos,
       size: 8,
       font: font,
-      color: rgb(0.5, 0.5, 0.5),
+      color: rgb(0.6, 0.6, 0.6),
     });
 
     // Save PDF
