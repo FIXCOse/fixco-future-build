@@ -54,6 +54,7 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./components/admin/AdminLayout";
 const AdminQuotesUnified = lazy(() => import("./pages/admin/AdminQuotesUnified"));
 const AdminQuotesTrash = lazy(() => import("./pages/admin/AdminQuotesTrash"));
+const QuoteHtmlPreview = lazy(() => import("./pages/admin/QuoteHtmlPreview"));
 const AdminBookingsTrash = lazy(() => import("./pages/admin/AdminBookingsTrash"));
 const AdminJobsTrash = lazy(() => import("./pages/admin/AdminJobsTrash"));
 const AdminProjectsTrash = lazy(() => import("./pages/admin/AdminProjectsTrash"));
@@ -263,6 +264,7 @@ const App = () => {
                     {/* Unified quotes page */}
                     <Route path="quotes" element={lazyElement(AdminQuotesUnified)} />
                     <Route path="quotes/trash" element={lazyElement(AdminQuotesTrash)} />
+                    <Route path="quotes/html-preview" element={lazyElement(QuoteHtmlPreview)} />
                     {/* Redirects for old routes */}
                     <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
                     <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
