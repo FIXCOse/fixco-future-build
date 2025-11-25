@@ -56,6 +56,8 @@ export default function QuoteHtmlPreview() {
   const [viewMode, setViewMode] = useState<'quote' | 'invoice'>('quote');
   const [showSource, setShowSource] = useState(false);
   const [logoBase64, setLogoBase64] = useState<string>('');
+  const [editedHtml, setEditedHtml] = useState<string>('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Load Fixco logo as base64
   useEffect(() => {
@@ -123,9 +125,31 @@ export default function QuoteHtmlPreview() {
     ? generateQuoteHTML(quoteData, logoBase64) 
     : generateInvoiceHTML(invoiceData, logoBase64);
 
+  const displayHtml = editedHtml || html;
+
   const handleCopyHtml = () => {
-    navigator.clipboard.writeText(html);
+    navigator.clipboard.writeText(displayHtml);
     toast.success('HTML kopierad till urklipp!');
+  };
+
+  const handleSaveHtml = () => {
+    localStorage.setItem('custom_quote_html', editedHtml);
+    toast.success('Källkod sparad!');
+    setHasUnsavedChanges(false);
+  };
+
+  const handleResetHtml = () => {
+    setEditedHtml('');
+    localStorage.removeItem('custom_quote_html');
+    toast.success('Återställd till standard');
+    setHasUnsavedChanges(false);
+  };
+
+  const handleDeleteCustomHtml = () => {
+    localStorage.removeItem('custom_quote_html');
+    setEditedHtml('');
+    toast.success('Anpassad källkod raderad');
+    setHasUnsavedChanges(false);
   };
 
   const handleUpdateQuoteData = (field: string, value: any) => {
@@ -241,11 +265,29 @@ export default function QuoteHtmlPreview() {
               </CardHeader>
               <CardContent>
                 {showSource ? (
-                  <pre className="bg-muted p-4 rounded-lg overflow-auto text-xs max-h-[600px]">
-                    <code>{html}</code>
-                  </pre>
+                  <div className="space-y-4">
+                    <Textarea
+                      value={editedHtml || html}
+                      onChange={(e) => {
+                        setEditedHtml(e.target.value);
+                        setHasUnsavedChanges(true);
+                      }}
+                      className="font-mono text-xs min-h-[600px]"
+                    />
+                    <div className="flex gap-2">
+                      <Button onClick={handleSaveHtml} disabled={!hasUnsavedChanges}>
+                        Spara ändringar
+                      </Button>
+                      <Button variant="outline" onClick={handleResetHtml}>
+                        Återställ
+                      </Button>
+                      <Button variant="destructive" onClick={handleDeleteCustomHtml}>
+                        Radera anpassad källkod
+                      </Button>
+                    </div>
+                  </div>
                 ) : (
-                  <A4PreviewContainer html={html} />
+                  <A4PreviewContainer html={displayHtml} />
                 )}
               </CardContent>
             </Card>
@@ -326,11 +368,29 @@ export default function QuoteHtmlPreview() {
               </CardHeader>
               <CardContent>
                 {showSource ? (
-                  <pre className="bg-muted p-4 rounded-lg overflow-auto text-xs max-h-[600px]">
-                    <code>{html}</code>
-                  </pre>
+                  <div className="space-y-4">
+                    <Textarea
+                      value={editedHtml || html}
+                      onChange={(e) => {
+                        setEditedHtml(e.target.value);
+                        setHasUnsavedChanges(true);
+                      }}
+                      className="font-mono text-xs min-h-[600px]"
+                    />
+                    <div className="flex gap-2">
+                      <Button onClick={handleSaveHtml} disabled={!hasUnsavedChanges}>
+                        Spara ändringar
+                      </Button>
+                      <Button variant="outline" onClick={handleResetHtml}>
+                        Återställ
+                      </Button>
+                      <Button variant="destructive" onClick={handleDeleteCustomHtml}>
+                        Radera anpassad källkod
+                      </Button>
+                    </div>
+                  </div>
                 ) : (
-                  <A4PreviewContainer html={html} />
+                  <A4PreviewContainer html={displayHtml} />
                 )}
               </CardContent>
             </Card>

@@ -17,6 +17,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import confetti from 'canvas-confetti';
 
 type QuoteQuestion = {
   id: string;
@@ -200,13 +201,35 @@ export default function QuotePublic() {
           title: 'Offerten är accepterad',
           description: 'Vi kontaktar dig inom kort för att bekräfta detaljer.',
         });
+        setQuote(prev => prev ? { ...prev, status: 'accepted' } : prev);
         setAccepted(true);
         setShowSuccessDialog(true);
+        
+        // Konfetti-effekt
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
         return;
       }
 
+      // Uppdatera quote state lokalt
+      setQuote(prev => prev ? { ...prev, status: 'accepted' } : prev);
       setAccepted(true);
       setShowSuccessDialog(true);
+      
+      // Konfetti-effekt + toast
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      
+      toast({
+        title: '🎉 Offert accepterad!',
+        description: 'Tack! Vi kontaktar dig inom kort.',
+      });
     } catch (err: any) {
       console.error('Fel vid accept:', err);
       toast({
@@ -843,7 +866,7 @@ export default function QuotePublic() {
                     Denna offert har raderats
                   </p>
                 </div>
-              ) : (accepted && quote?.status !== 'pending_reaccept') ? (
+              ) : accepted ? (
                 <>
                   <div className="bg-green-50 dark:bg-green-900/10 border border-green-600/30 rounded-lg p-4 text-center">
                     <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
