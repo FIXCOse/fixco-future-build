@@ -24,571 +24,418 @@ serve(async (req) => {
     );
 
     const { quoteId } = await req.json();
-    console.log('Generating PDF for quote:', quoteId);
+    console.log('Generating modern PDF for quote:', quoteId);
 
     // Fetch quote data
     const { data: quote, error: quoteError } = await supabaseClient
       .from('quotes_new')
-      .select(`
-        *,
-        customer:customers(*)
-      `)
+      .select(`*, customer:customers(*)`)
       .eq('id', quoteId)
       .single();
 
     if (quoteError || !quote) {
-      console.error('Quote fetch error:', quoteError);
       throw new Error('Quote not found');
     }
 
-    console.log('Quote fetched successfully:', quote.number);
-
-    // Fetch logo from storage
-    const { data: logoData, error: logoError } = await supabaseClient.storage
+    // Fetch logo
+    const { data: logoData } = await supabaseClient.storage
       .from('assets')
       .download('fixco-logo-white.png');
 
-    if (logoError) {
-      console.warn('Logo not found, continuing without logo:', logoError);
-    }
-
     // Create PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
+    let page = pdfDoc.addPage([595, 842]); // A4
     const { width, height } = page.getSize();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    let yPos = height - 50;
+    // ============================================================
+    // HELPER FUNCTIONS (Modern Design System)
+    // ============================================================
 
-    // ============= MINIMAL CLEAN HEADER =============
+    const drawText = (text: string, x: number, y: number, size: number, bold = false, color = rgb(0, 0, 0)) => {
+      page.drawText(text, {
+        x,
+        y,
+        size,
+        font: bold ? fontBold : font,
+        color,
+      });
+    };
 
-    // === CLEAN LOGO (smaller) ===
+    const drawGradientRect = (x: number, y: number, w: number, h: number, colors: any[]) => {
+      const steps = 40;
+      for (let i = 0; i < steps; i++) {
+        const ratio = i / (steps - 1);
+        const r = colors[0].red + ratio * (colors[2].red - colors[0].red);
+        const g = colors[0].green + ratio * (colors[2].green - colors[0].green);
+        const b = colors[0].blue + ratio * (colors[2].blue - colors[0].blue);
+
+        page.drawRectangle({
+          x: x + (ratio * w),
+          y,
+          width: w / steps,
+          height: h,
+          color: rgb(r, g, b),
+        });
+      }
+    };
+
+    const drawCard = (x: number, y: number, w: number, h: number) => {
+      // Shadow
+      page.drawRectangle({
+        x: x + 2,
+        y: y - 2,
+        width: w,
+        height: h,
+        color: rgb(0.88, 0.88, 0.90),
+      });
+      // Card
+      page.drawRectangle({
+        x,
+        y,
+        width: w,
+        height: h,
+        color: rgb(0.98, 0.98, 0.99),
+      });
+    };
+
+    const drawDotPattern = (x: number, y: number, count = 60) => {
+      for (let i = 0; i < count; i++) {
+        page.drawCircle({
+          x: x + i * 8,
+          y,
+          size: 1.5,
+          color: rgb(0.75, 0.75, 0.78),
+          opacity: 0.3,
+        });
+      }
+    };
+
+    const gradientFixco = [
+      rgb(176 / 255, 68 / 255, 255 / 255),   // LILA
+      rgb(28 / 255, 206 / 255, 255 / 255),   // CYAN
+      rgb(255 / 255, 91 / 255, 234 / 255),   // ROSA
+    ];
+
+    // ============================================================
+    // HERO HEADER
+    // ============================================================
+
+    let yPos = height - 70;
+
+    // Logo
     if (logoData) {
       try {
         const logoBytes = await logoData.arrayBuffer();
         const logoImage = await pdfDoc.embedPng(logoBytes);
-        const logoDims = logoImage.scale(0.22);
+        const logoDims = logoImage.scale(0.28);
         
         page.drawImage(logoImage, {
-          x: 50,
-          y: height - 65,
+          x: 60,
+          y: height - 75,
           width: logoDims.width,
           height: logoDims.height,
         });
-      } catch (error) {
-        console.warn('Failed to embed logo:', error);
+      } catch (e) {
+        drawText('FIXCO', 60, height - 70, 32, true);
       }
+    } else {
+      drawText('FIXCO', 60, height - 70, 32, true);
     }
 
-    // === MINIMAL COMPANY INFO (RIGHT SIDE) ===
-    const infoX = width - 180;
-    let infoY = height - 45;
-    const lineSpacing = 14;
+    // Dot pattern under logo
+    drawDotPattern(60, height - 95, 60);
 
-    page.drawText('FIXCO AB', {
-      x: infoX,
-      y: infoY,
-      size: 11,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
+    // ============================================================
+    // ASYMMETRISK TITEL + GILTIG TILL CARD
+    // ============================================================
 
-    infoY -= lineSpacing;
-    page.drawText('Org.nr: 559123-4567', {
-      x: infoX,
-      y: infoY,
-      size: 9,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
+    yPos = height - 150;
+    drawText('OFFERT', 60, yPos, 38, true, rgb(0.10, 0.10, 0.12));
+    yPos -= 30;
+    drawText(`#${quote.number}`, 60, yPos, 18, false, rgb(0.45, 0.45, 0.48));
 
-    infoY -= lineSpacing;
-    page.drawText('info@fixco.se', {
-      x: infoX,
-      y: infoY,
-      size: 9,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
+    // Right card - GILTIG TILL
+    const cardX = width - 230;
+    const cardY = height - 135;
+    drawCard(cardX, cardY, 170, 70);
 
-    infoY -= lineSpacing;
-    page.drawText('073-123 45 67', {
-      x: infoX,
-      y: infoY,
-      size: 9,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
+    drawText('GILTIG TILL', cardX + 15, cardY + 45, 10, true, rgb(0.50, 0.50, 0.53));
+    drawText(
+      new Date(quote.valid_until).toLocaleDateString('sv-SE'),
+      cardX + 15,
+      cardY + 25,
+      13,
+      true,
+      rgb(0.10, 0.10, 0.12)
+    );
+
+    // ============================================================
+    // KUND-CARD MED GRADIENT ACCENT
+    // ============================================================
+
+    yPos -= 60;
+    const custX = 60;
+    const custY = yPos - 100;
+    const custW = width - 120;
+    const custH = 100;
+
+    drawCard(custX, custY, custW, custH);
+
+    // 4px gradient accent bar
+    drawGradientRect(custX, custY, 4, custH, gradientFixco);
+
+    drawText('MOTTAGARE', custX + 20, custY + 75, 11, true, rgb(0.50, 0.50, 0.53));
+    drawText(
+      quote.customer?.name || 'Okänd kund',
+      custX + 20,
+      custY + 55,
+      12,
+      true,
+      rgb(0.10, 0.10, 0.12)
+    );
     
-    // Thin separator under header
-    page.drawLine({
-      start: { x: 40, y: height - 90 },
-      end: { x: width - 40, y: height - 90 },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
-
-    // === CLEAN TITLE SECTION ===
-    yPos = height - 130;
-
-    page.drawText(`Offert #${quote.number}`, {
-      x: 50,
-      y: yPos,
-      size: 24,
-      font: boldFont,
-      color: rgb(0.20, 0.40, 0.70), // Primary blue
-    });
-
-    // Thin separator
-    yPos -= 15;
-    page.drawLine({
-      start: { x: 50, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
-
-    // === INFO GRID (Two Columns - Clean) ===
-    yPos -= 35;
-    const customerName = quote.customer?.name || 'Okänd kund';
-    
-    // Left column - MOTTAGARE
-    page.drawText('MOTTAGARE', {
-      x: 50,
-      y: yPos,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.52, 0.54, 0.56), // Muted
-    });
-
-    yPos -= 18;
-    page.drawText(customerName, {
-      x: 50,
-      y: yPos,
-      size: 12,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
     if (quote.customer?.email) {
-      yPos -= 16;
-      page.drawText(quote.customer.email, {
-        x: 50,
-        y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.40, 0.42, 0.45),
-      });
+      drawText(quote.customer.email, custX + 20, custY + 35, 11, false, rgb(0.40, 0.40, 0.43));
+    }
+    
+    if (quote.customer?.phone) {
+      drawText(quote.customer.phone, custX + 20, custY + 18, 11, false, rgb(0.40, 0.40, 0.43));
     }
 
-    // Right column - GILTIG TILL
-    let rightY = height - 163;
+    // ============================================================
+    // LINE ITEMS MED GRADIENT HEADER
+    // ============================================================
+
+    yPos = custY - 50;
+    drawText('VAD INGÅR I OFFERTEN', 60, yPos, 15, true, rgb(0.10, 0.10, 0.12));
     
-    page.drawText('GILTIG TILL', {
-      x: 350,
-      y: rightY,
-      size: 10,
-      font: font,
-      color: rgb(0.52, 0.54, 0.56),
-    });
-
-    rightY -= 18;
-    page.drawText(new Date(quote.valid_until).toLocaleDateString('sv-SE'), {
-      x: 350,
-      y: rightY,
-      size: 12,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
-    yPos -= 65;
-    
-    page.drawText('VAD INGÅR I OFFERTEN', {
-      x: 50,
-      y: yPos,
-      size: 12,
-      font: boldFont,
-      color: rgb(0.20, 0.40, 0.70),
-    });
-
-    // Separator
-    yPos -= 8;
+    // Thin line
+    yPos -= 10;
     page.drawLine({
-      start: { x: 50, y: yPos },
-      end: { x: width - 50, y: yPos },
+      start: { x: 60, y: yPos },
+      end: { x: width - 60, y: yPos },
       thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
+      color: rgb(0.85, 0.85, 0.87),
     });
 
-    yPos -= 25;
+    yPos -= 30;
+    let tableY = yPos;
 
-    // Process line items by category
+    // Gradient header
+    const headerH = 28;
+    drawGradientRect(60, tableY, width - 120, headerH, gradientFixco);
+
+    drawText('BESKRIVNING', 70, tableY + 10, 11, true, rgb(1, 1, 1));
+    drawText('ANTAL', 280, tableY + 10, 11, true, rgb(1, 1, 1));
+    drawText('PRIS', 360, tableY + 10, 11, true, rgb(1, 1, 1));
+    drawText('BELOPP', 460, tableY + 10, 11, true, rgb(1, 1, 1));
+
+    tableY -= 20;
+
+    // Line items with zebra rows
     const items = quote.items || [];
-
-    // Group items by type
     const workItems = items.filter((item: any) => item.type === 'work' || !item.type);
     const materialItems = items.filter((item: any) => item.type === 'material');
 
-    // 🔧 ARBETE Section
-    if (workItems.length > 0) {
-      page.drawText('ARBETE', {
-        x: 50,
-        y: yPos,
-        size: 11,
-        font: boldFont,
-        color: rgb(0.10, 0.10, 0.12),
-      });
+    let itemIndex = 0;
 
-      yPos -= 20;
+    // ARBETE
+    if (workItems.length > 0) {
+      tableY -= 10;
+      drawText('ARBETE', 70, tableY, 10, true, rgb(0.30, 0.30, 0.33));
+      tableY -= 18;
 
       for (const item of workItems) {
-        if (yPos < 150) {
-          const newPage = pdfDoc.addPage([595.28, 841.89]);
-          yPos = height - 60;
+        if (tableY < 200) {
+          page = pdfDoc.addPage([595, 842]);
+          tableY = height - 60;
         }
 
-        const quantity = item.quantity || 0;
+        const isEven = itemIndex % 2 === 0;
+        const rowH = 24;
+
+        page.drawRectangle({
+          x: 60,
+          y: tableY,
+          width: width - 120,
+          height: rowH,
+          color: isEven ? rgb(1, 1, 1) : rgb(0.97, 0.97, 0.98),
+        });
+
+        const qty = item.quantity || 0;
         const price = item.price || 0;
-        const total = quantity * price;
+        const total = qty * price;
 
-        // Item row
-        const itemDesc = `${item.description} (${quantity} ${item.unit || 'st'} × ${price.toLocaleString('sv-SE')} kr)`;
-        page.drawText(itemDesc, {
-          x: 65,
-          y: yPos,
-          size: 10,
-          font: font,
-          color: rgb(0.10, 0.10, 0.12),
-          maxWidth: 360,
-        });
+        drawText(item.description || '', 70, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${qty}`, 280, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${price.toLocaleString('sv-SE')} kr`, 360, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${total.toLocaleString('sv-SE')} kr`, 460, tableY + 8, 10, true, rgb(0.10, 0.10, 0.12));
 
-        // Amount (right-aligned)
-        page.drawText(`${total.toLocaleString('sv-SE')} kr`, {
-          x: 480,
-          y: yPos,
-          size: 10,
-          font: boldFont,
-          color: rgb(0.10, 0.10, 0.12),
-        });
-
-        yPos -= 16;
-
-        // Supplier info (if available)
-        if (item.supplier) {
-          page.drawText(`Leverantör: ${item.supplier}`, {
-            x: 80,
-            y: yPos,
-            size: 8,
-            font: font,
-            color: rgb(0.52, 0.54, 0.56), // Muted
-          });
-          yPos -= 14;
-        } else {
-          yPos -= 6;
-        }
+        tableY -= rowH;
+        itemIndex++;
       }
-
-      yPos -= 10;
     }
 
-    // 📦 MATERIAL Section
+    // MATERIAL
     if (materialItems.length > 0) {
-      page.drawText('MATERIAL', {
-        x: 50,
-        y: yPos,
-        size: 11,
-        font: boldFont,
-        color: rgb(0.10, 0.10, 0.12),
-      });
-
-      yPos -= 20;
+      tableY -= 10;
+      drawText('MATERIAL', 70, tableY, 10, true, rgb(0.30, 0.30, 0.33));
+      tableY -= 18;
 
       for (const item of materialItems) {
-        if (yPos < 150) {
-          const newPage = pdfDoc.addPage([595.28, 841.89]);
-          yPos = height - 60;
+        if (tableY < 200) {
+          page = pdfDoc.addPage([595, 842]);
+          tableY = height - 60;
         }
 
-        const quantity = item.quantity || 0;
+        const isEven = itemIndex % 2 === 0;
+        const rowH = 24;
+
+        page.drawRectangle({
+          x: 60,
+          y: tableY,
+          width: width - 120,
+          height: rowH,
+          color: isEven ? rgb(1, 1, 1) : rgb(0.97, 0.97, 0.98),
+        });
+
+        const qty = item.quantity || 0;
         const price = item.price || 0;
-        const total = quantity * price;
+        const total = qty * price;
 
-        // Item row
-        const itemDesc = `${item.description} (${quantity} ${item.unit || 'st'} × ${price.toLocaleString('sv-SE')} kr)`;
-        page.drawText(itemDesc, {
-          x: 65,
-          y: yPos,
-          size: 10,
-          font: font,
-          color: rgb(0.10, 0.10, 0.12),
-          maxWidth: 360,
-        });
+        drawText(item.description || '', 70, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${qty}`, 280, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${price.toLocaleString('sv-SE')} kr`, 360, tableY + 8, 10, false, rgb(0.10, 0.10, 0.12));
+        drawText(`${total.toLocaleString('sv-SE')} kr`, 460, tableY + 8, 10, true, rgb(0.10, 0.10, 0.12));
 
-        // Amount (right-aligned)
-        page.drawText(`${total.toLocaleString('sv-SE')} kr`, {
-          x: 480,
-          y: yPos,
-          size: 10,
-          font: boldFont,
-          color: rgb(0.10, 0.10, 0.12),
-        });
-
-        yPos -= 16;
-
-        // Supplier info (if available)
-        if (item.supplier) {
-          page.drawText(`Leverantör: ${item.supplier}`, {
-            x: 80,
-            y: yPos,
-            size: 8,
-            font: font,
-            color: rgb(0.52, 0.54, 0.56),
-          });
-          yPos -= 14;
-        } else {
-          yPos -= 6;
-        }
+        tableY -= rowH;
+        itemIndex++;
       }
-
-      yPos -= 10;
     }
 
-    // === CLEAN COST SPECIFICATION ===
-    yPos -= 35;
-    
-    page.drawText('KOSTNADSSPECIFIKATION', {
-      x: 50,
-      y: yPos,
-      size: 12,
-      font: boldFont,
-      color: rgb(0.20, 0.40, 0.70),
-    });
+    // ============================================================
+    // KOSTNADSSPECIFIKATION (Mini Cards)
+    // ============================================================
 
-    // Separator
-    yPos -= 8;
-    page.drawLine({
-      start: { x: 50, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
+    tableY -= 40;
+    drawText('KOSTNADSSPECIFIKATION', 60, tableY, 13, true, rgb(0.10, 0.10, 0.12));
+    tableY -= 30;
 
-    yPos -= 25;
-    const costX = 350;
+    const costX = width - 280;
 
-    // Work cost row
-    page.drawText('Arbetskostnad', {
-      x: costX,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
-    page.drawText(`${(quote.subtotal_work_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.10, 0.10, 0.12),
-    });
+    // Work cost
+    drawText('Arbetskostnad', costX, tableY, 10, false, rgb(0.40, 0.40, 0.43));
+    drawText(
+      `${(quote.subtotal_work_sek || 0).toLocaleString('sv-SE')} kr`,
+      width - 110,
+      tableY,
+      10,
+      false,
+      rgb(0.10, 0.10, 0.12)
+    );
+    tableY -= 20;
 
-    yPos -= 14;
-    page.drawLine({
-      start: { x: costX - 10, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
+    // Material cost
+    drawText('Material', costX, tableY, 10, false, rgb(0.40, 0.40, 0.43));
+    drawText(
+      `${(quote.subtotal_mat_sek || 0).toLocaleString('sv-SE')} kr`,
+      width - 110,
+      tableY,
+      10,
+      false,
+      rgb(0.10, 0.10, 0.12)
+    );
+    tableY -= 20;
 
-    // Material cost row
-    yPos -= 14;
-    page.drawText('Material', {
-      x: costX,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
-    page.drawText(`${(quote.subtotal_mat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.10, 0.10, 0.12),
-    });
+    // VAT
+    drawText('Moms (25%)', costX, tableY, 10, false, rgb(0.40, 0.40, 0.43));
+    drawText(
+      `${(quote.vat_sek || 0).toLocaleString('sv-SE')} kr`,
+      width - 110,
+      tableY,
+      10,
+      false,
+      rgb(0.10, 0.10, 0.12)
+    );
+    tableY -= 20;
 
-    yPos -= 14;
-    page.drawLine({
-      start: { x: costX - 10, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
-
-    // VAT row
-    yPos -= 14;
-    page.drawText('Moms (25%)', {
-      x: costX,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
-    page.drawText(`${(quote.vat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
-      y: yPos,
-      size: 10,
-      font: font,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    yPos -= 14;
-    page.drawLine({
-      start: { x: costX - 10, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
-
-    // ROT-avdrag (GREEN BOX if applicable)
+    // ROT deduction (if any)
     if (quote.rot_deduction_sek && quote.rot_deduction_sek > 0) {
-      yPos -= 18;
-      
-      // Green background box
+      // Green badge
       page.drawRectangle({
-        x: costX - 12,
-        y: yPos - 4,
-        width: width - costX - 38,
-        height: 20,
-        color: rgb(0.96, 0.99, 0.96), // Light green bg
-        borderColor: rgb(0.60, 0.80, 0.60), // Green border
+        x: costX - 5,
+        y: tableY - 3,
+        width: 190,
+        height: 18,
+        color: rgb(0.93, 0.98, 0.93),
+        borderColor: rgb(0.50, 0.80, 0.50),
         borderWidth: 1,
       });
 
-      page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%)`, {
-        x: costX,
-        y: yPos,
-        size: 10,
-        font: boldFont,
-        color: rgb(0.13, 0.55, 0.13), // Green text
-      });
-      page.drawText(`-${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr`, {
-        x: 480,
-        y: yPos,
-        size: 10,
-        font: boldFont,
-        color: rgb(0.13, 0.55, 0.13),
-      });
-
-      yPos -= 18;
-      page.drawLine({
-        start: { x: costX - 10, y: yPos },
-        end: { x: width - 50, y: yPos },
-        thickness: 0.5,
-        color: rgb(0.90, 0.92, 0.94),
-      });
+      drawText(
+        `ROT-avdrag (${quote.rot_percentage || 30}%)`,
+        costX,
+        tableY,
+        10,
+        true,
+        rgb(0.13, 0.60, 0.13)
+      );
+      drawText(
+        `-${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr`,
+        width - 110,
+        tableY,
+        10,
+        true,
+        rgb(0.13, 0.60, 0.13)
+      );
+      tableY -= 25;
     }
 
-    // === HERO TOTAL BOX - LARGE GRADIENT (LILA → CYAN → ROSA) ===
-    yPos -= 30;
-    const totalBoxWidth = 250; // STÖRRE!
-    const totalBoxHeight = 70; // STÖRRE!
-    const totalBoxX = width - totalBoxWidth - 50;
+    // ============================================================
+    // HERO TOTAL BOX (300×120px!)
+    // ============================================================
 
-    // Smooth 3-color gradient (LILA → CYAN → ROSA)
-    const gradientSteps = 40;
-    for (let i = 0; i < gradientSteps; i++) {
-      const ratio = i / (gradientSteps - 1);
-      
-      let r, g, b;
-      
-      if (ratio < 0.5) {
-        // First half: LILA → CYAN (0 → 0.5)
-        const localRatio = ratio * 2; // 0 → 1
-        r = 0.52 + (0.00 - 0.52) * localRatio;  // 0.52 → 0.00
-        g = 0.20 + (0.75 - 0.20) * localRatio;  // 0.20 → 0.75
-        b = 0.90 + (1.00 - 0.90) * localRatio;  // 0.90 → 1.00
-      } else {
-        // Second half: CYAN → ROSA (0.5 → 1.0)
-        const localRatio = (ratio - 0.5) * 2; // 0 → 1
-        r = 0.00 + (1.00 - 0.00) * localRatio;  // 0.00 → 1.00
-        g = 0.75 + (0.30 - 0.75) * localRatio;  // 0.75 → 0.30
-        b = 1.00 + (0.90 - 1.00) * localRatio;  // 1.00 → 0.90
-      }
-      
-      page.drawRectangle({
-        x: totalBoxX,
-        y: yPos - totalBoxHeight + (i * totalBoxHeight / gradientSteps),
-        width: totalBoxWidth,
-        height: (totalBoxHeight / gradientSteps) + 1,
-        color: rgb(r, g, b),
-      });
-    }
+    tableY -= 20;
+    const totalBoxW = 300;
+    const totalBoxH = 110;
+    const totalBoxX = width - totalBoxW - 50;
+    const totalBoxY = tableY - totalBoxH;
 
-    // White text on gradient
-    page.drawText('TOTALT ATT BETALA', {
-      x: totalBoxX + 20,
-      y: yPos - 20,
-      size: 14,
-      font: boldFont,
-      color: rgb(1, 1, 1),
-    });
+    drawGradientRect(totalBoxX, totalBoxY, totalBoxW, totalBoxH, gradientFixco);
 
-    page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: totalBoxX + 20,
-      y: yPos - 50,
-      size: 26,
-      font: boldFont,
-      color: rgb(1, 1, 1),
-    });
+    drawText('TOTALT ATT BETALA', totalBoxX + 20, totalBoxY + 80, 13, true, rgb(1, 1, 1));
+    drawText(
+      `${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`,
+      totalBoxX + 20,
+      totalBoxY + 45,
+      30,
+      true,
+      rgb(1, 1, 1)
+    );
+    drawText('inkl. moms', totalBoxX + 20, totalBoxY + 20, 12, false, rgb(1, 1, 1));
 
-    // === MINIMAL FOOTER ===
-    const footerY = 80;
-    
-    // Thin separator line
-    page.drawLine({
-      start: { x: 50, y: footerY },
-      end: { x: width - 50, y: footerY },
-      thickness: 0.5,
-      color: rgb(0.90, 0.92, 0.94),
-    });
+    // ============================================================
+    // FOOTER
+    // ============================================================
 
-    yPos = footerY - 18;
-    
-    page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {
-      x: (width - 300) / 2,
-      y: yPos,
-      size: 8,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
+    const footerY = 70;
+    drawDotPattern(60, footerY, 60);
 
-    yPos -= 12;
-    page.drawText('info@fixco.se | 073-123 45 67 | fixco.se', {
-      x: (width - 230) / 2,
-      y: yPos,
-      size: 8,
-      font: font,
-      color: rgb(0.40, 0.42, 0.45),
-    });
+    // Gradient line
+    drawGradientRect(60, footerY - 10, width - 120, 2, gradientFixco);
 
-    yPos -= 12;
-    page.drawText('Betalningsvillkor: 30 dagar netto. Dröjsmålsränta enligt lag.', {
-      x: (width - 330) / 2,
-      y: yPos,
-      size: 8,
-      font: font,
-      color: rgb(0.52, 0.54, 0.56),
-    });
+    drawText('Fixco AB • Org.nr: 559123-4567 • Bankgiro: 1234-5678', 60, footerY - 30, 9);
+    drawText('info@fixco.se • 073-123 45 67 • fixco.se', 60, footerY - 45, 9);
 
-    // Save PDF
+    // ============================================================
+    // SAVE & UPLOAD PDF
+    // ============================================================
+
     const pdfBytes = await pdfDoc.save();
-    console.log('PDF generated, size:', pdfBytes.length);
 
-    // Upload to Supabase Storage
-    const fileName = `quote_${quote.number}_${Date.now()}.pdf`;
+    const fileName = `quote-${quote.number}-${Date.now()}.pdf`;
     const { data: uploadData, error: uploadError } = await supabaseClient.storage
       .from('quotes')
       .upload(fileName, pdfBytes, {
@@ -597,56 +444,37 @@ serve(async (req) => {
       });
 
     if (uploadError) {
-      console.error('Upload error:', uploadError);
-      throw new Error(`Failed to upload PDF: ${uploadError.message}`);
+      throw new Error(`Upload failed: ${uploadError.message}`);
     }
 
-    console.log('PDF uploaded:', fileName);
-
-    // Get public URL
-    const { data: { publicUrl } } = supabaseClient.storage
+    const { data: publicUrlData } = supabaseClient.storage
       .from('quotes')
       .getPublicUrl(fileName);
 
-    // Add cache-busting parameter to force browser reload
-    const cacheBustedUrl = `${publicUrl}?t=${Date.now()}`;
-    console.log('Public URL:', cacheBustedUrl);
+    const pdfUrl = publicUrlData.publicUrl;
 
-    // Update quote with PDF URL
-    const { error: updateError } = await supabaseClient
+    await supabaseClient
       .from('quotes_new')
-      .update({ pdf_url: publicUrl })
+      .update({ pdf_url: pdfUrl })
       .eq('id', quoteId);
 
-    if (updateError) {
-      console.error('Update error:', updateError);
-      throw new Error(`Failed to update quote: ${updateError.message}`);
-    }
-
-    console.log('Quote updated with PDF URL');
-
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        pdfUrl: cacheBustedUrl,
-        message: 'PDF genererad och sparad' 
+      JSON.stringify({
+        success: true,
+        pdf_url: pdfUrl,
+        message: 'Modern PDF generated successfully',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
       }
     );
-
-  } catch (error) {
-    console.error('Error in generate-pdf-from-quote:', error);
+  } catch (error: any) {
+    console.error('PDF generation error:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message || 'Failed to generate PDF',
-        details: error.toString()
-      }),
+      JSON.stringify({ error: error.message }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
   }
