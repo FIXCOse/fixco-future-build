@@ -79,28 +79,24 @@ export default function QuoteHtmlPreview() {
   // Test data for quote
   const [quoteData, setQuoteData] = useState({
     number: "2025-001",
-    date: "2025-11-25",
+    created_at: "2025-11-25",
     valid_until: "2025-12-25",
     customer_name: "Kalle Karlsson",
     customer_email: "kalle@example.com",
     customer_phone: "070-123 45 67",
     customer_address: "Testgatan 123, 753 20 Uppsala",
     items: [
-      { name: "Installation av eluttag", quantity: 5, unit_price: 800, category: 'work' as const },
-      { name: "Byte av armaturer", quantity: 3, unit_price: 1200, category: 'work' as const },
-      { name: "Eluttag (Schneider)", quantity: 5, unit_price: 150, category: 'material' as const },
-      { name: "Armaturer (Philips)", quantity: 3, unit_price: 450, category: 'material' as const },
+      { description: "Installation av eluttag", quantity: 5, price: 800, unit: 'tim', type: 'work' as const },
+      { description: "Byte av armaturer", quantity: 3, price: 1200, unit: 'tim', type: 'work' as const },
+      { description: "Eluttag (Schneider)", quantity: 5, price: 150, unit: 'st', type: 'material' as const },
+      { description: "Armaturer (Philips)", quantity: 3, price: 450, unit: 'st', type: 'material' as const },
     ],
-    subtotal: 7100,
-    vat_amount: 1775,
-    total_amount: 8875,
-    rot_deduction: 2130,
-    notes: "Arbetet utförs enligt bästa praxis. Material ingår enligt specifikation.",
-    cost_specifications: {
-      work_cost: 5000,
-      material_cost: 2100,
-      rot_deduction: 2130,
-    }
+    subtotal_work_sek: 5000,
+    subtotal_mat_sek: 2100,
+    vat_sek: 1775,
+    rot_deduction_sek: 1500,
+    rot_percentage: 30,
+    total_sek: 7375,
   });
 
   // Test data for invoice
@@ -113,15 +109,14 @@ export default function QuoteHtmlPreview() {
     customer_phone: "070-987 65 43",
     customer_address: "Storgatan 456, 753 20 Uppsala",
     line_items: [
-      { description: "Städning 3 rum + kök", quantity: 1, unit_price: 1500, vat_rate: 25, category: 'work' as const },
-      { description: "Fönsterputsning", quantity: 8, unit_price: 150, vat_rate: 25, category: 'work' as const },
-      { description: "Städmaterial", quantity: 1, unit_price: 200, vat_rate: 25, category: 'material' as const },
+      { description: "Städning 3 rum + kök", quantity: 1, unit_price: 1500, total_price: 1500, unit: 'tim', type: 'work' as const },
+      { description: "Fönsterputsning", quantity: 8, unit_price: 150, total_price: 1200, unit: 'st', type: 'work' as const },
+      { description: "Städmaterial", quantity: 1, unit_price: 200, total_price: 200, unit: 'st', type: 'material' as const },
     ],
     subtotal: 2900,
     vat_amount: 725,
     total_amount: 3625,
     rut_amount: 870,
-    notes: "Betalning sker enligt överenskommelse. Tack för ditt förtroende!"
   });
 
   const html = viewMode === 'quote' 
@@ -220,24 +215,16 @@ export default function QuoteHtmlPreview() {
                   <Label>Totalt belopp (kr)</Label>
                   <Input
                     type="number"
-                    value={quoteData.total_amount}
-                    onChange={(e) => handleUpdateQuoteData('total_amount', Number(e.target.value))}
+                    value={quoteData.total_sek}
+                    onChange={(e) => handleUpdateQuoteData('total_sek', Number(e.target.value))}
                   />
                 </div>
                 <div>
                   <Label>ROT-avdrag (kr)</Label>
                   <Input
                     type="number"
-                    value={quoteData.rot_deduction}
-                    onChange={(e) => handleUpdateQuoteData('rot_deduction', Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <Label>Anteckningar</Label>
-                  <Textarea
-                    value={quoteData.notes}
-                    onChange={(e) => handleUpdateQuoteData('notes', e.target.value)}
-                    rows={3}
+                    value={quoteData.rot_deduction_sek}
+                    onChange={(e) => handleUpdateQuoteData('rot_deduction_sek', Number(e.target.value))}
                   />
                 </div>
               </CardContent>
@@ -323,14 +310,6 @@ export default function QuoteHtmlPreview() {
                     type="number"
                     value={invoiceData.rut_amount}
                     onChange={(e) => handleUpdateInvoiceData('rut_amount', Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <Label>Anteckningar</Label>
-                  <Textarea
-                    value={invoiceData.notes}
-                    onChange={(e) => handleUpdateInvoiceData('notes', e.target.value)}
-                    rows={3}
                   />
                 </div>
               </CardContent>
