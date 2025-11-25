@@ -19,15 +19,18 @@ const Navbar2 = () => {
   console.log('🔧 [Navbar2] Component rendering!');
 
   const toggleDropdown = (dropdownId: string) => {
+    console.log('🔧 [toggleDropdown] Toggling:', dropdownId, 'Current:', openDropdown);
     setOpenDropdown(openDropdown === dropdownId ? null : dropdownId);
   };
 
   const handleMouseEnter = (dropdownId: string) => {
+    console.log('🔧 [handleMouseEnter] Mouse entered:', dropdownId, 'Window width:', window.innerWidth);
     if (window.innerWidth >= 768) {
       if (closeTimeout) {
         clearTimeout(closeTimeout);
         setCloseTimeout(null);
       }
+      console.log('🔧 [handleMouseEnter] Setting dropdown to:', dropdownId);
       setOpenDropdown(dropdownId);
     }
   };
@@ -48,6 +51,10 @@ const Navbar2 = () => {
       }
     };
   }, [closeTimeout]);
+
+  useEffect(() => {
+    console.log('🔧 [Navbar2] openDropdown state changed to:', openDropdown);
+  }, [openDropdown]);
 
   const closeDropdown = () => {
     setOpenDropdown(null);
@@ -177,6 +184,7 @@ const Navbar2 = () => {
                 className="rd-navbar_link w-dropdown-toggle"
                 onClick={() => toggleDropdown('services')}
                 onMouseEnter={() => handleMouseEnter('services')}
+                style={{ cursor: 'pointer' }}
               >
           <Wrench className="rd-navbar_link_icon" />
           <div className="rd-navbar_link_text">{t('nav.services')}</div>
@@ -257,6 +265,7 @@ const Navbar2 = () => {
                 className="rd-navbar_link w-dropdown-toggle"
                 onClick={() => toggleDropdown('more')}
                 onMouseEnter={() => handleMouseEnter('more')}
+                style={{ cursor: 'pointer' }}
               >
           <Menu className="rd-navbar_link_icon" />
           <div className="rd-navbar_link_text">{currentLanguage === 'en' ? 'More' : 'Mer'}</div>
