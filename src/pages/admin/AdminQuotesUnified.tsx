@@ -252,12 +252,16 @@ export default function AdminQuotesUnified() {
       toast.success('PDF genererad!');
       
       if (data?.pdfUrl) {
-        const newWindow = window.open(data.pdfUrl, '_blank');
+        const timestamp = new Date().getTime();
+        const pdfUrlWithTimestamp = `${data.pdfUrl}?t=${timestamp}`;
+        
+        const newWindow = window.open(pdfUrlWithTimestamp, '_blank');
         
         // Om popup blockeras, visa preview dialog istället
         if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-          setPdfPreviewUrl(data.pdfUrl);
+          setPdfPreviewUrl(pdfUrlWithTimestamp);
           setShowPdfDialog(true);
+          toast.info('Popup blockerades. Använd preview-dialogen för att visa PDF:en.');
         }
       }
       

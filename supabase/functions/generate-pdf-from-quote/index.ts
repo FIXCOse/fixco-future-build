@@ -61,46 +61,46 @@ serve(async (req) => {
 
     let yPos = height - 50;
 
-    // ============= MODERN GRADIENT HEADER =============
-    const headerHeight = 130;
-    
-    // Create gradient effect with multiple rectangles
-    const gradientSteps = 20;
+    // ============= ELEGANT PREMIUM HEADER =============
+    const headerHeight = 160;
+    const gradientSteps = 40;
+
+    // Create smooth elegant gradient (dark blue to medium blue)
     for (let i = 0; i < gradientSteps; i++) {
       const ratio = i / gradientSteps;
-      const r = 0.1 + (0.15 - 0.1) * ratio;
-      const g = 0.21 + (0.30 - 0.21) * ratio;
-      const b = 0.36 + (0.48 - 0.36) * ratio;
+      const r = 0.09 + (0.12 - 0.09) * ratio;
+      const g = 0.19 + (0.26 - 0.19) * ratio;
+      const b = 0.33 + (0.42 - 0.33) * ratio;
       
       page.drawRectangle({
         x: 0,
         y: height - headerHeight + (i * headerHeight / gradientSteps),
         width: width,
-        height: headerHeight / gradientSteps + 1,
+        height: (headerHeight / gradientSteps) + 1,
         color: rgb(r, g, b),
       });
     }
-    
-    // Subtle shadow below header
+
+    // Subtle glow effect under header
     page.drawRectangle({
       x: 0,
-      y: height - headerHeight - 2,
+      y: height - headerHeight - 8,
       width: width,
-      height: 2,
-      color: rgb(0, 0, 0),
-      opacity: 0.15,
+      height: 8,
+      color: rgb(0.09, 0.19, 0.33),
+      opacity: 0.05,
     });
 
-    // Embed and draw logo if available
+    // === LARGER, MORE VISIBLE LOGO ===
     if (logoData) {
       try {
         const logoBytes = await logoData.arrayBuffer();
         const logoImage = await pdfDoc.embedPng(logoBytes);
-        const logoDims = logoImage.scale(0.15);
+        const logoDims = logoImage.scale(0.25);
         
         page.drawImage(logoImage, {
           x: 50,
-          y: height - 100,
+          y: height - 110,
           width: logoDims.width,
           height: logoDims.height,
         });
@@ -109,83 +109,126 @@ serve(async (req) => {
       }
     }
 
-    // Company info (right side of header)
+    // === ELEGANT COMPANY INFO (RIGHT SIDE) ===
+    let infoY = height - 70;
+    const infoX = width - 220;
+    const lineSpacing = 18;
+
     page.drawText('FIXCO AB', {
-      x: width - 200,
-      y: height - 55,
-      size: 14,
+      x: infoX,
+      y: infoY,
+      size: 16,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
+    infoY -= lineSpacing;
     page.drawText('Org.nr: 559123-4567', {
-      x: width - 200,
-      y: height - 72,
-      size: 9,
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.9, 0.9, 0.9),
+      opacity: 0.85,
     });
 
+    infoY -= lineSpacing;
     page.drawText('info@fixco.se', {
-      x: width - 200,
-      y: height - 86,
-      size: 9,
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.9, 0.9, 0.9),
+      opacity: 0.85,
     });
 
-    page.drawText('+46 70 123 45 67', {
-      x: width - 200,
-      y: height - 100,
-      size: 9,
+    infoY -= lineSpacing;
+    page.drawText('073-123 45 67', {
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.9, 0.9, 0.9),
+      opacity: 0.85,
     });
 
-    page.drawText('www.fixco.se', {
-      x: width - 200,
-      y: height - 114,
-      size: 9,
+    infoY -= lineSpacing;
+    page.drawText('fixco.se', {
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.9, 0.9, 0.9),
+      opacity: 0.85,
     });
 
-    // ============= TITLE =============
-    yPos = height - 170;
+    // === PROMINENT TITLE WITH SUBTLE BACKGROUND ===
+    yPos = height - 190;
+
+    // Subtle background for title
+    page.drawRectangle({
+      x: 40,
+      y: yPos - 10,
+      width: 320,
+      height: 50,
+      color: rgb(0.98, 0.99, 1),
+      opacity: 0.5,
+    });
+
     page.drawText(`OFFERT ${quote.number}`, {
       x: 50,
       y: yPos,
-      size: 32,
+      size: 36,
       font: boldFont,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.09, 0.19, 0.33),
     });
 
-    // Two-column layout for customer and quote details
-    yPos -= 50;
-    
-    // Left column - Customer information
-    page.drawText('KUND', {
+    // === CUSTOMER INFO WITH ELEGANT BOX ===
+    yPos -= 70;
+
+    // Box for customer section
+    page.drawRectangle({
+      x: 40,
+      y: yPos - 100,
+      width: 250,
+      height: 120,
+      color: rgb(0.98, 0.99, 1),
+      borderColor: rgb(0.92, 0.94, 0.96),
+      borderWidth: 1,
+    });
+
+    // Accent bar
+    page.drawRectangle({
       x: 50,
+      y: yPos + 5,
+      width: 6,
+      height: 20,
+      color: rgb(0.09, 0.19, 0.33),
+    });
+
+    page.drawText('KUND', {
+      x: 65,
       y: yPos,
       size: 11,
       font: boldFont,
-      color: rgb(0.2, 0.2, 0.2),
+      color: rgb(0.4, 0.4, 0.4),
     });
 
     yPos -= 20;
     const customerName = quote.customer?.name || 'Okänd kund';
     page.drawText(customerName, {
-      x: 50,
+      x: 65,
       y: yPos,
-      size: 11,
+      size: 12,
       font: boldFont,
-      color: rgb(0, 0, 0),
+      color: rgb(0.1, 0.1, 0.1),
     });
 
     if (quote.customer?.email) {
-      yPos -= 16;
+      yPos -= 18;
       page.drawText(quote.customer.email, {
-        x: 50,
+        x: 65,
         y: yPos,
         size: 10,
         font: font,
@@ -196,7 +239,7 @@ serve(async (req) => {
     if (quote.customer?.phone) {
       yPos -= 16;
       page.drawText(quote.customer.phone, {
-        x: 50,
+        x: 65,
         y: yPos,
         size: 10,
         font: font,
@@ -204,111 +247,176 @@ serve(async (req) => {
       });
     }
 
-    // Right column - Quote details
-    let rightColY = height - 220;
+    // === QUOTE DETAILS BOX (RIGHT COLUMN) ===
+    let detailsY = height - 260;
+    const detailsX = width - 250;
+
+    // Box for details section
+    page.drawRectangle({
+      x: detailsX - 10,
+      y: detailsY - 80,
+      width: 230,
+      height: 100,
+      color: rgb(0.98, 0.99, 1),
+      borderColor: rgb(0.92, 0.94, 0.96),
+      borderWidth: 1,
+    });
+
+    // Accent bar
+    page.drawRectangle({
+      x: detailsX,
+      y: detailsY + 5,
+      width: 6,
+      height: 20,
+      color: rgb(0.09, 0.19, 0.33),
+    });
+
     page.drawText('OFFERTDETALJER', {
-      x: 350,
-      y: rightColY,
+      x: detailsX + 15,
+      y: detailsY,
       size: 11,
       font: boldFont,
-      color: rgb(0.2, 0.2, 0.2),
+      color: rgb(0.4, 0.4, 0.4),
     });
 
-    rightColY -= 20;
-    page.drawText(`Datum: ${new Date(quote.created_at).toLocaleDateString('sv-SE')}`, {
-      x: 350,
-      y: rightColY,
+    detailsY -= 20;
+    page.drawText('Offertnummer:', {
+      x: detailsX + 15,
+      y: detailsY,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    page.drawText(quote.number, {
+      x: detailsX + 120,
+      y: detailsY,
+      size: 10,
+      font: boldFont,
+      color: rgb(0.1, 0.1, 0.1),
     });
 
-    rightColY -= 16;
-    page.drawText(`Giltig till: ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}`, {
-      x: 350,
-      y: rightColY,
+    detailsY -= 18;
+    page.drawText('Datum:', {
+      x: detailsX + 15,
+      y: detailsY,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    page.drawText(new Date(quote.created_at).toLocaleDateString('sv-SE'), {
+      x: detailsX + 120,
+      y: detailsY,
+      size: 10,
+      font: font,
+      color: rgb(0.1, 0.1, 0.1),
     });
 
-    // Line items table
+    detailsY -= 18;
+    page.drawText('Giltig till:', {
+      x: detailsX + 15,
+      y: detailsY,
+      size: 10,
+      font: font,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    page.drawText(new Date(quote.valid_until).toLocaleDateString('sv-SE'), {
+      x: detailsX + 120,
+      y: detailsY,
+      size: 10,
+      font: font,
+      color: rgb(0.1, 0.1, 0.1),
+    });
+
+    // === MODERN LINE ITEMS TABLE ===
     yPos -= 60;
+
     page.drawText('SPECIFIKATION', {
       x: 50,
       y: yPos,
       size: 13,
       font: boldFont,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.09, 0.19, 0.33),
     });
 
-    // ============= TABLE HEADER =============
     yPos -= 30;
-    // Rounded rectangle for table header
-    const tableHeaderY = yPos - 5;
-    page.drawRectangle({
-      x: 40,
-      y: tableHeaderY,
-      width: width - 80,
-      height: 25,
-      color: rgb(0.1, 0.21, 0.36),
-      borderRadius: 4,
-    });
+    const tableY = yPos;
+    const tableWidth = width - 80;
+    
+    // Table header with gradient
+    for (let i = 0; i < 10; i++) {
+      const ratio = i / 10;
+      const r = 0.09 + (0.11 - 0.09) * ratio;
+      const g = 0.19 + (0.22 - 0.19) * ratio;
+      const b = 0.33 + (0.38 - 0.33) * ratio;
+      
+      page.drawRectangle({
+        x: 40,
+        y: tableY - 5 + (i * 30 / 10),
+        width: tableWidth,
+        height: 30 / 10 + 1,
+        color: rgb(r, g, b),
+      });
+    }
 
     page.drawText('Beskrivning', {
       x: 50,
       y: yPos + 2,
-      size: 10,
+      size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
     page.drawText('Antal', {
       x: 320,
       y: yPos + 2,
-      size: 10,
+      size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
     page.drawText('Enhet', {
       x: 375,
       y: yPos + 2,
-      size: 10,
+      size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
     page.drawText('Pris/enhet', {
       x: 430,
       y: yPos + 2,
-      size: 10,
+      size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
     page.drawText('Totalt', {
       x: 500,
       y: yPos + 2,
-      size: 10,
+      size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
+      opacity: 0.95,
     });
 
-    // Table rows with alternating background
+    // Table rows with improved styling
     yPos -= 25;
     const items = quote.items || [];
     let rowIndex = 0;
     
     for (const item of items) {
-      // Alternating row background
+      // Alternating row background (more subtle)
       if (rowIndex % 2 === 1) {
         page.drawRectangle({
           x: 40,
           y: yPos - 5,
-          width: width - 80,
+          width: tableWidth,
           height: 20,
-          color: rgb(0.97, 0.97, 0.97),
+          color: rgb(0.985, 0.99, 0.995),
         });
       }
 
@@ -367,18 +475,34 @@ serve(async (req) => {
       }
     }
 
-    // Summary section with background
+    // === ELEGANT SUMMARY BOX ===
     yPos -= 20;
+    const summaryX = width - 260;
+    const summaryBoxWidth = 240;
+
+    // Subtle shadow
     page.drawRectangle({
-      x: 340,
-      y: yPos - 120,
-      width: width - 390,
-      height: 130,
-      color: rgb(0.98, 0.98, 0.98),
+      x: summaryX - 6,
+      y: yPos - 94,
+      width: summaryBoxWidth,
+      height: 90,
+      color: rgb(0, 0, 0),
+      opacity: 0.03,
+    });
+
+    // Main summary box
+    page.drawRectangle({
+      x: summaryX - 10,
+      y: yPos - 90,
+      width: summaryBoxWidth,
+      height: 90,
+      color: rgb(0.99, 0.99, 1),
+      borderColor: rgb(0.90, 0.92, 0.95),
+      borderWidth: 1,
     });
 
     page.drawLine({
-      start: { x: 350, y: yPos },
+      start: { x: summaryX - 10, y: yPos },
       end: { x: width - 50, y: yPos },
       thickness: 1,
       color: rgb(0.8, 0.8, 0.8),
@@ -386,164 +510,248 @@ serve(async (req) => {
 
     yPos -= 25;
     page.drawText('Arbetskostnad:', {
-      x: 360,
+      x: summaryX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.3, 0.3, 0.3),
     });
     page.drawText(`${(quote.subtotal_work_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
+      x: width - 110,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.1, 0.1, 0.1),
     });
 
     yPos -= 18;
     page.drawText('Material:', {
-      x: 360,
+      x: summaryX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.3, 0.3, 0.3),
     });
     page.drawText(`${(quote.subtotal_mat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
+      x: width - 110,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.1, 0.1, 0.1),
     });
 
     yPos -= 18;
     page.drawText('Moms (25%):', {
-      x: 360,
+      x: summaryX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.3, 0.3, 0.3),
     });
     page.drawText(`${(quote.vat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
+      x: width - 110,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0, 0, 0),
+      color: rgb(0.1, 0.1, 0.1),
     });
 
-    // ============= ROT-AVDRAG HIGHLIGHT =============
+    // === ROT-AVDRAG WITH ENHANCED STYLING ===
     if (quote.rot_deduction_sek && quote.rot_deduction_sek > 0) {
-      yPos -= 18;
+      yPos -= 24;
       
-      // Green highlight box for ROT savings
+      // Glow effect
       page.drawRectangle({
-        x: 350,
-        y: yPos - 5,
-        width: width - 400,
-        height: 22,
-        color: rgb(0.9, 0.98, 0.9),
-        borderColor: rgb(0.1, 0.7, 0.1),
-        borderWidth: 1,
+        x: summaryX - 12,
+        y: yPos - 7,
+        width: summaryBoxWidth + 4,
+        height: 28,
+        color: rgb(0.1, 0.7, 0.1),
+        opacity: 0.1,
       });
-      
+
+      // Green highlight box for ROT
+      page.drawRectangle({
+        x: summaryX - 10,
+        y: yPos - 5,
+        width: summaryBoxWidth,
+        height: 24,
+        color: rgb(0.95, 0.99, 0.95),
+        borderColor: rgb(0.2, 0.8, 0.3),
+        borderWidth: 1.5,
+      });
+
+      // Icon circle
+      page.drawCircle({
+        x: summaryX + 5,
+        y: yPos + 7,
+        size: 8,
+        color: rgb(0.1, 0.7, 0.1),
+      });
+
       page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%):`, {
-        x: 360,
+        x: summaryX + 20,
         y: yPos,
         size: 11,
         font: boldFont,
-        color: rgb(0.1, 0.6, 0.1),
+        color: rgb(0.1, 0.5, 0.1),
       });
       page.drawText(`-${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr`, {
-        x: 480,
+        x: width - 110,
         y: yPos,
         size: 11,
         font: boldFont,
-        color: rgb(0.1, 0.6, 0.1),
+        color: rgb(0.1, 0.5, 0.1),
       });
     }
 
-    // ============= TOTAL SUM - PROMINENT BOX =============
-    yPos -= 22;
-    page.drawLine({
-      start: { x: 350, y: yPos },
-      end: { x: width - 50, y: yPos },
-      thickness: 2,
-      color: rgb(0.1, 0.21, 0.36),
+    // === HERO TOTAL BOX ===
+    yPos -= 34;
+
+    // Subtle outer glow
+    page.drawRectangle({
+      x: summaryX - 14,
+      y: yPos - 48,
+      width: summaryBoxWidth + 8,
+      height: 50,
+      color: rgb(0.09, 0.19, 0.33),
+      opacity: 0.15,
     });
 
-    yPos -= 38;
-    
-    // Prominent box for total amount
-    page.drawRectangle({
-      x: 350,
-      y: yPos - 8,
-      width: width - 400,
-      height: 35,
-      color: rgb(0.1, 0.21, 0.36),
-      borderRadius: 6,
+    // Gradient background for total
+    for (let i = 0; i < 15; i++) {
+      const ratio = i / 15;
+      const r = 0.09 + (0.12 - 0.09) * ratio;
+      const g = 0.19 + (0.23 - 0.19) * ratio;
+      const b = 0.33 + (0.40 - 0.33) * ratio;
+      
+      page.drawRectangle({
+        x: summaryX - 10,
+        y: yPos - 42 + (i * 42 / 15),
+        width: summaryBoxWidth,
+        height: 42 / 15 + 1,
+        color: rgb(r, g, b),
+      });
+    }
+
+    page.drawText('TOTALT ATT BETALA', {
+      x: summaryX,
+      y: yPos + 2,
+      size: 10,
+      font: font,
+      color: rgb(0.9, 0.9, 0.9),
     });
-    
-    page.drawText('TOTALT ATT BETALA:', {
-      x: 360,
-      y: yPos + 4,
-      size: 14,
-      font: boldFont,
-      color: rgb(1, 1, 1),
-    });
+
     page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: 480,
-      y: yPos + 4,
-      size: 16,
+      x: summaryX,
+      y: yPos - 22,
+      size: 20,
       font: boldFont,
       color: rgb(1, 1, 1),
     });
 
-    // ============= PROFESSIONAL FOOTER =============
-    yPos = 110;
-    
-    // Subtle footer background
-    page.drawRectangle({
-      x: 0,
-      y: 0,
-      width: width,
-      height: 100,
-      color: rgb(0.97, 0.97, 0.97),
-    });
-    
-    // Top border with brand color
+    // === PROFESSIONAL FOOTER ===
+    const footerY = 100;
+    const footerHeight = 90;
+
+    // Gradient footer background
+    for (let i = 0; i < 10; i++) {
+      const ratio = i / 10;
+      const brightness = 0.97 - (0.02 * ratio);
+      
+      page.drawRectangle({
+        x: 0,
+        y: footerY - footerHeight + (i * footerHeight / 10),
+        width: width,
+        height: footerHeight / 10 + 1,
+        color: rgb(brightness, brightness, brightness),
+      });
+    }
+
+    // Top border with accent
     page.drawLine({
-      start: { x: 0, y: 100 },
-      end: { x: width, y: 100 },
-      thickness: 2,
-      color: rgb(0.1, 0.21, 0.36),
+      start: { x: 0, y: footerY },
+      end: { x: width, y: footerY },
+      thickness: 3,
+      color: rgb(0.09, 0.19, 0.33),
     });
 
-    yPos -= 20;
+    // Decorative line
+    page.drawLine({
+      start: { x: 0, y: footerY - 2 },
+      end: { x: width, y: footerY - 2 },
+      thickness: 1,
+      color: rgb(0.3, 0.5, 0.7),
+      opacity: 0.3,
+    });
+
+    yPos = footerY - 25;
+
     page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {
       x: 50,
       y: yPos,
-      size: 9,
+      size: 10,
       font: boldFont,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.2, 0.2, 0.2),
+    });
+
+    yPos -= 16;
+    
+    // Email icon (circle)
+    page.drawCircle({
+      x: 42,
+      y: yPos + 3,
+      size: 4,
+      color: rgb(0.09, 0.19, 0.33),
     });
     
-    yPos -= 14;
-    page.drawText('info@fixco.se | +46 70 123 45 67 | www.fixco.se', {
+    page.drawText('info@fixco.se', {
       x: 50,
       y: yPos,
       size: 9,
       font: font,
-      color: rgb(0.5, 0.5, 0.5),
+      color: rgb(0.4, 0.4, 0.4),
     });
-    
-    yPos -= 14;
+
+    // Phone icon (circle)
+    page.drawCircle({
+      x: 142,
+      y: yPos + 3,
+      size: 4,
+      color: rgb(0.09, 0.19, 0.33),
+    });
+
+    page.drawText('073-123 45 67', {
+      x: 150,
+      y: yPos,
+      size: 9,
+      font: font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+
+    // Web icon (circle)
+    page.drawCircle({
+      x: 242,
+      y: yPos + 3,
+      size: 4,
+      color: rgb(0.09, 0.19, 0.33),
+    });
+
+    page.drawText('fixco.se', {
+      x: 250,
+      y: yPos,
+      size: 9,
+      font: font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+
+    yPos -= 16;
     page.drawText('Betalningsvillkor: 30 dagar netto. Dröjsmålsränta enligt lag.', {
       x: 50,
       y: yPos,
       size: 8,
       font: font,
-      color: rgb(0.6, 0.6, 0.6),
+      color: rgb(0.5, 0.5, 0.5),
     });
 
     // Save PDF
