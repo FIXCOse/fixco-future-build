@@ -169,15 +169,15 @@ const Navbar2 = () => {
         <span className="rd-navbar_link_text">{t('nav.services')}</span>
       </Link>
 
-      <div 
-        className="rd-navbar_dropdown cc-hide_mobile w-dropdown"
-        onMouseEnter={() => handleMouseEnter('services')}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div 
-          className="rd-navbar_link w-dropdown-toggle"
-          onClick={() => toggleDropdown('services')}
-        >
+            <div 
+              className="rd-navbar_dropdown cc-hide_mobile w-dropdown"
+              onMouseLeave={handleMouseLeave}
+            >
+              <div 
+                className="rd-navbar_link w-dropdown-toggle"
+                onClick={() => toggleDropdown('services')}
+                onMouseEnter={() => handleMouseEnter('services')}
+              >
           <Wrench className="rd-navbar_link_icon" />
           <div className="rd-navbar_link_text">{t('nav.services')}</div>
         </div>
@@ -249,15 +249,15 @@ const Navbar2 = () => {
         <span className="rd-navbar_link_text">{t('nav.references')}</span>
       </Link>
 
-      <div 
-        className="rd-navbar_dropdown w-dropdown"
-        onMouseEnter={() => handleMouseEnter('more')}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div 
-          className="rd-navbar_link w-dropdown-toggle"
-          onClick={() => toggleDropdown('more')}
-        >
+            <div 
+              className="rd-navbar_dropdown w-dropdown"
+              onMouseLeave={handleMouseLeave}
+            >
+              <div 
+                className="rd-navbar_link w-dropdown-toggle"
+                onClick={() => toggleDropdown('more')}
+                onMouseEnter={() => handleMouseEnter('more')}
+              >
           <Menu className="rd-navbar_link_icon" />
           <div className="rd-navbar_link_text">{currentLanguage === 'en' ? 'More' : 'Mer'}</div>
         </div>
