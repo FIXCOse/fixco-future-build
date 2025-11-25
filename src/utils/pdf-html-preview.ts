@@ -67,75 +67,131 @@ const baseStyles = `
     font-size: 10pt;
     line-height: 1.5;
     color: #0f172a;
-    background: #f8fafc;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   }
   
   .page {
     width: 210mm;
     min-height: 297mm;
-    padding: 20mm;
+    padding: 15mm 20mm 20mm;
     margin: 0 auto;
-    background: white;
+    background: transparent;
   }
   
-  /* Header with icon */
-  .header {
+  /* Hero Header with gradient */
+  .hero-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    border-radius: 20px;
+    padding: 30px;
     text-align: center;
     margin-bottom: 20px;
+    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1)),
+                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1));
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+    opacity: 0.3;
   }
   
   .header-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 10px;
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    margin: 0 auto 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
   }
   
   .header-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     color: white;
   }
   
-  .header h1 {
-    font-size: 20pt;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 4px;
+  .hero-header h1 {
+    font-size: 26pt;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
   
   .from-company {
+    font-size: 10pt;
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+  }
+  
+  /* Trust Badges */
+  .trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .trust-badge {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 8pt;
-    color: #64748b;
-    margin-bottom: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .trust-badge svg {
+    width: 14px;
+    height: 14px;
+    color: #10b981;
   }
   
   /* Main card container */
   .main-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     margin-bottom: 15px;
   }
   
   /* Title section */
   .title-section {
     text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e2e8f0;
-    margin-bottom: 15px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 20px;
   }
   
   .title-section h2 {
-    font-size: 16pt;
-    font-weight: 700;
+    font-size: 18pt;
+    font-weight: 800;
     color: #0f172a;
   }
   
@@ -143,27 +199,31 @@ const baseStyles = `
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 20px;
+    margin-bottom: 25px;
     font-size: 9pt;
   }
   
   .info-item {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
   
   .info-label {
     text-transform: uppercase;
     font-size: 7pt;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     color: #64748b;
-    font-weight: 500;
+    font-weight: 600;
   }
   
   .info-value {
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 11pt;
     color: #0f172a;
   }
   
@@ -171,60 +231,64 @@ const baseStyles = `
   .section-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e2e8f0;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
   }
   
   .section-icon {
-    width: 24px;
-    height: 24px;
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   }
   
   .section-icon svg {
-    width: 16px;
-    height: 16px;
-    color: #3b82f6;
+    width: 18px;
+    height: 18px;
+    color: white;
   }
   
   .section-title {
-    font-size: 11pt;
-    font-weight: 600;
+    font-size: 13pt;
+    font-weight: 700;
     color: #0f172a;
   }
   
   /* Items section */
   .items-section {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+  }
+  
+  .category-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
   }
   
   .category-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 9pt;
-    font-weight: 600;
+    gap: 10px;
+    font-size: 11pt;
+    font-weight: 700;
     color: #0f172a;
-    margin-bottom: 8px;
-    margin-top: 12px;
-  }
-  
-  .category-header:first-child {
-    margin-top: 0;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
   }
   
   .category-icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     color: #3b82f6;
   }
   
@@ -233,81 +297,150 @@ const baseStyles = `
     justify-content: space-between;
     align-items: flex-start;
     gap: 10px;
-    margin-left: 24px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 10px;
     font-size: 9pt;
   }
   
   .item-description {
     color: #0f172a;
     flex: 1;
+    font-weight: 500;
   }
   
   .item-price {
-    font-weight: 600;
+    font-weight: 700;
     color: #0f172a;
     white-space: nowrap;
+    font-size: 10pt;
   }
   
   /* Cost specification */
   .cost-section {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   
   .cost-row {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 14px 0;
     border-bottom: 1px solid #e2e8f0;
-    font-size: 9pt;
+    font-size: 10pt;
   }
   
   .cost-label {
     color: #64748b;
+    font-weight: 500;
   }
   
   .cost-value {
-    font-weight: 600;
+    font-weight: 700;
     color: #0f172a;
   }
   
   /* Green highlight for discounts and ROT */
   .cost-row.discount {
-    background: #f0fdf4;
-    margin: 0 -12px;
-    padding: 10px 12px;
-    border-radius: 6px;
-    border: none;
-  }
-  
-  .cost-row.discount .cost-label,
-  .cost-row.discount .cost-value {
-    color: #15803d;
-    font-weight: 600;
-  }
-  
-  /* Total box with gradient */
-  .total-box {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    margin: 8px -16px;
+    padding: 16px;
     border-radius: 12px;
-    padding: 15px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+  }
+  
+  .cost-row.discount .cost-label {
+    color: #065f46;
+    font-weight: 700;
+    font-size: 11pt;
+  }
+  
+  .cost-row.discount .cost-value {
+    color: #065f46;
+    font-weight: 800;
+    font-size: 12pt;
+  }
+  
+  .discount-explanation {
+    font-size: 8pt;
+    color: #047857;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  
+  /* Supercharged Total box with multicolor gradient */
+  .total-box {
+    background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #06b6d4 100%);
+    border-radius: 20px;
+    padding: 25px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    margin-top: 20px;
+    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .total-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
   }
   
   .total-label {
-    font-size: 12pt;
-    font-weight: 700;
+    font-size: 14pt;
+    font-weight: 800;
     color: white;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .total-amount {
-    font-size: 18pt;
-    font-weight: 700;
+    font-size: 24pt;
+    font-weight: 900;
     color: white;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Signature section */
+  .signature-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+  }
+  
+  .signature-header {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .signature-line {
+    border-bottom: 2px solid #64748b;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+  
+  .signature-label {
+    font-size: 8pt;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
   }
   
   /* Info cards at bottom */
@@ -315,45 +448,46 @@ const baseStyles = `
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #e2e8f0;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #e2e8f0;
   }
   
   .info-card {
-    background: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
   
   .info-card-header {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
   
   .info-card-icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     color: #3b82f6;
   }
   
   .info-card-title {
-    font-size: 9pt;
-    font-weight: 600;
+    font-size: 10pt;
+    font-weight: 700;
     color: #0f172a;
   }
   
   .info-card-content {
-    font-size: 7pt;
+    font-size: 8pt;
     color: #64748b;
-    line-height: 1.6;
+    line-height: 1.7;
   }
   
   .info-card-content p {
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   
   /* SVG Icons */
@@ -383,11 +517,23 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     `).join('');
   };
 
+  // Calculate savings percentage for ROT
+  const rotPercentage = quote.cost_specifications?.work_cost && quote.cost_specifications?.rot_deduction 
+    ? Math.round((quote.cost_specifications.rot_deduction / quote.cost_specifications.work_cost) * 100)
+    : 30;
+
   // File icon SVG
   const fileIconSVG = `
     <svg class="icon-file" viewBox="0 0 24 24">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14 2 14 8 20 8"/>
+    </svg>
+  `;
+
+  // Check icon SVG
+  const checkIconSVG = `
+    <svg class="icon-file" viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"/>
     </svg>
   `;
 
@@ -446,13 +592,29 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     </head>
     <body>
       <div class="page">
-        <!-- Header -->
-        <div class="header">
+        <!-- Hero Header -->
+        <div class="hero-header">
           <div class="header-icon">
             ${fileIconSVG}
           </div>
           <h1>Offert ${quote.number}</h1>
           <p class="from-company">Från Fixco AB</p>
+        </div>
+        
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>F-skatt registrerad</span>
+          </div>
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>Försäkrad</span>
+          </div>
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>2 års garanti</span>
+          </div>
         </div>
         
         <!-- Main Card -->
@@ -484,29 +646,37 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
             </div>
             
             ${workItems.length > 0 ? `
-              <div class="category-header">
-                <span class="category-icon">${wrenchIconSVG}</span>
-                <span>Arbete</span>
+              <div class="category-card">
+                <div class="category-header">
+                  <span class="category-icon">${wrenchIconSVG}</span>
+                  <span>Arbete</span>
+                </div>
+                ${renderItems(workItems)}
               </div>
-              ${renderItems(workItems)}
             ` : ''}
             
             ${materialItems.length > 0 ? `
-              <div class="category-header">
-                <span class="category-icon">${packageIconSVG}</span>
-                <span>Material</span>
+              <div class="category-card">
+                <div class="category-header">
+                  <span class="category-icon">${packageIconSVG}</span>
+                  <span>Material</span>
+                </div>
+                ${renderItems(materialItems)}
               </div>
-              ${renderItems(materialItems)}
             ` : ''}
             
-            ${uncategorizedItems.length > 0 ? renderItems(uncategorizedItems) : ''}
+            ${uncategorizedItems.length > 0 ? `
+              <div class="category-card">
+                ${renderItems(uncategorizedItems)}
+              </div>
+            ` : ''}
           </div>
           
           <!-- Cost specification -->
           <div class="cost-section">
             <div class="section-header">
               <div class="section-icon">
-                <span style="font-weight: 700; color: #3b82f6; font-size: 10pt;">kr</span>
+                <span style="font-weight: 700; color: white; font-size: 11pt;">kr</span>
               </div>
               <span class="section-title">Kostnadsspecifikation</span>
             </div>
@@ -532,16 +702,35 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
             
             ${quote.cost_specifications?.rot_deduction ? `
               <div class="cost-row discount">
-                <span class="cost-label">ROT-avdrag (30%)</span>
-                <span class="cost-value">−${quote.cost_specifications.rot_deduction.toLocaleString('sv-SE')} kr</span>
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="cost-label">🌱 ROT-avdrag (${rotPercentage}%)</span>
+                    <span class="cost-value">−${quote.cost_specifications.rot_deduction.toLocaleString('sv-SE')} kr</span>
+                  </div>
+                  <div class="discount-explanation">
+                    💰 Du sparar ${rotPercentage}% på arbetskostnaden!
+                  </div>
+                </div>
               </div>
             ` : ''}
           </div>
           
-          <!-- Total box -->
+          <!-- Supercharged Total box -->
           <div class="total-box">
             <span class="total-label">Totalt att betala</span>
             <span class="total-amount">${quote.total_amount.toLocaleString('sv-SE')} kr</span>
+          </div>
+          
+          <!-- Signature Section -->
+          <div class="signature-section">
+            <div class="signature-header">
+              ✍️ Godkännande
+            </div>
+            <div class="signature-line"></div>
+            <div class="signature-label">
+              <span>Underskrift</span>
+              <span>Datum</span>
+            </div>
           </div>
           
           <!-- Payment & Trust Info -->
@@ -552,9 +741,9 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
                 <span class="info-card-title">Betalning</span>
               </div>
               <div class="info-card-content">
-                <p>• Faktura efter slutfört arbete</p>
-                <p>• Kortbetalning & Swish</p>
-                <p>• ROT-avdrag hanteras automatiskt</p>
+                <p>💳 Faktura efter slutfört arbete</p>
+                <p>📱 Kortbetalning & Swish</p>
+                <p>🌿 ROT-avdrag hanteras automatiskt</p>
               </div>
             </div>
             
@@ -564,19 +753,19 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
                 <span class="info-card-title">Trygg handel</span>
               </div>
               <div class="info-card-content">
-                <p>• Org.nr: 559472-6448</p>
-                <p>• F-skatt & försäkring</p>
-                <p>• 2 års garanti på arbete</p>
+                <p>🏢 Org.nr: 559472-6448</p>
+                <p>✅ F-skatt & försäkring</p>
+                <p>⭐ 2 års garanti på arbete</p>
               </div>
             </div>
           </div>
         </div>
         
         ${quote.notes ? `
-          <div class="main-card" style="background: #fffbeb; border-color: #fbbf24;">
-            <div style="font-size: 9pt; color: #92400e;">
-              <strong>Anteckningar:</strong><br>
-              ${quote.notes}
+          <div class="main-card" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fbbf24;">
+            <div style="font-size: 10pt; color: #92400e; font-weight: 500;">
+              <strong style="font-size: 11pt;">📝 Anteckningar:</strong><br>
+              <span style="margin-top: 6px; display: block;">${quote.notes}</span>
             </div>
           </div>
         ` : ''}
@@ -606,11 +795,25 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
     }).join('');
   };
 
+  // Calculate ROT/RUT percentage
+  const rotPercentage = invoice.rot_amount && invoice.subtotal 
+    ? Math.round((invoice.rot_amount / invoice.subtotal) * 100)
+    : 30;
+  const rutPercentage = invoice.rut_amount && invoice.subtotal 
+    ? Math.round((invoice.rut_amount / invoice.subtotal) * 100)
+    : 30;
+
   // Icons (same as quote)
   const fileIconSVG = `
     <svg class="icon-file" viewBox="0 0 24 24">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14 2 14 8 20 8"/>
+    </svg>
+  `;
+
+  const checkIconSVG = `
+    <svg class="icon-file" viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"/>
     </svg>
   `;
 
@@ -664,13 +867,29 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
     </head>
     <body>
       <div class="page">
-        <!-- Header -->
-        <div class="header">
+        <!-- Hero Header -->
+        <div class="hero-header">
           <div class="header-icon">
             ${fileIconSVG}
           </div>
           <h1>Faktura ${invoice.invoice_number}</h1>
           <p class="from-company">Från Fixco AB</p>
+        </div>
+        
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>F-skatt registrerad</span>
+          </div>
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>Försäkrad & Momsregistrerad</span>
+          </div>
+          <div class="trust-badge">
+            ${checkIconSVG}
+            <span>Professionell service</span>
+          </div>
         </div>
         
         <!-- Main Card -->
@@ -702,29 +921,37 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
             </div>
             
             ${workItems.length > 0 ? `
-              <div class="category-header">
-                <span class="category-icon">${wrenchIconSVG}</span>
-                <span>Arbete</span>
+              <div class="category-card">
+                <div class="category-header">
+                  <span class="category-icon">${wrenchIconSVG}</span>
+                  <span>Arbete</span>
+                </div>
+                ${renderItems(workItems)}
               </div>
-              ${renderItems(workItems)}
             ` : ''}
             
             ${materialItems.length > 0 ? `
-              <div class="category-header">
-                <span class="category-icon">${packageIconSVG}</span>
-                <span>Material</span>
+              <div class="category-card">
+                <div class="category-header">
+                  <span class="category-icon">${packageIconSVG}</span>
+                  <span>Material</span>
+                </div>
+                ${renderItems(materialItems)}
               </div>
-              ${renderItems(materialItems)}
             ` : ''}
             
-            ${uncategorizedItems.length > 0 ? renderItems(uncategorizedItems) : ''}
+            ${uncategorizedItems.length > 0 ? `
+              <div class="category-card">
+                ${renderItems(uncategorizedItems)}
+              </div>
+            ` : ''}
           </div>
           
           <!-- Cost specification -->
           <div class="cost-section">
             <div class="section-header">
               <div class="section-icon">
-                <span style="font-weight: 700; color: #3b82f6; font-size: 10pt;">kr</span>
+                <span style="font-weight: 700; color: white; font-size: 11pt;">kr</span>
               </div>
               <span class="section-title">Kostnadsspecifikation</span>
             </div>
@@ -741,20 +968,34 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
             
             ${invoice.rot_amount && invoice.rot_amount > 0 ? `
               <div class="cost-row discount">
-                <span class="cost-label">ROT-avdrag (30%)</span>
-                <span class="cost-value">−${invoice.rot_amount.toLocaleString('sv-SE')} kr</span>
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="cost-label">🌱 ROT-avdrag (${rotPercentage}%)</span>
+                    <span class="cost-value">−${invoice.rot_amount.toLocaleString('sv-SE')} kr</span>
+                  </div>
+                  <div class="discount-explanation">
+                    💰 Du sparar ${rotPercentage}% på arbetskostnaden!
+                  </div>
+                </div>
               </div>
             ` : ''}
             
             ${invoice.rut_amount && invoice.rut_amount > 0 ? `
               <div class="cost-row discount">
-                <span class="cost-label">RUT-avdrag (30%)</span>
-                <span class="cost-value">−${invoice.rut_amount.toLocaleString('sv-SE')} kr</span>
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="cost-label">🏠 RUT-avdrag (${rutPercentage}%)</span>
+                    <span class="cost-value">−${invoice.rut_amount.toLocaleString('sv-SE')} kr</span>
+                  </div>
+                  <div class="discount-explanation">
+                    💰 Du sparar ${rutPercentage}% på arbetskostnaden!
+                  </div>
+                </div>
               </div>
             ` : ''}
           </div>
           
-          <!-- Total box -->
+          <!-- Supercharged Total box -->
           <div class="total-box">
             <span class="total-label">Totalt att betala</span>
             <span class="total-amount">${invoice.total_amount.toLocaleString('sv-SE')} kr</span>
@@ -768,9 +1009,9 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
                 <span class="info-card-title">Betalning</span>
               </div>
               <div class="info-card-content">
-                <p>• Förfallodatum: ${invoice.due_date}</p>
-                <p>• Kortbetalning & Swish</p>
-                <p>• Bankgiro: 123-4567</p>
+                <p>📅 Förfallodatum: ${invoice.due_date}</p>
+                <p>💳 Kortbetalning & Swish</p>
+                <p>🏦 Bankgiro: 123-4567</p>
               </div>
             </div>
             
@@ -780,19 +1021,19 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
                 <span class="info-card-title">Företagsinformation</span>
               </div>
               <div class="info-card-content">
-                <p>• Org.nr: 559472-6448</p>
-                <p>• F-skatt & moms</p>
-                <p>• info@fixco.se</p>
+                <p>🏢 Org.nr: 559472-6448</p>
+                <p>✅ F-skatt & moms</p>
+                <p>📧 info@fixco.se</p>
               </div>
             </div>
           </div>
         </div>
         
         ${invoice.notes ? `
-          <div class="main-card" style="background: #fffbeb; border-color: #fbbf24;">
-            <div style="font-size: 9pt; color: #92400e;">
-              <strong>Anteckningar:</strong><br>
-              ${invoice.notes}
+          <div class="main-card" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fbbf24;">
+            <div style="font-size: 10pt; color: #92400e; font-weight: 500;">
+              <strong style="font-size: 11pt;">📝 Anteckningar:</strong><br>
+              <span style="margin-top: 6px; display: block;">${invoice.notes}</span>
             </div>
           </div>
         ` : ''}
