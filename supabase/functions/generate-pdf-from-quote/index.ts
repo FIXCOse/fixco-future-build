@@ -129,164 +129,83 @@ serve(async (req) => {
       color: rgb(0.90, 0.92, 0.94),
     });
 
-    // === PROMINENT TITLE (CLEAN) ===
+    // === CLEAN TITLE SECTION ===
     yPos = height - 130;
 
-    page.drawText(`OFFERT ${quote.number}`, {
+    page.drawText(`Offert #${quote.number}`, {
       x: 50,
       y: yPos,
-      size: 36,
+      size: 24,
       font: boldFont,
       color: rgb(0.20, 0.40, 0.70), // Primary blue
     });
 
-    // === CUSTOMER INFO WITH ELEGANT BOX ===
-    yPos -= 70;
-
-    // Box for customer section
-    page.drawRectangle({
-      x: 40,
-      y: yPos - 100,
-      width: 250,
-      height: 120,
-      color: rgb(0.98, 0.99, 1),
-      borderColor: rgb(0.92, 0.94, 0.96),
-      borderWidth: 1,
+    // Thin separator
+    yPos -= 15;
+    page.drawLine({
+      start: { x: 50, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
     });
 
-    // Accent bar
-    page.drawRectangle({
-      x: 50,
-      y: yPos + 5,
-      width: 6,
-      height: 20,
-      color: rgb(0.10, 0.60, 0.90), // Electric blue
-    });
-
-    page.drawText('KUND', {
-      x: 65,
-      y: yPos,
-      size: 11,
-      font: boldFont,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-
-    yPos -= 20;
+    // === INFO GRID (Two Columns - Clean) ===
+    yPos -= 35;
     const customerName = quote.customer?.name || 'Okänd kund';
+    
+    // Left column - MOTTAGARE
+    page.drawText('MOTTAGARE', {
+      x: 50,
+      y: yPos,
+      size: 10,
+      font: boldFont,
+      color: rgb(0.52, 0.54, 0.56), // Muted
+    });
+
+    yPos -= 18;
     page.drawText(customerName, {
-      x: 65,
+      x: 50,
       y: yPos,
       size: 12,
       font: boldFont,
-      color: rgb(0.1, 0.1, 0.1),
+      color: rgb(0.10, 0.10, 0.12),
     });
 
     if (quote.customer?.email) {
-      yPos -= 18;
-      page.drawText(quote.customer.email, {
-        x: 65,
-        y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.3, 0.3, 0.3),
-      });
-    }
-
-    if (quote.customer?.phone) {
       yPos -= 16;
-      page.drawText(quote.customer.phone, {
-        x: 65,
+      page.drawText(quote.customer.email, {
+        x: 50,
         y: yPos,
         size: 10,
         font: font,
-        color: rgb(0.3, 0.3, 0.3),
+        color: rgb(0.40, 0.42, 0.45),
       });
     }
 
-    // === QUOTE DETAILS BOX (RIGHT COLUMN) ===
-    let detailsY = height - 260;
-    const detailsX = width - 250;
-
-    // Box for details section
-    page.drawRectangle({
-      x: detailsX - 10,
-      y: detailsY - 80,
-      width: 230,
-      height: 100,
-      color: rgb(0.98, 0.99, 1),
-      borderColor: rgb(0.92, 0.94, 0.96),
-      borderWidth: 1,
-    });
-
-    // Accent bar
-    page.drawRectangle({
-      x: detailsX,
-      y: detailsY + 5,
-      width: 6,
-      height: 20,
-      color: rgb(0.10, 0.60, 0.90), // Electric blue
-    });
-
-    page.drawText('OFFERTDETALJER', {
-      x: detailsX + 15,
-      y: detailsY,
-      size: 11,
-      font: boldFont,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-
-    detailsY -= 20;
-    page.drawText('Offertnummer:', {
-      x: detailsX + 15,
-      y: detailsY,
+    // Right column - GILTIG TILL
+    let rightY = height - 163;
+    
+    page.drawText('📅 GILTIG TILL', {
+      x: 350,
+      y: rightY,
       size: 10,
       font: font,
-      color: rgb(0.3, 0.3, 0.3),
-    });
-    page.drawText(quote.number, {
-      x: detailsX + 120,
-      y: detailsY,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.1, 0.1, 0.1),
+      color: rgb(0.52, 0.54, 0.56),
     });
 
-    detailsY -= 18;
-    page.drawText('Datum:', {
-      x: detailsX + 15,
-      y: detailsY,
-      size: 10,
-      font: font,
-      color: rgb(0.3, 0.3, 0.3),
-    });
-    page.drawText(new Date(quote.created_at).toLocaleDateString('sv-SE'), {
-      x: detailsX + 120,
-      y: detailsY,
-      size: 10,
-      font: font,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-
-    detailsY -= 18;
-    page.drawText('Giltig till:', {
-      x: detailsX + 15,
-      y: detailsY,
-      size: 10,
-      font: font,
-      color: rgb(0.3, 0.3, 0.3),
-    });
+    rightY -= 18;
     page.drawText(new Date(quote.valid_until).toLocaleDateString('sv-SE'), {
-      x: detailsX + 120,
-      y: detailsY,
-      size: 10,
-      font: font,
-      color: rgb(0.1, 0.1, 0.1),
+      x: 350,
+      y: rightY,
+      size: 12,
+      font: boldFont,
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    // === CLEAN LINE ITEMS TABLE ===
-    yPos -= 60;
-
-    page.drawText('VAD INGÅR I OFFERTEN', {
+    // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
+    yPos -= 65;
+    
+    page.drawText('📋 VAD INGÅR I OFFERTEN', {
       x: 50,
       y: yPos,
       size: 12,
@@ -294,254 +213,288 @@ serve(async (req) => {
       color: rgb(0.20, 0.40, 0.70),
     });
 
+    // Separator
+    yPos -= 8;
+    page.drawLine({
+      start: { x: 50, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
     yPos -= 25;
-    const tableY = yPos;
-    const tableWidth = width - 80;
-    
-    // Clean table header (no gradient)
-    page.drawRectangle({
-      x: 40,
-      y: tableY - 5,
-      width: tableWidth,
-      height: 25,
-      color: rgb(0.98, 0.99, 1),
-      borderColor: rgb(0.90, 0.92, 0.94),
-      borderWidth: 1,
-    });
 
-    page.drawText('Beskrivning', {
-      x: 50,
-      y: yPos + 2,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    page.drawText('Antal', {
-      x: 320,
-      y: yPos + 2,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    page.drawText('Enhet', {
-      x: 375,
-      y: yPos + 2,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    page.drawText('Pris/enhet', {
-      x: 430,
-      y: yPos + 2,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    page.drawText('Totalt', {
-      x: 500,
-      y: yPos + 2,
-      size: 10,
-      font: boldFont,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-
-    // Clean table rows (no zebra-striping)
-    yPos -= 25;
+    // Process line items by category
     const items = quote.items || [];
-    
-    for (const item of items) {
-      const quantity = item.quantity || 0;
-      const price = item.price || 0;
-      const total = quantity * price;
 
-      page.drawText(item.description || '', {
+    // Group items by type
+    const workItems = items.filter((item: any) => item.type === 'work' || !item.type);
+    const materialItems = items.filter((item: any) => item.type === 'material');
+
+    // 🔧 ARBETE Section
+    if (workItems.length > 0) {
+      page.drawText('🔧 ARBETE', {
         x: 50,
         y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.10, 0.10, 0.12),
-        maxWidth: 250,
-      });
-
-      page.drawText(quantity.toString(), {
-        x: 320,
-        y: yPos,
-        size: 10,
-        font: font,
+        size: 11,
+        font: boldFont,
         color: rgb(0.10, 0.10, 0.12),
       });
 
-      page.drawText(item.unit || 'st', {
-        x: 375,
-        y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.10, 0.10, 0.12),
-      });
+      yPos -= 20;
 
-      page.drawText(`${price.toLocaleString('sv-SE')} kr`, {
-        x: 430,
-        y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.10, 0.10, 0.12),
-      });
+      for (const item of workItems) {
+        if (yPos < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPos = height - 60;
+        }
 
-      page.drawText(`${total.toLocaleString('sv-SE')} kr`, {
-        x: 500,
-        y: yPos,
-        size: 10,
-        font: font,
-        color: rgb(0.10, 0.10, 0.12),
-      });
+        const quantity = item.quantity || 0;
+        const price = item.price || 0;
+        const total = quantity * price;
 
-      yPos -= 22;
+        // Item row
+        const itemDesc = `${item.description} (${quantity} ${item.unit || 'st'} × ${price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPos,
+          size: 10,
+          font: font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
+        });
 
-      // Add new page if needed
-      if (yPos < 200) {
-        const newPage = pdfDoc.addPage([595.28, 841.89]);
-        yPos = height - 50;
+        // Amount (right-aligned)
+        page.drawText(`${total.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPos,
+          size: 10,
+          font: boldFont,
+          color: rgb(0.10, 0.10, 0.12),
+        });
+
+        yPos -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`🏪 ${item.supplier}`, {
+            x: 80,
+            y: yPos,
+            size: 8,
+            font: font,
+            color: rgb(0.52, 0.54, 0.56), // Muted
+          });
+          yPos -= 14;
+        } else {
+          yPos -= 6;
+        }
       }
+
+      yPos -= 10;
     }
 
-    // === ELEGANT SUMMARY BOX ===
-    yPos -= 20;
-    const summaryX = width - 260;
-    const summaryBoxWidth = 240;
+    // 📦 MATERIAL Section
+    if (materialItems.length > 0) {
+      page.drawText('📦 MATERIAL', {
+        x: 50,
+        y: yPos,
+        size: 11,
+        font: boldFont,
+        color: rgb(0.10, 0.10, 0.12),
+      });
 
-    // Subtle shadow
-    page.drawRectangle({
-      x: summaryX - 6,
-      y: yPos - 94,
-      width: summaryBoxWidth,
-      height: 90,
-      color: rgb(0, 0, 0),
-      opacity: 0.03,
+      yPos -= 20;
+
+      for (const item of materialItems) {
+        if (yPos < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPos = height - 60;
+        }
+
+        const quantity = item.quantity || 0;
+        const price = item.price || 0;
+        const total = quantity * price;
+
+        // Item row
+        const itemDesc = `${item.description} (${quantity} ${item.unit || 'st'} × ${price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPos,
+          size: 10,
+          font: font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
+        });
+
+        // Amount (right-aligned)
+        page.drawText(`${total.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPos,
+          size: 10,
+          font: boldFont,
+          color: rgb(0.10, 0.10, 0.12),
+        });
+
+        yPos -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`🏪 ${item.supplier}`, {
+            x: 80,
+            y: yPos,
+            size: 8,
+            font: font,
+            color: rgb(0.52, 0.54, 0.56),
+          });
+          yPos -= 14;
+        } else {
+          yPos -= 6;
+        }
+      }
+
+      yPos -= 10;
+    }
+
+    // === CLEAN COST SPECIFICATION ===
+    yPos -= 35;
+    
+    page.drawText('💰 KOSTNADSSPECIFIKATION', {
+      x: 50,
+      y: yPos,
+      size: 12,
+      font: boldFont,
+      color: rgb(0.20, 0.40, 0.70),
     });
 
-    // Main summary box
-    page.drawRectangle({
-      x: summaryX - 10,
-      y: yPos - 90,
-      width: summaryBoxWidth,
-      height: 90,
-      color: rgb(0.99, 0.99, 1),
-      borderColor: rgb(0.90, 0.92, 0.95),
-      borderWidth: 1,
-    });
-
+    // Separator
+    yPos -= 8;
     page.drawLine({
-      start: { x: summaryX - 10, y: yPos },
+      start: { x: 50, y: yPos },
       end: { x: width - 50, y: yPos },
-      thickness: 1,
-      color: rgb(0.8, 0.8, 0.8),
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
     });
 
     yPos -= 25;
-    page.drawText('Arbetskostnad:', {
-      x: summaryX,
+    const costX = 350;
+
+    // Work cost row
+    page.drawText('Arbetskostnad', {
+      x: costX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.40, 0.42, 0.45),
     });
     page.drawText(`${(quote.subtotal_work_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: width - 110,
+      x: 480,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.1, 0.1, 0.1),
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    yPos -= 18;
-    page.drawText('Material:', {
-      x: summaryX,
+    yPos -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // Material cost row
+    yPos -= 14;
+    page.drawText('Material', {
+      x: costX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.40, 0.42, 0.45),
     });
     page.drawText(`${(quote.subtotal_mat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: width - 110,
+      x: 480,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.1, 0.1, 0.1),
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    yPos -= 18;
-    page.drawText('Moms (25%):', {
-      x: summaryX,
+    yPos -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // VAT row
+    yPos -= 14;
+    page.drawText('Moms (25%)', {
+      x: costX,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.3, 0.3, 0.3),
+      color: rgb(0.40, 0.42, 0.45),
     });
     page.drawText(`${(quote.vat_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: width - 110,
+      x: 480,
       y: yPos,
       size: 10,
       font: font,
-      color: rgb(0.1, 0.1, 0.1),
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    // === ROT-AVDRAG WITH ENHANCED STYLING ===
+    yPos -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPos },
+      end: { x: width - 50, y: yPos },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // ROT-avdrag (GREEN BOX if applicable)
     if (quote.rot_deduction_sek && quote.rot_deduction_sek > 0) {
-      yPos -= 24;
+      yPos -= 18;
       
-      // Glow effect
+      // Green background box
       page.drawRectangle({
-        x: summaryX - 12,
-        y: yPos - 7,
-        width: summaryBoxWidth + 4,
-        height: 28,
-        color: rgb(0.1, 0.7, 0.1),
-        opacity: 0.1,
+        x: costX - 12,
+        y: yPos - 4,
+        width: width - costX - 38,
+        height: 20,
+        color: rgb(0.96, 0.99, 0.96), // Light green bg
+        borderColor: rgb(0.60, 0.80, 0.60), // Green border
+        borderWidth: 1,
       });
 
-      // Green highlight box for ROT
-      page.drawRectangle({
-        x: summaryX - 10,
-        y: yPos - 5,
-        width: summaryBoxWidth,
-        height: 24,
-        color: rgb(0.95, 0.99, 0.95),
-        borderColor: rgb(0.2, 0.8, 0.3),
-        borderWidth: 1.5,
-      });
-
-      // Icon circle
-      page.drawCircle({
-        x: summaryX + 5,
-        y: yPos + 7,
-        size: 8,
-        color: rgb(0.1, 0.7, 0.1),
-      });
-
-      page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%):`, {
-        x: summaryX + 20,
+      page.drawText(`ROT-avdrag (${quote.rot_percentage || 30}%)`, {
+        x: costX,
         y: yPos,
-        size: 11,
+        size: 10,
         font: boldFont,
-        color: rgb(0.1, 0.5, 0.1),
+        color: rgb(0.13, 0.55, 0.13), // Green text
       });
       page.drawText(`-${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr`, {
-        x: width - 110,
+        x: 480,
         y: yPos,
-        size: 11,
+        size: 10,
         font: boldFont,
-        color: rgb(0.1, 0.5, 0.1),
+        color: rgb(0.13, 0.55, 0.13),
+      });
+
+      yPos -= 18;
+      page.drawLine({
+        start: { x: costX - 10, y: yPos },
+        end: { x: width - 50, y: yPos },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
       });
     }
 
-    // === HERO TOTAL BOX - GRADIENT (LILA → CYAN → ROSA) ===
-    yPos -= 34;
-    const totalBoxWidth = 200;
-    const totalBoxHeight = 60;
+    // === HERO TOTAL BOX - LARGE GRADIENT (LILA → CYAN → ROSA) ===
+    yPos -= 30;
+    const totalBoxWidth = 250; // STÖRRE!
+    const totalBoxHeight = 70; // STÖRRE!
     const totalBoxX = width - totalBoxWidth - 50;
 
     // Smooth 3-color gradient (LILA → CYAN → ROSA)
@@ -574,18 +527,19 @@ serve(async (req) => {
       });
     }
 
+    // White text on gradient
     page.drawText('TOTALT ATT BETALA', {
-      x: totalBoxX + 15,
-      y: yPos - 15,
-      size: 11,
-      font: font,
+      x: totalBoxX + 20,
+      y: yPos - 20,
+      size: 14,
+      font: boldFont,
       color: rgb(1, 1, 1),
     });
 
     page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
-      x: totalBoxX + 15,
-      y: yPos - 40,
-      size: 22,
+      x: totalBoxX + 20,
+      y: yPos - 50,
+      size: 26,
       font: boldFont,
       color: rgb(1, 1, 1),
     });

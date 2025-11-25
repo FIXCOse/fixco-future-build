@@ -133,155 +133,102 @@ serve(async (req) => {
       color: rgb(0.90, 0.92, 0.94),
     });
 
-    // === PROMINENT TITLE (CLEAN) ===
+    // === CLEAN TITLE SECTION ===
     yPosition = height - 130;
 
-    page.drawText('FAKTURA', {
+    page.drawText(`Faktura #${invoice.invoice_number}`, {
       x: 50,
       y: yPosition,
-      size: 36,
+      size: 24,
       font: fontBold,
       color: rgb(0.20, 0.40, 0.70), // Primary blue
     });
 
-    // Two-column layout for invoice details
-    yPosition -= 50;
+    // Thin separator
+    yPosition -= 15;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // === INFO GRID (Two Columns - Clean) ===
+    yPosition -= 35;
+    const customer = invoice.customer;
+    const customerName = customer?.company_name || customer?.name || 'Okänd kund';
     
-    // Left column - Invoice details
-    page.drawText(`Fakturanummer: ${invoice.invoice_number}`, {
+    // Left column - MOTTAGARE
+    page.drawText('MOTTAGARE', {
       x: 50,
       y: yPosition,
-      size: 11,
+      size: 10,
       font: fontBold,
-      color: rgb(0, 0, 0),
+      color: rgb(0.52, 0.54, 0.56), // Muted
     });
 
-    yPosition -= 20;
-    page.drawText(`Fakturadatum: ${new Date(invoice.issue_date).toLocaleDateString('sv-SE')}`, {
+    yPosition -= 18;
+    page.drawText(customerName, {
       x: 50,
-      y: yPosition,
-      size: 10,
-      font,
-      color: rgb(0.3, 0.3, 0.3),
-    });
-
-    yPosition -= 16;
-    page.drawText(`Förfallodatum: ${new Date(invoice.due_date).toLocaleDateString('sv-SE')}`, {
-      x: 50,
-      y: yPosition,
-      size: 10,
-      font,
-      color: rgb(0.8, 0.2, 0.2), // Red for due date
-    });
-
-    // Right column - Payment terms
-    let rightColY = height - 220;
-    page.drawText('BETALNINGSVILLKOR', {
-      x: 350,
-      y: rightColY,
-      size: 11,
-      font: fontBold,
-      color: rgb(0.2, 0.2, 0.2),
-    });
-
-    rightColY -= 20;
-    page.drawText('30 dagar netto', {
-      x: 350,
-      y: rightColY,
-      size: 10,
-      font,
-      color: rgb(0, 0, 0),
-    });
-
-    rightColY -= 16;
-    page.drawText('Dröjsmålsränta enligt räntelagen', {
-      x: 350,
-      y: rightColY,
-      size: 9,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-
-    // === ELEGANT CUSTOMER INFO BOX ===
-    yPosition -= 65;
-
-    // Modern card with border
-    page.drawRectangle({
-      x: 40,
-      y: yPosition - 115,
-      width: 260,
-      height: 130,
-      color: rgb(0.99, 0.99, 1),
-      borderColor: rgb(0.90, 0.92, 0.94),
-      borderWidth: 1,
-    });
-
-    // Accent bar (brand color)
-    page.drawRectangle({
-      x: 50,
-      y: yPosition + 5,
-      width: 6,
-      height: 22,
-      color: rgb(0.10, 0.60, 0.90), // Electric blue
-    });
-
-    page.drawText('KUND', {
-      x: 65,
       y: yPosition,
       size: 12,
       font: fontBold,
-      color: rgb(0.40, 0.42, 0.45), // Text gray
+      color: rgb(0.10, 0.10, 0.12),
     });
 
-    yPosition -= 22;
-    const customer = invoice.customer;
-    if (customer) {
-      const customerName = customer.company_name || customer.name || 'Okänd kund';
-      page.drawText(customerName, {
-        x: 65,
+    if (customer?.email) {
+      yPosition -= 16;
+      page.drawText(customer.email, {
+        x: 50,
         y: yPosition,
-        size: 13,
-        font: fontBold,
-        color: rgb(0.10, 0.10, 0.12), // Text dark
+        size: 10,
+        font,
+        color: rgb(0.40, 0.42, 0.45),
       });
-
-      if (customer.org_number) {
-        yPosition -= 18;
-        page.drawText(`Org.nr: ${customer.org_number}`, {
-          x: 65,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.40, 0.42, 0.45),
-        });
-      }
-
-      if (customer.address) {
-        yPosition -= 17;
-        page.drawText(customer.address, {
-          x: 65,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.40, 0.42, 0.45),
-        });
-      }
-
-      if (customer.postal_code && customer.city) {
-        yPosition -= 17;
-        page.drawText(`${customer.postal_code} ${customer.city}`, {
-          x: 65,
-          y: yPosition,
-          size: 10,
-          font,
-          color: rgb(0.40, 0.42, 0.45),
-        });
-      }
     }
 
-    // === CLEAN TABLE SECTION ===
-    yPosition -= 55;
-    page.drawText('SPECIFIKATION', {
+    // Right column - DATUM & FÖRFALLODATUM
+    let rightY = height - 163;
+    
+    page.drawText('📅 FAKTURADATUM', {
+      x: 350,
+      y: rightY,
+      size: 10,
+      font: font,
+      color: rgb(0.52, 0.54, 0.56),
+    });
+
+    rightY -= 18;
+    page.drawText(new Date(invoice.issue_date).toLocaleDateString('sv-SE'), {
+      x: 350,
+      y: rightY,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    rightY -= 24;
+    page.drawText('⏰ FÖRFALLODATUM', {
+      x: 350,
+      y: rightY,
+      size: 10,
+      font: font,
+      color: rgb(0.52, 0.54, 0.56),
+    });
+
+    rightY -= 18;
+    page.drawText(new Date(invoice.due_date).toLocaleDateString('sv-SE'), {
+      x: 350,
+      y: rightY,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.80, 0.20, 0.20), // Red for due date
+    });
+
+    // === SECTION-BASED LINE ITEMS (NO TABLE!) ===
+    yPosition -= 65;
+    
+    page.drawText('📋 VAD INGÅR I FAKTURAN', {
       x: 50,
       y: yPosition,
       size: 12,
@@ -289,200 +236,327 @@ serve(async (req) => {
       color: rgb(0.20, 0.40, 0.70),
     });
 
-    // Clean table header (no gradient)
-    yPosition -= 25;
-    const tableHeaderY = yPosition;
-    const tableWidth = width - 80;
-    
-    page.drawRectangle({
-      x: 40,
-      y: tableHeaderY - 5,
-      width: tableWidth,
-      height: 25,
-      color: rgb(0.98, 0.99, 1),
-      borderColor: rgb(0.90, 0.92, 0.94),
-      borderWidth: 1,
-    });
-
-    page.drawText('Beskrivning', { 
-      x: 50, 
-      y: yPosition + 2, 
-      size: 10, 
-      font: fontBold,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-    
-    page.drawText('Antal', { 
-      x: 300, 
-      y: yPosition + 2, 
-      size: 10, 
-      font: fontBold,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-    
-    page.drawText('Pris', { 
-      x: 370, 
-      y: yPosition + 2, 
-      size: 10, 
-      font: fontBold,
-      color: rgb(0.10, 0.10, 0.12),
-    });
-    
-    page.drawText('Belopp', { 
-      x: 470, 
-      y: yPosition + 2, 
-      size: 10, 
-      font: fontBold,
-      color: rgb(0.10, 0.10, 0.12),
+    // Separator
+    yPosition -= 8;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
     });
 
     yPosition -= 25;
 
-    // Clean line items (no zebra-striping)
+    // Process line items by category
     const lineItems = invoice.line_items as Array<{
       description: string;
       quantity: number;
       unit_price: number;
       amount: number;
+      category?: string;
+      supplier?: string;
     }>;
 
-    for (const item of lineItems) {
-      if (yPosition < 200) {
-        // Add new page if needed
-        const newPage = pdfDoc.addPage([595.28, 841.89]);
-        yPosition = height - 60;
-      }
+    // Group items by category
+    const workItems = lineItems.filter(item => !item.category || item.category === 'work');
+    const materialItems = lineItems.filter(item => item.category === 'material');
 
-      page.drawText(item.description || '', {
+    // 🔧 ARBETE Section
+    if (workItems.length > 0) {
+      page.drawText('🔧 ARBETE', {
         x: 50,
         y: yPosition,
-        size: 10,
-        font,
-        maxWidth: 230,
+        size: 11,
+        font: fontBold,
         color: rgb(0.10, 0.10, 0.12),
-      });
-
-      page.drawText(item.quantity?.toString() || '1', {
-        x: 300,
-        y: yPosition,
-        size: 10,
-        font,
-        color: rgb(0.10, 0.10, 0.12),
-      });
-
-      page.drawText(
-        `${(item.unit_price || 0).toLocaleString('sv-SE')} kr`,
-        { x: 370, y: yPosition, size: 10, font, color: rgb(0.10, 0.10, 0.12) }
-      );
-
-      page.drawText(
-        `${(item.amount || 0).toLocaleString('sv-SE')} kr`,
-        { x: 470, y: yPosition, size: 10, font, color: rgb(0.10, 0.10, 0.12) }
-      );
-
-      yPosition -= 22;
-    }
-
-    // === ELEGANT SUMMARY BOX WITH SHADOW ===
-    yPosition -= 30;
-    const summaryBoxX = 340;
-    const summaryBoxWidth = width - 390;
-    const summaryBoxHeight = 175;
-    
-    // Soft shadow effect
-    page.drawRectangle({
-      x: summaryBoxX + 3,
-      y: yPosition - summaryBoxHeight + 3,
-      width: summaryBoxWidth,
-      height: summaryBoxHeight,
-      color: rgb(0.06, 0.12, 0.24),
-      opacity: 0.05,
-    });
-    
-    // Main summary box
-    page.drawRectangle({
-      x: summaryBoxX,
-      y: yPosition - summaryBoxHeight,
-      width: summaryBoxWidth,
-      height: summaryBoxHeight,
-      color: rgb(0.99, 0.99, 1),
-      borderColor: rgb(0.90, 0.92, 0.94),
-      borderWidth: 1,
-    });
-    
-    // Gradient accent bar on left
-    for (let i = 0; i < 20; i++) {
-      const ratio = i / 20;
-      const r = 0.10 + (0.20 - 0.10) * ratio;
-      const g = 0.60 + (0.40 - 0.60) * ratio;
-      const b = 0.90 + (0.70 - 0.90) * ratio;
-      
-      page.drawRectangle({
-        x: summaryBoxX,
-        y: yPosition - summaryBoxHeight + (i * summaryBoxHeight / 20),
-        width: 5,
-        height: summaryBoxHeight / 20 + 1,
-        color: rgb(r, g, b),
-      });
-    }
-
-    const drawSummaryLine = (label: string, amount: number, bold = false, color = rgb(0, 0, 0)) => {
-      page.drawText(label, {
-        x: 360,
-        y: yPosition,
-        size: 10,
-        font: bold ? fontBold : font,
-        color,
-      });
-
-      page.drawText(`${amount.toLocaleString('sv-SE')} kr`, {
-        x: 480,
-        y: yPosition,
-        size: 10,
-        font: bold ? fontBold : font,
-        color,
       });
 
       yPosition -= 20;
-    };
 
-    yPosition -= 10;
-    drawSummaryLine('Delsumma:', invoice.subtotal);
-    drawSummaryLine('Moms (25%):', invoice.vat_amount);
+      for (const item of workItems) {
+        if (yPosition < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPosition = height - 60;
+        }
 
-    if (invoice.rot_amount && invoice.rot_amount > 0) {
-      drawSummaryLine('ROT-avdrag:', -invoice.rot_amount, false, rgb(0.1, 0.6, 0.1));
+        // Item row
+        const itemDesc = `${item.description} (${item.quantity} st × ${item.unit_price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPosition,
+          size: 10,
+          font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
+        });
+
+        // Amount (right-aligned)
+        page.drawText(`${item.amount.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPosition,
+          size: 10,
+          font: fontBold,
+          color: rgb(0.10, 0.10, 0.12),
+        });
+
+        yPosition -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`🏪 ${item.supplier}`, {
+            x: 80,
+            y: yPosition,
+            size: 8,
+            font,
+            color: rgb(0.52, 0.54, 0.56), // Muted
+          });
+          yPosition -= 14;
+        } else {
+          yPosition -= 6;
+        }
+      }
+
+      yPosition -= 10;
     }
 
-    if (invoice.rut_amount && invoice.rut_amount > 0) {
-      drawSummaryLine('RUT-avdrag:', -invoice.rut_amount, false, rgb(0.1, 0.6, 0.1));
-    }
-
-    if (invoice.discount_amount && invoice.discount_amount > 0) {
-      drawSummaryLine('Rabatt:', -invoice.discount_amount);
-    }
-
-    yPosition -= 8;
-    // Gradient separator line
-    for (let i = 0; i < 30; i++) {
-      const ratio = i / 30;
-      const r = 0.06 + (0.10 - 0.06) * ratio;
-      const g = 0.12 + (0.60 - 0.12) * ratio;
-      const b = 0.24 + (0.90 - 0.24) * ratio;
-      
-      page.drawRectangle({
-        x: 350 + (i * (width - 400) / 30),
+    // 📦 MATERIAL Section
+    if (materialItems.length > 0) {
+      page.drawText('📦 MATERIAL', {
+        x: 50,
         y: yPosition,
-        width: (width - 400) / 30 + 1,
-        height: 2,
-        color: rgb(r, g, b),
+        size: 11,
+        font: fontBold,
+        color: rgb(0.10, 0.10, 0.12),
+      });
+
+      yPosition -= 20;
+
+      for (const item of materialItems) {
+        if (yPosition < 150) {
+          const newPage = pdfDoc.addPage([595.28, 841.89]);
+          yPosition = height - 60;
+        }
+
+        // Item row
+        const itemDesc = `${item.description} (${item.quantity} st × ${item.unit_price.toLocaleString('sv-SE')} kr)`;
+        page.drawText(itemDesc, {
+          x: 65,
+          y: yPosition,
+          size: 10,
+          font,
+          color: rgb(0.10, 0.10, 0.12),
+          maxWidth: 360,
+        });
+
+        // Amount (right-aligned)
+        page.drawText(`${item.amount.toLocaleString('sv-SE')} kr`, {
+          x: 480,
+          y: yPosition,
+          size: 10,
+          font: fontBold,
+          color: rgb(0.10, 0.10, 0.12),
+        });
+
+        yPosition -= 16;
+
+        // Supplier info (if available)
+        if (item.supplier) {
+          page.drawText(`🏪 ${item.supplier}`, {
+            x: 80,
+            y: yPosition,
+            size: 8,
+            font,
+            color: rgb(0.52, 0.54, 0.56),
+          });
+          yPosition -= 14;
+        } else {
+          yPosition -= 6;
+        }
+      }
+
+      yPosition -= 10;
+    }
+
+    // === CLEAN COST SPECIFICATION ===
+    yPosition -= 35;
+    
+    page.drawText('💰 KOSTNADSSPECIFIKATION', {
+      x: 50,
+      y: yPosition,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.20, 0.40, 0.70),
+    });
+
+    // Separator
+    yPosition -= 8;
+    page.drawLine({
+      start: { x: 50, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    yPosition -= 25;
+    const costX = 350;
+
+    // Subtotal row
+    page.drawText('Delsumma', {
+      x: costX,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
+    page.drawText(`${invoice.subtotal.toLocaleString('sv-SE')} kr`, {
+      x: 480,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    yPosition -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // VAT row
+    yPosition -= 14;
+    page.drawText('Moms (25%)', {
+      x: costX,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.40, 0.42, 0.45),
+    });
+    page.drawText(`${invoice.vat_amount.toLocaleString('sv-SE')} kr`, {
+      x: 480,
+      y: yPosition,
+      size: 10,
+      font,
+      color: rgb(0.10, 0.10, 0.12),
+    });
+
+    yPosition -= 14;
+    page.drawLine({
+      start: { x: costX - 10, y: yPosition },
+      end: { x: width - 50, y: yPosition },
+      thickness: 0.5,
+      color: rgb(0.90, 0.92, 0.94),
+    });
+
+    // ROT-avdrag (GREEN BOX if applicable)
+    if (invoice.rot_amount && invoice.rot_amount > 0) {
+      yPosition -= 18;
+      
+      // Green background box
+      page.drawRectangle({
+        x: costX - 12,
+        y: yPosition - 4,
+        width: width - costX - 38,
+        height: 20,
+        color: rgb(0.96, 0.99, 0.96), // Light green bg
+        borderColor: rgb(0.60, 0.80, 0.60), // Green border
+        borderWidth: 1,
+      });
+
+      page.drawText('ROT-avdrag (30%)', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13), // Green text
+      });
+      page.drawText(`-${invoice.rot_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+
+      yPosition -= 18;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
       });
     }
 
-    // === HERO TOTAL BOX - GRADIENT (LILA → CYAN → ROSA) ===
+    // RUT-avdrag (GREEN BOX if applicable)
+    if (invoice.rut_amount && invoice.rut_amount > 0) {
+      yPosition -= 18;
+      
+      page.drawRectangle({
+        x: costX - 12,
+        y: yPosition - 4,
+        width: width - costX - 38,
+        height: 20,
+        color: rgb(0.96, 0.99, 0.96),
+        borderColor: rgb(0.60, 0.80, 0.60),
+        borderWidth: 1,
+      });
+
+      page.drawText('RUT-avdrag (30%)', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+      page.drawText(`-${invoice.rut_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font: fontBold,
+        color: rgb(0.13, 0.55, 0.13),
+      });
+
+      yPosition -= 18;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
+      });
+    }
+
+    // Discount (if applicable)
+    if (invoice.discount_amount && invoice.discount_amount > 0) {
+      yPosition -= 14;
+      page.drawText('Rabatt', {
+        x: costX,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.40, 0.42, 0.45),
+      });
+      page.drawText(`-${invoice.discount_amount.toLocaleString('sv-SE')} kr`, {
+        x: 480,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.10, 0.10, 0.12),
+      });
+
+      yPosition -= 14;
+      page.drawLine({
+        start: { x: costX - 10, y: yPosition },
+        end: { x: width - 50, y: yPosition },
+        thickness: 0.5,
+        color: rgb(0.90, 0.92, 0.94),
+      });
+    }
+
+    // === HERO TOTAL BOX - LARGE GRADIENT (LILA → CYAN → ROSA) ===
     yPosition -= 30;
-    const totalBoxWidth = 200;
-    const totalBoxHeight = 60;
+    const totalBoxWidth = 250; // STÖRRE!
+    const totalBoxHeight = 70; // STÖRRE!
     const totalBoxX = width - totalBoxWidth - 50;
 
     // Smooth 3-color gradient (LILA → CYAN → ROSA)
@@ -515,18 +589,19 @@ serve(async (req) => {
       });
     }
 
-    page.drawText('ATT BETALA', {
-      x: totalBoxX + 15,
-      y: yPosition - 15,
-      size: 11,
-      font: font,
+    // White text on gradient
+    page.drawText('TOTALT ATT BETALA', {
+      x: totalBoxX + 20,
+      y: yPosition - 20,
+      size: 14,
+      font: fontBold,
       color: rgb(1, 1, 1),
     });
 
     page.drawText(`${invoice.total_amount.toLocaleString('sv-SE')} kr`, {
-      x: totalBoxX + 15,
-      y: yPosition - 40,
-      size: 22,
+      x: totalBoxX + 20,
+      y: yPosition - 50,
+      size: 26,
       font: fontBold,
       color: rgb(1, 1, 1),
     });
