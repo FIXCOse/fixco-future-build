@@ -2544,6 +2544,7 @@ export type Database = {
           terms_accepted: boolean | null
           title: string
           total_sek: number
+          updated_at: string | null
           valid_until: string | null
           vat_included: boolean | null
           vat_sek: number | null
@@ -2578,6 +2579,7 @@ export type Database = {
           terms_accepted?: boolean | null
           title: string
           total_sek: number
+          updated_at?: string | null
           valid_until?: string | null
           vat_included?: boolean | null
           vat_sek?: number | null
@@ -2612,6 +2614,7 @@ export type Database = {
           terms_accepted?: boolean | null
           title?: string
           total_sek?: number
+          updated_at?: string | null
           valid_until?: string | null
           vat_included?: boolean | null
           vat_sek?: number | null

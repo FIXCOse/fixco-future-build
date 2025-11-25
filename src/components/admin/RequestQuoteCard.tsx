@@ -247,7 +247,10 @@ export function RequestQuoteCard({
                     {quote.status === 'sent' ? 'Skicka igen' : 'Skicka'}
                   </Button>
                 )}
-                {quote.status === 'accepted' && (
+                {quote.status === 'accepted' && 
+                 quote.updated_at && 
+                 quote.accepted_at && 
+                 new Date(quote.updated_at) > new Date(quote.accepted_at) && (
                   <Button
                     onClick={async () => {
                       try {
