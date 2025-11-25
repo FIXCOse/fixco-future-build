@@ -66,8 +66,8 @@ const baseStyles = `
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 10pt;
     line-height: 1.5;
-    color: #0f172a;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #1e293b;
+    background: #f8fafc;
   }
   
   .page {
@@ -78,84 +78,56 @@ const baseStyles = `
     background: transparent;
   }
   
-  /* Hero Header with clean white background */
+  /* Professional Header - Clean and minimal */
   .hero-header {
     background: #ffffff;
-    border-radius: 20px 20px 0 0;
-    padding: 40px 30px 30px;
+    border-radius: 8px 8px 0 0;
+    padding: 30px 25px 25px;
     text-align: center;
     margin-bottom: 0;
-    border-bottom: 3px solid #3b82f6;
+    border-bottom: 1px solid #e2e8f0;
   }
   
   .logo-container {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   
   .company-logo {
-    max-width: 180px;
+    max-width: 140px;
     height: auto;
     display: block;
     margin: 0 auto;
   }
   
   .hero-header h1 {
-    font-size: 28pt;
-    font-weight: 800;
-    color: #0f172a;
-    margin: 0;
-  }
-  
-  /* Trust Badges */
-  .trust-badges {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  
-  .trust-badge {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 8pt;
+    font-size: 22pt;
     font-weight: 600;
-    color: #0f172a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .trust-badge svg {
-    width: 14px;
-    height: 14px;
-    color: #10b981;
+    color: #1e293b;
+    margin: 0;
   }
   
   /* Main card container */
   .main-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 25px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin-bottom: 15px;
   }
   
   /* Title section */
   .title-section {
     text-align: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
     margin-bottom: 20px;
   }
   
   .title-section h2 {
-    font-size: 18pt;
-    font-weight: 800;
-    color: #0f172a;
+    font-size: 16pt;
+    font-weight: 600;
+    color: #1e293b;
   }
   
   /* Customer & Date Grid */
@@ -169,95 +141,128 @@ const baseStyles = `
   
   .info-item {
     background: #f8fafc;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 6px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    border: 1px solid #f1f5f9;
   }
   
   .info-label {
     text-transform: uppercase;
     font-size: 7pt;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.6px;
     color: #64748b;
     font-weight: 600;
   }
   
   .info-value {
-    font-weight: 700;
-    font-size: 11pt;
-    color: #0f172a;
+    font-weight: 600;
+    font-size: 10.5pt;
+    color: #1e293b;
   }
   
-  /* Section with icon header */
+  /* Section header - minimal style */
   .section-header {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e2e8f0;
-  }
-  
-  .section-icon {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-  }
-  
-  .section-icon svg {
-    width: 18px;
-    height: 18px;
-    color: white;
-  }
-  
-  .section-title {
-    font-size: 13pt;
-    font-weight: 700;
-    color: #0f172a;
-  }
-  
-  /* Items section */
-  .items-section {
-    margin-bottom: 20px;
-  }
-  
-  .category-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  
-  .category-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 11pt;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 12px;
     padding-bottom: 10px;
     border-bottom: 1px solid #e2e8f0;
   }
   
-  .category-icon {
-    width: 20px;
-    height: 20px;
-    color: #3b82f6;
+  .section-icon {
+    width: 24px;
+    height: 24px;
+    background: #1e3a5f;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
   
-  .item-row {
-    display: flex;
-    justify-content: space-between;
+  .section-icon svg {
+    width: 14px;
+    height: 14px;
+    color: white;
+  }
+  
+  .section-title {
+    font-size: 12pt;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  
+  /* Items section - CLASSIC TABLE LAYOUT */
+  .items-section {
+    margin-bottom: 20px;
+  }
+  
+  .category-title {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  /* Table for items */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  
+  .items-table thead {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .items-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 8pt;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .items-table th:last-child,
+  .items-table td:last-child {
+    text-align: right;
+  }
+  
+  .items-table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .items-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+  
+  .items-table td {
+    padding: 10px 12px;
+    font-size: 9pt;
+    color: #1e293b;
+  }
+  
+  .item-description {
+    font-weight: 500;
+  }
+  
+  .item-quantity,
+  .item-unit-price {
+    color: #64748b;
+  }
+  
+  .item-total {
+    font-weight: 600;
+  }
     align-items: flex-start;
     gap: 10px;
     margin-bottom: 8px;
@@ -288,9 +293,9 @@ const baseStyles = `
   .cost-row {
     display: flex;
     justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 10pt;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 9.5pt;
   }
   
   .cost-label {
@@ -299,104 +304,85 @@ const baseStyles = `
   }
   
   .cost-value {
-    font-weight: 700;
-    color: #0f172a;
+    font-weight: 600;
+    color: #1e293b;
   }
   
-  /* Green highlight for discounts and ROT */
+  /* Professional discount section - subtle green */
   .cost-row.discount {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    background: #f0fdf4;
     margin: 8px -16px;
-    padding: 16px;
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    padding: 14px 16px;
+    border-radius: 6px;
+    border: 1px solid #bbf7d0;
   }
   
   .cost-row.discount .cost-label {
-    color: #065f46;
+    color: #15803d;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+  
+  .cost-row.discount .cost-value {
+    color: #15803d;
     font-weight: 700;
     font-size: 11pt;
   }
   
-  .cost-row.discount .cost-value {
-    color: #065f46;
-    font-weight: 800;
-    font-size: 12pt;
-  }
-  
   .discount-explanation {
     font-size: 8pt;
-    color: #047857;
+    color: #16a34a;
     margin-top: 4px;
     font-weight: 500;
   }
   
-  /* Supercharged Total box with multicolor gradient */
+  /* Professional total box - solid dark blue */
   .total-box {
-    background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #06b6d4 100%);
-    border-radius: 20px;
-    padding: 25px 30px;
+    background: #1e3a5f;
+    border-radius: 6px;
+    padding: 18px 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.4);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .total-box::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border: 1px solid #334155;
   }
   
   .total-label {
-    font-size: 14pt;
-    font-weight: 800;
+    font-size: 12pt;
+    font-weight: 600;
     color: white;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .total-amount {
-    font-size: 24pt;
-    font-weight: 900;
+    font-size: 20pt;
+    font-weight: 700;
     color: white;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
   
   /* Signature section */
   .signature-section {
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 25px;
+    padding: 18px;
     background: #f8fafc;
-    border: 2px dashed #cbd5e1;
-    border-radius: 16px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 6px;
   }
   
   .signature-header {
-    font-size: 10pt;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 15px;
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   
   .signature-line {
-    border-bottom: 2px solid #64748b;
-    height: 50px;
-    margin-bottom: 8px;
+    border-bottom: 1px solid #94a3b8;
+    height: 45px;
+    margin-bottom: 6px;
   }
   
   .signature-label {
@@ -406,51 +392,38 @@ const baseStyles = `
     justify-content: space-between;
   }
   
-  /* Info cards at bottom */
+  /* Simple footer - traditional 2-column */
   .bottom-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin-top: 25px;
-    padding-top: 20px;
-    border-top: 2px solid #e2e8f0;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
   }
   
   .info-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .info-card-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .info-card-icon {
-    width: 20px;
-    height: 20px;
-    color: #3b82f6;
+    border-radius: 6px;
+    padding: 14px;
   }
   
   .info-card-title {
-    font-size: 10pt;
-    font-weight: 700;
-    color: #0f172a;
+    font-size: 9pt;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
   }
   
   .info-card-content {
     font-size: 8pt;
     color: #64748b;
-    line-height: 1.7;
+    line-height: 1.6;
   }
   
   .info-card-content p {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
   
   /* SVG Icons */
@@ -564,22 +537,6 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
       ` : ''}
       <h1>Offert ${quote.number}</h1>
     </div>
-        
-        <!-- Trust Badges -->
-        <div class="trust-badges">
-          <div class="trust-badge">
-            ${checkIconSVG}
-            <span>F-skatt registrerad</span>
-          </div>
-          <div class="trust-badge">
-            ${checkIconSVG}
-            <span>Försäkrad</span>
-          </div>
-          <div class="trust-badge">
-            ${checkIconSVG}
-            <span>2 års garanti</span>
-          </div>
-        </div>
         
         <!-- Main Card -->
         <div class="main-card">
@@ -700,26 +657,21 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
           <!-- Payment & Trust Info -->
           <div class="bottom-info">
             <div class="info-card">
-              <div class="info-card-header">
-                <span class="info-card-icon">${creditCardIconSVG}</span>
-                <span class="info-card-title">Betalning</span>
-              </div>
+              <div class="info-card-title">Företagsinformation</div>
               <div class="info-card-content">
-                <p>💳 Faktura efter slutfört arbete</p>
-                <p>📱 Kortbetalning & Swish</p>
-                <p>🌿 ROT-avdrag hanteras automatiskt</p>
+                <p><strong>Fixco AB</strong></p>
+                <p>Org.nr: 559240-3418</p>
+                <p>F-skatt & försäkring</p>
+                <p>2 års garanti på arbete</p>
               </div>
             </div>
             
             <div class="info-card">
-              <div class="info-card-header">
-                <span class="info-card-icon">${shieldIconSVG}</span>
-                <span class="info-card-title">Trygg handel</span>
-              </div>
+              <div class="info-card-title">Kontakt</div>
               <div class="info-card-content">
-                <p>🏢 Org.nr: 559472-6448</p>
-                <p>✅ F-skatt & försäkring</p>
-                <p>⭐ 2 års garanti på arbete</p>
+                <p>Email: info@fixco.se</p>
+                <p>Telefon: 010-551 72 40</p>
+                <p>Bankgiro: 5783-1466</p>
               </div>
             </div>
           </div>

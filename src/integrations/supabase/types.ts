@@ -2530,6 +2530,7 @@ export type Database = {
           number: string
           pdf_url: string | null
           public_token: string
+          reaccept_requested_at: string | null
           request_id: string | null
           rot_deduction_sek: number | null
           rot_percentage: number | null
@@ -2563,6 +2564,7 @@ export type Database = {
           number: string
           pdf_url?: string | null
           public_token: string
+          reaccept_requested_at?: string | null
           request_id?: string | null
           rot_deduction_sek?: number | null
           rot_percentage?: number | null
@@ -2596,6 +2598,7 @@ export type Database = {
           number?: string
           pdf_url?: string | null
           public_token?: string
+          reaccept_requested_at?: string | null
           request_id?: string | null
           rot_deduction_sek?: number | null
           rot_percentage?: number | null

@@ -247,6 +247,57 @@ export function RequestQuoteCard({
                     {quote.status === 'sent' ? 'Skicka igen' : 'Skicka'}
                   </Button>
                 )}
+                {quote.status === 'accepted' && (
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const { supabase } = await import('@/integrations/supabase/client');
+                        const { toast } = await import('sonner');
+                        
+                        // Update quote to pending_reaccept status
+                        const { error: updateError } = await supabase
+                          .from('quotes_new')
+                          .update({
+                            status: 'pending_reaccept',
+                            reaccept_requested_at: new Date().toISOString(),
+                            signature_name: null,
+                            signature_date: null,
+                            terms_accepted: false
+                          })
+                          .eq('id', quote.id);
+                        
+                        if (updateError) throw updateError;
+                        
+                        // Send re-accept email
+                        const { error: emailError } = await supabase.functions.invoke('send-reaccept-email', {
+                          body: {
+                            quoteId: quote.id,
+                            customerEmail: customer.email,
+                            customerName: customer.name
+                          }
+                        });
+                        
+                        if (emailError) {
+                          console.error('Email error:', emailError);
+                          toast.warning('Offerten uppdaterad, men kunde inte skicka email');
+                        } else {
+                          toast.success('Ny acceptans begärd och email skickat till kund');
+                        }
+                        
+                        onRefresh();
+                      } catch (err: any) {
+                        const { toast } = await import('sonner');
+                        console.error('Error:', err);
+                        toast.error('Kunde inte begära ny acceptans: ' + err.message);
+                      }
+                    }}
+                    size="sm"
+                    variant="secondary"
+                  >
+                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    Begär ny acceptans
+                  </Button>
+                )}
                 <Button
                   onClick={() => onCopyLink(quote.id)}
                   variant="outline"
