@@ -10,12 +10,18 @@ interface QuoteData {
     price: number;
     type?: string;
     supplier?: string;
+    supplierName?: string;
+    productUrl?: string;
+    imageUrl?: string;
   }>;
   subtotal_work_sek: number;
   subtotal_mat_sek: number;
   vat_sek: number;
   rot_deduction_sek?: number;
   rot_percentage?: number;
+  discount_amount_sek?: number;
+  discount_type?: string;
+  discount_value?: number;
   total_sek: number;
   customer?: {
     name: string;
@@ -269,6 +275,70 @@ const baseStyles = `
     font-size: 22px;
   }
 
+  /* Product links */
+  .product-links {
+    margin-top: 6px;
+    padding-left: 0;
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .product-link {
+    display: inline-block;
+    margin-right: 12px;
+    color: #1e3a5f;
+    text-decoration: none;
+    margin-top: 3px;
+  }
+
+  .product-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Info cards */
+  .info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .info-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 12px;
+  }
+
+  .info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .info-card li {
+    font-size: 11px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .info-card li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #1e3a5f;
+  }
+
   /* Signature Section */
   .signature-section {
     margin-top: 60px;
@@ -376,7 +446,16 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
       <div class="items-list">
         ${workItems.map(item => `
           <div class="item-row">
-            <div class="item-desc">${item.description}</div>
+            <div style="flex: 1;">
+              <div class="item-desc">${item.description}</div>
+              ${(item.productUrl || item.imageUrl || item.supplierName) ? `
+                <div class="product-links">
+                  ${item.supplierName ? `<span style="color: #6b7280;">📍 ${item.supplierName}</span>` : ''}
+                  ${item.productUrl ? `<a href="${item.productUrl}" class="product-link" target="_blank">🔗 Se produkt</a>` : ''}
+                  ${item.imageUrl ? `<a href="${item.imageUrl}" class="product-link" target="_blank">🖼️ Visa bild</a>` : ''}
+                </div>
+              ` : ''}
+            </div>
             <div class="item-qty">${item.quantity} ${item.unit || 'st'} × ${item.price.toLocaleString('sv-SE')} kr</div>
             <div class="item-price">${(item.quantity * item.price).toLocaleString('sv-SE')} kr</div>
           </div>
@@ -391,7 +470,16 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
       <div class="items-list">
         ${materialItems.map(item => `
           <div class="item-row">
-            <div class="item-desc">${item.description}</div>
+            <div style="flex: 1;">
+              <div class="item-desc">${item.description}</div>
+              ${(item.productUrl || item.imageUrl || item.supplierName) ? `
+                <div class="product-links">
+                  ${item.supplierName ? `<span style="color: #6b7280;">📍 ${item.supplierName}</span>` : ''}
+                  ${item.productUrl ? `<a href="${item.productUrl}" class="product-link" target="_blank">🔗 Se produkt</a>` : ''}
+                  ${item.imageUrl ? `<a href="${item.imageUrl}" class="product-link" target="_blank">🖼️ Visa bild</a>` : ''}
+                </div>
+              ` : ''}
+            </div>
             <div class="item-qty">${item.quantity} ${item.unit || 'st'} × ${item.price.toLocaleString('sv-SE')} kr</div>
             <div class="item-price">${(item.quantity * item.price).toLocaleString('sv-SE')} kr</div>
           </div>
@@ -411,6 +499,12 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
       <span>Materialkostnad</span>
       <span>${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
     </div>
+    ${quote.discount_amount_sek && quote.discount_amount_sek > 0 ? `
+      <div class="cost-row discount">
+        <span>Rabatt ${quote.discount_type === 'percentage' ? `(${quote.discount_value}%)` : ''}</span>
+        <span>−${quote.discount_amount_sek.toLocaleString('sv-SE')} kr</span>
+      </div>
+    ` : ''}
     <div class="cost-row">
       <span>Moms (25%)</span>
       <span>${quote.vat_sek.toLocaleString('sv-SE')} kr</span>
@@ -424,6 +518,25 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     <div class="cost-row total">
       <span>Totalt att betala</span>
       <span>${quote.total_sek.toLocaleString('sv-SE')} kr</span>
+    </div>
+  </div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h4>💳 Betalning</h4>
+      <ul>
+        <li>Faktura efter slutfört arbete</li>
+        <li>Kortbetalning & Swish</li>
+        <li>ROT-avdrag hanteras automatiskt</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>🛡️ Trygg handel</h4>
+      <ul>
+        <li>Org.nr: 559240-3418</li>
+        <li>F-skatt & försäkring</li>
+        <li>2 års garanti på arbete</li>
+      </ul>
     </div>
   </div>
 
