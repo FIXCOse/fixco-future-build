@@ -55,7 +55,7 @@ interface InvoiceData {
   };
 }
 
-// Clean minimalist design matching QuotePublic.tsx
+// Professional clean design matching QuotePublic.tsx exactly
 const baseStyles = `
   * {
     margin: 0;
@@ -68,112 +68,149 @@ const baseStyles = `
     background: white;
     color: #1a1a1a;
     font-size: 14px;
-    line-height: 1.5;
-    padding: 40px;
-    max-width: 800px;
+    line-height: 1.6;
+    padding: 40px 50px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
   /* Header with centered logo */
   .header {
     text-align: center;
-    padding: 30px 0;
-    border-bottom: 2px solid #1e3a5f;
+    padding-bottom: 30px;
     margin-bottom: 30px;
+    border-bottom: 1px solid #e5e7eb;
   }
 
   .logo {
-    max-width: 120px;
+    max-width: 140px;
     height: auto;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
   .doc-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: #1e3a5f;
-    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  .doc-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
   }
 
   /* Info Grid - 2 columns */
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 40px;
     margin-bottom: 40px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 4px;
+    padding: 24px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
   }
 
   .info-section h3 {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
-    color: #666;
+    color: #9ca3af;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
   }
 
   .info-section p {
     font-size: 14px;
-    margin: 5px 0;
-    color: #1a1a1a;
+    margin: 6px 0;
+    color: #1f2937;
+    line-height: 1.5;
+  }
+
+  .info-section p strong {
+    font-weight: 600;
+    color: #111827;
   }
 
   /* Items Section */
   .items-section {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
   }
 
   .items-section h3 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #1e3a5f;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .items-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  .icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
   }
 
-  .items-table th {
-    background: #1e3a5f;
-    color: white;
-    padding: 12px;
-    text-align: left;
+  .items-list {
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #ffffff;
+  }
+
+  .item-row:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .item-row:last-child {
+    border-bottom: none;
+  }
+
+  .item-desc {
+    flex: 1;
+    color: #374151;
+    font-size: 14px;
+    padding-right: 20px;
+  }
+
+  .item-qty {
+    color: #6b7280;
     font-size: 13px;
+    padding-right: 16px;
+    white-space: nowrap;
+  }
+
+  .item-price {
     font-weight: 600;
-  }
-
-  .items-table th:last-child,
-  .items-table td:last-child {
+    color: #111827;
+    font-size: 14px;
+    white-space: nowrap;
+    min-width: 100px;
     text-align: right;
-  }
-
-  .items-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 13px;
-  }
-
-  .items-table tbody tr:nth-child(even) {
-    background: #f8f9fa;
   }
 
   /* Cost Breakdown */
   .cost-breakdown {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #ddd;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid #e5e7eb;
   }
 
   .cost-breakdown h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #1e3a5f;
     margin-bottom: 20px;
@@ -182,50 +219,76 @@ const baseStyles = `
   .cost-row {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
     font-size: 14px;
   }
 
-  .cost-row.subtotal {
+  .cost-row span:first-child {
+    color: #6b7280;
+  }
+
+  .cost-row span:last-child {
     font-weight: 600;
-    padding-top: 15px;
+    color: #111827;
   }
 
   .cost-row.discount {
-    color: #16a34a;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    margin: 8px 0;
+  }
+
+  .cost-row.discount span {
+    color: #16a34a !important;
     font-weight: 600;
   }
 
   .cost-row.total {
     background: #1e3a5f;
     color: white;
-    padding: 20px;
-    margin-top: 15px;
-    border-radius: 4px;
-    font-size: 20px;
+    padding: 22px 24px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 18px;
     font-weight: 700;
+    border: none;
+  }
+
+  .cost-row.total span {
+    color: white !important;
+  }
+
+  .cost-row.total span:first-child {
+    font-size: 16px;
+  }
+
+  .cost-row.total span:last-child {
+    font-size: 22px;
   }
 
   /* Signature Section */
   .signature-section {
-    margin-top: 50px;
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #f8f9fa;
+    margin-top: 60px;
+    padding: 28px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
   }
 
   .signature-section h3 {
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #1e3a5f;
   }
 
   .signature-section p {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 25px;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 30px;
   }
 
   .signature-line {
@@ -240,29 +303,36 @@ const baseStyles = `
 
   .signature-field label {
     display: block;
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 8px;
+    font-size: 11px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .signature-field .line {
-    border-bottom: 2px solid #333;
-    height: 35px;
+    border-bottom: 2px solid #9ca3af;
+    height: 40px;
   }
 
   /* Footer */
   .footer {
-    margin-top: 50px;
-    padding-top: 25px;
-    border-top: 1px solid #ddd;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
     text-align: center;
-    font-size: 12px;
-    color: #666;
+    font-size: 11px;
+    color: #6b7280;
     line-height: 1.8;
   }
 
   .footer p {
-    margin: 4px 0;
+    margin: 3px 0;
+  }
+
+  .footer strong {
+    color: #374151;
+    font-weight: 600;
   }
 `;
 
@@ -280,74 +350,53 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
 </head>
 <body>
   <div class="header">
-    ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="Fixco Logo" class="logo" />` : '<div style="font-size: 22px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
-    <div class="doc-title">OFFERT ${quote.number}</div>
+    ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="Fixco Logo" class="logo" />` : '<div style="font-size: 24px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
+    <div class="doc-title">Offert ${quote.number}</div>
+    <div class="doc-subtitle">Från Fixco AB</div>
   </div>
 
   <div class="info-grid">
     <div class="info-section">
-      <h3>Kund</h3>
+      <h3>Mottagare</h3>
       <p><strong>${quote.customer?.name || 'Okänd kund'}</strong></p>
       ${quote.customer?.email ? `<p>${quote.customer.email}</p>` : ''}
       ${quote.customer?.phone ? `<p>${quote.customer.phone}</p>` : ''}
       ${quote.customer?.address ? `<p>${quote.customer.address}</p>` : ''}
     </div>
     <div class="info-section">
-      <h3>Datum & Giltighet</h3>
-      ${quote.created_at ? `<p><strong>Skapad:</strong> ${new Date(quote.created_at).toLocaleDateString('sv-SE')}</p>` : ''}
-      <p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>
+      <h3>Giltig till</h3>
+      <p><strong>${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</strong></p>
+      ${quote.created_at ? `<p style="font-size: 12px; color: #9ca3af; margin-top: 8px;">Skapad: ${new Date(quote.created_at).toLocaleDateString('sv-SE')}</p>` : ''}
     </div>
   </div>
 
   ${workItems.length > 0 ? `
     <div class="items-section">
-      <h3>Arbete</h3>
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Beskrivning</th>
-            <th style="width: 100px;">Antal</th>
-            <th style="width: 120px;">à-pris</th>
-            <th style="width: 120px;">Summa</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${workItems.map(item => `
-            <tr>
-              <td>${item.description}</td>
-              <td>${item.quantity} ${item.unit || 'st'}</td>
-              <td>${item.price.toLocaleString('sv-SE')} kr</td>
-              <td><strong>${(item.quantity * item.price).toLocaleString('sv-SE')} kr</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+      <h3>🔧 Arbete</h3>
+      <div class="items-list">
+        ${workItems.map(item => `
+          <div class="item-row">
+            <div class="item-desc">${item.description}</div>
+            <div class="item-qty">${item.quantity} ${item.unit || 'st'} × ${item.price.toLocaleString('sv-SE')} kr</div>
+            <div class="item-price">${(item.quantity * item.price).toLocaleString('sv-SE')} kr</div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   ` : ''}
 
   ${materialItems.length > 0 ? `
     <div class="items-section">
-      <h3>Material</h3>
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Beskrivning</th>
-            <th style="width: 100px;">Antal</th>
-            <th style="width: 120px;">à-pris</th>
-            <th style="width: 120px;">Summa</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${materialItems.map(item => `
-            <tr>
-              <td>${item.description}</td>
-              <td>${item.quantity} ${item.unit || 'st'}</td>
-              <td>${item.price.toLocaleString('sv-SE')} kr</td>
-              <td><strong>${(item.quantity * item.price).toLocaleString('sv-SE')} kr</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+      <h3>📦 Material</h3>
+      <div class="items-list">
+        ${materialItems.map(item => `
+          <div class="item-row">
+            <div class="item-desc">${item.description}</div>
+            <div class="item-qty">${item.quantity} ${item.unit || 'st'} × ${item.price.toLocaleString('sv-SE')} kr</div>
+            <div class="item-price">${(item.quantity * item.price).toLocaleString('sv-SE')} kr</div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   ` : ''}
 
@@ -355,25 +404,25 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     <h3>Kostnadsspecifikation</h3>
     
     <div class="cost-row">
-      <span>Arbetskostnad:</span>
-      <strong>${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</strong>
+      <span>Arbetskostnad</span>
+      <span>${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</span>
     </div>
     <div class="cost-row">
-      <span>Materialkostnad:</span>
-      <strong>${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</strong>
+      <span>Materialkostnad</span>
+      <span>${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
     </div>
     <div class="cost-row">
-      <span>Moms (25%):</span>
-      <strong>${quote.vat_sek.toLocaleString('sv-SE')} kr</strong>
+      <span>Moms (25%)</span>
+      <span>${quote.vat_sek.toLocaleString('sv-SE')} kr</span>
     </div>
     ${quote.rot_deduction_sek && quote.rot_deduction_sek > 0 ? `
       <div class="cost-row discount">
-        <span>ROT-avdrag (${quote.rot_percentage || 30}%):</span>
-        <strong>−${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</strong>
+        <span>ROT-avdrag (${quote.rot_percentage || 30}%)</span>
+        <span>−${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</span>
       </div>
     ` : ''}
     <div class="cost-row total">
-      <span>ATT BETALA:</span>
+      <span>Totalt att betala</span>
       <span>${quote.total_sek.toLocaleString('sv-SE')} kr</span>
     </div>
   </div>

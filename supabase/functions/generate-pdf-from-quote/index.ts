@@ -59,7 +59,7 @@ serve(async (req) => {
     try {
       const { data: logoData, error: logoError } = await supabaseClient.storage
         .from('assets')
-        .download('fixco-logo-white.png');
+        .download('fixco-logo-black.png');
 
       if (logoData && !logoError) {
         const logoBytes = await logoData.arrayBuffer();
