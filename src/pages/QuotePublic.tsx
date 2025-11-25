@@ -500,7 +500,24 @@ export default function QuotePublic() {
             </div>
           </div>
 
-          {/* Main Card */}
+              {/* Status Warning for pending_reaccept */}
+              {quote?.status === 'pending_reaccept' && !isDeleted && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/10 border-2 border-yellow-500/50 rounded-lg p-4 mb-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1">
+                        ⚠️ Offerten har uppdaterats
+                      </h3>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                        Vi har gjort ändringar i offerten efter din tidigare acceptans. Vänligen granska ändringarna nedan och acceptera på nytt för att fortsätta.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Main Card */}
           <Card className="border-border bg-surface shadow-xl">
             <CardContent className="p-4 space-y-4">
               {/* Title */}
@@ -826,7 +843,7 @@ export default function QuotePublic() {
                     Denna offert har raderats
                   </p>
                 </div>
-              ) : accepted ? (
+              ) : (accepted && quote?.status !== 'pending_reaccept') ? (
                 <>
                   <div className="bg-green-50 dark:bg-green-900/10 border border-green-600/30 rounded-lg p-4 text-center">
                     <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />

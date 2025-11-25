@@ -66,7 +66,7 @@ export default function AdminQuotesUnified() {
       
       case "active":
         // Quotes with active statuses
-        const activeStatuses = ['draft', 'sent', 'viewed', 'change_requested'];
+        const activeStatuses = ['draft', 'sent', 'viewed', 'change_requested', 'pending_reaccept'];
         let activeItems = allData.filter(item => 
           item.quote && activeStatuses.includes(item.quote.status)
         );
