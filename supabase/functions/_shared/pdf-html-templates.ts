@@ -781,14 +781,247 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
 }
 
 export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): string {
-  const isPaid = !!invoice.paid_at;
+  // Parse line items and categorize
+  const lineItems = Array.isArray(invoice.line_items) ? invoice.line_items : [];
+  const workItems = lineItems.filter((item: any) => item.type === 'work' || item.type === 'service');
+  const materialItems = lineItems.filter((item: any) => item.type === 'material' || item.type === 'product');
+
+  // Calculate payment status
+  const isPaid = invoice.status === 'paid' || !!invoice.paid_at;
   const dueDate = new Date(invoice.due_date);
-  const now = new Date();
-  const isOverdue = dueDate < now && !isPaid;
-  const diffTime = dueDate.getTime() - now.getTime();
-  const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
-  const formatCurrency = (amount: number) => 
+  const today = new Date();
+  const isOverdue = !isPaid && dueDate < today;
+  const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+  // Status badge
+  let statusBadge = '';
+  if (isPaid) {
+    statusBadge = '<span class="badge" style="background: #dcfce7; color: #166534;">✓ Betald</span>';
+  } else if (isOverdue) {
+    statusBadge = '<span class="badge" style="background: #fee2e2; color: #991b1b;">⏰ Förfallen</span>';
+  } else {
+    statusBadge = '<span class="badge badge-secondary">📄 Skickad</span>';
+  }
+
+  // Customer info
+  const customerName = invoice.customer?.name || 'Kund';
+
+  return `
+    <!DOCTYPE html>
+    <html lang="sv">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Faktura ${invoice.invoice_number}</title>
+      <style>${baseStyles}</style>
+    </head>
+    <body>
+      <div class="container">
+        <!-- Header -->
+        <div class="header-section">
+          <div class="icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 1-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <h1 class="header-title">Faktura ${invoice.invoice_number}</h1>
+          <p class="header-subtitle">Från Fixco AB</p>
+          
+          <div class="status-badges">
+            ${statusBadge}
+          </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+          <!-- Title -->
+          <div class="title-section">
+            <h2>Faktura för ${customerName}</h2>
+          </div>
+
+          <!-- Customer & Date -->
+          <div class="info-grid">
+            <div class="info-item">
+              <p class="info-label">MOTTAGARE</p>
+              <p class="info-value">${customerName}</p>
+            </div>
+            <div class="info-item">
+              <p class="info-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                FÖRFALLODATUM
+              </p>
+              <p class="info-value">
+                ${new Date(invoice.due_date).toLocaleDateString('sv-SE')}
+              </p>
+            </div>
+          </div>
+
+          <!-- Items Section -->
+          ${workItems.length > 0 || materialItems.length > 0 ? `
+          <div class="items-section">
+            <div class="section-header">
+              <div class="section-icon-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </div>
+              <h3 class="section-title">Vad ingår i fakturan</h3>
+            </div>
+
+            ${workItems.length > 0 ? `
+            <div class="item-category">
+              <div class="category-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Arbete
+              </div>
+              ${workItems.map((item: any) => `
+                <div class="item-row">
+                  <div class="item-description">
+                    <span class="item-description-text">
+                      ${item.description} (${item.quantity} ${item.unit || 'st'} × ${item.unit_price.toLocaleString('sv-SE')} kr)
+                    </span>
+                    <span class="item-price">${(item.total_price || item.amount).toLocaleString('sv-SE')} kr</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            ` : ''}
+
+            ${materialItems.length > 0 ? `
+            <div class="item-category">
+              <div class="category-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/>
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                Material
+              </div>
+              ${materialItems.map((item: any) => `
+                <div class="item-row">
+                  <div class="item-description">
+                    <span class="item-description-text">
+                      ${item.description} (${item.quantity} ${item.unit || 'st'} × ${item.unit_price.toLocaleString('sv-SE')} kr)
+                    </span>
+                    <span class="item-price">${(item.total_price || item.amount).toLocaleString('sv-SE')} kr</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            ` : ''}
+          </div>
+          ` : ''}
+
+          <!-- Cost Breakdown -->
+          <div class="cost-section">
+            <div class="section-header">
+              <div class="section-icon-box">
+                <span style="font-weight: 700; font-size: 12px; color: #1e3a5f;">kr</span>
+              </div>
+              <h3 class="section-title">Kostnadsspecifikation</h3>
+            </div>
+
+            <div class="cost-row">
+              <span class="cost-label">Delsumma</span>
+              <span class="cost-value">${invoice.subtotal.toLocaleString('sv-SE')} kr</span>
+            </div>
+
+            ${invoice.discount_amount && invoice.discount_amount > 0 ? `
+            <div class="cost-row-discount">
+              <span class="cost-label">Rabatt</span>
+              <span class="cost-value">−${invoice.discount_amount.toLocaleString('sv-SE')} kr</span>
+            </div>
+            ` : ''}
+
+            <div class="cost-row">
+              <span class="cost-label">Moms (25%)</span>
+              <span class="cost-value">${invoice.vat_amount.toLocaleString('sv-SE')} kr</span>
+            </div>
+
+            ${invoice.rot_amount && invoice.rot_amount > 0 ? `
+            <div class="cost-row-discount">
+              <span class="cost-label">ROT-avdrag</span>
+              <span class="cost-value">−${invoice.rot_amount.toLocaleString('sv-SE')} kr</span>
+            </div>
+            ` : ''}
+
+            ${invoice.rut_amount && invoice.rut_amount > 0 ? `
+            <div class="cost-row-discount">
+              <span class="cost-label">RUT-avdrag</span>
+              <span class="cost-value">−${invoice.rut_amount.toLocaleString('sv-SE')} kr</span>
+            </div>
+            ` : ''}
+
+            <div class="total-box">
+              <span class="total-label">Totalt att betala</span>
+              <span class="total-value">${invoice.total_amount.toLocaleString('sv-SE')} kr</span>
+            </div>
+          </div>
+
+          <!-- Info Cards -->
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-card-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                Betalning
+              </div>
+              <div class="info-card-content">
+                <p>• Betalning inom ${daysUntilDue > 0 ? daysUntilDue : 0} dagar</p>
+                <p>• Kortbetalning & Swish</p>
+                <p>• Bankgiro: 123-4567</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                Trygg handel
+              </div>
+              <div class="info-card-content">
+                <p>• Org.nr: 559240-3418</p>
+                <p>• F-skatt & försäkring</p>
+                <p>• 2 års garanti på arbete</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-section">
+          <div class="footer-logo">FIXCO AB</div>
+          <div class="footer-contact">
+            <p>Org.nr: 559240-3418 | info@fixco.se | Tel: 073-123 45 67</p>
+            <p>Besöksadress: Testgatan 1, 123 45 Stockholm</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `.trim();
+}
+
     new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
   
   const formatDate = (dateString: string) => 
