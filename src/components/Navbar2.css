@@ -856,6 +856,7 @@ p {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
+  pointer-events: none !important;
 }
 
 .rd-navbar_block_card:is(:hover, :focus-visible) .rd-navbar_block_card_image {
@@ -924,9 +925,10 @@ p {
     transform: translateX(-50%) translateY(100%);
   }
 
-  .rd-navbar_dropdown.cc-hide_mobile {
+  /* TILLFÄLLIGT BORTTAGET FÖR DEBUG - ÅTERSTÄLL SENARE */
+  /* .rd-navbar_dropdown.cc-hide_mobile {
     display: none;
-  }
+  } */
 
   .rd-navbar_btn {
     justify-self: center;
