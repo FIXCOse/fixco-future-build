@@ -10,6 +10,48 @@ import { Copy, Eye, Code } from "lucide-react";
 import { generateQuoteHTML, generateInvoiceHTML } from "@/utils/pdf-html-preview";
 import { toast } from "sonner";
 
+// A4 Preview Container with scaling
+const A4PreviewContainer = ({ html }: { html: string }) => {
+  // A4 dimensions in pixels (at 96 DPI)
+  const a4Width = 794;
+  const a4Height = 1123;
+  
+  // Container height determines the scale
+  const containerHeight = 800;
+  const scale = containerHeight / a4Height;
+  
+  return (
+    <div 
+      className="relative overflow-hidden border rounded-lg bg-muted"
+      style={{ height: `${containerHeight}px` }}
+    >
+      <div
+        style={{
+          width: a4Width,
+          height: a4Height,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          marginLeft: `-${(a4Width * scale) / 2}px`,
+        }}
+      >
+        <iframe
+          srcDoc={html}
+          className="w-full h-full bg-background shadow-lg"
+          title="A4 Preview"
+          style={{ 
+            border: 'none',
+            width: a4Width,
+            height: a4Height,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function QuoteHtmlPreview() {
   const [viewMode, setViewMode] = useState<'quote' | 'invoice'>('quote');
   const [showSource, setShowSource] = useState(false);
@@ -196,14 +238,7 @@ export default function QuoteHtmlPreview() {
                     <code>{html}</code>
                   </pre>
                 ) : (
-                  <div className="border rounded-lg overflow-hidden">
-                    <iframe
-                      srcDoc={html}
-                      className="w-full h-[600px] bg-white"
-                      title="Preview"
-                      style={{ border: 'none' }}
-                    />
-                  </div>
+                  <A4PreviewContainer html={html} />
                 )}
               </CardContent>
             </Card>
@@ -296,14 +331,7 @@ export default function QuoteHtmlPreview() {
                     <code>{html}</code>
                   </pre>
                 ) : (
-                  <div className="border rounded-lg overflow-hidden">
-                    <iframe
-                      srcDoc={html}
-                      className="w-full h-[600px] bg-white"
-                      title="Preview"
-                      style={{ border: 'none' }}
-                    />
-                  </div>
+                  <A4PreviewContainer html={html} />
                 )}
               </CardContent>
             </Card>
