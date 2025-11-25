@@ -7,6 +7,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Helper function for UTF-8 safe base64 encoding
+function utf8ToBase64(str: string): string {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  let binary = '';
+  for (let i = 0; i < data.length; i++) {
+    binary += String.fromCharCode(data[i]);
+  }
+  return btoa(binary);
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -74,7 +85,7 @@ serve(async (req) => {
         'API_KEY': Deno.env.get('PDFBOLT_API_KEY') ?? '',
       },
       body: JSON.stringify({
-        html: btoa(html), // Base64 encode the HTML
+        html: utf8ToBase64(html), // UTF-8 safe base64 encode the HTML
         options: {
           format: 'A4',
           printBackground: true,
