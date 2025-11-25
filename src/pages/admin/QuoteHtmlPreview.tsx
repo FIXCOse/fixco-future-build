@@ -81,6 +81,7 @@ export default function QuoteHtmlPreview() {
 
   // Test data for quote
   const [quoteData, setQuoteData] = useState({
+    title: "Elinstallation - Villa Ek",
     number: "2025-001",
     created_at: "2025-11-25",
     valid_until: "2025-12-25",
