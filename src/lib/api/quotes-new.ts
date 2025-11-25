@@ -19,7 +19,7 @@ export type QuoteNewRow = {
   total_sek: number;
   vat_included?: boolean;
   pdf_url?: string | null;
-  status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired';
+  status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired' | 'pending_reaccept';
   valid_until?: string | null;
   public_token: string;
   sent_at?: string | null;
@@ -27,6 +27,8 @@ export type QuoteNewRow = {
   accepted_at?: string | null;
   change_req_at?: string | null;
   declined_at?: string | null;
+  updated_at?: string | null;
+  reaccept_requested_at?: string | null;
   created_at: string;
   customer?: {
     id: string;

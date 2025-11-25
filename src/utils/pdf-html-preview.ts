@@ -54,7 +54,7 @@ interface InvoiceData {
   discount_amount?: number;
 }
 
-// MINIMALIST PROFESSIONAL PDF DESIGN
+// Clean minimalist design matching QuotePublic.tsx
 const baseStyles = `
   * {
     margin: 0;
@@ -68,80 +68,82 @@ const baseStyles = `
     color: #1a1a1a;
     font-size: 14px;
     line-height: 1.5;
-    padding: 20px;
+    padding: 40px;
     max-width: 800px;
     margin: 0 auto;
   }
 
-  /* Header */
+  /* Header with centered logo */
   .header {
     text-align: center;
-    padding: 20px 0;
+    padding: 30px 0;
     border-bottom: 2px solid #1e3a5f;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .logo {
     max-width: 120px;
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   .doc-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     color: #1e3a5f;
     margin-top: 10px;
   }
 
-  /* Info Grid */
+  /* Info Grid - 2 columns */
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 15px;
+    gap: 30px;
+    margin-bottom: 40px;
+    padding: 20px;
     background: #f8f9fa;
     border-radius: 4px;
   }
 
   .info-section h3 {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #666;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
   }
 
   .info-section p {
     font-size: 14px;
-    margin: 4px 0;
+    margin: 5px 0;
+    color: #1a1a1a;
   }
 
   /* Items Section */
   .items-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .items-section h3 {
     font-size: 16px;
     font-weight: 600;
     color: #1e3a5f;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #ddd;
   }
 
   .items-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
   .items-table th {
     background: #1e3a5f;
     color: white;
-    padding: 10px;
+    padding: 12px;
     text-align: left;
     font-size: 13px;
     font-weight: 600;
@@ -153,7 +155,7 @@ const baseStyles = `
   }
 
   .items-table td {
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #e0e0e0;
     font-size: 13px;
   }
@@ -164,15 +166,22 @@ const baseStyles = `
 
   /* Cost Breakdown */
   .cost-breakdown {
-    margin-top: 30px;
+    margin-top: 40px;
     padding-top: 20px;
     border-top: 2px solid #ddd;
+  }
+
+  .cost-breakdown h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 20px;
   }
 
   .cost-row {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 10px 0;
     font-size: 14px;
   }
 
@@ -181,38 +190,46 @@ const baseStyles = `
     padding-top: 15px;
   }
 
-  .cost-row.total {
-    background: #1e3a5f;
-    color: white;
-    padding: 15px 20px;
-    margin-top: 10px;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: 700;
-  }
-
   .cost-row.discount {
     color: #16a34a;
     font-weight: 600;
   }
 
+  .cost-row.total {
+    background: #1e3a5f;
+    color: white;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
   /* Signature Section */
   .signature-section {
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 50px;
+    padding: 25px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    background: #f8f9fa;
   }
 
   .signature-section h3 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    color: #1e3a5f;
+  }
+
+  .signature-section p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
   }
 
   .signature-line {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     margin-top: 30px;
   }
 
@@ -224,26 +241,27 @@ const baseStyles = `
     display: block;
     font-size: 12px;
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
 
   .signature-field .line {
-    border-bottom: 1px solid #333;
-    height: 30px;
+    border-bottom: 2px solid #333;
+    height: 35px;
   }
 
   /* Footer */
   .footer {
-    margin-top: 40px;
-    padding-top: 20px;
+    margin-top: 50px;
+    padding-top: 25px;
     border-top: 1px solid #ddd;
     text-align: center;
     font-size: 12px;
     color: #666;
+    line-height: 1.8;
   }
 
   .footer p {
-    margin: 3px 0;
+    margin: 4px 0;
   }
 `;
 
@@ -262,7 +280,7 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
 </head>
 <body>
   <div class="header">
-    ${logoBase64 ? `<img src="${logoBase64}" alt="Logo" class="logo" />` : '<div style="font-size: 20px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
+    ${logoBase64 ? `<img src="${logoBase64}" alt="Fixco Logo" class="logo" />` : '<div style="font-size: 22px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
     <div class="doc-title">OFFERT ${quote.number}</div>
   </div>
 
@@ -275,7 +293,7 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
       ${quote.customer_address ? `<p>${quote.customer_address}</p>` : ''}
     </div>
     <div class="info-section">
-      <h3>Datum & Giltighetstid</h3>
+      <h3>Datum & Giltighet</h3>
       <p><strong>Skapad:</strong> ${new Date(quote.created_at).toLocaleDateString('sv-SE')}</p>
       <p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>
     </div>
@@ -288,8 +306,8 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -314,8 +332,8 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -340,8 +358,8 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -360,6 +378,8 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
   ` : ''}
 
   <div class="cost-breakdown">
+    <h3>Kostnadsspecifikation</h3>
+    
     <div class="cost-row">
       <span>Arbetskostnad:</span>
       <strong>${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</strong>
@@ -403,7 +423,7 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
     <p><strong>Fixco AB</strong></p>
     <p>Org.nr: 559240-3418 | Bankgiro: 5260-9469</p>
     <p>E-post: info@fixco.se | Telefon: 08-123 456 78</p>
-    <p>Adress: Vasagatan 10, 111 20 Stockholm</p>
+    <p>Vasagatan 10, 111 20 Stockholm</p>
   </div>
 </body>
 </html>
@@ -425,7 +445,7 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
 </head>
 <body>
   <div class="header">
-    ${logoBase64 ? `<img src="${logoBase64}" alt="Logo" class="logo" />` : '<div style="font-size: 20px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
+    ${logoBase64 ? `<img src="${logoBase64}" alt="Fixco Logo" class="logo" />` : '<div style="font-size: 22px; font-weight: bold; color: #1e3a5f;">FIXCO AB</div>'}
     <div class="doc-title">FAKTURA ${invoice.invoice_number}</div>
   </div>
 
@@ -453,8 +473,8 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -479,8 +499,8 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -505,8 +525,8 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
         <thead>
           <tr>
             <th>Beskrivning</th>
-            <th style="width: 80px;">Antal</th>
-            <th style="width: 100px;">à-pris</th>
+            <th style="width: 100px;">Antal</th>
+            <th style="width: 120px;">à-pris</th>
             <th style="width: 120px;">Summa</th>
           </tr>
         </thead>
@@ -525,6 +545,8 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
   ` : ''}
 
   <div class="cost-breakdown">
+    <h3>Kostnadsspecifikation</h3>
+    
     <div class="cost-row">
       <span>Delsumma:</span>
       <strong>${invoice.subtotal.toLocaleString('sv-SE')} kr</strong>
@@ -535,20 +557,14 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
     </div>
     ${invoice.rot_amount && invoice.rot_amount > 0 ? `
       <div class="cost-row discount">
-        <span>ROT-avdrag:</span>
+        <span>ROT-avdrag (30%):</span>
         <strong>−${invoice.rot_amount.toLocaleString('sv-SE')} kr</strong>
       </div>
     ` : ''}
     ${invoice.rut_amount && invoice.rut_amount > 0 ? `
       <div class="cost-row discount">
-        <span>RUT-avdrag:</span>
+        <span>RUT-avdrag (30%):</span>
         <strong>−${invoice.rut_amount.toLocaleString('sv-SE')} kr</strong>
-      </div>
-    ` : ''}
-    ${invoice.discount_amount && invoice.discount_amount > 0 ? `
-      <div class="cost-row discount">
-        <span>Rabatt:</span>
-        <strong>−${invoice.discount_amount.toLocaleString('sv-SE')} kr</strong>
       </div>
     ` : ''}
     <div class="cost-row total">
@@ -557,22 +573,11 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
     </div>
   </div>
 
-  <div class="signature-section">
-    <h3>Betalningsinformation</h3>
-    <p><strong>Bankgiro:</strong> 5260-9469</p>
-    <p><strong>OCR:</strong> ${invoice.invoice_number.replace(/[^0-9]/g, '')}</p>
-    <p><strong>Förfallodatum:</strong> ${new Date(invoice.due_date).toLocaleDateString('sv-SE')}</p>
-    <p style="margin-top: 10px; font-size: 12px; color: #666;">
-      Vänligen ange OCR-nummer vid betalning.
-    </p>
-  </div>
-
   <div class="footer">
     <p><strong>Fixco AB</strong></p>
     <p>Org.nr: 559240-3418 | Bankgiro: 5260-9469</p>
-    <p>F-skatt | Momsregistrerad</p>
     <p>E-post: info@fixco.se | Telefon: 08-123 456 78</p>
-    <p>Adress: Vasagatan 10, 111 20 Stockholm</p>
+    <p>Vasagatan 10, 111 20 Stockholm</p>
   </div>
 </body>
 </html>
