@@ -4,7 +4,7 @@ import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Trash2, Search, Plus } from "lucide-react";
+import { Trash2, Search, Plus, Eye } from "lucide-react";
 import { useRequestsQuotes } from "@/hooks/useRequestsQuotes";
 import { RequestQuoteCard } from "@/components/admin/RequestQuoteCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -439,6 +439,13 @@ export default function AdminQuotesUnified() {
           <Button onClick={handleNewQuote}>
             <Plus className="h-4 w-4 mr-2" />
             Ny offert
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/admin/quotes/html-preview')}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Preview HTML
           </Button>
           <Button
             variant="outline"
