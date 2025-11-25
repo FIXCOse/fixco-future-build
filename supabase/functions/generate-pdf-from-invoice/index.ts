@@ -65,25 +65,46 @@ serve(async (req) => {
 
     let yPosition = height - 50;
 
-    // Premium header with gradient background
+    // ============= MODERN PREMIUM HEADER WITH SMOOTH GRADIENT =============
+    const headerHeight = 160;
+    const gradientSteps = 50;
+
+    // Elegant smooth gradient (navy dark → electric blue)
+    for (let i = 0; i < gradientSteps; i++) {
+      const ratio = i / gradientSteps;
+      const r = 0.06 + (0.10 - 0.06) * ratio;
+      const g = 0.12 + (0.60 - 0.12) * ratio;
+      const b = 0.24 + (0.90 - 0.24) * ratio;
+      
+      page.drawRectangle({
+        x: 0,
+        y: height - headerHeight + (i * headerHeight / gradientSteps),
+        width: width,
+        height: (headerHeight / gradientSteps) + 1,
+        color: rgb(r, g, b),
+      });
+    }
+
+    // Subtle glow effect under header
     page.drawRectangle({
       x: 0,
-      y: height - 130,
+      y: height - headerHeight - 10,
       width: width,
-      height: 130,
-      color: rgb(0.1, 0.21, 0.36), // Mörk blå #1a365d
+      height: 10,
+      color: rgb(0.06, 0.12, 0.24),
+      opacity: 0.08,
     });
 
-    // Embed and draw logo if available
+    // === LARGER, PREMIUM LOGO ===
     if (logoData) {
       try {
         const logoBytes = await logoData.arrayBuffer();
         const logoImage = await pdfDoc.embedPng(logoBytes);
-        const logoDims = logoImage.scale(0.15);
+        const logoDims = logoImage.scale(0.30); // Större logotyp!
         
         page.drawImage(logoImage, {
           x: 50,
-          y: height - 100,
+          y: height - 115,
           width: logoDims.width,
           height: logoDims.height,
         });
@@ -92,55 +113,88 @@ serve(async (req) => {
       }
     }
 
-    // Company info (right side of header)
+    // === ELEGANT COMPANY INFO (RIGHT SIDE) ===
+    const infoX = width - 220;
+    let infoY = height - 70;
+    const lineSpacing = 18;
+
     page.drawText('FIXCO AB', {
-      x: width - 200,
-      y: height - 55,
-      size: 14,
+      x: infoX,
+      y: infoY,
+      size: 16,
       font: fontBold,
       color: rgb(1, 1, 1),
+      opacity: 0.98,
     });
 
+    infoY -= lineSpacing;
     page.drawText('Org.nr: 559123-4567', {
-      x: width - 200,
-      y: height - 72,
-      size: 9,
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
+    infoY -= lineSpacing;
     page.drawText('info@fixco.se', {
-      x: width - 200,
-      y: height - 86,
-      size: 9,
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
-    page.drawText('+46 70 123 45 67', {
-      x: width - 200,
-      y: height - 100,
-      size: 9,
+    infoY -= lineSpacing;
+    page.drawText('073-123 45 67', {
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
-    page.drawText('www.fixco.se', {
-      x: width - 200,
-      y: height - 114,
-      size: 9,
+    infoY -= lineSpacing;
+    page.drawText('fixco.se', {
+      x: infoX,
+      y: infoY,
+      size: 10,
       font: font,
-      color: rgb(0.85, 0.85, 0.85),
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
-    // Invoice title
-    yPosition = height - 170;
-    page.drawText('FAKTURA', {
+    // === PROMINENT TITLE WITH ELEGANT BACKGROUND BOX ===
+    yPosition = height - 195;
+
+    // Subtle background box for title
+    page.drawRectangle({
+      x: 40,
+      y: yPosition - 12,
+      width: 350,
+      height: 55,
+      color: rgb(0.99, 0.99, 1),
+      opacity: 0.6,
+    });
+
+    // Accent bar next to title
+    page.drawRectangle({
       x: 50,
+      y: yPosition - 8,
+      width: 6,
+      height: 45,
+      color: rgb(0.10, 0.60, 0.90), // Electric blue
+    });
+
+    page.drawText('FAKTURA', {
+      x: 70,
       y: yPosition,
-      size: 28,
+      size: 40,
       font: fontBold,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.06, 0.12, 0.24), // Navy dark
     });
 
     // Two-column layout for invoice details
@@ -201,112 +255,157 @@ serve(async (req) => {
       color: rgb(0.4, 0.4, 0.4),
     });
 
-    // Customer info section
-    yPosition -= 40;
-    page.drawText('KUND', {
-      x: 50,
-      y: yPosition,
-      size: 11,
-      font: fontBold,
-      color: rgb(0.2, 0.2, 0.2),
+    // === ELEGANT CUSTOMER INFO BOX ===
+    yPosition -= 65;
+
+    // Modern card with border
+    page.drawRectangle({
+      x: 40,
+      y: yPosition - 115,
+      width: 260,
+      height: 130,
+      color: rgb(0.99, 0.99, 1),
+      borderColor: rgb(0.90, 0.92, 0.94),
+      borderWidth: 1,
     });
 
-    yPosition -= 20;
+    // Accent bar (brand color)
+    page.drawRectangle({
+      x: 50,
+      y: yPosition + 5,
+      width: 6,
+      height: 22,
+      color: rgb(0.10, 0.60, 0.90), // Electric blue
+    });
+
+    page.drawText('KUND', {
+      x: 65,
+      y: yPosition,
+      size: 12,
+      font: fontBold,
+      color: rgb(0.40, 0.42, 0.45), // Text gray
+    });
+
+    yPosition -= 22;
     const customer = invoice.customer;
     if (customer) {
       const customerName = customer.company_name || customer.name || 'Okänd kund';
       page.drawText(customerName, {
-        x: 50,
+        x: 65,
         y: yPosition,
-        size: 11,
+        size: 13,
         font: fontBold,
-        color: rgb(0, 0, 0),
+        color: rgb(0.10, 0.10, 0.12), // Text dark
       });
 
       if (customer.org_number) {
-        yPosition -= 16;
+        yPosition -= 18;
         page.drawText(`Org.nr: ${customer.org_number}`, {
-          x: 50,
+          x: 65,
           y: yPosition,
-          size: 9,
+          size: 10,
           font,
-          color: rgb(0.3, 0.3, 0.3),
+          color: rgb(0.40, 0.42, 0.45),
         });
       }
 
       if (customer.address) {
-        yPosition -= 16;
+        yPosition -= 17;
         page.drawText(customer.address, {
-          x: 50,
+          x: 65,
           y: yPosition,
-          size: 9,
+          size: 10,
           font,
-          color: rgb(0.3, 0.3, 0.3),
+          color: rgb(0.40, 0.42, 0.45),
         });
       }
 
       if (customer.postal_code && customer.city) {
-        yPosition -= 16;
+        yPosition -= 17;
         page.drawText(`${customer.postal_code} ${customer.city}`, {
-          x: 50,
+          x: 65,
           y: yPosition,
-          size: 9,
+          size: 10,
           font,
-          color: rgb(0.3, 0.3, 0.3),
+          color: rgb(0.40, 0.42, 0.45),
         });
       }
     }
 
-    // Line items table
-    yPosition -= 50;
+    // === PREMIUM TABLE SECTION ===
+    yPosition -= 55;
     page.drawText('SPECIFIKATION', {
       x: 50,
       y: yPosition,
-      size: 13,
+      size: 14,
       font: fontBold,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.06, 0.12, 0.24), // Navy dark
     });
 
-    // Table header with background
+    // Table header with smooth gradient
     yPosition -= 30;
+    const tableHeaderY = yPosition;
+    const tableWidth = width - 80;
+    
+    for (let i = 0; i < 15; i++) {
+      const ratio = i / 15;
+      const r = 0.06 + (0.09 - 0.06) * ratio;
+      const g = 0.12 + (0.19 - 0.12) * ratio;
+      const b = 0.24 + (0.33 - 0.24) * ratio;
+      
+      page.drawRectangle({
+        x: 40,
+        y: tableHeaderY - 5 + (i * 30 / 15),
+        width: tableWidth,
+        height: 30 / 15 + 1,
+        color: rgb(r, g, b),
+      });
+    }
+
+    // Subtle shadow under header
     page.drawRectangle({
       x: 40,
-      y: yPosition - 5,
-      width: width - 80,
-      height: 22,
-      color: rgb(0.1, 0.21, 0.36),
+      y: tableHeaderY - 38,
+      width: tableWidth,
+      height: 3,
+      color: rgb(0.06, 0.12, 0.24),
+      opacity: 0.08,
     });
 
     page.drawText('Beskrivning', { 
       x: 50, 
-      y: yPosition, 
-      size: 10, 
+      y: yPosition + 2, 
+      size: 11, 
       font: fontBold,
       color: rgb(1, 1, 1),
+      opacity: 0.98,
     });
     
     page.drawText('Antal', { 
       x: 300, 
-      y: yPosition, 
-      size: 10, 
+      y: yPosition + 2, 
+      size: 11, 
       font: fontBold,
       color: rgb(1, 1, 1),
+      opacity: 0.98,
     });
     
     page.drawText('Pris', { 
       x: 370, 
-      y: yPosition, 
-      size: 10, 
+      y: yPosition + 2, 
+      size: 11, 
       font: fontBold,
       color: rgb(1, 1, 1),
+      opacity: 0.98,
     });
     
     page.drawText('Belopp', { 
       x: 470, 
-      y: yPosition, 
-      size: 10, 
+      y: yPosition + 2, 
+      size: 11, 
       font: fontBold,
       color: rgb(1, 1, 1),
+      opacity: 0.98,
     });
 
     yPosition -= 25;
@@ -327,14 +426,14 @@ serve(async (req) => {
         yPosition = height - 60;
       }
 
-      // Alternating row background
+      // Subtle alternating row background (zebra-striping)
       if (rowIndex % 2 === 1) {
         page.drawRectangle({
           x: 40,
           y: yPosition - 5,
           width: width - 80,
-          height: 20,
-          color: rgb(0.97, 0.97, 0.97),
+          height: 22,
+          color: rgb(0.985, 0.99, 0.995), // Mycket subtil
         });
       }
 
@@ -369,15 +468,48 @@ serve(async (req) => {
       rowIndex++;
     }
 
-    // Summary section with background
-    yPosition -= 20;
+    // === ELEGANT SUMMARY BOX WITH SHADOW ===
+    yPosition -= 30;
+    const summaryBoxX = 340;
+    const summaryBoxWidth = width - 390;
+    const summaryBoxHeight = 175;
+    
+    // Soft shadow effect
     page.drawRectangle({
-      x: 340,
-      y: yPosition - 160,
-      width: width - 390,
-      height: 170,
-      color: rgb(0.98, 0.98, 0.98),
+      x: summaryBoxX + 3,
+      y: yPosition - summaryBoxHeight + 3,
+      width: summaryBoxWidth,
+      height: summaryBoxHeight,
+      color: rgb(0.06, 0.12, 0.24),
+      opacity: 0.05,
     });
+    
+    // Main summary box
+    page.drawRectangle({
+      x: summaryBoxX,
+      y: yPosition - summaryBoxHeight,
+      width: summaryBoxWidth,
+      height: summaryBoxHeight,
+      color: rgb(0.99, 0.99, 1),
+      borderColor: rgb(0.90, 0.92, 0.94),
+      borderWidth: 1,
+    });
+    
+    // Gradient accent bar on left
+    for (let i = 0; i < 20; i++) {
+      const ratio = i / 20;
+      const r = 0.10 + (0.20 - 0.10) * ratio;
+      const g = 0.60 + (0.40 - 0.60) * ratio;
+      const b = 0.90 + (0.70 - 0.90) * ratio;
+      
+      page.drawRectangle({
+        x: summaryBoxX,
+        y: yPosition - summaryBoxHeight + (i * summaryBoxHeight / 20),
+        width: 5,
+        height: summaryBoxHeight / 20 + 1,
+        color: rgb(r, g, b),
+      });
+    }
 
     const drawSummaryLine = (label: string, amount: number, bold = false, color = rgb(0, 0, 0)) => {
       page.drawText(label, {
@@ -415,38 +547,56 @@ serve(async (req) => {
       drawSummaryLine('Rabatt:', -invoice.discount_amount);
     }
 
-    yPosition -= 5;
-    page.drawLine({
-      start: { x: 350, y: yPosition },
-      end: { x: width - 50, y: yPosition },
-      thickness: 2,
-      color: rgb(0.1, 0.21, 0.36),
-    });
+    yPosition -= 8;
+    // Gradient separator line
+    for (let i = 0; i < 30; i++) {
+      const ratio = i / 30;
+      const r = 0.06 + (0.10 - 0.06) * ratio;
+      const g = 0.12 + (0.60 - 0.12) * ratio;
+      const b = 0.24 + (0.90 - 0.24) * ratio;
+      
+      page.drawRectangle({
+        x: 350 + (i * (width - 400) / 30),
+        y: yPosition,
+        width: (width - 400) / 30 + 1,
+        height: 2,
+        color: rgb(r, g, b),
+      });
+    }
 
-    yPosition -= 28;
+    yPosition -= 30;
     page.drawText('ATT BETALA:', {
       x: 360,
       y: yPosition,
-      size: 12,
+      size: 14,
       font: fontBold,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.06, 0.12, 0.24), // Navy dark
     });
     page.drawText(`${invoice.total_amount.toLocaleString('sv-SE')} kr`, {
-      x: 480,
+      x: 475,
       y: yPosition,
-      size: 12,
+      size: 16,
       font: fontBold,
-      color: rgb(0.1, 0.21, 0.36),
+      color: rgb(0.10, 0.60, 0.90), // Electric blue
     });
 
-    // Professional footer with separator
+    // === MODERN FOOTER WITH GRADIENT SEPARATOR ===
     yPosition = 100;
-    page.drawLine({
-      start: { x: 50, y: yPosition },
-      end: { x: width - 50, y: yPosition },
-      thickness: 0.5,
-      color: rgb(0.7, 0.7, 0.7),
-    });
+    
+    // Gradient separator line
+    for (let i = 0; i < 50; i++) {
+      const ratio = i / 50;
+      const opacity = 0.15 + (0.35 - 0.15) * Math.sin(ratio * Math.PI);
+      
+      page.drawRectangle({
+        x: 50 + (i * (width - 100) / 50),
+        y: yPosition,
+        width: (width - 100) / 50 + 1,
+        height: 0.8,
+        color: rgb(0.20, 0.40, 0.70),
+        opacity: opacity,
+      });
+    }
 
     yPosition -= 20;
     page.drawText('FIXCO AB | Org.nr: 559123-4567 | Bankgiro: 1234-5678', {

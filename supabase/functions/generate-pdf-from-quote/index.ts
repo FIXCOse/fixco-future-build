@@ -63,14 +63,14 @@ serve(async (req) => {
 
     // ============= ELEGANT PREMIUM HEADER =============
     const headerHeight = 160;
-    const gradientSteps = 40;
+    const gradientSteps = 50;
 
-    // Create smooth elegant gradient (dark blue to medium blue)
+    // Create smooth elegant gradient (navy dark → electric blue)
     for (let i = 0; i < gradientSteps; i++) {
       const ratio = i / gradientSteps;
-      const r = 0.09 + (0.12 - 0.09) * ratio;
-      const g = 0.19 + (0.26 - 0.19) * ratio;
-      const b = 0.33 + (0.42 - 0.33) * ratio;
+      const r = 0.06 + (0.10 - 0.06) * ratio;
+      const g = 0.12 + (0.60 - 0.12) * ratio;
+      const b = 0.24 + (0.90 - 0.24) * ratio;
       
       page.drawRectangle({
         x: 0,
@@ -84,11 +84,11 @@ serve(async (req) => {
     // Subtle glow effect under header
     page.drawRectangle({
       x: 0,
-      y: height - headerHeight - 8,
+      y: height - headerHeight - 10,
       width: width,
-      height: 8,
-      color: rgb(0.09, 0.19, 0.33),
-      opacity: 0.05,
+      height: 10,
+      color: rgb(0.06, 0.12, 0.24),
+      opacity: 0.08,
     });
 
     // === LARGER, MORE VISIBLE LOGO ===
@@ -96,11 +96,11 @@ serve(async (req) => {
       try {
         const logoBytes = await logoData.arrayBuffer();
         const logoImage = await pdfDoc.embedPng(logoBytes);
-        const logoDims = logoImage.scale(0.25);
+        const logoDims = logoImage.scale(0.30); // Större logotyp!
         
         page.drawImage(logoImage, {
           x: 50,
-          y: height - 110,
+          y: height - 115,
           width: logoDims.width,
           height: logoDims.height,
         });
@@ -120,7 +120,7 @@ serve(async (req) => {
       size: 16,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     infoY -= lineSpacing;
@@ -129,8 +129,8 @@ serve(async (req) => {
       y: infoY,
       size: 10,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
-      opacity: 0.85,
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
     infoY -= lineSpacing;
@@ -139,8 +139,8 @@ serve(async (req) => {
       y: infoY,
       size: 10,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
-      opacity: 0.85,
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
     infoY -= lineSpacing;
@@ -149,8 +149,8 @@ serve(async (req) => {
       y: infoY,
       size: 10,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
-      opacity: 0.85,
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
     infoY -= lineSpacing;
@@ -159,8 +159,8 @@ serve(async (req) => {
       y: infoY,
       size: 10,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
-      opacity: 0.85,
+      color: rgb(0.95, 0.95, 0.95),
+      opacity: 0.9,
     });
 
     // === PROMINENT TITLE WITH SUBTLE BACKGROUND ===
@@ -169,19 +169,19 @@ serve(async (req) => {
     // Subtle background for title
     page.drawRectangle({
       x: 40,
-      y: yPos - 10,
+      y: yPos - 12,
       width: 320,
-      height: 50,
-      color: rgb(0.98, 0.99, 1),
-      opacity: 0.5,
+      height: 55,
+      color: rgb(0.99, 0.99, 1),
+      opacity: 0.6,
     });
 
     page.drawText(`OFFERT ${quote.number}`, {
       x: 50,
       y: yPos,
-      size: 36,
+      size: 40,
       font: boldFont,
-      color: rgb(0.09, 0.19, 0.33),
+      color: rgb(0.06, 0.12, 0.24), // Navy dark
     });
 
     // === CUSTOMER INFO WITH ELEGANT BOX ===
@@ -204,7 +204,7 @@ serve(async (req) => {
       y: yPos + 5,
       width: 6,
       height: 20,
-      color: rgb(0.09, 0.19, 0.33),
+      color: rgb(0.10, 0.60, 0.90), // Electric blue
     });
 
     page.drawText('KUND', {
@@ -268,7 +268,7 @@ serve(async (req) => {
       y: detailsY + 5,
       width: 6,
       height: 20,
-      color: rgb(0.09, 0.19, 0.33),
+      color: rgb(0.10, 0.60, 0.90), // Electric blue
     });
 
     page.drawText('OFFERTDETALJER', {
@@ -333,27 +333,28 @@ serve(async (req) => {
     page.drawText('SPECIFIKATION', {
       x: 50,
       y: yPos,
-      size: 13,
+      size: 14,
       font: boldFont,
-      color: rgb(0.09, 0.19, 0.33),
+      color: rgb(0.06, 0.12, 0.24), // Navy dark
     });
 
     yPos -= 30;
     const tableY = yPos;
     const tableWidth = width - 80;
     
-    // Table header with gradient
-    for (let i = 0; i < 10; i++) {
-      const ratio = i / 10;
-      const r = 0.09 + (0.11 - 0.09) * ratio;
-      const g = 0.19 + (0.22 - 0.19) * ratio;
-      const b = 0.33 + (0.38 - 0.33) * ratio;
+    // Table header with smooth gradient
+    const tableHeaderSteps = 15;
+    for (let i = 0; i < tableHeaderSteps; i++) {
+      const ratio = i / tableHeaderSteps;
+      const r = 0.06 + (0.09 - 0.06) * ratio;
+      const g = 0.12 + (0.19 - 0.12) * ratio;
+      const b = 0.24 + (0.33 - 0.24) * ratio;
       
       page.drawRectangle({
         x: 40,
-        y: tableY - 5 + (i * 30 / 10),
+        y: tableY - 5 + (i * 30 / tableHeaderSteps),
         width: tableWidth,
-        height: 30 / 10 + 1,
+        height: 30 / tableHeaderSteps + 1,
         color: rgb(r, g, b),
       });
     }
@@ -364,7 +365,7 @@ serve(async (req) => {
       size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     page.drawText('Antal', {
@@ -373,7 +374,7 @@ serve(async (req) => {
       size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     page.drawText('Enhet', {
@@ -382,7 +383,7 @@ serve(async (req) => {
       size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     page.drawText('Pris/enhet', {
@@ -391,7 +392,7 @@ serve(async (req) => {
       size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     page.drawText('Totalt', {
@@ -400,7 +401,7 @@ serve(async (req) => {
       size: 11,
       font: boldFont,
       color: rgb(1, 1, 1),
-      opacity: 0.95,
+      opacity: 0.98,
     });
 
     // Table rows with improved styling
@@ -619,17 +620,18 @@ serve(async (req) => {
     });
 
     // Gradient background for total
-    for (let i = 0; i < 15; i++) {
-      const ratio = i / 15;
-      const r = 0.09 + (0.12 - 0.09) * ratio;
-      const g = 0.19 + (0.23 - 0.19) * ratio;
-      const b = 0.33 + (0.40 - 0.33) * ratio;
+    const totalGradientSteps = 20;
+    for (let i = 0; i < totalGradientSteps; i++) {
+      const ratio = i / totalGradientSteps;
+      const r = 0.06 + (0.09 - 0.06) * ratio;
+      const g = 0.12 + (0.19 - 0.12) * ratio;
+      const b = 0.24 + (0.33 - 0.24) * ratio;
       
       page.drawRectangle({
         x: summaryX - 10,
-        y: yPos - 42 + (i * 42 / 15),
+        y: yPos - 42 + (i * 42 / totalGradientSteps),
         width: summaryBoxWidth,
-        height: 42 / 15 + 1,
+        height: 42 / totalGradientSteps + 1,
         color: rgb(r, g, b),
       });
     }
@@ -639,13 +641,13 @@ serve(async (req) => {
       y: yPos + 2,
       size: 10,
       font: font,
-      color: rgb(0.9, 0.9, 0.9),
+      color: rgb(0.95, 0.95, 0.95),
     });
 
     page.drawText(`${(quote.total_sek || 0).toLocaleString('sv-SE')} kr`, {
       x: summaryX,
       y: yPos - 22,
-      size: 20,
+      size: 22,
       font: boldFont,
       color: rgb(1, 1, 1),
     });
@@ -668,21 +670,29 @@ serve(async (req) => {
       });
     }
 
-    // Top border with accent
-    page.drawLine({
-      start: { x: 0, y: footerY },
-      end: { x: width, y: footerY },
-      thickness: 3,
-      color: rgb(0.09, 0.19, 0.33),
-    });
+    // Top border with elegant gradient accent
+    for (let i = 0; i < 40; i++) {
+      const ratio = i / 40;
+      const r = 0.06 + (0.10 - 0.06) * ratio;
+      const g = 0.12 + (0.60 - 0.12) * ratio;
+      const b = 0.24 + (0.90 - 0.24) * ratio;
+      
+      page.drawRectangle({
+        x: i * (width / 40),
+        y: footerY,
+        width: (width / 40) + 1,
+        height: 3,
+        color: rgb(r, g, b),
+      });
+    }
 
     // Decorative line
     page.drawLine({
       start: { x: 0, y: footerY - 2 },
       end: { x: width, y: footerY - 2 },
       thickness: 1,
-      color: rgb(0.3, 0.5, 0.7),
-      opacity: 0.3,
+      color: rgb(0.10, 0.60, 0.90),
+      opacity: 0.4,
     });
 
     yPos = footerY - 25;
