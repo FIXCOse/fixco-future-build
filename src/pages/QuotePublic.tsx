@@ -716,8 +716,8 @@ export default function QuotePublic() {
                 </div>
               </div>
 
-              {/* PDF Download */}
-              {quote.pdf_url && (
+              {/* PDF Download - TILLFÄLLIGT DOLD */}
+              {/* {quote.pdf_url && (
                 <Button
                   variant="outline"
                   className="border-primary/30 hover:bg-primary/5 w-full"
@@ -726,7 +726,7 @@ export default function QuotePublic() {
                   <Download className="h-4 w-4 mr-2" />
                   Ladda ner PDF
                 </Button>
-              )}
+              )} */}
 
               {/* Already Accepted Badge */}
               {(accepted || quote?.status === 'accepted') && !isDeleted && (

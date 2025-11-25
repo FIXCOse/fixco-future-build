@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,6 +55,26 @@ const A4PreviewContainer = ({ html }: { html: string }) => {
 export default function QuoteHtmlPreview() {
   const [viewMode, setViewMode] = useState<'quote' | 'invoice'>('quote');
   const [showSource, setShowSource] = useState(false);
+  const [logoBase64, setLogoBase64] = useState<string>('');
+
+  // Load Fixco logo as base64
+  useEffect(() => {
+    const loadLogo = async () => {
+      try {
+        const response = await fetch('/assets/fixco-logo-black.png');
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64 = (reader.result as string).split(',')[1];
+          setLogoBase64(base64);
+        };
+        reader.readAsDataURL(blob);
+      } catch (error) {
+        console.error('Kunde inte ladda Fixco-loggan:', error);
+      }
+    };
+    loadLogo();
+  }, []);
 
   // Test data for quote
   const [quoteData, setQuoteData] = useState({
@@ -105,8 +125,8 @@ export default function QuoteHtmlPreview() {
   });
 
   const html = viewMode === 'quote' 
-    ? generateQuoteHTML(quoteData) 
-    : generateInvoiceHTML(invoiceData);
+    ? generateQuoteHTML(quoteData, logoBase64) 
+    : generateInvoiceHTML(invoiceData, logoBase64);
 
   const handleCopyHtml = () => {
     navigator.clipboard.writeText(html);
