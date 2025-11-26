@@ -907,7 +907,7 @@ p {
 @media screen and (max-width: 767px) {
   .rd-navbar {
     grid-template-columns: 1fr 1fr var(--_middle-size) 1fr 1fr;
-    padding: 16px 0 8px;
+    padding: 16px 0 max(8px, env(safe-area-inset-bottom));
     bottom: 0;
   }
 
@@ -941,10 +941,9 @@ p {
     transform: translateX(-50%) translateY(100%);
   }
 
-  /* TILLFÄLLIGT BORTTAGET FÖR DEBUG - ÅTERSTÄLL SENARE */
-  /* .rd-navbar_dropdown.cc-hide_mobile {
+  .rd-navbar_dropdown.cc-hide_mobile {
     display: none;
-  } */
+  }
 
   .rd-navbar_btn {
     justify-self: center;
