@@ -1,7 +1,6 @@
 .sticky-phone-button {
   position: fixed !important;
-  bottom: 96px; /* bottom-24 */
-  right: 16px; /* right-4 */
+  right: 16px;
   z-index: 9999;
   padding: 12px 16px;
   font-size: 16px;
@@ -15,10 +14,19 @@
   transition: transform 0.2s ease;
 }
 
+/* MOBIL - precis ovanför mobilmenyn */
+@media (max-width: 767px) {
+  .sticky-phone-button {
+    bottom: 90px;
+    right: 16px;
+  }
+}
+
+/* DESKTOP - på samma nivå som menybaren */
 @media (min-width: 768px) {
   .sticky-phone-button {
-    bottom: 24px; /* md:bottom-6 */
-    right: 24px; /* md:right-6 */
+    bottom: 1rem;
+    right: 1rem;
   }
 }
 
