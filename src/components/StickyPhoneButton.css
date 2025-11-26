@@ -22,11 +22,19 @@
   }
 }
 
-/* DESKTOP - på samma nivå som menybaren */
-@media (min-width: 768px) {
+/* DESKTOP - precis till höger om menybaren */
+@media (min-width: 768px) and (max-width: 920px) {
   .sticky-phone-button {
     bottom: 1rem;
     right: 1rem;
+  }
+}
+
+@media (min-width: 921px) {
+  .sticky-phone-button {
+    bottom: 1rem;
+    left: calc(50% + 26.5rem);
+    right: auto;
   }
 }
 
