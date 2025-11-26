@@ -42,7 +42,7 @@ const Navbar2 = () => {
     if (window.innerWidth >= 768) {
       const timeout = setTimeout(() => {
         setOpenDropdown(null);
-      }, 200);
+      }, 400);
       setCloseTimeout(timeout);
     }
   };
@@ -273,7 +273,11 @@ const Navbar2 = () => {
           <Menu className="rd-navbar_link_icon" />
           <div className="rd-navbar_link_text">{currentLanguage === 'en' ? 'More' : 'Mer'}</div>
         </div>
-        <nav className={`rd-navbar_dropdown_list w-dropdown-list ${openDropdown === 'more' ? 'w--open' : ''}`}>
+        <nav 
+          className={`rd-navbar_dropdown_list w-dropdown-list ${openDropdown === 'more' ? 'w--open' : ''}`}
+          onMouseEnter={() => handleMouseEnter('more')}
+          onMouseLeave={handleMouseLeave}
+        >
           <div className="rd-navbar_dropdown_block_wrapper">
             <div className="rd-navbar_dropdown_block_gradient"></div>
             <div data-wf--navbar-dropdown-block--variant="reversed" className="rd-navbar_dropdown_block w-variant-4f1623ae-01ab-18ff-1ad3-6b7bb43febb5">
