@@ -214,7 +214,6 @@ const App = () => {
                     <Toaster />
                     <Sonner />
                     <ServiceRequestModal />
-                    <StickyPhoneButton />
                     <BrowserRouter>
                       <FeatureFlagInitializer>
                         <PageViewTracker />
@@ -425,6 +424,9 @@ const App = () => {
                   
                   {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
                   <NavbarPortal />
+                  
+                  {/* Sticky Phone Button - renders OUTSIDE smooth-content for proper fixed positioning */}
+                  <StickyPhoneButton />
                 </BrowserRouter>
               </div>
             </div>
