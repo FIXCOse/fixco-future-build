@@ -1,0 +1,81 @@
+.sticky-phone-button {
+  position: fixed !important;
+  bottom: 96px; /* bottom-24 */
+  right: 16px; /* right-4 */
+  z-index: 9999;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .sticky-phone-button {
+    bottom: 24px; /* md:bottom-6 */
+    right: 24px; /* md:right-6 */
+  }
+}
+
+.sticky-phone-button:hover {
+  transform: scale(1.03);
+}
+
+.sticky-phone-button::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    #ffffff,
+    #b794ff,
+    #7d40ff,
+    #9d6fff,
+    #ffffff,
+    #e0d4ff,
+    #ffffff
+  );
+  z-index: 1;
+  filter: blur(6px);
+  animation: sticky-gradient-spin 6s linear infinite;
+}
+
+.sticky-phone-button::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #7d40ff;
+  border-radius: 47px;
+  z-index: 2;
+}
+
+.sticky-phone-button-text {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sticky-phone-button:active {
+  transform: scale(0.99);
+}
+
+@keyframes sticky-gradient-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
