@@ -1,3 +1,12 @@
+@keyframes sticky-gradient-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .sticky-phone-button {
   position: fixed !important;
   right: 16px;
@@ -7,14 +16,11 @@
   font-weight: bold;
   color: white;
   background: transparent;
-  border: 3px solid hsl(262, 83%, 58%);
+  border: none;
   cursor: pointer;
   border-radius: 50px;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 32px rgba(172, 100, 247, 0.5), 
-              0 4px 16px rgba(78, 205, 247, 0.3),
-              0 2px 8px rgba(255, 100, 204, 0.3);
 }
 
 /* MOBIL - precis ovanför mobilmenyn */
@@ -42,65 +48,46 @@
 }
 
 .sticky-phone-button:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(172, 100, 247, 0.7),
-              0 6px 20px rgba(78, 205, 247, 0.5),
-              0 3px 12px rgba(255, 100, 204, 0.5);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .sticky-phone-button:hover::before {
-  background: linear-gradient(
-    135deg,
-    rgba(172, 100, 247, 0.9),
-    rgba(78, 205, 247, 1),
-    rgba(255, 100, 204, 0.9),
-    rgba(172, 100, 247, 0.8)
-  );
-}
-
-.sticky-phone-button:hover::after {
-  background: linear-gradient(
-    135deg,
-    rgba(172, 100, 247, 0.9),
-    rgba(78, 205, 247, 1),
-    rgba(255, 100, 204, 0.9),
-    rgba(172, 100, 247, 0.8)
-  );
+  filter: blur(12px);
 }
 
 .sticky-phone-button::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(172, 100, 247, 0.7),
-    rgba(78, 205, 247, 0.8),
-    rgba(255, 100, 204, 0.7),
-    rgba(172, 100, 247, 0.6)
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    #ff6b6b 0deg,
+    #4ecdc4 45deg,
+    #45b7d1 90deg,
+    #96ceb4 135deg,
+    #feca57 180deg,
+    #ff9ff3 225deg,
+    #ff6b6b 252deg,
+    transparent 252deg,
+    transparent 360deg
   );
+  filter: blur(10px);
   z-index: 1;
-  border-radius: 47px;
-  transition: all 0.3s ease;
+  animation: sticky-gradient-rotate 7s linear infinite;
+  transition: filter 0.3s ease;
 }
 
 .sticky-phone-button::after {
   content: "";
   position: absolute;
   inset: 3px;
-  background: linear-gradient(
-    135deg,
-    rgba(172, 100, 247, 0.7),
-    rgba(78, 205, 247, 0.8),
-    rgba(255, 100, 204, 0.7),
-    rgba(172, 100, 247, 0.6)
-  );
+  background-image: linear-gradient(180deg, hsl(262, 83%, 45%) 25%, hsl(262, 83%, 58%));
   border-radius: 47px;
   z-index: 2;
-  transition: all 0.3s ease;
+  box-shadow: rgba(255, 255, 255, 0.72) 0 2px 3px inset;
 }
 
 .sticky-phone-button-text {
