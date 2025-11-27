@@ -7,11 +7,14 @@
   font-weight: bold;
   color: white;
   background: transparent;
-  border: none;
+  border: 3px solid hsl(262, 83%, 58%);
   cursor: pointer;
   border-radius: 50px;
   overflow: hidden;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(172, 100, 247, 0.5), 
+              0 4px 16px rgba(78, 205, 247, 0.3),
+              0 2px 8px rgba(255, 100, 204, 0.3);
 }
 
 /* MOBIL - precis ovanför mobilmenyn */
@@ -39,38 +42,65 @@
 }
 
 .sticky-phone-button:hover {
-  transform: scale(1.03);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(172, 100, 247, 0.7),
+              0 6px 20px rgba(78, 205, 247, 0.5),
+              0 3px 12px rgba(255, 100, 204, 0.5);
+}
+
+.sticky-phone-button:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(172, 100, 247, 0.9),
+    rgba(78, 205, 247, 1),
+    rgba(255, 100, 204, 0.9),
+    rgba(172, 100, 247, 0.8)
+  );
+}
+
+.sticky-phone-button:hover::after {
+  background: linear-gradient(
+    135deg,
+    rgba(172, 100, 247, 0.9),
+    rgba(78, 205, 247, 1),
+    rgba(255, 100, 204, 0.9),
+    rgba(172, 100, 247, 0.8)
+  );
 }
 
 .sticky-phone-button::before {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    #ffffff,
-    #b794ff,
-    #7d40ff,
-    #9d6fff,
-    #ffffff,
-    #e0d4ff,
-    #ffffff
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(172, 100, 247, 0.7),
+    rgba(78, 205, 247, 0.8),
+    rgba(255, 100, 204, 0.7),
+    rgba(172, 100, 247, 0.6)
   );
   z-index: 1;
-  filter: blur(6px);
-  animation: sticky-gradient-spin 6s linear infinite;
+  border-radius: 47px;
+  transition: all 0.3s ease;
 }
 
 .sticky-phone-button::after {
   content: "";
   position: absolute;
   inset: 3px;
-  background: #7d40ff;
+  background: linear-gradient(
+    135deg,
+    rgba(172, 100, 247, 0.7),
+    rgba(78, 205, 247, 0.8),
+    rgba(255, 100, 204, 0.7),
+    rgba(172, 100, 247, 0.6)
+  );
   border-radius: 47px;
   z-index: 2;
+  transition: all 0.3s ease;
 }
 
 .sticky-phone-button-text {
@@ -87,11 +117,3 @@
   transform: scale(0.99);
 }
 
-@keyframes sticky-gradient-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
