@@ -23,7 +23,7 @@ const requestSchema = z.object({
   brf_name: z.string().optional(),
   org_number: z.string().optional(),
   service_slug: z.string().min(1, "service_slug krävs"),
-  mode: z.enum(['quote', 'book']),
+  mode: z.enum(['quote', 'book', 'home_visit']),
   address: z.string().optional(),
   fields: z.record(z.any()).optional(),
   fileUrls: z.array(z.string().url()).optional(),
@@ -177,7 +177,9 @@ serve(async (req) => {
     return json({ 
       ok: true, 
       bookingId: booking.id,
-      message: mode === 'quote' 
+      message: mode === 'home_visit'
+        ? 'Hembesök bokat. Vi kontaktar dig inom 24 timmar för att bekräfta tid.'
+        : mode === 'quote' 
         ? 'Förfrågan mottagen. Vi återkommer med offert inom kort.'
         : 'Bokning mottagen. Vi kontaktar dig för bekräftelse.'
     });

@@ -90,6 +90,11 @@ export function RequestQuoteCard({
   const customerEmail = customer?.email || booking.payload?.email || booking.payload?.contact_email;
   const customerPhone = customer?.phone || booking.payload?.phone || booking.payload?.contact_phone;
   const address = booking.payload?.address;
+  
+  // Check if this is a home visit booking
+  const isHomeVisit = booking.mode === 'home_visit';
+  const serviceType = booking.payload?.service_type || booking.payload?.fields?.service_type;
+  const timePreference = booking.payload?.time_preference || booking.payload?.fields?.time_preference;
 
   return (
     <Card className="overflow-hidden border-2 shadow-md hover:shadow-lg transition-shadow">
@@ -102,6 +107,11 @@ export function RequestQuoteCard({
               <Badge variant={getStatusBadge(booking.status).variant as any}>
                 {getStatusBadge(booking.status).label}
               </Badge>
+              {isHomeVisit && (
+                <Badge variant="default" className="bg-teal-500 hover:bg-teal-600">
+                  🏠 Hembesök
+                </Badge>
+              )}
               {quote && (
                 <Badge variant="outline">Offert #{quote.number}</Badge>
               )}
@@ -180,6 +190,32 @@ export function RequestQuoteCard({
               <p className="text-sm text-muted-foreground pt-2">
                 {booking.payload.description}
               </p>
+            )}
+            
+            {/* Home visit specific info */}
+            {isHomeVisit && (
+              <div className="mt-3 p-3 bg-teal-50 dark:bg-teal-950/20 rounded-lg border border-teal-200 dark:border-teal-800">
+                <div className="space-y-2 text-sm">
+                  {serviceType && (
+                    <div>
+                      <span className="font-medium">Projekttyp:</span>
+                      <span className="ml-2 text-muted-foreground capitalize">{serviceType}</span>
+                    </div>
+                  )}
+                  {timePreference && (
+                    <div>
+                      <span className="font-medium">Önskad tid:</span>
+                      <span className="ml-2 text-muted-foreground">
+                        {timePreference === 'asap' && 'Så snart som möjligt'}
+                        {timePreference === 'morning' && 'Förmiddag (08-12)'}
+                        {timePreference === 'afternoon' && 'Eftermiddag (12-17)'}
+                        {timePreference === 'evening' && 'Kväll (17-20)'}
+                        {timePreference === 'weekend' && 'Helg'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
 

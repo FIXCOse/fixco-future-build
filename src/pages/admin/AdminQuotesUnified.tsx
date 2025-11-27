@@ -62,7 +62,15 @@ export default function AdminQuotesUnified() {
     switch (activeTab) {
       case "requests":
         // Bookings without quotes, status = new
-        return allData.filter(item => !item.quote && item.booking.status === 'new');
+        let requestItems = allData.filter(item => !item.quote && item.booking.status === 'new');
+        
+        // Sub-filter by mode (home_visit or quote)
+        if (subFilter === "home_visit") {
+          requestItems = requestItems.filter(item => item.booking.mode === 'home_visit');
+        } else if (subFilter === "quote") {
+          requestItems = requestItems.filter(item => item.booking.mode !== 'home_visit');
+        }
+        return requestItems;
       
       case "active":
         // Quotes with active statuses
@@ -123,8 +131,11 @@ export default function AdminQuotesUnified() {
 
   // Calculate counts for badges
   const counts = useMemo(() => {
+    const allRequests = allData.filter(item => !item.quote && item.booking.status === 'new');
     return {
-      requests: allData.filter(item => !item.quote && item.booking.status === 'new').length,
+      requests: allRequests.length,
+      homeVisits: allRequests.filter(item => item.booking.mode === 'home_visit').length,
+      quoteRequests: allRequests.filter(item => item.booking.mode !== 'home_visit').length,
       active: allData.filter(item => 
         item.quote && ['draft', 'sent', 'viewed', 'change_requested'].includes(item.quote.status)
       ).length,
@@ -547,6 +558,33 @@ export default function AdminQuotesUnified() {
               onClick={() => setSubFilterParam("expired")}
             >
               Utgångna ({counts.expired})
+            </Button>
+          </div>
+        )}
+
+        {/* Sub-filters for Requests */}
+        {activeTab === "requests" && (
+          <div className="flex gap-2 mt-4">
+            <Button
+              variant={subFilter === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("all")}
+            >
+              Alla ({counts.requests})
+            </Button>
+            <Button
+              variant={subFilter === "home_visit" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("home_visit")}
+            >
+              🏠 Hembesök ({counts.homeVisits})
+            </Button>
+            <Button
+              variant={subFilter === "quote" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSubFilterParam("quote")}
+            >
+              📋 Offertförfrågningar ({counts.quoteRequests})
             </Button>
           </div>
         )}
