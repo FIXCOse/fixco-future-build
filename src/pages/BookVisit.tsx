@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button-premium";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,7 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 const BookVisit = () => {
   const { toast } = useToast();
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,11 +41,53 @@ const BookVisit = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    toast({
-      title: "Tack för din bokning!",
-      description: "Vi kontaktar dig inom 2 timmar för att bekräfta tiden.",
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke('create-booking-with-quote', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          service_slug: 'home_visit',
+          mode: 'home_visit',
+          customer_type: 'private',
+          fields: {
+            service_type: formData.service,
+            time_preference: formData.timePreference,
+            description: formData.description
+          }
+        }
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Tack för din bokning!",
+        description: "Vi kontaktar dig inom 24 timmar för att boka in ett lämpligt besök.",
+      });
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        service: "",
+        description: "",
+        timePreference: ""
+      });
+    } catch (error: any) {
+      console.error('Error submitting booking:', error);
+      toast({
+        title: "Något gick fel",
+        description: "Kunde inte skicka din förfrågan. Försök igen senare.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -232,9 +275,9 @@ const BookVisit = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="cta" size="lg" className="w-full">
-                  Boka hembesök
-                  <CheckCircle className="ml-2 h-5 w-5" />
+                <Button type="submit" variant="cta" size="lg" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Skickar..." : "Boka hembesök"}
+                  {!isSubmitting && <CheckCircle className="ml-2 h-5 w-5" />}
                 </Button>
               </form>
             </div>
