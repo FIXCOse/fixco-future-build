@@ -154,7 +154,15 @@ const Home = () => {
               <div className="animate-pulse text-muted-foreground">Laddar...</div>
             </div>
           }>
-            {(useNewHero ?? false) ? <HeroV3 /> : <HeroUltra />}
+            {heroLoading ? (
+              <div className="h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/20">
+                <div className="animate-pulse text-muted-foreground">Laddar...</div>
+              </div>
+            ) : useNewHero ? (
+              <HeroV3 />
+            ) : (
+              <HeroUltra />
+            )}
           </Suspense>
         </ContextualEditor>
       </EditableSection>
