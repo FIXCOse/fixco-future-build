@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 interface BookHomeVisitModalStore {
   isOpen: boolean;
@@ -8,6 +9,9 @@ interface BookHomeVisitModalStore {
 
 export const useBookHomeVisitModal = create<BookHomeVisitModalStore>((set) => ({
   isOpen: false,
-  open: () => set({ isOpen: true }),
+  open: () => {
+    openServiceRequestModal({ mode: 'home_visit', showCategories: true });
+    set({ isOpen: true });
+  },
   close: () => set({ isOpen: false }),
 }));
