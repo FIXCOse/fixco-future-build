@@ -351,7 +351,7 @@ export default function ServiceRequestModal() {
       />
       
       {/* Modal */}
-      <div className="relative w-full md:w-[680px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
+      <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden">
         {/* Progress Indicator */}
         {!done && service && addons.length > 0 && (
           <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30">
@@ -401,7 +401,7 @@ export default function ServiceRequestModal() {
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-[50vh] overflow-y-auto">
+        <div className="p-6 max-h-[60vh] overflow-y-auto">
           {done ? (
             <div className="text-center py-8 animate-scale-in">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
