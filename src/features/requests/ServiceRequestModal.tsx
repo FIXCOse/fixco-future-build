@@ -55,6 +55,7 @@ export default function ServiceRequestModal() {
   const [mode, setMode] = useState<'quote' | 'home_visit'>('quote');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [desiredTime, setDesiredTime] = useState<string>('');
+  const [skipAddonsStep, setSkipAddonsStep] = useState(false);
 
   // Lock scroll when modal is open
   useScrollLock(open);
@@ -78,7 +79,7 @@ export default function ServiceRequestModal() {
 
   // Automatiskt hoppa över Steg 1 om inga tillägg finns
   useEffect(() => {
-    if (currentStep === 1 && addons.length === 0 && open && service) {
+    if (currentStep === 1 && addons.length === 0 && open && service && !skipAddonsStep) {
       if (mode === 'home_visit') {
         setCurrentStep(2); // Go to desired time
       } else {
@@ -86,7 +87,7 @@ export default function ServiceRequestModal() {
       }
       setSelectedAddons([]);
     }
-  }, [addons.length, currentStep, open, service, mode]);
+  }, [addons.length, currentStep, open, service, mode, skipAddonsStep]);
 
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -382,7 +383,7 @@ export default function ServiceRequestModal() {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-1">
-                {service?.name ?? "Begär offert"}
+                {service?.name ?? (mode === 'home_visit' ? "Boka Hembesök" : "Begär offert")}
               </h3>
               <p className="text-sm text-muted-foreground">
                 {done ? "Tack för din förfrågan!" : currentStep === 1 && addons.length > 0 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
@@ -443,40 +444,12 @@ export default function ServiceRequestModal() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => {
-                          if (mode === 'home_visit') {
-                            // Multi-select för home visit
-                            setSelectedCategories(prev => 
-                              prev.includes(category.slug)
-                                ? prev.filter(s => s !== category.slug)
-                                : [...prev, category.slug]
-                            );
-                          } else {
-                            // Single-select för quote
-                            const genericService: ServiceConfig = {
-                              slug: `${category.slug}-offert`,
-                              name: `${category.title}`,
-                              pricingMode: "quote",
-                              rotEligible: true,
-                              fields: [
-                                { 
-                                  kind: "textarea", 
-                                  key: "beskrivning", 
-                                  label: "Beskriv ditt projekt", 
-                                  placeholder: `Berätta vad du behöver hjälp med inom ${category.title.toLowerCase()}...`,
-                                  required: true 
-                                },
-                                { 
-                                  kind: "file", 
-                                  key: "bilder", 
-                                  label: "Bilder (valfritt)", 
-                                  accept: "image/*", 
-                                  multiple: true 
-                                }
-                              ]
-                            };
-                            setService(genericService);
-                            setCurrentStep(3); // Hoppa direkt till formulär (inga tillägg)
-                          }
+                          // Multi-select för BÅDA modes
+                          setSelectedCategories(prev => 
+                            prev.includes(category.slug)
+                              ? prev.filter(s => s !== category.slug)
+                              : [...prev, category.slug]
+                          );
                         }}
                         className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           isSelected && mode === 'home_visit'
@@ -496,11 +469,7 @@ export default function ServiceRequestModal() {
                             </p>
                           </div>
 
-                          {mode === 'home_visit' ? (
-                            <Checkbox checked={isSelected} />
-                          ) : (
-                            <ArrowRight className="w-5 h-5 text-muted-foreground" />
-                          )}
+                          <Checkbox checked={isSelected} />
                         </div>
                       </motion.div>
                     );
@@ -1080,10 +1049,48 @@ export default function ServiceRequestModal() {
                 </Button>
               )}
 
-              {/* Step 0: Continue Button */}
-              {currentStep === 0 && mode === 'home_visit' && (
+              {/* Step 0: Continue Button - För båda modes */}
+              {currentStep === 0 && showCategories && (
                 <Button
-                  onClick={() => goToStep1()}
+                  onClick={() => {
+                    if (selectedCategories.length === 0) return;
+                    
+                    // Skapa en kombinerad service från valda kategorier
+                    const selectedCategoryData = serviceCategories.filter(cat => 
+                      selectedCategories.includes(cat.slug)
+                    );
+                    
+                    const categoryNames = selectedCategoryData.map(c => c.title).join(', ');
+                    
+                    const genericService: ServiceConfig = {
+                      slug: selectedCategories.join('-'),
+                      name: mode === 'home_visit' 
+                        ? `Hembesök: ${categoryNames}`
+                        : categoryNames,
+                      pricingMode: "quote",
+                      rotEligible: true,
+                      fields: [
+                        { 
+                          kind: "textarea", 
+                          key: "beskrivning", 
+                          label: "Beskriv ditt projekt", 
+                          placeholder: `Berätta vad du behöver hjälp med...`,
+                          required: true 
+                        },
+                        { 
+                          kind: "file", 
+                          key: "bilder", 
+                          label: "Bilder (valfritt)", 
+                          accept: "image/*", 
+                          multiple: true 
+                        }
+                      ]
+                    };
+                    
+                    setService(genericService);
+                    setSkipAddonsStep(false);
+                    goToStep1();
+                  }}
                   disabled={selectedCategories.length === 0}
                   className="flex-1"
                 >
@@ -1093,16 +1100,6 @@ export default function ServiceRequestModal() {
                       {selectedCategories.length}
                     </Badge>
                   )}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              )}
-
-              {currentStep === 0 && showCategories && mode !== 'home_visit' && (
-                <Button
-                  onClick={() => goToStep1()}
-                  className="flex-1"
-                >
-                  Fortsätt
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               )}
