@@ -1022,6 +1022,9 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
   `.trim();
 }
 
+// Alternative invoice HTML generation with gradient styling
+export function generateInvoiceHTMLv2(invoice: InvoiceData, logoBase64?: string): string {
+  const formatCurrency = (amount: number) => 
     new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
   
   const formatDate = (dateString: string) => 
