@@ -35,6 +35,16 @@ export interface FeatureFlagHistory {
 // Hook to check if a specific feature is enabled
 export function useFeatureFlag(flagKey: string) {
   const { user } = useAuth();
+  
+  // Get cached value from localStorage
+  const getCachedValue = (): boolean | undefined => {
+    try {
+      const cached = localStorage.getItem(`feature-flag-${flagKey}`);
+      return cached !== null ? JSON.parse(cached) : undefined;
+    } catch {
+      return undefined;
+    }
+  };
 
   return useQuery({
     queryKey: ['feature-flag', flagKey, user?.id],
@@ -50,7 +60,10 @@ export function useFeatureFlag(flagKey: string) {
           .single();
 
         if (override) {
-          return override.enabled;
+          const value = override.enabled;
+          // Cache the result
+          localStorage.setItem(`feature-flag-${flagKey}`, JSON.stringify(value));
+          return value;
         }
       }
 
@@ -61,8 +74,12 @@ export function useFeatureFlag(flagKey: string) {
         .eq('key', flagKey)
         .single();
 
-      return flag?.enabled ?? false;
+      const value = flag?.enabled ?? false;
+      // Cache the result
+      localStorage.setItem(`feature-flag-${flagKey}`, JSON.stringify(value));
+      return value;
     },
+    initialData: getCachedValue(), // Use cached value as initial data
     staleTime: 0, // No cache - always fresh for realtime
     refetchOnWindowFocus: true, // Refetch on window focus
   });
