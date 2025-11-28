@@ -3,15 +3,15 @@ import { MapPin, Loader2 } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 
-interface AddressSuggestion {
-  display_name: string;
-  address: {
-    road?: string;
-    house_number?: string;
+interface PhotonFeature {
+  properties: {
+    name?: string;
+    street?: string;
+    housenumber?: string;
     postcode?: string;
     city?: string;
-    town?: string;
-    municipality?: string;
+    state?: string;
+    country?: string;
   };
 }
 
@@ -19,6 +19,10 @@ interface ParsedAddress {
   street: string;
   postalCode: string;
   city: string;
+}
+
+interface PhotonResponse {
+  features: PhotonFeature[];
 }
 
 interface AddressAutocompleteProps {
@@ -34,7 +38,7 @@ export const AddressAutocomplete = ({
   onSelect,
   placeholder = "Ex: Storgatan 12" 
 }: AddressAutocompleteProps) => {
-  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -53,23 +57,17 @@ export const AddressAutocomplete = ({
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?` +
-          `q=${encodeURIComponent(debouncedValue)}` +
-          `&format=json` +
-          `&addressdetails=1` +
-          `&countrycodes=se` +
-          `&limit=5`,
-          {
-            headers: {
-              'Accept-Language': 'sv'
-            }
-          }
+          `https://photon.komoot.io/api/?` +
+          `q=${encodeURIComponent(debouncedValue + ', Sverige')}` +
+          `&lang=sv` +
+          `&lat=59.33&lon=18.06` +
+          `&limit=5`
         );
 
         if (response.ok) {
-          const data = await response.json();
-          setSuggestions(data);
-          setShowDropdown(data.length > 0);
+          const data: PhotonResponse = await response.json();
+          setSuggestions(data.features || []);
+          setShowDropdown(data.features && data.features.length > 0);
           setSelectedIndex(-1);
         }
       } catch (error) {
@@ -100,19 +98,19 @@ export const AddressAutocomplete = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const parseAddress = (suggestion: AddressSuggestion): ParsedAddress => {
-    const { address } = suggestion;
-    const street = address.road && address.house_number 
-      ? `${address.road} ${address.house_number}`
-      : address.road || '';
-    const postalCode = address.postcode || '';
-    const city = address.city || address.town || address.municipality || '';
+  const parseAddress = (feature: PhotonFeature): ParsedAddress => {
+    const props = feature.properties;
+    const street = props.street && props.housenumber
+      ? `${props.street} ${props.housenumber}`
+      : props.street || props.name || '';
+    const postalCode = props.postcode || '';
+    const city = props.city || props.state || '';
 
     return { street, postalCode, city };
   };
 
-  const handleSelect = (suggestion: AddressSuggestion) => {
-    const parsed = parseAddress(suggestion);
+  const handleSelect = (feature: PhotonFeature) => {
+    const parsed = parseAddress(feature);
     onChange(parsed.street);
     onSelect(parsed);
     setShowDropdown(false);
@@ -135,7 +133,7 @@ export const AddressAutocomplete = ({
         break;
       case 'Enter':
         e.preventDefault();
-        if (selectedIndex >= 0) {
+        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
           handleSelect(suggestions[selectedIndex]);
         }
         break;
@@ -174,12 +172,12 @@ export const AddressAutocomplete = ({
           ref={dropdownRef}
           className="absolute z-50 w-full mt-2 bg-background border border-border rounded-lg shadow-elegant max-h-64 overflow-y-auto"
         >
-          {suggestions.map((suggestion, index) => {
-            const parsed = parseAddress(suggestion);
+          {suggestions.map((feature, index) => {
+            const parsed = parseAddress(feature);
             return (
               <button
                 key={index}
-                onClick={() => handleSelect(suggestion)}
+                onClick={() => handleSelect(feature)}
                 onMouseEnter={() => setSelectedIndex(index)}
                 className={cn(
                   "w-full px-4 py-3 text-left hover:bg-secondary/80 transition-colors border-b border-border last:border-b-0",
