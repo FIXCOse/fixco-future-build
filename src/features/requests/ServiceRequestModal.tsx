@@ -67,6 +67,7 @@ export default function ServiceRequestModal() {
   const goToStep3 = () => setCurrentStep(3);
   const skipAddons = () => {
     setSelectedAddons([]);
+    setSkipAddonsStep(false); // Reset flag when moving forward
     if (mode === 'home_visit') {
       setCurrentStep(2); // Go to desired time step
     } else {
@@ -1020,15 +1021,33 @@ export default function ServiceRequestModal() {
                   variant="outline"
                   onClick={() => {
                     if (currentStep === 3) {
-                      if (mode === 'home_visit') {
+                      if (showCategories && addons.length === 0) {
+                        // Om vi kom från kategori-val och det finns inga addons,
+                        // gå direkt tillbaka till kategori-valet
+                        goToStep0();
+                      } else if (mode === 'home_visit') {
                         goToStep2();
                       } else {
+                        // Sätt skipAddonsStep INNAN vi går till steg 1
+                        // för att förhindra useEffect från att hoppa tillbaka
+                        setSkipAddonsStep(true);
                         goToStep1();
                       }
-                    } else if (currentStep === 2 && mode === 'home_visit') {
-                      goToStep1();
+                    } else if (currentStep === 2) {
+                      if (mode === 'home_visit') {
+                        if (addons.length === 0 && showCategories) {
+                          goToStep0();
+                        } else {
+                          setSkipAddonsStep(true);
+                          goToStep1();
+                        }
+                      }
                     } else if (currentStep === 1) {
-                      goToStep0();
+                      if (showCategories) {
+                        goToStep0();
+                      } else {
+                        setOpen(false); // Stäng modalen om man inte kom från kategori-val
+                      }
                     }
                   }}
                   className="flex items-center gap-2"
@@ -1116,6 +1135,7 @@ export default function ServiceRequestModal() {
                   </Button>
                   <Button
                     onClick={() => {
+                      setSkipAddonsStep(false); // Reset flag when moving forward
                       if (mode === 'home_visit') {
                         goToStep2();
                       } else {
