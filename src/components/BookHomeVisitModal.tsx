@@ -7,6 +7,7 @@ import { useScrollLock } from '@/hooks/useScrollLock';
 import { useBookHomeVisitModal } from '@/hooks/useBookHomeVisitModal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { AddressAutocomplete } from '@/components/AddressAutocomplete';
 
 interface WizardData {
   projectType: string;
@@ -244,14 +245,22 @@ const BookHomeVisitModal = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-1">Gatuadress</label>
-                    <input
-                      type="text"
+                    <AddressAutocomplete
                       value={wizardData.address.street}
-                      onChange={(e) => setWizardData({
+                      onChange={(value) => setWizardData({
                         ...wizardData,
-                        address: {...wizardData.address, street: e.target.value}
+                        address: { ...wizardData.address, street: value }
                       })}
-                      className="w-full p-3 rounded-lg border border-border bg-input focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                      onSelect={(address) => {
+                        setWizardData({
+                          ...wizardData,
+                          address: {
+                            street: address.street,
+                            postalCode: address.postalCode,
+                            city: address.city
+                          }
+                        });
+                      }}
                       placeholder="Ex: Storgatan 12"
                     />
                   </div>
