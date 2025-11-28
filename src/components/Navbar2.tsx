@@ -6,6 +6,7 @@ import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import { useTheme } from '@/theme/useTheme';
 import { useAuth } from '@/hooks/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useBookHomeVisitModal } from '@/hooks/useBookHomeVisitModal';
 
 const Navbar2 = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -14,6 +15,7 @@ const Navbar2 = () => {
   const { currentLanguage } = useLanguagePersistence();
   const { theme, setTheme } = useTheme();
   const { user } = useAuth();
+  const { open: openHomeVisitModal } = useBookHomeVisitModal();
 
   // Debug logging
   console.log('🔧 [Navbar2] Component rendering!');
@@ -241,7 +243,10 @@ const Navbar2 = () => {
         </nav>
       </div>
 
-      <Link to={paths.bookVisit} className="rd-navbar_btn w-inline-block">
+      <button 
+        onClick={openHomeVisitModal} 
+        className="rd-navbar_btn w-inline-block cursor-pointer border-0 bg-transparent p-0"
+      >
         <div className="rd-navbar_btn_bg"></div>
         <div className="rd-navbar_btn_content">
           <div className="rd-navbar_btn_content_bg" style={{ opacity: 0 }}></div>
@@ -253,7 +258,7 @@ const Navbar2 = () => {
             <path d="M32 0L32.9939 28.2908L48 4.28719L34.7153 29.2847L59.7128 16L35.7092 31.0061L64 32L35.7092 32.9939L59.7128 48L34.7153 34.7153L48 59.7128L32.9939 35.7092L32 64L31.0061 35.7092L16 59.7128L29.2847 34.7153L4.28719 48L28.2908 32.9939L0 32L28.2908 31.0061L4.28719 16L29.2847 29.2847L16 4.28719L31.0061 28.2908L32 0Z" fill="currentColor"></path>
           </svg>
         </div>
-      </Link>
+      </button>
 
       <Link to={paths.references} className="rd-navbar_link w-inline-block">
         <Star className="rd-navbar_link_icon" />
