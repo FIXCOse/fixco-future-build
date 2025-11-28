@@ -401,7 +401,7 @@ export default function ServiceRequestModal() {
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-[60vh] overflow-y-auto">
+        <div className="p-6 max-h-[50vh] overflow-y-auto">
           {done ? (
             <div className="text-center py-8 animate-scale-in">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -542,22 +542,6 @@ export default function ServiceRequestModal() {
                   ))
                 )}
               </div>
-
-              {/* Fortsätt-knapp för home visit mode */}
-              {mode === 'home_visit' && selectedCategories.length > 0 && (
-                <div className="flex justify-end pt-4 border-t">
-                  <Button 
-                    onClick={() => setCurrentStep(1)}
-                    className="px-8"
-                  >
-                    Fortsätt
-                    <Badge className="ml-2 bg-primary-foreground text-primary">
-                      {selectedCategories.length}
-                    </Badge>
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              )}
             </motion.div>
           ) : currentStep === 1 && addons.length > 0 ? (
             // STEG 1: VÄLJ TILLÄGG
@@ -631,34 +615,6 @@ export default function ServiceRequestModal() {
                   <p className="text-muted-foreground">Inga tillägg tillgängliga för denna tjänst</p>
                 </div>
               )}
-
-              <div className="flex gap-3 pt-4 border-t">
-                <Button 
-                  variant="outline" 
-                  onClick={skipAddons}
-                  className="flex-1"
-                >
-                  Hoppa över
-                </Button>
-                <Button 
-                  onClick={() => {
-                    if (mode === 'home_visit') {
-                      goToStep2(); // Go to desired time
-                    } else {
-                      goToStep3(); // Go to form
-                    }
-                  }}
-                  className="flex-1"
-                >
-                  Fortsätt
-                  {selectedAddons.length > 0 && (
-                    <Badge className="ml-2 bg-primary-foreground text-primary">
-                      {selectedAddons.length}
-                    </Badge>
-                  )}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </div>
             </motion.div>
           ) : currentStep === 2 && mode === 'home_visit' ? (
             // STEG 2 (Home Visit): ÖNSKAD TID
@@ -720,25 +676,6 @@ export default function ServiceRequestModal() {
                     </motion.div>
                   );
                 })}
-              </div>
-
-              <div className="flex gap-3 pt-4 border-t">
-                <Button 
-                  variant="outline" 
-                  onClick={goToStep1}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Tillbaka
-                </Button>
-                <Button 
-                  onClick={goToStep3}
-                  disabled={!desiredTime}
-                  className="flex-1"
-                >
-                  Fortsätt
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
               </div>
             </motion.div>
           ) : currentStep === 3 || (currentStep === 2 && mode === 'quote') ? (
@@ -1100,16 +1037,29 @@ export default function ServiceRequestModal() {
                   </div>
                 </div>
               )}
+            </motion.div>
+          ) : null}
+        </div>
 
-              {/* Action buttons */}
-              <div className="flex gap-3 pt-4 border-t">
-                <Button 
-                  variant="outline" 
+        {/* Fixed Footer with Navigation Buttons */}
+        {!done && (
+          <div className="px-6 py-4 border-t border-border/20 bg-background/50 backdrop-blur-sm">
+            <div className="flex gap-3">
+              {/* Back Button */}
+              {currentStep > 0 && (
+                <Button
+                  variant="outline"
                   onClick={() => {
-                    if (mode === 'home_visit') {
-                      goToStep2(); // Back to desired time
-                    } else {
-                      goToStep1(); // Back to addons
+                    if (currentStep === 3) {
+                      if (mode === 'home_visit') {
+                        goToStep2();
+                      } else {
+                        goToStep1();
+                      }
+                    } else if (currentStep === 2 && mode === 'home_visit') {
+                      goToStep1();
+                    } else if (currentStep === 1) {
+                      goToStep0();
                     }
                   }}
                   className="flex items-center gap-2"
@@ -1117,7 +1067,92 @@ export default function ServiceRequestModal() {
                   <ArrowLeft className="w-4 h-4" />
                   Tillbaka
                 </Button>
-                <Button 
+              )}
+
+              {/* Cancel Button (Step 0 only) */}
+              {currentStep === 0 && showCategories && mode !== 'home_visit' && (
+                <Button
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  className="flex-1"
+                >
+                  Avbryt
+                </Button>
+              )}
+
+              {/* Step 0: Continue Button */}
+              {currentStep === 0 && mode === 'home_visit' && (
+                <Button
+                  onClick={() => goToStep1()}
+                  disabled={selectedCategories.length === 0}
+                  className="flex-1"
+                >
+                  Fortsätt
+                  {selectedCategories.length > 0 && (
+                    <Badge className="ml-2 bg-primary-foreground text-primary">
+                      {selectedCategories.length}
+                    </Badge>
+                  )}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+
+              {currentStep === 0 && showCategories && mode !== 'home_visit' && (
+                <Button
+                  onClick={() => goToStep1()}
+                  className="flex-1"
+                >
+                  Fortsätt
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+
+              {/* Step 1: Skip or Continue */}
+              {currentStep === 1 && addons.length > 0 && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={skipAddons}
+                    className="flex-1"
+                  >
+                    Hoppa över
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      if (mode === 'home_visit') {
+                        goToStep2();
+                      } else {
+                        goToStep3();
+                      }
+                    }}
+                    className="flex-1"
+                  >
+                    Fortsätt
+                    {selectedAddons.length > 0 && (
+                      <Badge className="ml-2 bg-primary-foreground text-primary">
+                        {selectedAddons.length}
+                      </Badge>
+                    )}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </>
+              )}
+
+              {/* Step 2 (Home Visit): Continue */}
+              {currentStep === 2 && mode === 'home_visit' && (
+                <Button
+                  onClick={goToStep3}
+                  disabled={!desiredTime}
+                  className="flex-1"
+                >
+                  Fortsätt
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+
+              {/* Step 3: Submit Button */}
+              {currentStep === 3 && (
+                <Button
                   onClick={onSubmit}
                   disabled={busy || Object.keys(errors).length > 0}
                   className="flex-1"
@@ -1132,20 +1167,20 @@ export default function ServiceRequestModal() {
                     </>
                   ) : (
                     <>
-                      {mode === 'home_visit' 
-                        ? "Boka hembesök" 
-                        : isQuote 
-                          ? "Skicka offertförfrågan" 
+                      {mode === 'home_visit'
+                        ? "Boka hembesök"
+                        : isQuote
+                          ? "Skicka offertförfrågan"
                           : "Skicka bokning"
                       }
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
                   )}
                 </Button>
-              </div>
-            </motion.div>
-          ) : null}
-        </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>,
     document.body
