@@ -118,7 +118,6 @@ import { lazyElement } from './components/LazyRoute';
 import { ScrollSmoother } from '@/lib/gsap';
 import { NavbarPortal } from './components/NavbarPortal';
 import { StickyPhoneButton } from './components/StickyPhoneButton';
-import BookHomeVisitModal from './components/BookHomeVisitModal';
 import './components/Navbar2.css';
 
 // Suspense fallback component
@@ -215,7 +214,6 @@ const App = () => {
                     <Toaster />
                     <Sonner />
                     <ServiceRequestModal />
-                    <BookHomeVisitModal />
                     <BrowserRouter>
                       <FeatureFlagInitializer>
                         <PageViewTracker />

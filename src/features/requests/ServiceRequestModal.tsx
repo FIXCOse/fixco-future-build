@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,6 +33,7 @@ export type OpenModalDetail = {
   serviceSlug?: string;
   prefill?: Record<string, any>;
   showCategories?: boolean;
+  mode?: 'quote' | 'home_visit';
 };
 
 export function openServiceRequestModal(detail: OpenModalDetail) {
@@ -49,8 +50,11 @@ export default function ServiceRequestModal() {
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
-  const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
+  const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3>(0);
   const [showCategories, setShowCategories] = useState(false);
+  const [mode, setMode] = useState<'quote' | 'home_visit'>('quote');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [desiredTime, setDesiredTime] = useState<string>('');
 
   // Lock scroll when modal is open
   useScrollLock(open);
@@ -59,9 +63,14 @@ export default function ServiceRequestModal() {
   const goToStep0 = () => setCurrentStep(0);
   const goToStep1 = () => setCurrentStep(1);
   const goToStep2 = () => setCurrentStep(2);
+  const goToStep3 = () => setCurrentStep(3);
   const skipAddons = () => {
     setSelectedAddons([]);
-    setCurrentStep(2);
+    if (mode === 'home_visit') {
+      setCurrentStep(2); // Go to desired time step
+    } else {
+      setCurrentStep(3); // Go to form step
+    }
   };
 
   // Hämta tillgängliga add-ons för vald tjänst
@@ -70,10 +79,14 @@ export default function ServiceRequestModal() {
   // Automatiskt hoppa över Steg 1 om inga tillägg finns
   useEffect(() => {
     if (currentStep === 1 && addons.length === 0 && open && service) {
-      setCurrentStep(2);
+      if (mode === 'home_visit') {
+        setCurrentStep(2); // Go to desired time
+      } else {
+        setCurrentStep(3); // Go to form
+      }
       setSelectedAddons([]);
     }
-  }, [addons.length, currentStep, open, service]);
+  }, [addons.length, currentStep, open, service, mode]);
 
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -81,6 +94,9 @@ export default function ServiceRequestModal() {
       const slug = ce.detail?.serviceSlug;
       const prefill = ce.detail?.prefill ?? {};
       const shouldShowCategories = ce.detail?.showCategories ?? false;
+      const requestMode = ce.detail?.mode ?? 'quote';
+      
+      setMode(requestMode);
       
       // Om showCategories eller ingen serviceSlug anges, visa väljare (steg 0)
       if (shouldShowCategories || !slug) {
@@ -90,6 +106,8 @@ export default function ServiceRequestModal() {
         setFiles({});
         setDone(false);
         setSelectedAddons([]);
+        setSelectedCategories([]);
+        setDesiredTime('');
         setCurrentStep(0);
         setShowCategories(shouldShowCategories);
         setOpen(true);
@@ -405,10 +423,10 @@ export default function ServiceRequestModal() {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <Wrench className="w-5 h-5 text-primary" />
-                  {showCategories ? 'Välj tjänstekategori' : 'Välj den tjänst du behöver'}
+                  {mode === 'home_visit' ? 'Välj tjänster' : (showCategories ? 'Välj tjänstekategori' : 'Välj den tjänst du behöver')}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  {showCategories ? 'Berätta vad du behöver hjälp med' : 'Vi hjälper dig med allt från el till målning'}
+                  {mode === 'home_visit' ? 'Välj en eller flera tjänster du behöver' : (showCategories ? 'Berätta vad du behöver hjälp med' : 'Vi hjälper dig med allt från el till målning')}
                 </p>
               </div>
 
@@ -417,39 +435,54 @@ export default function ServiceRequestModal() {
                   // Visa kategorier
                   serviceCategories.map(category => {
                     const IconComponent = category.icon;
+                    const isSelected = selectedCategories.includes(category.slug);
+                    
                     return (
                       <motion.div
                         key={category.slug}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => {
-                          // Skapa generisk service för vald kategori
-                          const genericService: ServiceConfig = {
-                            slug: `${category.slug}-offert`,
-                            name: `${category.title}`,
-                            pricingMode: "quote",
-                            rotEligible: true,
-                            fields: [
-                              { 
-                                kind: "textarea", 
-                                key: "beskrivning", 
-                                label: "Beskriv ditt projekt", 
-                                placeholder: `Berätta vad du behöver hjälp med inom ${category.title.toLowerCase()}...`,
-                                required: true 
-                              },
-                              { 
-                                kind: "file", 
-                                key: "bilder", 
-                                label: "Bilder (valfritt)", 
-                                accept: "image/*", 
-                                multiple: true 
-                              }
-                            ]
-                          };
-                          setService(genericService);
-                          setCurrentStep(2); // Hoppa direkt till formulär (inga tillägg)
+                          if (mode === 'home_visit') {
+                            // Multi-select för home visit
+                            setSelectedCategories(prev => 
+                              prev.includes(category.slug)
+                                ? prev.filter(s => s !== category.slug)
+                                : [...prev, category.slug]
+                            );
+                          } else {
+                            // Single-select för quote
+                            const genericService: ServiceConfig = {
+                              slug: `${category.slug}-offert`,
+                              name: `${category.title}`,
+                              pricingMode: "quote",
+                              rotEligible: true,
+                              fields: [
+                                { 
+                                  kind: "textarea", 
+                                  key: "beskrivning", 
+                                  label: "Beskriv ditt projekt", 
+                                  placeholder: `Berätta vad du behöver hjälp med inom ${category.title.toLowerCase()}...`,
+                                  required: true 
+                                },
+                                { 
+                                  kind: "file", 
+                                  key: "bilder", 
+                                  label: "Bilder (valfritt)", 
+                                  accept: "image/*", 
+                                  multiple: true 
+                                }
+                              ]
+                            };
+                            setService(genericService);
+                            setCurrentStep(3); // Hoppa direkt till formulär (inga tillägg)
+                          }
                         }}
-                        className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                          isSelected && mode === 'home_visit'
+                            ? 'border-primary bg-primary/10 shadow-lg'
+                            : 'border-border hover:border-primary/50'
+                        }`}
                       >
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -463,7 +496,11 @@ export default function ServiceRequestModal() {
                             </p>
                           </div>
 
-                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                          {mode === 'home_visit' ? (
+                            <Checkbox checked={isSelected} />
+                          ) : (
+                            <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                          )}
                         </div>
                       </motion.div>
                     );
@@ -505,6 +542,22 @@ export default function ServiceRequestModal() {
                   ))
                 )}
               </div>
+
+              {/* Fortsätt-knapp för home visit mode */}
+              {mode === 'home_visit' && selectedCategories.length > 0 && (
+                <div className="flex justify-end pt-4 border-t">
+                  <Button 
+                    onClick={() => setCurrentStep(1)}
+                    className="px-8"
+                  >
+                    Fortsätt
+                    <Badge className="ml-2 bg-primary-foreground text-primary">
+                      {selectedCategories.length}
+                    </Badge>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              )}
             </motion.div>
           ) : currentStep === 1 && addons.length > 0 ? (
             // STEG 1: VÄLJ TILLÄGG
@@ -588,7 +641,13 @@ export default function ServiceRequestModal() {
                   Hoppa över
                 </Button>
                 <Button 
-                  onClick={goToStep2}
+                  onClick={() => {
+                    if (mode === 'home_visit') {
+                      goToStep2(); // Go to desired time
+                    } else {
+                      goToStep3(); // Go to form
+                    }
+                  }}
                   className="flex-1"
                 >
                   Fortsätt
@@ -601,8 +660,89 @@ export default function ServiceRequestModal() {
                 </Button>
               </div>
             </motion.div>
-          ) : (
-            // STEG 2: FYLL I UPPGIFTER
+          ) : currentStep === 2 && mode === 'home_visit' ? (
+            // STEG 2 (Home Visit): ÖNSKAD TID
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-6"
+            >
+              <div className="text-center mb-6">
+                <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
+                  <CalendarClock className="w-5 h-5 text-primary" />
+                  När vill du ha hembesök?
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  Vi kontaktar dig för att bekräfta tid
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {[
+                  { id: 'asap', name: 'Så snart som möjligt', icon: AlertCircle },
+                  { id: '1-2days', name: 'Inom 1-2 dagar', icon: CalendarClock },
+                  { id: 'week', name: 'Inom en vecka', icon: CalendarDays },
+                  { id: 'month', name: 'Nästa månad', icon: CalendarRange }
+                ].map(time => {
+                  const IconComponent = time.icon;
+                  const isSelected = desiredTime === time.id;
+                  
+                  return (
+                    <motion.div
+                      key={time.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setDesiredTime(time.id)}
+                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                        isSelected 
+                          ? 'border-primary bg-primary/10 shadow-lg' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-6 h-6 text-primary" />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h5 className="font-semibold text-foreground">{time.name}</h5>
+                        </div>
+
+                        {isSelected && (
+                          <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                            <svg className="w-4 h-4 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  onClick={goToStep1}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Tillbaka
+                </Button>
+                <Button 
+                  onClick={goToStep3}
+                  disabled={!desiredTime}
+                  className="flex-1"
+                >
+                  Fortsätt
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+            </motion.div>
+          ) : currentStep === 3 || (currentStep === 2 && mode === 'quote') ? (
+            // STEG 3 (eller 2 för quote): FORMULÄR
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -965,7 +1105,13 @@ export default function ServiceRequestModal() {
               <div className="flex gap-3 pt-4 border-t">
                 <Button 
                   variant="outline" 
-                  onClick={goToStep1}
+                  onClick={() => {
+                    if (mode === 'home_visit') {
+                      goToStep2(); // Back to desired time
+                    } else {
+                      goToStep1(); // Back to addons
+                    }
+                  }}
                   className="flex items-center gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -986,14 +1132,19 @@ export default function ServiceRequestModal() {
                     </>
                   ) : (
                     <>
-                      {isQuote ? "Skicka offertförfrågan" : "Skicka bokning"}
+                      {mode === 'home_visit' 
+                        ? "Boka hembesök" 
+                        : isQuote 
+                          ? "Skicka offertförfrågan" 
+                          : "Skicka bokning"
+                      }
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
                   )}
                 </Button>
               </div>
             </motion.div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>,
