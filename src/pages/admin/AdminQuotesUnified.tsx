@@ -413,18 +413,36 @@ export default function AdminQuotesUnified() {
     if (!deleteId) return;
 
     try {
-      const { error } = await supabase
-        .from('bookings')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', deleteId);
+      // Kolla om det är en synthetic booking (standalone quote)
+      const isSynthetic = deleteId.startsWith('synthetic-');
+      
+      if (isSynthetic) {
+        // Extrahera quote ID från synthetic-<quote_id>
+        const quoteId = deleteId.replace('synthetic-', '');
+        
+        // Soft delete från quotes_new istället
+        const { error } = await supabase
+          .from('quotes_new')
+          .update({ deleted_at: new Date().toISOString() })
+          .eq('id', quoteId);
+        
+        if (error) throw error;
+        toast.success('Offert raderad');
+      } else {
+        // Vanlig booking - radera som tidigare
+        const { error } = await supabase
+          .from('bookings')
+          .update({ deleted_at: new Date().toISOString() })
+          .eq('id', deleteId);
 
-      if (error) throw error;
+        if (error) throw error;
+        toast.success('Förfrågan raderad');
+      }
 
-      toast.success('Förfrågan raderad');
       refresh();
     } catch (error: any) {
-      console.error('Error deleting booking:', error);
-      toast.error('Kunde inte radera förfrågan');
+      console.error('Error deleting:', error);
+      toast.error('Kunde inte radera');
     } finally {
       setDeleteId(null);
     }
