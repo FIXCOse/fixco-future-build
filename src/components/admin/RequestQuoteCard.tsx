@@ -96,6 +96,8 @@ export function RequestQuoteCard({
   const serviceType = booking.payload?.service_type || booking.payload?.fields?.service_type;
   const timePreference = booking.payload?.time_preference || booking.payload?.fields?.time_preference;
 
+  const isSyntheticBooking = booking.id.startsWith('synthetic-');
+  
   return (
     <Card className="overflow-hidden border-2 shadow-md hover:shadow-lg transition-shadow">
       {/* Container Header */}
@@ -103,7 +105,11 @@ export function RequestQuoteCard({
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="text-xl font-bold">#{booking.id.slice(0, 8)}</h2>
+              {quote ? (
+                <h2 className="text-xl font-bold">Offert #{quote.number}</h2>
+              ) : !isSyntheticBooking ? (
+                <h2 className="text-xl font-bold">#{booking.id.slice(0, 8)}</h2>
+              ) : null}
               <Badge variant={getStatusBadge(booking.status).variant as any}>
                 {getStatusBadge(booking.status).label}
               </Badge>
@@ -566,7 +572,9 @@ export function RequestQuoteCard({
                 <h3 className="text-sm font-semibold text-destructive">Farlig zon</h3>
               </div>
               <p className="text-xs text-muted-foreground">
-                Att ta bort denna bokning är permanent och kan inte ångras. All associerad data (offert, jobb, faktura) kommer att påverkas.
+                {isSyntheticBooking 
+                  ? 'Att ta bort denna offert är permanent och kan inte ångras.'
+                  : 'Att ta bort denna bokning är permanent och kan inte ångras. All associerad data (offert, jobb, faktura) kommer att påverkas.'}
               </p>
             </div>
             <Button
@@ -576,7 +584,7 @@ export function RequestQuoteCard({
               className="shrink-0"
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Ta bort bokning
+              {isSyntheticBooking ? 'Ta bort offert' : 'Ta bort bokning'}
             </Button>
           </div>
         </div>
