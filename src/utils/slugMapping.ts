@@ -5,7 +5,7 @@ export const svToEnRoutes: Record<string, string> = {
   '/tjanster/el': '/en/services/el',
   '/tjanster/vvs': '/en/services/vvs', 
   '/tjanster/snickeri': '/en/services/snickeri',
-  '/tjanster/malning': '/en/services/malning',
+  '/tjanster/malare': '/en/services/malare',
   '/tjanster/montering': '/en/services/montering',
   '/tjanster/tradgard': '/en/services/tradgard',
   '/tjanster/stadning': '/en/services/stadning',

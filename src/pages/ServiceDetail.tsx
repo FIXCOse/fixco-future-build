@@ -47,6 +47,7 @@ const ServiceDetail = () => {
     'vvs': 'vvs',
     'snickeri': 'snickeri',
     'maleri': 'malning',
+    'malare': 'malning',
     'montering': 'montering',
     'tradgard': 'tradgard',
     'stadning': 'stadning',
