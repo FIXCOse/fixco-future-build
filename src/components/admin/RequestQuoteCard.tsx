@@ -161,7 +161,7 @@ export function RequestQuoteCard({
                 <span>•</span>
                 <span className="truncate max-w-[200px]">{serviceName}</span>
                 <span>•</span>
-                <span>{format(new Date(booking.created_at), "d MMM yyyy", { locale: sv })}</span>
+                <span>{format(new Date(booking.created_at), "d MMM yyyy 'kl.' HH:mm", { locale: sv })}</span>
               </div>
             </div>
           </div>
