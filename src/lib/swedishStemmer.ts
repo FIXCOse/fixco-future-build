@@ -40,6 +40,7 @@ export function matchesSearchTerm(
   const term = searchTerm.toLowerCase().trim();
   
   if (!term) return true;
+  if (term.length < 2) return true; // Too short to search
   
   const stemmedTerm = stemSwedish(term);
   
@@ -52,35 +53,30 @@ export function matchesSearchTerm(
   if (descLower.includes(term)) return true;
   if (subCatLower.includes(term)) return true;
   
-  // 2. Stemmed matching on title words
-  const titleWords = titleLower.split(/\s+/);
+  // 2. Stemmed matching on title words (strict - only stemmedWord.startsWith)
+  const titleWords = titleLower.split(/\s+/).filter(w => w.length > 0);
   for (const word of titleWords) {
+    if (word.length < 3) continue; // Skip short words
     const stemmedWord = stemSwedish(word);
-    // Check if stems match (allowing partial match for short search terms)
-    if (stemmedWord.startsWith(stemmedTerm) || stemmedTerm.startsWith(stemmedWord)) {
-      return true;
+    if (stemmedWord.length >= 3 && stemmedTerm.length >= 3) {
+      if (stemmedWord.startsWith(stemmedTerm)) {
+        return true;
+      }
     }
   }
   
-  // 3. Stemmed matching on description words
-  const descWords = descLower.split(/\s+/);
-  for (const word of descWords) {
-    const stemmedWord = stemSwedish(word);
-    if (stemmedWord.startsWith(stemmedTerm) || stemmedTerm.startsWith(stemmedWord)) {
-      return true;
-    }
-  }
-  
-  // 4. Keyword matching (from database)
+  // 3. Keyword matching (from database) - most reliable
   if (searchKeywords) {
-    const keywords = searchKeywords.toLowerCase().split(',').map(k => k.trim());
+    const keywords = searchKeywords.toLowerCase().split(',').map(k => k.trim()).filter(k => k.length > 0);
     for (const kw of keywords) {
       // Direct keyword match
       if (kw.includes(term)) return true;
-      // Stemmed keyword match
+      // Stemmed keyword match (strict)
       const stemmedKeyword = stemSwedish(kw);
-      if (stemmedKeyword.startsWith(stemmedTerm) || stemmedTerm.startsWith(stemmedKeyword)) {
-        return true;
+      if (stemmedKeyword.length >= 3 && stemmedTerm.length >= 3) {
+        if (stemmedKeyword.startsWith(stemmedTerm)) {
+          return true;
+        }
       }
     }
   }
