@@ -64,10 +64,13 @@ const ServiceDetail = () => {
   
   const categoryName = slug ? categoryMap[slug] : undefined;
   
-  // Filter services by category from database
+  // Filter services by category from database (including cross-listed)
   const filteredSubServices = useMemo(() => {
     if (!dbServices || !categoryName) return [];
-    return dbServices.filter(s => s.category === categoryName);
+    return dbServices.filter(s => 
+      s.category === categoryName || 
+      s.additional_categories?.includes(categoryName)
+    );
   }, [dbServices, categoryName]);
 
   // Related services (other services from different categories)
