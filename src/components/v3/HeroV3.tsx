@@ -18,121 +18,84 @@ const HeroV3 = () => {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
-  const glowsRef = useRef<HTMLDivElement>(null);
   const { isHydrated } = useContentStore();
 
   useEffect(() => {
     if (!isHydrated) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.1 });
+    // Wait for fonts to load before SplitText to avoid layout shifts
+    document.fonts.ready.then(() => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({ delay: 0.1 });
 
-      // 1. Animate eyebrow text
-      if (eyebrowRef.current) {
-        tl.from(eyebrowRef.current, {
-          opacity: 0,
-          x: -30,
-          duration: 0.6,
-          ease: "power2.out"
-        });
-      }
+        // 1. Animate eyebrow text
+        if (eyebrowRef.current) {
+          tl.from(eyebrowRef.current, {
+            opacity: 0,
+            x: -30,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        }
 
-      // 2. Stagger stars
-      if (starsRef.current) {
-        tl.from(starsRef.current.children, {
-          opacity: 0,
-          scale: 0,
-          duration: 0.3,
-          stagger: 0.1,
-          ease: "back.out(1.7)"
-        }, "-=0.3");
-      }
+        // 2. Stagger stars
+        if (starsRef.current) {
+          tl.from(starsRef.current.children, {
+            opacity: 0,
+            scale: 0,
+            duration: 0.3,
+            stagger: 0.1,
+            ease: "back.out(1.7)"
+          }, "-=0.3");
+        }
 
-      // 3. SplitText animation on headline
-      if (headlineRef.current) {
-        const split = new SplitText(headlineRef.current, { 
-          type: "chars,words",
-          charsClass: "split-char",
-          wordsClass: "split-word"
-        });
+        // 3. SplitText animation on headline (fonts are now loaded)
+        if (headlineRef.current) {
+          const split = new SplitText(headlineRef.current, { 
+            type: "chars,words",
+            charsClass: "split-char",
+            wordsClass: "split-word"
+          });
 
-        tl.from(split.chars, {
-          opacity: 0,
-          y: 50,              // Slide up
-          rotationX: -90,     // 3D rotation X-axis
-          rotationY: 20,      // 3D rotation Y-axis
-          scale: 0.8,         // Scale effect
-          duration: 0.8,
-          stagger: 0.03,      // Delay between each letter
-          ease: "back.out(1.7)" // Bounce effect
-        }, "-=0.2");
-      }
+          tl.from(split.chars, {
+            opacity: 0,
+            y: 50,
+            rotationX: -90,
+            rotationY: 20,
+            scale: 0.8,
+            duration: 0.8,
+            stagger: 0.03,
+            ease: "back.out(1.7)"
+          }, "-=0.2");
+        }
 
-      // 4. Animate paragraph
-      if (paragraphRef.current) {
-        tl.from(paragraphRef.current, {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          ease: "power2.out"
-        }, "-=0.4");
-      }
+        // 4. Animate paragraph
+        if (paragraphRef.current) {
+          tl.from(paragraphRef.current, {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: "power2.out"
+          }, "-=0.4");
+        }
 
-      // 5. Animate buttons
-      if (buttonsRef.current) {
-        tl.from(buttonsRef.current.children, {
-          opacity: 0,
-          scale: 0.8,
-          duration: 0.5,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-          clearProps: "transform"
-        }, "-=0.3");
-      }
+        // 5. Animate buttons
+        if (buttonsRef.current) {
+          tl.from(buttonsRef.current.children, {
+            opacity: 0,
+            scale: 0.8,
+            duration: 0.5,
+            stagger: 0.15,
+            ease: "back.out(1.7)",
+            clearProps: "transform"
+          }, "-=0.3");
+        }
 
-      // 6. Floating animation for glow effects
-      if (glowsRef.current) {
-        const glows = glowsRef.current.children;
-        
-        gsap.to(glows[0], {
-          y: -20,
-          x: 10,
-          duration: 4,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        });
+        // NOTE: Floating glow animations moved to CSS for better performance
+      }, heroRef);
 
-        gsap.to(glows[1], {
-          y: 15,
-          x: -15,
-          duration: 5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        });
-
-        gsap.to(glows[2], {
-          y: -10,
-          x: 12,
-          duration: 4.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        });
-
-        gsap.to(glows[3], {
-          y: 18,
-          x: -8,
-          duration: 5.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        });
-      }
-    }, heroRef);
-
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
   }, [isHydrated]);
 
   return (
@@ -146,16 +109,16 @@ const HeroV3 = () => {
         }}
       />
       
-      {/* Glow Effects */}
-      <div ref={glowsRef} className="absolute inset-0 pointer-events-none">
+      {/* Glow Effects - Reduced blur for performance, CSS animations instead of GSAP */}
+      <div className="absolute inset-0 pointer-events-none">
         {/* Deep purple glow - top */}
-        <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#592db5] opacity-30 blur-[150px] rounded-full" />
+        <div className="absolute top-20 left-1/4 w-72 h-72 bg-[#592db5] opacity-30 blur-3xl rounded-full animate-float-slow" />
         {/* Bright purple glow - center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7d40ff] opacity-35 blur-[180px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#7d40ff] opacity-35 blur-3xl rounded-full animate-float-medium" />
         {/* Light purple accent - bottom right */}
-        <div className="absolute bottom-32 right-1/4 w-[450px] h-[450px] bg-[#9d6fff] opacity-25 blur-[130px] rounded-full" />
+        <div className="absolute bottom-32 right-1/4 w-64 h-64 bg-[#9d6fff] opacity-25 blur-2xl rounded-full animate-float-fast" />
         {/* Deep purple glow - bottom left */}
-        <div className="absolute bottom-20 left-10 w-[350px] h-[350px] bg-[#4a2490] opacity-20 blur-[100px] rounded-full" />
+        <div className="absolute bottom-20 left-10 w-56 h-56 bg-[#4a2490] opacity-20 blur-2xl rounded-full animate-float-reverse" />
       </div>
 
       {/* Fixco Logo - Absolute positioned with fade-in animation */}
