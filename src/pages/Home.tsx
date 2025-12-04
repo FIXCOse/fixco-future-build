@@ -35,16 +35,12 @@ const Home = () => {
   const glow2Ref = useRef<HTMLDivElement>(null);
   
   // Check which hero to show (HeroUltra vs HeroV3)
-  const { data: useNewHero, isLoading: heroLoading } = useFeatureFlag('use_new_hero');
+  const { data: useNewHero } = useFeatureFlag('use_new_hero');
   
   // Initialize pricing store from URL/localStorage
   useEffect(() => {
     usePriceStore.getState().initFromUrlOrStorage();
   }, []);
-  
-  useEffect(() => {
-    console.log('🎨 [Home] useNewHero:', useNewHero, 'isLoading:', heroLoading);
-  }, [useNewHero, heroLoading]);
 
   // GSAP Floating glow animations
   useEffect(() => {
@@ -154,15 +150,8 @@ const Home = () => {
               <div className="animate-pulse text-muted-foreground">Laddar...</div>
             </div>
           }>
-            {heroLoading ? (
-              <div className="h-screen flex items-center justify-center bg-gradient-to-b from-background to-muted/20">
-                <div className="animate-pulse text-muted-foreground">Laddar...</div>
-              </div>
-            ) : useNewHero ? (
-              <HeroV3 />
-            ) : (
-              <HeroUltra />
-            )}
+            {/* Show HeroV3 immediately as default, switch to HeroUltra only if flag is explicitly false */}
+            {useNewHero === false ? <HeroUltra /> : <HeroV3 />}
           </Suspense>
         </ContextualEditor>
       </EditableSection>
