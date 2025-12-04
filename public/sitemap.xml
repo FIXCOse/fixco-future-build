@@ -494,5 +494,20 @@
     <priority>0.75</priority>
   </url>
 
+  <!-- Målare Uppsala SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/malare-uppsala</loc>
+    <lastmod>2025-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Målare Stockholm SV -->
+  <url>
+    <loc>https://fixco.se/tjanster/malare-stockholm</loc>
+    <lastmod>2025-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 
 </urlset>

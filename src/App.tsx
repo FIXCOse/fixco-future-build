@@ -326,6 +326,14 @@ const App = () => {
                     <Route path="tjanster" element={lazyElement(Services)} />
                     <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
                     
+                    {/* Redirects: målning/måleri → målare (SEO-konsolidering) */}
+                    <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
+                    <Route path="tjanster/malning-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
+                    <Route path="tjanster/malning-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
+                    <Route path="tjanster/maleri" element={<Navigate to="/tjanster/malare" replace />} />
+                    <Route path="tjanster/maleri-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
+                    <Route path="tjanster/maleri-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
+                    
                     {/* Service+City pages - Full detail pages like main service pages */}
                     <Route path="tjanster/elmontor-uppsala" element={lazyElement(ServiceCityDetail, { service: "el", city: "Uppsala" })} />
                     <Route path="tjanster/vvs-uppsala" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Uppsala" })} />
@@ -336,7 +344,7 @@ const App = () => {
                     <Route path="tjanster/markarbeten-uppsala" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Uppsala" })} />
                     <Route path="tjanster/tekniska-installationer-uppsala" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Uppsala" })} />
                     <Route path="tjanster/flytt-uppsala" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Uppsala" })} />
-                    <Route path="tjanster/malning-uppsala" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Uppsala" })} />
+                    <Route path="tjanster/malare-uppsala" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Uppsala" })} />
                     
                     <Route path="tjanster/elmontor-stockholm" element={lazyElement(ServiceCityDetail, { service: "el", city: "Stockholm" })} />
                     <Route path="tjanster/vvs-stockholm" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Stockholm" })} />
@@ -347,7 +355,7 @@ const App = () => {
                     <Route path="tjanster/markarbeten-stockholm" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Stockholm" })} />
                     <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
                     <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
-                    <Route path="tjanster/malning-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
+                    <Route path="tjanster/malare-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
                     
                     <Route path="kontakt" element={lazyElement(Contact)} />
                     <Route path="faq" element={lazyElement(FAQ)} />

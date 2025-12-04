@@ -1,10 +1,13 @@
 # Gamla URL:er som inte längre finns (301 permanent redirects)
 /cleaning-organization/         /tjanster/stadning     301!
 
-# Måleri -> Målning URL-korrigering (gamla maleri-slugs till nya malning-slugs)
-/tjanster/maleri                /tjanster/malning              301!
-/tjanster/maleri-uppsala        /tjanster/malning-uppsala      301!
-/tjanster/maleri-stockholm      /tjanster/malning-stockholm    301!
+# Målare URL-konsolidering (alla varianter → malare som kanonisk)
+/tjanster/malning                /tjanster/malare               301!
+/tjanster/malning-uppsala        /tjanster/malare-uppsala       301!
+/tjanster/malning-stockholm      /tjanster/malare-stockholm     301!
+/tjanster/maleri                 /tjanster/malare               301!
+/tjanster/maleri-uppsala         /tjanster/malare-uppsala       301!
+/tjanster/maleri-stockholm       /tjanster/malare-stockholm     301!
 
 # Tvinga bort trailing slashes - Svenska routes
 /tjanster/              /tjanster              301!

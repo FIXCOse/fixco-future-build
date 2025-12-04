@@ -1056,7 +1056,7 @@ export const serviceCityData: ServiceCityItem[] = [
   {
     service: "Målning",
     city: "Uppsala",
-    slug: "malning-uppsala",
+    slug: "malare-uppsala",
     h1: "Målare i Uppsala",
     title: "Målare i Uppsala – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Professionella målare i Uppsala för målning av rum, tak, fasad och tapetsering. Snabb start, ROT-avdrag 30%. Vi täcker hela Uppsala.",
@@ -1135,7 +1135,7 @@ export const serviceCityData: ServiceCityItem[] = [
   {
     service: "Målning",
     city: "Stockholm",
-    slug: "malning-stockholm",
+    slug: "malare-stockholm",
     h1: "Målare i Stockholm",
     title: "Målare i Stockholm – Målning, Tapetsering & Ytbehandling | ROT 30%",
     description: "Erfarna målare i Stockholm för målning av rum, fasader och tapetsering. Snabb hjälp, ROT-avdrag 30%. Täcker hela Stockholms stad.",
