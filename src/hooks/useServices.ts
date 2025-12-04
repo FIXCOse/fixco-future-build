@@ -20,6 +20,7 @@ export interface Service {
   is_active: boolean;
   translation_status: 'pending' | 'completed' | 'failed';
   sort_order: number;
+  search_keywords?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -27,6 +28,7 @@ export interface Service {
 export interface ServiceWithTranslations extends Service {
   title: string;
   description: string;
+  searchKeywords?: string | null;
 }
 
 // Hook to get all services
@@ -59,6 +61,7 @@ export const useServices = (locale: 'sv' | 'en' = 'sv') => {
           ...service,
           title,
           description,
+          searchKeywords: service.search_keywords,
           price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
           location: service.location as 'inomhus' | 'utomhus' | 'båda',
           translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
@@ -98,6 +101,7 @@ export const useServicesByCategory = (category: string, locale: 'sv' | 'en' = 's
         ...service,
         title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
         description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
+        searchKeywords: service.search_keywords,
         price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
         location: service.location as 'inomhus' | 'utomhus' | 'båda',
         translation_status: service.translation_status as 'pending' | 'completed' | 'failed'
@@ -123,6 +127,7 @@ export const useAllServicesForAdmin = (locale: 'sv' | 'en' = 'sv') => {
         ...service,
         title: locale === 'en' && service.title_en ? service.title_en : service.title_sv,
         description: locale === 'en' && service.description_en ? service.description_en : service.description_sv,
+        searchKeywords: service.search_keywords,
         price_type: service.price_type as 'hourly' | 'fixed' | 'quote',
         location: service.location as 'inomhus' | 'utomhus' | 'båda',
         translation_status: service.translation_status as 'pending' | 'completed' | 'failed'

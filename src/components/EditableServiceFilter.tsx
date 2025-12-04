@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from '@tanstack/react-query';
+import { matchesSearchTerm } from '@/lib/swedishStemmer';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -73,7 +74,8 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
       },
       laborShare: 1.0,
       translatedTitle: service.title,
-      translatedDescription: service.description
+      translatedDescription: service.description,
+      searchKeywords: service.searchKeywords
     }));
   }, [servicesFromDB]);
 
@@ -144,13 +146,16 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   const filteredServices = useMemo(() => {
     let filtered = [...allServices];
 
-    // Text search
+    // Text search with intelligent Swedish stemming
     if (searchDebounced) {
-      const searchTerm = searchDebounced.toLowerCase();
       filtered = filtered.filter(service => 
-        service.title.toLowerCase().includes(searchTerm) ||
-        service.description.toLowerCase().includes(searchTerm) ||
-        service.subCategory.toLowerCase().includes(searchTerm)
+        matchesSearchTerm(
+          searchDebounced,
+          service.title,
+          service.description,
+          service.subCategory,
+          service.searchKeywords
+        )
       );
     }
 

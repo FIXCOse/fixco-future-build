@@ -2943,6 +2943,7 @@ export type Database = {
           price_unit: string
           rot_eligible: boolean
           rut_eligible: boolean
+          search_keywords: string | null
           sort_order: number | null
           sub_category: string | null
           title_en: string | null
@@ -2965,6 +2966,7 @@ export type Database = {
           price_unit?: string
           rot_eligible?: boolean
           rut_eligible?: boolean
+          search_keywords?: string | null
           sort_order?: number | null
           sub_category?: string | null
           title_en?: string | null
@@ -2987,6 +2989,7 @@ export type Database = {
           price_unit?: string
           rot_eligible?: boolean
           rut_eligible?: boolean
+          search_keywords?: string | null
           sort_order?: number | null
           sub_category?: string | null
           title_en?: string | null
