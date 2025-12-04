@@ -324,9 +324,8 @@ const App = () => {
                     <Route index element={lazyElement(Home)} />
                     <Route path="home-v2" element={lazyElement(HomeV2)} />
                     <Route path="tjanster" element={lazyElement(Services)} />
-                    <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
                     
-                    {/* Redirects: målning/måleri → målare (SEO-konsolidering) */}
+                    {/* Redirects: målning/måleri → målare (SEO-konsolidering) - MÅSTE vara FÖRE :slug */}
                     <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
                     <Route path="tjanster/malning-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
                     <Route path="tjanster/malning-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
@@ -356,6 +355,9 @@ const App = () => {
                     <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
                     <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
                     <Route path="tjanster/malare-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
+                    
+                    {/* Dynamisk route SIST - fångar alla andra tjänster */}
+                    <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
                     
                     <Route path="kontakt" element={lazyElement(Contact)} />
                     <Route path="faq" element={lazyElement(FAQ)} />

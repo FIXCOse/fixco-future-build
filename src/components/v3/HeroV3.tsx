@@ -23,25 +23,42 @@ const HeroV3 = () => {
   useEffect(() => {
     if (!isHydrated) return;
 
+    let ctx: gsap.Context | null = null;
+    let isMounted = true;
+
+    // Fallback: Visa element om animering misslyckas efter 2 sekunder
+    const fallbackTimer = setTimeout(() => {
+      [eyebrowRef, starsRef, paragraphRef, buttonsRef].forEach(ref => {
+        if (ref.current) {
+          ref.current.style.opacity = '1';
+          ref.current.style.transform = 'none';
+        }
+      });
+    }, 2000);
+
     // Wait for fonts to load before SplitText to avoid layout shifts
     document.fonts.ready.then(() => {
-      const ctx = gsap.context(() => {
+      if (!isMounted) return; // Avbryt om komponenten unmountat
+      
+      clearTimeout(fallbackTimer); // Rensa fallback om fonts laddade
+
+      ctx = gsap.context(() => {
         const tl = gsap.timeline({ delay: 0.1 });
 
         // 1. Animate eyebrow text
         if (eyebrowRef.current) {
           tl.from(eyebrowRef.current, {
-            opacity: 0,
+            autoAlpha: 0,
             x: -30,
             duration: 0.6,
             ease: "power2.out"
           });
         }
 
-        // 2. Stagger stars
-        if (starsRef.current) {
+        // 2. Stagger stars (med null-check för children)
+        if (starsRef.current && starsRef.current.children.length > 0) {
           tl.from(starsRef.current.children, {
-            opacity: 0,
+            autoAlpha: 0,
             scale: 0,
             duration: 0.3,
             stagger: 0.1,
@@ -58,7 +75,7 @@ const HeroV3 = () => {
           });
 
           tl.from(split.chars, {
-            opacity: 0,
+            autoAlpha: 0,
             y: 50,
             rotationX: -90,
             rotationY: 20,
@@ -72,17 +89,17 @@ const HeroV3 = () => {
         // 4. Animate paragraph
         if (paragraphRef.current) {
           tl.from(paragraphRef.current, {
-            opacity: 0,
+            autoAlpha: 0,
             y: 20,
             duration: 0.6,
             ease: "power2.out"
           }, "-=0.4");
         }
 
-        // 5. Animate buttons
-        if (buttonsRef.current) {
+        // 5. Animate buttons (med null-check för children)
+        if (buttonsRef.current && buttonsRef.current.children.length > 0) {
           tl.from(buttonsRef.current.children, {
-            opacity: 0,
+            autoAlpha: 0,
             scale: 0.8,
             duration: 0.5,
             stagger: 0.15,
@@ -90,12 +107,15 @@ const HeroV3 = () => {
             clearProps: "transform"
           }, "-=0.3");
         }
-
-        // NOTE: Floating glow animations moved to CSS for better performance
       }, heroRef);
-
-      return () => ctx.revert();
     });
+
+    // KORREKT: Cleanup returneras direkt från useEffect
+    return () => {
+      isMounted = false;
+      clearTimeout(fallbackTimer);
+      if (ctx) ctx.revert();
+    };
   }, [isHydrated]);
 
   return (
