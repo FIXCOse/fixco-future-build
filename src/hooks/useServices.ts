@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 export interface Service {
   id: string;
   category: string;
+  additional_categories?: string[];
   title_sv: string;
   description_sv: string;
   title_en?: string;
@@ -85,7 +86,8 @@ export const useServicesByCategory = (category: string, locale: 'sv' | 'en' = 's
         .order('sort_order');
 
       if (category !== 'alla') {
-        query = query.eq('category', category);
+        // Match primary category OR if additional_categories contains this category
+        query = query.or(`category.eq.${category},additional_categories.cs.{${category}}`);
       }
 
       const { data, error } = await query;

@@ -2929,6 +2929,7 @@ export type Database = {
       }
       services: {
         Row: {
+          additional_categories: string[] | null
           base_price: number
           category: string
           created_at: string
@@ -2950,6 +2951,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          additional_categories?: string[] | null
           base_price: number
           category: string
           created_at?: string
@@ -2971,6 +2973,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          additional_categories?: string[] | null
           base_price?: number
           category?: string
           created_at?: string

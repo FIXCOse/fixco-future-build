@@ -61,6 +61,7 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
       title: service.title,
       description: service.description,
       category: service.category,
+      additionalCategories: service.additional_categories || [],
       subCategory: service.sub_category || '',
       priceType: service.price_type,
       basePrice: service.base_price,
@@ -132,7 +133,9 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   const subCategories = useMemo(() => {
     if (selectedCategory === 'alla') return [];
     
-    const servicesInCategory = allServices.filter(s => s.category === selectedCategory);
+    const servicesInCategory = allServices.filter(s => 
+      s.category === selectedCategory || s.additionalCategories?.includes(selectedCategory)
+    );
     const subCats = new Set(servicesInCategory.map(s => s.subCategory).filter(Boolean));
     return Array.from(subCats).sort();
   }, [selectedCategory, allServices]);
@@ -151,9 +154,12 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
       );
     }
 
-    // Category filter
+    // Category filter (including cross-listed services)
     if (selectedCategory !== 'alla') {
-      filtered = filtered.filter(service => service.category === selectedCategory);
+      filtered = filtered.filter(service => 
+        service.category === selectedCategory || 
+        service.additionalCategories?.includes(selectedCategory)
+      );
     }
 
     // Subcategory filter
