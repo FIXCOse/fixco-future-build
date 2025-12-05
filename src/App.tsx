@@ -220,217 +220,220 @@ const App = () => {
                         <PageViewTracker />
                         <ScrollToTop />
                         <Routes>
-                      {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
-                      <Route path="/auth" element={lazyElement(Auth)} />
-                      <Route path="/en/auth" element={lazyElement(Auth)} />
-                      <Route path="/auth/callback" element={lazyElement(AuthCallback)} />
-                      <Route path="/auth/error" element={lazyElement(AuthError)} />
-                      
-                      {/* All other routes INSIDE MaintenanceGate */}
-                      <Route path="*" element={
-                        <MaintenanceGate>
-                          <Routes>
-                  <Route path="/dashboard" element={lazyElement(Dashboard)} />
-                  
-                  {/* Public Quote View - Hybrid format & legacy support */}
-                  <Route path="/q/:number/:token" element={lazyElement(QuotePublic)} />
-                  <Route path="/q/:token" element={lazyElement(QuotePublic)} />
-                  
-                  {/* Public Invoice View */}
-                  <Route path="/invoice/:token" element={lazyElement(InvoicePublic)} />
+                          {/* Auth routes OUTSIDE MaintenanceGate so admins can login during maintenance */}
+                          <Route path="/auth" element={lazyElement(Auth)} />
+                          <Route path="/en/auth" element={lazyElement(Auth)} />
+                          <Route path="/auth/callback" element={lazyElement(AuthCallback)} />
+                          <Route path="/auth/error" element={lazyElement(AuthError)} />
+                          
+                          {/* Public routes that don't need MaintenanceGate wrapper */}
+                          <Route path="/dashboard" element={<MaintenanceGate>{lazyElement(Dashboard)}</MaintenanceGate>} />
+                          
+                          {/* Public Quote View - Hybrid format & legacy support */}
+                          <Route path="/q/:number/:token" element={<MaintenanceGate>{lazyElement(QuotePublic)}</MaintenanceGate>} />
+                          <Route path="/q/:token" element={<MaintenanceGate>{lazyElement(QuotePublic)}</MaintenanceGate>} />
+                          
+                          {/* Public Invoice View */}
+                          <Route path="/invoice/:token" element={<MaintenanceGate>{lazyElement(InvoicePublic)}</MaintenanceGate>} />
 
-                  {/* City pages */}
-                  <Route path="/omraden/uppsala" element={lazyElement(LocationCityPage, { city: "Uppsala" })} />
-                  <Route path="/omraden/stockholm" element={lazyElement(LocationCityPage, { city: "Stockholm" })} />
+                          {/* City pages */}
+                          <Route path="/omraden/uppsala" element={<MaintenanceGate>{lazyElement(LocationCityPage, { city: "Uppsala" })}</MaintenanceGate>} />
+                          <Route path="/omraden/stockholm" element={<MaintenanceGate>{lazyElement(LocationCityPage, { city: "Stockholm" })}</MaintenanceGate>} />
 
-                  {/* MyFixco Layout with nested routes */}
-                  <Route path="/mitt-fixco" element={
-                    <Suspense fallback={<SuspenseFallback />}>
-                      <MyFixcoLayout />
-                    </Suspense>
-                  }>
-                    <Route index element={lazyElement(CustomerDashboard)} />
-                    <Route path="properties" element={lazyElement(PropertiesPage)} />
-                    <Route path="invoices" element={lazyElement(InvoicesPage)} />
-                    <Route path="history" element={lazyElement(HistoryPage)} />
-                    <Route path="activity" element={lazyElement(ActivityPage)} />
-                    <Route path="rot-rut" element={lazyElement(RotRutPage)} />
-                    <Route path="settings" element={lazyElement(AccountSettings)} />
-                    <Route path="staff" element={lazyElement(StaffManagement)} />
-                  </Route>
+                          {/* MyFixco Layout with nested routes */}
+                          <Route path="/mitt-fixco" element={
+                            <MaintenanceGate>
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <MyFixcoLayout />
+                              </Suspense>
+                            </MaintenanceGate>
+                          }>
+                            <Route index element={lazyElement(CustomerDashboard)} />
+                            <Route path="properties" element={lazyElement(PropertiesPage)} />
+                            <Route path="invoices" element={lazyElement(InvoicesPage)} />
+                            <Route path="history" element={lazyElement(HistoryPage)} />
+                            <Route path="activity" element={lazyElement(ActivityPage)} />
+                            <Route path="rot-rut" element={lazyElement(RotRutPage)} />
+                            <Route path="settings" element={lazyElement(AccountSettings)} />
+                            <Route path="staff" element={lazyElement(StaffManagement)} />
+                          </Route>
 
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                    <Route index element={lazyElement(DashboardOverview)} />
-                    <Route path="services" element={lazyElement(AdminServices)} />
-                    {/* Unified quotes page */}
-                    <Route path="quotes" element={lazyElement(AdminQuotesUnified)} />
-                    <Route path="quotes/trash" element={lazyElement(AdminQuotesTrash)} />
-                    <Route path="quotes/html-preview" element={lazyElement(QuoteHtmlPreview)} />
-                    {/* Redirects for old routes */}
-                    <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
-                    <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
-                    <Route path="bookings/:id" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
-                    <Route path="bookings/trash" element={lazyElement(AdminBookingsTrash)} />
-                    <Route path="ongoing-projects" element={<Navigate to="/admin/jobs" replace />} />
-                    <Route path="quote-questions" element={lazyElement(AdminQuoteQuestions)} />
-                    <Route path="invoices" element={lazyElement(AdminInvoices)} />
-                    <Route path="projects/trash" element={lazyElement(AdminProjectsTrash)} />
-                    <Route path="customers" element={lazyElement(AdminCustomers)} />
-                    <Route path="users" element={lazyElement(AdminUsers)} />
-                    <Route path="database" element={lazyElement(AdminDatabase)} />
-                    <Route path="reports" element={lazyElement(AdminReports)} />
-                    <Route path="jobs" element={lazyElement(AdminJobsUnified)} />
-                    <Route path="jobs/:jobId" element={lazyElement(AdminJobDetail)} />
-                    <Route path="jobs/trash" element={lazyElement(AdminJobsTrash)} />
-                    <Route path="schedule" element={lazyElement(AdminSchedule)} />
-                    <Route path="settings" element={lazyElement(AdminSettings)} />
-                    <Route path="feature-flags" element={lazyElement(AdminFeatureFlags)} />
-                    <Route path="security" element={lazyElement(AdminSecurity)} />
-                    <Route path="staff" element={lazyElement(AdminStaff)} />
-                    <Route path="payroll" element={lazyElement(AdminPayroll)} />
-                    <Route path="job-requests-trash" element={lazyElement(AdminJobRequestsTrash)} />
-                    <Route path="analytics/detailed" element={lazyElement(AdminReports)} />
-                    <Route path="translations" element={lazyElement(AdminTranslations)} />
-                    <Route path="leads" element={lazyElement(AdminLeads)} />
-                    <Route path="worker-analytics" element={lazyElement(AdminWorkerAnalytics)} />
-                    <Route path="applications" element={lazyElement(AdminApplications)} />
-                  </Route>
+                          {/* Admin Routes */}
+                          <Route path="/admin" element={
+                            <MaintenanceGate>
+                              <AdminRoute><AdminLayout /></AdminRoute>
+                            </MaintenanceGate>
+                          }>
+                            <Route index element={lazyElement(DashboardOverview)} />
+                            <Route path="services" element={lazyElement(AdminServices)} />
+                            {/* Unified quotes page */}
+                            <Route path="quotes" element={lazyElement(AdminQuotesUnified)} />
+                            <Route path="quotes/trash" element={lazyElement(AdminQuotesTrash)} />
+                            <Route path="quotes/html-preview" element={lazyElement(QuoteHtmlPreview)} />
+                            {/* Redirects for old routes */}
+                            <Route path="requests-quotes" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                            <Route path="bookings" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                            <Route path="bookings/:id" element={<Navigate to="/admin/quotes?tab=requests" replace />} />
+                            <Route path="bookings/trash" element={lazyElement(AdminBookingsTrash)} />
+                            <Route path="ongoing-projects" element={<Navigate to="/admin/jobs" replace />} />
+                            <Route path="quote-questions" element={lazyElement(AdminQuoteQuestions)} />
+                            <Route path="invoices" element={lazyElement(AdminInvoices)} />
+                            <Route path="projects/trash" element={lazyElement(AdminProjectsTrash)} />
+                            <Route path="customers" element={lazyElement(AdminCustomers)} />
+                            <Route path="users" element={lazyElement(AdminUsers)} />
+                            <Route path="database" element={lazyElement(AdminDatabase)} />
+                            <Route path="reports" element={lazyElement(AdminReports)} />
+                            <Route path="jobs" element={lazyElement(AdminJobsUnified)} />
+                            <Route path="jobs/:jobId" element={lazyElement(AdminJobDetail)} />
+                            <Route path="jobs/trash" element={lazyElement(AdminJobsTrash)} />
+                            <Route path="schedule" element={lazyElement(AdminSchedule)} />
+                            <Route path="settings" element={lazyElement(AdminSettings)} />
+                            <Route path="feature-flags" element={lazyElement(AdminFeatureFlags)} />
+                            <Route path="security" element={lazyElement(AdminSecurity)} />
+                            <Route path="staff" element={lazyElement(AdminStaff)} />
+                            <Route path="payroll" element={lazyElement(AdminPayroll)} />
+                            <Route path="job-requests-trash" element={lazyElement(AdminJobRequestsTrash)} />
+                            <Route path="analytics/detailed" element={lazyElement(AdminReports)} />
+                            <Route path="translations" element={lazyElement(AdminTranslations)} />
+                            <Route path="leads" element={lazyElement(AdminLeads)} />
+                            <Route path="worker-analytics" element={lazyElement(AdminWorkerAnalytics)} />
+                            <Route path="applications" element={lazyElement(AdminApplications)} />
+                          </Route>
 
-                  {/* Worker Routes */}
-                  <Route path="/worker" element={
-                    <Suspense fallback={<SuspenseFallback />}>
-                      <WorkerLayout />
-                    </Suspense>
-                  }>
-                  <Route index element={lazyElement(WorkerDashboard)} />
-                    <Route path="pool" element={lazyElement(JobPool)} />
-                    <Route path="jobs" element={lazyElement(MyJobs)} />
-                    <Route path="jobs/:jobId" element={lazyElement(JobDetail)} />
-                    <Route path="schedule" element={lazyElement(WorkerSchedule)} />
-                    <Route path="timesheet" element={lazyElement(WorkerTimesheet)} />
-                    <Route path="settings" element={lazyElement(WorkerSettings)} />
-                  </Route>
+                          {/* Worker Routes */}
+                          <Route path="/worker" element={
+                            <MaintenanceGate>
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <WorkerLayout />
+                              </Suspense>
+                            </MaintenanceGate>
+                          }>
+                            <Route index element={lazyElement(WorkerDashboard)} />
+                            <Route path="pool" element={lazyElement(JobPool)} />
+                            <Route path="jobs" element={lazyElement(MyJobs)} />
+                            <Route path="jobs/:jobId" element={lazyElement(JobDetail)} />
+                            <Route path="schedule" element={lazyElement(WorkerSchedule)} />
+                            <Route path="timesheet" element={lazyElement(WorkerTimesheet)} />
+                            <Route path="settings" element={lazyElement(WorkerSettings)} />
+                          </Route>
 
-                  {/* Booking Route */}
-                  <Route path="/boka/:slug" element={
-                    <Suspense fallback={<SuspenseFallback />}>
-                      <BookingWizard />
-                    </Suspense>
-                  } />
-                  
-                  {/* Main Swedish Routes */}
-                  <Route path="/" element={<AppLayout />}>
-                    <Route index element={lazyElement(Home)} />
-                    <Route path="home-v2" element={lazyElement(HomeV2)} />
-                    <Route path="tjanster" element={lazyElement(Services)} />
-                    
-                    {/* Redirects: målning/måleri → målare (SEO-konsolidering) - MÅSTE vara FÖRE :slug */}
-                    <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
-                    <Route path="tjanster/malning-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
-                    <Route path="tjanster/malning-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
-                    <Route path="tjanster/maleri" element={<Navigate to="/tjanster/malare" replace />} />
-                    <Route path="tjanster/maleri-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
-                    <Route path="tjanster/maleri-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
-                    
-                    {/* Service+City pages - Full detail pages like main service pages */}
-                    <Route path="tjanster/elmontor-uppsala" element={lazyElement(ServiceCityDetail, { service: "el", city: "Uppsala" })} />
-                    <Route path="tjanster/vvs-uppsala" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Uppsala" })} />
-                    <Route path="tjanster/snickare-uppsala" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Uppsala" })} />
-                    <Route path="tjanster/montering-uppsala" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Uppsala" })} />
-                    <Route path="tjanster/tradgard-uppsala" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Uppsala" })} />
-                    <Route path="tjanster/stad-uppsala" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Uppsala" })} />
-                    <Route path="tjanster/markarbeten-uppsala" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Uppsala" })} />
-                    <Route path="tjanster/tekniska-installationer-uppsala" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Uppsala" })} />
-                    <Route path="tjanster/flytt-uppsala" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Uppsala" })} />
-                    <Route path="tjanster/malare-uppsala" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Uppsala" })} />
-                    
-                    <Route path="tjanster/elmontor-stockholm" element={lazyElement(ServiceCityDetail, { service: "el", city: "Stockholm" })} />
-                    <Route path="tjanster/vvs-stockholm" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Stockholm" })} />
-                    <Route path="tjanster/snickare-stockholm" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Stockholm" })} />
-                    <Route path="tjanster/montering-stockholm" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Stockholm" })} />
-                    <Route path="tjanster/tradgard-stockholm" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Stockholm" })} />
-                    <Route path="tjanster/stad-stockholm" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Stockholm" })} />
-                    <Route path="tjanster/markarbeten-stockholm" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Stockholm" })} />
-                    <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
-                    <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
-                    <Route path="tjanster/malare-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
-                    
-                    {/* Dynamisk route SIST - fångar alla andra tjänster */}
-                    <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
-                    
-                    <Route path="kontakt" element={lazyElement(Contact)} />
-                    <Route path="faq" element={lazyElement(FAQ)} />
-                    <Route path="om-oss" element={lazyElement(AboutUs)} />
-                    <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
-                    <Route path="rot-info" element={lazyElement(ROTInfo)} />
-                    <Route path="cookies" element={lazyElement(Cookies)} />
-                    <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
-                    <Route path="rot" element={lazyElement(ROTInfo)} />
-                    <Route path="rut" element={lazyElement(RUT)} />
-                    <Route path="referenser" element={lazyElement(Referenser)} />
-                    <Route path="ai" element={lazyElement(AI)} />
-                    <Route path="karriar" element={lazyElement(Careers)} />
-                    <Route path="smart-hem" element={
-                      <ErrorBoundary fallback={
-                        <div className="min-h-screen flex items-center justify-center">
-                          <div className="text-center">
-                            <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
-                            <p className="text-muted-foreground">Please try again later</p>
-                          </div>
-                        </div>
-                      }>
-                        <Suspense fallback={<SuspenseFallback />}>
-                          <SmartHome />
-                        </Suspense>
-                      </ErrorBoundary>
-                    } />
-                    <Route path="terms" element={lazyElement(Terms)} />
-                    <Route path="privacy" element={lazyElement(Privacy)} />
-                    <Route path="cookies" element={lazyElement(Cookies)} />
-                    <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
-                  </Route>
-                  
-                  <Route path="/en/*" element={<AppLayout />}>
-                    <Route index element={lazyElement(Home)} />
-                    <Route path="home-v2" element={lazyElement(HomeV2)} />
-                    <Route path="services" element={lazyElement(Services)} />
-                    <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
-                    <Route path="contact" element={lazyElement(Contact)} />
-                    <Route path="faq" element={lazyElement(FAQ)} />
-                    <Route path="about" element={lazyElement(AboutUs)} />
-                    <Route path="references" element={lazyElement(Referenser)} />
-                    <Route path="terms" element={lazyElement(Terms)} />
-                    <Route path="privacy" element={lazyElement(Privacy)} />
-                    <Route path="cookies" element={lazyElement(Cookies)} />
-                    <Route path="insurance" element={lazyElement(Insurance)} />
-                    <Route path="rot" element={lazyElement(ROTInfo)} />
-                    <Route path="rut" element={lazyElement(RUT)} />
-                    <Route path="book-visit" element={lazyElement(BookVisit)} />
-                    <Route path="ai" element={lazyElement(AI)} />
-                    <Route path="careers" element={lazyElement(Careers)} />
-                    <Route path="smart-home" element={
-                      <ErrorBoundary fallback={
-                        <div className="min-h-screen flex items-center justify-center">
-                          <div className="text-center">
-                            <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
-                            <p className="text-muted-foreground">Please try again later</p>
-                          </div>
-                        </div>
-                      }>
-                        <Suspense fallback={<SuspenseFallback />}>
-                          <SmartHome />
-                        </Suspense>
-                      </ErrorBoundary>
-                    } />
-                  </Route>
-                  
-                  {/* Catch-all route */}
-                            <Route path="*" element={lazyElement(NotFound)} />
-                          </Routes>
-                        </MaintenanceGate>
-                      } />
-                    </Routes>
+                          {/* Booking Route */}
+                          <Route path="/boka/:slug" element={
+                            <MaintenanceGate>
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <BookingWizard />
+                              </Suspense>
+                            </MaintenanceGate>
+                          } />
+                          
+                          {/* Main Swedish Routes */}
+                          <Route path="/" element={<MaintenanceGate><AppLayout /></MaintenanceGate>}>
+                            <Route index element={lazyElement(Home)} />
+                            <Route path="home-v2" element={lazyElement(HomeV2)} />
+                            <Route path="tjanster" element={lazyElement(Services)} />
+                            
+                            {/* Redirects: målning/måleri → målare (SEO-konsolidering) - MÅSTE vara FÖRE :slug */}
+                            <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
+                            <Route path="tjanster/malning-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
+                            <Route path="tjanster/malning-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
+                            <Route path="tjanster/maleri" element={<Navigate to="/tjanster/malare" replace />} />
+                            <Route path="tjanster/maleri-uppsala" element={<Navigate to="/tjanster/malare-uppsala" replace />} />
+                            <Route path="tjanster/maleri-stockholm" element={<Navigate to="/tjanster/malare-stockholm" replace />} />
+                            
+                            {/* Service+City pages - Full detail pages like main service pages */}
+                            <Route path="tjanster/elmontor-uppsala" element={lazyElement(ServiceCityDetail, { service: "el", city: "Uppsala" })} />
+                            <Route path="tjanster/vvs-uppsala" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Uppsala" })} />
+                            <Route path="tjanster/snickare-uppsala" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Uppsala" })} />
+                            <Route path="tjanster/montering-uppsala" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Uppsala" })} />
+                            <Route path="tjanster/tradgard-uppsala" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Uppsala" })} />
+                            <Route path="tjanster/stad-uppsala" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Uppsala" })} />
+                            <Route path="tjanster/markarbeten-uppsala" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Uppsala" })} />
+                            <Route path="tjanster/tekniska-installationer-uppsala" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Uppsala" })} />
+                            <Route path="tjanster/flytt-uppsala" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Uppsala" })} />
+                            <Route path="tjanster/malare-uppsala" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Uppsala" })} />
+                            
+                            <Route path="tjanster/elmontor-stockholm" element={lazyElement(ServiceCityDetail, { service: "el", city: "Stockholm" })} />
+                            <Route path="tjanster/vvs-stockholm" element={lazyElement(ServiceCityDetail, { service: "vvs", city: "Stockholm" })} />
+                            <Route path="tjanster/snickare-stockholm" element={lazyElement(ServiceCityDetail, { service: "snickeri", city: "Stockholm" })} />
+                            <Route path="tjanster/montering-stockholm" element={lazyElement(ServiceCityDetail, { service: "montering", city: "Stockholm" })} />
+                            <Route path="tjanster/tradgard-stockholm" element={lazyElement(ServiceCityDetail, { service: "tradgard", city: "Stockholm" })} />
+                            <Route path="tjanster/stad-stockholm" element={lazyElement(ServiceCityDetail, { service: "stadning", city: "Stockholm" })} />
+                            <Route path="tjanster/markarbeten-stockholm" element={lazyElement(ServiceCityDetail, { service: "markarbeten", city: "Stockholm" })} />
+                            <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
+                            <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
+                            <Route path="tjanster/malare-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
+                            
+                            {/* Dynamisk route SIST - fångar alla andra tjänster */}
+                            <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
+                            
+                            <Route path="kontakt" element={lazyElement(Contact)} />
+                            <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="om-oss" element={lazyElement(AboutUs)} />
+                            <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
+                            <Route path="rot-info" element={lazyElement(ROTInfo)} />
+                            <Route path="cookies" element={lazyElement(Cookies)} />
+                            <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
+                            <Route path="rot" element={lazyElement(ROTInfo)} />
+                            <Route path="rut" element={lazyElement(RUT)} />
+                            <Route path="referenser" element={lazyElement(Referenser)} />
+                            <Route path="ai" element={lazyElement(AI)} />
+                            <Route path="karriar" element={lazyElement(Careers)} />
+                            <Route path="smart-hem" element={
+                              <ErrorBoundary fallback={
+                                <div className="min-h-screen flex items-center justify-center">
+                                  <div className="text-center">
+                                    <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
+                                    <p className="text-muted-foreground">Please try again later</p>
+                                  </div>
+                                </div>
+                              }>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartHome />
+                                </Suspense>
+                              </ErrorBoundary>
+                            } />
+                            <Route path="terms" element={lazyElement(Terms)} />
+                            <Route path="privacy" element={lazyElement(Privacy)} />
+                          </Route>
+                          
+                          {/* English Routes */}
+                          <Route path="/en" element={<MaintenanceGate><AppLayout /></MaintenanceGate>}>
+                            <Route index element={lazyElement(Home)} />
+                            <Route path="home-v2" element={lazyElement(HomeV2)} />
+                            <Route path="services" element={lazyElement(Services)} />
+                            <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
+                            <Route path="contact" element={lazyElement(Contact)} />
+                            <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="about" element={lazyElement(AboutUs)} />
+                            <Route path="references" element={lazyElement(Referenser)} />
+                            <Route path="terms" element={lazyElement(Terms)} />
+                            <Route path="privacy" element={lazyElement(Privacy)} />
+                            <Route path="cookies" element={lazyElement(Cookies)} />
+                            <Route path="insurance" element={lazyElement(Insurance)} />
+                            <Route path="rot" element={lazyElement(ROTInfo)} />
+                            <Route path="rut" element={lazyElement(RUT)} />
+                            <Route path="book-visit" element={lazyElement(BookVisit)} />
+                            <Route path="ai" element={lazyElement(AI)} />
+                            <Route path="careers" element={lazyElement(Careers)} />
+                            <Route path="smart-home" element={
+                              <ErrorBoundary fallback={
+                                <div className="min-h-screen flex items-center justify-center">
+                                  <div className="text-center">
+                                    <h2 className="text-2xl font-bold mb-4">Smart Home temporarily unavailable</h2>
+                                    <p className="text-muted-foreground">Please try again later</p>
+                                  </div>
+                                </div>
+                              }>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartHome />
+                                </Suspense>
+                              </ErrorBoundary>
+                            } />
+                          </Route>
+                          
+                          {/* Catch-all 404 route */}
+                          <Route path="*" element={<MaintenanceGate>{lazyElement(NotFound)}</MaintenanceGate>} />
+                        </Routes>
                   </FeatureFlagInitializer>
                   
                   {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
