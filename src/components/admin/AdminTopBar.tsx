@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bell, Search, Plus, User, LogOut, Settings, ChevronDown } from 'lucide-react';
+import { Bell, Search, Plus, User, LogOut, Settings, ChevronDown, LayoutDashboard, Briefcase, FileText, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -25,7 +25,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRole } from '@/hooks/useRole';
 import { useNavigate } from 'react-router-dom';
@@ -33,8 +33,32 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import QuoteQuestionsNotification from './QuoteQuestionsNotification';
 import BookingsNotification from './BookingsNotification';
 
+interface SearchResults {
+  customers: Array<{ id: string; name: string; email: string; phone: string | null }>;
+  jobs: Array<{ id: string; title: string | null; status: string }>;
+  quotes: Array<{ id: string; number: string; title: string | null; status: string | null }>;
+  bookings: Array<{ id: string; service_slug: string | null; payload: any }>;
+}
+
+const staticPages = [
+  { title: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+  { title: 'Jobb', path: '/admin/jobs', icon: Briefcase },
+  { title: 'Kunder', path: '/admin/customers', icon: Users },
+  { title: 'Offerter', path: '/admin/quotes', icon: FileText },
+  { title: 'Rapporter', path: '/admin/reports', icon: FileText },
+  { title: 'Inställningar', path: '/admin/settings', icon: Settings },
+];
+
 export function AdminTopBar() {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResults>({
+    customers: [],
+    jobs: [],
+    quotes: [],
+    bookings: []
+  });
+  const [isSearching, setIsSearching] = useState(false);
   const [notifications, setNotifications] = useState<any>({ notifications: [] });
   const [viewedNotifications, setViewedNotifications] = useState<Set<string>>(() => {
     const stored = localStorage.getItem('viewedNotifications');
@@ -42,6 +66,77 @@ export function AdminTopBar() {
   });
   const { isOwner } = useRole();
   const navigate = useNavigate();
+
+  // Debounced search function
+  const performSearch = useCallback(async (query: string) => {
+    if (query.length < 2) {
+      setSearchResults({ customers: [], jobs: [], quotes: [], bookings: [] });
+      return;
+    }
+
+    setIsSearching(true);
+    const searchTerm = `%${query}%`;
+
+    try {
+      const [customersRes, jobsRes, quotesRes, bookingsRes] = await Promise.all([
+        supabase
+          .from('customers')
+          .select('id, name, email, phone')
+          .or(`name.ilike.${searchTerm},email.ilike.${searchTerm},phone.ilike.${searchTerm}`)
+          .limit(5),
+        supabase
+          .from('jobs')
+          .select('id, title, status')
+          .is('deleted_at', null)
+          .ilike('title', searchTerm)
+          .limit(5),
+        supabase
+          .from('quotes_new')
+          .select('id, number, title, status')
+          .is('deleted_at', null)
+          .or(`number.ilike.${searchTerm},title.ilike.${searchTerm}`)
+          .limit(5),
+        supabase
+          .from('bookings')
+          .select('id, service_slug, payload')
+          .is('deleted_at', null)
+          .ilike('service_slug', searchTerm)
+          .limit(5)
+      ]);
+
+      setSearchResults({
+        customers: customersRes.data || [],
+        jobs: jobsRes.data || [],
+        quotes: quotesRes.data || [],
+        bookings: bookingsRes.data || []
+      });
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery) {
+        performSearch(searchQuery);
+      } else {
+        setSearchResults({ customers: [], jobs: [], quotes: [], bookings: [] });
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, performSearch]);
+
+  // Reset search when dialog closes
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      setSearchQuery('');
+      setSearchResults({ customers: [], jobs: [], quotes: [], bookings: [] });
+    }
+  };
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -95,6 +190,21 @@ export function AdminTopBar() {
     { title: 'Lägg till kund', path: '/admin/customers' },
     { title: 'Skapa jobb', path: '/admin/jobs' },
   ];
+
+  // Filter static pages based on search query
+  const filteredPages = searchQuery.length >= 2
+    ? staticPages.filter(page => page.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    : staticPages;
+
+  const hasResults = searchResults.customers.length > 0 || 
+                     searchResults.jobs.length > 0 || 
+                     searchResults.quotes.length > 0 ||
+                     searchResults.bookings.length > 0;
+
+  const getBookingName = (booking: any) => {
+    const payload = booking.payload || {};
+    return payload.name || payload.contact_name || payload.customerName || booking.service_slug || 'Bokning';
+  };
 
   return (
     <>
@@ -218,30 +328,98 @@ export function AdminTopBar() {
         </DropdownMenu>
       </header>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Sök efter sidor, kunder, jobb..." />
+      <CommandDialog open={open} onOpenChange={handleOpenChange}>
+        <CommandInput 
+          placeholder="Sök efter sidor, kunder, jobb, offerter..." 
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+        />
         <CommandList>
-          <CommandEmpty>Inga resultat hittades.</CommandEmpty>
-          <CommandGroup heading="Sidor">
-            <CommandItem onSelect={() => { navigate('/admin'); setOpen(false); }}>
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Dashboard
-            </CommandItem>
-            <CommandItem onSelect={() => { navigate('/admin/jobs'); setOpen(false); }}>
-              Jobb
-            </CommandItem>
-            <CommandItem onSelect={() => { navigate('/admin/customers'); setOpen(false); }}>
-              Kunder
-            </CommandItem>
-            <CommandItem onSelect={() => { navigate('/admin/reports'); setOpen(false); }}>
-              Rapporter
-            </CommandItem>
-          </CommandGroup>
+          <CommandEmpty>
+            {isSearching ? 'Söker...' : 'Inga resultat hittades.'}
+          </CommandEmpty>
+          
+          {/* Static pages */}
+          {filteredPages.length > 0 && (
+            <CommandGroup heading="Sidor">
+              {filteredPages.map((page) => (
+                <CommandItem 
+                  key={page.path} 
+                  onSelect={() => { navigate(page.path); handleOpenChange(false); }}
+                >
+                  <page.icon className="mr-2 h-4 w-4" />
+                  {page.title}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {/* Customers */}
+          {searchResults.customers.length > 0 && (
+            <CommandGroup heading="Kunder">
+              {searchResults.customers.map((customer) => (
+                <CommandItem 
+                  key={customer.id} 
+                  onSelect={() => { navigate(`/admin/customers?id=${customer.id}`); handleOpenChange(false); }}
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  <span>{customer.name}</span>
+                  <span className="ml-auto text-xs text-muted-foreground">{customer.email}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {/* Jobs */}
+          {searchResults.jobs.length > 0 && (
+            <CommandGroup heading="Jobb">
+              {searchResults.jobs.map((job) => (
+                <CommandItem 
+                  key={job.id} 
+                  onSelect={() => { navigate(`/admin/jobs/${job.id}`); handleOpenChange(false); }}
+                >
+                  <Briefcase className="mr-2 h-4 w-4" />
+                  <span>{job.title || 'Utan titel'}</span>
+                  <Badge variant="outline" className="ml-auto text-xs">{job.status}</Badge>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {/* Quotes */}
+          {searchResults.quotes.length > 0 && (
+            <CommandGroup heading="Offerter">
+              {searchResults.quotes.map((quote) => (
+                <CommandItem 
+                  key={quote.id} 
+                  onSelect={() => { navigate(`/admin/quotes/${quote.id}`); handleOpenChange(false); }}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>{quote.number}</span>
+                  <span className="ml-2 text-xs text-muted-foreground truncate max-w-32">{quote.title}</span>
+                  <Badge variant="outline" className="ml-auto text-xs">{quote.status}</Badge>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {/* Bookings */}
+          {searchResults.bookings.length > 0 && (
+            <CommandGroup heading="Bokningar">
+              {searchResults.bookings.map((booking) => (
+                <CommandItem 
+                  key={booking.id} 
+                  onSelect={() => { navigate(`/admin/quotes?tab=requests&id=${booking.id}`); handleOpenChange(false); }}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>{getBookingName(booking)}</span>
+                  <span className="ml-auto text-xs text-muted-foreground">{booking.service_slug}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
     </>
   );
 }
-
-// Import missing component
-import { LayoutDashboard } from 'lucide-react';
