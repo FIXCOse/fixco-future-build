@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load ALL pages for optimal performance
@@ -150,6 +150,28 @@ const PageViewTracker = () => {
   return null;
 };
 
+// URL decode guard - fixes incorrectly encoded URLs (e.g., %3F instead of ?)
+const URLDecodeGuard = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Check if pathname contains encoded query characters
+    if (location.pathname.includes('%3F') || location.pathname.includes('%26')) {
+      const decodedPath = decodeURIComponent(location.pathname);
+      const questionMarkIndex = decodedPath.indexOf('?');
+      
+      if (questionMarkIndex !== -1) {
+        const actualPath = decodedPath.substring(0, questionMarkIndex);
+        const queryString = decodedPath.substring(questionMarkIndex);
+        navigate(actualPath + queryString, { replace: true });
+      }
+    }
+  }, [location.pathname, navigate]);
+  
+  return null;
+};
+
 const App = () => {
   // Load content globally ONCE instead of per-route
   useContentLoader();
@@ -217,6 +239,7 @@ const App = () => {
                     <ServiceRequestModal />
                     <BrowserRouter>
                       <FeatureFlagInitializer>
+                        <URLDecodeGuard />
                         <PageViewTracker />
                         <ScrollToTop />
                         <Routes>
