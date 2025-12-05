@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from "react-router-dom";
 import {
   DndContext,
@@ -26,6 +26,7 @@ import { useEditMode } from '@/contexts/EditModeContext';
 import { toast } from 'sonner';
 import type { CopyKey } from '@/copy/keys';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { useServices } from '@/hooks/useServices';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -49,9 +50,10 @@ interface SortableCategoryItemProps {
   index: number;
   t: any;
   locale: string;
+  serviceCount: number;
 }
 
-function SortableCategoryItem({ service, index, t, locale }: SortableCategoryItemProps) {
+function SortableCategoryItem({ service, index, t, locale, serviceCount }: SortableCategoryItemProps) {
   const {
     attributes,
     listeners,
@@ -122,7 +124,7 @@ function SortableCategoryItem({ service, index, t, locale }: SortableCategoryIte
           </h3>
           
           <p className="text-xs text-muted-foreground">
-            {service.subServices.length} {t('services.count')}
+            {serviceCount} {t('services.count')}
           </p>
           
           <div className="mt-3 text-primary text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
@@ -138,6 +140,19 @@ const EditableCategoryGridNew = () => {
   const { t, locale } = useCopy();
   const { isEditMode } = useEditMode();
   const [services, setServices] = useState(servicesDataNew);
+  const { data: dbServices = [] } = useServices(locale);
+
+  // Calculate service counts dynamically from database
+  const serviceCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    servicesDataNew.forEach(cat => {
+      counts[cat.slug] = dbServices.filter(service => 
+        service.category === cat.slug || 
+        service.additional_categories?.includes(cat.slug)
+      ).length;
+    });
+    return counts;
+  }, [dbServices]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -193,7 +208,7 @@ const EditableCategoryGridNew = () => {
                 </h3>
                 
                 <p className="text-xs text-muted-foreground">
-                  {service.subServices.length} {t('services.count')}
+                  {serviceCounts[service.slug] || 0} {t('services.count')}
                 </p>
                 
                 <div className="mt-3 text-primary text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
@@ -229,6 +244,7 @@ const EditableCategoryGridNew = () => {
                 index={index}
                 t={t}
                 locale={locale}
+                serviceCount={serviceCounts[service.slug] || 0}
               />
             ))}
           </div>
