@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function AdminQuotesUnified() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "requests";
   const subFilter = searchParams.get("status") || "all";
@@ -47,6 +49,25 @@ export default function AdminQuotesUnified() {
 
   // Fetch all data without filtering - we'll do client-side filtering
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
+
+  // Markera bokningar som sedda när sidan laddas
+  useEffect(() => {
+    const markBookingsAsSeen = async () => {
+      const { error } = await supabase
+        .from('bookings')
+        .update({ seen_at: new Date().toISOString() })
+        .eq('status', 'new')
+        .is('seen_at', null)
+        .is('deleted_at', null);
+      
+      if (!error) {
+        queryClient.invalidateQueries({ queryKey: ['unseen-bookings-count'] });
+        queryClient.invalidateQueries({ queryKey: ['recent-unseen-bookings'] });
+      }
+    };
+    
+    markBookingsAsSeen();
+  }, [queryClient]);
 
   // Listen for ?new=true query param to open quote modal
   const hasHandledNew = useRef(false);

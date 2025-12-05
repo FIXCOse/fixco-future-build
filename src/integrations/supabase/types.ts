@@ -208,6 +208,7 @@ export type Database = {
           id: string
           mode: string | null
           payload: Json | null
+          seen_at: string | null
           selected_addons: Json | null
           service_slug: string | null
           status: string | null
@@ -220,6 +221,7 @@ export type Database = {
           id?: string
           mode?: string | null
           payload?: Json | null
+          seen_at?: string | null
           selected_addons?: Json | null
           service_slug?: string | null
           status?: string | null
@@ -232,6 +234,7 @@ export type Database = {
           id?: string
           mode?: string | null
           payload?: Json | null
+          seen_at?: string | null
           selected_addons?: Json | null
           service_slug?: string | null
           status?: string | null
