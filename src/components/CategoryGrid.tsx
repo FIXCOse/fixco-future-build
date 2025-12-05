@@ -1,9 +1,11 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { LucideIcon } from "lucide-react";
 import { useCopy } from '@/copy/CopyProvider';
 import type { CopyKey } from '@/copy/keys';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { useServices } from '@/hooks/useServices';
 
 // Smart hem-inspirerade färger för olika tjänstekategorier
 const getGradientForService = (slug: string): string => {
@@ -25,6 +27,19 @@ const getGradientForService = (slug: string): string => {
 
 const CategoryGrid = () => {
   const { t, locale } = useCopy();
+  const { data: dbServices = [] } = useServices(locale);
+
+  // Calculate service counts dynamically from database
+  const serviceCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    servicesDataNew.forEach(cat => {
+      counts[cat.slug] = dbServices.filter(service => 
+        service.category === cat.slug || 
+        service.additional_categories?.includes(cat.slug)
+      ).length;
+    });
+    return counts;
+  }, [dbServices]);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -58,9 +73,9 @@ const CategoryGrid = () => {
                 {t(translateKey) || service.title}
               </h3>
               
-              {/* Sub-services count */}
+              {/* Sub-services count - dynamic from database */}
               <p className="text-xs text-muted-foreground">
-                {service.subServices.length} {t('services.count')}
+                {serviceCounts[service.slug] || 0} {t('services.count')}
               </p>
               
               {/* Hover indicator */}
