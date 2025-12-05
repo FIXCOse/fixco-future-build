@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Search, Users, Eye, Mail, Phone, MapPin, Calendar, TrendingUp, Building2, Home } from 'lucide-react';
+import { Search, Users, Eye, Mail, Phone, MapPin, Calendar, TrendingUp, Building2, Home, Download } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -101,6 +101,37 @@ const AdminCustomers = () => {
     );
   });
 
+  // Export customers to CSV
+  const exportCustomers = () => {
+    if (!filteredCustomers?.length) return;
+    
+    const headers = ['Namn', 'Email', 'Telefon', 'Adress', 'Postnummer', 'Stad', 'Kundtyp', 'Företagsnamn', 'Orgnummer', 'Antal bokningar', 'Total spenderat (kr)', 'Skapad'];
+    
+    const rows = filteredCustomers.map(c => [
+      c.name || '',
+      c.email || '',
+      c.phone || '',
+      c.address || '',
+      c.postal_code || '',
+      c.city || '',
+      c.customer_type === 'company' ? 'Företag' : c.customer_type === 'brf' ? 'BRF' : 'Privat',
+      c.company_name || c.brf_name || '',
+      c.org_number || '',
+      c.booking_count || 0,
+      c.total_spent || 0,
+      c.created_at ? new Date(c.created_at).toLocaleDateString('sv-SE') : ''
+    ]);
+    
+    const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kunder-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       <AdminBack />
@@ -110,6 +141,10 @@ const AdminCustomers = () => {
           <h1 className="text-2xl font-bold">Kunder</h1>
           <p className="text-muted-foreground">Alla kunder som någonsin bokat en tjänst</p>
         </div>
+        <Button onClick={exportCustomers} variant="outline" disabled={!filteredCustomers?.length}>
+          <Download className="h-4 w-4 mr-2" />
+          Exportera {filteredCustomers?.length || 0} kunder
+        </Button>
       </div>
 
       {/* Stats Cards */}

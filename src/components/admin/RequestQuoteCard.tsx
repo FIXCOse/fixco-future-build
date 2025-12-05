@@ -210,6 +210,28 @@ export function RequestQuoteCard({
                     )}
                   </p>
                 )}
+                
+                {/* Customer saved indicator */}
+                {customer?.id && (
+                  <div className="flex items-center gap-2 pt-2 border-t mt-2">
+                    <Badge variant="outline" className="text-green-600 border-green-300 bg-green-50 dark:bg-green-950/30">
+                      <Users className="h-3 w-3 mr-1" />
+                      Sparad i kundregister
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(`/admin/customers?highlight=${customer.id}`, '_blank');
+                      }}
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      Visa kundkort
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             
