@@ -2242,6 +2242,7 @@ export type Database = {
           id: string
           question: string
           quote_id: string
+          seen_at: string | null
         }
         Insert: {
           answer?: string | null
@@ -2253,6 +2254,7 @@ export type Database = {
           id?: string
           question: string
           quote_id: string
+          seen_at?: string | null
         }
         Update: {
           answer?: string | null
@@ -2264,6 +2266,7 @@ export type Database = {
           id?: string
           question?: string
           quote_id?: string
+          seen_at?: string | null
         }
         Relationships: [
           {
