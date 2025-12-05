@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AdminBack from "@/components/admin/AdminBack";
 import { Button } from "@/components/ui/button";
@@ -49,13 +49,15 @@ export default function AdminQuotesUnified() {
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
 
   // Listen for ?new=true query param to open quote modal
+  const hasHandledNew = useRef(false);
   useEffect(() => {
-    if (searchParams.get('new') === 'true') {
+    const isNew = searchParams.get('new') === 'true';
+    if (isNew && !hasHandledNew.current) {
+      hasHandledNew.current = true;
       handleNewQuote();
-      searchParams.delete('new');
-      setSearchParams(searchParams, { replace: true });
+      setSearchParams({ tab: activeTab }, { replace: true });
     }
-  }, [searchParams]);
+  }, [searchParams.get('new')]);
 
   // Client-side filtering based on active tab
   const filteredByTab = useMemo(() => {
@@ -449,20 +451,11 @@ export default function AdminQuotesUnified() {
   };
 
   const setTab = (tab: string) => {
-    setSearchParams(() => {
-      const newParams = new URLSearchParams();
-      newParams.set('tab', tab);
-      return newParams;
-    }, { replace: true });
+    setSearchParams({ tab }, { replace: true });
   };
 
   const setSubFilterParam = (status: string) => {
-    setSearchParams(() => {
-      const newParams = new URLSearchParams();
-      newParams.set('tab', activeTab);
-      newParams.set('status', status);
-      return newParams;
-    }, { replace: true });
+    setSearchParams({ tab: activeTab, status }, { replace: true });
   };
 
   return (
