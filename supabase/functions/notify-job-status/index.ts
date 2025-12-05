@@ -87,14 +87,14 @@ const handler = async (req: Request): Promise<Response> => {
               <p><strong>${workerName}</strong> är nu på väg till dig för att påbörja arbetet.</p>
               <p>Om något har hänt eller om du har några frågor, ring gärna vårt kontor:</p>
               <p style="font-size: 18px; margin: 15px 0;">
-                📞 <strong>08-123 456 78</strong>
+                📞 <strong>079-335 02 28</strong>
               </p>
               <p>Vi ser fram emot att hjälpa dig!</p>
             </div>
             <div class="footer">
               <p><strong>Fixco AB</strong></p>
               <p>
-                Telefon: 08-123 456 78<br>
+                Telefon: 079-335 02 28<br>
                 E-post: info@fixco.se<br>
                 Webb: www.fixco.se
               </p>
@@ -135,7 +135,7 @@ const handler = async (req: Request): Promise<Response> => {
 
               <p>Har du några frågor eller synpunkter? Hör gärna av dig till oss!</p>
               <p style="font-size: 18px; margin: 15px 0;">
-                📞 <strong>08-123 456 78</strong><br>
+                📞 <strong>079-335 02 28</strong><br>
                 📧 <strong>info@fixco.se</strong>
               </p>
               <p>Tack för att du valde Fixco!</p>
@@ -143,7 +143,7 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="footer">
               <p><strong>Fixco AB</strong></p>
               <p>
-                Telefon: 08-123 456 78<br>
+                Telefon: 079-335 02 28<br>
                 E-post: info@fixco.se<br>
                 Webb: www.fixco.se
               </p>
@@ -156,7 +156,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email via Resend
     const emailResponse = await resend.emails.send({
-      from: "Fixco <onboarding@resend.dev>", // TODO: Change to validated domain
+      from: "Fixco <info@fixco.se>",
       to: [customerEmail],
       subject: emailSubject,
       html: emailHtml,

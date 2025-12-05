@@ -154,7 +154,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p class="muted" style="margin:0 0 4px;"><strong style="color:#111827">Kontakt</strong></p>
             <ul style="margin:0; padding-left:18px; color:#374151;">
               <li>E-post: info@fixco.se</li>
-              <li>Telefon: 08-123 45 67</li>
+              <li>Telefon: 079-335 02 28</li>
             </ul>
           </div>
           
@@ -168,7 +168,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "Fixco <onboarding@resend.dev>",
+      from: "Fixco <info@fixco.se>",
       to: [customerEmail],
       subject: `Offert ${quote.quote_number} från Fixco`,
       html: emailHtml,

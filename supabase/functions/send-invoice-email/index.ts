@@ -75,11 +75,8 @@ function generateInvoiceHTML(invoice: any, customer: any, property: any, publicU
         <div>
           <div class="section-title">Från</div>
           <div class="info-line"><strong>Fixco AB</strong></div>
-          <div class="info-line">Hantverkargatan 123</div>
-          <div class="info-line">118 21 Stockholm</div>
-          <div class="info-line">Org.nr: 556789-0123</div>
           <div class="info-line">info@fixco.se</div>
-          <div class="info-line">08-123 45 67</div>
+          <div class="info-line">079-335 02 28</div>
         </div>
         <div style="text-align:right">
           <div class="section-title">Till</div>
@@ -129,7 +126,7 @@ function generateInvoiceHTML(invoice: any, customer: any, property: any, publicU
         </div>
         ` : ''}
         <p>Tack för att du valde Fixco!</p>
-        <p>www.fixco.se | info@fixco.se | 08-123 45 67</p>
+        <p>www.fixco.se | info@fixco.se | 079-335 02 28</p>
       </div>
     </div>
   </div>
@@ -214,7 +211,7 @@ serve(async (req) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Fixco <noreply@fixco.se>',
+        from: 'Fixco <info@fixco.se>',
         to: [to],
         subject: `Faktura ${inv.invoice_number}`,
         html
