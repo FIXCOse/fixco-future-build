@@ -1,38 +1,29 @@
-# TODO: Mail & Kontaktuppgifter
+# Mail & Kontaktuppgifter
 
-## ⚠️ Måste uppdateras innan produktion
+## ✅ Genomfört 2025-12-05
 
 ### 1. Mail-avsändare
-- [ ] Uppdatera "from" address i `supabase/functions/notify-job-status/index.ts`
-  - Nuvarande: `"Fixco <onboarding@resend.dev>"`
-  - Ändra till: `"Fixco <info@fixco.se>"` (eller annan validerad domän)
+- [x] Uppdaterat alla edge functions till `Fixco <info@fixco.se>`
 
 ### 2. Kontaktuppgifter i mail-templates
-Uppdatera i `supabase/functions/notify-job-status/index.ts`:
-
-**Nuvarande tillfälliga värden:**
-- Telefon: `08-123 456 78`
-- Email: `info@fixco.se`
-- Webb: `www.fixco.se`
-
-**Vad som behöver verifieras/ändras:**
-- [ ] Rätt telefonnummer
-- [ ] Rätt email-adress
-- [ ] Rätt webbadress
-- [ ] Kanske lägga till organisationsnummer?
-- [ ] Kanske lägga till fysisk adress?
+- [x] Telefon: `079-335 02 28`
+- [x] Email: `info@fixco.se`
+- [x] Webb: `www.fixco.se`
 
 ### 3. Resend Domain Validation
-- [ ] Validera domän på https://resend.com/domains
-- [ ] Skapa ny API-nyckel för produktionsmiljö om behövs
+- [x] Domän `fixco.se` verifierad i Resend
+- [x] RESEND_API_KEY uppdaterad
 
-### 4. Mail-innehåll/copy
-- [ ] Granska och justera tonalitet i båda mail-templates
-- [ ] Eventuellt lägga till företagslogotyp
-- [ ] Eventuellt lägga till footer med länkar
+### 4. Uppdaterade Edge Functions
+- [x] `send-quote-email-new` - Offertmail
+- [x] `send-quote-email` - Offertmail (legacy)
+- [x] `send-invoice-email` - Fakturamail
+- [x] `notify-job-status` - "På väg" och "Klart" notiser
+- [x] `send-application-email` - Jobbansöknings-status
+- [x] `admin-reset-user-password` - Lösenordsåterställning (test-läge borttaget)
+- [x] `send-reaccept-email` - Uppdaterad offert
+- [x] `answer-quote-question` - Redan korrekt
 
 ---
 
-## Relaterade filer
-- `supabase/functions/notify-job-status/index.ts` - Mail-templates och avsändare
-- `src/i18n/locales/sv.json` / `en.json` - Om mail-texter ska internationaliseras
+Alla email skickas nu från `info@fixco.se` med rätt kontaktuppgifter.

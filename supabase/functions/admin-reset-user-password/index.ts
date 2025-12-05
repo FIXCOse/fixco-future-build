@@ -78,19 +78,11 @@ serve(async (req) => {
 
     console.log('Password reset link generated for:', email);
 
-    // TEMPORARY: Send to offert@fixco.se (verified email) until domain is verified
-    // In production, change this to send to actual user email
-    const recipientEmail = 'offert@fixco.se';
-    const isTestMode = recipientEmail !== email;
-
     // Send email with Resend
     const emailResponse = await resend.emails.send({
-      from: 'Fixco <onboarding@resend.dev>',
-      replyTo: 'offert@fixco.se',
-      to: [recipientEmail],
-      subject: isTestMode 
-        ? `[TEST] Återställ lösenord för ${userName} (${email})` 
-        : 'Återställ ditt lösenord - Fixco',
+      from: 'Fixco <info@fixco.se>',
+      to: [email],
+      subject: 'Återställ ditt lösenord - Fixco',
       html: `
         <!DOCTYPE html>
         <html>
@@ -157,11 +149,6 @@ serve(async (req) => {
             </style>
           </head>
           <body>
-            ${isTestMode ? `
-            <div class="test-notice">
-              🧪 TEST-LÄGE: Detta mail är menat för användaren <strong>${userName}</strong> (${email})
-            </div>
-            ` : ''}
             <div class="header">
               <h1 style="margin: 0;">Återställ ditt lösenord</h1>
             </div>
