@@ -617,37 +617,39 @@ export default function AdminQuotesUnified() {
           />
         </div>
 
-        <TabsContent value={activeTab} className="space-y-6 mt-6">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="h-[300px]" />
-            ))
-          ) : filteredData.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>Inga poster att visa</p>
-            </div>
-          ) : (
-            filteredData.map((item) => (
-              <RequestQuoteCard
-                key={item.booking.id}
-                item={item}
-                onCreateQuote={handleCreateQuote}
-                onEditQuote={handleEditQuote}
-                onSendQuote={handleSendQuote}
-                onViewPdf={handleViewPdf}
-                onDeleteBooking={(id) => setDeleteId(id)}
-                onCopyLink={handleCopyLink}
-                onCreateInvoice={handleCreateInvoice}
-                onViewInvoice={handleViewInvoice}
-                onSendInvoice={handleSendInvoice}
-                onCopyInvoiceLink={handleCopyInvoiceLink}
-                onCreateJob={handleCreateJob}
-                onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
-                onRefresh={refresh}
-              />
-            ))
-          )}
-        </TabsContent>
+        {["requests", "active", "completed", "jobs", "archived"].map((tabValue) => (
+          <TabsContent key={tabValue} value={tabValue} className="space-y-6 mt-6">
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-[300px]" />
+              ))
+            ) : filteredData.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                <p>Inga poster att visa</p>
+              </div>
+            ) : (
+              filteredData.map((item) => (
+                <RequestQuoteCard
+                  key={item.booking.id}
+                  item={item}
+                  onCreateQuote={handleCreateQuote}
+                  onEditQuote={handleEditQuote}
+                  onSendQuote={handleSendQuote}
+                  onViewPdf={handleViewPdf}
+                  onDeleteBooking={(id) => setDeleteId(id)}
+                  onCopyLink={handleCopyLink}
+                  onCreateInvoice={handleCreateInvoice}
+                  onViewInvoice={handleViewInvoice}
+                  onSendInvoice={handleSendInvoice}
+                  onCopyInvoiceLink={handleCopyInvoiceLink}
+                  onCreateJob={handleCreateJob}
+                  onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
+                  onRefresh={refresh}
+                />
+              ))
+            )}
+          </TabsContent>
+        ))}
       </Tabs>
 
       <JobCreationDialog
