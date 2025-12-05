@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { MessageCircle, Send, CheckCircle, Clock, Mail } from 'lucide-react';
+import { MessageCircle, Send, CheckCircle, Clock, Mail, Trash2 } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -23,6 +24,7 @@ type QuoteQuestion = {
   answered: boolean;
   answer: string | null;
   answered_at: string | null;
+  seen_at: string | null;
   quote: {
     number: string;
     title: string;
@@ -35,6 +37,7 @@ type QuoteQuestion = {
 
 export default function AdminQuoteQuestions() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [questions, setQuestions] = useState<QuoteQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<QuoteQuestion | null>(null);
@@ -44,6 +47,7 @@ export default function AdminQuoteQuestions() {
 
   useEffect(() => {
     fetchQuestions();
+    markQuestionsAsSeen();
   }, []);
 
   const fetchQuestions = async () => {
@@ -68,6 +72,39 @@ export default function AdminQuoteQuestions() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const markQuestionsAsSeen = async () => {
+    const { error } = await supabase
+      .from('quote_questions')
+      .update({ seen_at: new Date().toISOString() })
+      .eq('answered', false)
+      .is('seen_at', null);
+
+    if (!error) {
+      // Invalidera notis-cachen så den uppdateras
+      queryClient.invalidateQueries({ queryKey: ['unanswered-questions-count'] });
+      queryClient.invalidateQueries({ queryKey: ['recent-unanswered-questions'] });
+    }
+  };
+
+  const handleDeleteQuestion = async (questionId: string) => {
+    if (!confirm('Är du säker på att du vill ta bort denna fråga?')) return;
+
+    const { error } = await supabase
+      .from('quote_questions')
+      .delete()
+      .eq('id', questionId);
+
+    if (error) {
+      toast.error('Kunde inte ta bort frågan');
+      return;
+    }
+
+    toast.success('Fråga borttagen');
+    fetchQuestions();
+    queryClient.invalidateQueries({ queryKey: ['unanswered-questions-count'] });
+    queryClient.invalidateQueries({ queryKey: ['recent-unanswered-questions'] });
   };
 
   const handleAnswerQuestion = async () => {
@@ -212,9 +249,19 @@ export default function AdminQuoteQuestions() {
                             {question.quote?.title}
                           </p>
                         </div>
-                        <div className="text-right text-sm text-muted-foreground">
-                          <p>{format(new Date(question.asked_at), 'PPP', { locale: sv })}</p>
-                          <p className="text-xs">{format(new Date(question.asked_at), 'HH:mm')}</p>
+                        <div className="flex items-start gap-2">
+                          <div className="text-right text-sm text-muted-foreground">
+                            <p>{format(new Date(question.asked_at), 'PPP', { locale: sv })}</p>
+                            <p className="text-xs">{format(new Date(question.asked_at), 'HH:mm')}</p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => handleDeleteQuestion(question.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
 
