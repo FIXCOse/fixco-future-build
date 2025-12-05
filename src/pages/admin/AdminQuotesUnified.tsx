@@ -449,11 +449,20 @@ export default function AdminQuotesUnified() {
   };
 
   const setTab = (tab: string) => {
-    setSearchParams({ tab });
+    setSearchParams(() => {
+      const newParams = new URLSearchParams();
+      newParams.set('tab', tab);
+      return newParams;
+    }, { replace: true });
   };
 
   const setSubFilterParam = (status: string) => {
-    setSearchParams({ tab: activeTab, status });
+    setSearchParams(() => {
+      const newParams = new URLSearchParams();
+      newParams.set('tab', activeTab);
+      newParams.set('status', status);
+      return newParams;
+    }, { replace: true });
   };
 
   return (
