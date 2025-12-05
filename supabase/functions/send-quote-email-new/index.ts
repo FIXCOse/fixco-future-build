@@ -16,19 +16,22 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { quoteId, customerEmail, customerName } = await req.json();
+    const { quoteId } = await req.json();
 
-    console.log("Sending quote email for:", { quoteId, customerEmail, customerName });
+    console.log("Sending quote email for quoteId:", quoteId);
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Hämta offert
+    // Hämta offert MED kundinfo via JOIN
     const { data: quote, error: quoteError } = await supabase
       .from('quotes_new')
-      .select('*')
+      .select(`
+        *,
+        customer:customers!customer_id(id, name, email, phone)
+      `)
       .eq('id', quoteId)
       .single();
 
@@ -36,6 +39,17 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("Error fetching quote:", quoteError);
       throw new Error("Kunde inte hämta offerten");
     }
+
+    // Hämta kundinfo från JOIN-resultatet
+    const customerEmail = quote.customer?.email;
+    const customerName = quote.customer?.name;
+
+    if (!customerEmail) {
+      console.error("No customer email found for quote:", quoteId);
+      throw new Error("Ingen e-postadress hittades för kunden");
+    }
+
+    console.log("Customer info:", { customerEmail, customerName });
 
     const displayName = customerName || 'Kund';
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
