@@ -46,3 +46,6 @@
 
 # Catch-all för alla andra trailing slashes
 /*/                     /:splat                301!
+
+# SPA Fallback - MÅSTE vara SIST
+/*    /index.html   200
