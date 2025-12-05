@@ -25,6 +25,8 @@ const requestSchema = z.object({
   service_slug: z.string().min(1, "service_slug krävs"),
   mode: z.enum(['quote', 'book', 'home_visit']),
   address: z.string().optional(),
+  postal_code: z.string().optional(),
+  city: z.string().optional(),
   fields: z.record(z.any()).optional(),
   fileUrls: z.array(z.string().url()).optional(),
 }).refine(
@@ -77,6 +79,8 @@ serve(async (req) => {
       brf_name,
       org_number,
       address = "",
+      postal_code = "",
+      city = "",
       service_slug,
       mode,
       fields = {},
@@ -98,6 +102,8 @@ serve(async (req) => {
       name, 
       phone, 
       address,
+      postal_code: postal_code || null,
+      city: city || null,
       customer_type,
     };
 
@@ -158,6 +164,8 @@ serve(async (req) => {
         name,
         phone,
         address,
+        postal_code,
+        city,
       },
       file_urls: fileUrls ?? [],
     };
