@@ -31,6 +31,7 @@ import { useRole } from '@/hooks/useRole';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import QuoteQuestionsNotification from './QuoteQuestionsNotification';
+import BookingsNotification from './BookingsNotification';
 
 export function AdminTopBar() {
   const [open, setOpen] = useState(false);
@@ -133,6 +134,7 @@ export function AdminTopBar() {
           </DropdownMenuContent>
         </DropdownMenu>
 
+        <BookingsNotification />
         <QuoteQuestionsNotification />
 
         <Popover>
