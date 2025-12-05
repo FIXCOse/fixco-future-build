@@ -890,7 +890,7 @@ export default function ProjectEditModal({
           </Button>
           <Button 
             onClick={handleSave}
-            disabled={!formData.title || !formData.description || !formData.location}
+            disabled={!formData.title_sv || !formData.description_sv || !formData.location_sv}
           >
             {isCreating ? 'Skapa projekt' : 'Spara ändringar'}
           </Button>
