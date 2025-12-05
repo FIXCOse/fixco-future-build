@@ -167,14 +167,14 @@ export function CustomerDetailModal({
               </div>
               
               <div className="space-y-3">
-                {customer.address && (
+                {(customer.address || customer.postal_code || customer.city) && (
                   <div className="flex items-start gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="font-medium">Adress:</p>
-                      <p>{customer.address}</p>
-                      {customer.postal_code && customer.city && (
-                        <p>{customer.postal_code} {customer.city}</p>
+                      {customer.address && <p>{customer.address}</p>}
+                      {(customer.postal_code || customer.city) && (
+                        <p>{[customer.postal_code, customer.city].filter(Boolean).join(' ')}</p>
                       )}
                     </div>
                   </div>
