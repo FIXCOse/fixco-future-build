@@ -363,7 +363,18 @@ export default function ProjectEditModal({
     }
 
     console.log('✅ All validations passed, saving project...');
-    onSave(formData);
+    
+    // Synka legacy-fält med svenska värden för bakåtkompatibilitet
+    const projectToSave = {
+      ...formData,
+      category: formData.category_sv,
+      title: formData.title_sv,
+      description: formData.description_sv,
+      location: formData.location_sv,
+      features: formData.features_sv,
+    };
+    
+    onSave(projectToSave);
     onClose();
   };
 
