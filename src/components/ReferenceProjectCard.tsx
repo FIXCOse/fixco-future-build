@@ -15,6 +15,8 @@ interface ReferenceProject {
   location: string;
   completion_date?: string;
   category?: string;
+  category_sv?: string;
+  category_en?: string;
   rating?: number;
   client_initials?: string;
   rot_savings?: number;
@@ -44,6 +46,9 @@ export const ReferenceProjectCard = ({
   onView,
 }: ReferenceProjectCardProps) => {
   const title = locale === "en" && project.title_en ? project.title_en : project.title_sv;
+  const category = locale === "en" && project.category_en 
+    ? project.category_en 
+    : project.category_sv || project.category;
   const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
 
@@ -68,9 +73,9 @@ export const ReferenceProjectCard = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
         {/* Category badge */}
-        {project.category && (
+        {category && (
           <Badge className="absolute top-3 left-3 bg-primary/90 backdrop-blur-sm">
-            {project.category}
+            {category}
           </Badge>
         )}
 
