@@ -13,6 +13,8 @@ interface ReferenceProject {
   description_sv?: string;
   description_en?: string;
   location: string;
+  location_sv?: string;
+  location_en?: string;
   completion_date?: string;
   category?: string;
   category_sv?: string;
@@ -49,6 +51,9 @@ export const ReferenceProjectCard = ({
   const category = locale === "en" && project.category_en 
     ? project.category_en 
     : project.category_sv || project.category;
+  const location = locale === "en" && project.location_en 
+    ? project.location_en 
+    : project.location_sv || project.location;
   const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
 
@@ -126,7 +131,7 @@ export const ReferenceProjectCard = ({
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4" />
-            <span>{project.location}</span>
+            <span>{location}</span>
           </div>
           {formattedDate && (
             <div className="flex items-center gap-1">
