@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { ReferenceProject } from '@/hooks/useReferenceProjects';
 import { useCopy } from '@/copy/CopyProvider';
+import { ImageWithPlaceholder, getOptimizedUrl, useImagePreloader } from '@/components/ImageWithPlaceholder';
 
 // Helper function to get localized field
 const getLocalizedField = (
@@ -51,6 +52,14 @@ export default function ProjectDetailModal({
 }: ProjectDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { locale } = useCopy();
+
+  // Reset image index when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [project?.id]);
+
+  // Preload next/previous images
+  useImagePreloader(project?.images || [], currentImageIndex);
 
   if (!project) return null;
 
@@ -104,10 +113,12 @@ export default function ProjectDetailModal({
           <div className="relative h-64 md:h-96 bg-muted">
             {project.images && project.images.length > 0 ? (
               <>
-                <img
+                <ImageWithPlaceholder
                   src={project.images[currentImageIndex]}
                   alt={`${getLocalizedField(project, 'title', locale)} - Bild ${currentImageIndex + 1}`}
-                className="w-full h-full object-contain"
+                  className="w-full h-full object-contain"
+                  containerClassName="w-full h-full"
+                  priority={currentImageIndex === 0}
                   onError={(e) => {
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop';
                   }}
@@ -173,10 +184,12 @@ export default function ProjectDetailModal({
                       }
                     `}
                   >
-                    <img
-                      src={image}
+                    <ImageWithPlaceholder
+                      src={getOptimizedUrl(image, { width: 200, quality: 70 })}
                       alt={`${getLocalizedField(project, 'title', locale)} - Miniatyr ${index + 1}`}
                       className="w-full h-full object-contain bg-muted/50"
+                      containerClassName="w-full h-full"
+                      priority={index < 4}
                       onError={(e) => {
                         e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop';
                       }}
