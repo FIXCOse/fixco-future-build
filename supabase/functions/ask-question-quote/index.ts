@@ -5,12 +5,64 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Rate limiting helper
+async function checkRateLimit(
+  supabase: any,
+  identifier: string,
+  action: string,
+  maxAttempts: number,
+  windowMinutes: number
+): Promise<boolean> {
+  try {
+    const windowStart = new Date(Date.now() - windowMinutes * 60 * 1000).toISOString();
+    const { count } = await supabase
+      .from('rate_limit_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('identifier', identifier)
+      .eq('action', action)
+      .gte('created_at', windowStart);
+
+    return (count || 0) < maxAttempts;
+  } catch (error) {
+    console.error('Rate limit check failed:', error);
+    return true; // Fail open
+  }
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+         req.headers.get('x-real-ip') || 
+         'unknown';
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Rate limiting: 10 frågor per 15 minuter per IP
+    const clientIp = getClientIp(req);
+    const allowed = await checkRateLimit(supabase, clientIp, 'ask-question-quote', 10, 15);
+    
+    if (!allowed) {
+      return new Response(
+        JSON.stringify({ error: 'För många förfrågningar. Vänta några minuter och försök igen.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Logga detta request
+    await supabase.from('rate_limit_log').insert({
+      identifier: clientIp,
+      action: 'ask-question-quote',
+      metadata: { endpoint: 'ask-question-quote', timestamp: new Date().toISOString() }
+    });
+
     const url = new URL(req.url);
     const pathParts = url.pathname.split('/').filter(p => p);
     
@@ -41,9 +93,20 @@ Deno.serve(async (req) => {
       );
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Input validation - max längder
+    if (question.length > 2000) {
+      return new Response(
+        JSON.stringify({ error: 'Frågan är för lång (max 2000 tecken)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (customer_name.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Namnet är för långt (max 100 tecken)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Hämta offerten - stödjer både nummer+token och bara token
     let query = supabase
