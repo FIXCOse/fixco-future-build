@@ -6,6 +6,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// HTML-escaping för att förhindra XSS
+function escapeHtml(str: string | null | undefined): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -62,6 +73,17 @@ serve(async (req) => {
     // Parse line items
     const lineItems = Array.isArray(quote.line_items) ? quote.line_items : [];
     
+    // Escape all user-provided data
+    const safeQuoteNumber = escapeHtml(quote.quote_number);
+    const safeTitle = escapeHtml(quote.title);
+    const safeDescription = escapeHtml(description);
+    const safeCustomerName = escapeHtml(quote.customer_name || (quote.customer ? `${quote.customer.first_name || ''} ${quote.customer.last_name || ''}`.trim() : ''));
+    const safeCustomerEmail = escapeHtml(quote.customer_email);
+    const safeCustomerPhone = escapeHtml(quote.customer_phone);
+    const safeCustomerAddress = escapeHtml(quote.customer_address);
+    const safeCustomerPostalCode = escapeHtml(quote.customer_postal_code);
+    const safeCustomerCity = escapeHtml(quote.customer_city);
+    
     // Generate HTML for PDF
     const html = `
       <!DOCTYPE html>
@@ -87,29 +109,29 @@ serve(async (req) => {
       <body>
         <div class="header">
           <div class="company">FIXCO</div>
-          <p>Uppsala & Stockholm<br>Telefon: 08-123 456 78<br>info@fixco.se</p>
+          <p>Uppsala &amp; Stockholm<br>Telefon: 08-123 456 78<br>info@fixco.se</p>
         </div>
         
         <h1>Offert</h1>
         <div class="quote-info">
-          <p><strong>Offertnummer:</strong> ${quote.quote_number}</p>
+          <p><strong>Offertnummer:</strong> ${safeQuoteNumber}</p>
           <p><strong>Datum:</strong> ${new Date(quote.created_at).toLocaleDateString('sv-SE')}</p>
           ${quote.valid_until ? `<p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
         </div>
 
-        ${quote.customer_name || quote.customer ? `
+        ${safeCustomerName ? `
         <div class="customer-info">
           <h3>Kund</h3>
-          <p><strong>${quote.customer_name || (quote.customer ? `${quote.customer.first_name || ''} ${quote.customer.last_name || ''}`.trim() : '')}</strong></p>
-          ${quote.customer_email ? `<p>Email: ${quote.customer_email}</p>` : ''}
-          ${quote.customer_phone ? `<p>Telefon: ${quote.customer_phone}</p>` : ''}
-          ${quote.customer_address ? `<p>${quote.customer_address}${quote.customer_postal_code ? `, ${quote.customer_postal_code}` : ''}${quote.customer_city ? ` ${quote.customer_city}` : ''}</p>` : ''}
+          <p><strong>${safeCustomerName}</strong></p>
+          ${safeCustomerEmail ? `<p>Email: ${safeCustomerEmail}</p>` : ''}
+          ${safeCustomerPhone ? `<p>Telefon: ${safeCustomerPhone}</p>` : ''}
+          ${safeCustomerAddress ? `<p>${safeCustomerAddress}${safeCustomerPostalCode ? `, ${safeCustomerPostalCode}` : ''}${safeCustomerCity ? ` ${safeCustomerCity}` : ''}</p>` : ''}
         </div>
         ` : ''}
 
         <div>
-          <h2>${quote.title}</h2>
-          ${description ? `<p>${description}</p>` : ''}
+          <h2>${safeTitle}</h2>
+          ${safeDescription ? `<p>${safeDescription}</p>` : ''}
         </div>
         
         <table>
@@ -124,7 +146,7 @@ serve(async (req) => {
           <tbody>
             ${lineItems.map(item => `
               <tr>
-                <td>${item.description || item.name || ''}</td>
+                <td>${escapeHtml(item.description || item.name || '')}</td>
                 <td class="amount">${item.quantity || 1}</td>
                 <td class="amount">${(item.unit_price || 0).toLocaleString('sv-SE')} kr</td>
                 <td class="amount">${((item.quantity || 1) * (item.unit_price || 0)).toLocaleString('sv-SE')} kr</td>

@@ -12,6 +12,35 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
+// Rate limiting helper
+async function checkRateLimit(
+  identifier: string,
+  action: string,
+  maxAttempts: number,
+  windowMinutes: number
+): Promise<boolean> {
+  try {
+    const windowStart = new Date(Date.now() - windowMinutes * 60 * 1000).toISOString();
+    const { count } = await admin
+      .from('rate_limit_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('identifier', identifier)
+      .eq('action', action)
+      .gte('created_at', windowStart);
+
+    return (count || 0) < maxAttempts;
+  } catch (error) {
+    console.error('Rate limit check failed:', error);
+    return true; // Fail open
+  }
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+         req.headers.get('x-real-ip') || 
+         'unknown';
+}
+
 // Validering schema
 const requestSchema = z.object({
   customer_type: z.enum(['private', 'company', 'brf']).default('private'),
@@ -53,6 +82,25 @@ serve(async (req) => {
   if (req.method === "GET") return json({ ok: true, ping: true });
 
   try {
+    // Rate limiting: 10 bokningar per 15 minuter per IP
+    const clientIp = getClientIp(req);
+    const allowed = await checkRateLimit(clientIp, 'create-booking', 10, 15);
+    
+    if (!allowed) {
+      console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+      return json({ 
+        ok: false, 
+        error: 'För många bokningsförsök. Vänta några minuter och försök igen.' 
+      }, 429);
+    }
+
+    // Logga detta request för rate limiting
+    await admin.from('rate_limit_log').insert({
+      identifier: clientIp,
+      action: 'create-booking',
+      metadata: { endpoint: 'create-booking-with-quote', timestamp: new Date().toISOString() }
+    });
+
     const ct = req.headers.get("content-type") || "";
     if (!ct.includes("application/json")) return json({ error: "Use application/json" }, 415);
 
