@@ -66,10 +66,11 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [notes, setNotes] = useState('');
   
   // ROT/RUT settings
+  // OBS: ROT är 50% fram till 2025-12-31, därefter 30% (Skatteverket)
   const [enableRot, setEnableRot] = useState(false);
-  const [rotRate, setRotRate] = useState(30); // Default 30% för ROT
+  const [rotRate, setRotRate] = useState(50); // 50% ROT enligt Skatteverket (fram till 2026)
   const [enableRut, setEnableRut] = useState(false);
-  const [rutRate, setRutRate] = useState(50); // Default 50% för RUT
+  const [rutRate, setRutRate] = useState(50); // 50% RUT enligt Skatteverket
   
   // Discount settings
   const [discountType, setDiscountType] = useState<'none' | 'percent' | 'amount'>('none');
@@ -108,7 +109,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       // Load ROT/RUT settings from quote
       if (quote.rot_deduction_sek > 0) {
         setEnableRot(true);
-        setRotRate(quote.rot_percentage || 30);
+        setRotRate(quote.rot_percentage || 50);
       }
       
       if (quote.rut_percentage && quote.rut_percentage > 0) {
@@ -154,7 +155,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       // Aktivera ROT om tjänsten är ROT-berättigad
       if (payload.rot_eligible !== false) {
         setEnableRot(true);
-        setRotRate(30);
+        setRotRate(50); // 50% enligt Skatteverket (fram till 2026)
       }
     } else if (prefilledCustomerId || prefilledData) {
       // Load prefilled data from AI lead
@@ -169,7 +170,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       }
       if (prefilledData?.enableRot) {
         setEnableRot(true);
-        setRotRate(30);
+        setRotRate(50); // 50% enligt Skatteverket (fram till 2026)
       }
     } else {
       resetForm();
@@ -194,7 +195,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setValidUntil('');
     setNotes('');
     setEnableRot(false);
-    setRotRate(30);
+    setRotRate(50); // 50% enligt Skatteverket (fram till 2026)
     setEnableRut(false);
     setRutRate(50);
     setDiscountType('none');
@@ -283,12 +284,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     const workCost = calculateSubtotalWork();
     let deduction = 0;
     
+    // ROT/RUT beräknas på arbetskostnad INKLUSIVE moms enligt Skatteverket
+    // Om vatIncluded är true är workCost redan inkl moms, annars multiplicera med 1.25
+    const workCostInclVat = vatIncluded ? workCost : workCost * 1.25;
+    
     if (enableRot) {
-      deduction += Math.round(workCost * (rotRate / 100));
+      deduction += Math.round(workCostInclVat * (rotRate / 100));
     }
     
     if (enableRut) {
-      deduction += Math.round(workCost * (rutRate / 100));
+      deduction += Math.round(workCostInclVat * (rutRate / 100));
     }
     
     return deduction;

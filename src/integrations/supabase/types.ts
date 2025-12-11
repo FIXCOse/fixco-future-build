@@ -4017,8 +4017,8 @@ export type Database = {
       }
       is_owner: { Args: { user_uuid?: string }; Returns: boolean }
       is_worker:
-        | { Args: { user_uuid?: string }; Returns: boolean }
         | { Args: never; Returns: boolean }
+        | { Args: { user_uuid?: string }; Returns: boolean }
       kpi_today: { Args: never; Returns: Json }
       log_activity: {
         Args: {

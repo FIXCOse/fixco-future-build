@@ -7,10 +7,13 @@ const RUTCalculator = () => {
   const [projectCost, setProjectCost] = useState(25000);
   const [householdSize, setHouseholdSize] = useState(2);
 
-  // Step-by-step calculation to ensure correctness - RUT specific amounts
+  // RUT-beräkning enligt Skatteverket:
+  // - 50% av arbetskostnad INKLUSIVE moms
+  // - Max 25 000 kr per person och år (lägre än ROT:s 50k)
+  // - projectCost antas vara inkl moms (så kunden anger vad de betalar)
   const maxRutDeductionPerPerson = 25000; // RUT is 25k per person vs ROT's 50k
   const maxTotalRutDeduction = householdSize * maxRutDeductionPerPerson; // 1=25k, 2=50k
-  const rutPercentage = 50;
+  const rutPercentage = 50; // 50% enligt Skatteverket
   const calculatedDeduction = (projectCost * rutPercentage) / 100;
   const actualDeduction = Math.min(calculatedDeduction, maxTotalRutDeduction);
   const finalCost = projectCost - actualDeduction;
