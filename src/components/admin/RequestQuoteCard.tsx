@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -25,6 +25,7 @@ type Props = {
   onCreateJob: (quoteId: string) => void;
   onCreateInvoiceFromJob?: (jobId: string, customerId: string) => void;
   onAdminAccept?: (quoteId: string) => void;
+  onAdminCompleteJob?: (jobId: string) => void;
   onRefresh: () => void;
 };
 
@@ -43,6 +44,7 @@ export function RequestQuoteCard({
   onCreateJob,
   onCreateInvoiceFromJob,
   onAdminAccept,
+  onAdminCompleteJob,
   onRefresh,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -519,6 +521,18 @@ export function RequestQuoteCard({
                       </div>
                     </div>
                   </div>
+                )}
+
+                {/* Admin complete job button */}
+                {job.status !== 'completed' && onAdminCompleteJob && (
+                  <Button
+                    onClick={() => onAdminCompleteJob(job.id)}
+                    size="sm"
+                    className="w-full"
+                  >
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Markera som slutfört (admin)
+                  </Button>
                 )}
 
                 {/* Action button for completed jobs */}

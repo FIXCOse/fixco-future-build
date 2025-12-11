@@ -402,6 +402,23 @@ export default function AdminQuotesUnified() {
     setJobCreationModalOpen(true);
   };
 
+  const handleAdminCompleteJob = async (jobId: string) => {
+    try {
+      const { error } = await supabase
+        .from('jobs')
+        .update({ status: 'completed' })
+        .eq('id', jobId);
+
+      if (error) throw error;
+
+      toast.success('Jobbet markerat som slutfört!');
+      refresh();
+    } catch (error: any) {
+      console.error('Error completing job:', error);
+      toast.error('Kunde inte markera jobbet som slutfört');
+    }
+  };
+
   const handleCreateInvoiceFromJob = (jobId: string, customerId: string) => {
     const item = allData.find(d => d.job?.id === jobId);
     if (!item || !item.job) {
@@ -690,6 +707,7 @@ export default function AdminQuotesUnified() {
                   onCreateJob={handleCreateJob}
                   onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
                   onAdminAccept={handleAdminAccept}
+                  onAdminCompleteJob={handleAdminCompleteJob}
                   onRefresh={refresh}
                 />
               ))
