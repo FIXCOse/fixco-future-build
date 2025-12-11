@@ -7,10 +7,13 @@ const ROTCalculator = () => {
   const [projectCost, setProjectCost] = useState(80000);
   const [householdSize, setHouseholdSize] = useState(2);
 
-  // Step-by-step calculation to ensure correctness
+  // ROT-beräkning enligt Skatteverket:
+  // - 50% av arbetskostnad INKLUSIVE moms (fram till 2025-12-31, därefter 30%)
+  // - Max 50 000 kr per person och år
+  // - projectCost antas vara inkl moms (så kunden anger vad de betalar)
   const maxRotDeductionPerPerson = 50000;
   const maxTotalRotDeduction = householdSize * maxRotDeductionPerPerson; // 1=50k, 2=100k, 3=150k, 4=200k
-  const rotPercentage = 50;
+  const rotPercentage = 50; // 50% enligt Skatteverket (fram till 2026)
   const calculatedDeduction = (projectCost * rotPercentage) / 100;
   const actualDeduction = Math.min(calculatedDeduction, maxTotalRotDeduction);
   const finalCost = projectCost - actualDeduction;
