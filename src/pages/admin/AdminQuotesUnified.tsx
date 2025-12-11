@@ -364,6 +364,28 @@ export default function AdminQuotesUnified() {
     toast.success('Fakturalänk kopierad!');
   };
 
+  const handleAdminAccept = async (quoteId: string) => {
+    try {
+      const { error } = await supabase
+        .from('quotes_new')
+        .update({
+          status: 'accepted',
+          accepted_at: new Date().toISOString(),
+          signature_name: 'Admin-accepterad',
+          terms_accepted: true
+        })
+        .eq('id', quoteId);
+
+      if (error) throw error;
+
+      toast.success('Offert markerad som accepterad');
+      refresh();
+    } catch (error: any) {
+      console.error('Error accepting quote:', error);
+      toast.error('Kunde inte acceptera offert');
+    }
+  };
+
   const handleCreateJob = async (quoteId: string) => {
     const item = allData.find(d => d.quote?.id === quoteId);
     if (!item?.quote) {
@@ -667,6 +689,7 @@ export default function AdminQuotesUnified() {
                   onCopyInvoiceLink={handleCopyInvoiceLink}
                   onCreateJob={handleCreateJob}
                   onCreateInvoiceFromJob={handleCreateInvoiceFromJob}
+                  onAdminAccept={handleAdminAccept}
                   onRefresh={refresh}
                 />
               ))
