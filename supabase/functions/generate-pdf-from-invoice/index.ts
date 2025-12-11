@@ -77,30 +77,64 @@ serve(async (req) => {
     const html = generateInvoiceHTML(invoice, logoBase64);
     console.log('HTML generated, calling PDFBolt API...');
 
-    // Convert HTML to PDF using PDFBolt
-    const pdfBoltResponse = await fetch('https://api.pdfbolt.com/v1/direct', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'API-KEY': Deno.env.get('PDFBOLT_API_KEY') ?? '',
-      },
-      body: JSON.stringify({
-        html: utf8ToBase64(html),
-        format: 'A4',
-        printBackground: true,
-        margin: {
-          top: '15mm',
-          bottom: '15mm',
-          left: '15mm',
-          right: '15mm'
+    // Convert HTML to PDF using PDFBolt with retry logic
+    const maxRetries = 3;
+    let pdfBoltResponse: Response | null = null;
+    let lastError: string = '';
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      console.log(`PDFBolt API attempt ${attempt}/${maxRetries}`);
+      
+      try {
+        pdfBoltResponse = await fetch('https://api.pdfbolt.com/v1/direct', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'API-KEY': Deno.env.get('PDFBOLT_API_KEY') ?? '',
+          },
+          body: JSON.stringify({
+            html: utf8ToBase64(html),
+            format: 'A4',
+            printBackground: true,
+            margin: {
+              top: '15mm',
+              bottom: '15mm',
+              left: '15mm',
+              right: '15mm'
+            }
+          })
+        });
+        
+        if (pdfBoltResponse.ok) {
+          console.log('PDFBolt API success on attempt', attempt);
+          break;
         }
-      })
-    });
+        
+        // Check if it's a retryable error (5xx)
+        if (pdfBoltResponse.status >= 500 && attempt < maxRetries) {
+          lastError = await pdfBoltResponse.text();
+          console.warn(`PDFBolt API returned ${pdfBoltResponse.status}, retrying in ${attempt * 2}s...`);
+          await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+          continue;
+        }
+        
+        // Non-retryable error or last attempt
+        const errorText = await pdfBoltResponse.text();
+        console.error('PDFBolt API error:', errorText);
+        throw new Error(`PDFBolt API failed: ${pdfBoltResponse.status} - ${errorText}`);
+        
+      } catch (fetchError) {
+        lastError = fetchError.message;
+        if (attempt === maxRetries) {
+          throw new Error(`PDFBolt API failed after ${maxRetries} attempts: ${lastError}`);
+        }
+        console.warn(`PDFBolt fetch error, retrying in ${attempt * 2}s:`, fetchError.message);
+        await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+      }
+    }
 
-    if (!pdfBoltResponse.ok) {
-      const errorText = await pdfBoltResponse.text();
-      console.error('PDFBolt API error:', errorText);
-      throw new Error(`PDFBolt API failed: ${pdfBoltResponse.status} - ${errorText}`);
+    if (!pdfBoltResponse || !pdfBoltResponse.ok) {
+      throw new Error(`PDFBolt API failed after ${maxRetries} attempts: ${lastError}`);
     }
 
     const pdfBuffer = await pdfBoltResponse.arrayBuffer();
