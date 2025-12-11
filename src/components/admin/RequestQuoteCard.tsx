@@ -24,6 +24,7 @@ type Props = {
   onCopyInvoiceLink?: (invoiceId: string) => void;
   onCreateJob: (quoteId: string) => void;
   onCreateInvoiceFromJob?: (jobId: string, customerId: string) => void;
+  onAdminAccept?: (quoteId: string) => void;
   onRefresh: () => void;
 };
 
@@ -41,6 +42,7 @@ export function RequestQuoteCard({
   onCopyInvoiceLink,
   onCreateJob,
   onCreateInvoiceFromJob,
+  onAdminAccept,
   onRefresh,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -431,15 +433,36 @@ export function RequestQuoteCard({
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
-                  {quote.status === 'accepted' && !job && (
+                  {/* Admin-accept button for sent/viewed quotes */}
+                  {(quote.status === 'sent' || quote.status === 'viewed') && onAdminAccept && (
                     <Button
-                      onClick={() => onCreateJob(quote.id)}
+                      onClick={() => onAdminAccept(quote.id)}
                       size="sm"
-                      variant="default"
+                      variant="secondary"
                     >
-                      <Briefcase className="h-4 w-4 mr-2" />
-                      Skapa jobb
+                      <FileText className="h-4 w-4 mr-2" />
+                      Acceptera (admin)
                     </Button>
+                  )}
+                  {quote.status === 'accepted' && !job && (
+                    <>
+                      <Button
+                        onClick={() => onCreateJob(quote.id)}
+                        size="sm"
+                        variant="default"
+                      >
+                        <Briefcase className="h-4 w-4 mr-2" />
+                        Skapa jobb
+                      </Button>
+                      <Button
+                        onClick={() => onCreateInvoice(quote.id)}
+                        size="sm"
+                        variant="outline"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Skapa faktura direkt
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
