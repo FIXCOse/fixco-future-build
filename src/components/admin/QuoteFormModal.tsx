@@ -252,65 +252,73 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     return calculateSubtotalWork() + calculateSubtotalMaterial();
   };
 
+  // Beräkna rabatt på totalen INKLUSIVE moms (Limont-style)
   const calculateDiscount = () => {
     const subtotal = calculateSubtotal();
+    // Om vatIncluded är true är subtotal redan inkl moms
+    // Om false, lägg till moms för rabattberäkning
+    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
+    
     if (discountType === 'percent') {
-      return Math.round(subtotal * (discountValue / 100));
+      return Math.round(subtotalInclVat * (discountValue / 100));
     } else if (discountType === 'amount') {
       return discountValue;
     }
     return 0;
   };
 
+  // Returnerar subtotal efter rabatt (INKLUSIVE moms om vatIncluded eller efter att moms lagts till)
   const calculateSubtotalAfterDiscount = () => {
-    return calculateSubtotal() - calculateDiscount();
+    const subtotal = calculateSubtotal();
+    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
+    return subtotalInclVat - calculateDiscount();
   };
 
+  // Beräkna moms - subtotalAfterDiscount är nu alltid INKL moms
   const calculateVat = () => {
     const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
     const vatRate = customVat ? customVatRate : 25;
     
-    if (vatIncluded) {
-      // Calculate VAT that's already included in the price
-      // If total is 40,000 kr incl. VAT (25%), then VAT = 40,000 * (25/125) = 8,000 kr
-      return Math.round(subtotalAfterDiscount * (vatRate / (100 + vatRate)));
-    } else {
-      // Add VAT on top (current logic)
-      return Math.round(subtotalAfterDiscount * (vatRate / 100));
-    }
+    // Moms är redan inkluderad i subtotalAfterDiscount
+    // VAT = total * (rate / (100 + rate))
+    return Math.round(subtotalAfterDiscount * (vatRate / (100 + vatRate)));
   };
 
+  // ROT/RUT beräknas på ARBETSKOSTNAD efter rabatt INKLUSIVE moms (Skatteverket)
   const calculateRotRutDeduction = () => {
     const workCost = calculateSubtotalWork();
+    const matCost = calculateSubtotalMaterial();
+    const totalCost = workCost + matCost;
+    
+    // Beräkna hur stor del av totalen som är arbete
+    const workRatio = totalCost > 0 ? workCost / totalCost : 1;
+    
+    // Hämta subtotal efter rabatt (inkl moms)
+    const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
+    
+    // Arbetskostnad efter rabatt inkl moms
+    const workCostAfterDiscountInclVat = subtotalAfterDiscount * workRatio;
+    
     let deduction = 0;
     
-    // ROT/RUT beräknas på arbetskostnad INKLUSIVE moms enligt Skatteverket
-    // Om vatIncluded är true är workCost redan inkl moms, annars multiplicera med 1.25
-    const workCostInclVat = vatIncluded ? workCost : workCost * 1.25;
-    
     if (enableRot) {
-      deduction += Math.round(workCostInclVat * (rotRate / 100));
+      // ROT = 50% av arbetskostnad inkl moms efter rabatt
+      deduction += Math.round(workCostAfterDiscountInclVat * (rotRate / 100));
     }
     
     if (enableRut) {
-      deduction += Math.round(workCostInclVat * (rutRate / 100));
+      // RUT = 50% av arbetskostnad inkl moms efter rabatt
+      deduction += Math.round(workCostAfterDiscountInclVat * (rutRate / 100));
     }
     
     return deduction;
   };
 
+  // Total att betala = Subtotal efter rabatt (inkl moms) - ROT/RUT
   const calculateTotal = () => {
     const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
-    const vat = calculateVat();
     const rotRutDeduction = calculateRotRutDeduction();
-    
-    if (vatIncluded) {
-      // If VAT is included, subtotal is already the total price
-      return subtotalAfterDiscount - rotRutDeduction;
-    } else {
-      // Add VAT on top (current logic)
-      return subtotalAfterDiscount + vat - rotRutDeduction;
-    }
+    return subtotalAfterDiscount - rotRutDeduction;
   };
 
   const handleCreateCustomer = async () => {
