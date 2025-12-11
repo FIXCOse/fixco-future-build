@@ -433,8 +433,8 @@ export function RequestQuoteCard({
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
-                  {/* Admin-accept button for sent/viewed quotes */}
-                  {(quote.status === 'sent' || quote.status === 'viewed') && onAdminAccept && (
+                  {/* Admin-accept button for draft/sent/viewed quotes */}
+                  {(quote.status === 'draft' || quote.status === 'sent' || quote.status === 'viewed') && onAdminAccept && (
                     <Button
                       onClick={() => onAdminAccept(quote.id)}
                       size="sm"
