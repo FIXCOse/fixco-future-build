@@ -82,19 +82,17 @@ serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'API_KEY': Deno.env.get('PDFBOLT_API_KEY') ?? '',
+        'API-KEY': Deno.env.get('PDFBOLT_API_KEY') ?? '',
       },
       body: JSON.stringify({
-        html: utf8ToBase64(html), // UTF-8 safe base64 encode the HTML
-        options: {
-          format: 'A4',
-          printBackground: true,
-          margin: {
-            top: '15mm',
-            bottom: '15mm',
-            left: '15mm',
-            right: '15mm'
-          }
+        html: utf8ToBase64(html),
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '15mm',
+          bottom: '15mm',
+          left: '15mm',
+          right: '15mm'
         }
       })
     });
