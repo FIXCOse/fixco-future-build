@@ -52,6 +52,7 @@ type PublicQuote = {
   customer_name: string;
   customer_email: string;
   questions: QuoteQuestion[];
+  vat_included?: boolean;
 };
 
 export default function QuotePublic() {
@@ -699,62 +700,124 @@ export default function QuotePublic() {
                 );
               })()}
 
-              {/* Price breakdown */}
-              <div className="space-y-2 pt-2">
-                <div className="flex items-center gap-2 pb-2 border-b border-border">
-                  <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary font-bold text-xs">kr</span>
-                  </div>
-                  <h3 className="font-semibold text-foreground">Kostnadsspecifikation</h3>
-                </div>
+              {/* Price breakdown - Limont-style structure */}
+              {(() => {
+                // Beräkna visningsvärden baserat på vat_included
+                const vatIncluded = quote.vat_included ?? false;
                 
-                <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">Arbetskostnad</span>
-                    <span className="font-semibold">{quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">Materialkostnad</span>
-                    <span className="font-semibold">{quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</span>
-                  </div>
-                  {quote.discount_amount_sek && quote.discount_amount_sek > 0 && (
-                    <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
-                      <span className="font-medium text-green-700 dark:text-green-400">
-                        Rabatt {quote.discount_type === 'percentage' ? `(${quote.discount_value}%)` : ''}
-                      </span>
-                      <span className="font-semibold text-green-700 dark:text-green-400">
-                        −{quote.discount_amount_sek.toLocaleString('sv-SE')} kr
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between py-2 border-b border-border">
-                    <span className="text-muted-foreground">
-                      Moms (25%){(quote as any).vat_included ? ' (ingår i priset)' : ''}
-                    </span>
-                    <span className="font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
-                  </div>
-                  {quote.rot_deduction_sek > 0 && (
-                    <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
-                      <span className="font-medium text-green-700 dark:text-green-400">
-                        ROT-avdrag ({quote.rot_percentage || 30}%)
-                      </span>
-                      <span className="font-semibold text-green-700 dark:text-green-400">
-                        −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
-                      </span>
-                    </div>
-                  )}
-                </div>
+                // Om vat_included: visa priser INKL moms
+                const workCostDisplay = vatIncluded 
+                  ? Math.round(quote.subtotal_work_sek * 1.25)  // 54,360 kr inkl moms
+                  : quote.subtotal_work_sek;                    // 43,488 kr exkl moms
                 
-                {/* Total */}
-                <div className="gradient-primary rounded-xl p-4 mt-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-primary-foreground">Totalt att betala</span>
-                    <span className="text-2xl font-bold text-primary-foreground">
-                      {quote.total_sek.toLocaleString('sv-SE')} kr
-                    </span>
+                const matCostDisplay = vatIncluded 
+                  ? Math.round(quote.subtotal_mat_sek * 1.25)
+                  : quote.subtotal_mat_sek;
+                
+                // Summa efter rabatt (före moms-specifikation)
+                const totalBeforeDiscount = workCostDisplay + matCostDisplay;
+                const discountAmount = quote.discount_amount_sek || 0;
+                const sumAfterDiscount = totalBeforeDiscount - discountAmount;
+                
+                // Exkl moms och moms (för visning)
+                const exclVat = Math.round(sumAfterDiscount / 1.25);
+                const vatAmount = sumAfterDiscount - exclVat;
+                
+                return (
+                  <div className="space-y-2 pt-2">
+                    <div className="flex items-center gap-2 pb-2 border-b border-border">
+                      <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary font-bold text-xs">kr</span>
+                      </div>
+                      <h3 className="font-semibold text-foreground">Kostnadsspecifikation</h3>
+                    </div>
+                    
+                    <div className="space-y-1.5 text-sm">
+                      {/* Arbetskostnad */}
+                      <div className="flex justify-between py-2 border-b border-border">
+                        <span className="text-muted-foreground">
+                          Arbetskostnad{vatIncluded ? ' (inkl moms)' : ''}
+                        </span>
+                        <span className="font-semibold">{workCostDisplay.toLocaleString('sv-SE')} kr</span>
+                      </div>
+                      
+                      {/* Materialkostnad - visa endast om > 0 */}
+                      {matCostDisplay > 0 && (
+                        <div className="flex justify-between py-2 border-b border-border">
+                          <span className="text-muted-foreground">
+                            Materialkostnad{vatIncluded ? ' (inkl moms)' : ''}
+                          </span>
+                          <span className="font-semibold">{matCostDisplay.toLocaleString('sv-SE')} kr</span>
+                        </div>
+                      )}
+                      
+                      {/* Rabatt */}
+                      {discountAmount > 0 && (
+                        <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
+                          <span className="font-medium text-green-700 dark:text-green-400">
+                            Rabatt {quote.discount_type === 'percent' ? `(${quote.discount_value}%)` : ''}
+                          </span>
+                          <span className="font-semibold text-green-700 dark:text-green-400">
+                            −{discountAmount.toLocaleString('sv-SE')} kr
+                          </span>
+                        </div>
+                      )}
+                      
+                      {/* Summa efter rabatt */}
+                      {discountAmount > 0 && (
+                        <div className="flex justify-between py-2 border-b border-border font-medium">
+                          <span className="text-foreground">Summa</span>
+                          <span className="font-semibold">{sumAfterDiscount.toLocaleString('sv-SE')} kr</span>
+                        </div>
+                      )}
+                      
+                      {/* Moms-specifikation */}
+                      {vatIncluded && (
+                        <>
+                          <div className="flex justify-between py-1.5 text-muted-foreground text-xs">
+                            <span className="italic">varav Exkl. moms</span>
+                            <span>{exclVat.toLocaleString('sv-SE')} kr</span>
+                          </div>
+                          <div className="flex justify-between py-1.5 border-b border-border text-muted-foreground text-xs">
+                            <span className="italic">varav Moms (25%)</span>
+                            <span>{vatAmount.toLocaleString('sv-SE')} kr</span>
+                          </div>
+                        </>
+                      )}
+                      
+                      {/* Moms för exkl-moms-läge */}
+                      {!vatIncluded && (
+                        <div className="flex justify-between py-2 border-b border-border">
+                          <span className="text-muted-foreground">Moms (25%)</span>
+                          <span className="font-semibold">{quote.vat_sek.toLocaleString('sv-SE')} kr</span>
+                        </div>
+                      )}
+                      
+                      {/* ROT-avdrag */}
+                      {quote.rot_deduction_sek > 0 && (
+                        <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
+                          <span className="font-medium text-green-700 dark:text-green-400">
+                            Skattereduktion (ROT {quote.rot_percentage || 50}%)
+                          </span>
+                          <span className="font-semibold text-green-700 dark:text-green-400">
+                            −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Total att betala */}
+                    <div className="gradient-primary rounded-xl p-4 mt-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-bold text-primary-foreground">ATT BETALA</span>
+                        <span className="text-2xl font-bold text-primary-foreground">
+                          {quote.total_sek.toLocaleString('sv-SE')} kr
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                );
+              })()}
 
               {/* PDF Download - TILLFÄLLIGT DOLD */}
               {/* {quote.pdf_url && (
