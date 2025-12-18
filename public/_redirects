@@ -1,5 +1,30 @@
-# Gamla URL:er som inte längre finns (301 permanent redirects)
+# ===== GAMLA SIDOR SOM INTE LÄNGRE FINNS =====
 /cleaning-organization/         /tjanster/stadning     301!
+/naromrade                       /                      301!
+/naromrade/                      /                      301!
+/topplista                       /                      301!
+/topplista/                      /                      301!
+/omraden                         /                      301!
+/omraden/                        /                      301!
+
+# ===== ENGELSKA URL:ER UTAN /en/ PREFIX → SVENSKA VERSIONER =====
+/contact                         /kontakt               301!
+/contact/                        /kontakt               301!
+/services                        /tjanster              301!
+/services/                       /tjanster              301!
+/services/*                      /tjanster/:splat       301!
+/about-us                        /om-oss                301!
+/about-us/                       /om-oss                301!
+/technical-installations         /tjanster/tekniska-installationer  301!
+/technical-installations/        /tjanster/tekniska-installationer  301!
+/references                      /referenser            301!
+/references/                     /referenser            301!
+/careers                         /karriar               301!
+/careers/                        /karriar               301!
+/book-visit                      /boka-hembesok         301!
+/book-visit/                     /boka-hembesok         301!
+/smart-home                      /smart-hem             301!
+/smart-home/                     /smart-hem             301!
 
 # Målare URL-konsolidering (alla varianter → malare som kanonisk)
 /tjanster/malning                /tjanster/malare               301!
