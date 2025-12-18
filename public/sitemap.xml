@@ -7,7 +7,7 @@
   <!-- Landing SV -->
   <url>
     <loc>https://fixco.se/</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
@@ -18,7 +18,7 @@
   <!-- Landing EN -->
   <url>
     <loc>https://fixco.se/en/</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
@@ -29,7 +29,7 @@
   <!-- Tjänster Hub SV -->
   <url>
     <loc>https://fixco.se/tjanster</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
@@ -40,7 +40,7 @@
   <!-- Services Hub EN -->
   <url>
     <loc>https://fixco.se/en/services</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
@@ -51,7 +51,7 @@
   <!-- Referenser SV -->
   <url>
     <loc>https://fixco.se/referenser</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
@@ -62,18 +62,18 @@
   <!-- References EN -->
   <url>
     <loc>https://fixco.se/en/references</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referencer"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
   </url>
 
   <!-- Kontakt SV -->
   <url>
     <loc>https://fixco.se/kontakt</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
@@ -84,7 +84,7 @@
   <!-- Contact EN -->
   <url>
     <loc>https://fixco.se/en/contact</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
@@ -95,7 +95,7 @@
   <!-- Om Oss SV -->
   <url>
     <loc>https://fixco.se/om-oss</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
@@ -106,7 +106,7 @@
   <!-- About EN -->
   <url>
     <loc>https://fixco.se/en/about</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
@@ -117,7 +117,7 @@
   <!-- Boka Hembesök SV -->
   <url>
     <loc>https://fixco.se/boka-hembesok</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
@@ -128,7 +128,7 @@
   <!-- Book Visit EN -->
   <url>
     <loc>https://fixco.se/en/book-visit</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
@@ -139,7 +139,7 @@
   <!-- FAQ SV -->
   <url>
     <loc>https://fixco.se/faq</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
@@ -150,7 +150,7 @@
   <!-- FAQ EN -->
   <url>
     <loc>https://fixco.se/en/faq</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
@@ -161,7 +161,7 @@
   <!-- ROT Info SV -->
   <url>
     <loc>https://fixco.se/rot-info</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
@@ -172,7 +172,7 @@
   <!-- ROT Info EN -->
   <url>
     <loc>https://fixco.se/en/rot-info</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
@@ -183,7 +183,7 @@
   <!-- RUT SV -->
   <url>
     <loc>https://fixco.se/rut</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
@@ -194,7 +194,7 @@
   <!-- RUT EN -->
   <url>
     <loc>https://fixco.se/en/rut</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
@@ -205,7 +205,7 @@
   <!-- Smart Hem SV -->
   <url>
     <loc>https://fixco.se/smart-hem</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
@@ -216,7 +216,7 @@
   <!-- Smart Home EN -->
   <url>
     <loc>https://fixco.se/en/smart-home</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
@@ -227,7 +227,7 @@
   <!-- AI SV -->
   <url>
     <loc>https://fixco.se/ai</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
@@ -238,7 +238,7 @@
   <!-- AI EN -->
   <url>
     <loc>https://fixco.se/en/ai</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
@@ -251,7 +251,7 @@
   <!-- El SV -->
   <url>
     <loc>https://fixco.se/tjanster/el</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/el"/>
@@ -261,7 +261,7 @@
   <!-- VVS SV -->
   <url>
     <loc>https://fixco.se/tjanster/vvs</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/vvs"/>
@@ -271,7 +271,7 @@
   <!-- Snickare SV -->
   <url>
     <loc>https://fixco.se/tjanster/snickare</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare"/>
@@ -281,7 +281,7 @@
   <!-- Målare SV -->
   <url>
     <loc>https://fixco.se/tjanster/malare</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/malare"/>
@@ -291,7 +291,7 @@
   <!-- Trädgård SV -->
   <url>
     <loc>https://fixco.se/tjanster/tradgard</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tradgard"/>
@@ -301,7 +301,7 @@
   <!-- Städ SV -->
   <url>
     <loc>https://fixco.se/tjanster/stad</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/stad"/>
@@ -311,7 +311,7 @@
   <!-- Markarbeten SV -->
   <url>
     <loc>https://fixco.se/tjanster/markarbeten</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/markarbeten"/>
@@ -321,7 +321,7 @@
   <!-- Tekniska Installationer SV -->
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/tekniska-installationer"/>
@@ -331,7 +331,7 @@
   <!-- Flytt SV -->
   <url>
     <loc>https://fixco.se/tjanster/flytt</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/flytt"/>
@@ -341,7 +341,7 @@
   <!-- Montering SV -->
   <url>
     <loc>https://fixco.se/tjanster/montering</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/montering"/>
@@ -353,7 +353,7 @@
   <!-- Elmontör Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/elmontor-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -361,7 +361,7 @@
   <!-- Elmontör Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/elmontor-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -369,7 +369,7 @@
   <!-- VVS Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/vvs-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -377,7 +377,7 @@
   <!-- VVS Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/vvs-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -385,7 +385,7 @@
   <!-- Snickare Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/snickare-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -393,7 +393,7 @@
   <!-- Snickare Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/snickare-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -401,7 +401,7 @@
   <!-- Montering Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/montering-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -409,7 +409,7 @@
   <!-- Montering Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/montering-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -417,7 +417,7 @@
   <!-- Trädgård Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/tradgard-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -425,7 +425,7 @@
   <!-- Trädgård Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/tradgard-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -433,7 +433,7 @@
   <!-- Städ Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/stad-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -441,7 +441,7 @@
   <!-- Städ Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/stad-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -449,7 +449,7 @@
   <!-- Markarbeten Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/markarbeten-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -457,7 +457,7 @@
   <!-- Markarbeten Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/markarbeten-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -465,7 +465,7 @@
   <!-- Tekniska Installationer Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -473,7 +473,7 @@
   <!-- Tekniska Installationer Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/tekniska-installationer-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -481,7 +481,7 @@
   <!-- Flytt Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/flytt-uppsala</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -489,7 +489,7 @@
   <!-- Flytt Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/flytt-stockholm</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -497,7 +497,7 @@
   <!-- Målare Uppsala SV -->
   <url>
     <loc>https://fixco.se/tjanster/malare-uppsala</loc>
-    <lastmod>2025-12-04</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -505,7 +505,7 @@
   <!-- Målare Stockholm SV -->
   <url>
     <loc>https://fixco.se/tjanster/malare-stockholm</loc>
-    <lastmod>2025-12-04</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
