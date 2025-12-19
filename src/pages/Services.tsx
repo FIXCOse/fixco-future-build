@@ -105,60 +105,60 @@ const Services = () => {
           </p>
           <div className="flex flex-wrap gap-3 justify-center max-w-5xl mx-auto">
             {/* Uppsala */}
-            <Link to="/tjanster/elmontor-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Elmontör Uppsala
+            <Link to="/tjanster/elektriker/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+              Elektriker Uppsala
             </Link>
-            <Link to="/tjanster/vvs-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/vvs/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               VVS Uppsala
             </Link>
-            <Link to="/tjanster/snickare-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/snickare/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Snickare Uppsala
             </Link>
-            <Link to="/tjanster/montering-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/montering/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Montering Uppsala
             </Link>
-            <Link to="/tjanster/tradgard-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/tradgard/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Trädgård Uppsala
             </Link>
-            <Link to="/tjanster/stad-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/stad/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Städ Uppsala
             </Link>
-            <Link to="/tjanster/markarbeten-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/markarbeten/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Markarbeten Uppsala
             </Link>
-            <Link to="/tjanster/tekniska-installationer-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/tekniska-installationer/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Teknik Uppsala
             </Link>
-            <Link to="/tjanster/flytt-uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/flytt/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Flytt Uppsala
             </Link>
             
             {/* Stockholm */}
-            <Link to="/tjanster/elmontor-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Elmontör Stockholm
+            <Link to="/tjanster/elektriker/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+              Elektriker Stockholm
             </Link>
-            <Link to="/tjanster/vvs-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/vvs/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               VVS Stockholm
             </Link>
-            <Link to="/tjanster/snickare-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/snickare/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Snickare Stockholm
             </Link>
-            <Link to="/tjanster/montering-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/montering/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Montering Stockholm
             </Link>
-            <Link to="/tjanster/tradgard-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/tradgard/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Trädgård Stockholm
             </Link>
-            <Link to="/tjanster/stad-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/stad/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Städ Stockholm
             </Link>
-            <Link to="/tjanster/markarbeten-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/markarbeten/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Markarbeten Stockholm
             </Link>
-            <Link to="/tjanster/tekniska-installationer-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/tekniska-installationer/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Teknik Stockholm
             </Link>
-            <Link to="/tjanster/flytt-stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
+            <Link to="/tjanster/flytt/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
               Flytt Stockholm
             </Link>
           </div>

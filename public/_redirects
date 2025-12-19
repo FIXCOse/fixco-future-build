@@ -1,5 +1,46 @@
 # ===== GAMLA SIDOR SOM INTE LÄNGRE FINNS =====
 /cleaning-organization/         /tjanster/stadning     301!
+
+# ===== GAMLA LOKALA TJÄNST-SIDOR → NYA FORMAT =====
+# Elmontör → Elektriker (nya sidor)
+/tjanster/elmontor-uppsala       /tjanster/elektriker/uppsala       301!
+/tjanster/elmontor-stockholm     /tjanster/elektriker/stockholm     301!
+
+# VVS
+/tjanster/vvs-uppsala            /tjanster/vvs/uppsala              301!
+/tjanster/vvs-stockholm          /tjanster/vvs/stockholm            301!
+
+# Snickare
+/tjanster/snickare-uppsala       /tjanster/snickare/uppsala         301!
+/tjanster/snickare-stockholm     /tjanster/snickare/stockholm       301!
+
+# Montering
+/tjanster/montering-uppsala      /tjanster/montering/uppsala        301!
+/tjanster/montering-stockholm    /tjanster/montering/stockholm      301!
+
+# Trädgård
+/tjanster/tradgard-uppsala       /tjanster/tradgard/uppsala         301!
+/tjanster/tradgard-stockholm     /tjanster/tradgard/stockholm       301!
+
+# Städ
+/tjanster/stad-uppsala           /tjanster/stad/uppsala             301!
+/tjanster/stad-stockholm         /tjanster/stad/stockholm           301!
+
+# Markarbeten
+/tjanster/markarbeten-uppsala    /tjanster/markarbeten/uppsala      301!
+/tjanster/markarbeten-stockholm  /tjanster/markarbeten/stockholm    301!
+
+# Tekniska installationer
+/tjanster/tekniska-installationer-uppsala    /tjanster/tekniska-installationer/uppsala    301!
+/tjanster/tekniska-installationer-stockholm  /tjanster/tekniska-installationer/stockholm  301!
+
+# Flytt
+/tjanster/flytt-uppsala          /tjanster/flytt/uppsala            301!
+/tjanster/flytt-stockholm        /tjanster/flytt/stockholm          301!
+
+# Målare
+/tjanster/malare-uppsala         /tjanster/malare/uppsala           301!
+/tjanster/malare-stockholm       /tjanster/malare/stockholm         301!
 /naromrade                       /                      301!
 /naromrade/                      /                      301!
 /topplista                       /                      301!
