@@ -99,15 +99,18 @@ const AnimatedStat = ({ value: targetValue, suffix = "", label, icon: Icon, stat
     <motion.div
       ref={observe}
       variants={itemVariants}
-      className="text-center"
+      whileHover={{ y: -4, scale: 1.02 }}
+      className="relative group"
     >
-      <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
-        <Icon className="h-6 w-6 text-primary" />
+      <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 rounded-2xl p-6 text-center shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300">
+        <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+          <Icon className="h-7 w-7 text-primary" />
+        </div>
+        <div className="text-4xl md:text-5xl font-bold mb-2">
+          <GradientText>{value}{suffix}</GradientText>
+        </div>
+        <div className="text-sm text-muted-foreground">{label}</div>
       </div>
-      <div className="text-4xl md:text-5xl font-bold mb-2">
-        <GradientText>{value}{suffix}</GradientText>
-      </div>
-      <div className="text-sm text-muted-foreground">{label}</div>
     </motion.div>
   );
 };
@@ -265,58 +268,42 @@ const LocalServicePage = () => {
       <div className="min-h-screen">
         <Breadcrumbs />
         
-        {/* Hero Section - Softer Premium Design */}
-        <section className="pt-12 pb-20 relative overflow-hidden">
-          {/* Softer gradient background with more color depth */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(258,35%,12%)] via-[hsl(240,20%,11%)] to-background" />
+        {/* Hero Section - Warm Premium Design */}
+        <section className="pt-16 pb-24 relative overflow-hidden">
+          {/* Warmer, deeper gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(250,25%,14%)] via-[hsl(240,18%,11%)] to-[hsl(220,20%,9%)]" />
           
-          {/* Mesh gradient overlay for more visual interest */}
+          {/* Large, soft top glow - creates focal point */}
           <div 
-            className="absolute inset-0 opacity-30"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px]"
             style={{
-              backgroundImage: `
-                radial-gradient(at 20% 30%, hsl(262 83% 58% / 0.15) 0%, transparent 50%),
-                radial-gradient(at 80% 70%, hsl(200 100% 50% / 0.1) 0%, transparent 50%),
-                radial-gradient(at 50% 50%, hsl(340 80% 55% / 0.05) 0%, transparent 60%)
-              `
+              background: "radial-gradient(ellipse at 50% 0%, hsl(262 70% 55% / 0.25) 0%, hsl(200 80% 50% / 0.08) 40%, transparent 70%)"
             }}
           />
           
-          {/* Subtle grid pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
-              backgroundSize: '60px 60px'
-            }}
-          />
-          
-          {/* Enhanced blur-orbs with more visibility */}
+          {/* Warm accent orbs - more visible and colorful */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div 
-              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20 animate-pulse"
-              style={{ 
-                background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)",
-                animationDuration: '8s'
-              }} 
+              className="absolute top-[15%] left-[15%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-30"
+              style={{ background: "hsl(262 80% 60%)" }} 
             />
             <div 
-              className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-15 animate-pulse"
-              style={{ 
-                background: "radial-gradient(circle, hsl(200 100% 50%) 0%, transparent 70%)",
-                animationDuration: '10s',
-                animationDelay: '2s'
-              }} 
+              className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-20"
+              style={{ background: "hsl(200 90% 55%)" }} 
             />
             <div 
-              className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full blur-3xl opacity-10 animate-pulse"
-              style={{ 
-                background: "radial-gradient(circle, hsl(340 80% 55%) 0%, transparent 70%)",
-                animationDuration: '12s',
-                animationDelay: '4s'
-              }} 
+              className="absolute top-[50%] left-[60%] w-[300px] h-[300px] rounded-full blur-[80px] opacity-15"
+              style={{ background: "hsl(340 80% 60%)" }} 
             />
           </div>
+          
+          {/* Subtle warm noise texture */}
+          <div 
+            className="absolute inset-0 opacity-[0.015]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+            }}
+          />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -325,21 +312,21 @@ const LocalServicePage = () => {
               animate="visible"
               variants={containerVariants}
             >
-              {/* Location badge - glassmorphism design */}
-              <motion.div variants={badgeVariants} className="mb-6">
-                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 backdrop-blur-md text-sm font-medium shadow-lg shadow-primary/5">
+              {/* Location badge - warm glassmorphism */}
+              <motion.div variants={badgeVariants} className="mb-8">
+                <span className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-white/[0.12] to-white/[0.04] border border-white/20 backdrop-blur-xl text-sm font-medium shadow-2xl shadow-primary/10">
                   <MapPin className="h-4 w-4 text-primary" />
-                  <span className="text-foreground/90">Lokala hantverkare i {area}</span>
+                  <span className="text-foreground">Lokala hantverkare i {area}</span>
                 </span>
               </motion.div>
 
               {/* Icon + H1 */}
               <motion.div variants={itemVariants} className="flex items-center justify-center gap-6 mb-8">
                 <div className="relative">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/20 flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 backdrop-blur-sm border border-primary/30 flex items-center justify-center shadow-xl shadow-primary/20">
                     <IconComponent className="h-10 w-10 text-primary" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg shadow-primary/40">
                     <FixcoFIcon className="h-4 w-4 text-primary-foreground" />
                   </div>
                 </div>
@@ -355,10 +342,10 @@ const LocalServicePage = () => {
                 dangerouslySetInnerHTML={{ __html: content.intro.replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>').replace(/\n\n/g, '</p><p class="mt-4">') }} 
               />
               
-              {/* Trust badges - Clean horizontal list */}
+              {/* Trust badges - Enhanced with hover effects */}
               <motion.div 
                 variants={containerVariants}
-                className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-muted-foreground"
+                className="flex flex-wrap justify-center gap-4 mb-10"
               >
                 {[
                   { icon: Shield, text: `Ansvarsförsäkrade` },
@@ -369,7 +356,8 @@ const LocalServicePage = () => {
                   <motion.div
                     key={idx}
                     variants={badgeVariants}
-                    className="flex items-center gap-2"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors"
                   >
                     <badge.icon className="h-4 w-4 text-primary" />
                     <span>{badge.text}</span>
@@ -384,7 +372,7 @@ const LocalServicePage = () => {
               >
                 <Button 
                   size="lg"
-                  className="shadow-lg shadow-primary/20"
+                  className="shadow-xl shadow-primary/30"
                   onClick={() => {
                     openServiceRequestModal({
                       serviceSlug: service?.serviceKey || serviceSlug,
@@ -398,7 +386,7 @@ const LocalServicePage = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  className="border-primary/30 hover:bg-primary/10"
+                  className="border-primary/30 hover:bg-primary/10 hover:border-primary/50"
                   onClick={() => window.location.href = 'tel:+46793350228'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -409,14 +397,23 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Visual separator */}
-        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        {/* Gradient separator with glow */}
+        <div className="relative h-px">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="absolute inset-x-1/4 h-8 -top-4 bg-primary/10 blur-2xl" />
+        </div>
 
-        {/* Aktivitet i orten - Enhanced Stats Section */}
-        <section className="py-20 relative overflow-hidden">
-          {/* Subtle gradient background with color accent */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-blue-500/5" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80" />
+        {/* Aktivitet i orten - Premium Stats Section */}
+        <section className="py-24 relative overflow-hidden">
+          {/* Lighter background with warm accent */}
+          <div className="absolute inset-0 bg-[hsl(240,12%,10%)]" />
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse at 30% 50%, hsl(262 60% 50% / 0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, hsl(200 80% 50% / 0.05) 0%, transparent 40%)"
+            }}
+          />
+          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-5xl mx-auto"
@@ -425,11 +422,14 @@ const LocalServicePage = () => {
               viewport={{ once: true, margin: "-100px" }}
               variants={containerVariants}
             >
-              <motion.div variants={itemVariants} className="text-center mb-12">
+              <motion.div variants={itemVariants} className="text-center mb-14">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Live statistik
+                </span>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                   <GradientText>Fixco i {area}</GradientText> just nu
                 </h2>
-                <p className="text-muted-foreground">Se vår aktivitet och tillgänglighet i ditt område</p>
+                <p className="text-muted-foreground max-w-lg mx-auto">Se vår aktivitet och tillgänglighet i ditt område</p>
               </motion.div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -465,19 +465,30 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Visual separator */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+        {/* Warm gradient separator */}
+        <div className="relative h-px">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+        </div>
 
-        {/* Så bokar du - Enhanced Timeline Design */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-surface/30 via-surface/50 to-surface/30" />
-          {/* Subtle decorative element */}
+        {/* Så bokar du - Warm Timeline Design */}
+        <section className="py-24 relative overflow-hidden">
+          {/* Warm gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(30,15%,10%)] via-[hsl(240,10%,9%)] to-[hsl(260,15%,10%)]" />
+          
+          {/* Warm ambient light */}
           <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-20"
+            className="absolute top-0 right-0 w-[600px] h-[400px]"
             style={{
-              background: "radial-gradient(ellipse, hsl(262 83% 58% / 0.15) 0%, transparent 70%)"
+              background: "radial-gradient(ellipse, hsl(30 80% 50% / 0.08) 0%, transparent 60%)"
             }}
           />
+          <div 
+            className="absolute bottom-0 left-0 w-[500px] h-[300px]"
+            style={{
+              background: "radial-gradient(ellipse, hsl(262 70% 55% / 0.06) 0%, transparent 60%)"
+            }}
+          />
+          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -486,6 +497,9 @@ const LocalServicePage = () => {
               variants={containerVariants}
             >
               <motion.div variants={itemVariants} className="text-center mb-16">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                  Så enkelt är det
+                </span>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                   Så bokar du <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
                 </h2>
@@ -497,7 +511,7 @@ const LocalServicePage = () => {
               <div className="max-w-5xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 relative">
                   {/* Timeline connector - desktop only */}
-                  <div className="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+                  <div className="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-amber-500/30 via-primary to-primary/30" />
                   
                   {howToSteps.map((step, idx) => {
                     const StepIcon = stepIcons[idx] || CheckCircle;
@@ -505,18 +519,19 @@ const LocalServicePage = () => {
                       <motion.div 
                         key={idx} 
                         variants={itemVariants}
-                        className="relative"
+                        whileHover={{ y: -4 }}
+                        className="relative group"
                       >
                         {/* Step number badge */}
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center font-bold">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center font-bold shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
                             {idx + 1}
                           </div>
                         </div>
                         
-                        {/* card-premium instead of GlassCard */}
-                        <div className="card-premium pt-10 pb-6 px-6 text-center h-full hover:border-primary/30 transition-colors">
-                          <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
+                        {/* Enhanced card with depth */}
+                        <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 rounded-2xl pt-10 pb-6 px-6 text-center h-full hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                          <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <StepIcon className="h-7 w-7 text-primary" />
                           </div>
                           <h3 className="font-semibold mb-2 text-lg">{step.title}</h3>
@@ -531,12 +546,15 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Visual separator */}
-        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        {/* Cyan accent separator */}
+        <div className="relative h-px">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+        </div>
 
-        {/* Din lokala X i Y Section */}
-        <section className="py-16 bg-gradient-to-b from-background to-surface/20">
-          <div className="container mx-auto px-4">
+        {/* Din lokala X i Y Section - Clean neutral */}
+        <section className="py-20 relative">
+          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-3xl mx-auto"
               initial="hidden"
@@ -549,7 +567,7 @@ const LocalServicePage = () => {
               </motion.h2>
               <motion.div 
                 variants={itemVariants}
-                className="prose prose-slate dark:prose-invert max-w-none"
+                className="prose prose-slate dark:prose-invert max-w-none bg-gradient-to-br from-white/[0.04] to-transparent p-8 rounded-2xl border border-white/5"
                 dangerouslySetInnerHTML={{ 
                   __html: content.localSection.content
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -562,9 +580,14 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Tjänster Section - Premium Cards */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-background" />
+        {/* Tjänster Section - Premium with depth */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,10%,11%)] via-[hsl(250,12%,12%)] to-[hsl(240,10%,10%)]" />
+          {/* Subtle accent */}
+          <div 
+            className="absolute top-1/2 left-0 w-[400px] h-[300px] -translate-y-1/2"
+            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
+          />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-4xl mx-auto"
@@ -573,21 +596,21 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-8 text-center">
+              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-10 text-center">
                 {content.servicesSection.title}
               </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {content.servicesSection.items.map((item, idx) => (
                   <motion.div
                     key={idx}
                     variants={itemVariants}
-                    whileHover={{ x: 4 }}
-                    className="flex items-center gap-3 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-4 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default"
+                    whileHover={{ x: 6, scale: 1.01 }}
+                    className="flex items-center gap-4 bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-xl p-5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-default"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-4 w-4 text-primary" />
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle className="h-5 w-5 text-primary" />
                     </div>
-                    <span>{item}</span>
+                    <span className="font-medium">{item}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -595,9 +618,14 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* ROT/RUT Section */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5" />
+        {/* ROT/RUT Section - Green/Teal accent */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(160,20%,10%)] via-[hsl(180,15%,9%)] to-[hsl(200,15%,10%)]" />
+          {/* Teal glow */}
+          <div 
+            className="absolute top-1/2 right-0 w-[500px] h-[400px] -translate-y-1/2"
+            style={{ background: "radial-gradient(ellipse, hsl(160 60% 40% / 0.1) 0%, transparent 60%)" }}
+          />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-3xl mx-auto"
@@ -606,12 +634,17 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6">
-                {content.rotRutSection.title}
-              </motion.h2>
+              <motion.div variants={itemVariants} className="mb-6">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
+                  Spara pengar
+                </span>
+                <h2 className="text-3xl font-bold">
+                  {content.rotRutSection.title}
+                </h2>
+              </motion.div>
               <motion.div 
                 variants={itemVariants}
-                className="prose prose-slate dark:prose-invert max-w-none"
+                className="prose prose-slate dark:prose-invert max-w-none bg-gradient-to-br from-emerald-500/[0.04] to-transparent p-8 rounded-2xl border border-emerald-500/10"
                 dangerouslySetInnerHTML={{ 
                   __html: content.rotRutSection.content
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -625,8 +658,9 @@ const LocalServicePage = () => {
         </section>
 
         {/* Kontakta våra X i Y - Grid med alla orter */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
+        <section className="py-20 relative">
+          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -638,10 +672,10 @@ const LocalServicePage = () => {
               </motion.h2>
               <motion.div 
                 variants={itemVariants}
-                className="max-w-3xl mx-auto text-center mb-12"
+                className="max-w-3xl mx-auto text-center mb-12 text-muted-foreground"
                 dangerouslySetInnerHTML={{ 
                   __html: content.ctaSection.content
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                 }} 
               />
@@ -657,7 +691,7 @@ const LocalServicePage = () => {
                     <Link
                       key={linkedArea}
                       to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="flex items-center justify-between bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg px-3 py-2 hover:border-primary hover:bg-primary/5 transition-all text-sm group"
+                      className="flex items-center justify-between bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-2.5 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm group"
                     >
                       <span>{service?.name} {linkedArea}</span>
                       <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
@@ -677,7 +711,7 @@ const LocalServicePage = () => {
                     <Link
                       key={linkedArea}
                       to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="flex items-center justify-between bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg px-3 py-2 hover:border-primary hover:bg-primary/5 transition-all text-sm group"
+                      className="flex items-center justify-between bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-2.5 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm group"
                     >
                       <span>{service?.name} {linkedArea}</span>
                       <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
@@ -689,9 +723,18 @@ const LocalServicePage = () => {
           </div>
         </section>
 
+        {/* Purple separator */}
+        <div className="relative h-px">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        </div>
+
         {/* Fler tjänster i orten - Premium Service Cards */}
-        <section className="py-12 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background to-muted/30" />
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,15%,11%)] to-[hsl(240,10%,9%)]" />
+          <div 
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px]"
+            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
+          />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-4xl mx-auto"
@@ -700,23 +743,23 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-center">
+              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
                 Fler tjänster i <GradientText>{area}</GradientText>
               </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <motion.div variants={containerVariants} className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService, idx) => {
                   const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon || Zap;
                   return (
-                    <motion.div key={otherService.slug} variants={itemVariants}>
+                    <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -4 }}>
                       <Link 
                         to={`/tjanster/${otherService.slug}/${areaSlug}`}
-                        className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-primary/5 hover:border-primary/50 transition-all group text-center"
+                        className="flex flex-col items-center gap-3 p-5 rounded-xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 hover:bg-primary/5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all group text-center"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                          <OtherIcon className="h-5 w-5 text-primary" />
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <OtherIcon className="h-6 w-6 text-primary" />
                         </div>
                         <span className="text-sm font-medium">{otherService.name}</span>
-                        <ArrowRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                        <ArrowRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>
                     </motion.div>
                   );
@@ -726,9 +769,10 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Quick Facts - GlassCard Design */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
+        {/* Quick Facts - Enhanced with depth */}
+        <section className="py-16 relative">
+          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-4xl mx-auto"
               initial="hidden"
@@ -736,7 +780,7 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-center">
+              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
                 Snabbfakta: <GradientText>{content.h1}</GradientText>
               </motion.h2>
               <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -744,10 +788,10 @@ const LocalServicePage = () => {
                   <motion.div
                     key={idx}
                     variants={itemVariants}
-                    whileHover={{ y: -2 }}
-                    className="flex items-center gap-3 p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all"
+                    whileHover={{ y: -3, scale: 1.02 }}
+                    className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
                       <CheckCircle className="h-4 w-4 text-primary" />
                     </div>
                     <span className="text-sm">{fact}</span>
@@ -758,10 +802,15 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Visste du detta om [Ort] - Clean Fun Facts */}
+        {/* Visste du detta om [Ort] - Warm Fun Facts */}
         {content.funFacts.length > 0 && (
-          <section className="py-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-surface/20" />
+          <section className="py-16 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(35,20%,10%)] via-[hsl(30,15%,9%)] to-[hsl(40,15%,8%)]" />
+            {/* Warm glow */}
+            <div 
+              className="absolute top-0 left-1/3 w-[500px] h-[300px]"
+              style={{ background: "radial-gradient(ellipse, hsl(35 70% 50% / 0.08) 0%, transparent 60%)" }}
+            />
             <div className="container mx-auto px-4 relative z-10">
               <motion.div 
                 className="max-w-4xl mx-auto"
@@ -770,21 +819,27 @@ const LocalServicePage = () => {
                 viewport={{ once: true }}
                 variants={containerVariants}
               >
-                <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-center">
-                  Visste du detta om <GradientText>{area}</GradientText>?
-                </motion.h2>
+                <motion.div variants={itemVariants} className="text-center mb-8">
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                    Lokalt
+                  </span>
+                  <h2 className="text-2xl font-bold">
+                    Visste du detta om <GradientText>{area}</GradientText>?
+                  </h2>
+                </motion.div>
                 <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {content.funFacts.map((fact, idx) => (
                     <motion.div
                       key={idx}
                       variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
                     >
-                      <div className="card-premium p-5 h-full hover:border-primary/30 transition-colors">
+                      <div className="bg-gradient-to-br from-amber-500/[0.08] to-amber-500/[0.02] border border-amber-500/10 rounded-2xl p-6 h-full hover:border-amber-500/20 transition-colors">
                         <div className="flex items-start gap-4">
                           <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                            <Lightbulb className="h-5 w-5 text-amber-500" />
+                            <Lightbulb className="h-5 w-5 text-amber-400" />
                           </div>
-                          <span className="text-sm leading-relaxed">{fact}</span>
+                          <span className="text-sm leading-relaxed text-foreground/90">{fact}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -795,10 +850,11 @@ const LocalServicePage = () => {
           </section>
         )}
 
-        {/* Myter om tjänsten - Clean Design */}
+        {/* Myter om tjänsten - Enhanced Design */}
         {content.myths.length > 0 && (
-          <section className="py-12 bg-background">
-            <div className="container mx-auto px-4">
+          <section className="py-16 relative">
+            <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
+            <div className="container mx-auto px-4 relative z-10">
               <motion.div 
                 className="max-w-3xl mx-auto"
                 initial="hidden"
@@ -806,7 +862,7 @@ const LocalServicePage = () => {
                 viewport={{ once: true }}
                 variants={containerVariants}
               >
-                <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-center">
+                <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
                   Myter om {service?.name?.toLowerCase()} – sant eller falskt?
                 </motion.h2>
                 <motion.div variants={containerVariants} className="space-y-4">
@@ -814,8 +870,9 @@ const LocalServicePage = () => {
                     <motion.div 
                       key={idx}
                       variants={itemVariants}
+                      whileHover={{ scale: 1.01 }}
                     >
-                      <div className="card-premium p-6 hover:border-primary/30 transition-colors">
+                      <div className="bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 rounded-2xl p-6 hover:border-primary/20 transition-colors">
                         <div className="flex items-start gap-3 mb-4">
                           <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
                             <XCircle className="h-4 w-4 text-destructive" />
@@ -823,8 +880,8 @@ const LocalServicePage = () => {
                           <span className="font-medium text-destructive">Myt: &quot;{item.myth}&quot;</span>
                         </div>
                         <div className="flex items-start gap-3 pl-11">
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <CheckCircle className="h-4 w-4 text-primary" />
+                          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                            <CheckCircle className="h-4 w-4 text-emerald-400" />
                           </div>
                           <span className="text-muted-foreground">Sanning: {item.truth}</span>
                         </div>
@@ -837,9 +894,14 @@ const LocalServicePage = () => {
           </section>
         )}
 
-        {/* FAQ Section - Enhanced Accordion */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-background" />
+        {/* FAQ Section - Premium Accordion */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,15%,11%)] via-[hsl(250,12%,10%)] to-[hsl(240,10%,9%)]" />
+          {/* Subtle glow */}
+          <div 
+            className="absolute bottom-0 right-0 w-[500px] h-[400px]"
+            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
+          />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-3xl mx-auto"
@@ -848,16 +910,21 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-8 text-center">
-                Vanliga frågor om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
-              </motion.h2>
+              <motion.div variants={itemVariants} className="text-center mb-10">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  FAQ
+                </span>
+                <h2 className="text-3xl font-bold">
+                  Vanliga frågor om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
+                </h2>
+              </motion.div>
               <motion.div variants={itemVariants}>
                 <Accordion type="single" collapsible className="w-full space-y-3">
                   {content.faqs.map((faq, idx) => (
                     <AccordionItem 
                       key={idx} 
                       value={`faq-${idx}`}
-                      className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl px-6 data-[state=open]:border-primary/30 transition-colors"
+                      className="bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 rounded-xl px-6 data-[state=open]:border-primary/30 data-[state=open]:shadow-lg data-[state=open]:shadow-primary/5 transition-all"
                     >
                       <AccordionTrigger className="text-left hover:no-underline py-5">
                         <span className="font-medium">{faq.q}</span>
@@ -873,13 +940,18 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Final CTA - Clean Premium Design */}
-        <section className="py-20 relative overflow-hidden">
-          {/* Subtle blur-orbs for CTA */}
+        {/* Final CTA - Premium with strong glow */}
+        <section className="py-24 relative overflow-hidden">
+          {/* Strong ambient glows */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(260,15%,10%)] to-[hsl(240,10%,7%)]" />
           <div className="absolute inset-0 pointer-events-none">
             <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-3xl opacity-10"
-              style={{ background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)" }} 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full blur-[120px] opacity-25"
+              style={{ background: "hsl(262 80% 55%)" }} 
+            />
+            <div 
+              className="absolute top-1/3 right-1/4 w-[400px] h-[300px] rounded-full blur-[80px] opacity-15"
+              style={{ background: "hsl(200 90% 55%)" }} 
             />
           </div>
           
@@ -890,11 +962,11 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <div className="card-premium max-w-3xl mx-auto p-10 md:p-12 text-center">
+              <div className="max-w-3xl mx-auto p-10 md:p-14 text-center bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/15 rounded-3xl shadow-2xl shadow-primary/10">
                 <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-4">
                   Hitta och anlita bästa <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}?
                 </motion.h2>
-                <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8">
+                <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
                   Fixco hjälper dig hitta rätt {service?.name?.toLowerCase()} i {area}. 
                   Få ett fast pris med 50% {service?.rotRut}-avdrag idag!
                 </motion.p>
@@ -904,6 +976,7 @@ const LocalServicePage = () => {
                 >
                   <Button 
                     size="lg"
+                    className="shadow-xl shadow-primary/30"
                     onClick={() => {
                       openServiceRequestModal({
                         serviceSlug: service?.serviceKey || serviceSlug,
@@ -917,7 +990,7 @@ const LocalServicePage = () => {
                   <Button 
                     variant="outline" 
                     size="lg"
-                    className="border-primary/30 hover:bg-primary/10"
+                    className="border-primary/30 hover:bg-primary/10 hover:border-primary/50"
                     asChild
                   >
                     <Link to="/tjanster">
@@ -932,23 +1005,25 @@ const LocalServicePage = () => {
         </section>
 
         {/* Andra tjänster i området - Clean footer links */}
-        <section className="py-12 bg-background border-t border-border/50">
-          <div className="container mx-auto px-4">
+        <section className="py-14 relative">
+          <div className="absolute inset-0 bg-[hsl(240,8%,6%)]" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-center">
+              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
                 Andra tjänster i {area}
               </motion.h2>
               <motion.div variants={containerVariants} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 max-w-4xl mx-auto">
                 {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => (
-                  <motion.div key={otherService.slug} variants={itemVariants}>
+                  <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -2 }}>
                     <Link
                       to={`/tjanster/${otherService.slug}/${areaSlug}`}
-                      className="flex items-center justify-center bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg px-3 py-3 hover:border-primary hover:bg-primary/5 transition-all text-sm text-center group"
+                      className="flex items-center justify-center bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-3 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm text-center"
                     >
                       <span>{otherService.name} {area}</span>
                     </Link>
