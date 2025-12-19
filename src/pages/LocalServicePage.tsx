@@ -45,6 +45,8 @@ import { GradientText } from "@/components/v2/GradientText";
 import { HeroIllustration } from "@/components/local-service/HeroIllustration";
 import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
 import { TestimonialCard } from "@/components/local-service/TestimonialCard";
+import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
+import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
 
 // Animation variants
 const containerVariants = {
@@ -161,8 +163,7 @@ const LocalServicePage = () => {
     ]
   }), [service, area, serviceSlug, areaSlug]);
 
-  const stockholmAreasForLinks = STOCKHOLM_AREAS.filter(a => a !== area);
-  const uppsalaAreasForLinks = UPPSALA_AREAS.filter(a => a !== area);
+  // Area links are now handled by ExpandableAreaLinks component
 
   // Combine myths into FAQ for consolidation
   const allFaqItems = [
@@ -386,6 +387,15 @@ const LocalServicePage = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* ============================================
+            NEARBY AREAS - For easy navigation
+            ============================================ */}
+        <NearbyAreasSection
+          currentArea={area}
+          serviceSlug={serviceSlug}
+          serviceName={service?.name || ""}
+        />
 
         {/* ============================================
             SERVICES SECTION - Larger Clickable Cards
@@ -732,63 +742,13 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            AREA LINKS - For SEO
+            AREA LINKS - For SEO (Expandable)
             ============================================ */}
-        <section className="py-14 relative">
-          <div className="absolute inset-0 bg-[hsl(240,8%,5%)]" />
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-xl font-bold mb-6 text-center text-foreground/80">
-                {service?.name} i andra områden
-              </motion.h2>
-              
-              {/* Stockholm */}
-              <motion.div variants={itemVariants} className="mb-8">
-                <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Stockholmsområdet
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {stockholmAreasForLinks.slice(0, 12).map((linkedArea) => (
-                    <Link
-                      key={linkedArea}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all"
-                    >
-                      {linkedArea}
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Uppsala */}
-              <motion.div variants={itemVariants}>
-                <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Uppsalaområdet
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {uppsalaAreasForLinks.slice(0, 12).map((linkedArea) => (
-                    <Link
-                      key={linkedArea}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all"
-                    >
-                      {linkedArea}
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
+        <ExpandableAreaLinks
+          currentArea={area}
+          serviceSlug={serviceSlug}
+          serviceName={service?.name || ""}
+        />
       </div>
     </>
   );
