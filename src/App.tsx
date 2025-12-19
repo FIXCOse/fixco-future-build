@@ -99,6 +99,8 @@ const ServiceCityPage = lazy(() => import("./pages/locations/ServiceCityPage"));
 const ServiceCityDetail = lazy(() => import("./pages/locations/ServiceCityDetail"));
 const LocalServicePage = lazy(() => import("./pages/LocalServicePage"));
 const Careers = lazy(() => import("./pages/Careers"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -376,6 +378,8 @@ const App = () => {
                             <Route path="rot" element={lazyElement(ROTInfo)} />
                             <Route path="rut" element={lazyElement(RUT)} />
                             <Route path="referenser" element={lazyElement(Referenser)} />
+                            <Route path="blogg" element={lazyElement(Blog)} />
+                            <Route path="blogg/:slug" element={lazyElement(BlogPost)} />
                             <Route path="ai" element={lazyElement(AI)} />
                             <Route path="karriar" element={lazyElement(Careers)} />
                             <Route path="smart-hem" element={
