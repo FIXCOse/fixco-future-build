@@ -8,18 +8,14 @@ import {
   FileText, 
   MapPin, 
   Clock, 
-  Shield, 
   Star, 
   CheckCircle, 
   ArrowRight,
-  Users,
   BadgeCheck,
   Zap,
   Lightbulb,
   XCircle,
-  Calendar,
-  Briefcase,
-  TrendingUp
+  Calendar
 } from "lucide-react";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -29,7 +25,6 @@ import {
   getServiceFromSlug,
   isValidLocalServicePage,
   generateAreaSlug,
-  ALL_AREAS,
   LOCAL_SERVICES,
   STOCKHOLM_AREAS,
   UPPSALA_AREAS,
@@ -47,14 +42,16 @@ import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
-import useCountUpOnce from "@/hooks/useCountUpOnce";
+import { HeroIllustration } from "@/components/local-service/HeroIllustration";
+import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
+import { TestimonialCard } from "@/components/local-service/TestimonialCard";
 
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.08 }
   }
 };
 
@@ -67,58 +64,17 @@ const itemVariants = {
   }
 };
 
-const badgeVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const }
-  }
-};
-
-// Animated stat component
-interface AnimatedStatProps {
-  value: number;
-  suffix?: string;
-  label: string;
-  icon: React.ElementType;
-  statKey: string;
-  decimals?: number;
-}
-
-const AnimatedStat = ({ value: targetValue, suffix = "", label, icon: Icon, statKey, decimals = 0 }: AnimatedStatProps) => {
-  const { value, observe } = useCountUpOnce({
-    key: `local-stat-${statKey}`,
-    from: 0,
-    to: targetValue,
-    duration: 2000,
-    formatter: (val) => decimals ? val.toFixed(decimals) : Math.round(val).toLocaleString('sv-SE')
-  });
-
-  return (
-    <motion.div
-      ref={observe}
-      variants={itemVariants}
-      whileHover={{ y: -4, scale: 1.02 }}
-      className="relative group"
-    >
-      <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 rounded-2xl p-6 text-center shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-          <Icon className="h-7 w-7 text-primary" />
-        </div>
-        <div className="text-4xl md:text-5xl font-bold mb-2">
-          <GradientText>{value}{suffix}</GradientText>
-        </div>
-        <div className="text-sm text-muted-foreground">{label}</div>
-      </div>
-    </motion.div>
-  );
-};
+const stepIcons = [FileText, Clock, Calendar, CheckCircle];
+const stepColors = [
+  { bg: "from-purple-500/20 to-purple-500/5", text: "text-purple-400", border: "border-purple-500/20" },
+  { bg: "from-blue-500/20 to-blue-500/5", text: "text-blue-400", border: "border-blue-500/20" },
+  { bg: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-400", border: "border-emerald-500/20" },
+  { bg: "from-amber-500/20 to-amber-500/5", text: "text-amber-400", border: "border-amber-500/20" },
+];
 
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
   
-  // Validera att kombinationen finns
   if (!serviceSlug || !areaSlug || !isValidLocalServicePage(serviceSlug, areaSlug)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -140,15 +96,13 @@ const LocalServicePage = () => {
   const content = generateLocalContent(serviceSlug as LocalServiceSlug, area);
   const metadata = getAreaMetadata(area);
   
-  // Hämta ikon från servicesDataNew
   const serviceData = servicesDataNew.find(s => s.slug === service?.serviceKey);
   const IconComponent = serviceData?.icon || Zap;
   
-  // Hämta aktivitetsdata för orten
   const areaActivity = getAreaActivity(area);
   const howToSteps = getHowToSteps(service?.name || '', area);
   
-  // Generera schema.org markup
+  // Schema.org markup
   const localBusinessSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -157,10 +111,7 @@ const LocalServicePage = () => {
     "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
     "telephone": "+46-79-335-02-28",
     "priceRange": "$$",
-    "areaServed": {
-      "@type": "City",
-      "name": area
-    },
+    "areaServed": { "@type": "City", "name": area },
     "address": {
       "@type": "PostalAddress",
       "addressLocality": area,
@@ -172,17 +123,9 @@ const LocalServicePage = () => {
       "ratingValue": areaActivity.avgRating.toFixed(1),
       "reviewCount": areaActivity.reviewCount.toString(),
       "bestRating": "5"
-    },
-    "review": [{
-      "@type": "Review",
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "author": { "@type": "Person", "name": getRandomReviewer(area) },
-      "reviewBody": getAreaReview(area, service?.name || ''),
-      "datePublished": "2024-11-15"
-    }]
-  }), [content, serviceSlug, areaSlug, area, metadata, areaActivity, service]);
+    }
+  }), [content, serviceSlug, areaSlug, area, metadata, areaActivity]);
 
-  // HowTo Schema för Google rich snippets
   const howToSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -196,22 +139,6 @@ const LocalServicePage = () => {
       "text": step.description
     }))
   }), [service, area, howToSteps]);
-
-  // ContactPoint Schema
-  const contactPointSchema = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "ContactPoint",
-    "telephone": "+46-79-335-02-28",
-    "contactType": "customer service",
-    "areaServed": area,
-    "availableLanguage": ["Swedish", "English"],
-    "hoursAvailable": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "07:00",
-      "closes": "18:00"
-    }
-  }), [area]);
   
   const faqSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -219,10 +146,7 @@ const LocalServicePage = () => {
     "mainEntity": content.faqs.map(faq => ({
       "@type": "Question",
       "name": faq.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.a
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
     }))
   }), [content.faqs]);
 
@@ -237,16 +161,14 @@ const LocalServicePage = () => {
     ]
   }), [service, area, serviceSlug, areaSlug]);
 
-  // Hämta relaterade orter i samma region
-  const relatedAreas = metadata.region === "Stockholm" 
-    ? STOCKHOLM_AREAS.filter(a => a !== area).slice(0, 15)
-    : UPPSALA_AREAS.filter(a => a !== area).slice(0, 15);
-  
-  // Hämta alla orter för intern länkning
   const stockholmAreasForLinks = STOCKHOLM_AREAS.filter(a => a !== area);
   const uppsalaAreasForLinks = UPPSALA_AREAS.filter(a => a !== area);
 
-  const stepIcons = [FileText, Clock, Calendar, CheckCircle];
+  // Combine myths into FAQ for consolidation
+  const allFaqItems = [
+    ...content.faqs,
+    ...content.myths.map(m => ({ q: `Myt: "${m.myth}" – stämmer det?`, a: `Nej, det är en myt. Sanningen är: ${m.truth}` }))
+  ];
   
   return (
     <>
@@ -257,726 +179,100 @@ const LocalServicePage = () => {
         <meta property="og:title" content={content.title} />
         <meta property="og:description" content={content.description} />
         <meta property="og:url" content={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
-        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(howToSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(contactPointSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen">
         <Breadcrumbs />
         
-        {/* Hero Section - Warm Premium Design */}
-        <section className="pt-16 pb-24 relative overflow-hidden">
-          {/* Warmer, deeper gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(250,25%,14%)] via-[hsl(240,18%,11%)] to-[hsl(220,20%,9%)]" />
+        {/* ============================================
+            HERO SECTION - Split Layout with Illustration
+            ============================================ */}
+        <section className="pt-8 pb-16 lg:pt-12 lg:pb-24 relative overflow-hidden">
+          {/* Background - warm deep gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,25%,12%)] via-[hsl(250,20%,10%)] to-[hsl(240,18%,8%)]" />
           
-          {/* Large, soft top glow - creates focal point */}
-          <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px]"
-            style={{
-              background: "radial-gradient(ellipse at 50% 0%, hsl(262 70% 55% / 0.25) 0%, hsl(200 80% 50% / 0.08) 40%, transparent 70%)"
-            }}
-          />
-          
-          {/* Warm accent orbs - more visible and colorful */}
+          {/* Ambient glows */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div 
-              className="absolute top-[15%] left-[15%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-30"
-              style={{ background: "hsl(262 80% 60%)" }} 
+              className="absolute -top-[20%] left-[20%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-30"
+              style={{ background: "linear-gradient(135deg, hsl(262 70% 55%), hsl(200 80% 50%))" }} 
             />
             <div 
-              className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-20"
-              style={{ background: "hsl(200 90% 55%)" }} 
-            />
-            <div 
-              className="absolute top-[50%] left-[60%] w-[300px] h-[300px] rounded-full blur-[80px] opacity-15"
-              style={{ background: "hsl(340 80% 60%)" }} 
+              className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-20"
+              style={{ background: "hsl(340 70% 55%)" }} 
             />
           </div>
           
-          {/* Subtle warm noise texture */}
-          <div 
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
-            }}
-          />
-          
           <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="text-center max-w-4xl mx-auto"
-              initial="hidden"
-              animate="visible"
-              variants={containerVariants}
-            >
-              {/* Location badge - warm glassmorphism */}
-              <motion.div variants={badgeVariants} className="mb-8">
-                <span className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-white/[0.12] to-white/[0.04] border border-white/20 backdrop-blur-xl text-sm font-medium shadow-2xl shadow-primary/10">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <span className="text-foreground">Lokala hantverkare i {area}</span>
-                </span>
-              </motion.div>
-
-              {/* Icon + H1 */}
-              <motion.div variants={itemVariants} className="flex items-center justify-center gap-6 mb-8">
-                <div className="relative">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 backdrop-blur-sm border border-primary/30 flex items-center justify-center shadow-xl shadow-primary/20">
-                    <IconComponent className="h-10 w-10 text-primary" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg shadow-primary/40">
-                    <FixcoFIcon className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-                  <GradientText gradient="rainbow">{content.h1}</GradientText>
-                </h1>
-              </motion.div>
-              
-              {/* Intro text */}
-              <motion.div 
-                variants={itemVariants}
-                className="text-lg text-muted-foreground mb-10 max-w-3xl mx-auto text-left prose prose-slate dark:prose-invert"
-                dangerouslySetInnerHTML={{ __html: content.intro.replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>').replace(/\n\n/g, '</p><p class="mt-4">') }} 
-              />
-              
-              {/* Trust badges - Enhanced with hover effects */}
-              <motion.div 
-                variants={containerVariants}
-                className="flex flex-wrap justify-center gap-4 mb-10"
-              >
-                {[
-                  { icon: Shield, text: `Ansvarsförsäkrade` },
-                  { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5 betyg` },
-                  { icon: Clock, text: `Start inom 24-48h` },
-                  { icon: BadgeCheck, text: `50% ${service?.rotRut}-avdrag` }
-                ].map((badge, idx) => (
-                  <motion.div
-                    key={idx}
-                    variants={badgeVariants}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors"
-                  >
-                    <badge.icon className="h-4 w-4 text-primary" />
-                    <span>{badge.text}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {/* CTA buttons */}
-              <motion.div 
-                variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
-                <Button 
-                  size="lg"
-                  className="shadow-xl shadow-primary/30"
-                  onClick={() => {
-                    openServiceRequestModal({
-                      serviceSlug: service?.serviceKey || serviceSlug,
-                      prefill: { service_name: content.h1 }
-                    });
-                  }}
-                >
-                  <FileText className="h-5 w-5 mr-2" />
-                  Begär offert i {area}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="border-primary/30 hover:bg-primary/10 hover:border-primary/50"
-                  onClick={() => window.location.href = 'tel:+46793350228'}
-                >
-                  <Phone className="h-5 w-5 mr-2" />
-                  Ring oss: 079-335 02 28
-                </Button>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Gradient separator with glow */}
-        <div className="relative h-px">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-          <div className="absolute inset-x-1/4 h-8 -top-4 bg-primary/10 blur-2xl" />
-        </div>
-
-        {/* Aktivitet i orten - Premium Stats Section */}
-        <section className="py-24 relative overflow-hidden">
-          {/* Lighter background with warm accent */}
-          <div className="absolute inset-0 bg-[hsl(240,12%,10%)]" />
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse at 30% 50%, hsl(262 60% 50% / 0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, hsl(200 80% 50% / 0.05) 0%, transparent 40%)"
-            }}
-          />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-5xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-14">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Live statistik
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  <GradientText>Fixco i {area}</GradientText> just nu
-                </h2>
-                <p className="text-muted-foreground max-w-lg mx-auto">Se vår aktivitet och tillgänglighet i ditt område</p>
-              </motion.div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                <AnimatedStat
-                  value={areaActivity.recentProjects}
-                  label="Projekt senaste månaden"
-                  icon={Briefcase}
-                  statKey={`${area}-projects`}
-                />
-                <AnimatedStat
-                  value={areaActivity.avgRating}
-                  suffix="/5"
-                  label={`Snittbetyg i ${area}`}
-                  icon={Star}
-                  statKey={`${area}-rating`}
-                  decimals={1}
-                />
-                <AnimatedStat
-                  value={areaActivity.responseTimeHours}
-                  suffix="h"
-                  label="Genomsnittlig svarstid"
-                  icon={Clock}
-                  statKey={`${area}-response`}
-                />
-                <AnimatedStat
-                  value={areaActivity.activeWorkers}
-                  label="Aktiva hantverkare"
-                  icon={Users}
-                  statKey={`${area}-workers`}
-                />
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Warm gradient separator */}
-        <div className="relative h-px">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-        </div>
-
-        {/* Så bokar du - Warm Timeline Design */}
-        <section className="py-24 relative overflow-hidden">
-          {/* Warm gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(30,15%,10%)] via-[hsl(240,10%,9%)] to-[hsl(260,15%,10%)]" />
-          
-          {/* Warm ambient light */}
-          <div 
-            className="absolute top-0 right-0 w-[600px] h-[400px]"
-            style={{
-              background: "radial-gradient(ellipse, hsl(30 80% 50% / 0.08) 0%, transparent 60%)"
-            }}
-          />
-          <div 
-            className="absolute bottom-0 left-0 w-[500px] h-[300px]"
-            style={{
-              background: "radial-gradient(ellipse, hsl(262 70% 55% / 0.06) 0%, transparent 60%)"
-            }}
-          />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-16">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
-                  Så enkelt är det
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Så bokar du <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Det tar bara några minuter att komma igång
-                </p>
-              </motion.div>
-
-              <div className="max-w-5xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 relative">
-                  {/* Timeline connector - desktop only */}
-                  <div className="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-amber-500/30 via-primary to-primary/30" />
-                  
-                  {howToSteps.map((step, idx) => {
-                    const StepIcon = stepIcons[idx] || CheckCircle;
-                    return (
-                      <motion.div 
-                        key={idx} 
-                        variants={itemVariants}
-                        whileHover={{ y: -4 }}
-                        className="relative group"
-                      >
-                        {/* Step number badge */}
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center font-bold shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform">
-                            {idx + 1}
-                          </div>
-                        </div>
-                        
-                        {/* Enhanced card with depth */}
-                        <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 rounded-2xl pt-10 pb-6 px-6 text-center h-full hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
-                          <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <StepIcon className="h-7 w-7 text-primary" />
-                          </div>
-                          <h3 className="font-semibold mb-2 text-lg">{step.title}</h3>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Cyan accent separator */}
-        <div className="relative h-px">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-        </div>
-
-        {/* Din lokala X i Y Section - Clean neutral */}
-        <section className="py-20 relative">
-          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-3xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6">
-                {content.localSection.title}
-              </motion.h2>
-              <motion.div 
-                variants={itemVariants}
-                className="prose prose-slate dark:prose-invert max-w-none bg-gradient-to-br from-white/[0.04] to-transparent p-8 rounded-2xl border border-white/5"
-                dangerouslySetInnerHTML={{ 
-                  __html: content.localSection.content
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n\n/g, '</p><p class="mt-4">')
-                    .replace(/- (.*?)(?=\n|$)/g, '<li class="flex items-start gap-2"><span class="text-primary mt-1">✓</span><span>$1</span></li>')
-                    .replace(/(<li.*?<\/li>\s*)+/g, '<ul class="list-none space-y-2 my-4">$&</ul>')
-                }} 
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Tjänster Section - Premium with depth */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,10%,11%)] via-[hsl(250,12%,12%)] to-[hsl(240,10%,10%)]" />
-          {/* Subtle accent */}
-          <div 
-            className="absolute top-1/2 left-0 w-[400px] h-[300px] -translate-y-1/2"
-            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
-          />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-4xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-10 text-center">
-                {content.servicesSection.title}
-              </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {content.servicesSection.items.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    variants={itemVariants}
-                    whileHover={{ x: 6, scale: 1.01 }}
-                    className="flex items-center gap-4 bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-xl p-5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-default"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-5 w-5 text-primary" />
-                    </div>
-                    <span className="font-medium">{item}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ROT/RUT Section - Green/Teal accent */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(160,20%,10%)] via-[hsl(180,15%,9%)] to-[hsl(200,15%,10%)]" />
-          {/* Teal glow */}
-          <div 
-            className="absolute top-1/2 right-0 w-[500px] h-[400px] -translate-y-1/2"
-            style={{ background: "radial-gradient(ellipse, hsl(160 60% 40% / 0.1) 0%, transparent 60%)" }}
-          />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-3xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="mb-6">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
-                  Spara pengar
-                </span>
-                <h2 className="text-3xl font-bold">
-                  {content.rotRutSection.title}
-                </h2>
-              </motion.div>
-              <motion.div 
-                variants={itemVariants}
-                className="prose prose-slate dark:prose-invert max-w-none bg-gradient-to-br from-emerald-500/[0.04] to-transparent p-8 rounded-2xl border border-emerald-500/10"
-                dangerouslySetInnerHTML={{ 
-                  __html: content.rotRutSection.content
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n\n/g, '</p><p class="mt-4">')
-                    .replace(/(\d\. .*?)(?=\n|$)/g, '<li>$1</li>')
-                    .replace(/(<li>.*?<\/li>\s*)+/g, '<ol class="list-decimal list-inside space-y-2 my-4">$&</ol>')
-                }} 
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Kontakta våra X i Y - Grid med alla orter */}
-        <section className="py-20 relative">
-          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-4 text-center">
-                {content.ctaSection.title}
-              </motion.h2>
-              <motion.div 
-                variants={itemVariants}
-                className="max-w-3xl mx-auto text-center mb-12 text-muted-foreground"
-                dangerouslySetInnerHTML={{ 
-                  __html: content.ctaSection.content
-                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
-                    .replace(/\n\n/g, '</p><p class="mt-4">')
-                }} 
-              />
-              
-              {/* Stockholm-regionen */}
-              <motion.div variants={itemVariants} className="mb-12">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  {service?.name} i Stockholmsområdet
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                  {stockholmAreasForLinks.map((linkedArea) => (
-                    <Link
-                      key={linkedArea}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="flex items-center justify-between bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-2.5 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm group"
-                    >
-                      <span>{service?.name} {linkedArea}</span>
-                      <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Uppsala-regionen */}
-              <motion.div variants={itemVariants}>
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  {service?.name} i Uppsalaområdet
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                  {uppsalaAreasForLinks.map((linkedArea) => (
-                    <Link
-                      key={linkedArea}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
-                      className="flex items-center justify-between bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-2.5 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm group"
-                    >
-                      <span>{service?.name} {linkedArea}</span>
-                      <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Purple separator */}
-        <div className="relative h-px">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-        </div>
-
-        {/* Fler tjänster i orten - Premium Service Cards */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,15%,11%)] to-[hsl(240,10%,9%)]" />
-          <div 
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px]"
-            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
-          />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-4xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
-                Fler tjänster i <GradientText>{area}</GradientText>
-              </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService, idx) => {
-                  const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon || Zap;
-                  return (
-                    <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -4 }}>
-                      <Link 
-                        to={`/tjanster/${otherService.slug}/${areaSlug}`}
-                        className="flex flex-col items-center gap-3 p-5 rounded-xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 hover:bg-primary/5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all group text-center"
-                      >
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <OtherIcon className="h-6 w-6 text-primary" />
-                        </div>
-                        <span className="text-sm font-medium">{otherService.name}</span>
-                        <ArrowRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Quick Facts - Enhanced with depth */}
-        <section className="py-16 relative">
-          <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-4xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
-                Snabbfakta: <GradientText>{content.h1}</GradientText>
-              </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {content.quickFacts.map((fact, idx) => (
-                  <motion.div
-                    key={idx}
-                    variants={itemVariants}
-                    whileHover={{ y: -3, scale: 1.02 }}
-                    className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                    </div>
-                    <span className="text-sm">{fact}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Visste du detta om [Ort] - Warm Fun Facts */}
-        {content.funFacts.length > 0 && (
-          <section className="py-16 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(35,20%,10%)] via-[hsl(30,15%,9%)] to-[hsl(40,15%,8%)]" />
-            {/* Warm glow */}
-            <div 
-              className="absolute top-0 left-1/3 w-[500px] h-[300px]"
-              style={{ background: "radial-gradient(ellipse, hsl(35 70% 50% / 0.08) 0%, transparent 60%)" }}
-            />
-            <div className="container mx-auto px-4 relative z-10">
-              <motion.div 
-                className="max-w-4xl mx-auto"
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Left Column - Content */}
+              <motion.div
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                animate="visible"
                 variants={containerVariants}
+                className="order-2 lg:order-1"
               >
-                <motion.div variants={itemVariants} className="text-center mb-8">
-                  <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
-                    Lokalt
+                {/* Location badge */}
+                <motion.div variants={itemVariants} className="mb-6">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.08] border border-white/10 backdrop-blur-sm text-sm">
+                    <MapPin className="h-4 w-4 text-primary" />
+                    <span className="text-foreground/80">Lokala hantverkare i {area}</span>
                   </span>
-                  <h2 className="text-2xl font-bold">
-                    Visste du detta om <GradientText>{area}</GradientText>?
-                  </h2>
                 </motion.div>
-                <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {content.funFacts.map((fact, idx) => (
-                    <motion.div
-                      key={idx}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="bg-gradient-to-br from-amber-500/[0.08] to-amber-500/[0.02] border border-amber-500/10 rounded-2xl p-6 h-full hover:border-amber-500/20 transition-colors">
-                        <div className="flex items-start gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                            <Lightbulb className="h-5 w-5 text-amber-400" />
-                          </div>
-                          <span className="text-sm leading-relaxed text-foreground/90">{fact}</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+
+                {/* H1 with icon */}
+                <motion.div variants={itemVariants} className="flex items-start gap-4 mb-6">
+                  <div className="hidden sm:flex relative flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 flex items-center justify-center">
+                      <IconComponent className="h-8 w-8 text-primary" />
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <FixcoFIcon className="h-3 w-3 text-primary-foreground" />
+                    </div>
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+                    <GradientText gradient="rainbow">{content.h1}</GradientText>
+                  </h1>
                 </motion.div>
-              </motion.div>
-            </div>
-          </section>
-        )}
-
-        {/* Myter om tjänsten - Enhanced Design */}
-        {content.myths.length > 0 && (
-          <section className="py-16 relative">
-            <div className="absolute inset-0 bg-[hsl(240,8%,8%)]" />
-            <div className="container mx-auto px-4 relative z-10">
-              <motion.div 
-                className="max-w-3xl mx-auto"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={containerVariants}
-              >
-                <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
-                  Myter om {service?.name?.toLowerCase()} – sant eller falskt?
-                </motion.h2>
-                <motion.div variants={containerVariants} className="space-y-4">
-                  {content.myths.map((item, idx) => (
-                    <motion.div 
-                      key={idx}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <div className="bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 rounded-2xl p-6 hover:border-primary/20 transition-colors">
-                        <div className="flex items-start gap-3 mb-4">
-                          <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
-                            <XCircle className="h-4 w-4 text-destructive" />
-                          </div>
-                          <span className="font-medium text-destructive">Myt: &quot;{item.myth}&quot;</span>
-                        </div>
-                        <div className="flex items-start gap-3 pl-11">
-                          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                            <CheckCircle className="h-4 w-4 text-emerald-400" />
-                          </div>
-                          <span className="text-muted-foreground">Sanning: {item.truth}</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
-            </div>
-          </section>
-        )}
-
-        {/* FAQ Section - Premium Accordion */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,15%,11%)] via-[hsl(250,12%,10%)] to-[hsl(240,10%,9%)]" />
-          {/* Subtle glow */}
-          <div 
-            className="absolute bottom-0 right-0 w-[500px] h-[400px]"
-            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.06) 0%, transparent 60%)" }}
-          />
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-3xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-10">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  FAQ
-                </span>
-                <h2 className="text-3xl font-bold">
-                  Vanliga frågor om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
-                </h2>
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <Accordion type="single" collapsible className="w-full space-y-3">
-                  {content.faqs.map((faq, idx) => (
-                    <AccordionItem 
-                      key={idx} 
-                      value={`faq-${idx}`}
-                      className="bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 rounded-xl px-6 data-[state=open]:border-primary/30 data-[state=open]:shadow-lg data-[state=open]:shadow-primary/5 transition-all"
-                    >
-                      <AccordionTrigger className="text-left hover:no-underline py-5">
-                        <span className="font-medium">{faq.q}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-5">
-                        {faq.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Final CTA - Premium with strong glow */}
-        <section className="py-24 relative overflow-hidden">
-          {/* Strong ambient glows */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(260,15%,10%)] to-[hsl(240,10%,7%)]" />
-          <div className="absolute inset-0 pointer-events-none">
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full blur-[120px] opacity-25"
-              style={{ background: "hsl(262 80% 55%)" }} 
-            />
-            <div 
-              className="absolute top-1/3 right-1/4 w-[400px] h-[300px] rounded-full blur-[80px] opacity-15"
-              style={{ background: "hsl(200 90% 55%)" }} 
-            />
-          </div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <div className="max-w-3xl mx-auto p-10 md:p-14 text-center bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/15 rounded-3xl shadow-2xl shadow-primary/10">
-                <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-4">
-                  Hitta och anlita bästa <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}?
-                </motion.h2>
-                <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                  Fixco hjälper dig hitta rätt {service?.name?.toLowerCase()} i {area}. 
-                  Få ett fast pris med 50% {service?.rotRut}-avdrag idag!
+                
+                {/* Intro text - shorter for hero */}
+                <motion.p 
+                  variants={itemVariants}
+                  className="text-lg text-muted-foreground mb-8 max-w-lg"
+                >
+                  Hitta kvalificerade {service?.name?.toLowerCase()} i {area}. 
+                  Fast pris, försäkrade hantverkare och {service?.rotRut}-avdrag.
                 </motion.p>
+                
+                {/* Quick trust badges - inline */}
                 <motion.div 
                   variants={itemVariants}
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
+                  className="flex flex-wrap gap-3 mb-8"
+                >
+                  {[
+                    { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
+                    { icon: BadgeCheck, text: `50% ${service?.rotRut}`, color: "text-emerald-400" },
+                    { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
+                  ].map((badge, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 text-sm">
+                      <badge.icon className={`h-4 w-4 ${badge.color}`} />
+                      <span className="text-foreground/80">{badge.text}</span>
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* CTA buttons */}
+                <motion.div 
+                  variants={itemVariants}
+                  className="flex flex-col sm:flex-row gap-3"
                 >
                   <Button 
                     size="lg"
-                    className="shadow-xl shadow-primary/30"
+                    className="shadow-xl shadow-primary/25"
                     onClick={() => {
                       openServiceRequestModal({
                         serviceSlug: service?.serviceKey || serviceSlug,
@@ -990,24 +286,404 @@ const LocalServicePage = () => {
                   <Button 
                     variant="outline" 
                     size="lg"
-                    className="border-primary/30 hover:bg-primary/10 hover:border-primary/50"
-                    asChild
+                    className="border-white/20 hover:bg-white/5"
+                    onClick={() => window.location.href = 'tel:+46793350228'}
                   >
-                    <Link to="/tjanster">
-                      Alla tjänster
-                      <ArrowRight className="h-5 w-5 ml-2" />
-                    </Link>
+                    <Phone className="h-5 w-5 mr-2" />
+                    079-335 02 28
                   </Button>
+                </motion.div>
+              </motion.div>
+              
+              {/* Right Column - Illustration */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="order-1 lg:order-2"
+              >
+                <HeroIllustration serviceIcon={IconComponent} />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Compact Trust Bar */}
+        <CompactTrustBar 
+          rating={areaActivity.avgRating}
+          recentProjects={areaActivity.recentProjects}
+          area={area}
+          rotRut={service?.rotRut || "ROT"}
+        />
+
+        {/* ============================================
+            HOW TO BOOK - Warmer Timeline
+            ============================================ */}
+        <section className="py-20 relative overflow-hidden">
+          {/* Warm gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(35,15%,9%)] via-[hsl(30,12%,8%)] to-[hsl(260,12%,9%)]" />
+          
+          {/* Warm ambient glow */}
+          <div 
+            className="absolute top-0 right-[20%] w-[500px] h-[400px] opacity-40"
+            style={{ background: "radial-gradient(ellipse, hsl(35 70% 50% / 0.12) 0%, transparent 60%)" }}
+          />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-14">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                  4 enkla steg
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                  Så bokar du <GradientText>{service?.name?.toLowerCase()}</GradientText>
+                </h2>
+                <p className="text-muted-foreground">Från förfrågan till färdigt jobb på nolltid</p>
+              </motion.div>
+
+              <div className="max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                  {/* Connecting line - desktop */}
+                  <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-emerald-500/40 to-amber-500/40" />
+                  </div>
+                  
+                  {howToSteps.map((step, idx) => {
+                    const StepIcon = stepIcons[idx] || CheckCircle;
+                    const colors = stepColors[idx] || stepColors[0];
+                    return (
+                      <motion.div 
+                        key={idx} 
+                        variants={itemVariants}
+                        whileHover={{ y: -6, scale: 1.02 }}
+                        className="relative group"
+                      >
+                        {/* Step number - floating above */}
+                        <div className="flex justify-center mb-4">
+                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} ${colors.border} border-2 flex items-center justify-center font-bold text-lg ${colors.text} shadow-lg group-hover:scale-110 transition-transform`}>
+                            {idx + 1}
+                          </div>
+                        </div>
+                        
+                        {/* Card */}
+                        <div className="bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-2xl p-6 text-center h-full hover:border-white/20 transition-all">
+                          <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
+                            <StepIcon className={`h-6 w-6 ${colors.text}`} />
+                          </div>
+                          <h3 className="font-semibold mb-2">{step.title}</h3>
+                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            SERVICES SECTION - Larger Clickable Cards
+            ============================================ */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[hsl(240,10%,8%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-5xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-3">
+                  {content.servicesSection.title}
+                </h2>
+                <p className="text-muted-foreground">Allt du behöver, samlat på ett ställe</p>
+              </motion.div>
+              
+              <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {content.servicesSection.items.map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.03, y: -4 }}
+                    className="group cursor-default"
+                  >
+                    <div className="bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-xl p-5 h-full hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <CheckCircle className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <span className="font-medium text-foreground">{item}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            ROT/RUT SECTION - Green/Teal Highlight Box
+            ============================================ */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(165,18%,9%)] via-[hsl(180,15%,8%)] to-[hsl(200,15%,9%)]" />
+          
+          {/* Teal glow */}
+          <div 
+            className="absolute top-1/2 right-0 w-[500px] h-[400px] -translate-y-1/2 opacity-50"
+            style={{ background: "radial-gradient(ellipse, hsl(165 60% 40% / 0.15) 0%, transparent 60%)" }}
+          />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-4xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                {/* Left - Icon/visual */}
+                <motion.div variants={itemVariants} className="flex justify-center">
+                  <div className="relative">
+                    <div className="w-40 h-40 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20 flex items-center justify-center">
+                      <span className="text-6xl font-bold text-emerald-400">50%</span>
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-medium">
+                      {service?.rotRut}-avdrag
+                    </div>
+                  </div>
+                </motion.div>
+                
+                {/* Right - Content */}
+                <motion.div variants={itemVariants}>
+                  <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
+                    Spara pengar
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    {content.rotRutSection.title}
+                  </h2>
+                  <div 
+                    className="prose prose-sm prose-slate dark:prose-invert max-w-none text-muted-foreground"
+                    dangerouslySetInnerHTML={{ 
+                      __html: content.rotRutSection.content
+                        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
+                        .replace(/\n\n/g, '</p><p class="mt-3">')
+                    }} 
+                  />
                 </motion.div>
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Andra tjänster i området - Clean footer links */}
-        <section className="py-14 relative">
-          <div className="absolute inset-0 bg-[hsl(240,8%,6%)]" />
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+        {/* ============================================
+            TESTIMONIAL SECTION - Human Touch
+            ============================================ */}
+        <section className="py-16 relative">
+          <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-3xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-8">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Kundrecension
+                </span>
+                <h2 className="text-2xl font-bold">Vad våra kunder säger</h2>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <TestimonialCard 
+                  quote={getAreaReview(area, service?.name || '')}
+                  name={getRandomReviewer(area)}
+                  location={area}
+                  rating={5}
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            COMBINED FACTS SECTION - Quick Facts + Fun Facts
+            ============================================ */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-5xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              {/* Quick Facts */}
+              <motion.div variants={itemVariants} className="mb-12">
+                <h2 className="text-2xl font-bold mb-6 text-center">
+                  Snabbfakta: <GradientText>{content.h1}</GradientText>
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {content.quickFacts.slice(0, 8).map((fact, idx) => (
+                    <motion.div
+                      key={idx}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/5 text-sm"
+                    >
+                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                      <span className="text-foreground/80">{fact}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+              
+              {/* Fun Facts */}
+              {content.funFacts.length > 0 && (
+                <motion.div variants={itemVariants}>
+                  <div className="flex items-center gap-3 mb-6 justify-center">
+                    <Lightbulb className="h-5 w-5 text-amber-400" />
+                    <h3 className="text-xl font-semibold">Visste du detta om {area}?</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {content.funFacts.slice(0, 4).map((fact, idx) => (
+                      <div 
+                        key={idx}
+                        className="p-4 rounded-xl bg-gradient-to-br from-amber-500/[0.06] to-amber-500/[0.02] border border-amber-500/10"
+                      >
+                        <p className="text-sm text-foreground/80">{fact}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            FAQ SECTION - Includes Myths
+            ============================================ */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[hsl(240,8%,7%)]" />
+          
+          <div 
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-40"
+            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.1) 0%, transparent 60%)" }}
+          />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-3xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-10">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Vanliga frågor
+                </span>
+                <h2 className="text-3xl font-bold">
+                  FAQ om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
+                </h2>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <Accordion type="single" collapsible className="w-full space-y-3">
+                  {allFaqItems.map((faq, idx) => (
+                    <AccordionItem 
+                      key={idx} 
+                      value={`faq-${idx}`}
+                      className="bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 rounded-xl px-6 data-[state=open]:border-primary/30 transition-all"
+                    >
+                      <AccordionTrigger className="text-left hover:no-underline py-4">
+                        <span className="font-medium pr-4">{faq.q}</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-4">
+                        {faq.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            OTHER SERVICES IN AREA
+            ============================================ */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-5xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-10">
+                <h2 className="text-2xl font-bold">
+                  Fler tjänster i <GradientText>{area}</GradientText>
+                </h2>
+              </motion.div>
+              
+              <motion.div variants={containerVariants} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => {
+                  const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon || Zap;
+                  return (
+                    <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -4, scale: 1.02 }}>
+                      <Link 
+                        to={`/tjanster/${otherService.slug}/${areaSlug}`}
+                        className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <OtherIcon className="h-5 w-5 text-primary" />
+                        </div>
+                        <span className="text-sm font-medium">{otherService.name}</span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            FINAL CTA
+            ============================================ */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(260,15%,10%)] to-[hsl(240,12%,6%)]" />
+          
+          {/* Strong glows */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[100px] opacity-30"
+              style={{ background: "linear-gradient(135deg, hsl(262 70% 55%), hsl(200 80% 50%))" }} 
+            />
+          </div>
+          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -1015,20 +691,100 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-8 text-center">
-                Andra tjänster i {area}
-              </motion.h2>
-              <motion.div variants={containerVariants} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 max-w-4xl mx-auto">
-                {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => (
-                  <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -2 }}>
-                    <Link
-                      to={`/tjanster/${otherService.slug}/${areaSlug}`}
-                      className="flex items-center justify-center bg-gradient-to-br from-white/[0.04] to-transparent border border-white/5 rounded-lg px-3 py-3 hover:border-primary/40 hover:bg-primary/5 transition-all text-sm text-center"
+              <div className="max-w-2xl mx-auto text-center">
+                <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/15 rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    Redo att boka <GradientText>{service?.name?.toLowerCase()}</GradientText>?
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    Få ett fast pris från lokala hantverkare i {area} – med 50% {service?.rotRut}-avdrag.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button 
+                      size="lg"
+                      className="shadow-xl shadow-primary/30"
+                      onClick={() => {
+                        openServiceRequestModal({
+                          serviceSlug: service?.serviceKey || serviceSlug,
+                          prefill: { service_name: content.h1 }
+                        });
+                      }}
                     >
-                      <span>{otherService.name} {area}</span>
+                      <FileText className="h-5 w-5 mr-2" />
+                      Begär gratis offert
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="lg"
+                      className="border-white/20 hover:bg-white/5"
+                      asChild
+                    >
+                      <Link to="/tjanster">
+                        Alla tjänster
+                        <ArrowRight className="h-5 w-5 ml-2" />
+                      </Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            AREA LINKS - For SEO
+            ============================================ */}
+        <section className="py-14 relative">
+          <div className="absolute inset-0 bg-[hsl(240,8%,5%)]" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.h2 variants={itemVariants} className="text-xl font-bold mb-6 text-center text-foreground/80">
+                {service?.name} i andra områden
+              </motion.h2>
+              
+              {/* Stockholm */}
+              <motion.div variants={itemVariants} className="mb-8">
+                <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Stockholmsområdet
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {stockholmAreasForLinks.slice(0, 12).map((linkedArea) => (
+                    <Link
+                      key={linkedArea}
+                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
+                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all"
+                    >
+                      {linkedArea}
                     </Link>
-                  </motion.div>
-                ))}
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Uppsala */}
+              <motion.div variants={itemVariants}>
+                <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Uppsalaområdet
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {uppsalaAreasForLinks.slice(0, 12).map((linkedArea) => (
+                    <Link
+                      key={linkedArea}
+                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(linkedArea)}`}
+                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all"
+                    >
+                      {linkedArea}
+                    </Link>
+                  ))}
+                </div>
               </motion.div>
             </motion.div>
           </div>
