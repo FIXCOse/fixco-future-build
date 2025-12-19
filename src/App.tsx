@@ -362,6 +362,28 @@ const App = () => {
                             <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
                             <Route path="tjanster/maleri" element={<Navigate to="/tjanster/malare" replace />} />
                             
+                            {/* Redirects: gamla lokala tjänst-sidor → nya format (client-side) */}
+                            <Route path="tjanster/elmontor-uppsala" element={<Navigate to="/tjanster/elektriker/uppsala" replace />} />
+                            <Route path="tjanster/elmontor-stockholm" element={<Navigate to="/tjanster/elektriker/stockholm" replace />} />
+                            <Route path="tjanster/vvs-uppsala" element={<Navigate to="/tjanster/vvs/uppsala" replace />} />
+                            <Route path="tjanster/vvs-stockholm" element={<Navigate to="/tjanster/vvs/stockholm" replace />} />
+                            <Route path="tjanster/snickare-uppsala" element={<Navigate to="/tjanster/snickare/uppsala" replace />} />
+                            <Route path="tjanster/snickare-stockholm" element={<Navigate to="/tjanster/snickare/stockholm" replace />} />
+                            <Route path="tjanster/montering-uppsala" element={<Navigate to="/tjanster/montering/uppsala" replace />} />
+                            <Route path="tjanster/montering-stockholm" element={<Navigate to="/tjanster/montering/stockholm" replace />} />
+                            <Route path="tjanster/tradgard-uppsala" element={<Navigate to="/tjanster/tradgard/uppsala" replace />} />
+                            <Route path="tjanster/tradgard-stockholm" element={<Navigate to="/tjanster/tradgard/stockholm" replace />} />
+                            <Route path="tjanster/stad-uppsala" element={<Navigate to="/tjanster/stad/uppsala" replace />} />
+                            <Route path="tjanster/stad-stockholm" element={<Navigate to="/tjanster/stad/stockholm" replace />} />
+                            <Route path="tjanster/markarbeten-uppsala" element={<Navigate to="/tjanster/markarbeten/uppsala" replace />} />
+                            <Route path="tjanster/markarbeten-stockholm" element={<Navigate to="/tjanster/markarbeten/stockholm" replace />} />
+                            <Route path="tjanster/tekniska-installationer-uppsala" element={<Navigate to="/tjanster/tekniska-installationer/uppsala" replace />} />
+                            <Route path="tjanster/tekniska-installationer-stockholm" element={<Navigate to="/tjanster/tekniska-installationer/stockholm" replace />} />
+                            <Route path="tjanster/flytt-uppsala" element={<Navigate to="/tjanster/flytt/uppsala" replace />} />
+                            <Route path="tjanster/flytt-stockholm" element={<Navigate to="/tjanster/flytt/stockholm" replace />} />
+                            <Route path="tjanster/malare-uppsala" element={<Navigate to="/tjanster/malare/uppsala" replace />} />
+                            <Route path="tjanster/malare-stockholm" element={<Navigate to="/tjanster/malare/stockholm" replace />} />
+                            
                             {/* DYNAMISK LOKAL SEO ROUTE - 540+ sidor */}
                             <Route path="tjanster/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             
