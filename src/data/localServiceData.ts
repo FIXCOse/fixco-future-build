@@ -95,6 +95,25 @@ export const getAreaMetadata = (area: AreaKey): { population: string; type: stri
 // CONTENT GENERATOR - Lärorikt innehåll med hög ortnamn-upprepning
 // ============================================================
 
+// PRISMAPPNING - Korrekta priser från servicesData
+const SERVICE_PRICING: Record<LocalServiceSlug, { 
+  base: string; 
+  afterDeduction: string; 
+  isQuoteOnly: boolean;
+  rotRut: 'ROT' | 'RUT';
+}> = {
+  "snickare":    { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "elektriker":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "vvs":         { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "malare":      { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "tradgard":    { base: "659 kr/h",  afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "stad":        { base: "459 kr/h",  afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "markarbeten": { base: "959 kr/h",  afterDeduction: "480 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "montering":   { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "flytt":       { base: "559 kr/h",  afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "tekniska-installationer": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+};
+
 export interface LocalServiceContent {
   h1: string;
   title: string;
@@ -184,32 +203,39 @@ När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avd
 Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr'} per person och år. Har du inte utnyttjat ditt ${rotRut}-avdrag i år är det perfekt tillfälle att anlita ${serviceName} i ${area}!`
     },
 
-    faqs: [
-      {
-        q: `Vad kostar ${serviceName} i timmen i ${area}?`,
-        a: `Timpriset för ${serviceName} i ${area} varierar beroende på arbetets art och komplexitet. Generellt ligger timpriset på 450-650 kr/timme före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (50%) betalar du alltså 225-325 kr/timme för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`
-      },
-      {
-        q: `Hur snabbt kan ${serviceName} komma till ${area}?`,
-        a: `Våra ${serviceName} i ${area} kan ofta komma inom 24-48 timmar för mindre uppdrag. För större projekt i ${area} bokar vi in ett startdatum som passar dig, vanligtvis inom 1-2 veckor. Vid akuta ärenden i ${area} försöker vi alltid hitta en snabb lösning.`
-      },
-      {
-        q: `Får jag ${rotRut}-avdrag för ${serviceName} i ${area}?`,
-        a: `Ja! Du får 50% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.`
-      },
-      {
-        q: `Vilka områden i ${area} täcker ni?`,
-        a: `Vi täcker hela ${area} ${metadata.type} och alla närliggande områden. Oavsett var i ${area} du bor kan vi hjälpa dig med ${serviceName}. Vi har lokalkännedom om ${area} och vet hur man tar sig fram snabbt och effektivt.`
-      },
-      {
-        q: `Är era ${serviceName} i ${area} certifierade?`,
-        a: `Ja, alla våra ${serviceName} i ${area} är certifierade och har relevant utbildning för sina arbetsuppgifter. ${getCertificationText(serviceSlug)} Vi ställer höga krav på alla hantverkare som arbetar för Fixco i ${area}.`
-      },
-      {
-        q: `Hur bokar jag ${serviceName} i ${area}?`,
-        a: `Det är enkelt att boka ${serviceName} i ${area}! Du kan antingen ringa oss, fylla i vårt offertformulär eller använda vår bokningsguide online. Beskriv ditt projekt i ${area} så kontaktar vi dig med ett fast pris inom 24 timmar.`
-      }
-    ],
+    faqs: (() => {
+      const pricing = SERVICE_PRICING[serviceSlug];
+      const priceAnswer = pricing.isQuoteOnly 
+        ? `Priset för ${serviceName} i ${area} varierar beroende på projektets omfattning och komplexitet. Kontakta oss för en kostnadsfri offert på ditt projekt i ${area}. Alla priser inkluderar ${rotRut}-avdrag (50%) när du anlitar ${serviceName} via Fixco.`
+        : `Timpriset för ${serviceName} i ${area} är ${pricing.base} före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (50%) betalar du ${pricing.afterDeduction} för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`;
+      
+      return [
+        {
+          q: `Vad kostar ${serviceName} i timmen i ${area}?`,
+          a: priceAnswer
+        },
+        {
+          q: `Hur snabbt kan ${serviceName} komma till ${area}?`,
+          a: `Våra ${serviceName} i ${area} kan ofta komma inom 24-48 timmar för mindre uppdrag. För större projekt i ${area} bokar vi in ett startdatum som passar dig, vanligtvis inom 1-2 veckor. Vid akuta ärenden i ${area} försöker vi alltid hitta en snabb lösning.`
+        },
+        {
+          q: `Får jag ${rotRut}-avdrag för ${serviceName} i ${area}?`,
+          a: `Ja! Du får 50% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.`
+        },
+        {
+          q: `Vilka områden i ${area} täcker ni?`,
+          a: `Vi täcker hela ${area} ${metadata.type} och alla närliggande områden. Oavsett var i ${area} du bor kan vi hjälpa dig med ${serviceName}. Vi har lokalkännedom om ${area} och vet hur man tar sig fram snabbt och effektivt.`
+        },
+        {
+          q: `Är era ${serviceName} i ${area} certifierade?`,
+          a: `Ja, alla våra ${serviceName} i ${area} är certifierade och har relevant utbildning för sina arbetsuppgifter. ${getCertificationText(serviceSlug)} Vi ställer höga krav på alla hantverkare som arbetar för Fixco i ${area}.`
+        },
+        {
+          q: `Hur bokar jag ${serviceName} i ${area}?`,
+          a: `Det är enkelt att boka ${serviceName} i ${area}! Du kan antingen ringa oss, fylla i vårt offertformulär eller använda vår bokningsguide online. Beskriv ditt projekt i ${area} så kontaktar vi dig med ett fast pris inom 24 timmar.`
+        }
+      ];
+    })(),
 
     quickFacts: [
       `${area} ligger i ${metadata.region}s län`,
