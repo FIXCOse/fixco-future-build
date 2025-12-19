@@ -46,7 +46,6 @@ import {
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps } from "@/data/areaActivityData";
-import { GlassCard } from "@/components/v2/GlassCard";
 import { GradientText } from "@/components/v2/GradientText";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
 
@@ -100,21 +99,15 @@ const AnimatedStat = ({ value: targetValue, suffix = "", label, icon: Icon, stat
     <motion.div
       ref={observe}
       variants={itemVariants}
+      className="text-center"
     >
-      <GlassCard 
-        className="p-6 text-center" 
-        hoverEffect={true}
-        glowColor="hsl(262 83% 58% / 0.2)"
-        innerGlow={true}
-      >
-        <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-          <Icon className="h-5 w-5 text-primary" />
-        </div>
-        <div className="text-3xl md:text-4xl font-bold mb-1">
-          <GradientText>{value}{suffix}</GradientText>
-        </div>
-        <div className="text-sm text-muted-foreground">{label}</div>
-      </GlassCard>
+      <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+        <Icon className="h-6 w-6 text-primary" />
+      </div>
+      <div className="text-4xl md:text-5xl font-bold mb-2">
+        <GradientText>{value}{suffix}</GradientText>
+      </div>
+      <div className="text-sm text-muted-foreground">{label}</div>
     </motion.div>
   );
 };
@@ -272,34 +265,21 @@ const LocalServicePage = () => {
       <div className="min-h-screen">
         <Breadcrumbs />
         
-        {/* Hero Section - Premium Upgrade */}
+        {/* Hero Section - Clean Premium Design */}
         <section className="pt-12 pb-20 relative overflow-hidden">
-          {/* Gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(262_83%_58%_/_0.15),transparent_50%)]" />
+          {/* Dark gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,6%)] via-[hsl(222,47%,8%)] to-background" />
           
-          {/* Animated floating elements */}
+          {/* Subtle blur-orbs (opacity-10) */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <motion.div 
-              className="absolute top-20 right-[10%] w-20 h-20"
-              animate={{ 
-                y: [0, -15, 0],
-                rotate: [0, 5, 0]
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-sm border border-primary/10" />
-            </motion.div>
-            <motion.div 
-              className="absolute top-40 left-[5%] w-16 h-16"
-              animate={{ 
-                y: [0, 10, 0],
-                rotate: [0, -5, 0]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            >
-              <div className="w-full h-full rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 backdrop-blur-sm border border-blue-500/10" />
-            </motion.div>
+            <div 
+              className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full blur-3xl opacity-10"
+              style={{ background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)" }} 
+            />
+            <div 
+              className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full blur-3xl opacity-10"
+              style={{ background: "radial-gradient(circle, hsl(200 100% 50%) 0%, transparent 70%)" }} 
+            />
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
@@ -309,11 +289,11 @@ const LocalServicePage = () => {
               animate="visible"
               variants={containerVariants}
             >
-              {/* Location badge */}
+              {/* Location badge - clean design */}
               <motion.div variants={badgeVariants} className="mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
-                  <MapPin className="h-4 w-4" />
-                  Lokala hantverkare i {area}
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span className="text-muted-foreground">Lokala hantverkare i {area}</span>
                 </span>
               </motion.div>
 
@@ -339,13 +319,13 @@ const LocalServicePage = () => {
                 dangerouslySetInnerHTML={{ __html: content.intro.replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>').replace(/\n\n/g, '</p><p class="mt-4">') }} 
               />
               
-              {/* Trust badges - Animated */}
+              {/* Trust badges - Clean horizontal list */}
               <motion.div 
                 variants={containerVariants}
-                className="flex flex-wrap justify-center gap-3 mb-10"
+                className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-muted-foreground"
               >
                 {[
-                  { icon: Shield, text: `Ansvarsförsäkrade i ${area}` },
+                  { icon: Shield, text: `Ansvarsförsäkrade` },
                   { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5 betyg` },
                   { icon: Clock, text: `Start inom 24-48h` },
                   { icon: BadgeCheck, text: `50% ${service?.rotRut}-avdrag` }
@@ -353,8 +333,7 @@ const LocalServicePage = () => {
                   <motion.div
                     key={idx}
                     variants={badgeVariants}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 text-sm font-medium backdrop-blur-sm"
+                    className="flex items-center gap-2"
                   >
                     <badge.icon className="h-4 w-4 text-primary" />
                     <span>{badge.text}</span>
@@ -394,9 +373,9 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Aktivitet i orten - Premium Stats */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+        {/* Aktivitet i orten - Clean Stats */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-surface/30 to-background" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-5xl mx-auto"
@@ -445,9 +424,9 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Så bokar du - Timeline Design */}
+        {/* Så bokar du - Clean Timeline Design */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background to-muted/30" />
+          <div className="absolute inset-0 bg-surface/20" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -478,31 +457,20 @@ const LocalServicePage = () => {
                         className="relative"
                       >
                         {/* Step number badge */}
-                        <motion.div 
-                          className="absolute -top-3 left-1/2 -translate-x-1/2 z-20"
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center font-bold shadow-lg shadow-primary/30">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center font-bold">
                             {idx + 1}
                           </div>
-                        </motion.div>
+                        </div>
                         
-                        <GlassCard 
-                          className="pt-10 pb-6 px-6 text-center h-full"
-                          hoverEffect={true}
-                          glowColor="hsl(262 83% 58% / 0.15)"
-                          innerGlow={true}
-                        >
-                          <motion.div 
-                            className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center"
-                            whileHover={{ rotate: [0, -5, 5, 0] }}
-                            transition={{ duration: 0.4 }}
-                          >
+                        {/* card-premium instead of GlassCard */}
+                        <div className="card-premium pt-10 pb-6 px-6 text-center h-full hover:border-primary/30 transition-colors">
+                          <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
                             <StepIcon className="h-7 w-7 text-primary" />
-                          </motion.div>
+                          </div>
                           <h3 className="font-semibold mb-2 text-lg">{step.title}</h3>
                           <p className="text-sm text-muted-foreground">{step.description}</p>
-                        </GlassCard>
+                        </div>
                       </motion.div>
                     );
                   })}
@@ -736,10 +704,10 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Visste du detta om [Ort] - Premium Fun Facts */}
+        {/* Visste du detta om [Ort] - Clean Fun Facts */}
         {content.funFacts.length > 0 && (
           <section className="py-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-blue-500/5" />
+            <div className="absolute inset-0 bg-surface/20" />
             <div className="container mx-auto px-4 relative z-10">
               <motion.div 
                 className="max-w-4xl mx-auto"
@@ -756,24 +724,15 @@ const LocalServicePage = () => {
                     <motion.div
                       key={idx}
                       variants={itemVariants}
-                      whileHover={{ scale: 1.02 }}
                     >
-                      <GlassCard 
-                        className="p-5 h-full"
-                        hoverEffect={true}
-                        glowColor="hsl(200 100% 50% / 0.15)"
-                      >
+                      <div className="card-premium p-5 h-full hover:border-primary/30 transition-colors">
                         <div className="flex items-start gap-4">
-                          <motion.div 
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-500/10 flex items-center justify-center flex-shrink-0"
-                            whileHover={{ rotate: [0, -10, 10, 0] }}
-                            transition={{ duration: 0.4 }}
-                          >
+                          <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                             <Lightbulb className="h-5 w-5 text-amber-500" />
-                          </motion.div>
+                          </div>
                           <span className="text-sm leading-relaxed">{fact}</span>
                         </div>
-                      </GlassCard>
+                      </div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -782,7 +741,7 @@ const LocalServicePage = () => {
           </section>
         )}
 
-        {/* Myter om tjänsten - Premium Design */}
+        {/* Myter om tjänsten - Clean Design */}
         {content.myths.length > 0 && (
           <section className="py-12 bg-background">
             <div className="container mx-auto px-4">
@@ -801,9 +760,8 @@ const LocalServicePage = () => {
                     <motion.div 
                       key={idx}
                       variants={itemVariants}
-                      whileHover={{ x: 4 }}
                     >
-                      <GlassCard className="p-6" hoverEffect={true} glowColor="hsl(0 84% 60% / 0.1)">
+                      <div className="card-premium p-6 hover:border-primary/30 transition-colors">
                         <div className="flex items-start gap-3 mb-4">
                           <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
                             <XCircle className="h-4 w-4 text-destructive" />
@@ -816,7 +774,7 @@ const LocalServicePage = () => {
                           </div>
                           <span className="text-muted-foreground">Sanning: {item.truth}</span>
                         </div>
-                      </GlassCard>
+                      </div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -861,10 +819,15 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Final CTA - Dramatic Premium Design */}
+        {/* Final CTA - Clean Premium Design */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/15 to-blue-500/10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(262_83%_58%_/_0.1),transparent_70%)]" />
+          {/* Subtle blur-orbs for CTA */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-3xl opacity-10"
+              style={{ background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)" }} 
+            />
+          </div>
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -873,11 +836,7 @@ const LocalServicePage = () => {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <GlassCard 
-                className="max-w-3xl mx-auto p-10 md:p-12 text-center"
-                hoverEffect={false}
-                innerGlow={true}
-              >
+              <div className="card-premium max-w-3xl mx-auto p-10 md:p-12 text-center">
                 <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-4">
                   Hitta och anlita bästa <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}?
                 </motion.h2>
@@ -891,7 +850,6 @@ const LocalServicePage = () => {
                 >
                   <Button 
                     size="lg"
-                    className="shadow-lg shadow-primary/30"
                     onClick={() => {
                       openServiceRequestModal({
                         serviceSlug: service?.serviceKey || serviceSlug,
@@ -914,7 +872,7 @@ const LocalServicePage = () => {
                     </Link>
                   </Button>
                 </motion.div>
-              </GlassCard>
+              </div>
             </motion.div>
           </div>
         </section>
