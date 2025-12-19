@@ -172,25 +172,20 @@ export const HeroIllustration = ({ serviceIcon: ServiceIcon }: HeroIllustrationP
         return (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, scale: 0, rotate: -20 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1, 
-              rotate: 0,
-              ...animVariant.animate
-            }}
-            transition={{
-              opacity: { delay: 0.5 + idx * 0.1, duration: 0.4 },
-              scale: { delay: 0.5 + idx * 0.1, duration: 0.5, type: "spring" },
-              rotate: { delay: 0.5 + idx * 0.1, duration: 0.5 },
-              ...animVariant.transition
-            }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 + idx * 0.1, duration: 0.5, ease: "easeOut" }}
             className="absolute"
             style={{ left: `${x}%`, top: `${y}%` }}
           >
-            <div className={`w-11 h-11 lg:w-13 lg:h-13 rounded-xl bg-gradient-to-br from-white/[0.12] to-white/[0.04] border border-white/15 backdrop-blur-sm flex items-center justify-center shadow-lg ${glowColor} hover:scale-110 transition-transform`}>
-              <Icon style={{ width: size, height: size }} className={`${color}`} />
-            </div>
+            <motion.div
+              animate={animVariant.animate}
+              transition={animVariant.transition}
+            >
+              <div className={`w-11 h-11 lg:w-13 lg:h-13 rounded-xl bg-gradient-to-br from-white/[0.12] to-white/[0.04] border border-white/15 backdrop-blur-sm flex items-center justify-center shadow-lg ${glowColor} hover:scale-110 transition-transform`}>
+                <Icon style={{ width: size, height: size }} className={`${color}`} />
+              </div>
+            </motion.div>
           </motion.div>
         );
       })}
