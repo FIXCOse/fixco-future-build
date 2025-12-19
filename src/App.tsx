@@ -97,6 +97,7 @@ const InvoicePublic = lazy(() => import("./pages/InvoicePublic"));
 const LocationCityPage = lazy(() => import("./pages/locations/LocationCityPage"));
 const ServiceCityPage = lazy(() => import("./pages/locations/ServiceCityPage"));
 const ServiceCityDetail = lazy(() => import("./pages/locations/ServiceCityDetail"));
+const LocalServicePage = lazy(() => import("./pages/LocalServicePage"));
 const Careers = lazy(() => import("./pages/Careers"));
 
 // Lazy load components for better performance with Suspense fallbacks
@@ -385,6 +386,9 @@ const App = () => {
                             <Route path="tjanster/tekniska-installationer-stockholm" element={lazyElement(ServiceCityDetail, { service: "tekniska-installationer", city: "Stockholm" })} />
                             <Route path="tjanster/flytt-stockholm" element={lazyElement(ServiceCityDetail, { service: "flytt", city: "Stockholm" })} />
                             <Route path="tjanster/malare-stockholm" element={lazyElement(ServiceCityDetail, { service: "malning", city: "Stockholm" })} />
+                            
+                            {/* DYNAMISK LOKAL SEO ROUTE - 450+ sidor */}
+                            <Route path="tjanster/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             
                             {/* Dynamisk route SIST - fångar alla andra tjänster */}
                             <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
