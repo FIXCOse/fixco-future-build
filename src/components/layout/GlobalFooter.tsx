@@ -295,6 +295,11 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                     Referenser
                   </Link>
                 </li>
+                <li>
+                  <Link to="/blogg" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+                    📝 Blogg & Guider
+                  </Link>
+                </li>
               </ul>
             </div>
 
