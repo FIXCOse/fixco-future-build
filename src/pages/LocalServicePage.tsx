@@ -13,7 +13,9 @@ import {
   ArrowRight,
   Users,
   BadgeCheck,
-  Zap
+  Zap,
+  Lightbulb,
+  XCircle
 } from "lucide-react";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -350,8 +352,54 @@ const LocalServicePage = () => {
           </div>
         </section>
 
+        {/* Visste du detta om [Ort] - Fun Facts */}
+        {content.funFacts.length > 0 && (
+          <section className="py-12 bg-primary/5">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-center">Visste du detta om {area}?</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {content.funFacts.map((fact, idx) => (
+                    <div key={idx} className="flex items-start gap-3 bg-card border rounded-lg p-4 hover:border-primary/50 transition-colors">
+                      <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">{fact}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Myter om tjänsten */}
+        {content.myths.length > 0 && (
+          <section className="py-12 bg-background">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-center">
+                  Myter om {service?.name?.toLowerCase()} – sant eller falskt?
+                </h2>
+                <div className="space-y-4">
+                  {content.myths.map((item, idx) => (
+                    <div key={idx} className="bg-card border rounded-lg p-5 hover:border-primary/30 transition-colors">
+                      <div className="flex items-start gap-3 mb-3">
+                        <XCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+                        <span className="font-medium text-destructive">Myt: &quot;{item.myth}&quot;</span>
+                      </div>
+                      <div className="flex items-start gap-3 pl-8">
+                        <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">Sanning: {item.truth}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* FAQ Section */}
-        <section className="py-16 bg-background">
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 text-center">Vanliga frågor om {service?.name?.toLowerCase()} i {area}</h2>
