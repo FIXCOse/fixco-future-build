@@ -155,10 +155,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Elektriker */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Elektriker</div>
-                    <Link to="/tjanster/elmontor-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/elektriker/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Elektriker Uppsala
                     </Link>
-                    <Link to="/tjanster/elmontor-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/elektriker/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Elektriker Stockholm
                     </Link>
                   </div>
@@ -166,10 +166,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* VVS */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">VVS</div>
-                    <Link to="/tjanster/vvs-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/vvs/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       VVS Uppsala
                     </Link>
-                    <Link to="/tjanster/vvs-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/vvs/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       VVS Stockholm
                     </Link>
                   </div>
@@ -177,10 +177,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Snickare */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Snickare</div>
-                    <Link to="/tjanster/snickare-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/snickare/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Snickare Uppsala
                     </Link>
-                    <Link to="/tjanster/snickare-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/snickare/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Snickare Stockholm
                     </Link>
                   </div>
@@ -188,10 +188,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Målare */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Målare</div>
-                    <Link to="/tjanster/malare-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/malare/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Målare Uppsala
                     </Link>
-                    <Link to="/tjanster/malare-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/malare/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Målare Stockholm
                     </Link>
                   </div>
@@ -199,10 +199,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Montering */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Montering</div>
-                    <Link to="/tjanster/montering-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/montering/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Montering Uppsala
                     </Link>
-                    <Link to="/tjanster/montering-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/montering/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Montering Stockholm
                     </Link>
                   </div>
@@ -210,10 +210,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Trädgård */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Trädgård</div>
-                    <Link to="/tjanster/tradgard-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/tradgard/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Trädgård Uppsala
                     </Link>
-                    <Link to="/tjanster/tradgard-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/tradgard/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Trädgård Stockholm
                     </Link>
                   </div>
@@ -221,10 +221,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Städning */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Städning</div>
-                    <Link to="/tjanster/stad-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/stad/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Städning Uppsala
                     </Link>
-                    <Link to="/tjanster/stad-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/stad/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Städning Stockholm
                     </Link>
                   </div>
@@ -232,10 +232,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Markarbeten */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Markarbeten</div>
-                    <Link to="/tjanster/markarbeten-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/markarbeten/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Markarbeten Uppsala
                     </Link>
-                    <Link to="/tjanster/markarbeten-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/markarbeten/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Markarbeten Stockholm
                     </Link>
                   </div>
@@ -243,10 +243,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Tekniska installationer */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Tekniska installationer</div>
-                    <Link to="/tjanster/tekniska-installationer-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/tekniska-installationer/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Tekniska installationer Uppsala
                     </Link>
-                    <Link to="/tjanster/tekniska-installationer-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/tekniska-installationer/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Tekniska installationer Stockholm
                     </Link>
                   </div>
@@ -254,10 +254,10 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   {/* Flytt */}
                   <div className="text-sm">
                     <div className="font-medium mb-1 text-foreground">Flytthjälp</div>
-                    <Link to="/tjanster/flytt-uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/flytt/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
                       Flytthjälp Uppsala
                     </Link>
-                    <Link to="/tjanster/flytt-stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
+                    <Link to="/tjanster/flytt/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
                       Flytthjälp Stockholm
                     </Link>
                   </div>
