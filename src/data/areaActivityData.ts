@@ -8,7 +8,7 @@ export interface AreaActivity {
   recentProjects: number;
   activeWorkers: number;
   avgRating: number;
-  responseTime: string;
+  responseTimeHours: number;
   reviewCount: number;
 }
 
@@ -30,7 +30,7 @@ const generateActivityData = (population: number, area: string): AreaActivity =>
     recentProjects: Math.floor(baseProjects + variation * 10),
     activeWorkers: Math.floor(baseWorkers + variation * 5),
     avgRating: 4.7 + (variation * 0.3), // 4.7-5.0
-    responseTime: "< 2 timmar",
+    responseTimeHours: 2,
     reviewCount: Math.floor(baseReviews + variation * 50),
   };
 };

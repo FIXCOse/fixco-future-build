@@ -27,8 +27,8 @@ import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal
 
 // Slug alias mappning - mappar URL-slugs till data-slugs
 const slugAliases: Record<string, string> = {
-  'malare': 'malning',
-  'maleri': 'malning',
+  'malning': 'malare',
+  'maleri': 'malare',
   'elektriker': 'el',
   'elmontor': 'el',
   'stad': 'stadning',
@@ -60,8 +60,9 @@ const ServiceDetail = () => {
     'el': 'el',
     'vvs': 'vvs',
     'snickeri': 'snickeri',
-    'maleri': 'malning',
     'malare': 'malning',
+    'maleri': 'malning',
+    'malning': 'malning',
     'montering': 'montering',
     'tradgard': 'tradgard',
     'stadning': 'stadning',
@@ -72,7 +73,6 @@ const ServiceDetail = () => {
     'fonster-dorrar': 'fonster-dorrar',
     'golv': 'golv',
     'kok': 'kok',
-    'malning': 'malning',
     'takarbeten': 'takarbeten'
   };
   

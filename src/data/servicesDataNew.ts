@@ -117,9 +117,9 @@ export const serviceCategories = [
     eligible: { rot: true, rut: false }
   },
   {
-    id: "malning",
+    id: "malare",
     title: "Målning",
-    slug: "malning",
+    slug: "malare",
     description: "Professionell målning in- och utvändigt",
     icon: Paintbrush,
     eligible: { rot: true, rut: false }
@@ -610,7 +610,7 @@ export const servicesDataNew = [
   },
   {
     title: "Målning",
-    slug: "malning",
+    slug: "malare",
     description: "Professionell målning inomhus och utomhus",
     icon: Paintbrush,
     basePrice: 759,

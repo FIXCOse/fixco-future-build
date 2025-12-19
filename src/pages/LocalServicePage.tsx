@@ -265,20 +265,56 @@ const LocalServicePage = () => {
       <div className="min-h-screen">
         <Breadcrumbs />
         
-        {/* Hero Section - Clean Premium Design */}
+        {/* Hero Section - Softer Premium Design */}
         <section className="pt-12 pb-20 relative overflow-hidden">
-          {/* Dark gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,6%)] via-[hsl(222,47%,8%)] to-background" />
+          {/* Softer gradient background with more color depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(258,35%,12%)] via-[hsl(240,20%,11%)] to-background" />
           
-          {/* Subtle blur-orbs (opacity-10) */}
+          {/* Mesh gradient overlay for more visual interest */}
+          <div 
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: `
+                radial-gradient(at 20% 30%, hsl(262 83% 58% / 0.15) 0%, transparent 50%),
+                radial-gradient(at 80% 70%, hsl(200 100% 50% / 0.1) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, hsl(340 80% 55% / 0.05) 0%, transparent 60%)
+              `
+            }}
+          />
+          
+          {/* Subtle grid pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px'
+            }}
+          />
+          
+          {/* Enhanced blur-orbs with more visibility */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div 
-              className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full blur-3xl opacity-10"
-              style={{ background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)" }} 
+              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20 animate-pulse"
+              style={{ 
+                background: "radial-gradient(circle, hsl(262 83% 58%) 0%, transparent 70%)",
+                animationDuration: '8s'
+              }} 
             />
             <div 
-              className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full blur-3xl opacity-10"
-              style={{ background: "radial-gradient(circle, hsl(200 100% 50%) 0%, transparent 70%)" }} 
+              className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-15 animate-pulse"
+              style={{ 
+                background: "radial-gradient(circle, hsl(200 100% 50%) 0%, transparent 70%)",
+                animationDuration: '10s',
+                animationDelay: '2s'
+              }} 
+            />
+            <div 
+              className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full blur-3xl opacity-10 animate-pulse"
+              style={{ 
+                background: "radial-gradient(circle, hsl(340 80% 55%) 0%, transparent 70%)",
+                animationDuration: '12s',
+                animationDelay: '4s'
+              }} 
             />
           </div>
           
@@ -289,11 +325,11 @@ const LocalServicePage = () => {
               animate="visible"
               variants={containerVariants}
             >
-              {/* Location badge - clean design */}
+              {/* Location badge - glassmorphism design */}
               <motion.div variants={badgeVariants} className="mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium">
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 backdrop-blur-md text-sm font-medium shadow-lg shadow-primary/5">
                   <MapPin className="h-4 w-4 text-primary" />
-                  <span className="text-muted-foreground">Lokala hantverkare i {area}</span>
+                  <span className="text-foreground/90">Lokala hantverkare i {area}</span>
                 </span>
               </motion.div>
 
@@ -373,9 +409,14 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Aktivitet i orten - Clean Stats */}
+        {/* Visual separator */}
+        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
+        {/* Aktivitet i orten - Enhanced Stats Section */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-surface/30 to-background" />
+          {/* Subtle gradient background with color accent */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-blue-500/5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-5xl mx-auto"
@@ -407,7 +448,7 @@ const LocalServicePage = () => {
                   decimals={1}
                 />
                 <AnimatedStat
-                  value={parseInt(areaActivity.responseTime)}
+                  value={areaActivity.responseTimeHours}
                   suffix="h"
                   label="Genomsnittlig svarstid"
                   icon={Clock}
@@ -424,9 +465,19 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Så bokar du - Clean Timeline Design */}
+        {/* Visual separator */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+
+        {/* Så bokar du - Enhanced Timeline Design */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-surface/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface/30 via-surface/50 to-surface/30" />
+          {/* Subtle decorative element */}
+          <div 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-20"
+            style={{
+              background: "radial-gradient(ellipse, hsl(262 83% 58% / 0.15) 0%, transparent 70%)"
+            }}
+          />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -480,8 +531,11 @@ const LocalServicePage = () => {
           </div>
         </section>
 
+        {/* Visual separator */}
+        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
         {/* Din lokala X i Y Section */}
-        <section className="py-16 bg-background">
+        <section className="py-16 bg-gradient-to-b from-background to-surface/20">
           <div className="container mx-auto px-4">
             <motion.div 
               className="max-w-3xl mx-auto"
