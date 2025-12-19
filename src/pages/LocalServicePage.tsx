@@ -15,7 +15,8 @@ import {
   BadgeCheck,
   Zap,
   Lightbulb,
-  XCircle
+  XCircle,
+  Calendar
 } from "lucide-react";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -41,6 +42,7 @@ import {
 } from "@/components/ui/accordion";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
+import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps } from "@/data/areaActivityData";
 
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
@@ -71,6 +73,10 @@ const LocalServicePage = () => {
   const serviceData = servicesDataNew.find(s => s.slug === service?.serviceKey);
   const IconComponent = serviceData?.icon || Zap;
   
+  // Hämta aktivitetsdata för orten
+  const areaActivity = getAreaActivity(area);
+  const howToSteps = getHowToSteps(service?.name || '', area);
+  
   // Generera schema.org markup
   const localBusinessSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -78,7 +84,7 @@ const LocalServicePage = () => {
     "name": `Fixco ${content.h1}`,
     "description": content.description,
     "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
-    "telephone": "+46-10-123-45-67",
+    "telephone": "+46-79-335-02-28",
     "priceRange": "$$",
     "areaServed": {
       "@type": "City",
@@ -92,10 +98,49 @@ const LocalServicePage = () => {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "247"
+      "ratingValue": areaActivity.avgRating.toFixed(1),
+      "reviewCount": areaActivity.reviewCount.toString(),
+      "bestRating": "5"
+    },
+    "review": [{
+      "@type": "Review",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "author": { "@type": "Person", "name": getRandomReviewer(area) },
+      "reviewBody": getAreaReview(area, service?.name || ''),
+      "datePublished": "2024-11-15"
+    }]
+  }), [content, serviceSlug, areaSlug, area, metadata, areaActivity, service]);
+
+  // HowTo Schema för Google rich snippets
+  const howToSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": `Så bokar du ${service?.name?.toLowerCase()} i ${area}`,
+    "description": `Steg-för-steg guide för att boka ${service?.name?.toLowerCase()} via Fixco i ${area}`,
+    "totalTime": "PT5M",
+    "step": howToSteps.map((step, idx) => ({
+      "@type": "HowToStep",
+      "position": idx + 1,
+      "name": step.title,
+      "text": step.description
+    }))
+  }), [service, area, howToSteps]);
+
+  // ContactPoint Schema
+  const contactPointSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "ContactPoint",
+    "telephone": "+46-79-335-02-28",
+    "contactType": "customer service",
+    "areaServed": area,
+    "availableLanguage": ["Swedish", "English"],
+    "hoursAvailable": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "07:00",
+      "closes": "18:00"
     }
-  }), [content, serviceSlug, areaSlug, area, metadata]);
+  }), [area]);
   
   const faqSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -143,6 +188,8 @@ const LocalServicePage = () => {
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(howToSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(contactPointSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen">
@@ -189,7 +236,7 @@ const LocalServicePage = () => {
                 </div>
                 <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
                   <Star className="h-4 w-4" />
-                  <span>4.8/5 på Trustpilot</span>
+                  <span>{areaActivity.avgRating.toFixed(1)}/5 betyg</span>
                 </div>
                 <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
                   <Clock className="h-4 w-4" />
@@ -218,11 +265,75 @@ const LocalServicePage = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  onClick={() => window.location.href = 'tel:010-123 45 67'}
+                  onClick={() => window.location.href = 'tel:+46793350228'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
-                  Ring oss: 010-123 45 67
+                  Ring oss: 079-335 02 28
                 </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Så bokar du - HowTo Section */}
+        <section className="py-16 bg-gradient-to-b from-background to-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-4">
+              Så bokar du {service?.name?.toLowerCase()} i {area}
+            </h2>
+            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+              Det tar bara några minuter att komma igång
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+              {howToSteps.map((step, idx) => {
+                const StepIcon = idx === 0 ? FileText : idx === 1 ? Clock : idx === 2 ? Calendar : CheckCircle;
+                return (
+                  <div key={idx} className="relative text-center">
+                    {/* Stegnummer */}
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm z-10 shadow-lg">
+                      {idx + 1}
+                    </div>
+                    {/* Kort */}
+                    <div className="bg-card border rounded-xl p-6 pt-8 h-full hover:border-primary/50 hover:shadow-lg transition-all">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <StepIcon className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="font-semibold mb-2">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground">{step.description}</p>
+                    </div>
+                    {/* Connector line */}
+                    {idx < 3 && (
+                      <div className="hidden md:block absolute top-1/2 -right-4 w-8 border-t-2 border-dashed border-primary/30" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Aktivitet i orten */}
+        <section className="py-12 bg-primary/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold text-center mb-8">Fixco i {area} just nu</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-card border rounded-xl p-6 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary">{areaActivity.recentProjects}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Projekt senaste månaden</div>
+                </div>
+                <div className="bg-card border rounded-xl p-6 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary">{areaActivity.avgRating.toFixed(1)}/5</div>
+                  <div className="text-sm text-muted-foreground mt-1">Snittbetyg i {area}</div>
+                </div>
+                <div className="bg-card border rounded-xl p-6 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary">{areaActivity.responseTime}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Genomsnittlig svarstid</div>
+                </div>
+                <div className="bg-card border rounded-xl p-6 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary">{areaActivity.activeWorkers}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Aktiva hantverkare</div>
+                </div>
               </div>
             </div>
           </div>
@@ -335,8 +446,29 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Quick Facts */}
+        {/* Fler tjänster i orten - Internal Linking */}
         <section className="py-12 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold mb-6 text-center">Fler tjänster i {area}</h2>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => (
+                  <Link 
+                    key={otherService.slug}
+                    to={`/tjanster/${otherService.slug}/${areaSlug}`}
+                    className="flex items-center gap-2 bg-card border rounded-lg p-3 hover:bg-primary/5 hover:border-primary transition-colors group"
+                  >
+                    <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                    <span className="text-sm font-medium">{otherService.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Facts */}
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-2xl font-bold mb-6 text-center">Snabbfakta: {content.h1}</h2>
