@@ -10,6 +10,7 @@ import PriceSummary from '@/components/PriceSummary';
 import ServiceCardV3 from '@/components/ServiceCardV3';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from "@/copy/CopyProvider";
+import { Seo } from "@/components/SEO";
 import { 
   ArrowRight,
   CheckCircle,
@@ -24,6 +25,16 @@ import {
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
+// Slug alias mappning - mappar URL-slugs till data-slugs
+const slugAliases: Record<string, string> = {
+  'malare': 'malning',
+  'maleri': 'malning',
+  'elektriker': 'el',
+  'elmontor': 'el',
+  'stad': 'stadning',
+  'snickare': 'snickeri',
+};
+
 const ServiceDetail = () => {
   const { slug } = useParams();
   const location = useLocation();
@@ -35,13 +46,16 @@ const ServiceDetail = () => {
   // Determine if we're on English site
   const isEnglish = locale === 'en';
   
+  // Normalisera slug via alias-mappning
+  const normalizedSlug = slug ? (slugAliases[slug] || slug) : undefined;
+  
   // Get static service category info for UI
-  const service = servicesDataNew.find(s => s.slug === slug);
+  const service = servicesDataNew.find(s => s.slug === normalizedSlug);
   
   // Fetch database services with translations based on locale
   const { data: dbServices, isLoading } = useServices(locale);
   
-  // Map slug to category name for filtering
+  // Map slug to category name for filtering - använd normalizedSlug
   const categoryMap: Record<string, string> = {
     'el': 'el',
     'vvs': 'vvs',
@@ -62,7 +76,7 @@ const ServiceDetail = () => {
     'takarbeten': 'takarbeten'
   };
   
-  const categoryName = slug ? categoryMap[slug] : undefined;
+  const categoryName = normalizedSlug ? categoryMap[normalizedSlug] : undefined;
   
   // Filter services by category from database (including cross-listed)
   const filteredSubServices = useMemo(() => {
@@ -114,8 +128,17 @@ const ServiceDetail = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
 
+  // SEO - dynamisk titel och beskrivning
+  const seoTitle = `${t(`serviceCategories.${service.slug}.title` as any) || service.title} | Fixco`;
+  const seoDescription = t(`serviceCategories.${service.slug}.description` as any) || service.description;
+
   return (
     <div className="min-h-screen">
+      <Seo 
+        title={seoTitle}
+        description={seoDescription}
+        canonicalPath={`/tjanster/${slug}`}
+      />
       <Breadcrumbs />
       
         {/* Hero Section */}
