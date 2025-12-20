@@ -47,6 +47,7 @@ import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
 import { TestimonialCard } from "@/components/local-service/TestimonialCard";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
+import { CarpenterActionSection } from "@/components/local-service/CarpenterActionSection";
 
 // Animation variants
 const containerVariants = {
@@ -308,6 +309,11 @@ const LocalServicePage = () => {
             </div>
           </div>
         </section>
+
+        {/* Carpenter Action Section - Only for snickare pages */}
+        {serviceSlug === "snickare" && (
+          <CarpenterActionSection area={area} />
+        )}
 
         {/* Compact Trust Bar */}
         <CompactTrustBar 
