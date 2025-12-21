@@ -13,7 +13,7 @@ const getGradientForService = (slug: string): string => {
     'el': 'bg-gradient-to-r from-yellow-400 to-orange-500', // Gul-orange (elektricitet)
     'vvs': 'bg-gradient-to-r from-blue-400 to-cyan-500', // Blå-cyan (vatten)
     'snickeri': 'bg-gradient-to-r from-amber-500 to-orange-600', // Amber-orange (trä)
-    'malning': 'bg-gradient-to-r from-cyan-400 via-pink-500 via-yellow-400 to-purple-600', // Färgpalett (turkos-rosa-gul-lila)
+    'malare': 'bg-gradient-to-r from-cyan-400 via-pink-500 via-yellow-400 to-purple-600', // Färgpalett (turkos-rosa-gul-lila)
     'montering': 'bg-gradient-to-r from-purple-500 to-violet-600', // Lila-violet
     'tradgard': 'bg-gradient-to-r from-green-400 to-lime-500', // Grön-lime (natur)
     'stadning': 'bg-gradient-to-r from-pink-400 to-rose-500', // Rosa-rose

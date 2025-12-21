@@ -155,6 +155,7 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.vvs': 'Plumbing',
   'serviceCategories.snickeri': 'Carpentry',
   'serviceCategories.malning': 'Painting',
+  'serviceCategories.malare': 'Painting',
   'serviceCategories.montering': 'Assembly',
   'serviceCategories.tradgard': 'Garden',
   'serviceCategories.stadning': 'Cleaning',

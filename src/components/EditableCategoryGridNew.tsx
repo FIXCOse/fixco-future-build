@@ -34,6 +34,7 @@ const getGradientForService = (slug: string): string => {
     'el': 'bg-gradient-to-r from-yellow-400 to-orange-500',
     'vvs': 'bg-gradient-to-r from-blue-400 to-cyan-500',
     'snickeri': 'bg-gradient-to-r from-amber-500 to-orange-600',
+    'malare': 'bg-gradient-to-r from-cyan-400 via-pink-500 via-yellow-400 to-purple-600', // Färgpalett
     'montering': 'bg-gradient-to-r from-purple-500 to-violet-600',
     'tradgard': 'bg-gradient-to-r from-green-400 to-lime-500',
     'stadning': 'bg-gradient-to-r from-pink-400 to-rose-500',
