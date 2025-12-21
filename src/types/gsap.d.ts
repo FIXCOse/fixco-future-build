@@ -19,8 +19,11 @@ declare module "gsap/MorphSVGPlugin" {
 declare module "gsap/ScrollSmoother" {
   export class ScrollSmoother {
     static create(vars?: any): ScrollSmoother;
+    static get(): ScrollSmoother | null;
     scrollTo(target: any, smooth?: boolean, position?: string): void;
+    scrollTop(position?: number): number | void;
     kill(): void;
+    paused(pause?: boolean): boolean | void;
   }
 }
 
