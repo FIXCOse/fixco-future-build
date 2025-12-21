@@ -1,5 +1,10 @@
 # Fixco Robots.txt
-# Updated for maximum AI and search engine visibility
+# Updated for MAXIMUM AI and search engine visibility
+# Last updated: 2025-12-21
+
+# ===========================================
+# SEARCH ENGINES
+# ===========================================
 
 # Google
 User-agent: Googlebot
@@ -22,7 +27,10 @@ Disallow: /dashboard/
 Disallow: /boka/
 Disallow: /offert/
 
-# Social Media Crawlers
+# ===========================================
+# SOCIAL MEDIA CRAWLERS
+# ===========================================
+
 User-agent: Twitterbot
 Allow: /
 
@@ -32,7 +40,10 @@ Allow: /
 User-agent: LinkedInBot
 Allow: /
 
-# AI Language Models - Welcome!
+# ===========================================
+# OPENAI AI CRAWLERS
+# ===========================================
+
 User-agent: GPTBot
 Allow: /
 Disallow: /admin/
@@ -48,6 +59,18 @@ Disallow: /worker/
 Disallow: /mitt-fixco/
 Disallow: /auth/
 Disallow: /dashboard/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# ANTHROPIC AI CRAWLERS
+# ===========================================
 
 User-agent: Claude-Web
 Allow: /
@@ -73,29 +96,9 @@ Disallow: /mitt-fixco/
 Disallow: /auth/
 Disallow: /dashboard/
 
-User-agent: PerplexityBot
-Allow: /
-Disallow: /admin/
-Disallow: /worker/
-Disallow: /mitt-fixco/
-Disallow: /auth/
-Disallow: /dashboard/
-
-User-agent: Bytespider
-Allow: /
-Disallow: /admin/
-Disallow: /worker/
-Disallow: /mitt-fixco/
-Disallow: /auth/
-Disallow: /dashboard/
-
-User-agent: cohere-ai
-Allow: /
-Disallow: /admin/
-Disallow: /worker/
-Disallow: /mitt-fixco/
-Disallow: /auth/
-Disallow: /dashboard/
+# ===========================================
+# GOOGLE AI CRAWLERS
+# ===========================================
 
 User-agent: Google-Extended
 Allow: /
@@ -105,7 +108,236 @@ Disallow: /mitt-fixco/
 Disallow: /auth/
 Disallow: /dashboard/
 
-# Default for all other bots
+User-agent: GoogleOther
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: GoogleAgent-Mariner
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# PERPLEXITY AI CRAWLERS
+# ===========================================
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# META AI CRAWLERS
+# ===========================================
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# APPLE AI CRAWLERS
+# ===========================================
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# AMAZON AI CRAWLERS
+# ===========================================
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# MICROSOFT AI CRAWLERS
+# ===========================================
+
+User-agent: bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: MicrosoftPreview
+Allow: /
+
+# ===========================================
+# BYTEDANCE AI CRAWLERS (TikTok)
+# ===========================================
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# ===========================================
+# OTHER AI CRAWLERS
+# ===========================================
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: YouBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: AI2Bot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Diffbot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Timpibot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: omgili
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Scrapy
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: PiplBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Webzio-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: iaskspider
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: IsDown
+Allow: /
+
+# ===========================================
+# DEFAULT FOR ALL OTHER BOTS
+# ===========================================
+
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -116,8 +348,16 @@ Disallow: /dashboard/
 Disallow: /boka/
 Disallow: /offert/
 
+# ===========================================
+# AI INFORMATION FILES
+# ===========================================
+
 # Sitemap
 Sitemap: https://fixco.se/sitemap.xml
 
-# AI-specific information files
-# See also: /llms.txt and /.well-known/ai.txt
+# AI-specific information files (for AI crawlers)
+# /llms.txt - Basic AI information
+# /llms-full.txt - Comprehensive AI information
+# /.well-known/ai.txt - Alternative AI info location
+# /.well-known/llms.txt - Alternative llms.txt location
+# /knowledge-base.json - Structured JSON for AI parsing

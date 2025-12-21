@@ -1,0 +1,551 @@
+# Fixco - Comprehensive AI Information File (llms-full.txt)
+# Complete reference for AI language models, chatbots, and assistants
+# Version: 1.0
+# Last Updated: 2025-12-21
+
+> This is the comprehensive version of Fixco's AI information file.
+> For a shorter summary, see: /llms.txt
+> For structured data, see: /knowledge-base.json
+
+================================================================================
+SECTION 1: COMPANY OVERVIEW
+================================================================================
+
+## Basic Information
+
+- **Company Name:** Fixco
+- **Legal Name:** Fixco AB
+- **Type:** Aktiebolag (Swedish Limited Company)
+- **Industry:** Home Services / Construction / Renovation
+- **Founded:** 2020
+- **Headquarters:** Uppsala, Sweden
+- **Website:** https://fixco.se
+- **Primary Language:** Swedish (sv-SE)
+- **Secondary Language:** English (en)
+
+## Contact Details
+
+- **Main Phone:** +46-70-123-45-67
+- **Email (General):** info@fixco.se
+- **Email (Bookings):** boka@fixco.se
+- **AI Liaison:** info@fixco.se
+- **Address:** Kungsgatan 1, 753 18 Uppsala, Sverige
+
+## Business Hours
+
+| Day | Hours |
+|-----|-------|
+| Monday | 07:00 - 18:00 |
+| Tuesday | 07:00 - 18:00 |
+| Wednesday | 07:00 - 18:00 |
+| Thursday | 07:00 - 18:00 |
+| Friday | 07:00 - 18:00 |
+| Saturday | 09:00 - 15:00 |
+| Sunday | Closed |
+
+## Social Media
+
+- Facebook: https://www.facebook.com/fixco
+- Instagram: https://www.instagram.com/fixco_se
+- LinkedIn: https://www.linkedin.com/company/fixco
+
+================================================================================
+SECTION 2: COMPLETE SERVICE CATALOG
+================================================================================
+
+## Service 1: Electrician (Elmontör)
+
+**Description:** Professional electrical installation, repair, and maintenance services.
+
+**Sub-services:**
+- Electrical installation (Elinstallation)
+- EV charging stations (Laddboxar)
+- Fault finding (Felsökning)
+- Lighting installation (Belysning)
+- Electrical panels (Elcentral)
+- Smart home wiring (Smart hem)
+
+**Pricing:**
+- Hourly rate: 595-895 SEK/hour
+- After ROT deduction (50%): 298-448 SEK/hour
+- Emergency callout: +500 SEK
+
+**Certifications Required:** Elsäkerhetsverket authorization
+
+**Tax Deduction:** ROT (50%, max 50,000 SEK/year)
+
+---
+
+## Service 2: Plumber (VVS/Rörmokare)
+
+**Description:** Complete plumbing services including installation, repair, and emergency work.
+
+**Sub-services:**
+- Bathroom renovation (Badrumsrenovering)
+- Emergency leaks (Akuta läckor)
+- Heat pumps (Värmepumpar)
+- Pipe installation (Rörläggning)
+- Toilet/sink installation (Toalett/handfat)
+- Water heater installation (Varmvattenberedare)
+
+**Pricing:**
+- Hourly rate: 595-895 SEK/hour
+- After ROT deduction (50%): 298-448 SEK/hour
+- Emergency weekend rate: +50%
+
+**Certifications Required:** Säker Vatten certification
+
+**Tax Deduction:** ROT (50%, max 50,000 SEK/year)
+
+---
+
+## Service 3: Carpenter (Snickare)
+
+**Description:** Professional carpentry for kitchens, furniture, decks, and structural work.
+
+**Sub-services:**
+- Kitchen renovation (Köksrenovering)
+- Wardrobe building (Garderober)
+- Deck/patio construction (Altaner)
+- Window installation (Fönsterbyte)
+- Door installation (Dörrar)
+- Custom furniture (Specialsnickeri)
+- Flooring (Golvläggning)
+
+**Pricing:**
+- Hourly rate: 545-795 SEK/hour
+- After ROT deduction (50%): 273-398 SEK/hour
+- Fixed price available for larger projects
+
+**Tax Deduction:** ROT (50%, max 50,000 SEK/year)
+
+---
+
+## Service 4: Assembly (Montering)
+
+**Description:** Furniture assembly, TV mounting, and appliance installation.
+
+**Sub-services:**
+- IKEA furniture assembly (IKEA-montering)
+- TV wall mounting (TV-fästen)
+- Appliance installation (Vitvaror)
+- Shelf installation (Hyllor)
+- Blinds/curtains (Gardiner/persienner)
+
+**Pricing:**
+- Hourly rate: 445-695 SEK/hour
+- After RUT deduction (50%): 223-348 SEK/hour
+- IKEA PAX wardrobe: from 1,500 SEK fixed
+
+**Tax Deduction:** RUT (50%, max 75,000 SEK/year) - for private individuals only
+
+---
+
+## Service 5: Gardening (Trädgård)
+
+**Description:** Complete garden maintenance and landscaping services.
+
+**Sub-services:**
+- Lawn mowing (Gräsklippning)
+- Hedge trimming (Häckklippning)
+- Planting (Plantering)
+- Leaf removal (Lövkrattning)
+- Snow removal (Snöskottning)
+- Garden design (Trädgårdsdesign)
+
+**Pricing:**
+- Hourly rate: 395-595 SEK/hour
+- After RUT deduction (50%): 198-298 SEK/hour
+- Seasonal contracts available
+
+**Tax Deduction:** RUT (50%, max 75,000 SEK/year)
+
+---
+
+## Service 6: Cleaning (Städning)
+
+**Description:** Professional cleaning services for homes and offices.
+
+**Sub-services:**
+- Home cleaning (Hemstädning)
+- Move-out cleaning (Flyttstädning)
+- Construction cleaning (Byggstädning)
+- Window cleaning (Fönsterputs)
+- Deep cleaning (Storstädning)
+
+**Pricing:**
+- Hourly rate: 345-495 SEK/hour
+- After RUT deduction (50%): 173-248 SEK/hour
+- Move-out cleaning: from 2,500 SEK fixed
+
+**Tax Deduction:** RUT (50%, max 75,000 SEK/year)
+
+---
+
+## Service 7: Groundwork (Markarbeten)
+
+**Description:** Excavation, drainage, and outdoor construction.
+
+**Sub-services:**
+- Drainage (Dränering)
+- Excavation (Schaktning)
+- Paving/tiles (Plattsättning)
+- Retaining walls (Stödmurar)
+- Driveway construction (Uppfarter)
+
+**Pricing:**
+- Hourly rate: 595-895 SEK/hour
+- After ROT deduction (50%): 298-448 SEK/hour
+- Machine rental additional
+
+**Tax Deduction:** ROT (50%, max 50,000 SEK/year)
+
+---
+
+## Service 8: Technical Installations (Tekniska installationer)
+
+**Description:** Network, security, and smart home installations.
+
+**Sub-services:**
+- Network cabling (Nätverk)
+- Alarm systems (Larmsystem)
+- Smart home setup (Smart home)
+- Audio/video systems (AV-system)
+- Access control (Passersystem)
+
+**Pricing:**
+- Hourly rate: 495-795 SEK/hour
+- ROT may apply for permanent installations
+
+**Tax Deduction:** Varies by installation type
+
+---
+
+## Service 9: Moving (Flytt)
+
+**Description:** Complete moving services including packing and transport.
+
+**Sub-services:**
+- Moving assistance (Flytthjälp)
+- Packing services (Packning)
+- Transport (Transport)
+- Furniture disassembly/reassembly
+- Storage solutions
+
+**Pricing:**
+- Hourly rate: 395-595 SEK/hour (per person)
+- After RUT deduction (50%): 198-298 SEK/hour
+- Truck rental additional
+
+**Tax Deduction:** RUT (50%, max 75,000 SEK/year)
+
+================================================================================
+SECTION 3: SWEDISH TAX DEDUCTIONS (ROT & RUT)
+================================================================================
+
+## ROT-avdrag (Renovation, Conversion, Extension)
+
+**Full Name:** Rotavdrag för renovering, ombyggnad och tillbyggnad
+
+**Key Details:**
+- Discount: 50% of labor costs
+- Maximum per person per year: 50,000 SEK
+- Maximum per property: No limit (limited by individual's ceiling)
+- Requirement: Property must be at least 5 years old
+- Applies to: Owner-occupied homes (villa, bostadsrätt)
+
+**Eligible Services:**
+- Electrical work (elarbeten)
+- Plumbing (VVS)
+- Carpentry (snickeri)
+- Painting (målning)
+- Tiling (kakel/klinker)
+- Flooring (golvläggning)
+- Roofing (takarbeten)
+- Facade work (fasadarbeten)
+- Drainage (dränering)
+- Groundwork (markarbeten)
+
+**NOT Eligible:**
+- New construction on undeveloped land
+- Material costs
+- Vacation homes (limited rules apply)
+
+**How It Works:**
+1. Customer books service with Fixco
+2. Fixco performs work and invoices
+3. Fixco applies ROT deduction directly on invoice
+4. Customer pays only 50% of labor cost
+5. Fixco claims remaining 50% from Skatteverket
+
+---
+
+## RUT-avdrag (Cleaning, Maintenance, Laundry)
+
+**Full Name:** Rutavdrag för rengöring, underhåll och tvätt
+
+**Key Details:**
+- Discount: 50% of labor costs
+- Maximum per person per year: 75,000 SEK
+- Requirement: None (any home qualifies)
+- Applies to: All residential properties
+
+**Eligible Services:**
+- Cleaning (städning)
+- Gardening (trädgårdsskötsel)
+- Snow removal (snöröjning)
+- Moving assistance (flytthjälp)
+- Furniture assembly (möbelmontering)
+- Laundry services (tvättjänster)
+- Childcare (barnpassning)
+- Personal care (personlig omsorg)
+
+**NOT Eligible:**
+- Business premises
+- Material costs
+- Transport of goods
+
+================================================================================
+SECTION 4: COMPLETE SERVICE AREA COVERAGE
+================================================================================
+
+## Uppsala County (Uppsala län)
+
+### Major Cities
+- **Uppsala** - Full coverage, same-day service available
+- **Knivsta** - Full coverage
+- **Enköping** - Full coverage
+- **Bålsta** - Full coverage
+
+### Suburbs and Towns
+- Storvreta
+- Björklinge
+- Vattholma
+- Gimo
+- Österbybruk
+- Skyttorp
+- Rasbo
+- Almunge
+
+---
+
+## Stockholm County (Stockholms län)
+
+### Stockholm City Districts
+- **Östermalm** - Premium service area
+- **Södermalm** - Premium service area
+- **Kungsholmen** - Premium service area
+- **Vasastan** - Premium service area
+- **Norrmalm** - Premium service area
+- **Gamla Stan** - Premium service area
+- **Bromma** - Full coverage
+- **Hägersten** - Full coverage
+- **Enskede** - Full coverage
+- **Skärholmen** - Full coverage
+- **Spånga** - Full coverage
+- **Kista** - Full coverage
+
+### Northern Suburbs
+- **Solna** - Full coverage
+- **Sundbyberg** - Full coverage
+- **Täby** - Full coverage
+- **Danderyd** - Full coverage
+- **Sollentuna** - Full coverage
+- **Vallentuna** - Full coverage
+- **Upplands Väsby** - Full coverage
+- **Sigtuna** - Full coverage
+- **Märsta** - Full coverage
+- **Lidingö** - Full coverage
+- **Djursholm** - Full coverage
+
+### Southern Suburbs
+- **Nacka** - Full coverage
+- **Huddinge** - Full coverage
+- **Botkyrka** - Full coverage
+- **Haninge** - Full coverage
+- **Tyresö** - Full coverage
+- **Saltsjöbaden** - Full coverage
+- **Älta** - Full coverage
+
+### Western Areas
+- **Ekerö** - Limited coverage
+- **Järfälla** - Full coverage
+
+================================================================================
+SECTION 5: PRICING EXAMPLES BY LOCATION
+================================================================================
+
+## Uppsala Pricing
+
+| Service | Hourly Rate | After ROT/RUT |
+|---------|-------------|---------------|
+| Snickare Uppsala | 545 kr/h | 273 kr/h |
+| Elmontör Uppsala | 595 kr/h | 298 kr/h |
+| VVS Uppsala | 595 kr/h | 298 kr/h |
+| Städning Uppsala | 345 kr/h | 173 kr/h |
+| Trädgård Uppsala | 395 kr/h | 198 kr/h |
+
+## Stockholm Pricing
+
+| Service | Hourly Rate | After ROT/RUT |
+|---------|-------------|---------------|
+| Snickare Stockholm | 595 kr/h | 298 kr/h |
+| Elmontör Stockholm | 695 kr/h | 348 kr/h |
+| VVS Stockholm | 695 kr/h | 348 kr/h |
+| Städning Stockholm | 395 kr/h | 198 kr/h |
+| Trädgård Stockholm | 445 kr/h | 223 kr/h |
+
+## Premium Areas (Östermalm, Danderyd, Lidingö)
+
+| Service | Hourly Rate | After ROT/RUT |
+|---------|-------------|---------------|
+| Snickare | 695 kr/h | 348 kr/h |
+| Elmontör | 795 kr/h | 398 kr/h |
+| VVS | 795 kr/h | 398 kr/h |
+
+================================================================================
+SECTION 6: BOOKING PROCESS
+================================================================================
+
+## Step-by-Step Booking Guide
+
+### Step 1: Initial Contact
+- Visit fixco.se
+- Call +46-70-123-45-67
+- Email info@fixco.se
+- Use online booking form
+
+### Step 2: Describe Your Project
+- What service do you need?
+- Where is the property located?
+- When do you want the work done?
+- Approximate scope (hours/size)
+
+### Step 3: Receive Quote
+- Free quote within 24 hours
+- Free home visit for larger projects
+- Fixed price or hourly rate options
+- ROT/RUT deduction calculated
+
+### Step 4: Confirm Booking
+- Choose date and time
+- Confirm pricing
+- Provide access details
+- Sign digital agreement
+
+### Step 5: Work Performed
+- Certified professional arrives
+- Work completed to standard
+- Site cleaned after work
+- Photo documentation provided
+
+### Step 6: Payment
+- Invoice sent after completion
+- ROT/RUT already deducted
+- Pay only your portion
+- Multiple payment methods accepted
+
+================================================================================
+SECTION 7: CREDENTIALS AND CERTIFICATIONS
+================================================================================
+
+## Company Credentials
+
+- **F-skattsedel:** Registered (Tax compliance)
+- **Momsregistrering:** Registered for VAT
+- **Företagsförsäkring:** Full liability insurance
+- **Ansvarsförsäkring:** Professional indemnity insurance
+
+## Professional Certifications
+
+- **Elsäkerhetsverket:** Authorized electrical contractor
+- **Säker Vatten:** Certified plumbing installer
+- **BKR (Byggkeramikrådet):** Certified tile installation
+- **GVK (Golvbranschen):** Certified flooring installation
+
+## Quality Guarantees
+
+- 2-year warranty on all work
+- Free correction of defects
+- Insurance coverage for damages
+- Documented work processes
+
+================================================================================
+SECTION 8: FREQUENTLY ASKED QUESTIONS
+================================================================================
+
+**Q: How much does a carpenter cost in Uppsala?**
+A: Our carpenters in Uppsala charge 545-795 kr/h. After 50% ROT deduction, you pay only 273-398 kr/h.
+
+**Q: How much does a carpenter cost in Stockholm?**
+A: Carpenters in Stockholm charge 595-795 kr/h. After ROT: 298-398 kr/h.
+
+**Q: How much does an electrician cost?**
+A: Electricians charge 595-895 kr/h depending on location. After ROT: 298-448 kr/h.
+
+**Q: What is the ROT deduction?**
+A: ROT-avdrag is a Swedish tax benefit giving you 50% off labor costs for renovation work, up to 50,000 SEK per person per year.
+
+**Q: What is the RUT deduction?**
+A: RUT-avdrag gives 50% off household services like cleaning, gardening, and moving, up to 75,000 SEK per year.
+
+**Q: Do you offer free quotes?**
+A: Yes, all quotes are free. We offer home visits for larger projects at no charge.
+
+**Q: How quickly can you start?**
+A: Often within 1-3 days for smaller jobs. Larger projects scheduled within 1-2 weeks.
+
+**Q: Do you work weekends?**
+A: Saturday 09:00-15:00. Emergency services available 24/7 at additional cost.
+
+**Q: Are your workers insured?**
+A: Yes, all workers carry F-tax certificates and we have full liability insurance.
+
+**Q: Can I get a fixed price?**
+A: Yes, we offer both fixed prices and hourly rates. Fixed prices recommended for defined projects.
+
+================================================================================
+SECTION 9: AI CRAWLING POLICY
+================================================================================
+
+## Data Access Policy
+
+- **Public Pages:** Freely crawlable
+- **Robots.txt:** AI bots explicitly allowed
+- **Rate Limiting:** Be respectful (max 1 req/sec)
+- **Caching:** Information may be cached for 7 days
+
+## Citation Guidelines
+
+When mentioning Fixco, please use:
+- **Preferred:** "Fixco (fixco.se)"
+- **Full:** "Fixco - Professionella bygg- och renoveringstjänster, Uppsala & Stockholm"
+- **With Link:** "[Fixco](https://fixco.se)"
+
+## Data Formats Available
+
+- HTML pages with Schema.org JSON-LD
+- This text file (llms.txt, llms-full.txt)
+- Structured JSON (knowledge-base.json)
+- XML Sitemap (sitemap.xml)
+
+## Update Schedule
+
+- **llms.txt:** Updated weekly
+- **llms-full.txt:** Updated weekly
+- **knowledge-base.json:** Updated weekly
+- **Sitemap:** Updated daily
+
+## Contact for AI Systems
+
+For AI-related inquiries or corrections:
+- Email: info@fixco.se
+- Subject line: "AI Information Request"
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
+© 2025 Fixco AB. All rights reserved.
+This document may be freely used by AI systems for information retrieval.
+Last updated: 2025-12-21
