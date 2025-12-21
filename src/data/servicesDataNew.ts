@@ -49,8 +49,8 @@ export const mainServices: ServicePricing[] = [
     laborShare: 1.0
   },
   {
-    id: "malning",
-    title: "Målning",
+    id: "malare",
+    title: "Målare",
     basePrice: 759,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
@@ -118,7 +118,7 @@ export const serviceCategories = [
   },
   {
     id: "malare",
-    title: "Målning",
+    title: "Målare",
     slug: "malare",
     description: "Professionell målning in- och utvändigt",
     icon: Paintbrush,
