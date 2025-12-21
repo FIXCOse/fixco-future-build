@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 // High-priority routes (most visited pages)
 const HIGH_PRIORITY = [
+  () => import("../pages/Home"),
   () => import("../pages/Services"),
   () => import("../pages/Contact"),
   () => import("../pages/FAQ"),

@@ -376,7 +376,7 @@ const LocalServicePage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
                   {/* Connecting line - desktop */}
                   <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-emerald-500/40 to-amber-500/40" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-amber-500/40 to-emerald-500/40" />
                   </div>
                   
                   {howToSteps.map((step, idx) => {
