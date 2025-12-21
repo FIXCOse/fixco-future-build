@@ -53,6 +53,11 @@ import { PlumberActionSection } from "@/components/local-service/PlumberActionSe
 import { ElectricianActionSection } from "@/components/local-service/ElectricianActionSection";
 import { GardenActionSection } from "@/components/local-service/GardenActionSection";
 import { GroundworkActionSection } from "@/components/local-service/GroundworkActionSection";
+import { 
+  getAuthorSchema, 
+  getSpeakableSchema, 
+  getOrganizationSchema 
+} from "@/components/SEOSchemaEnhanced";
 
 // Animation variants
 const containerVariants = {
@@ -169,6 +174,16 @@ const LocalServicePage = () => {
     ]
   }), [service, area, serviceSlug, areaSlug]);
 
+  // AI-optimized schemas for maximum visibility
+  const authorSchema = useMemo(() => getAuthorSchema(), []);
+  const organizationSchema = useMemo(() => getOrganizationSchema(), []);
+  const speakableSchema = useMemo(() => getSpeakableSchema({
+    headline: content.h1,
+    description: content.description,
+    url: `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+    speakableSelectors: ["h1", ".hero-description", ".service-intro"]
+  }), [content, serviceSlug, areaSlug]);
+
   // Area links are now handled by ExpandableAreaLinks component
 
   // Combine myths into FAQ for consolidation
@@ -186,10 +201,15 @@ const LocalServicePage = () => {
         <meta property="og:title" content={content.title} />
         <meta property="og:description" content={content.description} />
         <meta property="og:url" content={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        {/* Core SEO schemas */}
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(howToSchema)}</script>
+        {/* AI-optimized schemas for ChatGPT, Claude, Perplexity, etc */}
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(authorSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(speakableSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen">

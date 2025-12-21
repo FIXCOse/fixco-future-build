@@ -421,3 +421,268 @@ export const getServiceListSchema = (services: Array<{name: string; url: string;
     "description": service.description
   }))
 });
+
+// HowTo Schema for booking guides - helps AI understand step-by-step processes
+export const getHowToSchema = (options: {
+  name: string;
+  description: string;
+  totalTime?: string;
+  estimatedCost?: { currency: string; value: string };
+  steps: Array<{ name: string; text: string; url?: string }>;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": options.name,
+  "description": options.description,
+  "totalTime": options.totalTime || "PT30M",
+  "estimatedCost": options.estimatedCost || {
+    "@type": "MonetaryAmount",
+    "currency": "SEK",
+    "value": "0"
+  },
+  "step": options.steps.map((step, index) => ({
+    "@type": "HowToStep",
+    "position": index + 1,
+    "name": step.name,
+    "text": step.text,
+    "url": step.url || `${baseUrl}#step-${index + 1}`
+  })),
+  "tool": [
+    {
+      "@type": "HowToTool",
+      "name": "Telefon eller dator"
+    }
+  ]
+});
+
+// Default booking HowTo for service pages
+export const getBookingHowToSchema = (serviceName: string, areaName?: string) => 
+  getHowToSchema({
+    name: `Hur bokar jag ${serviceName.toLowerCase()}${areaName ? ` i ${areaName}` : ''}?`,
+    description: `Steg-för-steg guide för att boka ${serviceName.toLowerCase()} med ROT/RUT-avdrag via Fixco`,
+    totalTime: "PT10M",
+    estimatedCost: { currency: "SEK", value: "0" },
+    steps: [
+      {
+        name: "Beskriv ditt projekt",
+        text: "Beskriv vad du behöver hjälp med på fixco.se eller ring oss på +46-70-123-45-67. Bifoga gärna bilder för bättre prisuppskattning.",
+        url: `${baseUrl}/boka-hembesok`
+      },
+      {
+        name: "Få offert inom 24h",
+        text: "Vi återkommer med en detaljerad offert inom 24 timmar. För större projekt erbjuder vi gratis hembesök.",
+        url: `${baseUrl}/boka-hembesok`
+      },
+      {
+        name: "Boka tid",
+        text: "Välj en tid som passar dig. Vi är flexibla och kan ofta komma samma vecka.",
+        url: `${baseUrl}/boka-hembesok`
+      },
+      {
+        name: "Arbetet utförs",
+        text: `Vår ${serviceName.toLowerCase()} kommer och utför arbetet professionellt. Alla våra hantverkare har F-skatt och är försäkrade.`
+      },
+      {
+        name: "Betala med ROT/RUT-avdrag",
+        text: "Du betalar endast 50% av arbetskostnaden tack vare ROT/RUT-avdraget. Vi hanterar allt pappersarbete åt dig."
+      }
+    ]
+  });
+
+// Author/Organization Schema for E-E-A-T signals
+export const getAuthorSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${baseUrl}#author`,
+  "name": "Fixco",
+  "url": baseUrl,
+  "logo": `${baseUrl}/assets/fixco-logo-black.png`,
+  "description": "Professionella bygg- och renoveringstjänster med ROT & RUT-avdrag i Uppsala och Stockholm",
+  "foundingDate": "2020",
+  "founder": {
+    "@type": "Person",
+    "name": "Fixco Team"
+  },
+  "knowsAbout": [
+    "Elinstallationer",
+    "VVS och rörmokeri",
+    "Snickeri och renovering",
+    "ROT-avdrag",
+    "RUT-avdrag",
+    "Byggnadsteknik",
+    "Hemrenovering"
+  ],
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "F-skatt",
+      "name": "Godkänd för F-skatt"
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Elsäkerhetsverket",
+      "name": "Auktorisation Elsäkerhetsverket"
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Säker Vatten",
+      "name": "Certifierad VVS-installatör"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/fixco",
+    "https://www.instagram.com/fixco_se",
+    "https://www.linkedin.com/company/fixco"
+  ]
+});
+
+// Speakable Schema for voice assistants (Google Assistant, Alexa, etc.)
+export const getSpeakableSchema = (options: {
+  headline: string;
+  description: string;
+  url: string;
+  speakableSelectors?: string[];
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": options.headline,
+  "description": options.description,
+  "url": options.url,
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": options.speakableSelectors || [
+      "h1",
+      ".speakable-intro",
+      ".hero-description"
+    ]
+  },
+  "author": {
+    "@id": `${baseUrl}#author`
+  },
+  "publisher": {
+    "@id": `${baseUrl}#organization`
+  }
+});
+
+// Local Service Schema - enhanced for local SEO and AI
+export const getLocalServiceSchema = (options: {
+  serviceName: string;
+  serviceSlug: string;
+  areaName: string;
+  areaSlug: string;
+  description: string;
+  priceRange: string;
+  hasROT: boolean;
+  hasRUT: boolean;
+  faqs?: Array<{ question: string; answer: string }>;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${baseUrl}/tjanster/${options.serviceSlug}/${options.areaSlug}#service`,
+  "name": `${options.serviceName} ${options.areaName}`,
+  "description": options.description,
+  "url": `${baseUrl}/tjanster/${options.serviceSlug}/${options.areaSlug}`,
+  "provider": {
+    "@type": "LocalBusiness",
+    "@id": `${baseUrl}#organization`,
+    "name": "Fixco",
+    "image": `${baseUrl}/assets/fixco-logo-black.png`,
+    "telephone": "+46-70-123-45-67",
+    "email": "info@fixco.se"
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": options.areaName,
+    "containedInPlace": {
+      "@type": "Country",
+      "name": "Sverige"
+    }
+  },
+  "serviceType": options.serviceName,
+  "priceRange": options.priceRange,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "priceCurrency": "SEK",
+      "unitText": "per timme",
+      "description": options.hasROT 
+        ? "50% ROT-avdrag på arbetskostnad" 
+        : options.hasRUT 
+          ? "50% RUT-avdrag på arbetskostnad"
+          : "Fast pris eller timpris"
+    }
+  },
+  "termsOfService": options.hasROT || options.hasRUT 
+    ? `${baseUrl}/rot-info` 
+    : undefined,
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": `${options.serviceName} tjänster i ${options.areaName}`,
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `${options.serviceName} i ${options.areaName}`
+        }
+      }
+    ]
+  }
+});
+
+// Combined AI-optimized schema for maximum visibility
+export const getAIOptimizedSchema = (pageType: 'home' | 'service' | 'local', options?: {
+  serviceName?: string;
+  serviceSlug?: string;
+  areaName?: string;
+  areaSlug?: string;
+  description?: string;
+  faqs?: Array<{ question: string; answer: string }>;
+}) => {
+  const schemas: any[] = [
+    getOrganizationSchema(),
+    getAuthorSchema(),
+    getSiteNavigationSchema()
+  ];
+
+  if (pageType === 'home') {
+    schemas.push(getWebsiteSchema());
+    schemas.push(getHomeServicesSchema());
+    schemas.push(getSpeakableSchema({
+      headline: "Fixco - Professionella Hantverkare med ROT & RUT-avdrag",
+      description: "Boka elmontör, snickare, rörmokare och fler hantverkare i Uppsala och Stockholm. 50% rabatt via ROT/RUT-avdrag.",
+      url: baseUrl
+    }));
+  }
+
+  if (pageType === 'service' && options?.serviceName) {
+    schemas.push(getBookingHowToSchema(options.serviceName));
+  }
+
+  if (pageType === 'local' && options?.serviceName && options?.areaName && options?.serviceSlug && options?.areaSlug) {
+    schemas.push(getLocalServiceSchema({
+      serviceName: options.serviceName,
+      serviceSlug: options.serviceSlug,
+      areaName: options.areaName,
+      areaSlug: options.areaSlug,
+      description: options.description || `Boka ${options.serviceName.toLowerCase()} i ${options.areaName} med ROT/RUT-avdrag`,
+      priceRange: "345-895 SEK/h",
+      hasROT: ['snickare', 'elmontor', 'vvs', 'markarbeten'].includes(options.serviceSlug),
+      hasRUT: ['stadning', 'tradgard', 'flytt', 'montering'].includes(options.serviceSlug)
+    }));
+    schemas.push(getBookingHowToSchema(options.serviceName, options.areaName));
+    schemas.push(getSpeakableSchema({
+      headline: `${options.serviceName} ${options.areaName} - Fixco`,
+      description: options.description || `Professionell ${options.serviceName.toLowerCase()} i ${options.areaName}`,
+      url: `${baseUrl}/tjanster/${options.serviceSlug}/${options.areaSlug}`
+    }));
+    
+    if (options.faqs && options.faqs.length > 0) {
+      schemas.push(getFAQSchema(options.faqs));
+    }
+  }
+
+  return schemas;
+};
