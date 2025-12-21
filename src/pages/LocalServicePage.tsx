@@ -48,6 +48,11 @@ import { TestimonialCard } from "@/components/local-service/TestimonialCard";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
 import { CarpenterActionSection } from "@/components/local-service/CarpenterActionSection";
+import { PainterActionSection } from "@/components/local-service/PainterActionSection";
+import { PlumberActionSection } from "@/components/local-service/PlumberActionSection";
+import { ElectricianActionSection } from "@/components/local-service/ElectricianActionSection";
+import { GardenActionSection } from "@/components/local-service/GardenActionSection";
+import { GroundworkActionSection } from "@/components/local-service/GroundworkActionSection";
 
 // Animation variants
 const containerVariants = {
@@ -310,9 +315,24 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Carpenter Action Section - Only for snickare pages */}
+        {/* Service Action Sections - Conditional by service type */}
         {serviceSlug === "snickare" && (
           <CarpenterActionSection area={area} />
+        )}
+        {serviceSlug === "malare" && (
+          <PainterActionSection area={area} />
+        )}
+        {serviceSlug === "vvs" && (
+          <PlumberActionSection area={area} />
+        )}
+        {serviceSlug === "el" && (
+          <ElectricianActionSection area={area} />
+        )}
+        {serviceSlug === "tradgard" && (
+          <GardenActionSection area={area} />
+        )}
+        {serviceSlug === "markarbeten" && (
+          <GroundworkActionSection area={area} />
         )}
 
         {/* Compact Trust Bar */}

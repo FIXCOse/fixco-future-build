@@ -188,7 +188,13 @@ const Navbar2 = () => {
             >
               <div 
                 className="rd-navbar_link w-dropdown-toggle"
-                onClick={() => toggleDropdown('services')}
+                onClick={() => {
+                  if (openDropdown === 'services') {
+                    window.location.href = paths.services;
+                  } else {
+                    toggleDropdown('services');
+                  }
+                }}
                 onMouseEnter={() => handleMouseEnter('services')}
                 style={{ cursor: 'pointer' }}
               >
