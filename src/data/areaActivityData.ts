@@ -121,6 +121,77 @@ export const getAreaReview = (area: string, serviceName: string): string => {
   return reviews[hash % reviews.length];
 };
 
+// Utökad namnlista med internationell mix
+const extendedFirstNames = [
+  'Emma', 'Erik', 'Anna', 'Johan', 'Sofia', 'Lars', 'Maria', 'Anders', 'Karin', 'Peter',
+  'Ali', 'Fatima', 'Chen', 'Mei', 'Mohammed', 'Amira', 'Pawel', 'Ewa', 'Yusuf', 'Zeynep',
+  'Gustav', 'Lena', 'Oscar', 'Elin', 'Viktor', 'Klara', 'David', 'Sara', 'Nils', 'Eva',
+  'Raj', 'Priya', 'Marco', 'Elena', 'Andreas', 'Hanna', 'Mikael', 'Linda', 'Jakob', 'Maja',
+  'Hassan', 'Leila', 'Henrik', 'Camilla', 'Joakim', 'Rebecka', 'Alexander', 'Ida'
+];
+
+const extendedLastInitials = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Z'];
+
+// Recensionsmallar (20+)
+const reviewTemplates = [
+  `Fantastisk {service} i {area}! Professionella och punktliga.`,
+  `Bästa hantverkarna vi anlitat i {area}. Snyggt jobb!`,
+  `Mycket nöjd med arbetet i vårt hem i {area}. Kommer anlita igen!`,
+  `Pålitliga och duktiga! Fixade allt på utsatt tid här i {area}.`,
+  `Utmärkt service från start till mål. Rekommenderar varmt!`,
+  `Helt fantastiskt bemötande! Proffsigt utfört jobb i {area}.`,
+  `Snabba, effektiva och städade efter sig. Perfekt för oss!`,
+  `ROT-avdraget ordnades smidigt. Supernöjd kund i {area}!`,
+  `Bra pris och kvalitet. Gjorde precis som vi önskade.`,
+  `Otroligt nöjd! Skulle anlita igen utan tvekan.`,
+  `Proffsigt team som levererade i tid. Stort tack!`,
+  `Överträffade våra förväntningar. Rekommenderas starkt!`,
+  `Snygg finish och bra kommunikation hela vägen.`,
+  `Kanon service och hjälpsamma hantverkare i {area}!`,
+  `Allt gick smidigt från offert till färdigt resultat.`,
+  `Toppen från början till slut. Vänliga och professionella.`,
+  `Bästa beslutet vi gjort! Fantastiskt resultat i {area}.`,
+  `Prisvärt och kvalitativt arbete. Rekommenderar gärna!`,
+  `Punktliga och noggranna. Kommer definitivt tillbaka!`,
+  `Super nöjd med {service}. Fixade allt på en dag!`,
+];
+
+// Interface för recensionsdata
+export interface TestimonialData {
+  quote: string;
+  name: string;
+  location: string;
+  rating: number;
+}
+
+// Generera FLERA unika recensioner per ort och tjänst
+export const getAreaReviews = (area: string, serviceName: string, count: number = 15): TestimonialData[] => {
+  const results: TestimonialData[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    // Unik hash per index som kombinerar area + service + index
+    const hash = (area + serviceName + i.toString()).split('').reduce((acc, char, idx) => 
+      acc + char.charCodeAt(0) * (idx + 1), 0
+    );
+    
+    const template = reviewTemplates[(hash * 3) % reviewTemplates.length]
+      .replace('{service}', serviceName?.toLowerCase() || 'service')
+      .replace('{area}', area);
+    
+    const firstName = extendedFirstNames[hash % extendedFirstNames.length];
+    const lastInitial = extendedLastInitials[(hash * 7) % extendedLastInitials.length];
+    
+    results.push({
+      quote: template,
+      name: `${firstName} ${lastInitial}.`,
+      location: area,
+      rating: [4, 5, 5, 5, 5][(hash * 11) % 5] // 80% 5-stjärnor, 20% 4-stjärnor
+    });
+  }
+  
+  return results;
+};
+
 // Generera reviewer-namn
 export const getRandomReviewer = (area: string): string => {
   const firstNames = ['Anna', 'Erik', 'Maria', 'Johan', 'Sofia', 'Lars', 'Emma', 'Anders', 'Karin', 'Peter'];

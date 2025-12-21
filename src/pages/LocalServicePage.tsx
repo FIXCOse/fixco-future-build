@@ -40,11 +40,11 @@ import {
 } from "@/components/ui/accordion";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
-import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps } from "@/data/areaActivityData";
+import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
 import { HeroIllustration } from "@/components/local-service/HeroIllustration";
 import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
-import { TestimonialCard } from "@/components/local-service/TestimonialCard";
+import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
 import { CarpenterActionSection } from "@/components/local-service/CarpenterActionSection";
@@ -76,8 +76,8 @@ const stepIcons = [FileText, Clock, Calendar, CheckCircle];
 const stepColors = [
   { bg: "from-purple-500/20 to-purple-500/5", text: "text-purple-400", border: "border-purple-500/20" },
   { bg: "from-blue-500/20 to-blue-500/5", text: "text-blue-400", border: "border-blue-500/20" },
-  { bg: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-400", border: "border-emerald-500/20" },
   { bg: "from-amber-500/20 to-amber-500/5", text: "text-amber-400", border: "border-amber-500/20" },
+  { bg: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-400", border: "border-emerald-500/20" },
 ];
 
 const LocalServicePage = () => {
@@ -338,7 +338,6 @@ const LocalServicePage = () => {
         {/* Compact Trust Bar */}
         <CompactTrustBar 
           rating={areaActivity.avgRating}
-          recentProjects={areaActivity.recentProjects}
           area={area}
           rotRut={service?.rotRut || "ROT"}
         />
@@ -525,14 +524,14 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            TESTIMONIAL SECTION - Human Touch
+            TESTIMONIAL SECTION - Carousel with Multiple Reviews
             ============================================ */}
-        <section className="py-16 relative">
+        <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
-              className="max-w-3xl mx-auto"
+              className="max-w-6xl mx-auto"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -540,17 +539,14 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-8">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Kundrecension
+                  Kundrecensioner
                 </span>
-                <h2 className="text-2xl font-bold">Vad våra kunder säger</h2>
+                <h2 className="text-2xl font-bold">Vad våra kunder i {area} säger</h2>
               </motion.div>
               
               <motion.div variants={itemVariants}>
-                <TestimonialCard 
-                  quote={getAreaReview(area, service?.name || '')}
-                  name={getRandomReviewer(area)}
-                  location={area}
-                  rating={5}
+                <TestimonialCarouselLocal 
+                  testimonials={getAreaReviews(area, service?.name || '', 15)}
                 />
               </motion.div>
             </motion.div>
