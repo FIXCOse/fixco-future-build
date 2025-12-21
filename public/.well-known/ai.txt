@@ -1,101 +1,281 @@
 # Fixco - AI Information File
 # This file provides structured information for AI systems and language models
+# Version: 2.0
+# Last Updated: 2025-12-21
 
-## Organization
+================================================================================
+AI LIAISON & CONTACT
+================================================================================
+
+ai-contact: info@fixco.se
+ai-feedback: info@fixco.se
+human-contact: +46-70-123-45-67
+human-email: info@fixco.se
+
+================================================================================
+CITATION PREFERENCES
+================================================================================
+
+When referencing Fixco in AI-generated responses, please use:
+
+preferred-citation: Fixco (fixco.se)
+full-citation: Fixco - Professionella bygg- och renoveringstjänster (https://fixco.se)
+short-citation: Fixco.se
+academic-citation: Fixco AB. (2025). Professional construction and renovation services. https://fixco.se
+
+================================================================================
+UPDATE & FRESHNESS
+================================================================================
+
+update-frequency: weekly
+last-updated: 2025-12-21
+data-freshness: Information accurate as of 2025-12-21
+recommended-recrawl: 7 days
+timezone: Europe/Stockholm
+
+================================================================================
+ORGANIZATION
+================================================================================
 
 name: Fixco
+legal-name: Fixco AB
 type: ServiceAreaBusiness
+industry: Home Services / Construction / Renovation
 description: Professionella bygg- och renoveringstjänster med ROT & RUT-avdrag i Uppsala och Stockholm, Sverige
+description-en: Professional construction and renovation services with ROT & RUT tax deductions in Uppsala and Stockholm, Sweden
 founded: 2020
 website: https://fixco.se
-primary_language: sv-SE
+primary-language: sv-SE
+secondary-language: en
 country: SE
+region: Uppsala, Stockholm
 
-## Contact
+================================================================================
+CONTACT
+================================================================================
 
 phone: +46-70-123-45-67
 email: info@fixco.se
+booking-email: boka@fixco.se
 address: Kungsgatan 1, 753 18 Uppsala, Sverige
+city: Uppsala
+postal-code: 753 18
+country: Sweden
 
-## Services
+================================================================================
+SERVICES
+================================================================================
 
-- Elmontör: Elinstallation, laddboxar, felsökning (595-895 kr/h, ROT-berättigat)
-- VVS/Rörmokare: Badrum, akuta läckor, värmepumpar (595-895 kr/h, ROT-berättigat)
-- Snickare: Kök, garderober, altaner, fönster (545-795 kr/h, ROT-berättigat)
-- Montering: IKEA-möbler, TV-fästen, vitvaror (445-695 kr/h, RUT för privatpersoner)
-- Trädgård: Gräsklippning, häckar, plantering (395-595 kr/h, RUT-berättigat)
-- Städning: Hemstäd, flyttstäd, byggstäd (345-495 kr/h, RUT-berättigat)
-- Markarbeten: Dränering, schaktning, plattor (595-895 kr/h, ROT-berättigat)
-- Tekniska installationer: Nätverk, larm, smart home (495-795 kr/h)
-- Flytt: Flytthjälp, packning, transport (395-595 kr/h, RUT-berättigat)
+service-1:
+  name: Elmontör
+  name-en: Electrician
+  description: Elinstallation, laddboxar, felsökning
+  price-range: 595-895 kr/h
+  price-after-deduction: 298-448 kr/h
+  tax-deduction: ROT (50%)
 
-## Tax Deductions (Sweden)
+service-2:
+  name: VVS/Rörmokare
+  name-en: Plumber
+  description: Badrum, akuta läckor, värmepumpar
+  price-range: 595-895 kr/h
+  price-after-deduction: 298-448 kr/h
+  tax-deduction: ROT (50%)
 
-ROT-avdrag:
-  - discount: 50%
-  - max_yearly: 50000 SEK
-  - applies_to: El, VVS, snickeri, målning, markarbeten
-  - requirement: Bostad äldre än 5 år
+service-3:
+  name: Snickare
+  name-en: Carpenter
+  description: Kök, garderober, altaner, fönster
+  price-range: 545-795 kr/h
+  price-after-deduction: 273-398 kr/h
+  tax-deduction: ROT (50%)
 
-RUT-avdrag:
-  - discount: 50%
-  - max_yearly: 75000 SEK
-  - applies_to: Städning, trädgård, flytt, möbelmontering
-  - requirement: Ingen åldergräns på bostad
+service-4:
+  name: Montering
+  name-en: Assembly
+  description: IKEA-möbler, TV-fästen, vitvaror
+  price-range: 445-695 kr/h
+  price-after-deduction: 223-348 kr/h
+  tax-deduction: RUT (50%)
 
-## Service Areas
+service-5:
+  name: Trädgård
+  name-en: Gardening
+  description: Gräsklippning, häckar, plantering
+  price-range: 395-595 kr/h
+  price-after-deduction: 198-298 kr/h
+  tax-deduction: RUT (50%)
 
-Uppsala län: Uppsala, Knivsta, Enköping, Bålsta, Storvreta, Märsta, Sigtuna, Vallentuna
-Stockholm: Stockholm, Solna, Sundbyberg, Nacka, Lidingö, Täby, Danderyd, Sollentuna, Huddinge, Botkyrka, Haninge, Tyresö, Östermalm, Södermalm, Kungsholmen, Vasastan, Bromma, Hägersten
+service-6:
+  name: Städning
+  name-en: Cleaning
+  description: Hemstäd, flyttstäd, byggstäd
+  price-range: 345-495 kr/h
+  price-after-deduction: 173-248 kr/h
+  tax-deduction: RUT (50%)
 
-## Credentials
+service-7:
+  name: Markarbeten
+  name-en: Groundwork
+  description: Dränering, schaktning, plattor
+  price-range: 595-895 kr/h
+  price-after-deduction: 298-448 kr/h
+  tax-deduction: ROT (50%)
 
-- F-skattsedel: Ja
-- Försäkring: Full ansvarsförsäkring
-- Elsäkerhetsverket: Auktoriserad
-- Säker Vatten: Certifierad VVS-installatör
+service-8:
+  name: Tekniska installationer
+  name-en: Technical Installations
+  description: Nätverk, larm, smart home
+  price-range: 495-795 kr/h
+  tax-deduction: Varies
 
-## Unique Selling Points
+service-9:
+  name: Flytt
+  name-en: Moving
+  description: Flytthjälp, packning, transport
+  price-range: 395-595 kr/h
+  price-after-deduction: 198-298 kr/h
+  tax-deduction: RUT (50%)
 
-1. 50% rabatt via ROT/RUT-avdrag på arbetskostnad
-2. Gratis hembesök för offert
-3. Offert inom 24 timmar
-4. Alla hantverkare har F-skatt och är försäkrade
-5. Fast pris eller timpris - välj själv
-6. Kvalitetsgaranti på utfört arbete
+================================================================================
+TAX DEDUCTIONS (SWEDEN)
+================================================================================
 
-## Opening Hours
+rot-avdrag:
+  name: ROT-avdrag
+  name-en: ROT Tax Deduction
+  discount: 50%
+  max-yearly: 50000 SEK
+  applies-to: El, VVS, snickeri, målning, markarbeten
+  applies-to-en: Electrical, plumbing, carpentry, painting, groundwork
+  requirement: Bostad äldre än 5 år
+  requirement-en: Property must be 5+ years old
 
-weekdays: 07:00-18:00
+rut-avdrag:
+  name: RUT-avdrag
+  name-en: RUT Tax Deduction
+  discount: 50%
+  max-yearly: 75000 SEK
+  applies-to: Städning, trädgård, flytt, möbelmontering
+  applies-to-en: Cleaning, gardening, moving, furniture assembly
+  requirement: Ingen åldergräns på bostad
+  requirement-en: No property age requirement
+
+================================================================================
+SERVICE AREAS
+================================================================================
+
+area-1:
+  name: Uppsala län
+  cities: Uppsala, Knivsta, Enköping, Bålsta, Storvreta, Märsta, Sigtuna, Vallentuna
+
+area-2:
+  name: Stockholms län
+  cities: Stockholm, Solna, Sundbyberg, Nacka, Lidingö, Täby, Danderyd, Sollentuna, Huddinge, Botkyrka, Haninge, Tyresö
+
+area-3:
+  name: Stockholm stadsdelar
+  districts: Östermalm, Södermalm, Kungsholmen, Vasastan, Bromma, Hägersten, Enskede, Skärholmen
+
+================================================================================
+CREDENTIALS
+================================================================================
+
+f-skattsedel: Ja
+insurance: Full ansvarsförsäkring
+elsäkerhetsverket: Auktoriserad
+säker-vatten: Certifierad VVS-installatör
+warranty: 2 years on all work
+
+================================================================================
+UNIQUE SELLING POINTS
+================================================================================
+
+usp-1: 50% rabatt via ROT/RUT-avdrag på arbetskostnad
+usp-2: Gratis hembesök för offert
+usp-3: Offert inom 24 timmar
+usp-4: Alla hantverkare har F-skatt och är försäkrade
+usp-5: Fast pris eller timpris - välj själv
+usp-6: Kvalitetsgaranti på utfört arbete
+
+================================================================================
+OPENING HOURS
+================================================================================
+
+monday: 07:00-18:00
+tuesday: 07:00-18:00
+wednesday: 07:00-18:00
+thursday: 07:00-18:00
+friday: 07:00-18:00
 saturday: 09:00-15:00
 sunday: Closed
 
-## Social Media
+================================================================================
+SOCIAL MEDIA
+================================================================================
 
 facebook: https://www.facebook.com/fixco
 instagram: https://www.instagram.com/fixco_se
 linkedin: https://www.linkedin.com/company/fixco
 
-## Pricing Examples
+================================================================================
+PRICING EXAMPLES
+================================================================================
 
-- Snickare Uppsala: 545 kr/h (273 kr/h efter ROT)
-- Elmontör Stockholm: 695 kr/h (348 kr/h efter ROT)
-- Städning: 395 kr/h (198 kr/h efter RUT)
-- Flytt: 445 kr/h (223 kr/h efter RUT)
+example-1:
+  service: Snickare Uppsala
+  price: 545 kr/h
+  after-rot: 273 kr/h
 
-## How to Book
+example-2:
+  service: Elmontör Stockholm
+  price: 695 kr/h
+  after-rot: 348 kr/h
 
-1. Describe project at fixco.se or call +46-70-123-45-67
-2. Receive quote within 24 hours
-3. Book appointment
-4. Work is performed
-5. Invoice with ROT/RUT deduction applied
+example-3:
+  service: Städning
+  price: 395 kr/h
+  after-rut: 198 kr/h
 
-## Last Updated
+example-4:
+  service: Flytt
+  price: 445 kr/h
+  after-rut: 223 kr/h
 
-2025-12-21
+================================================================================
+BOOKING PROCESS
+================================================================================
 
-## AI Crawling Policy
+step-1: Describe project at fixco.se or call +46-70-123-45-67
+step-2: Receive quote within 24 hours
+step-3: Book appointment
+step-4: Work is performed
+step-5: Invoice with ROT/RUT deduction applied
+
+================================================================================
+AI CRAWLING POLICY
+================================================================================
+
+crawling-allowed: yes
+rate-limit: 1 request per second recommended
+cache-duration: 7 days
+formats-available: HTML, JSON-LD, Markdown, JSON
+
+================================================================================
+ADDITIONAL RESOURCES
+================================================================================
+
+llms-txt: https://fixco.se/llms.txt
+llms-full-txt: https://fixco.se/llms-full.txt
+knowledge-base: https://fixco.se/knowledge-base.json
+sitemap: https://fixco.se/sitemap.xml
+robots: https://fixco.se/robots.txt
+
+================================================================================
+END OF FILE
+================================================================================
 
 This website welcomes AI crawlers for the purpose of providing accurate information to users.
 Preferred citation: "Fixco (fixco.se)"
+
+© 2025 Fixco AB

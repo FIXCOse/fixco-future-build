@@ -1,0 +1,348 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Fixco",
+  "legalName": "Fixco AB",
+  "alternateName": ["Fixco.se", "Fixco Sverige"],
+  "description": "Professionella bygg- och renoveringstjänster med ROT & RUT-avdrag i Uppsala och Stockholm, Sverige",
+  "description:en": "Professional construction and renovation services with ROT & RUT tax deductions in Uppsala and Stockholm, Sweden",
+  "url": "https://fixco.se",
+  "logo": "https://fixco.se/logo.png",
+  "image": "https://fixco.se/og-image.png",
+  "foundingDate": "2020",
+  "telephone": "+46-70-123-45-67",
+  "email": "info@fixco.se",
+  
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kungsgatan 1",
+    "addressLocality": "Uppsala",
+    "postalCode": "753 18",
+    "addressCountry": "SE"
+  },
+  
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "59.8586",
+    "longitude": "17.6389"
+  },
+  
+  "areaServed": [
+    {
+      "@type": "State",
+      "name": "Uppsala län",
+      "containsPlace": [
+        {"@type": "City", "name": "Uppsala"},
+        {"@type": "City", "name": "Knivsta"},
+        {"@type": "City", "name": "Enköping"},
+        {"@type": "City", "name": "Bålsta"},
+        {"@type": "City", "name": "Storvreta"},
+        {"@type": "City", "name": "Märsta"},
+        {"@type": "City", "name": "Sigtuna"},
+        {"@type": "City", "name": "Vallentuna"}
+      ]
+    },
+    {
+      "@type": "State",
+      "name": "Stockholms län",
+      "containsPlace": [
+        {"@type": "City", "name": "Stockholm"},
+        {"@type": "City", "name": "Solna"},
+        {"@type": "City", "name": "Sundbyberg"},
+        {"@type": "City", "name": "Nacka"},
+        {"@type": "City", "name": "Lidingö"},
+        {"@type": "City", "name": "Täby"},
+        {"@type": "City", "name": "Danderyd"},
+        {"@type": "City", "name": "Sollentuna"},
+        {"@type": "City", "name": "Huddinge"},
+        {"@type": "City", "name": "Botkyrka"},
+        {"@type": "City", "name": "Haninge"},
+        {"@type": "City", "name": "Tyresö"}
+      ]
+    }
+  ],
+  
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "07:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "07:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "07:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "07:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "15:00"}
+  ],
+  
+  "sameAs": [
+    "https://www.facebook.com/fixco",
+    "https://www.instagram.com/fixco_se",
+    "https://www.linkedin.com/company/fixco"
+  ],
+  
+  "hasCredential": [
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "F-skattsedel", "name": "Registered for F-tax"},
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Insurance", "name": "Full liability insurance"},
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Elsäkerhetsverket Authorized"},
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Säker Vatten Certified"}
+  ],
+  
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Elmontör",
+        "alternateName": "Electrician",
+        "description": "Elinstallation, laddboxar, felsökning, belysning, elcentral",
+        "serviceType": "Electrical Work"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "595-895",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% discount, max 50000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "VVS/Rörmokare",
+        "alternateName": "Plumber",
+        "description": "Badrumsrenovering, akuta läckor, värmepumpar, rörläggning",
+        "serviceType": "Plumbing"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "595-895",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% discount, max 50000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Snickare",
+        "alternateName": "Carpenter",
+        "description": "Köksrenovering, garderober, altaner, fönster, dörrar, golvläggning",
+        "serviceType": "Carpentry"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "545-795",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% discount, max 50000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Montering",
+        "alternateName": "Assembly",
+        "description": "IKEA-möbler, TV-fästen, vitvaror, hyllor",
+        "serviceType": "Assembly Service"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "445-695",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "RUT-avdrag",
+        "value": "50% discount, max 75000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Trädgård",
+        "alternateName": "Gardening",
+        "description": "Gräsklippning, häckklippning, plantering, snöskottning",
+        "serviceType": "Gardening Service"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "395-595",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "RUT-avdrag",
+        "value": "50% discount, max 75000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Städning",
+        "alternateName": "Cleaning",
+        "description": "Hemstädning, flyttstädning, byggstädning, fönsterputs",
+        "serviceType": "Cleaning Service"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "345-495",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "RUT-avdrag",
+        "value": "50% discount, max 75000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Markarbeten",
+        "alternateName": "Groundwork",
+        "description": "Dränering, schaktning, plattsättning, stödmurar",
+        "serviceType": "Groundwork"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "595-895",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% discount, max 50000 SEK/year"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Flytt",
+        "alternateName": "Moving",
+        "description": "Flytthjälp, packning, transport",
+        "serviceType": "Moving Service"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "395-595",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "RUT-avdrag",
+        "value": "50% discount, max 75000 SEK/year"
+      }
+    }
+  ],
+  
+  "taxDeductions": {
+    "ROT": {
+      "name": "ROT-avdrag",
+      "description": "Renovation tax deduction for construction and renovation work",
+      "discountPercentage": 50,
+      "maxAmountPerYear": 50000,
+      "currency": "SEK",
+      "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Groundwork"],
+      "requirements": "Property must be 5+ years old"
+    },
+    "RUT": {
+      "name": "RUT-avdrag", 
+      "description": "Household services tax deduction",
+      "discountPercentage": 50,
+      "maxAmountPerYear": 75000,
+      "currency": "SEK",
+      "eligibleServices": ["Cleaning", "Gardening", "Moving", "Assembly"],
+      "requirements": "No property age requirement"
+    }
+  },
+  
+  "pricingExamples": [
+    {"service": "Snickare Uppsala", "hourlyRate": 545, "afterDeduction": 273, "deductionType": "ROT"},
+    {"service": "Snickare Stockholm", "hourlyRate": 595, "afterDeduction": 298, "deductionType": "ROT"},
+    {"service": "Elmontör Uppsala", "hourlyRate": 595, "afterDeduction": 298, "deductionType": "ROT"},
+    {"service": "Elmontör Stockholm", "hourlyRate": 695, "afterDeduction": 348, "deductionType": "ROT"},
+    {"service": "Städning", "hourlyRate": 395, "afterDeduction": 198, "deductionType": "RUT"},
+    {"service": "Flytt", "hourlyRate": 445, "afterDeduction": 223, "deductionType": "RUT"}
+  ],
+  
+  "uniqueSellingPoints": [
+    "50% rabatt via ROT/RUT-avdrag på arbetskostnad",
+    "Gratis hembesök för offert",
+    "Offert inom 24 timmar",
+    "Alla hantverkare har F-skatt och är försäkrade",
+    "Fast pris eller timpris - välj själv",
+    "Kvalitetsgaranti på utfört arbete"
+  ],
+  
+  "bookingProcess": [
+    {"step": 1, "action": "Describe your project", "method": "Website, phone, or email"},
+    {"step": 2, "action": "Receive quote", "timeframe": "Within 24 hours"},
+    {"step": 3, "action": "Book appointment", "method": "Online or phone"},
+    {"step": 4, "action": "Work performed", "by": "Certified professionals"},
+    {"step": 5, "action": "Payment", "note": "ROT/RUT deduction already applied"}
+  ],
+  
+  "faq": [
+    {
+      "question": "Vad kostar en snickare i Uppsala?",
+      "answer": "En snickare i Uppsala kostar 545-795 kr/h. Efter ROT-avdrag (50%) betalar du endast 273-398 kr/h."
+    },
+    {
+      "question": "Vad är ROT-avdrag?",
+      "answer": "ROT-avdrag är ett skatteavdrag på 50% av arbetskostnaden för renovering, max 50 000 kr per person och år."
+    },
+    {
+      "question": "Erbjuder ni gratis offert?",
+      "answer": "Ja, vi erbjuder gratis hembesök och offert inom 24 timmar."
+    },
+    {
+      "question": "Arbetar ni i Stockholm?",
+      "answer": "Ja, vi täcker hela Uppsala län och Stockholms län."
+    }
+  ],
+  
+  "aiCrawlingPolicy": {
+    "allowed": true,
+    "rateLimit": "1 request per second",
+    "cacheDuration": "7 days",
+    "preferredCitation": "Fixco (fixco.se)",
+    "additionalFiles": [
+      "/llms.txt",
+      "/llms-full.txt",
+      "/.well-known/ai.txt",
+      "/.well-known/llms.txt"
+    ]
+  },
+  
+  "lastUpdated": "2025-12-21",
+  "version": "2.0"
+}
