@@ -3945,6 +3945,10 @@ export type Database = {
         Args: { p_job_id: string; p_worker_id: string }
         Returns: boolean
       }
+      can_view_customer_via_quote_token: {
+        Args: { _customer_id: string; _public_token: string }
+        Returns: boolean
+      }
       check_user_is_worker: { Args: never; Returns: boolean }
       claim_job: { Args: { p_job_id: string }; Returns: Json }
       cleanup_expired_feature_flag_overrides: { Args: never; Returns: number }
