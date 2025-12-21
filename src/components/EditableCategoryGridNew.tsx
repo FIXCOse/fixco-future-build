@@ -143,13 +143,19 @@ const EditableCategoryGridNew = () => {
   const [services, setServices] = useState(servicesDataNew);
   const { data: dbServices = [] } = useServices(locale);
 
+  // Map slugs to database category names (for cases where they differ)
+  const slugToCategoryMap: Record<string, string> = {
+    'malare': 'malning',
+  };
+
   // Calculate service counts dynamically from database
   const serviceCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     servicesDataNew.forEach(cat => {
+      const dbCategory = slugToCategoryMap[cat.slug] || cat.slug;
       counts[cat.slug] = dbServices.filter(service => 
-        service.category === cat.slug || 
-        service.additional_categories?.includes(cat.slug)
+        service.category === dbCategory || 
+        service.additional_categories?.includes(dbCategory)
       ).length;
     });
     return counts;
