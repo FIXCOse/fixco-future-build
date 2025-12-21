@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { queryClient } from '@/lib/queryClient';
+import { supabase } from '@/integrations/supabase/client';
 
 // High-priority routes (most visited pages)
 const HIGH_PRIORITY = [
@@ -9,6 +11,23 @@ const HIGH_PRIORITY = [
   () => import("../pages/BookVisit"),
   () => import("../pages/AboutUs"),
 ];
+
+// Prefetch services data for faster Services page load
+const prefetchServicesData = () => {
+  queryClient.prefetchQuery({
+    queryKey: ['services', 'sv'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('services')
+        .select('*')
+        .eq('is_active', true)
+        .order('category')
+        .order('sort_order');
+      return data || [];
+    },
+    staleTime: 1000 * 60 * 5, // 5 min
+  });
+};
 
 // Medium-priority routes (important but less frequent)
 const MEDIUM_PRIORITY = [
@@ -50,9 +69,12 @@ export const usePreloadRoutes = () => {
         requestIdleCallback(() => {
           console.log('⚡ Preloading HIGH priority routes');
           HIGH_PRIORITY.forEach(loader => loader());
+          // Also prefetch services data
+          prefetchServicesData();
         });
       } else {
         HIGH_PRIORITY.forEach(loader => loader());
+        prefetchServicesData();
       }
     }, 500);
     

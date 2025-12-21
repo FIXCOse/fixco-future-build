@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -37,10 +37,14 @@ const EditableServiceFilter: React.FC<EditableServiceFilterProps> = ({
   const { mode } = usePriceStore();
   const queryClient = useQueryClient();
   
-  // Invalidate services query when locale changes
+  // Track previous locale to only invalidate when it actually changes
+  const prevLocaleRef = useRef(locale);
   useEffect(() => {
-    console.log('[EditableServiceFilter] Locale changed, invalidating services cache');
-    queryClient.invalidateQueries({ queryKey: ['services'] });
+    if (prevLocaleRef.current !== locale) {
+      console.log('[EditableServiceFilter] Locale actually changed, invalidating cache');
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      prevLocaleRef.current = locale;
+    }
   }, [locale, queryClient]);
   
   // Get services from database

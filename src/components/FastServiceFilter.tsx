@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -31,10 +31,14 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
   const { mode } = usePriceStore();
   const queryClient = useQueryClient();
   
-  // Invalidate services query when locale changes
+  // Track previous locale to only invalidate when it actually changes
+  const prevLocaleRef = useRef(locale);
   useEffect(() => {
-    console.log('[FastServiceFilter] Locale changed, invalidating services cache');
-    queryClient.invalidateQueries({ queryKey: ['services'] });
+    if (prevLocaleRef.current !== locale) {
+      console.log('[FastServiceFilter] Locale actually changed, invalidating cache');
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      prevLocaleRef.current = locale;
+    }
   }, [locale, queryClient]);
   
   // Get services from database with current locale
