@@ -34,7 +34,7 @@ export const TestimonialCarouselLocal = ({ testimonials }: Props) => {
   return (
     <div 
       ref={scrollRef}
-      className="flex gap-6 overflow-x-auto scrollbar-hide py-4 px-4 -mx-4"
+      className="flex gap-6 overflow-x-auto no-scrollbar py-4 px-4 -mx-4"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       style={{ scrollBehavior: 'auto' }}
