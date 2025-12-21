@@ -14,6 +14,7 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import QuoteQuestionsNotification from './admin/QuoteQuestionsNotification';
 import React from 'react';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -352,16 +353,15 @@ function Navigation() {
                         <span className="xl:hidden">Login</span>
                       </Button>
                     </Link>
-                    <Link to={currentLanguage === 'en' ? "/en/book-visit" : "/boka-hembesok"}>
-                      <Button 
-                        variant="default" 
-                        size="sm"
-                        className="h-8 xl:h-9 px-3 xl:px-4 text-xs xl:text-sm bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
-                      >
-                        <span className="hidden xl:inline">{t('cta.request_quote')}</span>
-                        <span className="xl:hidden">{t('cta.get_quote')}</span>
-                      </Button>
-                    </Link>
+                    <Button 
+                      variant="default" 
+                      size="sm"
+                      className="h-8 xl:h-9 px-3 xl:px-4 text-xs xl:text-sm bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
+                      onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                    >
+                      <span className="hidden xl:inline">{t('cta.request_quote')}</span>
+                      <span className="xl:hidden">{t('cta.get_quote')}</span>
+                    </Button>
               </div>
             )}
 
@@ -494,15 +494,14 @@ function Navigation() {
                         <span>{t('cta.login')}</span>
                       </Button>
                     </Link>
-                    <Link to={currentLanguage === 'en' ? "/en/book-visit" : "/boka-hembesok"} onClick={() => setIsMenuOpen(false)}>
-                      <Button 
-                        variant="default" 
-                        size="sm" 
-                        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                      >
-                        {t('cta.request_quote')}
-                      </Button>
-                    </Link>
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsMenuOpen(false); }}
+                    >
+                      {t('cta.request_quote')}
+                    </Button>
                   </div>
                 )}
               </div>

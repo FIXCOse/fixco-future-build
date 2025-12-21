@@ -23,6 +23,7 @@ import { Helmet } from 'react-helmet-async';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 interface BookingHistory {
   id: string;
@@ -317,11 +318,9 @@ const HistoryPage = () => {
                   }
                 </p>
                 {bookings.length === 0 && (
-                  <Link to="/boka-hembesok">
-                    <Button>
-                      Boka din första tjänst
-                    </Button>
-                  </Link>
+                  <Button onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}>
+                    Boka din första tjänst
+                  </Button>
                 )}
               </div>
             ) : (

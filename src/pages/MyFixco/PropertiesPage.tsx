@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { PROPERTY_TYPES } from '@/schemas/propertySchema';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 interface Property {
   id: string;
@@ -280,11 +281,18 @@ const PropertiesPage = () => {
                   )}
 
                   <div className="pt-2 border-t">
-                    <Link to={`/boka-hembesok?property=${property.id}`}>
-                      <Button variant="outline" size="sm" className="w-full">
-                        Boka tjänst här
-                      </Button>
-                    </Link>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => openServiceRequestModal({ 
+                        mode: 'home_visit', 
+                        showCategories: true,
+                        prefill: { propertyId: property.id }
+                      })}
+                    >
+                      Boka tjänst här
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
