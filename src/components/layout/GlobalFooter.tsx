@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 interface GlobalFooterProps {
   locale?: 'sv' | 'en';
@@ -313,9 +314,12 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/boka-hembesok" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <button 
+                    onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                    className="text-muted-foreground hover:text-foreground transition-colors text-left"
+                  >
                     Boka hembesök
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <a href="tel:+46793350228" className="text-muted-foreground hover:text-foreground transition-colors">
