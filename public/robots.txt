@@ -1,3 +1,7 @@
+# Fixco Robots.txt
+# Updated for maximum AI and search engine visibility
+
+# Google
 User-agent: Googlebot
 Allow: /
 Disallow: /admin/
@@ -18,12 +22,90 @@ Disallow: /dashboard/
 Disallow: /boka/
 Disallow: /offert/
 
+# Social Media Crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+# AI Language Models - Welcome!
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /worker/
+Disallow: /mitt-fixco/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# Default for all other bots
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -34,4 +116,8 @@ Disallow: /dashboard/
 Disallow: /boka/
 Disallow: /offert/
 
+# Sitemap
 Sitemap: https://fixco.se/sitemap.xml
+
+# AI-specific information files
+# See also: /llms.txt and /.well-known/ai.txt

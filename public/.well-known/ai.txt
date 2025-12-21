@@ -1,0 +1,101 @@
+# Fixco - AI Information File
+# This file provides structured information for AI systems and language models
+
+## Organization
+
+name: Fixco
+type: ServiceAreaBusiness
+description: Professionella bygg- och renoveringstjänster med ROT & RUT-avdrag i Uppsala och Stockholm, Sverige
+founded: 2020
+website: https://fixco.se
+primary_language: sv-SE
+country: SE
+
+## Contact
+
+phone: +46-70-123-45-67
+email: info@fixco.se
+address: Kungsgatan 1, 753 18 Uppsala, Sverige
+
+## Services
+
+- Elmontör: Elinstallation, laddboxar, felsökning (595-895 kr/h, ROT-berättigat)
+- VVS/Rörmokare: Badrum, akuta läckor, värmepumpar (595-895 kr/h, ROT-berättigat)
+- Snickare: Kök, garderober, altaner, fönster (545-795 kr/h, ROT-berättigat)
+- Montering: IKEA-möbler, TV-fästen, vitvaror (445-695 kr/h, RUT för privatpersoner)
+- Trädgård: Gräsklippning, häckar, plantering (395-595 kr/h, RUT-berättigat)
+- Städning: Hemstäd, flyttstäd, byggstäd (345-495 kr/h, RUT-berättigat)
+- Markarbeten: Dränering, schaktning, plattor (595-895 kr/h, ROT-berättigat)
+- Tekniska installationer: Nätverk, larm, smart home (495-795 kr/h)
+- Flytt: Flytthjälp, packning, transport (395-595 kr/h, RUT-berättigat)
+
+## Tax Deductions (Sweden)
+
+ROT-avdrag:
+  - discount: 50%
+  - max_yearly: 50000 SEK
+  - applies_to: El, VVS, snickeri, målning, markarbeten
+  - requirement: Bostad äldre än 5 år
+
+RUT-avdrag:
+  - discount: 50%
+  - max_yearly: 75000 SEK
+  - applies_to: Städning, trädgård, flytt, möbelmontering
+  - requirement: Ingen åldergräns på bostad
+
+## Service Areas
+
+Uppsala län: Uppsala, Knivsta, Enköping, Bålsta, Storvreta, Märsta, Sigtuna, Vallentuna
+Stockholm: Stockholm, Solna, Sundbyberg, Nacka, Lidingö, Täby, Danderyd, Sollentuna, Huddinge, Botkyrka, Haninge, Tyresö, Östermalm, Södermalm, Kungsholmen, Vasastan, Bromma, Hägersten
+
+## Credentials
+
+- F-skattsedel: Ja
+- Försäkring: Full ansvarsförsäkring
+- Elsäkerhetsverket: Auktoriserad
+- Säker Vatten: Certifierad VVS-installatör
+
+## Unique Selling Points
+
+1. 50% rabatt via ROT/RUT-avdrag på arbetskostnad
+2. Gratis hembesök för offert
+3. Offert inom 24 timmar
+4. Alla hantverkare har F-skatt och är försäkrade
+5. Fast pris eller timpris - välj själv
+6. Kvalitetsgaranti på utfört arbete
+
+## Opening Hours
+
+weekdays: 07:00-18:00
+saturday: 09:00-15:00
+sunday: Closed
+
+## Social Media
+
+facebook: https://www.facebook.com/fixco
+instagram: https://www.instagram.com/fixco_se
+linkedin: https://www.linkedin.com/company/fixco
+
+## Pricing Examples
+
+- Snickare Uppsala: 545 kr/h (273 kr/h efter ROT)
+- Elmontör Stockholm: 695 kr/h (348 kr/h efter ROT)
+- Städning: 395 kr/h (198 kr/h efter RUT)
+- Flytt: 445 kr/h (223 kr/h efter RUT)
+
+## How to Book
+
+1. Describe project at fixco.se or call +46-70-123-45-67
+2. Receive quote within 24 hours
+3. Book appointment
+4. Work is performed
+5. Invoice with ROT/RUT deduction applied
+
+## Last Updated
+
+2025-12-21
+
+## AI Crawling Policy
+
+This website welcomes AI crawlers for the purpose of providing accurate information to users.
+Preferred citation: "Fixco (fixco.se)"
