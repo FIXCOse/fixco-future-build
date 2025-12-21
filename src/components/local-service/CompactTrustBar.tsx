@@ -1,17 +1,15 @@
 import { motion } from "framer-motion";
-import { Star, Clock, Shield, BadgeCheck, MapPin, Users } from "lucide-react";
+import { Star, Clock, Shield, BadgeCheck } from "lucide-react";
 
 interface CompactTrustBarProps {
   rating: number;
-  recentProjects: number;
   area: string;
   rotRut: string;
 }
 
-export const CompactTrustBar = ({ rating, recentProjects, area, rotRut }: CompactTrustBarProps) => {
+export const CompactTrustBar = ({ rating, area, rotRut }: CompactTrustBarProps) => {
   const trustItems = [
     { icon: Star, text: `${rating.toFixed(1)}/5 betyg`, highlight: true },
-    { icon: MapPin, text: `${recentProjects} projekt i ${area}` },
     { icon: Clock, text: "Svar inom 2h" },
     { icon: BadgeCheck, text: `50% ${rotRut}-avdrag` },
     { icon: Shield, text: "Ansvarsförsäkrade" },
