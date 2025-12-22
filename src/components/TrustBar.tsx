@@ -1,106 +1,68 @@
 import { useRef, useEffect } from 'react';
-import { Shield, MapPin, Clock, Award, CheckCircle, Users } from 'lucide-react';
+import { Shield, MapPin, Clock, Award, Star, Briefcase, Heart, Zap, Calculator, Home, ThumbsUp, TrendingUp } from 'lucide-react';
 import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
 import { gsap } from '@/lib/gsap';
 
 const TrustBar = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   const trustItems = [
-    {
-      icon: "image",
-      src: "/assets/fixco-f-icon-new.png",
-      text: "Fixco Kvalitet"
-    },
-    {
-      icon: Clock,
-      text: "Start inom < 5 dagar"
-    },
-    {
-      icon: MapPin,
-      text: "Uppsala & Stockholm"
-    },
-    {
-      icon: CheckCircle,
-      text: "500+ nöjda kunder"
-    },
-    {
-      icon: Award,
-      text: "Försäkrad & garanterad"
-    },
-    {
-      icon: Users,
-      text: "Familjeföretag sedan 2015"
-    }
+    { icon: "image", text: "Fixco Kvalitet" },
+    { icon: Clock, text: "Start inom < 5 dagar" },
+    { icon: MapPin, text: "#1 i Uppsala & Stockholm" },
+    { icon: Star, text: "4.9 ★ på Google" },
+    { icon: Award, text: "Försäkrad & garanterad" },
+    { icon: Briefcase, text: "10+ års erfarenhet" },
+    { icon: Heart, text: "Personlig service" },
+    { icon: Zap, text: "Snabb offert – samma dag" },
+    { icon: Calculator, text: "ROT-avdrag inkluderat" },
+    { icon: Home, text: "Gratis hembesök" },
+    { icon: ThumbsUp, text: "Rekommenderas av 9 av 10" },
+    { icon: TrendingUp, text: "98% nöjda kunder" },
   ];
 
+  // GSAP hover effects only
   useEffect(() => {
-    const container = scrollContainerRef.current;
+    const container = containerRef.current;
     if (!container) return;
 
-    const items = Array.from(container.children);
-    const firstHalf = items.slice(0, trustItems.length);
+    const items = container.querySelectorAll('.trust-item');
     
-    // GSAP seamless loop animation
-    gsap.to(container, {
-      x: () => -(firstHalf[0] as HTMLElement).offsetWidth * trustItems.length,
-      duration: 30,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize((x: any) => parseFloat(x) % (-(firstHalf[0] as HTMLElement).offsetWidth * trustItems.length))
-      }
-    });
-
-    // Magnetic hover on each item
-    firstHalf.forEach((item) => {
+    items.forEach((item) => {
       const element = item as HTMLElement;
-      
-      const xTo = gsap.quickTo(element, "x", { duration: 0.4, ease: "power2.out" });
-      const yTo = gsap.quickTo(element, "y", { duration: 0.4, ease: "power2.out" });
       const scaleTo = gsap.quickTo(element, "scale", { duration: 0.3, ease: "power2.out" });
 
-      element.addEventListener('mouseenter', () => {
-        scaleTo(1.1);
-      });
-
-      element.addEventListener('mouseleave', () => {
-        xTo(0);
-        yTo(0);
-        scaleTo(1);
-      });
+      element.addEventListener('mouseenter', () => scaleTo(1.1));
+      element.addEventListener('mouseleave', () => scaleTo(1));
     });
-
-    return () => {
-      gsap.killTweensOf(container);
-    };
   }, []);
 
+  // Triplicera items för sömlös loop
+  const allItems = [...trustItems, ...trustItems, ...trustItems];
+
   return (
-    <section className="py-8 border-y border-border bg-gradient-primary-subtle">
+    <section className="py-8 border-y border-border bg-gradient-primary-subtle overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center overflow-hidden">
-          <div ref={scrollContainerRef} className="flex">
-            {[...trustItems, ...trustItems].map((item, index) => {
-              return (
-                <div 
-                  key={index}
-                  className="flex items-center space-x-2 mx-8 whitespace-nowrap cursor-pointer will-change-transform"
-                >
-                  {item.icon === "image" ? (
-                    <AnimatedFixcoFIcon className="h-5 w-5 shrink-0" />
-                  ) : (
-                    (() => {
-                      const IconComponent = item.icon as any;
-                      return <IconComponent className="h-5 w-5 text-primary shrink-0" />;
-                    })()
-                  )}
-                  <span className="text-sm font-medium text-foreground">
-                    {item.text}
-                  </span>
-                </div>
-              );
-            })}
+          <div ref={containerRef} className="flex animate-marquee">
+            {allItems.map((item, index) => (
+              <div 
+                key={index}
+                className="trust-item flex items-center space-x-2 mx-8 whitespace-nowrap cursor-pointer will-change-transform"
+              >
+                {item.icon === "image" ? (
+                  <AnimatedFixcoFIcon className="h-5 w-5 shrink-0" />
+                ) : (
+                  (() => {
+                    const IconComponent = item.icon as any;
+                    return <IconComponent className="h-5 w-5 text-primary shrink-0" />;
+                  })()
+                )}
+                <span className="text-sm font-medium text-foreground">
+                  {item.text}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
