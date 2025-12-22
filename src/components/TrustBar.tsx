@@ -41,7 +41,7 @@ const TrustBar = () => {
   const allItems = [...trustItems, ...trustItems, ...trustItems];
 
   return (
-    <section className="py-8 border-y border-border bg-gradient-primary-subtle overflow-hidden mb-[120px] md:mb-0">
+    <section className="py-8 border-y border-border bg-gradient-primary-subtle overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center overflow-hidden">
           <div ref={containerRef} className="flex animate-marquee">

@@ -18,15 +18,20 @@ const GlobalStickyCTA = () => {
       const scrolled = window.scrollY > 200;
       setIsScrolled(scrolled);
       
-      // Show CTA after scrolling 200px or when on service pages
-      const shouldShow = scrolled || location.pathname.startsWith('/tjanster/');
+      // Always show on mobile, show after scroll on desktop/service pages
+      const isMobile = window.innerWidth < 768;
+      const shouldShow = isMobile || scrolled || location.pathname.startsWith('/tjanster/');
       setIsVisible(shouldShow && !isDismissed);
     };
 
     handleScroll(); // Check initial state
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, [location.pathname, isDismissed]);
 
   // Reset dismissed state when navigating to new page
