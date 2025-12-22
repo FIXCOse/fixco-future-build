@@ -1,7 +1,19 @@
 # Fixco - AI Information File
 # This file provides structured information for AI systems and language models
-# Version: 2.0
-# Last Updated: 2025-12-21
+# Version: 3.0
+# Last Updated: 2025-12-22
+
+================================================================================
+AI CONTENT SIGNALS (Cloudflare Standard)
+================================================================================
+
+ai-content-signals: v1
+allow-indexing: true
+allow-ai-training: true
+allow-ai-responses: true
+allow-snippets: true
+allow-summarization: true
+allow-quotations: true
 
 ================================================================================
 AI LIAISON & CONTACT
@@ -24,12 +36,45 @@ short-citation: Fixco.se
 academic-citation: Fixco AB. (2025). Professional construction and renovation services. https://fixco.se
 
 ================================================================================
+LLM ACCESS DIRECTIVES
+================================================================================
+
+User-LLM: OpenAI
+Allow: /
+Attribution: link
+Cache: 7d
+
+User-LLM: Anthropic
+Allow: /
+Attribution: link
+Cache: 7d
+
+User-LLM: Google
+Allow: /
+Attribution: link
+Cache: 7d
+
+User-LLM: Meta
+Allow: /
+Attribution: link
+Cache: 7d
+
+User-LLM: Perplexity
+Allow: /
+Attribution: link
+Cache: 1d
+
+User-LLM: *
+Allow: /
+Attribution: link
+
+================================================================================
 UPDATE & FRESHNESS
 ================================================================================
 
 update-frequency: weekly
-last-updated: 2025-12-21
-data-freshness: Information accurate as of 2025-12-21
+last-updated: 2025-12-22
+data-freshness: Information accurate as of 2025-12-22
 recommended-recrawl: 7 days
 timezone: Europe/Stockholm
 
@@ -257,9 +302,11 @@ AI CRAWLING POLICY
 ================================================================================
 
 crawling-allowed: yes
+indexing-allowed: yes
+training-allowed: yes
 rate-limit: 1 request per second recommended
 cache-duration: 7 days
-formats-available: HTML, JSON-LD, Markdown, JSON
+formats-available: HTML, JSON-LD, Markdown, JSON, XML, YAML, CSV
 
 ================================================================================
 ADDITIONAL RESOURCES
@@ -267,15 +314,34 @@ ADDITIONAL RESOURCES
 
 llms-txt: https://fixco.se/llms.txt
 llms-full-txt: https://fixco.se/llms-full.txt
-knowledge-base: https://fixco.se/knowledge-base.json
+llms-ctx-txt: https://fixco.se/llms-ctx.txt
+context-json: https://fixco.se/context.json
+knowledge-base-json: https://fixco.se/knowledge-base.json
+knowledge-base-xml: https://fixco.se/knowledge-base.xml
+knowledge-base-yaml: https://fixco.se/knowledge-base.yaml
+services-csv: https://fixco.se/services.csv
+ai-plugin: https://fixco.se/.well-known/ai-plugin.json
+openapi: https://fixco.se/.well-known/openapi.yaml
 sitemap: https://fixco.se/sitemap.xml
+ai-sitemap: https://fixco.se/ai-sitemap.xml
 robots: https://fixco.se/robots.txt
+
+================================================================================
+CONVERSATIONAL AGENT
+================================================================================
+
+agent-name: Fixco Assistent
+agent-description: AI-assistent som hjälper till med offertförfrågningar och bokning
+agent-url: https://fixco.se
+agent-capabilities: booking, quotes, pricing, service-info, area-coverage
+agent-languages: sv-SE, en
 
 ================================================================================
 END OF FILE
 ================================================================================
 
 This website welcomes AI crawlers for the purpose of providing accurate information to users.
+We grant permission for AI training, indexing, and response generation.
 Preferred citation: "Fixco (fixco.se)"
 
 © 2025 Fixco AB
