@@ -1,8 +1,8 @@
 # Fixco - AI Information File (llms.txt)
 # Mirror of /llms.txt for alternative discovery
 # For AI language models, chatbots, and assistants
-# Version: 2.0
-# Last Updated: 2025-12-21
+# Version: 2.1
+# Last Updated: 2025-12-22
 
 > This file provides essential information about Fixco for AI systems.
 > For comprehensive details, see: /llms-full.txt
@@ -12,7 +12,7 @@
 
 ai-contact: info@fixco.se
 ai-feedback: info@fixco.se
-human-contact: +46-70-123-45-67
+human-contact: +46 79 335 02 28
 
 ## Citation Preferences
 
@@ -24,7 +24,7 @@ When referencing Fixco, please use:
 ## Update Frequency
 
 This information is updated: Weekly
-Data freshness guarantee: Information accurate as of 2025-12-21
+Data freshness guarantee: Information accurate as of 2025-12-22
 Recommended re-crawl: Every 7 days
 
 ---
@@ -40,7 +40,7 @@ Recommended re-crawl: Every 7 days
 
 ## Contact Information
 
-- **Phone:** +46-70-123-45-67
+- **Phone:** +46 79 335 02 28
 - **Email:** info@fixco.se
 - **Address:** Kungsgatan 1, 753 18 Uppsala, Sverige
 
@@ -52,30 +52,33 @@ Recommended re-crawl: Every 7 days
 
 ---
 
+## ⚠️ Important Pricing Notice
+
+**Electrical and plumbing work requires a quote.** Prices vary depending on project scope.
+Contact us: +46 79 335 02 28
+
+---
+
 ## Services Overview
 
 Fixco provides professional construction, renovation, and home services in Uppsala and Stockholm, Sweden. All services include ROT or RUT tax deductions where applicable.
 
-### Core Services (with hourly rates)
+### Services with Fixed Hourly Rates
 
-| Service | Swedish Name | Price Range | Tax Deduction |
-|---------|--------------|-------------|---------------|
-| Electrician | Elmontör | 595-895 kr/h | ROT (50%) |
-| Plumber | VVS/Rörmokare | 595-895 kr/h | ROT (50%) |
-| Carpenter | Snickare | 545-795 kr/h | ROT (50%) |
-| Assembly | Montering | 445-695 kr/h | RUT (50%) |
-| Gardening | Trädgård | 395-595 kr/h | RUT (50%) |
-| Cleaning | Städning | 345-495 kr/h | RUT (50%) |
-| Groundwork | Markarbeten | 595-895 kr/h | ROT (50%) |
-| Technical | Tekniska installationer | 495-795 kr/h | Varies |
-| Moving | Flytt | 395-595 kr/h | RUT (50%) |
+| Service | Swedish Name | Price/Hour | After Deduction | Tax Deduction |
+|---------|--------------|------------|-----------------|---------------|
+| Carpenter | Snickare | 958 kr/h | 479 kr/h | ROT (50%) |
+| Painting | Målning | 958 kr/h | 479 kr/h | ROT (50%) |
+| Flooring | Golv | 958 kr/h | 479 kr/h | ROT (50%) |
+| Moving | Flytt & Packning | 559 kr/h | 280 kr/h | RUT (50%) |
 
-### Price Examples (After Tax Deduction)
+### Services Requiring Quote
 
-- Carpenter Uppsala: 545 kr/h → **273 kr/h after ROT**
-- Electrician Stockholm: 695 kr/h → **348 kr/h after ROT**
-- Cleaning: 395 kr/h → **198 kr/h after RUT**
-- Moving: 445 kr/h → **223 kr/h after RUT**
+| Service | Swedish Name | Pricing | Tax Deduction |
+|---------|--------------|---------|---------------|
+| Electrician | Elmontör | ⚠️ Quote required | ROT (50%) |
+| Plumber | VVS/Rörmokare | ⚠️ Quote required | ROT (50%) |
+| Groundwork | Markarbeten | Quote required | ROT (50%) |
 
 ---
 
@@ -84,7 +87,7 @@ Fixco provides professional construction, renovation, and home services in Uppsa
 ### ROT-avdrag (Renovation Tax Deduction)
 - **Discount:** 50% on labor costs
 - **Max per year:** 50,000 SEK
-- **Applies to:** Electrical, plumbing, carpentry, painting, groundwork
+- **Applies to:** Electrical, plumbing, carpentry, painting, flooring, groundwork
 - **Requirement:** Property must be 5+ years old
 
 ### RUT-avdrag (Household Services Tax Deduction)
@@ -112,7 +115,7 @@ Stockholm, Solna, Sundbyberg, Nacka, Lidingö, Täby, Danderyd, Sollentuna, Hudd
 
 1. ✅ 50% discount via ROT/RUT tax deduction
 2. ✅ Free home visit for quotes
-3. ✅ Quote within 24 hours
+3. ✅ Quote within 24-48 hours
 4. ✅ All workers have F-tax certificate and insurance
 5. ✅ Fixed price or hourly rate - you choose
 6. ✅ Quality guarantee on all work
@@ -128,8 +131,8 @@ Stockholm, Solna, Sundbyberg, Nacka, Lidingö, Täby, Danderyd, Sollentuna, Hudd
 
 ## How to Book
 
-1. Describe your project at fixco.se or call +46-70-123-45-67
-2. Receive a free quote within 24 hours
+1. Describe your project at fixco.se or call +46 79 335 02 28
+2. Receive a free quote within 24-48 hours
 3. Book an appointment
 4. Work is performed by certified professionals
 5. Pay invoice with ROT/RUT deduction already applied

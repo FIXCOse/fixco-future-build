@@ -4,15 +4,19 @@ info:
   description: |
     API för att hämta information om Fixcos hantverkstjänster i Uppsala och Stockholm.
     
-    ## Tjänster som erbjuds:
-    - **Elmontör** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
-    - **VVS/Rörmokare** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
-    - **Snickare** (ROT): 545-795 kr/h → 273-398 kr/h efter avdrag
-    - **Montering** (RUT): 445-695 kr/h → 223-348 kr/h efter avdrag
-    - **Trädgård** (RUT): 395-595 kr/h → 198-298 kr/h efter avdrag
-    - **Städning** (RUT): 345-495 kr/h → 173-248 kr/h efter avdrag
-    - **Markarbeten** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
-    - **Flytt** (RUT): 395-595 kr/h → 198-298 kr/h efter avdrag
+    ## ⚠️ Viktigt om priser
+    **El- och VVS-jobb kräver alltid offert.** Kontakta oss på +46 79 335 02 28.
+    
+    ## Tjänster med fasta priser:
+    - **Snickare** (ROT): 958 kr/h → 479 kr/h efter avdrag
+    - **Målning** (ROT): 958 kr/h → 479 kr/h efter avdrag
+    - **Golv** (ROT): 958 kr/h → 479 kr/h efter avdrag
+    - **Flytt & Packning** (RUT): 559 kr/h → 280 kr/h efter avdrag
+    
+    ## Tjänster som kräver offert:
+    - **Elmontör** (ROT): Offert krävs – indikativt ~1059 kr/h
+    - **VVS/Rörmokare** (ROT): Offert krävs – varje projekt är unikt
+    - **Markarbeten** (ROT): Offert krävs
     
     ## ROT-avdrag
     50% rabatt på arbetskostnad, max 50 000 kr/år. Kräver bostad äldre än 5 år.
@@ -21,10 +25,10 @@ info:
     50% rabatt på arbetskostnad, max 75 000 kr/år. Inget ålderskrav på bostad.
     
     ## Kontakt
-    - Telefon: +46-70-123-45-67
+    - Telefon: +46 79 335 02 28
     - Email: info@fixco.se
     - Adress: Kungsgatan 1, 753 18 Uppsala
-  version: "1.0.0"
+  version: "1.1.0"
   contact:
     name: Fixco Support
     email: info@fixco.se
@@ -68,7 +72,7 @@ paths:
                 name: Fixco
                 services:
                   - name: Snickare
-                    priceRange: "545-795 kr/h"
+                    pricePerHour: 958
                     taxDeduction: ROT
 
   /llms.txt:
@@ -166,12 +170,15 @@ components:
           example: "Snickare"
         description:
           type: string
-        priceRange:
-          type: string
-          example: "545-795 kr/h"
+        pricePerHour:
+          type: number
+          example: 958
         priceAfterDeduction:
-          type: string
-          example: "273-398 kr/h"
+          type: number
+          example: 479
+        quoteRequired:
+          type: boolean
+          example: false
         taxDeduction:
           type: string
           enum: [ROT, RUT, None]

@@ -4,7 +4,7 @@
   For AI systems that prefer XML parsing
   Last updated: 2025-12-22
 -->
-<fixco xmlns="http://fixco.se/schemas/knowledge-base" version="2.0" locale="sv-SE">
+<fixco xmlns="http://fixco.se/schemas/knowledge-base" version="2.1" locale="sv-SE">
   
   <company>
     <name>Fixco</name>
@@ -17,7 +17,7 @@
   </company>
 
   <contact>
-    <phone>+46-70-123-45-67</phone>
+    <phone>+46 79 335 02 28</phone>
     <email>info@fixco.se</email>
     <bookingEmail>boka@fixco.se</bookingEmail>
     <address>
@@ -35,24 +35,42 @@
   </openingHours>
 
   <services>
-    <service id="electrician" taxDeduction="ROT">
+    <service id="electrician" taxDeduction="ROT" quoteRequired="true">
       <name lang="sv">Elmontör</name>
       <name lang="en">Electrician</name>
       <slug>elmontor</slug>
       <description>Elinstallation, laddboxar, felsökning, säkringsbyten</description>
-      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
-      <priceAfterDeduction min="298" max="448"/>
+      <pricing type="quote">
+        <note>⚠️ Offert krävs för de flesta eljobb. Kontakta oss för prisuppgift.</note>
+        <indicativePrice currency="SEK" unit="hour">1059</indicativePrice>
+        <indicativePriceAfterROT>530</indicativePriceAfterROT>
+      </pricing>
       <certification>Elsäkerhetsverket</certification>
+      <quoteRequiredFor>
+        <item>Spotlights</item>
+        <item>Ny elgrupp</item>
+        <item>Dra ny el</item>
+        <item>Elcentral</item>
+        <item>Laddbox</item>
+      </quoteRequiredFor>
     </service>
     
-    <service id="plumber" taxDeduction="ROT">
+    <service id="plumber" taxDeduction="ROT" quoteRequired="true">
       <name lang="sv">VVS/Rörmokare</name>
       <name lang="en">Plumber</name>
       <slug>vvs</slug>
       <description>Badrumsrenovering, akuta läckor, värmepumpar</description>
-      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
-      <priceAfterDeduction min="298" max="448"/>
+      <pricing type="quote">
+        <note>⚠️ Offert krävs för alla VVS-jobb – varje projekt är unikt.</note>
+      </pricing>
       <certification>Säker Vatten</certification>
+      <quoteRequiredFor>
+        <item>Badrumsrenovering</item>
+        <item>Läckage</item>
+        <item>Värmepump</item>
+        <item>Golvvärme</item>
+        <item>Rördragning</item>
+      </quoteRequiredFor>
     </service>
     
     <service id="carpenter" taxDeduction="ROT">
@@ -60,53 +78,45 @@
       <name lang="en">Carpenter</name>
       <slug>snickare</slug>
       <description>Köksrenovering, garderober, altaner, fönster</description>
-      <priceRange currency="SEK" unit="hour" min="545" max="795"/>
-      <priceAfterDeduction min="273" max="398"/>
+      <priceRange currency="SEK" unit="hour">958</priceRange>
+      <priceAfterDeduction>479</priceAfterDeduction>
     </service>
     
-    <service id="assembly" taxDeduction="RUT">
-      <name lang="sv">Montering</name>
-      <name lang="en">Assembly</name>
-      <slug>montering</slug>
-      <description>IKEA-möbler, TV-fästen, vitvaror</description>
-      <priceRange currency="SEK" unit="hour" min="445" max="695"/>
-      <priceAfterDeduction min="223" max="348"/>
+    <service id="painting" taxDeduction="ROT">
+      <name lang="sv">Målning</name>
+      <name lang="en">Painting</name>
+      <slug>malning</slug>
+      <description>Invändig och utvändig målning, tapetsering</description>
+      <priceRange currency="SEK" unit="hour">958</priceRange>
+      <priceAfterDeduction>479</priceAfterDeduction>
     </service>
     
-    <service id="gardening" taxDeduction="RUT">
-      <name lang="sv">Trädgård</name>
-      <name lang="en">Gardening</name>
-      <slug>tradgard</slug>
-      <description>Gräsklippning, häckklippning, plantering</description>
-      <priceRange currency="SEK" unit="hour" min="395" max="595"/>
-      <priceAfterDeduction min="198" max="298"/>
+    <service id="flooring" taxDeduction="ROT">
+      <name lang="sv">Golv</name>
+      <name lang="en">Flooring</name>
+      <slug>golv</slug>
+      <description>Golvläggning, parkettslipning, laminat, vinyl</description>
+      <priceRange currency="SEK" unit="hour">958</priceRange>
+      <priceAfterDeduction>479</priceAfterDeduction>
     </service>
     
-    <service id="cleaning" taxDeduction="RUT">
-      <name lang="sv">Städning</name>
-      <name lang="en">Cleaning</name>
-      <slug>stadning</slug>
-      <description>Hemstäd, flyttstäd, byggstäd, fönsterputs</description>
-      <priceRange currency="SEK" unit="hour" min="345" max="495"/>
-      <priceAfterDeduction min="173" max="248"/>
+    <service id="moving" taxDeduction="RUT">
+      <name lang="sv">Flytt &amp; Packning</name>
+      <name lang="en">Moving &amp; Packing</name>
+      <slug>flytt</slug>
+      <description>Flytthjälp, packning, transport, bärhjälp</description>
+      <priceRange currency="SEK" unit="hour">559</priceRange>
+      <priceAfterDeduction>280</priceAfterDeduction>
     </service>
     
-    <service id="groundwork" taxDeduction="ROT">
+    <service id="groundwork" taxDeduction="ROT" quoteRequired="true">
       <name lang="sv">Markarbeten</name>
       <name lang="en">Groundwork</name>
       <slug>markarbeten</slug>
       <description>Dränering, schaktning, plattläggning</description>
-      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
-      <priceAfterDeduction min="298" max="448"/>
-    </service>
-    
-    <service id="moving" taxDeduction="RUT">
-      <name lang="sv">Flytt</name>
-      <name lang="en">Moving</name>
-      <slug>flytt</slug>
-      <description>Flytthjälp, packning, transport</description>
-      <priceRange currency="SEK" unit="hour" min="395" max="595"/>
-      <priceAfterDeduction min="198" max="298"/>
+      <pricing type="quote">
+        <note>Offert krävs – kontakta oss för prisuppgift.</note>
+      </pricing>
     </service>
   </services>
 
@@ -116,7 +126,7 @@
       <fullName>Renovering, Ombyggnad, Tillbyggnad</fullName>
       <discount percent="50"/>
       <maxYearly currency="SEK">50000</maxYearly>
-      <eligibleServices>El, VVS, snickeri, målning, markarbeten</eligibleServices>
+      <eligibleServices>El, VVS, snickeri, målning, golv, markarbeten</eligibleServices>
       <requirement>Bostaden måste vara äldre än 5 år</requirement>
     </deduction>
     
@@ -164,5 +174,10 @@
     <credential type="certification">Säker Vatten-certifierad</credential>
     <credential type="warranty">2 års garanti</credential>
   </credentials>
+
+  <importantNotes>
+    <note type="pricing">El- och VVS-jobb kräver alltid offert. Kontakta oss på +46 79 335 02 28.</note>
+    <note type="booking">Gratis hembesök för större projekt. Offert inom 24-48 timmar.</note>
+  </importantNotes>
 
 </fixco>

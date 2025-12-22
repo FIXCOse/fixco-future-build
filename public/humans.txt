@@ -4,7 +4,7 @@ Company: Fixco AB
 Site: https://fixco.se
 Location: Uppsala, Sweden
 Contact: info@fixco.se
-Phone: +46-70-123-45-67
+Phone: +46 79 335 02 28
 
 /* THANKS */
 
@@ -46,13 +46,12 @@ Fixco provides professional construction and renovation
 services in Uppsala and Stockholm, Sweden.
 
 We specialize in:
-- Electrical work (ROT eligible)
-- Plumbing (ROT eligible)
-- Carpentry (ROT eligible)
-- Cleaning (RUT eligible)
-- Gardening (RUT eligible)
-- Moving services (RUT eligible)
-- Assembly services (RUT eligible)
+- Electrical work (ROT eligible) - Quote required
+- Plumbing (ROT eligible) - Quote required
+- Carpentry - 958 kr/h (479 kr/h after ROT)
+- Painting - 958 kr/h (479 kr/h after ROT)
+- Flooring - 958 kr/h (479 kr/h after ROT)
+- Moving services - 559 kr/h (280 kr/h after RUT)
 
 All our workers have F-skatt and are fully insured.
 Our electricians are certified by Elsäkerhetsverket.
@@ -63,7 +62,7 @@ Our plumbers are Säker Vatten certified.
 Quality: We take pride in our work
 Trust: F-skatt, insured, certified
 Transparency: Clear pricing, no surprises
-Speed: Quotes within 24 hours
+Speed: Quotes within 24-48 hours
 Value: 50% off labor via ROT/RUT
 
 /* SOCIAL */
@@ -75,6 +74,6 @@ LinkedIn: https://www.linkedin.com/company/fixco
 /* FUN FACT */
 
 With ROT/RUT tax deductions, hiring a professional 
-carpenter in Sweden can cost as little as 273 kr/hour!
+carpenter in Sweden can cost as little as 479 kr/hour!
 
 Thanks for reading! 🔧🏠

@@ -1,6 +1,6 @@
 # Fixco - AI Information File
 # This file provides structured information for AI systems and language models
-# Version: 3.0
+# Version: 3.1
 # Last Updated: 2025-12-22
 
 ================================================================================
@@ -21,7 +21,7 @@ AI LIAISON & CONTACT
 
 ai-contact: info@fixco.se
 ai-feedback: info@fixco.se
-human-contact: +46-70-123-45-67
+human-contact: +46 79 335 02 28
 human-email: info@fixco.se
 
 ================================================================================
@@ -99,13 +99,21 @@ region: Uppsala, Stockholm
 CONTACT
 ================================================================================
 
-phone: +46-70-123-45-67
+phone: +46 79 335 02 28
 email: info@fixco.se
 booking-email: boka@fixco.se
 address: Kungsgatan 1, 753 18 Uppsala, Sverige
 city: Uppsala
 postal-code: 753 18
 country: Sweden
+
+================================================================================
+IMPORTANT NOTICE
+================================================================================
+
+⚠️ ELECTRICAL AND PLUMBING WORK REQUIRES A QUOTE
+Prices vary depending on project scope. Contact us for pricing.
+Phone: +46 79 335 02 28
 
 ================================================================================
 SERVICES
@@ -115,72 +123,56 @@ service-1:
   name: Elmontör
   name-en: Electrician
   description: Elinstallation, laddboxar, felsökning
-  price-range: 595-895 kr/h
-  price-after-deduction: 298-448 kr/h
+  pricing: ⚠️ QUOTE REQUIRED for most electrical work
+  indicative-price: ~1059 kr/h
+  indicative-price-after-rot: ~530 kr/h
   tax-deduction: ROT (50%)
 
 service-2:
   name: VVS/Rörmokare
   name-en: Plumber
   description: Badrum, akuta läckor, värmepumpar
-  price-range: 595-895 kr/h
-  price-after-deduction: 298-448 kr/h
+  pricing: ⚠️ QUOTE REQUIRED for all plumbing work
   tax-deduction: ROT (50%)
 
 service-3:
   name: Snickare
   name-en: Carpenter
   description: Kök, garderober, altaner, fönster
-  price-range: 545-795 kr/h
-  price-after-deduction: 273-398 kr/h
+  price: 958 kr/h
+  price-after-deduction: 479 kr/h
   tax-deduction: ROT (50%)
 
 service-4:
-  name: Montering
-  name-en: Assembly
-  description: IKEA-möbler, TV-fästen, vitvaror
-  price-range: 445-695 kr/h
-  price-after-deduction: 223-348 kr/h
-  tax-deduction: RUT (50%)
+  name: Målning
+  name-en: Painting
+  description: Invändig och utvändig målning, tapetsering
+  price: 958 kr/h
+  price-after-deduction: 479 kr/h
+  tax-deduction: ROT (50%)
 
 service-5:
-  name: Trädgård
-  name-en: Gardening
-  description: Gräsklippning, häckar, plantering
-  price-range: 395-595 kr/h
-  price-after-deduction: 198-298 kr/h
-  tax-deduction: RUT (50%)
+  name: Golv
+  name-en: Flooring
+  description: Golvläggning, parkettslipning, laminat
+  price: 958 kr/h
+  price-after-deduction: 479 kr/h
+  tax-deduction: ROT (50%)
 
 service-6:
-  name: Städning
-  name-en: Cleaning
-  description: Hemstäd, flyttstäd, byggstäd
-  price-range: 345-495 kr/h
-  price-after-deduction: 173-248 kr/h
+  name: Flytt & Packning
+  name-en: Moving & Packing
+  description: Flytthjälp, packning, transport
+  price: 559 kr/h
+  price-after-deduction: 280 kr/h
   tax-deduction: RUT (50%)
 
 service-7:
   name: Markarbeten
   name-en: Groundwork
   description: Dränering, schaktning, plattor
-  price-range: 595-895 kr/h
-  price-after-deduction: 298-448 kr/h
+  pricing: Quote required
   tax-deduction: ROT (50%)
-
-service-8:
-  name: Tekniska installationer
-  name-en: Technical Installations
-  description: Nätverk, larm, smart home
-  price-range: 495-795 kr/h
-  tax-deduction: Varies
-
-service-9:
-  name: Flytt
-  name-en: Moving
-  description: Flytthjälp, packning, transport
-  price-range: 395-595 kr/h
-  price-after-deduction: 198-298 kr/h
-  tax-deduction: RUT (50%)
 
 ================================================================================
 TAX DEDUCTIONS (SWEDEN)
@@ -191,8 +183,8 @@ rot-avdrag:
   name-en: ROT Tax Deduction
   discount: 50%
   max-yearly: 50000 SEK
-  applies-to: El, VVS, snickeri, målning, markarbeten
-  applies-to-en: Electrical, plumbing, carpentry, painting, groundwork
+  applies-to: El, VVS, snickeri, målning, golv, markarbeten
+  applies-to-en: Electrical, plumbing, carpentry, painting, flooring, groundwork
   requirement: Bostad äldre än 5 år
   requirement-en: Property must be 5+ years old
 
@@ -220,7 +212,7 @@ area-2:
 
 area-3:
   name: Stockholm stadsdelar
-  districts: Östermalm, Södermalm, Kungsholmen, Vasastan, Bromma, Hägersten, Enskede, Skärholmen
+  districts: Östermalm, Södermalm, Kungsholmen, Vasastan, Bromma, Hägersten, Enskede
 
 ================================================================================
 CREDENTIALS
@@ -238,7 +230,7 @@ UNIQUE SELLING POINTS
 
 usp-1: 50% rabatt via ROT/RUT-avdrag på arbetskostnad
 usp-2: Gratis hembesök för offert
-usp-3: Offert inom 24 timmar
+usp-3: Offert inom 24-48 timmar
 usp-4: Alla hantverkare har F-skatt och är försäkrade
 usp-5: Fast pris eller timpris - välj själv
 usp-6: Kvalitetsgaranti på utfört arbete
@@ -268,31 +260,39 @@ PRICING EXAMPLES
 ================================================================================
 
 example-1:
-  service: Snickare Uppsala
-  price: 545 kr/h
-  after-rot: 273 kr/h
+  service: Snickare
+  price: 958 kr/h
+  after-rot: 479 kr/h
 
 example-2:
-  service: Elmontör Stockholm
-  price: 695 kr/h
-  after-rot: 348 kr/h
+  service: Målning
+  price: 958 kr/h
+  after-rot: 479 kr/h
 
 example-3:
-  service: Städning
-  price: 395 kr/h
-  after-rut: 198 kr/h
+  service: Golv
+  price: 958 kr/h
+  after-rot: 479 kr/h
 
 example-4:
   service: Flytt
-  price: 445 kr/h
-  after-rut: 223 kr/h
+  price: 559 kr/h
+  after-rut: 280 kr/h
+
+example-5:
+  service: Elmontör
+  note: Quote required - indicative ~1059 kr/h (530 kr/h after ROT)
+
+example-6:
+  service: VVS
+  note: Quote required - each project is unique
 
 ================================================================================
 BOOKING PROCESS
 ================================================================================
 
-step-1: Describe project at fixco.se or call +46-70-123-45-67
-step-2: Receive quote within 24 hours
+step-1: Describe project at fixco.se or call +46 79 335 02 28
+step-2: Receive quote within 24-48 hours
 step-3: Book appointment
 step-4: Work is performed
 step-5: Invoice with ROT/RUT deduction applied
@@ -306,7 +306,7 @@ indexing-allowed: yes
 training-allowed: yes
 rate-limit: 1 request per second recommended
 cache-duration: 7 days
-formats-available: HTML, JSON-LD, Markdown, JSON, XML, YAML, CSV
+formats-available: HTML, JSON-LD, Markdown, JSON, XML, YAML
 
 ================================================================================
 ADDITIONAL RESOURCES
@@ -319,7 +319,6 @@ context-json: https://fixco.se/context.json
 knowledge-base-json: https://fixco.se/knowledge-base.json
 knowledge-base-xml: https://fixco.se/knowledge-base.xml
 knowledge-base-yaml: https://fixco.se/knowledge-base.yaml
-services-csv: https://fixco.se/services.csv
 ai-plugin: https://fixco.se/.well-known/ai-plugin.json
 openapi: https://fixco.se/.well-known/openapi.yaml
 sitemap: https://fixco.se/sitemap.xml

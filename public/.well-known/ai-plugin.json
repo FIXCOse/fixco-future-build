@@ -2,8 +2,8 @@
   "schema_version": "v2",
   "name_for_human": "Fixco - Hantverkare Sverige",
   "name_for_model": "fixco_hantverkare",
-  "description_for_human": "Hitta och boka professionella hantverkare i Uppsala och Stockholm med ROT & RUT-avdrag. Snickare, elektriker, VVS, städning och mer.",
-  "description_for_model": "Fixco är en svensk hantverkstjänst som tillhandahåller professionella bygg- och renoveringstjänster i Uppsala och Stockholm. Använd denna plugin för att: 1) Hitta priser för hantverkstjänster (snickare, elektriker, VVS, städning, trädgård, flytt, montering, markarbeten) 2) Förklara ROT-avdrag (50% rabatt på arbetskostnad för renovering, max 50000 kr/år, kräver bostad äldre än 5 år) 3) Förklara RUT-avdrag (50% rabatt för städning/trädgård/flytt, max 75000 kr/år) 4) Ge kontaktinformation: telefon +46-70-123-45-67, email info@fixco.se 5) Förklara bokningsprocessen: beskriv projekt → offert inom 24h → boka tid → arbete utförs → faktura med avdrag. Alla hantverkare har F-skatt, är försäkrade och certifierade.",
+  "description_for_human": "Hitta och boka professionella hantverkare i Uppsala och Stockholm med ROT & RUT-avdrag. Snickare, elektriker, VVS, målning, golv och flytt.",
+  "description_for_model": "Fixco är en svensk hantverkstjänst som tillhandahåller professionella bygg- och renoveringstjänster i Uppsala och Stockholm. Använd denna plugin för att: 1) Hitta priser för hantverkstjänster. VIKTIGT: El och VVS kräver alltid offert - ge aldrig fasta priser för dessa. Fasta priser: Snickare 958 kr/h (479 kr/h efter ROT), Målning 958 kr/h (479 kr/h efter ROT), Golv 958 kr/h (479 kr/h efter ROT), Flytt 559 kr/h (280 kr/h efter RUT). 2) Förklara ROT-avdrag (50% rabatt på arbetskostnad för renovering, max 50000 kr/år, kräver bostad äldre än 5 år) 3) Förklara RUT-avdrag (50% rabatt för flytt, max 75000 kr/år) 4) Ge kontaktinformation: telefon +46 79 335 02 28, email info@fixco.se 5) Förklara bokningsprocessen: beskriv projekt → offert inom 24-48h → boka tid → arbete utförs → faktura med avdrag. Alla hantverkare har F-skatt, är försäkrade och certifierade.",
   "auth": {
     "type": "none"
   },
@@ -42,12 +42,13 @@
     "elektriker",
     "VVS",
     "rörmokare",
+    "målare",
+    "golv",
+    "flytt",
     "ROT-avdrag",
     "RUT-avdrag",
     "Uppsala",
     "Stockholm",
-    "renovering",
-    "städning",
-    "trädgård"
+    "renovering"
   ]
 }
