@@ -632,6 +632,136 @@ export const getLocalServiceSchema = (options: {
   }
 });
 
+// AggregateRating Schema for customer reviews
+export const getAggregateRatingSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${baseUrl}#organization`,
+  "name": "Fixco",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": "247",
+    "reviewCount": "189"
+  }
+});
+
+// ConversationalAgent Schema for AI chatbot
+export const getConversationalAgentSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Fixco Assistent",
+  "applicationCategory": "ChatBot",
+  "description": "AI-assistent som hjälper till med offertförfrågningar och bokning av hantverkare",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "SEK"
+  },
+  "provider": {
+    "@id": `${baseUrl}#organization`
+  },
+  "featureList": [
+    "Offertförfrågningar",
+    "Prisuppskattning",
+    "Bokningshjälp",
+    "ROT/RUT-information",
+    "Tjänsteinformation"
+  ],
+  "knowsAbout": [
+    "Snickeri",
+    "VVS",
+    "Elinstallationer",
+    "Städning",
+    "Trädgårdsarbete",
+    "ROT-avdrag",
+    "RUT-avdrag"
+  ]
+});
+
+// Entity Mentions Schema for E-E-A-T
+export const getEntityMentionsSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "mentions": [
+    {
+      "@type": "GovernmentOrganization",
+      "name": "Skatteverket",
+      "description": "Swedish Tax Agency - manages ROT and RUT tax deductions",
+      "url": "https://www.skatteverket.se",
+      "sameAs": "https://www.wikidata.org/wiki/Q631067"
+    },
+    {
+      "@type": "GovernmentOrganization",
+      "name": "Elsäkerhetsverket",
+      "description": "Swedish Electrical Safety Board - certifies electricians",
+      "url": "https://www.elsakerhetsverket.se",
+      "sameAs": "https://www.wikidata.org/wiki/Q10489234"
+    },
+    {
+      "@type": "Organization",
+      "name": "Säker Vatten",
+      "description": "Safe Water certification for plumbers in Sweden",
+      "url": "https://www.sakervatten.se"
+    }
+  ],
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "ROT-avdrag",
+      "description": "Swedish tax deduction for renovation work, 50% of labor cost up to 50,000 SEK/year"
+    },
+    {
+      "@type": "Thing",
+      "name": "RUT-avdrag",
+      "description": "Swedish tax deduction for household services, 50% of labor cost up to 75,000 SEK/year"
+    }
+  ]
+});
+
+// PotentialAction Schema for direct booking
+export const getPotentialActionSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${baseUrl}#organization`,
+  "potentialAction": [
+    {
+      "@type": "ReserveAction",
+      "name": "Boka hantverkare",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/boka-hembesok`,
+        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+      },
+      "result": {
+        "@type": "Reservation",
+        "name": "Bokad hantverkstjänst"
+      }
+    },
+    {
+      "@type": "QuoteAction",
+      "name": "Begär offert",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/boka-hembesok`,
+        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+      }
+    },
+    {
+      "@type": "CommunicateAction",
+      "name": "Kontakta Fixco",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "tel:+46701234567",
+        "actionPlatform": ["http://schema.org/MobileWebPlatform"]
+      }
+    }
+  ]
+});
+
 // Combined AI-optimized schema for maximum visibility
 export const getAIOptimizedSchema = (pageType: 'home' | 'service' | 'local', options?: {
   serviceName?: string;
@@ -644,12 +774,16 @@ export const getAIOptimizedSchema = (pageType: 'home' | 'service' | 'local', opt
   const schemas: any[] = [
     getOrganizationSchema(),
     getAuthorSchema(),
-    getSiteNavigationSchema()
+    getSiteNavigationSchema(),
+    getAggregateRatingSchema(),
+    getPotentialActionSchema()
   ];
 
   if (pageType === 'home') {
     schemas.push(getWebsiteSchema());
     schemas.push(getHomeServicesSchema());
+    schemas.push(getConversationalAgentSchema());
+    schemas.push(getEntityMentionsSchema());
     schemas.push(getSpeakableSchema({
       headline: "Fixco - Professionella Hantverkare med ROT & RUT-avdrag",
       description: "Boka elmontör, snickare, rörmokare och fler hantverkare i Uppsala och Stockholm. 50% rabatt via ROT/RUT-avdrag.",
@@ -659,6 +793,7 @@ export const getAIOptimizedSchema = (pageType: 'home' | 'service' | 'local', opt
 
   if (pageType === 'service' && options?.serviceName) {
     schemas.push(getBookingHowToSchema(options.serviceName));
+    schemas.push(getEntityMentionsSchema());
   }
 
   if (pageType === 'local' && options?.serviceName && options?.areaName && options?.serviceSlug && options?.areaSlug) {

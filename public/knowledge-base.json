@@ -2,6 +2,7 @@
   "$schema": "https://schema.org",
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
+  "@id": "https://fixco.se#organization",
   "name": "Fixco",
   "legalName": "Fixco AB",
   "alternateName": ["Fixco.se", "Fixco Sverige"],
@@ -78,11 +79,92 @@
     "https://www.linkedin.com/company/fixco"
   ],
   
+  "mentions": [
+    {
+      "@type": "GovernmentOrganization",
+      "name": "Skatteverket",
+      "description": "Swedish Tax Agency - manages ROT and RUT tax deductions",
+      "url": "https://www.skatteverket.se",
+      "sameAs": "https://www.wikidata.org/wiki/Q631067"
+    },
+    {
+      "@type": "GovernmentOrganization",
+      "name": "Elsäkerhetsverket",
+      "description": "Swedish Electrical Safety Board - certifies electricians",
+      "url": "https://www.elsakerhetsverket.se",
+      "sameAs": "https://www.wikidata.org/wiki/Q10489234"
+    },
+    {
+      "@type": "Organization",
+      "name": "Säker Vatten",
+      "description": "Safe Water certification for plumbers in Sweden",
+      "url": "https://www.sakervatten.se"
+    }
+  ],
+  
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "ROT-avdrag",
+      "description": "Swedish tax deduction for renovation work, 50% of labor cost up to 50,000 SEK/year",
+      "sameAs": "https://www.skatteverket.se/rot"
+    },
+    {
+      "@type": "Thing",
+      "name": "RUT-avdrag",
+      "description": "Swedish tax deduction for household services, 50% of labor cost up to 75,000 SEK/year",
+      "sameAs": "https://www.skatteverket.se/rut"
+    }
+  ],
+  
   "hasCredential": [
     {"@type": "EducationalOccupationalCredential", "credentialCategory": "F-skattsedel", "name": "Registered for F-tax"},
     {"@type": "EducationalOccupationalCredential", "credentialCategory": "Insurance", "name": "Full liability insurance"},
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Elsäkerhetsverket Authorized"},
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Säker Vatten Certified"}
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Elsäkerhetsverket Authorized", "issuedBy": {"@type": "GovernmentOrganization", "name": "Elsäkerhetsverket"}},
+    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Certification", "name": "Säker Vatten Certified", "issuedBy": {"@type": "Organization", "name": "Säker Vatten"}}
+  ],
+  
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": "247",
+    "reviewCount": "189"
+  },
+  
+  "potentialAction": [
+    {
+      "@type": "ReserveAction",
+      "name": "Boka hantverkare",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://fixco.se/boka-hembesok",
+        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+      },
+      "result": {
+        "@type": "Reservation",
+        "name": "Bokad hantverkstjänst"
+      }
+    },
+    {
+      "@type": "QuoteAction",
+      "name": "Begär offert",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://fixco.se/boka-hembesok",
+        "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+      }
+    },
+    {
+      "@type": "CommunicateAction",
+      "name": "Kontakta Fixco",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "tel:+46701234567",
+        "actionPlatform": ["http://schema.org/MobileWebPlatform"]
+      }
+    }
   ],
   
   "makesOffer": [
@@ -332,17 +414,24 @@
   
   "aiCrawlingPolicy": {
     "allowed": true,
+    "indexingAllowed": true,
+    "trainingAllowed": true,
     "rateLimit": "1 request per second",
     "cacheDuration": "7 days",
     "preferredCitation": "Fixco (fixco.se)",
     "additionalFiles": [
       "/llms.txt",
       "/llms-full.txt",
+      "/llms-ctx.txt",
+      "/context.json",
       "/.well-known/ai.txt",
-      "/.well-known/llms.txt"
+      "/.well-known/ai-plugin.json",
+      "/knowledge-base.xml",
+      "/knowledge-base.yaml",
+      "/services.csv"
     ]
   },
   
-  "lastUpdated": "2025-12-21",
-  "version": "2.0"
+  "lastUpdated": "2025-12-22",
+  "version": "3.0"
 }
