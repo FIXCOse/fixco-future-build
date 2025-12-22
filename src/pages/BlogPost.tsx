@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Share2, BookOpen, Info, AlertTriangle, Lightbulb, ExternalLink, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { getBlogPostBySlug, getRelatedPosts, blogCategories } from '@/data/blogData';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
+
+// Extend window for global modal function
+declare global {
+  interface Window {
+    openFixcoModal?: () => void;
+  }
+}
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,6 +27,16 @@ const BlogPost = () => {
 
   const relatedPosts = getRelatedPosts(post.slug, 3);
   const categoryName = blogCategories.find(c => c.slug === post.category)?.name || post.category;
+
+  // Expose global function for CTA buttons in rendered HTML
+  useEffect(() => {
+    window.openFixcoModal = () => {
+      openServiceRequestModal({ mode: 'home_visit', showCategories: true });
+    };
+    return () => {
+      delete window.openFixcoModal;
+    };
+  }, []);
 
   // Schema.org för Article
   const articleSchema = {
@@ -102,17 +121,17 @@ const BlogPost = () => {
           </div>
         </div>
       `)
-      // CTA boxes - gradient med knapp
+      // CTA boxes - gradient med knapp (öppnar HomeVisit-modal)
       .replace(/:::cta\n([\s\S]*?):::/g, `
         <div class="my-8 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 border border-primary/20 text-center relative overflow-hidden">
           <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-50"></div>
           <div class="relative z-10">
             <p class="text-xl md:text-2xl font-bold text-foreground mb-2">$1</p>
             <p class="text-muted-foreground mb-6">Få professionell hjälp av våra experter</p>
-            <a href="/kontakt" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:opacity-90 transition-all shadow-lg hover:shadow-xl hover:scale-105">
+            <button onclick="window.openFixcoModal && window.openFixcoModal()" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:opacity-90 transition-all shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer border-0">
               Begär gratis offert
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </a>
+            </button>
           </div>
         </div>
       `)
@@ -351,11 +370,13 @@ const BlogPost = () => {
                 Begär en gratis offert idag!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:opacity-90 shadow-lg hover:shadow-xl transition-all hover:scale-105" asChild>
-                  <Link to="/kontakt">
-                    Begär gratis offert
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                >
+                  Begär gratis offert
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
                   <a href="tel:+46793350228">
