@@ -157,14 +157,8 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Epic Wave Divider: Hero → TrustBar - Aurora glow effect */}
-      <WaveDivider 
-        variant="aurora" 
-        colorFrom="background" 
-        colorTo="surface" 
-        intensity="epic"
-        animated 
-      />
+      {/* Particles Divider: Hero → TrustBar */}
+      <WaveDivider animated />
 
       {/* Trust Bar */}
       <EditableSection id="trust-bar" title="Förtroende bar">
@@ -173,15 +167,8 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Epic Wave Divider: TrustBar → CTA - Liquid flow */}
-      <WaveDivider 
-        variant="liquid" 
-        colorFrom="surface" 
-        colorTo="background" 
-        intensity="medium"
-        flip 
-        animated 
-      />
+      {/* Particles Divider: TrustBar → CTA */}
+      <WaveDivider flip animated />
 
       {/* All Services CTA Section - GSAP Enhanced */}
       <section ref={allServicesRef} className="py-16 bg-background relative overflow-hidden">
@@ -208,15 +195,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Epic Wave Divider: CTA → Comparison - Glow edge neon effect */}
-      <WaveDivider 
-        variant="glow" 
-        colorFrom="background" 
-        colorTo="muted" 
-        glowColor="primary"
-        intensity="epic"
-        animated 
-      />
+      {/* Particles Divider: CTA → Comparison */}
+      <WaveDivider animated />
 
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
@@ -225,15 +205,8 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Epic Wave Divider: Comparison → Services - Particles floating up */}
-      <WaveDivider 
-        variant="particles" 
-        colorFrom="muted" 
-        colorTo="background" 
-        intensity="medium"
-        flip 
-        animated 
-      />
+      {/* Particles Divider: Comparison → Services */}
+      <WaveDivider flip animated />
 
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
@@ -242,14 +215,8 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Epic Wave Divider: Services → Projects - Glass blur transition */}
-      <WaveDivider 
-        variant="glass" 
-        colorFrom="background" 
-        colorTo="surface" 
-        intensity="subtle"
-        animated 
-      />
+      {/* Particles Divider: Services → Projects */}
+      <WaveDivider animated />
 
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
@@ -258,15 +225,8 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Epic Wave Divider: Projects → FAQ - Liquid flow reversed */}
-      <WaveDivider 
-        variant="liquid" 
-        colorFrom="surface" 
-        colorTo="background" 
-        intensity="subtle"
-        flip 
-        animated 
-      />
+      {/* Particles Divider: Projects → FAQ */}
+      <WaveDivider flip animated />
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
