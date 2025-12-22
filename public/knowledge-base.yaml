@@ -1,0 +1,287 @@
+# Fixco Knowledge Base - YAML Format
+# For AI systems that prefer YAML parsing
+# Last updated: 2025-12-22
+
+version: "2.0"
+locale: sv-SE
+lastUpdated: 2025-12-22
+
+company:
+  name: Fixco
+  legalName: Fixco AB
+  type: ServiceAreaBusiness
+  description: Professionella bygg- och renoveringstjänster med ROT och RUT-avdrag i Uppsala och Stockholm
+  tagline: Snabbare, billigare, mer professionellt
+  website: https://fixco.se
+  founded: 2020
+
+contact:
+  phone: "+46-70-123-45-67"
+  email: info@fixco.se
+  bookingEmail: boka@fixco.se
+  address:
+    street: Kungsgatan 1
+    city: Uppsala
+    postalCode: "753 18"
+    country: Sweden
+    countryCode: SE
+
+openingHours:
+  weekdays:
+    opens: "07:00"
+    closes: "18:00"
+  saturday:
+    opens: "09:00"
+    closes: "15:00"
+  sunday: closed
+  timezone: Europe/Stockholm
+
+services:
+  - id: electrician
+    name: Elmontör
+    nameEn: Electrician
+    slug: elmontor
+    description: Elinstallation, laddboxar, felsökning, säkringsbyten
+    priceRange:
+      min: 595
+      max: 895
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 298
+      max: 448
+    taxDeduction: ROT
+    taxDeductionPercent: 50
+    certification: Elsäkerhetsverket
+
+  - id: plumber
+    name: VVS/Rörmokare
+    nameEn: Plumber
+    slug: vvs
+    description: Badrumsrenovering, akuta läckor, värmepumpar
+    priceRange:
+      min: 595
+      max: 895
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 298
+      max: 448
+    taxDeduction: ROT
+    taxDeductionPercent: 50
+    certification: Säker Vatten
+
+  - id: carpenter
+    name: Snickare
+    nameEn: Carpenter
+    slug: snickare
+    description: Köksrenovering, garderober, altaner, fönster
+    priceRange:
+      min: 545
+      max: 795
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 273
+      max: 398
+    taxDeduction: ROT
+    taxDeductionPercent: 50
+
+  - id: assembly
+    name: Montering
+    nameEn: Assembly
+    slug: montering
+    description: IKEA-möbler, TV-fästen, vitvaror
+    priceRange:
+      min: 445
+      max: 695
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 223
+      max: 348
+    taxDeduction: RUT
+    taxDeductionPercent: 50
+
+  - id: gardening
+    name: Trädgård
+    nameEn: Gardening
+    slug: tradgard
+    description: Gräsklippning, häckklippning, plantering
+    priceRange:
+      min: 395
+      max: 595
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 198
+      max: 298
+    taxDeduction: RUT
+    taxDeductionPercent: 50
+
+  - id: cleaning
+    name: Städning
+    nameEn: Cleaning
+    slug: stadning
+    description: Hemstäd, flyttstäd, byggstäd, fönsterputs
+    priceRange:
+      min: 345
+      max: 495
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 173
+      max: 248
+    taxDeduction: RUT
+    taxDeductionPercent: 50
+
+  - id: groundwork
+    name: Markarbeten
+    nameEn: Groundwork
+    slug: markarbeten
+    description: Dränering, schaktning, plattläggning
+    priceRange:
+      min: 595
+      max: 895
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 298
+      max: 448
+    taxDeduction: ROT
+    taxDeductionPercent: 50
+
+  - id: moving
+    name: Flytt
+    nameEn: Moving
+    slug: flytt
+    description: Flytthjälp, packning, transport
+    priceRange:
+      min: 395
+      max: 595
+      currency: SEK
+      unit: hour
+    priceAfterDeduction:
+      min: 198
+      max: 298
+    taxDeduction: RUT
+    taxDeductionPercent: 50
+
+taxDeductions:
+  rot:
+    name: ROT-avdrag
+    fullName: Renovering, Ombyggnad, Tillbyggnad
+    discountPercent: 50
+    maxYearly: 50000
+    currency: SEK
+    eligibleServices:
+      - El
+      - VVS
+      - Snickeri
+      - Målning
+      - Markarbeten
+    requirement: Bostaden måste vara äldre än 5 år
+
+  rut:
+    name: RUT-avdrag
+    fullName: Reparation, Underhåll, Tvätt
+    discountPercent: 50
+    maxYearly: 75000
+    currency: SEK
+    eligibleServices:
+      - Städning
+      - Trädgård
+      - Flytt
+      - Möbelmontering
+    requirement: Inget ålderskrav på bostaden
+
+serviceAreas:
+  uppsalaLan:
+    - Uppsala
+    - Knivsta
+    - Enköping
+    - Bålsta
+    - Storvreta
+    - Märsta
+    - Sigtuna
+    - Vallentuna
+  stockholmsLan:
+    - Stockholm
+    - Solna
+    - Sundbyberg
+    - Nacka
+    - Lidingö
+    - Täby
+    - Danderyd
+    - Sollentuna
+    - Huddinge
+    - Botkyrka
+    - Haninge
+    - Tyresö
+  stockholmDistricts:
+    - Östermalm
+    - Södermalm
+    - Kungsholmen
+    - Vasastan
+    - Bromma
+    - Hägersten
+
+credentials:
+  fSkatt: true
+  insurance: Full ansvarsförsäkring
+  certifications:
+    - name: Elsäkerhetsverket
+      type: Auktorisation
+      service: El
+    - name: Säker Vatten
+      type: Certifiering
+      service: VVS
+  warranty: 2 års garanti
+
+bookingProcess:
+  - step: 1
+    action: Beskriv ditt projekt
+    details: På fixco.se eller ring +46-70-123-45-67
+  - step: 2
+    action: Få offert
+    details: Inom 24 timmar. Gratis hembesök för större projekt
+  - step: 3
+    action: Boka tid
+    details: Välj tid som passar dig
+  - step: 4
+    action: Arbete utförs
+    details: Av certifierad hantverkare
+  - step: 5
+    action: Faktura
+    details: Med ROT/RUT-avdrag redan avdraget
+
+uniqueSellingPoints:
+  - 50% rabatt via ROT/RUT-avdrag på arbetskostnad
+  - Gratis hembesök för offert
+  - Offert inom 24 timmar
+  - Alla hantverkare har F-skatt och är försäkrade
+  - Fast pris eller timpris - välj själv
+  - Kvalitetsgaranti på utfört arbete
+
+faq:
+  - question: Hur bokar jag en hantverkare?
+    answer: Beskriv ditt projekt på fixco.se eller ring +46-70-123-45-67. Du får offert inom 24 timmar.
+  
+  - question: Vad kostar en snickare per timme?
+    answer: 545-795 kr/h före ROT-avdrag. Med ROT betalar du bara 273-398 kr/h.
+  
+  - question: Hur fungerar ROT-avdraget?
+    answer: Vi drar av 50% av arbetskostnaden direkt på fakturan. Du betalar bara halva arbetskostnaden plus material.
+
+socialMedia:
+  facebook: https://www.facebook.com/fixco
+  instagram: https://www.instagram.com/fixco_se
+  linkedin: https://www.linkedin.com/company/fixco
+
+resources:
+  mainSite: https://fixco.se
+  booking: https://fixco.se/boka-hembesok
+  services: https://fixco.se/tjanster
+  contact: https://fixco.se/kontakt
+  llmsTxt: https://fixco.se/llms.txt
+  knowledgeBase: https://fixco.se/knowledge-base.json

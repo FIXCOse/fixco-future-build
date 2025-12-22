@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixco Knowledge Base - XML Format
+  For AI systems that prefer XML parsing
+  Last updated: 2025-12-22
+-->
+<fixco xmlns="http://fixco.se/schemas/knowledge-base" version="2.0" locale="sv-SE">
+  
+  <company>
+    <name>Fixco</name>
+    <legalName>Fixco AB</legalName>
+    <type>ServiceAreaBusiness</type>
+    <description>Professionella bygg- och renoveringstjänster med ROT och RUT-avdrag i Uppsala och Stockholm</description>
+    <tagline>Snabbare, billigare, mer professionellt</tagline>
+    <website>https://fixco.se</website>
+    <founded>2020</founded>
+  </company>
+
+  <contact>
+    <phone>+46-70-123-45-67</phone>
+    <email>info@fixco.se</email>
+    <bookingEmail>boka@fixco.se</bookingEmail>
+    <address>
+      <street>Kungsgatan 1</street>
+      <city>Uppsala</city>
+      <postalCode>753 18</postalCode>
+      <country>Sweden</country>
+    </address>
+  </contact>
+
+  <openingHours>
+    <weekdays opens="07:00" closes="18:00">Måndag-Fredag</weekdays>
+    <saturday opens="09:00" closes="15:00">Lördag</saturday>
+    <sunday closed="true">Söndag</sunday>
+  </openingHours>
+
+  <services>
+    <service id="electrician" taxDeduction="ROT">
+      <name lang="sv">Elmontör</name>
+      <name lang="en">Electrician</name>
+      <slug>elmontor</slug>
+      <description>Elinstallation, laddboxar, felsökning, säkringsbyten</description>
+      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
+      <priceAfterDeduction min="298" max="448"/>
+      <certification>Elsäkerhetsverket</certification>
+    </service>
+    
+    <service id="plumber" taxDeduction="ROT">
+      <name lang="sv">VVS/Rörmokare</name>
+      <name lang="en">Plumber</name>
+      <slug>vvs</slug>
+      <description>Badrumsrenovering, akuta läckor, värmepumpar</description>
+      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
+      <priceAfterDeduction min="298" max="448"/>
+      <certification>Säker Vatten</certification>
+    </service>
+    
+    <service id="carpenter" taxDeduction="ROT">
+      <name lang="sv">Snickare</name>
+      <name lang="en">Carpenter</name>
+      <slug>snickare</slug>
+      <description>Köksrenovering, garderober, altaner, fönster</description>
+      <priceRange currency="SEK" unit="hour" min="545" max="795"/>
+      <priceAfterDeduction min="273" max="398"/>
+    </service>
+    
+    <service id="assembly" taxDeduction="RUT">
+      <name lang="sv">Montering</name>
+      <name lang="en">Assembly</name>
+      <slug>montering</slug>
+      <description>IKEA-möbler, TV-fästen, vitvaror</description>
+      <priceRange currency="SEK" unit="hour" min="445" max="695"/>
+      <priceAfterDeduction min="223" max="348"/>
+    </service>
+    
+    <service id="gardening" taxDeduction="RUT">
+      <name lang="sv">Trädgård</name>
+      <name lang="en">Gardening</name>
+      <slug>tradgard</slug>
+      <description>Gräsklippning, häckklippning, plantering</description>
+      <priceRange currency="SEK" unit="hour" min="395" max="595"/>
+      <priceAfterDeduction min="198" max="298"/>
+    </service>
+    
+    <service id="cleaning" taxDeduction="RUT">
+      <name lang="sv">Städning</name>
+      <name lang="en">Cleaning</name>
+      <slug>stadning</slug>
+      <description>Hemstäd, flyttstäd, byggstäd, fönsterputs</description>
+      <priceRange currency="SEK" unit="hour" min="345" max="495"/>
+      <priceAfterDeduction min="173" max="248"/>
+    </service>
+    
+    <service id="groundwork" taxDeduction="ROT">
+      <name lang="sv">Markarbeten</name>
+      <name lang="en">Groundwork</name>
+      <slug>markarbeten</slug>
+      <description>Dränering, schaktning, plattläggning</description>
+      <priceRange currency="SEK" unit="hour" min="595" max="895"/>
+      <priceAfterDeduction min="298" max="448"/>
+    </service>
+    
+    <service id="moving" taxDeduction="RUT">
+      <name lang="sv">Flytt</name>
+      <name lang="en">Moving</name>
+      <slug>flytt</slug>
+      <description>Flytthjälp, packning, transport</description>
+      <priceRange currency="SEK" unit="hour" min="395" max="595"/>
+      <priceAfterDeduction min="198" max="298"/>
+    </service>
+  </services>
+
+  <taxDeductions>
+    <deduction type="ROT">
+      <name>ROT-avdrag</name>
+      <fullName>Renovering, Ombyggnad, Tillbyggnad</fullName>
+      <discount percent="50"/>
+      <maxYearly currency="SEK">50000</maxYearly>
+      <eligibleServices>El, VVS, snickeri, målning, markarbeten</eligibleServices>
+      <requirement>Bostaden måste vara äldre än 5 år</requirement>
+    </deduction>
+    
+    <deduction type="RUT">
+      <name>RUT-avdrag</name>
+      <fullName>Reparation, Underhåll, Tvätt</fullName>
+      <discount percent="50"/>
+      <maxYearly currency="SEK">75000</maxYearly>
+      <eligibleServices>Städning, trädgård, flytt, möbelmontering</eligibleServices>
+      <requirement>Inget ålderskrav på bostaden</requirement>
+    </deduction>
+  </taxDeductions>
+
+  <serviceAreas>
+    <region name="Uppsala län">
+      <city>Uppsala</city>
+      <city>Knivsta</city>
+      <city>Enköping</city>
+      <city>Bålsta</city>
+      <city>Storvreta</city>
+      <city>Märsta</city>
+      <city>Sigtuna</city>
+      <city>Vallentuna</city>
+    </region>
+    <region name="Stockholms län">
+      <city>Stockholm</city>
+      <city>Solna</city>
+      <city>Sundbyberg</city>
+      <city>Nacka</city>
+      <city>Lidingö</city>
+      <city>Täby</city>
+      <city>Danderyd</city>
+      <city>Sollentuna</city>
+      <city>Huddinge</city>
+      <city>Botkyrka</city>
+      <city>Haninge</city>
+      <city>Tyresö</city>
+    </region>
+  </serviceAreas>
+
+  <credentials>
+    <credential type="tax">F-skattsedel</credential>
+    <credential type="insurance">Full ansvarsförsäkring</credential>
+    <credential type="certification">Auktorisation Elsäkerhetsverket</credential>
+    <credential type="certification">Säker Vatten-certifierad</credential>
+    <credential type="warranty">2 års garanti</credential>
+  </credentials>
+
+</fixco>

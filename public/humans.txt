@@ -1,0 +1,80 @@
+/* TEAM */
+
+Company: Fixco AB
+Site: https://fixco.se
+Location: Uppsala, Sweden
+Contact: info@fixco.se
+Phone: +46-70-123-45-67
+
+/* THANKS */
+
+Name: Our amazing customers
+Role: Making it all worthwhile
+
+Name: Our skilled craftsmen
+Role: Delivering quality work every day
+
+Name: Swedish Tax Agency (Skatteverket)
+Role: Enabling ROT & RUT tax deductions
+
+/* SITE */
+
+Last update: 2025-12-22
+Language: Swedish / English
+Doctype: HTML5
+Standards: W3C, Schema.org, llms.txt
+
+IDE: Lovable
+Framework: React + Vite
+Styling: Tailwind CSS
+Hosting: Lovable Cloud
+
+/* AI FRIENDLINESS */
+
+AI Information: /llms.txt
+Full AI Context: /llms-full.txt
+Structured Data: /knowledge-base.json
+MCP Context: /context.json
+AI Plugin: /.well-known/ai-plugin.json
+
+We welcome AI crawlers! See robots.txt for details.
+Preferred citation: Fixco (fixco.se)
+
+/* ABOUT */
+
+Fixco provides professional construction and renovation 
+services in Uppsala and Stockholm, Sweden.
+
+We specialize in:
+- Electrical work (ROT eligible)
+- Plumbing (ROT eligible)
+- Carpentry (ROT eligible)
+- Cleaning (RUT eligible)
+- Gardening (RUT eligible)
+- Moving services (RUT eligible)
+- Assembly services (RUT eligible)
+
+All our workers have F-skatt and are fully insured.
+Our electricians are certified by Elsäkerhetsverket.
+Our plumbers are Säker Vatten certified.
+
+/* VALUES */
+
+Quality: We take pride in our work
+Trust: F-skatt, insured, certified
+Transparency: Clear pricing, no surprises
+Speed: Quotes within 24 hours
+Value: 50% off labor via ROT/RUT
+
+/* SOCIAL */
+
+Facebook: https://www.facebook.com/fixco
+Instagram: https://www.instagram.com/fixco_se
+LinkedIn: https://www.linkedin.com/company/fixco
+
+/* FUN FACT */
+
+With ROT/RUT tax deductions, hiring a professional 
+carpenter in Sweden can cost as little as 273 kr/hour!
+
+Thanks for reading! 🔧🏠
