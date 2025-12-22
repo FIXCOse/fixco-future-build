@@ -177,23 +177,10 @@ const BlogPost = () => {
       // Regular lists
       .replace(/^- (.*$)/gm, '<li class="ml-4 list-disc py-1 text-muted-foreground">$1</li>')
       .replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal py-1 text-muted-foreground">$1</li>')
-      // Tables med premium design (fasta kolumnbredder för att undvika "zik-zak")
-      .replace(/\|(.+)\|/g, (match, content) => {
-        if (content.includes('---')) return '';
-        const cells = content.split('|').map((cell: string) => cell.trim());
-
-        // Check if it's a header row
-        const isHeader = cells.some((cell: string) => {
-          const lower = cell.toLowerCase();
-          return (
-            lower.includes('komponent') ||
-            lower.includes('typ') ||
-            lower.includes('livslängd') ||
-            lower.includes('beskrivning') ||
-            lower.includes('kategori') ||
-            lower === 'år'
-          );
-        });
+      // Tables - parse entire table blocks at once to keep them together
+      .replace(/((?:^\|.+\|$\n?)+)/gm, (tableBlock) => {
+        const rows = tableBlock.trim().split('\n').filter(row => row.trim() && !row.includes('---'));
+        if (rows.length === 0) return '';
 
         const getColWidthClass = (index: number) => {
           if (index === 0) return 'w-32';
@@ -201,68 +188,67 @@ const BlogPost = () => {
           return '';
         };
 
-        if (isHeader) {
-          return `<tr class="bg-gradient-to-r from-primary/15 via-primary/10 to-accent/15">${cells
+        const renderRow = (row: string, isHeader: boolean) => {
+          const cells = row.replace(/^\||\|$/g, '').split('|').map((cell: string) => cell.trim());
+
+          if (isHeader) {
+            return `<tr class="bg-gradient-to-r from-primary/15 via-primary/10 to-accent/15">${cells
+              .map((cell: string, index: number) => {
+                const widthClass = getColWidthClass(index);
+                return `<th class="${widthClass} px-5 py-4 align-top text-left font-bold text-foreground uppercase tracking-wide text-xs border-b-2 border-primary/30">${cell}</th>`;
+              })
+              .join('')}</tr>`;
+          }
+
+          return `<tr class="group border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300">${cells
             .map((cell: string, index: number) => {
               const widthClass = getColWidthClass(index);
-              return `<th class="${widthClass} px-5 py-4 align-top text-left font-bold text-foreground uppercase tracking-wide text-xs border-b-2 border-primary/30">${cell}</th>`;
+
+              // Check if cell contains lifespan data (år)
+              const lifespanMatch = cell.match(/(\d+)\s*år/);
+              if (lifespanMatch) {
+                const years = parseInt(lifespanMatch[1]);
+                const percentage = Math.min((years / 100) * 100, 100);
+                const gradientColor =
+                  years >= 60
+                    ? 'from-emerald-500 to-green-400'
+                    : years >= 30
+                      ? 'from-amber-500 to-yellow-400'
+                      : 'from-orange-500 to-red-400';
+
+                return `<td class="${widthClass} px-5 py-4 align-top">
+                  <div class="flex flex-col gap-2">
+                    <span class="font-bold text-lg tabular-nums bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent">${years} år</span>
+                    <div class="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
+                      <div class="h-full bg-gradient-to-r ${gradientColor} rounded-full transition-all duration-700" style="width: ${percentage}%"></div>
+                    </div>
+                  </div>
+                </td>`;
+              }
+
+              // First column styling (component name)
+              if (index === 0) {
+                return `<td class="${widthClass} px-5 py-4 align-top font-semibold text-foreground group-hover:text-primary transition-colors">${cell}</td>`;
+              }
+
+              return `<td class="${widthClass} px-5 py-4 align-top text-muted-foreground break-words">${cell}</td>`;
             })
             .join('')}</tr>`;
-        }
+        };
 
-        // Regular data row with enhanced styling
-        return `<tr class="group border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300">${cells
-          .map((cell: string, index: number) => {
-            const widthClass = getColWidthClass(index);
+        // Determine if first row is header
+        const firstRowCells = rows[0].replace(/^\||\|$/g, '').split('|').map((s: string) => s.trim().toLowerCase());
+        const isFirstRowHeader = firstRowCells.some((cell: string) =>
+          cell.includes('komponent') || cell.includes('typ') || cell.includes('livslängd') ||
+          cell.includes('beskrivning') || cell.includes('kategori') || cell === 'år'
+        );
 
-            // Check if cell contains lifespan data (år)
-            const lifespanMatch = cell.match(/(\d+)\s*år/);
-            if (lifespanMatch) {
-              const years = parseInt(lifespanMatch[1]);
-              const percentage = Math.min((years / 100) * 100, 100);
-              const gradientColor =
-                years >= 60
-                  ? 'from-emerald-500 to-green-400'
-                  : years >= 30
-                    ? 'from-amber-500 to-yellow-400'
-                    : 'from-orange-500 to-red-400';
+        const tableRows = rows.map((row, index) => renderRow(row, index === 0 && isFirstRowHeader)).join('');
 
-              return `<td class="${widthClass} px-5 py-4 align-top">
-                <div class="flex flex-col gap-2">
-                  <span class="font-bold text-lg tabular-nums bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent">${years} år</span>
-                  <div class="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r ${gradientColor} rounded-full transition-all duration-700" style="width: ${percentage}%"></div>
-                  </div>
-                </div>
-              </td>`;
-            }
-
-            // First column styling (component name)
-            if (index === 0) {
-              return `<td class="${widthClass} px-5 py-4 align-top font-semibold text-foreground group-hover:text-primary transition-colors">${cell}</td>`;
-            }
-
-            return `<td class="${widthClass} px-5 py-4 align-top text-muted-foreground break-words">${cell}</td>`;
-          })
-          .join('')}</tr>`;
-      })
-      // Paragraphs
-      .replace(/\n\n/g, '</p><p class="mb-4 text-muted-foreground leading-relaxed text-base md:text-lg">')
-      // Horizontal rule
-      .replace(/^---$/gm, '<hr class="my-10 border-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />')
-      // Links med hover effekt
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-medium hover:underline decoration-primary/50 underline-offset-2 transition-all hover:decoration-primary">$1</a>');
-
-    // Wrap tables with premium container
-    html = html.replace(/<tr/g, (match, offset) => {
-      const before = html.substring(0, offset);
-      if (!before.includes('<table') || before.lastIndexOf('</table>') > before.lastIndexOf('<table')) {
         return `<div class="my-8 overflow-x-auto rounded-2xl border border-border/50 bg-gradient-to-br from-card via-background to-card shadow-lg shadow-primary/5 backdrop-blur-sm">
-          <table class="w-full min-w-[640px] table-fixed text-sm">` + match;
-      }
-      return match;
-    });
-    html = html.replace(/<\/tr>(?![\s\S]*<tr)/g, '</tr></table></div>');
+          <table class="w-full min-w-[640px] table-fixed text-sm">${tableRows}</table>
+        </div>`;
+      })
 
     return html;
   };
