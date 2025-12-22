@@ -53,10 +53,17 @@ export default function ProjectDetailModal({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { locale } = useCopy();
 
-  // Reset image index when project changes
+  // Reset image index when project changes - start at thumbnail if available
   useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [project?.id]);
+    if (project?.thumbnail_image && project.images?.length > 0) {
+      const thumbnailIndex = project.images.findIndex(
+        img => img === project.thumbnail_image
+      );
+      setCurrentImageIndex(thumbnailIndex >= 0 ? thumbnailIndex : 0);
+    } else {
+      setCurrentImageIndex(0);
+    }
+  }, [project?.id, project?.thumbnail_image, project?.images]);
 
   // Preload next/previous images
   useImagePreloader(project?.images || [], currentImageIndex);
