@@ -3591,6 +3591,2315 @@ Byggmaterialindustrierna | SCB Prisindex | Svensk Handel | Pricerunner
     image: '/placeholder.svg',
     featured: false,
   },
+
+  // ============================================================
+  // ARTIKEL 26: RUT-AVDRAG GUIDE 2026
+  // ============================================================
+  {
+    id: '26',
+    slug: 'rut-avdrag-guide-2026',
+    title: 'RUT-avdrag 2026 – Komplett guide för privatpersoner',
+    metaTitle: 'RUT-avdrag 2026 | Max 75 000 kr, 50% avdrag | Skatteverket Guide',
+    metaDescription: 'RUT-avdrag 2026: 50% av arbetskostnaden, max 75 000 kr per person. Städning, trädgård, flytt och mer. Komplett guide med alla regler från Skatteverket.',
+    excerpt: 'Allt du behöver veta om RUT-avdraget 2026 – vilka tjänster som ingår, hur mycket du kan spara och hur du gör avdraget direkt på fakturan.',
+    content: `
+:::info
+RUT-avdraget ger dig **50% rabatt på arbetskostnaden** för hushållsnära tjänster, upp till **75 000 kr per person och år**.
+:::
+
+## Vad är RUT-avdrag?
+
+RUT står för **R**engöring, **U**nderhåll och **T**vätt. Det är en skattelättnad som gör det billigare att anlita hjälp med hushållsarbete i hemmet.
+
+:::stats
+50% | Avdrag på arbetskostnad
+75 000 kr | Max per person/år
+75 000 kr | Max ROT + RUT kombinerat
+:::
+
+## Vilka tjänster ger RUT-avdrag 2026?
+
+Enligt Skatteverket ingår följande tjänster:
+
+### Städning och rengöring
+- ✅ Städning av bostad
+- ✅ Fönsterputsning
+- ✅ Flyttstädning
+- ✅ Storstädning
+
+### Kläd- och textilvård
+- ✅ Tvätt och strykning i hemmet
+- ✅ Skotillsyn och skovård
+
+### Trädgårdsarbete
+- ✅ Häck- och gräsklippning
+- ✅ Krattning och ogräsrensning
+- ✅ Beskärning av buskar
+- ✅ Snöskottning
+
+### Barnpassning och omsorg
+- ✅ Barnpassning i hemmet
+- ✅ Personlig omsorg
+- ✅ Tillsyn av bostad
+
+### Flytt och montering
+- ✅ Flytt av bohag mellan bostäder
+- ✅ Möbelmontering
+- ✅ Gardinupphängning
+
+:::warning
+Material, utrustning och resor ingår INTE i underlaget för RUT-avdrag – endast arbetskostnaden räknas.
+:::
+
+## Så fungerar RUT-avdraget
+
+### Steg 1: Välj ett företag med F-skatt
+Företaget måste vara godkänt för skattereduktion och ha F-skattsedel.
+
+### Steg 2: Få arbetet utfört
+Se till att fakturan tydligt visar arbetskostnaden separat.
+
+### Steg 3: Betala halva arbetskostnaden
+Du betalar 50% av arbetskostnaden + 100% av eventuellt material.
+
+### Steg 4: Företaget ansöker åt dig
+Företaget begär ut resterande 50% från Skatteverket.
+
+## Beräkningsexempel
+
+### Exempel: Hemstädning
+
+**Faktura:**
+- Arbetskostnad: 2 000 kr
+- RUT-avdrag (50%): 1 000 kr
+- **Du betalar:** 1 000 kr
+
+### Exempel: Trädgårdsskötsel
+
+**Faktura:**
+- Arbetskostnad: 8 000 kr
+- Material (växter): 2 000 kr
+- RUT-avdrag (50% av arbete): 4 000 kr
+- **Du betalar:** 6 000 kr
+
+:::tip
+Om ni är två i hushållet kan ni dela på tjänsten och få RUT-avdrag var – totalt upp till 150 000 kr!
+:::
+
+## Villkor för RUT-avdrag
+
+För att få RUT-avdrag måste du uppfylla dessa krav:
+
+- ✅ Fyllt 18 år
+- ✅ Obegränsat skattskyldig i Sverige
+- ✅ Ha tillräcklig skatt att kvitta mot
+- ✅ Arbetet utförs i din bostad
+- ✅ Företaget har F-skattsedel
+
+### Vad räknas som bostad?
+
+- ✅ Permanentbostad (där du är folkbokförd)
+- ✅ Fritidshus (som du själv nyttjar)
+- ✅ Föräldrars bostad (om de nyttjar den)
+
+:::cta
+Behöver du hjälp med hushållsnära tjänster?
+:::
+
+## Vanliga frågor om RUT 2026
+
+### Kan jag få RUT för städning i mitt företag?
+Nej, RUT gäller endast för privatpersoners hushåll, inte för företag.
+
+### Måste jag deklarera RUT-avdraget?
+Avdraget syns automatiskt i din deklaration. Kontrollera att uppgifterna stämmer.
+
+### Kan jag kombinera ROT och RUT?
+Ja, men totalt max 75 000 kr per år varav högst 50 000 kr får vara ROT.
+
+### Vad händer om jag inte har tillräcklig skatt?
+Du kan omfördela avdraget till make/maka eller sambo som har skatt att kvitta mot.
+
+### Får jag RUT för arbete hos mina föräldrar?
+Ja, om dina föräldrar nyttjar bostaden och du betalar fakturan.
+
+:::source
+Skatteverket.se – RUT-avdrag | Uppdaterad december 2025
+:::
+    `,
+    author: {
+      name: 'Maria Svensson',
+      role: 'Ekonomiexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'rot-rut',
+    tags: ['rut-avdrag', 'skatteavdrag', 'städning', 'trädgård', 'hushållsnära tjänster', '2026'],
+    readingTime: 8,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 27: RUT TRÄDGÅRD 2026
+  // ============================================================
+  {
+    id: '27',
+    slug: 'rut-tradgard-2026',
+    title: 'RUT-avdrag för trädgårdsarbete 2026 – Vad ingår?',
+    metaTitle: 'RUT-avdrag Trädgård 2026 | Häckklippning, Gräsklippning | Guide',
+    metaDescription: 'RUT-avdrag för trädgårdsarbete 2026: Häckklippning, gräsklippning, ogräsrensning och snöskottning. Se exakt vad som ger avdrag enligt Skatteverket.',
+    excerpt: 'Vilka trädgårdsarbeten ger RUT-avdrag? Vi går igenom exakt vad Skatteverket godkänner – från häckklippning till snöskottning.',
+    content: `
+:::info
+Trädgårdsarbete ger RUT-avdrag om det utförs på **tomt eller i trädgård i nära anslutning till din bostad**.
+:::
+
+## Trädgårdsarbeten som ger RUT-avdrag
+
+Enligt Skatteverket ingår följande arbeten:
+
+:::stats
+50% | Avdrag på arbetskostnad
+75 000 kr | Max RUT per år
+100% | Material betalas separat
+:::
+
+### Gräs- och häckskötsel
+- ✅ **Gräsklippning** – regelbunden klippning av gräsmatta
+- ✅ **Häckklippning** – formning och trimning av häckar
+- ✅ **Kantklippning** – snygga kanter längs rabatter och gångar
+
+### Rensning och underhåll
+- ✅ **Ogräsrensning** – borttagning av ogräs i rabatter och gångar
+- ✅ **Krattning** – löv och annat skräp
+- ✅ **Klippning av buskar** – beskärning och formning
+- ✅ **Mossbekämpning** – arbetskostnad för behandling av gräsmatta
+
+### Säsongsarbeten
+- ✅ **Höstgrävning** – grävning av land inför vintern
+- ✅ **Vattning och gödning** – i samband med klippning/rensning
+- ✅ **Omgrävning av kompost**
+- ✅ **Snöskottning** – bortskottning av snö från tomten
+
+:::warning
+Trädfällning, anläggning av ny trädgård och markarbeten ger INTE RUT-avdrag. Dessa kan däremot ge ROT-avdrag i vissa fall.
+:::
+
+## Arbeten som INTE ger RUT-avdrag
+
+- ❌ Trädfällning och bortforsling av träd
+- ❌ Anläggning av ny gräsmatta
+- ❌ Bygge av stenmurar eller staket
+- ❌ Plantering av nya träd och buskar
+- ❌ Dränering och markarbeten
+- ❌ Pool- och dammskötsel
+
+### Gränsdragning: RUT eller ROT?
+
+| Arbete | Typ | Avdrag |
+|--------|-----|--------|
+| Gräsklippning | Underhåll | RUT |
+| Häckklippning | Underhåll | RUT |
+| Anläggning av altan | Bygge | ROT |
+| Stenläggning | Bygge | ROT |
+| Staket-bygge | Bygge | ROT |
+
+## Beräkningsexempel
+
+### Säsongsavtal för trädgårdsskötsel
+
+**Årsavtal (april–oktober):**
+- 14 tillfällen gräsklippning
+- 4 tillfällen häckklippning
+- Löpande ogräsrensning
+
+**Total arbetskostnad:** 24 000 kr/säsong
+**RUT-avdrag (50%):** 12 000 kr
+**Du betalar:** 12 000 kr
+
+:::tip
+Teckna säsongsavtal för trädgårdsskötsel – du får samma kvalitet till halva priset med RUT!
+:::
+
+## Villkor att tänka på
+
+### Din bostad
+- ✅ Permanentbostad (folkbokföringsadress)
+- ✅ Fritidshus (om du nyttjar det)
+- ✅ Föräldrars bostad (om de bor där)
+
+### Tomtens storlek
+Skatteverket har ingen exakt gräns, men arbetet ska utföras "i nära anslutning" till bostaden. En normalstor villatomt godkänns alltid. Större jordbruksfastigheter kan underkännas.
+
+### Samfälligheter
+Arbete på gemensam mark i en samfällighet ger normalt **inte** RUT-avdrag.
+
+:::cta
+Vill du ha hjälp med trädgården?
+:::
+
+## FAQ – Vanliga frågor
+
+### Får jag RUT för att anlägga ny gräsmatta?
+Nej, nyanläggning räknas inte som underhåll och ger inte RUT.
+
+### Kan jag få RUT för snöröjning av uppfarten?
+Ja, snöskottning på tomten ger RUT-avdrag.
+
+### Vad händer om företaget inte har F-skatt?
+Då får du inget avdrag alls. Kontrollera alltid företagets F-skatt innan du anlitar dem.
+
+### Kan jag få både ROT och RUT för samma projekt?
+Ja, om projektet innehåller både bygge (ROT) och underhåll (RUT). T.ex. bygge av altan (ROT) + underhåll av befintlig trädgård (RUT).
+
+:::source
+Skatteverket.se – Vilken typ av trädgårdsarbete ger rutavdrag? | December 2025
+:::
+    `,
+    author: {
+      name: 'Anders Björk',
+      role: 'Trädgårdsexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'rot-rut',
+    tags: ['rut-avdrag', 'trädgård', 'gräsklippning', 'häckklippning', '2026'],
+    readingTime: 7,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 28: RUT STÄDNING 2026
+  // ============================================================
+  {
+    id: '28',
+    slug: 'rut-stadning-2026',
+    title: 'RUT-avdrag för städning 2026 – Hemstädning, fönsterputs & flyttstäd',
+    metaTitle: 'RUT-avdrag Städning 2026 | Hemstädning, Flyttstäd, Fönsterputs',
+    metaDescription: 'RUT-avdrag för städning 2026: Hemstädning, fönsterputsning, flyttstädning och storstädning. 50% rabatt på arbetskostnaden. Komplett guide.',
+    excerpt: 'Städning är den vanligaste RUT-tjänsten. Lär dig exakt vilka städtjänster som ger avdrag och hur du maximerar din besparing.',
+    content: `
+:::info
+Städning är den mest använda RUT-tjänsten i Sverige. Du får **50% rabatt på arbetskostnaden** – direkt på fakturan.
+:::
+
+## Städtjänster som ger RUT-avdrag
+
+:::stats
+50% | Avdrag på arbetskostnad
+75 000 kr | Max per person/år
+#1 | Vanligaste RUT-tjänsten
+:::
+
+### Löpande hemstädning
+- ✅ Dammsugning och våttorkning av golv
+- ✅ Avtorkning av ytor (bänkar, bord, hyllor)
+- ✅ Rengöring av kök och badrum
+- ✅ Bäddning och byte av sängkläder
+- ✅ Tömning av papperskorgar
+
+### Storstädning
+- ✅ Grundlig rengöring av hela bostaden
+- ✅ Städning av skåp och lådor
+- ✅ Rengöring bakom och under möbler
+- ✅ Fettborttagning i kök
+
+### Fönsterputsning
+- ✅ Insida och utsida av fönster
+- ✅ Fönsterkarmar och fönsterbleck
+- ✅ Inglasade balkonger och uterum
+
+### Flyttstädning
+- ✅ Städning av bostad vid flytt
+- ✅ Rengöring av vitvaror
+- ✅ Ugnsrengöring
+- ✅ Städning av förråd och garage
+
+:::tip
+Många städföretag erbjuder "Trygghetsgaranti" vid flyttstäd – besiktning ingår så du vet att den nya ägaren blir nöjd.
+:::
+
+## Städtjänster som INTE ger RUT-avdrag
+
+- ❌ Städning i företagslokaler
+- ❌ Sanering efter skadedjur
+- ❌ Städning av pool eller spa
+- ❌ Tvätt av bilar
+- ❌ Rengöring av ventilationskanaler
+
+## Beräkningsexempel
+
+### Exempel: Löpande hemstädning
+
+**Varannan vecka, 3 timmar/gång:**
+- Timpris: 400 kr/timme
+- Per tillfälle: 1 200 kr
+- RUT-avdrag (50%): 600 kr
+- **Du betalar:** 600 kr per tillfälle
+
+**Årskostnad (26 tillfällen):**
+- Totalt arbete: 31 200 kr
+- RUT-avdrag: 15 600 kr
+- **Din kostnad:** 15 600 kr/år
+
+### Exempel: Flyttstädning 3:a
+
+**Städtid: 8 timmar**
+- Arbetskostnad: 3 200 kr
+- RUT-avdrag (50%): 1 600 kr
+- **Du betalar:** 1 600 kr
+
+:::warning
+Rengöringsmedel och material som städföretaget tar med ingår i deras omkostnader och är inte avdragsgilla separat.
+:::
+
+## Så maximerar du ditt RUT-avdrag
+
+### 1. Dela upp i hushållet
+Om ni är två vuxna i hushållet, dela upp fakturorna så båda får avdrag.
+
+### 2. Kombinera tjänster
+Samma tillfälle: städning + fönsterputs + gardinupphängning.
+
+### 3. Teckna avtal
+Löpande avtal ger ofta bättre pris per timme.
+
+### 4. Boka storstäd före jul/påsk
+Populära tider – boka i god tid.
+
+## Hur du kommer igång
+
+### Steg 1: Välj städföretag
+Kontrollera att de har F-skattsedel och är godkända för RUT.
+
+### Steg 2: Boka en provstädning
+Många företag erbjuder rabatterad första städning.
+
+### Steg 3: Skapa städinstruktion
+Berätta vad som är viktigast för dig.
+
+### Steg 4: Betala och få avdraget
+Du betalar halva arbetskostnaden direkt.
+
+:::cta
+Behöver du hjälp med städning?
+:::
+
+## FAQ – Vanliga frågor
+
+### Kan jag få RUT för egen städutrustning?
+Nej, endast arbetskostnaden ger RUT-avdrag. Dammsugare och rengöringsmedel får du ingen rabatt på.
+
+### Måste jag vara hemma när städaren kommer?
+Nej, de flesta städkunder lånar ut nyckel eller använder kodsystem.
+
+### Kan jag byta städdag samma vecka?
+Beror på avtalet med företaget – fråga vid bokning.
+
+### Får jag RUT för städning av uthyrningslägenhet?
+Endast om du själv nyttjar bostaden. Andrahandsuthyrning ger normalt inte RUT.
+
+:::source
+Skatteverket.se – RUT-avdrag för städning | December 2025
+:::
+    `,
+    author: {
+      name: 'Lisa Ek',
+      role: 'Hushållsexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'rot-rut',
+    tags: ['rut-avdrag', 'städning', 'hemstädning', 'flyttstädning', 'fönsterputs', '2026'],
+    readingTime: 7,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 29: RUT FLYTT 2026
+  // ============================================================
+  {
+    id: '29',
+    slug: 'rut-flytt-2026',
+    title: 'RUT-avdrag vid flytt 2026 – Flytthjälp, städ & montering',
+    metaTitle: 'RUT-avdrag Flytt 2026 | Flytthjälp, Flyttstäd, Montering | Guide',
+    metaDescription: 'RUT-avdrag vid flytt 2026: Flytthjälp, flyttstädning, möbelmontering och gardinupphängning. Se exakt vad som ger 50% rabatt enligt Skatteverket.',
+    excerpt: 'Flytta billigare med RUT-avdrag! Läs om vilka flyttjänster som ger avdrag – från bärhjälp till möbelmontering i det nya hemmet.',
+    content: `
+:::info
+Vid flytt kan du få RUT-avdrag för både **flytthjälp, flyttstädning och montering** i det nya hemmet.
+:::
+
+## Flyttjänster som ger RUT-avdrag
+
+:::stats
+50% | Avdrag på arbetskostnad
+75 000 kr | Max per person/år
+3 tjänster | Flytt, städ & montering
+:::
+
+### Flytt av bohag
+- ✅ Bärning av möbler och bohag
+- ✅ Packning av dina ägodelar
+- ✅ Uppackning i det nya hemmet
+- ✅ Montering av möbler som varit nedmonterade
+
+### Flyttstädning
+- ✅ Städning av den gamla bostaden
+- ✅ Rengöring av vitvaror
+- ✅ Ugnsrengöring och fönsterputs
+- ✅ Städning av förråd
+
+### Montering och uppsättning
+- ✅ Möbelmontering (IKEA, Mio etc.)
+- ✅ Gardinupphängning
+- ✅ Uppsättning av tavlor och speglar
+- ✅ Installation av lampor (ej elinstallation)
+
+:::warning
+Transport, material (kartonger, tejp) och magasinering ger INTE RUT-avdrag – endast arbetskostnaden räknas.
+:::
+
+## Tjänster som INTE ger RUT-avdrag
+
+- ❌ Hyra av flyttbil
+- ❌ Flyttkartonger och packmaterial
+- ❌ Magasinering
+- ❌ Transport/körning (drivmedel etc.)
+- ❌ Försäkring under flytt
+
+## Beräkningsexempel: Komplett flytt
+
+### Flytt av 3:a (70 m²)
+
+| Tjänst | Arbetskostnad | RUT-avdrag | Du betalar |
+|--------|---------------|------------|------------|
+| Flytt av bohag | 6 000 kr | 3 000 kr | 3 000 kr |
+| Flyttstädning | 3 500 kr | 1 750 kr | 1 750 kr |
+| Möbelmontering | 2 500 kr | 1 250 kr | 1 250 kr |
+| **Totalt arbete** | **12 000 kr** | **6 000 kr** | **6 000 kr** |
+
+**Tillägg (inget avdrag):**
+- Flyttbil: 1 500 kr
+- Material: 500 kr
+
+**Total kostnad:** 8 000 kr (istället för 14 000 kr)
+
+:::tip
+Boka flytt, städ och montering hos samma företag – enklare faktura och ofta paketpris!
+:::
+
+## Så här maximerar du avdraget vid flytt
+
+### 1. Separera arbetskostnad
+Be om specificerad faktura där arbete, transport och material är separerade.
+
+### 2. Dela upp mellan hushållet
+Om ni är två vuxna, dela fakturorna så båda får maximalt avdrag.
+
+### 3. Använd RUT i både gamla och nya bostaden
+- Gamla bostaden: Flyttstädning
+- Nya bostaden: Möbelmontering, gardinupphängning
+
+### 4. Planera i förväg
+Populära flyttdatum (månadsskiften) bokas upp tidigt.
+
+## Vilka bostäder ger RUT vid flytt?
+
+### Gamla bostaden
+Du får RUT för städning om du har ägt/hyrt bostaden.
+
+### Nya bostaden
+Du får RUT för montering om du äger/hyr den nya bostaden.
+
+### Fritidshus
+RUT gäller även vid flytt till/från fritidshus som du nyttjar.
+
+:::cta
+Planerar du en flytt?
+:::
+
+## Steg-för-steg: Så gör du
+
+### 1. Boka flyttfirma med F-skatt
+Kontrollera att de är godkända för RUT hos Skatteverket.
+
+### 2. Be om offert med separat arbetskostnad
+Se till att transport och material är specificerade separat.
+
+### 3. Betala 50% av arbetskostnaden
+Plus 100% av transport och material.
+
+### 4. Företaget ansöker om resten
+Skatteverket betalar ut resterande 50% till företaget.
+
+## FAQ – Vanliga frågor
+
+### Får jag RUT för transport?
+Nej, transport (körning av flyttbil) ger inte RUT-avdrag.
+
+### Kan jag få RUT om jag hyr flyttbil själv?
+Nej, RUT gäller endast om du anlitar ett företag med F-skatt.
+
+### Får jag RUT för att flytta piano?
+Ja, om det ingår i flytt av bohag och företaget har F-skatt.
+
+### Kan jag kombinera ROT och RUT vid flytt?
+Ja, t.ex. renovering i nya bostaden (ROT) + flyttstäd i gamla (RUT).
+
+### Vad händer om fakturan inte är specificerad?
+Be företaget om ny faktura med separat arbetskostnad.
+
+:::source
+Skatteverket.se – RUT-avdrag för flytt | December 2025
+:::
+    `,
+    author: {
+      name: 'Marcus Lindgren',
+      role: 'Flyttexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'rot-rut',
+    tags: ['rut-avdrag', 'flytt', 'flyttstädning', 'möbelmontering', '2026'],
+    readingTime: 7,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 30: MÅLA RUM SJÄLV GUIDE
+  // ============================================================
+  {
+    id: '30',
+    slug: 'mala-rum-sjalv-guide',
+    title: 'Måla rum själv – Steg-för-steg guide för nybörjare',
+    metaTitle: 'Måla Rum Själv 2026 | Steg-för-steg Guide | DIY Målning',
+    metaDescription: 'Måla rum själv med vår kompletta guide. Inköpslista, förberedelser och 10 steg till proffsresultat. Spara tusentals kronor på målning.',
+    excerpt: 'Målning är ett av de enklaste renoveringsprojekten att göra själv. Följ vår steg-för-steg guide och få ett proffsresultat.',
+    content: `
+:::info
+Att måla ett rum själv sparar dig **5 000–15 000 kr** jämfört med att anlita målare. Med rätt teknik blir resultatet lika bra!
+:::
+
+## Svårighetsgrad och tidsåtgång
+
+:::stats
+⭐⭐ | Svårighetsgrad (Lätt)
+4-6 tim | Tidsåtgång normalstort rum
+50% | Besparing vs målare
+:::
+
+## Inköpslista – Vad du behöver
+
+### Färg
+- Väggfärg (helmatt eller matt): 3-5 liter för 12 m² väggyta
+- Takfärg (helmatt): 2-3 liter för 10 m² tak
+- Snickerifärg (halvblank): 1 liter för foder och lister
+
+### Verktyg
+- Roller (10-18 cm) med lång lugg för struktur
+- Pensel (50 mm) för kanter och hörn
+- Förlängningsskaft för tak
+- Målarskål eller hink med galler
+- Målarbyxa (skyddar rollern)
+
+### Förberedelser
+- Maskeringstejp (2-3 rullar)
+- Skyddspapper/plast för golv
+- Spackel och spackelspade
+- Slippapper (120-180 korn)
+- Fuktig trasa
+
+:::warning
+Använd alltid samma färgtyp vid övermålning! Latexfärg på alkyd kan flagna.
+:::
+
+## 10 steg till perfekt målning
+
+### Steg 1: Töm och skydda rummet
+Flytta ut möbler eller samla dem i mitten och täck med plast. Lägg skyddspapper på golvet längs väggarna.
+
+### Steg 2: Tvätta väggarna
+Använd målartvätt eller sockervatten för att ta bort fett och smuts. Låt torka helt.
+
+### Steg 3: Spackla hål och sprickor
+Fyll igen spikhål och sprickor med spackel. Låt torka enligt anvisning på förpackningen.
+
+### Steg 4: Slipa spacklade ytor
+Slipa jämnt med finkornigt papper (150-180 korn). Torka av slipdamm.
+
+### Steg 5: Maskera
+Tejpa runt fönster, dörrar, socklar och tak (om du målar vägg). Press fast tejpen ordentligt.
+
+### Steg 6: Börja med taket
+Måla först en rand runt kanterna med pensel. Rulla sedan resten med förlängningsskaft.
+
+### Steg 7: Måla kanter och hörn
+Använd pensel för att måla 5-10 cm in från alla hörn och runt fönster/dörrar.
+
+### Steg 8: Rulla väggarna
+Arbeta i W-mönster och fördela färgen jämnt. Jobba snabbt våt-i-våt för att undvika skarvar.
+
+### Steg 9: Låt torka och stryk andra strykningen
+Vänta minst 4 timmar (oftare över natten). Andra strykningen ger jämn färg.
+
+### Steg 10: Ta bort tejp och städa
+Ta bort maskeringstejpen medan sista strykningen fortfarande är lätt klibbig.
+
+:::tip
+Målning går alltid uppifrån och ned: Tak → Väggar → Snickerier → Socklar
+:::
+
+## Vanliga misstag att undvika
+
+- ❌ **För lite färg på rollern** – ger ojämn yta och strimmor
+- ❌ **Måla för stora ytor** – färgen torkar och skapar skarvar
+- ❌ **Hoppa över grundstrykning** – på nya skivor eller vid färgbyte
+- ❌ **Dålig belysning** – svårt se missade fläckar
+- ❌ **Målning i kyla** – under 10°C torkar färgen dåligt
+
+## När ska du anlita målare?
+
+- ✅ Höga tak (över 3 meter)
+- ✅ Svåråtkomliga ytor
+- ✅ Strukturtapeter eller stänkmålning
+- ✅ Om du vill ha ROT-avdrag
+- ✅ Vid stora renoveringsprojekt
+
+:::cta
+Behöver du professionell hjälp?
+:::
+
+## FAQ – Vanliga frågor
+
+### Hur mycket färg behöver jag?
+Räkna med 0,1 liter per m² väggyta för två strykningar. Ett rum på 12 m² behöver ca 5 liter.
+
+### Vilken färg är bäst?
+Helmatt eller matt för väggar ger snyggt resultat och döljer ojämnheter. Halvblank för snickerier.
+
+### Måste jag grunda innan målning?
+Ja, om ytan är ny (gips, trä) eller om du byter färgtyp. Annars räcker det med spädd färg.
+
+### Hur länge håller målningen?
+Med rätt utfört arbete: 8-15 år innan ny målning behövs.
+
+:::source
+Alcro | Beckers | Måleriföretagen
+:::
+    `,
+    author: {
+      name: 'Henrik Ström',
+      role: 'DIY-expert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['målning', 'diy', 'renovering', 'steg-för-steg', 'tips'],
+    readingTime: 9,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 31: SPACKLA OCH MÅLA GUIDE
+  // ============================================================
+  {
+    id: '31',
+    slug: 'spackla-mala-sjalv',
+    title: 'Spackla och måla väggar – Förbered som ett proffs',
+    metaTitle: 'Spackla och Måla Väggar | Steg-för-steg Guide | DIY 2026',
+    metaDescription: 'Lär dig spackla och förbereda väggar för målning. Lagning av hål, sprickor och ojämnheter. Komplett DIY-guide med professionella tips.',
+    excerpt: 'Bra förberedelser är nyckeln till ett snyggt målningsresultat. Lär dig spackla hål, slipa och grunda som ett proffs.',
+    content: `
+:::info
+**80% av ett bra målningsresultat** sitter i förberedelserna. Slarva inte med spackling och slipning!
+:::
+
+## Svårighetsgrad och tidsåtgång
+
+:::stats
+⭐⭐ | Svårighetsgrad (Lätt)
+2-4 tim | Förberedelsetid per rum
+80% | Av resultatet är förberedelse
+:::
+
+## Verktyg och material
+
+### Spackling
+- Finspackel (för hål och sprickor)
+- Grovspackel (för större ojämnheter)
+- Fogspackel (för gipsskivor)
+- Spackelspade (50-100 mm)
+- Bred spartelbräda (för stora ytor)
+
+### Slipning
+- Slipklossar eller slipmaskin
+- Slippapper 120 korn (grovslip)
+- Slippapper 180 korn (finslip)
+- Slipmask och skyddsglasögon
+
+### Rengöring
+- Dammsugare
+- Mikrofibertrasa
+- Målartvätt
+
+## Steg-för-steg: Spackling
+
+### 1. Identifiera skadorna
+Gå igenom väggarna i bra belysning. Markera:
+- Spikhål och skruvhål
+- Sprickor i spackel eller puts
+- Bucklor och ojämnheter
+- Skadad tape i hörn
+
+### 2. Förbered spackelmassan
+- Ta ut spacklet ur burken med ren spackelspade
+- Arbeta massan mjuk genom att röra om
+- Tillsätt några droppar vatten om det är för torrt
+
+### 3. Spackla hål
+1. Tryck in spackel i hålet med spaden
+2. Dra av överskottet med ett jämnt drag
+3. Lämna lite extra – det krymper när det torkar
+4. Låt torka enligt förpackningen (ofta 1-4 timmar)
+
+### 4. Spackla sprickor
+1. Öppna sprickan något med en kniv
+2. Fyll med spackel i hela djupet
+3. Dra av och jämna till
+4. Större sprickor kan kräva armering med gipstejp
+
+### 5. Stora ojämnheter
+1. Använd grovspackel i första lagret
+2. Låt torka helt
+3. Applicera finspackel ovanpå
+4. Bred ut tunt för att undvika kantmarkeringar
+
+:::tip
+Flera tunna lager är alltid bättre än ett tjockt lager. Tjocka lager spricker lättare.
+:::
+
+## Steg-för-steg: Slipning
+
+### 1. Vänta tills helt torrt
+Känn på spacklet – det ska vara helt torrt och vitt (inte grått).
+
+### 2. Grovslipa (120 korn)
+Slipa bort grova ojämnheter och överskott. Jobba i cirklande rörelser.
+
+### 3. Finslipa (180 korn)
+Slipa tills ytan är helt jämn. Känn med handen – inga kanter ska märkas.
+
+### 4. Dammsug och torka
+Dammsug väggen grundligt. Torka av med fuktig mikrofibertrasa.
+
+:::warning
+Använd alltid andningsskydd vid slipning! Slipdamm är skadligt för lungorna.
+:::
+
+## Grundning
+
+### När ska du grunda?
+- ✅ Nya gipsskivor (uppsugande yta)
+- ✅ Spacklade ytor (späd färg 1:1 med vatten)
+- ✅ Vid byte av färgtyp
+- ✅ Fläckar som kan blöda igenom
+
+### Hur gör du?
+1. Använd spädbar grundfärg eller späd väggfärg 1:1
+2. Stryk med roller eller pensel
+3. Låt torka minst 4 timmar
+4. Fortsätt med vanlig målning
+
+## Vanliga misstag
+
+- ❌ **Spacklar för tjockt** – spricker och tar lång tid att torka
+- ❌ **Slipar för lite** – kanterna syns igenom färgen
+- ❌ **Glömmer att dammsuga** – damm blandar sig med färgen
+- ❌ **Hoppar över grundning** – ojämn färguppsugning ger fläckar
+
+## När ringa proffs?
+
+- ✅ Stora sprickor i bärande väggar (kan vara strukturellt)
+- ✅ Fuktskador (måste åtgärdas först)
+- ✅ Tapetborttagning och ommålning
+- ✅ Strukturputsning
+
+:::cta
+Behöver du hjälp med väggarna?
+:::
+
+## FAQ – Vanliga frågor
+
+### Hur lång tid tar spacklet att torka?
+Beror på tjocklek och fuktighet. Tunna lager: 1-4 timmar. Tjocka lager: över natten.
+
+### Kan jag använda gips istället för spackel?
+Ja, för större hål och djupare skador. Gips är starkare men svårare att slipa.
+
+### Måste jag grunda spacklade ytor?
+Ja, annars suger spacklet upp mer färg än omgivande vägg och syns som matta fläckar.
+
+### Hur fixar jag bubbel i tapet?
+Skär ett litet snitt, tryck ut luften, stryk på lim och platta till.
+
+:::source
+Alcro | Bostik | GVK
+:::
+    `,
+    author: {
+      name: 'Henrik Ström',
+      role: 'DIY-expert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['spackling', 'målning', 'diy', 'förberedelse', 'renovering'],
+    readingTime: 8,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 32: LÄGGA LAMINAT SJÄLV
+  // ============================================================
+  {
+    id: '32',
+    slug: 'lagga-laminat-sjalv',
+    title: 'Lägga laminatgolv själv – Komplett guide för nybörjare',
+    metaTitle: 'Lägga Laminat Själv 2026 | Steg-för-steg Guide | DIY Golv',
+    metaDescription: 'Lär dig lägga laminatgolv själv med vår kompletta guide. Verktyg, material, mönster och steg-för-steg instruktioner för proffsresultat.',
+    excerpt: 'Laminatgolv är ett prisvärt och snyggt alternativ som du kan lägga själv på en dag. Här är den kompletta guiden.',
+    content: `
+:::info
+Med rätt förberedelser och lite tålamod kan du lägga laminatgolv i ett normalstort rum på **en dag**. Spara tusentals kronor!
+:::
+
+## Svårighetsgrad och tidsåtgång
+
+:::stats
+⭐⭐⭐ | Svårighetsgrad (Medel)
+1 dag | Tidsåtgång för 20 m²
+60% | Besparing vs golvläggare
+:::
+
+## Verktyg och material
+
+### Verktyg du behöver
+- Såg (kapningssåg eller sticksåg)
+- Hammare och slagkloss
+- Måttband och penna
+- Dragstång (för sista raden)
+- Mellanlägg (distanser 8-10 mm)
+- Kniv eller plattång
+
+### Material
+- Laminatgolv (köp 10% extra för svinn)
+- Underlag/trampljudsdämpare
+- Golvlister
+- Övergångsprofiler (vid dörrkarmar)
+- Plastfolie (om betonggolv)
+
+## Förberedelser
+
+### 1. Kontrollera undergolvet
+- **Platt:** Max 3 mm ojämnhet per 2 meter
+- **Torrt:** Betonggolv ska ha max 85% RF
+- **Rent:** Dammsug och torka av
+
+### 2. Acklimatisera laminatet
+Låt paketen ligga i rummet **minst 48 timmar** innan läggning. Detta förhindrar att golvet expanderar eller krymper efteråt.
+
+### 3. Planera mönstret
+- Lägg längs med ljusinsläppet (fönstren)
+- Beräkna så sista raden blir minst 5 cm bred
+- Undvik att skarvar hamnar i rad
+
+:::warning
+Laminat på betonggolv kräver ALLTID fuktspärr (plastfolie) under underlaget.
+:::
+
+## Steg-för-steg: Läggning
+
+### Steg 1: Lägg fuktspärr (om betong)
+Lägg plastfolie med 20 cm överlapp mellan våder. Tejpa skarvarna.
+
+### Steg 2: Rulla ut underlaget
+Lägg underlag utan överlapp. Tejpa skarvarna så det inte glider.
+
+### Steg 3: Börja i ett hörn
+Lägg första brädans spontsida mot väggen. Använd distanser (8-10 mm) mot väggen.
+
+### Steg 4: Klicka fast brädorna
+- Vinkla långsidan ca 20 grader
+- Tryck ned och klicka i sponten
+- Kortsidan: slå försiktigt med slagkloss
+
+### Steg 5: Fortsätt med förskjutning
+Nästa rad börjar med biten som blev över från första raden (minst 30 cm lång). Förskjut skarvarna minst 30 cm.
+
+### Steg 6: Såga vid väggar och hinder
+Mät noga och såga med framsidan uppåt (sticksåg) eller neråt (cirkelsåg).
+
+### Steg 7: Sista raden
+Mät bredden som behövs. Såga längs och använd dragstång för att klicka i sista brädorna.
+
+### Steg 8: Montera lister
+Ta bort distanserna. Montera golvlister med clips eller lim (inte spika i laminatet!).
+
+:::tip
+Spara alltid några extra brädor för framtida reparationer. Samma batch kan vara svår att hitta senare.
+:::
+
+## Vanliga misstag att undvika
+
+- ❌ **Ingen expansion** – mellanrum vid väggar krävs, annars bucklar golvet
+- ❌ **Raka skarvar** – förskjut alltid minst 30 cm
+- ❌ **Fel undergolv** – gummimatta under laminat ger dåligt ljud
+- ❌ **Spika i laminat** – listarna fästs i väggen, inte i golvet
+- ❌ **Hoppar över acklimatisering** – leder till sprickor och glapp
+
+## Runt dörrkarmar och rör
+
+### Dörrkarmar
+1. Lägg en laminatbräda upp-och-ned vid karmen
+2. Såga av karmen i höjd med brädan
+3. Skjut in laminatet under karmen
+
+### Rörgenomföringar
+1. Mät rörets position
+2. Borra hål 20 mm större än röret
+3. Såga ut en bit och limma tillbaka efter montering
+4. Täck med rörrosetter
+
+## När anlita golvläggare?
+
+- ✅ Ojämnt undergolv (kräver avjämning)
+- ✅ Komplicerade rum med många hinder
+- ✅ Golvvärme (speciella krav)
+- ✅ Om du vill ha ROT-avdrag
+
+:::cta
+Behöver du hjälp med golvet?
+:::
+
+## FAQ – Vanliga frågor
+
+### Hur länge håller laminat?
+Med normal användning: 15-25 år beroende på slitsklass.
+
+### Kan jag lägga laminat på golvvärme?
+Ja, men välj laminat godkänt för golvvärme och följ tillverkarens anvisningar.
+
+### Vad gör jag om en bräda går sönder?
+Byt ut hela brädan genom att demontera fram till skadan.
+
+### Hur rengör jag laminatgolv?
+Dammsug och torrmoppa. Undvik mycket vatten – laminat tål inte väta.
+
+:::source
+Pergo | Tarkett | Golvbranschens Riksorganisation
+:::
+    `,
+    author: {
+      name: 'Jonas Berg',
+      role: 'Golvexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['laminat', 'golv', 'diy', 'renovering', 'steg-för-steg'],
+    readingTime: 10,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 33: BYTA VATTENKRAN SJÄLV
+  // ============================================================
+  {
+    id: '33',
+    slug: 'byta-vattenkran-sjalv',
+    title: 'Byta vattenkran själv – Enkel guide för nybörjare',
+    metaTitle: 'Byta Vattenkran Själv 2026 | Steg-för-steg Guide | DIY VVS',
+    metaDescription: 'Lär dig byta vattenkran och blandare själv. Stäng av vattnet, byt blandare steg-för-steg. Spara pengar på rörmokare.',
+    excerpt: 'Att byta en blandare är enklare än du tror. Med rätt verktyg och denna guide fixar du det på under en timme.',
+    content: `
+:::info
+Att byta blandare själv är **lagligt** och sparar dig 1 500–3 000 kr i rörmokarkostnader. Men gör det rätt – vattenskador kostar!
+:::
+
+## Svårighetsgrad och tidsåtgång
+
+:::stats
+⭐⭐ | Svårighetsgrad (Lätt)
+30-60 min | Tidsåtgång
+2 000 kr | Besparing vs rörmokare
+:::
+
+## Viktigt innan du börjar
+
+### Vad du FÅR göra själv
+- ✅ Byta blandare i kök och badrum
+- ✅ Byta duschblandare
+- ✅ Byta packningar i kranar
+- ✅ Ansluta diskmaskin och tvättmaskin
+
+### Vad du INTE bör göra själv
+- ❌ Dra nya vattenledningar
+- ❌ Arbeta med dolda rör i väggar
+- ❌ Installera nytt avlopp
+- ❌ Arbete som kräver certifiering (Säker Vatten)
+
+:::warning
+Enligt Vattenskaderapporten 2024 sker **35% av alla vattenskador i köket**. Kontrollera alltid kopplingar efter byte!
+:::
+
+## Verktyg och material
+
+### Verktyg
+- Rörtång eller skiftnyckel
+- Insexnycklar (om blandaren kräver det)
+- Hink och trasor
+- Ficklampa
+
+### Material
+- Ny blandare
+- Nya slangar (ofta medföljande)
+- Tejp eller gängtejp (om metallrör)
+- Ventilpackningar (om gamla ventiler byts)
+
+## Steg-för-steg: Byt blandare i kök/badrum
+
+### Steg 1: Stäng av vattnet
+Stäng avstängningsventilerna under handfatet. Saknas de – stäng huvudkranen.
+
+### Steg 2: Töm rören
+Öppna kranen och låt vattnet rinna ut. Lägg en hink under.
+
+### Steg 3: Lossa slangarna
+Använd rörtång för att skruva loss de flexibla slangarna från ventilerna.
+
+### Steg 4: Lossa blandaren uppifrån
+Under blandaren finns en stor mutter. Skruva loss den. Lyft av blandaren.
+
+### Steg 5: Rengör ytan
+Rengör hålet i diskbänken/handfatet från gamla tätningar och smuts.
+
+### Steg 6: Montera nya tätningar
+Lägg på tätningsringen som följer med den nya blandaren.
+
+### Steg 7: Sätt i nya blandaren
+Trä ner slangarna genom hålet. Skruva fast muttern underifrån.
+
+### Steg 8: Anslut slangarna
+Skruva fast de nya slangarna på avstängningsventilerna. Drag åt för hand + 1/4 varv med tång.
+
+### Steg 9: Öppna vattnet och testa
+Öppna ventilerna försiktigt. Kontrollera alla kopplingar efter läckage.
+
+### Steg 10: Testa blandaren
+Testa varmt och kallt vatten. Spola i 5 minuter och kontrollera under handfatet igen.
+
+:::tip
+Lägg alltid en tidning eller handduk under och återkom nästa dag för att kolla kopplingar – läckage kan synas först senare.
+:::
+
+## Vanliga fel att undvika
+
+- ❌ **Drar för hårt** – gängor och packningar kan skadas
+- ❌ **Glömmer packningar** – garanterat läckage
+- ❌ **Återanvänder gamla slangar** – riskerar sprickor
+- ❌ **Lämnar vatten på** – översvämning
+
+## När ska du ringa rörmokare?
+
+- ✅ Gamla rör (koppar/galvat) som ser skört ut
+- ✅ Läckande avstängningsventiler
+- ✅ Vatten i väggen eller svårkomliga rör
+- ✅ Om du är osäker
+
+:::cta
+Behöver du professionell hjälp?
+:::
+
+## FAQ – Vanliga frågor
+
+### Hur vet jag vilken blandare som passar?
+Mät hålets diameter (ofta 32-35 mm). De flesta blandare är universella.
+
+### Måste jag byta slangarna?
+Ja, det rekommenderas. Gamla slangar kan vara slitna inuti.
+
+### Vad kostar en bra blandare?
+Kvalitetsblandare: 1 500-4 000 kr. Billiga kan vara svåra att få reservdelar till.
+
+### Kan jag använda gängtejp?
+Ja, på metallgängor. På plastgängor och packningar behövs det inte.
+
+:::source
+Säker Vatten | Vattenskadecentrum | VVS Företagen
+:::
+    `,
+    author: {
+      name: 'Per Nilsson',
+      role: 'VVS-tekniker',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['vvs', 'blandare', 'kran', 'diy', 'kök', 'badrum'],
+    readingTime: 8,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 34: DROPPANDE KRAN GUIDE
+  // ============================================================
+  {
+    id: '34',
+    slug: 'dropp-vattenkran-guide',
+    title: 'Droppande kran – Så fixar du det själv på 15 minuter',
+    metaTitle: 'Droppande Kran Fix 2026 | Byta Packning | Enkel Guide',
+    metaDescription: 'Fixa droppande kran på 15 minuter. Vanligaste orsaken är sliten packning. Steg-för-steg guide med bilder.',
+    excerpt: 'En droppande kran kostar dig hundratals kronor per år i vattenslöseri. Lär dig fixa det själv på 15 minuter.',
+    content: `
+:::info
+En droppande kran kan slösa **5 000–10 000 liter vatten per år**. Det motsvarar 100-200 kr – och irriterar grannarna!
+:::
+
+## Svårighetsgrad och tidsåtgång
+
+:::stats
+⭐ | Svårighetsgrad (Mycket lätt)
+15 min | Tidsåtgång
+50 kr | Kostnad för packning
+:::
+
+## Vanligaste orsaken: Sliten packning
+
+I 90% av fallen beror droppet på att **packingen inuti kranen är sliten**. Den kostar under 50 kr och tar 15 minuter att byta.
+
+### Verktyg du behöver
+- Skruvmejsel
+- Rörtång eller skiftnyckel
+- Ny packning (ta med den gamla till affären)
+- Trasa
+
+## Steg-för-steg: Byt packning
+
+### Steg 1: Stäng av vattnet
+Stäng avstängningsventilen under handfatet. Ingen ventil? Stäng huvudkranen.
+
+### Steg 2: Töm kranen
+Öppna kranen och låt vattnet rinna ut.
+
+### Steg 3: Ta bort ratten
+Bänd av den lilla pluggen (ofta märkt blå/röd). Skruva loss skruven under. Dra av ratten.
+
+### Steg 4: Lossa tätningmuttern
+Använd rörtång för att skruva loss den stora muttern (toppventilen).
+
+### Steg 5: Dra ut spindeln
+Dra ut spindeln/ventilen. Längst ned sitter packningen.
+
+### Steg 6: Byt packningen
+Bänd bort den gamla packningen. Tryck dit den nya.
+
+### Steg 7: Montera tillbaka
+Sätt tillbaka spindeln, skruva åt muttern och montera ratten.
+
+### Steg 8: Testa
+Öppna vattnet. Kontrollera att droppet är borta.
+
+:::tip
+Ta med den gamla packningen till byggvaruhuset – det finns många olika storlekar och typer.
+:::
+
+## Andra orsaker till droppande kran
+
+### Sliten ventilsäte
+Om packningen är hel kan ventilsätet vara skadat. Det kan slipas med speciellt verktyg eller kräva byte av hela blandaren.
+
+### Sliten keramisk patron
+Moderna engreapsblandare har keramiska patroner istället för packningar. Dessa byts som en enhet (200-500 kr).
+
+### Sliten O-ring
+Om det läcker runt spaken (inte ur pipen) är det ofta O-ringen som behöver bytas.
+
+## Kostnadsexempel
+
+| Lösning | Kostnad DIY | Kostnad rörmokare |
+|---------|-------------|-------------------|
+| Byta packning | 50 kr | 800-1 200 kr |
+| Byta patron | 300 kr | 1 000-1 500 kr |
+| Ny blandare | 1 500 kr | 3 000-5 000 kr |
+
+:::warning
+Om det läcker från slangkopplingar UNDER handfatet – agera direkt! Vattenskador kostar i snitt 100 000 kr.
+:::
+
+## När ska du ringa rörmokare?
+
+- ✅ Droppet fortsätter efter packningsbyte
+- ✅ Du ser inte var läckaget kommer från
+- ✅ Gamla rör som verkar skörta
+- ✅ Läckage från väggen
+
+:::cta
+Behöver du hjälp med VVS?
+:::
+
+## FAQ – Vanliga frågor
+
+### Måste jag stänga av vattnet?
+Ja, annars får du en vattenspridare när du öppnar kranen!
+
+### Var köper jag packningar?
+Byggvaruhus (Bauhaus, Hornbach, K-rauta) eller VVS-butiker.
+
+### Hur vet jag vilken packning jag behöver?
+Ta med den gamla till affären. Det finns universalkit med flera storlekar.
+
+### Hur ofta behöver packningar bytas?
+Beror på vattnets hårdhet. Normalt: vart 5-10 år.
+
+:::source
+Säker Vatten | Vattenskadecentrum
+:::
+    `,
+    author: {
+      name: 'Per Nilsson',
+      role: 'VVS-tekniker',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['vvs', 'kran', 'dropp', 'packning', 'diy', 'reparation'],
+    readingTime: 6,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 35: BYTA ELUTTAG REGLER
+  // ============================================================
+  {
+    id: '35',
+    slug: 'byta-eluttag-sjalv',
+    title: 'Byta eluttag – Vad du FÅR och INTE får göra själv',
+    metaTitle: 'Byta Eluttag Själv 2026 | Elsäkerhetsverket Regler | Guide',
+    metaDescription: 'Vad får du göra själv med el? Byta vägguttag ja, dra nya kablar nej. Elsäkerhetsverkets regler förklarade med steg-för-steg guide.',
+    excerpt: 'Elarbeten är reglerat av lag. Lär dig exakt vad du får och inte får göra själv – och hur du byter ett uttag säkert.',
+    content: `
+:::warning
+Felaktigt elarbete kan orsaka **brand och dödsfall**. Det kan också ogiltigförklara din försäkring. Följ alltid Elsäkerhetsverkets regler!
+:::
+
+## Vad du FÅR göra själv
+
+Enligt Elsäkerhetsverket får du som privatperson utföra följande:
+
+### ✅ Tillåtet
+- Byta ett befintligt **vägguttag** (max 16 A)
+- Byta en befintlig **strömbrytare**
+- Byta en **stickkontakt** på en sladd
+- Byta **lamphållare** (sockel)
+- Ansluta lampor och armaturer till befintliga uttag
+- Byta **täcklock** på uttag och strömbrytare
+
+:::stats
+16 A | Max amperetal du får arbeta med
+0 | Arbeten du får göra i elcentralen
+Livsfara | Risk vid felaktig koppling
+:::
+
+## Vad du INTE får göra själv
+
+### ❌ Förbjudet
+- **Dra nya elkablar** i väggar eller tak
+- Installera **nya uttag eller strömbrytare**
+- Flytta befintliga uttag
+- **Arbeta i elcentralen** (säkringsskåp)
+- Installera **jordfelsbrytare**
+- Elinstallation i **våtrum** (badrum, bastu)
+- Koppla in **induktionshäll, spis, elbilsladdare**
+- Arbeta med **trefas** (3x16 A och högre)
+
+:::warning
+Olagligt elarbete kan leda till böter upp till 200 000 kr. Om det orsakar skada eller brand kan du dömas för brott.
+:::
+
+## Steg-för-steg: Byt ett vägguttag
+
+### Verktyg
+- Skruvmejsel (spår och kryss)
+- Spänningsmätare/testpenna
+- Ficklampa
+
+### Steg 1: Bryt strömmen
+Stäng av säkringen som matar uttaget. Slå av huvudströmbrytaren för säkerhets skull.
+
+### Steg 2: Kontrollera att strömmen är bruten
+Använd en spänningsmätare eller testpenna. Dubbelkolla med lampa du vet fungerar.
+
+### Steg 3: Skruva bort kåpan
+Ta bort täcklocket eller fronten på uttaget.
+
+### Steg 4: Ta ut insatsen
+Lossa fästskruvarna och dra försiktigt ut uttaget. Notera var ledarna sitter!
+
+### Steg 5: Fotografera kopplingen
+Ta en bild med mobilen innan du lossar några ledare.
+
+### Steg 6: Lossa ledarna
+Skruva loss klämmorna och dra ut ledarna. Vanligtvis:
+- **Fas (brun/svart):** Till höger kontakt
+- **Nolla (blå):** Till vänster kontakt
+- **Jord (gul/grön):** Till jordskruven
+
+### Steg 7: Anslut till nya uttaget
+Fäst ledarna på samma ställen i det nya uttaget. Drag åt ordentligt.
+
+### Steg 8: Montera tillbaka
+Tryck in uttaget i dosan. Skruva fast och sätt på kåpan.
+
+### Steg 9: Slå på strömmen och testa
+Slå på säkringen. Testa uttaget med en lampa eller laddare.
+
+:::tip
+Byt ALDRIG från ojordat till jordat uttag själv! Det kräver ny kabel med jordledare och ska göras av elektriker.
+:::
+
+## Viktiga säkerhetsregler
+
+1. **Bryt alltid strömmen** innan du börjar
+2. **Dubbelkolla** att strömmen är bruten
+3. **Ta aldrig i blanka ledare** med strömmen på
+4. **Anlita elektriker** om du är osäker
+5. **Spara inte pengar på säkerhet**
+
+## Konsekvenser av olagligt elarbete
+
+| Konsekvens | Beskrivning |
+|------------|-------------|
+| Böter | Upp till 200 000 kr |
+| Försäkring | Ogiltig vid skada |
+| Brottmål | Framkallande av fara |
+| Brand | Dödsfall och förstörelse |
+| Försäljning | Sämre värde på bostaden |
+
+## När ska du ringa elektriker?
+
+- ✅ Alla nya installationer
+- ✅ Arbete i våtrum
+- ✅ Arbete i elcentral
+- ✅ Byte av jordfelsbrytare
+- ✅ Installation av värme/spis
+- ✅ Om du är det minsta osäker
+
+:::cta
+Behöver du hjälp med el?
+:::
+
+## FAQ – Vanliga frågor
+
+### Får jag byta strömbrytare?
+Ja, om den är för max 16 A och du inte drar nya kablar.
+
+### Får jag sätta upp en lampa?
+Ja, om den ansluts till befintlig kabel i tak (ej ny kabel).
+
+### Vad händer om jag gör fel?
+Kan orsaka kortslutning, brand eller elchock. Försäkringen kan bli ogiltig.
+
+### Hur hittar jag en bra elektriker?
+Välj alltid ett registrerat elinstallationsföretag. Kontrollera på elsakerhetsverket.se.
+
+:::source
+Elsäkerhetsverket.se | Starkströmsföreskrifterna ELSÄK-FS
+:::
+    `,
+    author: {
+      name: 'Mikael Johansson',
+      role: 'Elexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'guider',
+    tags: ['el', 'eluttag', 'elsäkerhet', 'diy', 'regler', 'elsäkerhetsverket'],
+    readingTime: 9,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 36: VAD KOSTAR MÅLARE 2026
+  // ============================================================
+  {
+    id: '36',
+    slug: 'vad-kostar-malare-2026',
+    title: 'Vad kostar målare 2026? Prisguide per rum och m²',
+    metaTitle: 'Vad Kostar Målare 2026 | Timpris & m²-pris | ROT-avdrag Guide',
+    metaDescription: 'Målare kostnad 2026: 450-600 kr/timme, 80-150 kr/m². Prisexempel per rum med ROT-avdrag. Komplett prisguide för invändig målning.',
+    excerpt: 'Vad kostar det att anlita målare 2026? Vi går igenom timpris, kvadratmeterpris och ger konkreta exempel för varje rumstyp.',
+    content: `
+:::info
+Målare kostar **450-600 kr/timme** före ROT-avdrag. Med 30% ROT betalar du 315-420 kr/timme för arbetskostnaden.
+:::
+
+## Översikt målarkostnader 2026
+
+:::stats
+450-600 kr | Timpris (före ROT)
+80-150 kr | Pris per m² vägg
+30% | ROT-avdrag på arbete
+:::
+
+## Timpris målare 2026
+
+| Typ av målare | Timpris före ROT | Med 30% ROT |
+|---------------|------------------|-------------|
+| Mindre företag | 450-500 kr | 315-350 kr |
+| Mellanstort företag | 500-550 kr | 350-385 kr |
+| Större företag | 550-600 kr | 385-420 kr |
+| Stockholm/Göteborg | +10-15% | - |
+
+:::tip
+Kvadratmeterpris är ofta mer förutsägbart än timpris. Be om fast pris per rum om möjligt!
+:::
+
+## Pris per kvadratmeter (m²)
+
+### Väggmålning invändigt
+
+| Typ av arbete | Pris/m² (före ROT) | Med 30% ROT |
+|---------------|-------------------|-------------|
+| Övermålning (vit på vit) | 80-120 kr | 56-84 kr |
+| Färgbyte (ljust till ljust) | 100-140 kr | 70-98 kr |
+| Färgbyte (mörkt till ljust) | 130-180 kr | 91-126 kr |
+| Nya gipsväggar | 120-160 kr | 84-112 kr |
+| Tapetborttagning + målning | 180-250 kr | 126-175 kr |
+
+### Takmålning
+
+| Höjd | Pris/m² (före ROT) |
+|------|-------------------|
+| Standard (2,4 m) | 70-100 kr |
+| Hög (2,7-3 m) | 90-130 kr |
+| Mycket hög (>3 m) | 130-200 kr |
+
+## Prisexempel per rumstyp
+
+### Sovrum (12 m²)
+- Väggyta: ca 35 m²
+- Tak: 12 m²
+- **Arbete (före ROT):** 5 000-7 000 kr
+- **Material:** 1 500-2 500 kr
+- **Med ROT-avdrag:** 4 500-6 000 kr totalt
+
+### Vardagsrum (25 m²)
+- Väggyta: ca 55 m²
+- Tak: 25 m²
+- **Arbete (före ROT):** 8 000-12 000 kr
+- **Material:** 2 500-4 000 kr
+- **Med ROT-avdrag:** 7 100-10 400 kr totalt
+
+### Kök (10 m²)
+- Väggyta: ca 25 m² (exkl. kakel)
+- Tak: 10 m²
+- **Arbete (före ROT):** 4 000-6 000 kr
+- **Material:** 1 000-2 000 kr
+- **Med ROT-avdrag:** 3 200-5 200 kr totalt
+
+### Badrum (5 m²)
+- Endast tak (väggar kakel)
+- **Arbete (före ROT):** 1 500-2 500 kr
+- **Material:** 500-1 000 kr
+- **Med ROT-avdrag:** 1 450-2 250 kr totalt
+
+:::warning
+Priser varierar kraftigt beroende på skick, antal lager och tillgänglighet. Be alltid om offert!
+:::
+
+## Vad ingår i priset?
+
+### Ingår normalt
+- ✅ Täckning av golv och möbler
+- ✅ Spackling av mindre hål
+- ✅ 2 strykningar
+- ✅ Städning efteråt
+
+### Ingår normalt INTE
+- ❌ Färg och material
+- ❌ Tapetborttagning
+- ❌ Större spackelarbeten
+- ❌ Flytt av tunga möbler
+
+## Så sparar du pengar
+
+### 1. Förbered själv
+- Flytta möbler
+- Ta bort gardiner och tavlor
+- Spackla och slipa
+
+### 2. Be om fast pris
+Undvik timdebitering vid oklara projekt.
+
+### 3. Boka utanför högsäsong
+April-maj och september-oktober är mest hektiska.
+
+### 4. Anlita vid större projekt
+Målare ger ofta bättre pris för hela våningen än enstaka rum.
+
+### 5. Utnyttja ROT maximalt
+Separera alltid arbete och material på fakturan.
+
+## ROT-avdrag på målning
+
+### Beräkningsexempel: Måla 3:a
+
+**Total kostnad:**
+- Arbetskostnad: 25 000 kr
+- Material: 8 000 kr
+
+**ROT-avdrag (30% av arbete):** 7 500 kr
+
+**Din slutkostnad:** 25 500 kr
+
+:::cta
+Behöver du offert på målning?
+:::
+
+## FAQ – Vanliga frågor
+
+### Hur lång tid tar det att måla ett rum?
+1 sovrum: 1 dag. 3:a: 3-5 dagar beroende på skick.
+
+### Ska jag köpa färgen själv?
+Du kan, men målare får ofta rabatt. Be om separerad faktura oavsett.
+
+### Hur ofta behöver man måla om?
+Väggar: 8-15 år. Tak: 10-20 år. Snickeri: 5-10 år.
+
+### Vad kostar utvändig målning?
+Fasad: 200-400 kr/m². Snickerier (fönster etc.): 500-1 500 kr/st.
+
+:::source
+Måleriföretagen | SCB Byggkostnadsindex | Konsumentverket
+:::
+    `,
+    author: {
+      name: 'Erik Lindberg',
+      role: 'Målarexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'tips',
+    tags: ['målare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering'],
+    readingTime: 8,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 37: VAD KOSTAR SNICKARE 2026
+  // ============================================================
+  {
+    id: '37',
+    slug: 'vad-kostar-snickare-2026',
+    title: 'Vad kostar snickare 2026? Timpris och projektpriser',
+    metaTitle: 'Vad Kostar Snickare 2026 | Timpris 500-700 kr | ROT Guide',
+    metaDescription: 'Snickare kostnad 2026: 500-700 kr/timme före ROT. Altan, kök, badrum – kompletta prisexempel med ROT-avdrag.',
+    excerpt: 'Snickare är bland de mest efterfrågade hantverkarna. Lär dig vad olika projekt kostar och hur du maximerar ROT-avdraget.',
+    content: `
+:::info
+Snickare kostar **500-700 kr/timme** före ROT-avdrag. Med 30% ROT betalar du 350-490 kr/timme för arbetet.
+:::
+
+## Översikt snickarkostnader 2026
+
+:::stats
+500-700 kr | Timpris (före ROT)
+30% | ROT-avdrag på arbete
+10-25 år | Livslängd kvalitetsarbete
+:::
+
+## Timpris snickare 2026
+
+| Typ av snickare | Timpris före ROT | Med 30% ROT |
+|-----------------|------------------|-------------|
+| Allround-snickare | 500-550 kr | 350-385 kr |
+| Finsnickare | 550-650 kr | 385-455 kr |
+| Specialistsnickare | 650-700 kr | 455-490 kr |
+| Storstadsområde | +10-20% | - |
+
+## Projektpriser (typiska exempel)
+
+### Altan (15 m²)
+
+| Del | Arbetskostnad | Material | Totalt |
+|-----|---------------|----------|--------|
+| Rivning gammal | 5 000 kr | - | 5 000 kr |
+| Bygge ny altan | 25 000 kr | 20 000 kr | 45 000 kr |
+| Räcke | 8 000 kr | 6 000 kr | 14 000 kr |
+| **Summa** | **38 000 kr** | **26 000 kr** | **64 000 kr** |
+| **ROT-avdrag (30%)** | -11 400 kr | - | - |
+| **Du betalar** | - | - | **52 600 kr** |
+
+### Nytt kök (komplett)
+
+| Del | Arbetskostnad | Material |
+|-----|---------------|----------|
+| Rivning gammalt | 8 000 kr | - |
+| Montering nytt | 25 000 kr | - |
+| Snickeri (anpassning) | 15 000 kr | 5 000 kr |
+| **Summa arbete** | **48 000 kr** | - |
+| **ROT-avdrag** | -14 400 kr | - |
+| **Arbete efter ROT** | **33 600 kr** | - |
+
+*Köket i sig kostar 30 000-150 000 kr beroende på kvalitet.*
+
+### Garderober (löpmeter)
+
+| Typ | Pris per löpmeter |
+|-----|-------------------|
+| Enkel garderob (IKEA-montering) | 1 500-3 000 kr |
+| Platsbyggd garderob (standard) | 5 000-8 000 kr |
+| Platsbyggd walk-in | 8 000-15 000 kr |
+
+### Fönsterbyte
+
+| Fönstertyp | Pris inkl. arbete |
+|------------|-------------------|
+| Standard (100x120 cm) | 10 000-15 000 kr |
+| Stort fönster | 15 000-25 000 kr |
+| Fönsterdörr | 20 000-35 000 kr |
+
+:::tip
+Be alltid om fast pris vid större projekt. Timpris passar bäst för små reparationer.
+:::
+
+## Vanliga snickeriprojekt och kostnad
+
+| Projekt | Tid | Arbetskostnad (före ROT) |
+|---------|-----|--------------------------|
+| Byta innerdörr | 2-3 tim | 1 500-2 000 kr |
+| Sätta upp lister | 1-2 tim/rum | 800-1 500 kr |
+| Bygga bokhylla | 8-16 tim | 5 000-10 000 kr |
+| Renovera trappa | 1-3 dagar | 8 000-20 000 kr |
+| Takfönster (inkl. installation) | 1 dag | 15 000-25 000 kr |
+
+## När är snickare billigast?
+
+### Lågsäsong
+- November–februari (undantag: december)
+- Vardagar (undvik helger)
+
+### Högsäsong
+- April–september (altansäsong)
+- Före jul och påsk
+
+:::warning
+Undvik att anlita snickare utan F-skatt. Du riskerar att förlora ROT-avdraget och kan bli ansvarig för deras skatter.
+:::
+
+## Så jämför du offerter
+
+### 1. Be om detaljerad specifikation
+- Arbetskostnad separerat från material
+- Tidsuppskattning
+- Vad som ingår/inte ingår
+
+### 2. Jämför minst 3 offerter
+Stor prisskillnad kan betyda olika kvalitet eller missförstånd om omfattningen.
+
+### 3. Kontrollera referenser
+Fråga efter tidigare kunder och titta på bilder.
+
+### 4. Kontrollera F-skatt
+Använd Skatteverkets tjänst för att verifiera.
+
+## ROT-avdrag på snickeri
+
+### Vad ger ROT?
+- ✅ Allt arbete på befintlig byggnad
+- ✅ Reparation och underhåll
+- ✅ Ombyggnad och tillbyggnad
+- ❌ Nybyggnation (första 5 åren)
+- ❌ Material och varor
+
+:::cta
+Behöver du offert på snickeri?
+:::
+
+## FAQ – Vanliga frågor
+
+### Finns det snickare som gör mindre jobb?
+Ja, men räkna med minsta fakturering (ofta 2-4 timmar).
+
+### Hur lång tid tar det att bygga altan?
+Enkel altan: 3-5 dagar. Större med tak: 1-2 veckor.
+
+### Vad kostar det att anlita snickare per dag?
+Ca 4 000-5 600 kr/dag (8 timmar) före ROT.
+
+### Kan jag köpa material själv?
+Ja, men snickare får ofta bättre priser. Spara alltid kvitton.
+
+:::source
+Konsumentverket | Byggföretagen | SCB Prisindex
+:::
+    `,
+    author: {
+      name: 'Johan Karlsson',
+      role: 'Snickeriexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'tips',
+    tags: ['snickare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'altan', 'kök'],
+    readingTime: 9,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 38: VAD KOSTAR VVS 2026
+  // ============================================================
+  {
+    id: '38',
+    slug: 'vad-kostar-vvs-2026',
+    title: 'Vad kostar rörmokare 2026? Komplett prisguide',
+    metaTitle: 'Vad Kostar Rörmokare 2026 | Timpris & Jourpris | VVS Guide',
+    metaDescription: 'Rörmokare kostnad 2026: 550-800 kr/timme. Jour +50-100%. Byta kran, toalett, värmepump – kompletta prisexempel.',
+    excerpt: 'Rörmokare är bland de dyraste hantverkarna – speciellt vid jour. Lär dig normalpriserna och undvik att bli lurad.',
+    content: `
+:::info
+Rörmokare kostar **550-800 kr/timme** på dagtid. Jourutryckning kan kosta **dubbelt så mycket**. Planera i förväg!
+:::
+
+## Översikt VVS-kostnader 2026
+
+:::stats
+550-800 kr | Timpris dagtid
++50-100% | Jourpåslag
+30% | ROT-avdrag på arbete
+:::
+
+## Timpris rörmokare 2026
+
+| Tid | Timpris | Med ROT (30%) |
+|-----|---------|---------------|
+| Vardagar 07-17 | 550-700 kr | 385-490 kr |
+| Vardagar 17-22 | 700-900 kr | 490-630 kr |
+| Helger | 800-1 000 kr | 560-700 kr |
+| Nattjour | 1 000-1 400 kr | 700-980 kr |
+
+### Utryckningsavgift
+De flesta rörmokare tar en fast avgift bara för att komma ut:
+- Dagtid: 500-800 kr
+- Jour: 1 000-1 500 kr
+
+:::warning
+Jourpriser kan variera enormt. Fråga ALLTID om pris innan du godkänner att de kommer!
+:::
+
+## Vanliga VVS-arbeten och kostnad
+
+### Byta blandare
+
+| Typ | Arbetskostnad | Material | Totalt |
+|-----|---------------|----------|--------|
+| Köksblandare | 1 000-1 500 kr | 1 000-4 000 kr | 2 000-5 500 kr |
+| Badrumsblandare | 1 000-1 500 kr | 800-3 000 kr | 1 800-4 500 kr |
+| Duschblandare | 1 200-1 800 kr | 1 500-5 000 kr | 2 700-6 800 kr |
+
+### Toalett och handfat
+
+| Arbete | Kostnad inkl. material |
+|--------|------------------------|
+| Byta toalettstol | 3 000-6 000 kr |
+| Byta handfat | 2 500-5 000 kr |
+| Nytt badkar | 5 000-12 000 kr |
+| Installera bidé | 4 000-8 000 kr |
+
+### Värmesystem
+
+| Arbete | Kostnad (exkl. produkt) |
+|--------|-------------------------|
+| Installera värmepump (arbete) | 15 000-40 000 kr |
+| Byta cirkulationspump | 3 000-5 000 kr |
+| Byta expansion-skärl | 2 000-4 000 kr |
+| Lufta elementsystem | 1 000-2 500 kr |
+
+### Akuta problem
+
+| Problem | Jourtid kostnad |
+|---------|-----------------|
+| Vattenläcka (stopp) | 3 000-6 000 kr |
+| Igensatt avlopp | 2 500-5 000 kr |
+| Trasig varmvattenberedare | 4 000-8 000 kr |
+
+## Hur undviker du höga jourpriser?
+
+### 1. Lär dig grunderna
+- Var huvudkranen sitter
+- Hur du stänger enskilda ventiler
+- Vad du kan fixa själv (droppande kran)
+
+### 2. Ha jour-numret klart
+Välj ett företag i förväg så du inte ringer det dyraste i panik.
+
+### 3. Fråga om pris FÖRST
+Be om uppskattning innan de åker ut.
+
+### 4. Minska skadan
+Stäng av vattnet. Många "jour"-problem kan vänta till vardagen.
+
+:::tip
+Vattenskador kostar i snitt **100 000 kr**. Lägg några minuter på att lära dig var huvudkranen sitter!
+:::
+
+## Vad ingår i ROT?
+
+### Ger ROT-avdrag
+- ✅ Allt arbete med VA i befintlig bostad
+- ✅ Byte av blandare, toalett, badkar
+- ✅ Installation av värmepump
+- ✅ Stambyte och renovering
+
+### Ger INTE ROT-avdrag
+- ❌ Material och produkter
+- ❌ Vitvaror (disk/tvättmaskin)
+- ❌ Nybyggnation (första 5 åren)
+
+## Beräkningsexempel: Byta blandare i köket
+
+**Kostnad:**
+- Arbetskostnad: 1 200 kr
+- Blandare (kvalitet): 2 500 kr
+
+**ROT-avdrag (30% av arbete):** 360 kr
+
+**Du betalar:** 3 340 kr
+
+## Certifiering: Säker Vatten
+
+Kontrollera att rörmokaren har certifikatet **Säker Vatten**. Det innebär:
+- Regelbunden utbildning
+- Krav på dokumentation
+- Försäkring vid fel
+
+:::cta
+Behöver du hjälp med VVS?
+:::
+
+## FAQ – Vanliga frågor
+
+### Kan jag byta blandare själv?
+Ja, det är tillåtet och relativt enkelt. Se vår guide.
+
+### Vad kostar stambyte?
+80 000-150 000 kr per lägenhet beroende på omfattning.
+
+### Hur snabbt kan en rörmokare komma vid akut läcka?
+Jour: oftast inom 1-4 timmar. Räkna med hög kostnad.
+
+### Ska jag anlita försäkringens rörmokare vid skada?
+Kontakta försäkringsbolaget först – de kan ha avtal som är billigare.
+
+:::source
+VVS Företagen | Säker Vatten | Konsumentverket
+:::
+    `,
+    author: {
+      name: 'Per Nilsson',
+      role: 'VVS-expert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'tips',
+    tags: ['vvs', 'rörmokare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'jour'],
+    readingTime: 9,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 39: VAD KOSTAR TAKBYTE 2026
+  // ============================================================
+  {
+    id: '39',
+    slug: 'vad-kostar-takbyte-2026',
+    title: 'Vad kostar takbyte 2026? Material och arbete',
+    metaTitle: 'Vad Kostar Takbyte 2026 | Betongpannor, Plåt, Papp | Prisguide',
+    metaDescription: 'Takbyte kostnad 2026: 600-1 200 kr/m² beroende på material. Betongpannor, plåttak, papptak. Kompletta prisexempel med ROT.',
+    excerpt: 'Ett nytt tak kostar 100 000-400 000 kr för en normalvilla. Vi går igenom priserna för olika takmaterial och vad som påverkar kostnaden.',
+    content: `
+:::info
+Takbyte kostar **600-1 200 kr/m²** beroende på material och svårighetsgrad. En villa på 150 m² tak kostar typiskt **150 000-350 000 kr**.
+:::
+
+## Prisöversikt takbyte 2026
+
+:::stats
+600-1 200 kr | Pris per m² (totalt)
+150 000-350 000 kr | Villa (150 m² tak)
+30% | ROT-avdrag på arbete
+:::
+
+## Pris per takmaterial
+
+| Material | Pris/m² (totalt) | Livslängd | Kommentar |
+|----------|------------------|-----------|-----------|
+| Betongpannor | 600-900 kr | 40-60 år | Vanligast |
+| Tegelpannor | 800-1 100 kr | 60-100 år | Mest hållbart |
+| Plåttak (ståndsfalsat) | 900-1 200 kr | 50-80 år | Underhållsfritt |
+| Plåtprofiler | 600-800 kr | 40-50 år | Ekonomiskt val |
+| Papptak (3 lager) | 400-600 kr | 20-30 år | Billigast |
+| Betongtakpannor premium | 800-1 000 kr | 50-70 år | Bäst kvalitet |
+
+### Jämförelse: Kostnad vs livslängd
+
+| Material | Kostnad 150 m² | Livslängd | Kostnad/år |
+|----------|---------------|-----------|------------|
+| Papptak | 90 000 kr | 25 år | 3 600 kr |
+| Betongpannor | 120 000 kr | 50 år | 2 400 kr |
+| Plåt ståndsfalsat | 165 000 kr | 70 år | 2 360 kr |
+| Tegelpannor | 150 000 kr | 80 år | 1 875 kr |
+
+:::tip
+Tegelpannor och ståndsfalsat plåt kostar mer initialt men blir billigast per år!
+:::
+
+## Vad ingår i takbyte?
+
+### Ingår normalt
+- ✅ Rivning av gammalt tak
+- ✅ Ny underlagspapp/duk
+- ✅ Läktning
+- ✅ Nytt takmaterial
+- ✅ Ventilationshuvar
+- ✅ Ränndalar och genomföringar
+- ✅ Bortforsling av rivningsavfall
+
+### Tillval (extra kostnad)
+- Ny takränna: 150-300 kr/löpmeter
+- Taksäkerhet (stegar, bryggor): 5 000-15 000 kr
+- Tilläggsisolering: 200-400 kr/m²
+- Byte av råspont: 300-500 kr/m²
+
+## Prisexempel: Villa 150 m² tak
+
+### Betongpannor (standard)
+
+| Post | Kostnad |
+|------|---------|
+| Rivning | 20 000 kr |
+| Material (pannor, läkt) | 50 000 kr |
+| Arbetskostnad | 70 000 kr |
+| Ränndalar, genomföringar | 15 000 kr |
+| Taksäkerhet | 10 000 kr |
+| **Totalt** | **165 000 kr** |
+| **ROT-avdrag (30% av arbete)** | -21 000 kr |
+| **Du betalar** | **144 000 kr** |
+
+### Ståndsfalsat plåt (premium)
+
+| Post | Kostnad |
+|------|---------|
+| Rivning | 20 000 kr |
+| Material (plåt, läkt) | 80 000 kr |
+| Arbetskostnad | 90 000 kr |
+| Detaljer, genomföringar | 20 000 kr |
+| Taksäkerhet | 10 000 kr |
+| **Totalt** | **220 000 kr** |
+| **ROT-avdrag (30% av arbete)** | -27 000 kr |
+| **Du betalar** | **193 000 kr** |
+
+## Faktorer som påverkar priset
+
+### Höjer priset
+- Brant lutning (>45 grader)
+- Hög byggnad (ställning krävs)
+- Komplicerad form (många vinklar)
+- Många genomföringar (skorsten, takfönster)
+- Byte av råspont
+- Dålig tillgänglighet
+
+### Sänker priset
+- Enkel form (sadeltak)
+- Låg byggnad
+- Bra tillgänglighet
+- Stor yta (skalfördel)
+
+:::warning
+Kontrollera alltid takets underlag (råspont) innan takbyte! Om den är rutten kan kostnaden öka med 30-50%.
+:::
+
+## Taksäkerhet enligt Boverket
+
+Från 1 juli 2025 gäller nya regler för taksäkerhet:
+
+- ✅ Takstegar till skorsten och takfönster
+- ✅ Gångbryggor om fasta arbetsplatser på tak
+- ✅ Snörasskydd vid entréer
+- ✅ Fasta fästpunkter för säkerhetslinor
+
+## När ska taket bytas?
+
+### Varningssignaler
+- Läckage vid hårda regn
+- Trasiga eller saknade pannor
+- Mossa och påväxt
+- Ålder >40 år (papptak >25 år)
+- Synlig råspont inifrån vinden
+
+### Takets typiska livslängd
+
+| Material | Livslängd |
+|----------|-----------|
+| Papptak | 20-30 år |
+| Betongpannor | 40-60 år |
+| Tegelpannor | 60-100 år |
+| Plåt | 50-80 år |
+
+:::cta
+Behöver du offert på takbyte?
+:::
+
+## FAQ – Vanliga frågor
+
+### Kan man byta tak på vintern?
+Ja, men det är svårare och kan ta längre tid. Undvik om möjligt.
+
+### Hur lång tid tar ett takbyte?
+Villa: 1-2 veckor beroende på väder och komplexitet.
+
+### Måste jag flytta under takbytet?
+Nej, det går att bo kvar. Företaget täcker för regn under arbetet.
+
+### Får jag ROT på takbyte?
+Ja, på arbetskostnaden. Material ger inget ROT-avdrag.
+
+:::source
+Boverket | Takläggaren | Konsumentverket | SCB
+:::
+    `,
+    author: {
+      name: 'Mattias Gran',
+      role: 'Takexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'tips',
+    tags: ['tak', 'takbyte', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering'],
+    readingTime: 10,
+    image: '/placeholder.svg',
+    featured: false,
+  },
+
+  // ============================================================
+  // ARTIKEL 40: VAD KOSTAR DRÄNERING 2026
+  // ============================================================
+  {
+    id: '40',
+    slug: 'vad-kostar-dranering-2026',
+    title: 'Vad kostar dränering 2026? Husgrund och källare',
+    metaTitle: 'Vad Kostar Dränering 2026 | 2 000-4 000 kr/m | ROT-avdrag Guide',
+    metaDescription: 'Dränering kostnad 2026: 2 000-4 000 kr per löpmeter. Hela huset 150 000-350 000 kr. Allt om fuktproblem, priser och ROT-avdrag.',
+    excerpt: 'Dränering är en stor investering men nödvändig vid fuktproblem. Lär dig vad det kostar och varför det kan spara dig miljoner.',
+    content: `
+:::info
+Dränering kostar **2 000-4 000 kr per löpmeter**. För ett normalstort hus (80 m runt grunden) blir kostnaden **160 000-320 000 kr**.
+:::
+
+## Prisöversikt dränering 2026
+
+:::stats
+2 000-4 000 kr | Pris per löpmeter
+160 000-320 000 kr | Helt hus (80 m)
+30% | ROT-avdrag på arbete
+:::
+
+## Faktorer som påverkar priset
+
+| Faktor | Låg kostnad | Hög kostnad |
+|--------|-------------|-------------|
+| Marktyp | Sand/grus | Lera/berg |
+| Schaktdjup | 1-1,5 m | >2 m |
+| Tillgänglighet | God | Dålig (staket, altan) |
+| Grundläggning | Enkel | Komplicerad |
+| Avstånd till dagvatten | Nära | Långt |
+
+## Vad ingår i dränering?
+
+### Komplett dräneringsarbete
+- ✅ Schaktning runt grunden
+- ✅ Borttransport av massor
+- ✅ Rengöring av grundmur
+- ✅ Ny fuktspärr (asfaltmatta eller skiva)
+- ✅ Dräneringsrör (slitsade)
+- ✅ Makadam och fiberduk
+- ✅ Återfyllnad
+- ✅ Anslutning till dagvattenbrunn
+
+### Tillval (extra kostnad)
+- Isolering av grund: 200-400 kr/m²
+- Ny dagvattenbrunn: 5 000-15 000 kr
+- Markvärme/kabelskydd: 50-100 kr/m
+- Återställning av trädgård: Varierande
+
+## Prisexempel: Dränering av villa
+
+### Villa 100 m² (80 löpmeter runt grunden)
+
+| Post | Kostnad |
+|------|---------|
+| Schaktning och transport | 40 000 kr |
+| Rengöring och förarbete | 15 000 kr |
+| Fuktspärr (skiva) | 30 000 kr |
+| Dräneringsrör och makadam | 35 000 kr |
+| Arbetskostnad | 100 000 kr |
+| Dagvattenanslutning | 15 000 kr |
+| **Totalt** | **235 000 kr** |
+| **ROT-avdrag (30% av arbete)** | -30 000 kr |
+| **Du betalar** | **205 000 kr** |
+
+:::warning
+Kostnaden kan öka betydligt om det finns berg, trädrötter, eller dolda ledningar. Få alltid besiktning först!
+:::
+
+## Varför behövs dränering?
+
+### Varningssignaler på fuktproblem
+
+Enligt Boverket bör du vara uppmärksam på:
+
+- ✅ Lukt av mögel i källare
+- ✅ Fuktfläckar på väggar under marknivå
+- ✅ Saltutfällningar (vita kristaller)
+- ✅ Bubblande färg eller tapeter
+- ✅ Mögel bakom möbler
+- ✅ Hög luftfuktighet (>70% RF)
+
+### Konsekvenser av utebliven åtgärd
+
+| Problem | Kostnad att åtgärda |
+|---------|---------------------|
+| Fortsatt fuktskada | 50 000-200 000 kr |
+| Mögelsanering | 100 000-500 000 kr |
+| Grundläggningsskador | 200 000-1 000 000 kr |
+| Sjunkande husvärde | 10-30% |
+
+:::tip
+En fuktutredning kostar 5 000-15 000 kr och kan avslöja problem som sparar dig hundratusentals kronor!
+:::
+
+## Dräneringens livslängd
+
+| Komponent | Livslängd |
+|-----------|-----------|
+| Dräneringsrör (plast) | 50-100 år |
+| Fuktspärr (modern typ) | 40-60 år |
+| Makadam/grus | 50-100 år |
+| Hela systemet | 40-60 år |
+
+**Jämförelse med gammal dränering:**
+- Tegelrör (1950-70-tal): 30-50 år
+- Gamla asfaltmattor: 25-40 år
+
+## Olika typer av fuktskydd
+
+### Utvändig dränering (traditionell)
+Gräver upp runt grunden och lägger nytt system. Mest effektivt.
+
+### Invändig dränering
+Fräser ränna i källargolvet och leder vatten till pump. Billigare men löser inte grundorsaken.
+
+### Injektering
+Sprutar in tätmedel i grundmuren. Fungerar för mindre problem.
+
+| Metod | Kostnad | Effektivitet |
+|-------|---------|--------------|
+| Utvändig dränering | 2 500-4 000 kr/m | Utmärkt |
+| Invändig dränering | 1 500-2 500 kr/m | God |
+| Injektering | 500-1 500 kr/m | Måttlig |
+
+## ROT-avdrag på dränering
+
+### Vad ger ROT?
+- ✅ Arbete med dränering
+- ✅ Schaktning och återfyllnad
+- ✅ Installation av fuktspärr
+- ❌ Material (rör, makadam, skivor)
+- ❌ Maskinuthyrning (om separat)
+
+### Beräkningsexempel
+
+**Total kostnad:** 240 000 kr
+- Arbetskostnad: 120 000 kr
+- Material: 80 000 kr
+- Maskin & transport: 40 000 kr
+
+**ROT-avdrag (30% av arbete):** 36 000 kr
+**Du betalar:** 204 000 kr
+
+:::cta
+Behöver du hjälp med dränering?
+:::
+
+## Så väljer du entreprenör
+
+### Kontrollera
+1. F-skattsedel
+2. Försäkring (ansvarsförsäkring)
+3. Referenser från liknande projekt
+4. Besiktning av grunden innan arbete
+
+### Fråga efter
+- Fast pris eller timdebitering?
+- Vad ingår i priset?
+- Hur hanteras oväntade problem?
+- Garanti på arbetet?
+
+## FAQ – Vanliga frågor
+
+### Hur lång tid tar dränering?
+1-3 veckor beroende på storlek och markförhållanden.
+
+### Måste jag flytta under arbetet?
+Nej, men räkna med buller och begränsad tillgänglighet.
+
+### Kan jag dränera delvis?
+Ja, men det ger sämre skydd. Fukt kan komma runt.
+
+### Vad händer med trädgården?
+Den påverkas kraftigt. Räkna med återställningskostnad.
+
+:::source
+Boverket | Säker Vatten | VVS Företagen | Fuktcentrum
+:::
+    `,
+    author: {
+      name: 'Fredrik Holm',
+      role: 'Markexpert',
+    },
+    publishedAt: '2025-12-22',
+    updatedAt: '2025-12-22',
+    category: 'tips',
+    tags: ['dränering', 'fukt', 'källare', 'pris', 'kostnad', 'rot-avdrag', '2026'],
+    readingTime: 10,
+    image: '/placeholder.svg',
+    featured: false,
+  },
 ];
 
 // Hitta bloggpost baserat på slug
