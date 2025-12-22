@@ -157,18 +157,12 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Particles Divider: Hero → TrustBar */}
-      <WaveDivider animated />
-
       {/* Trust Bar */}
       <EditableSection id="trust-bar" title="Förtroende bar">
         <ContextualEditor contentId="trust-bar-section">
           <TrustBar />
         </ContextualEditor>
       </EditableSection>
-
-      {/* Particles Divider: TrustBar → CTA */}
-      <WaveDivider flip animated />
 
       {/* All Services CTA Section - GSAP Enhanced */}
       <section ref={allServicesRef} className="py-16 bg-background relative overflow-hidden">
@@ -194,9 +188,6 @@ const Home = () => {
           </Button>
         </div>
       </section>
-
-      {/* Particles Divider: CTA → Comparison */}
-      <WaveDivider animated />
 
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
