@@ -27,6 +27,7 @@ import {
   LazyProjectShowcase, 
   LazyFAQTeaser
 } from "@/components/LazyComponents";
+import { WaveDivider } from "@/components/ui/WaveDivider";
 
 const Home = () => {
   const { t } = useCopy();
@@ -156,6 +157,9 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
+      {/* Wave Divider: Hero → TrustBar */}
+      <WaveDivider variant="layered" colorFrom="background" colorTo="surface" animated />
+
       {/* Trust Bar */}
       <EditableSection id="trust-bar" title="Förtroende bar">
         <ContextualEditor contentId="trust-bar-section">
@@ -163,8 +167,11 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
+      {/* Wave Divider: TrustBar → CTA */}
+      <WaveDivider variant="wave" colorFrom="surface" colorTo="background" flip animated />
+
       {/* All Services CTA Section - GSAP Enhanced */}
-      <section ref={allServicesRef} className="py-16 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+      <section ref={allServicesRef} className="py-16 bg-background relative overflow-hidden">
         {/* Floating glows */}
         <div className="absolute inset-0 pointer-events-none">
           <div ref={glow1Ref} className="absolute top-10 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
@@ -188,12 +195,18 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Wave Divider: CTA → Comparison */}
+      <WaveDivider variant="curve" colorFrom="background" colorTo="muted" animated />
+
       {/* Advanced Comparison Section - ULTRA Enhanced */}
       <EditableSection id="comparison" title="Jämförelse sektion">
         <ContextualEditor contentId="comparison-section">
           <LazyComparisonUltra />
         </ContextualEditor>
       </EditableSection>
+
+      {/* Wave Divider: Comparison → Services */}
+      <WaveDivider variant="mesh" colorFrom="muted" colorTo="background" flip animated />
 
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
@@ -202,12 +215,18 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
+      {/* Wave Divider: Services → Projects */}
+      <WaveDivider variant="layered" colorFrom="background" colorTo="surface" animated />
+
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
         <ContextualEditor contentId="projects-section">
           <LazyProjectShowcase />
         </ContextualEditor>
       </EditableSection>
+
+      {/* Wave Divider: Projects → FAQ */}
+      <WaveDivider variant="wave" colorFrom="surface" colorTo="background" flip animated />
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
