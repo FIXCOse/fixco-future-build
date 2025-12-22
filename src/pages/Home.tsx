@@ -27,7 +27,6 @@ import {
   LazyProjectShowcase, 
   LazyFAQTeaser
 } from "@/components/LazyComponents";
-import { WaveDivider } from "@/components/ui/WaveDivider";
 
 const Home = () => {
   const { t } = useCopy();
@@ -196,9 +195,6 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Particles Divider: Comparison → Services */}
-      <WaveDivider flip animated />
-
       {/* Service Teaser Grid */}
       <EditableSection id="services" title="Tjänster översikt">
         <ContextualEditor contentId="services-section">
@@ -206,18 +202,12 @@ const Home = () => {
         </ContextualEditor>
       </EditableSection>
 
-      {/* Particles Divider: Services → Projects */}
-      <WaveDivider animated />
-
       {/* Project Showcase */}
       <EditableSection id="projects" title="Projekt showcase">
         <ContextualEditor contentId="projects-section">
           <LazyProjectShowcase />
         </ContextualEditor>
       </EditableSection>
-
-      {/* Particles Divider: Projects → FAQ */}
-      <WaveDivider flip animated />
 
       {/* FAQ Teaser */}
       <EditableSection id="faq" title="FAQ sektion">
