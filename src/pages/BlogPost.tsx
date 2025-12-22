@@ -177,16 +177,51 @@ const BlogPost = () => {
       // Regular lists
       .replace(/^- (.*$)/gm, '<li class="ml-4 list-disc py-1 text-muted-foreground">$1</li>')
       .replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal py-1 text-muted-foreground">$1</li>')
-      // Tables med bättre design
-      .replace(/\|(.+)\|/g, (match, content) => {
+      // Tables med premium design
+      .replace(/\|(.+)\|/g, (match, content, offset, fullString) => {
         if (content.includes('---')) return '';
         const cells = content.split('|').map((cell: string) => cell.trim());
-        // Check if it's a header row (first row after table start)
-        const isHeader = cells.some((cell: string) => cell.toLowerCase() === cell.toUpperCase() && cell.length > 0);
-        if (isHeader && !content.includes('kr') && !content.includes('%')) {
-          return `<tr class="bg-muted/30">${cells.map((cell: string) => `<th class="px-4 py-3 text-left font-semibold text-foreground border-b border-border">${cell}</th>`).join('')}</tr>`;
+        
+        // Check if it's a header row
+        const isHeader = cells.some((cell: string) => {
+          const lower = cell.toLowerCase();
+          return (lower.includes('komponent') || lower.includes('typ') || lower.includes('livslängd') || 
+                  lower.includes('beskrivning') || lower.includes('kategori') || lower === 'år');
+        });
+        
+        if (isHeader) {
+          return `<tr class="bg-gradient-to-r from-primary/15 via-primary/10 to-accent/15">${cells.map((cell: string) => 
+            `<th class="px-5 py-4 text-left font-bold text-foreground uppercase tracking-wide text-xs border-b-2 border-primary/30">${cell}</th>`
+          ).join('')}</tr>`;
         }
-        return `<tr class="border-b border-border/50 hover:bg-muted/20 transition-colors">${cells.map((cell: string) => `<td class="px-4 py-3 text-muted-foreground">${cell}</td>`).join('')}</tr>`;
+        
+        // Regular data row with enhanced styling
+        return `<tr class="group border-b border-border/30 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300">${cells.map((cell: string, index: number) => {
+          // Check if cell contains lifespan data (år)
+          const lifespanMatch = cell.match(/(\d+)\s*år/);
+          if (lifespanMatch) {
+            const years = parseInt(lifespanMatch[1]);
+            const percentage = Math.min((years / 100) * 100, 100);
+            const gradientColor = years >= 60 ? 'from-emerald-500 to-green-400' : 
+                                  years >= 30 ? 'from-amber-500 to-yellow-400' : 
+                                  'from-orange-500 to-red-400';
+            return `<td class="px-5 py-4">
+              <div class="flex flex-col gap-2">
+                <span class="font-bold text-lg bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent">${years} år</span>
+                <div class="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r ${gradientColor} rounded-full transition-all duration-700" style="width: ${percentage}%"></div>
+                </div>
+              </div>
+            </td>`;
+          }
+          
+          // First column styling (component name)
+          if (index === 0) {
+            return `<td class="px-5 py-4 font-semibold text-foreground group-hover:text-primary transition-colors">${cell}</td>`;
+          }
+          
+          return `<td class="px-5 py-4 text-muted-foreground">${cell}</td>`;
+        }).join('')}</tr>`;
       })
       // Paragraphs
       .replace(/\n\n/g, '</p><p class="mb-4 text-muted-foreground leading-relaxed text-base md:text-lg">')
@@ -195,11 +230,12 @@ const BlogPost = () => {
       // Links med hover effekt
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-medium hover:underline decoration-primary/50 underline-offset-2 transition-all hover:decoration-primary">$1</a>');
 
-    // Wrap tables
+    // Wrap tables with premium container
     html = html.replace(/<tr/g, (match, offset) => {
       const before = html.substring(0, offset);
       if (!before.includes('<table') || before.lastIndexOf('</table>') > before.lastIndexOf('<table')) {
-        return '<div class="my-6 overflow-x-auto rounded-xl border border-border"><table class="w-full text-sm">' + match;
+        return `<div class="my-8 overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-card via-background to-card shadow-lg shadow-primary/5 backdrop-blur-sm">
+          <table class="w-full text-sm">` + match;
       }
       return match;
     });
