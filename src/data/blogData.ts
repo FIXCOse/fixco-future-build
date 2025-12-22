@@ -17,7 +17,7 @@ export interface BlogPost {
   };
   publishedAt: string;
   updatedAt: string;
-  category: 'rot-rut' | 'renovering' | 'tips' | 'nyheter' | 'guider' | 'energi' | 'brf' | 'lagstiftning' | 'marknad';
+  category: 'rot-rut' | 'rut' | 'renovering' | 'tips' | 'nyheter' | 'guider' | 'energi' | 'brf' | 'lagstiftning' | 'marknad';
   tags: string[];
   readingTime: number;
   image: string;
@@ -25,7 +25,8 @@ export interface BlogPost {
 }
 
 export const blogCategories = [
-  { slug: 'rot-rut', name: 'ROT & RUT', description: 'Allt om skatteavdrag för hemarbeten' },
+  { slug: 'rot-rut', name: 'ROT-avdrag', description: 'Skatteavdrag för renovering och byggnadsarbete' },
+  { slug: 'rut', name: 'RUT-avdrag', description: 'Skatteavdrag för hushållsnära tjänster' },
   { slug: 'renovering', name: 'Renovering', description: 'Tips och guider för renoveringsprojekt' },
   { slug: 'tips', name: 'Tips & Råd', description: 'Praktiska tips för hemmet' },
   { slug: 'nyheter', name: 'Nyheter', description: 'Senaste nytt från Fixco' },
@@ -3733,7 +3734,7 @@ Skatteverket.se – RUT-avdrag | Uppdaterad december 2025
     },
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
-    category: 'rot-rut',
+    category: 'rut',
     tags: ['rut-avdrag', 'skatteavdrag', 'städning', 'trädgård', 'hushållsnära tjänster', '2026'],
     readingTime: 8,
     image: '/placeholder.svg',
@@ -3863,7 +3864,7 @@ Skatteverket.se – Vilken typ av trädgårdsarbete ger rutavdrag? | December 20
     },
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
-    category: 'rot-rut',
+    category: 'rut',
     tags: ['rut-avdrag', 'trädgård', 'gräsklippning', 'häckklippning', '2026'],
     readingTime: 7,
     image: '/placeholder.svg',
@@ -4011,7 +4012,7 @@ Skatteverket.se – RUT-avdrag för städning | December 2025
     },
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
-    category: 'rot-rut',
+    category: 'rut',
     tags: ['rut-avdrag', 'städning', 'hemstädning', 'flyttstädning', 'fönsterputs', '2026'],
     readingTime: 7,
     image: '/placeholder.svg',
@@ -4163,7 +4164,7 @@ Skatteverket.se – RUT-avdrag för flytt | December 2025
     },
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
-    category: 'rot-rut',
+    category: 'rut',
     tags: ['rut-avdrag', 'flytt', 'flyttstädning', 'möbelmontering', '2026'],
     readingTime: 7,
     image: '/placeholder.svg',
