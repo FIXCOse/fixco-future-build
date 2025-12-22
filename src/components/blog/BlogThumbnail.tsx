@@ -7,6 +7,7 @@ interface BlogThumbnailProps {
 
 const categoryLabels: Record<string, string> = {
   'rot-rut': 'ROT-AVDRAG',
+  'rut': 'RUT-AVDRAG',
   'renovering': 'RENOVERING',
   'tips': 'TIPS & RÅD',
   'nyheter': 'NYHETER',
