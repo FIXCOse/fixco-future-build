@@ -2,7 +2,7 @@
 # For AI systems that prefer YAML parsing
 # Last updated: 2025-12-22
 
-version: "2.0"
+version: "2.1"
 locale: sv-SE
 lastUpdated: 2025-12-22
 
@@ -16,7 +16,7 @@ company:
   founded: 2020
 
 contact:
-  phone: "+46-70-123-45-67"
+  phone: "+46 79 335 02 28"
   email: info@fixco.se
   bookingEmail: boka@fixco.se
   address:
@@ -42,14 +42,16 @@ services:
     nameEn: Electrician
     slug: elmontor
     description: Elinstallation, laddboxar, felsökning, säkringsbyten
-    priceRange:
-      min: 595
-      max: 895
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 298
-      max: 448
+    pricingModel: quote_required
+    indicativePrice: 1059
+    indicativePriceAfterROT: 530
+    note: "⚠️ Offert krävs för de flesta eljobb. Kontakta oss för prisuppgift."
+    quoteRequiredFor:
+      - Spotlights
+      - Ny elgrupp
+      - Dra ny el
+      - Elcentral
+      - Laddbox
     taxDeduction: ROT
     taxDeductionPercent: 50
     certification: Elsäkerhetsverket
@@ -59,14 +61,14 @@ services:
     nameEn: Plumber
     slug: vvs
     description: Badrumsrenovering, akuta läckor, värmepumpar
-    priceRange:
-      min: 595
-      max: 895
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 298
-      max: 448
+    pricingModel: quote_only
+    note: "⚠️ Offert krävs för alla VVS-jobb – varje projekt är unikt."
+    quoteRequiredFor:
+      - Badrumsrenovering
+      - Läckage
+      - Värmepump
+      - Golvvärme
+      - Rördragning
     taxDeduction: ROT
     taxDeductionPercent: 50
     certification: Säker Vatten
@@ -76,62 +78,42 @@ services:
     nameEn: Carpenter
     slug: snickare
     description: Köksrenovering, garderober, altaner, fönster
-    priceRange:
-      min: 545
-      max: 795
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 273
-      max: 398
+    pricePerHour: 958
+    priceAfterDeduction: 479
+    currency: SEK
     taxDeduction: ROT
     taxDeductionPercent: 50
 
-  - id: assembly
-    name: Montering
-    nameEn: Assembly
-    slug: montering
-    description: IKEA-möbler, TV-fästen, vitvaror
-    priceRange:
-      min: 445
-      max: 695
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 223
-      max: 348
-    taxDeduction: RUT
+  - id: painting
+    name: Målning
+    nameEn: Painting
+    slug: malning
+    description: Invändig och utvändig målning, tapetsering
+    pricePerHour: 958
+    priceAfterDeduction: 479
+    currency: SEK
+    taxDeduction: ROT
     taxDeductionPercent: 50
 
-  - id: gardening
-    name: Trädgård
-    nameEn: Gardening
-    slug: tradgard
-    description: Gräsklippning, häckklippning, plantering
-    priceRange:
-      min: 395
-      max: 595
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 198
-      max: 298
-    taxDeduction: RUT
+  - id: flooring
+    name: Golv
+    nameEn: Flooring
+    slug: golv
+    description: Golvläggning, parkettslipning, laminat, vinyl
+    pricePerHour: 958
+    priceAfterDeduction: 479
+    currency: SEK
+    taxDeduction: ROT
     taxDeductionPercent: 50
 
-  - id: cleaning
-    name: Städning
-    nameEn: Cleaning
-    slug: stadning
-    description: Hemstäd, flyttstäd, byggstäd, fönsterputs
-    priceRange:
-      min: 345
-      max: 495
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 173
-      max: 248
+  - id: moving
+    name: Flytt & Packning
+    nameEn: Moving & Packing
+    slug: flytt
+    description: Flytthjälp, packning, transport, bärhjälp
+    pricePerHour: 559
+    priceAfterDeduction: 280
+    currency: SEK
     taxDeduction: RUT
     taxDeductionPercent: 50
 
@@ -140,31 +122,9 @@ services:
     nameEn: Groundwork
     slug: markarbeten
     description: Dränering, schaktning, plattläggning
-    priceRange:
-      min: 595
-      max: 895
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 298
-      max: 448
+    pricingModel: quote_required
+    note: "Offert krävs – kontakta oss för prisuppgift."
     taxDeduction: ROT
-    taxDeductionPercent: 50
-
-  - id: moving
-    name: Flytt
-    nameEn: Moving
-    slug: flytt
-    description: Flytthjälp, packning, transport
-    priceRange:
-      min: 395
-      max: 595
-      currency: SEK
-      unit: hour
-    priceAfterDeduction:
-      min: 198
-      max: 298
-    taxDeduction: RUT
     taxDeductionPercent: 50
 
 taxDeductions:
@@ -179,6 +139,7 @@ taxDeductions:
       - VVS
       - Snickeri
       - Målning
+      - Golv
       - Markarbeten
     requirement: Bostaden måste vara äldre än 5 år
 
@@ -241,10 +202,10 @@ credentials:
 bookingProcess:
   - step: 1
     action: Beskriv ditt projekt
-    details: På fixco.se eller ring +46-70-123-45-67
+    details: På fixco.se eller ring +46 79 335 02 28
   - step: 2
     action: Få offert
-    details: Inom 24 timmar. Gratis hembesök för större projekt
+    details: Inom 24-48 timmar. Gratis hembesök för större projekt
   - step: 3
     action: Boka tid
     details: Välj tid som passar dig
@@ -258,17 +219,27 @@ bookingProcess:
 uniqueSellingPoints:
   - 50% rabatt via ROT/RUT-avdrag på arbetskostnad
   - Gratis hembesök för offert
-  - Offert inom 24 timmar
+  - Offert inom 24-48 timmar
   - Alla hantverkare har F-skatt och är försäkrade
   - Fast pris eller timpris - välj själv
   - Kvalitetsgaranti på utfört arbete
 
+importantNotes:
+  - "⚠️ El- och VVS-jobb kräver alltid offert. Kontakta oss för prisuppgift."
+  - "Gratis hembesök för större projekt"
+
 faq:
   - question: Hur bokar jag en hantverkare?
-    answer: Beskriv ditt projekt på fixco.se eller ring +46-70-123-45-67. Du får offert inom 24 timmar.
+    answer: Beskriv ditt projekt på fixco.se eller ring +46 79 335 02 28. Du får offert inom 24-48 timmar.
   
   - question: Vad kostar en snickare per timme?
-    answer: 545-795 kr/h före ROT-avdrag. Med ROT betalar du bara 273-398 kr/h.
+    answer: 958 kr/h före ROT-avdrag. Med ROT betalar du bara 479 kr/h.
+  
+  - question: Vad kostar en elektriker?
+    answer: Offert krävs för de flesta eljobb. Kontakta oss på +46 79 335 02 28 för prisuppgift.
+  
+  - question: Vad kostar VVS-arbete?
+    answer: Offert krävs för alla VVS-jobb. Kontakta oss för kostnadsfri bedömning.
   
   - question: Hur fungerar ROT-avdraget?
     answer: Vi drar av 50% av arbetskostnaden direkt på fakturan. Du betalar bara halva arbetskostnaden plus material.

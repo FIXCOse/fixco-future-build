@@ -12,7 +12,7 @@
   "logo": "https://fixco.se/logo.png",
   "image": "https://fixco.se/og-image.png",
   "foundingDate": "2020",
-  "telephone": "+46-70-123-45-67",
+  "telephone": "+46 79 335 02 28",
   "email": "info@fixco.se",
   
   "address": {
@@ -161,7 +161,7 @@
       "name": "Kontakta Fixco",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "tel:+46701234567",
+        "urlTemplate": "tel:+46793350228",
         "actionPlatform": ["http://schema.org/MobileWebPlatform"]
       }
     }
@@ -174,14 +174,14 @@
         "@type": "Service",
         "name": "Elmontör",
         "alternateName": "Electrician",
-        "description": "Elinstallation, laddboxar, felsökning, belysning, elcentral",
+        "description": "Elinstallation, laddboxar, felsökning, belysning, elcentral. ⚠️ Offert krävs för de flesta eljobb.",
         "serviceType": "Electrical Work"
       },
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "price": "595-895",
+        "price": "Offert krävs",
         "priceCurrency": "SEK",
-        "unitText": "per hour"
+        "description": "Indikativt: ~1059 kr/h (530 kr/h efter ROT). Kontakta oss för prisuppgift."
       },
       "eligibleRegion": ["Uppsala", "Stockholm"],
       "additionalProperty": {
@@ -196,14 +196,14 @@
         "@type": "Service",
         "name": "VVS/Rörmokare",
         "alternateName": "Plumber",
-        "description": "Badrumsrenovering, akuta läckor, värmepumpar, rörläggning",
+        "description": "Badrumsrenovering, akuta läckor, värmepumpar, rörläggning. ⚠️ Offert krävs för alla VVS-jobb.",
         "serviceType": "Plumbing"
       },
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "price": "595-895",
+        "price": "Offert krävs",
         "priceCurrency": "SEK",
-        "unitText": "per hour"
+        "description": "Varje projekt är unikt. Kontakta oss för kostnadsfri bedömning."
       },
       "eligibleRegion": ["Uppsala", "Stockholm"],
       "additionalProperty": {
@@ -223,7 +223,7 @@
       },
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "price": "545-795",
+        "price": "958",
         "priceCurrency": "SEK",
         "unitText": "per hour"
       },
@@ -231,21 +231,65 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% discount, max 50000 SEK/year"
+        "value": "50% rabatt → 479 kr/h efter avdrag"
       }
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Montering",
-        "alternateName": "Assembly",
-        "description": "IKEA-möbler, TV-fästen, vitvaror, hyllor",
-        "serviceType": "Assembly Service"
+        "name": "Målning",
+        "alternateName": "Painting",
+        "description": "Invändig och utvändig målning, tapetsering",
+        "serviceType": "Painting"
       },
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "price": "445-695",
+        "price": "958",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% rabatt → 479 kr/h efter avdrag"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Golv",
+        "alternateName": "Flooring",
+        "description": "Golvläggning, parkettslipning, laminat, vinyl",
+        "serviceType": "Flooring"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "958",
+        "priceCurrency": "SEK",
+        "unitText": "per hour"
+      },
+      "eligibleRegion": ["Uppsala", "Stockholm"],
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "ROT-avdrag",
+        "value": "50% rabatt → 479 kr/h efter avdrag"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Flytt & Packning",
+        "alternateName": "Moving & Packing",
+        "description": "Flytthjälp, packning, transport, bärhjälp",
+        "serviceType": "Moving Service"
+      },
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "price": "559",
         "priceCurrency": "SEK",
         "unitText": "per hour"
       },
@@ -253,51 +297,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "RUT-avdrag",
-        "value": "50% discount, max 75000 SEK/year"
-      }
-    },
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Trädgård",
-        "alternateName": "Gardening",
-        "description": "Gräsklippning, häckklippning, plantering, snöskottning",
-        "serviceType": "Gardening Service"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "395-595",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "RUT-avdrag",
-        "value": "50% discount, max 75000 SEK/year"
-      }
-    },
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Städning",
-        "alternateName": "Cleaning",
-        "description": "Hemstädning, flyttstädning, byggstädning, fönsterputs",
-        "serviceType": "Cleaning Service"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "345-495",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "RUT-avdrag",
-        "value": "50% discount, max 75000 SEK/year"
+        "value": "50% rabatt → 280 kr/h efter avdrag"
       }
     },
     {
@@ -306,42 +306,19 @@
         "@type": "Service",
         "name": "Markarbeten",
         "alternateName": "Groundwork",
-        "description": "Dränering, schaktning, plattsättning, stödmurar",
+        "description": "Dränering, schaktning, plattsättning, stödmurar. Offert krävs.",
         "serviceType": "Groundwork"
       },
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "price": "595-895",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
+        "price": "Offert krävs",
+        "priceCurrency": "SEK"
       },
       "eligibleRegion": ["Uppsala", "Stockholm"],
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
         "value": "50% discount, max 50000 SEK/year"
-      }
-    },
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Flytt",
-        "alternateName": "Moving",
-        "description": "Flytthjälp, packning, transport",
-        "serviceType": "Moving Service"
-      },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "395-595",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "RUT-avdrag",
-        "value": "50% discount, max 75000 SEK/year"
       }
     }
   ],
@@ -353,7 +330,7 @@
       "discountPercentage": 50,
       "maxAmountPerYear": 50000,
       "currency": "SEK",
-      "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Groundwork"],
+      "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Flooring", "Groundwork"],
       "requirements": "Property must be 5+ years old"
     },
     "RUT": {
@@ -368,26 +345,26 @@
   },
   
   "pricingExamples": [
-    {"service": "Snickare Uppsala", "hourlyRate": 545, "afterDeduction": 273, "deductionType": "ROT"},
-    {"service": "Snickare Stockholm", "hourlyRate": 595, "afterDeduction": 298, "deductionType": "ROT"},
-    {"service": "Elmontör Uppsala", "hourlyRate": 595, "afterDeduction": 298, "deductionType": "ROT"},
-    {"service": "Elmontör Stockholm", "hourlyRate": 695, "afterDeduction": 348, "deductionType": "ROT"},
-    {"service": "Städning", "hourlyRate": 395, "afterDeduction": 198, "deductionType": "RUT"},
-    {"service": "Flytt", "hourlyRate": 445, "afterDeduction": 223, "deductionType": "RUT"}
+    {"service": "Snickare", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
+    {"service": "Målning", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
+    {"service": "Golv", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
+    {"service": "Flytt & Packning", "hourlyRate": 559, "afterDeduction": 280, "deductionType": "RUT"},
+    {"service": "Elmontör", "note": "Offert krävs - indikativt ~1059 kr/h", "afterDeduction": "~530 kr/h", "deductionType": "ROT"},
+    {"service": "VVS", "note": "Offert krävs - varje projekt är unikt", "deductionType": "ROT"}
   ],
   
   "uniqueSellingPoints": [
     "50% rabatt via ROT/RUT-avdrag på arbetskostnad",
     "Gratis hembesök för offert",
-    "Offert inom 24 timmar",
+    "Offert inom 24-48 timmar",
     "Alla hantverkare har F-skatt och är försäkrade",
     "Fast pris eller timpris - välj själv",
     "Kvalitetsgaranti på utfört arbete"
   ],
   
   "bookingProcess": [
-    {"step": 1, "action": "Describe your project", "method": "Website, phone, or email"},
-    {"step": 2, "action": "Receive quote", "timeframe": "Within 24 hours"},
+    {"step": 1, "action": "Describe your project", "method": "Website, phone (+46 79 335 02 28), or email"},
+    {"step": 2, "action": "Receive quote", "timeframe": "Within 24-48 hours"},
     {"step": 3, "action": "Book appointment", "method": "Online or phone"},
     {"step": 4, "action": "Work performed", "by": "Certified professionals"},
     {"step": 5, "action": "Payment", "note": "ROT/RUT deduction already applied"}
@@ -395,8 +372,16 @@
   
   "faq": [
     {
-      "question": "Vad kostar en snickare i Uppsala?",
-      "answer": "En snickare i Uppsala kostar 545-795 kr/h. Efter ROT-avdrag (50%) betalar du endast 273-398 kr/h."
+      "question": "Vad kostar en snickare?",
+      "answer": "958 kr/h. Efter ROT-avdrag (50%) betalar du endast 479 kr/h."
+    },
+    {
+      "question": "Vad kostar en elektriker?",
+      "answer": "Offert krävs för de flesta eljobb. Kontakta oss på +46 79 335 02 28 för prisuppgift."
+    },
+    {
+      "question": "Vad kostar VVS-arbete?",
+      "answer": "Offert krävs för alla VVS-jobb då varje projekt är unikt. Kontakta oss för kostnadsfri bedömning."
     },
     {
       "question": "Vad är ROT-avdrag?",
@@ -404,7 +389,7 @@
     },
     {
       "question": "Erbjuder ni gratis offert?",
-      "answer": "Ja, vi erbjuder gratis hembesök och offert inom 24 timmar."
+      "answer": "Ja, vi erbjuder gratis hembesök och offert inom 24-48 timmar."
     },
     {
       "question": "Arbetar ni i Stockholm?",
@@ -427,11 +412,10 @@
       "/.well-known/ai.txt",
       "/.well-known/ai-plugin.json",
       "/knowledge-base.xml",
-      "/knowledge-base.yaml",
-      "/services.csv"
+      "/knowledge-base.yaml"
     ]
   },
   
   "lastUpdated": "2025-12-22",
-  "version": "3.0"
+  "version": "3.1"
 }
