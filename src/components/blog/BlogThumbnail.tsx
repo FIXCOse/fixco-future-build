@@ -41,13 +41,8 @@ const BlogThumbnail = ({ category, className = '' }: BlogThumbnailProps) => {
         <img 
           src={fixcoLogo} 
           alt="Fixco" 
-          className="h-12 md:h-16 lg:h-20 w-auto mb-3 drop-shadow-2xl"
+          className="h-12 md:h-16 lg:h-20 w-auto mb-6 drop-shadow-2xl"
         />
-        
-        {/* Tagline */}
-        <p className="text-white/70 text-xs md:text-sm tracking-[0.3em] uppercase mb-6 font-light">
-          Din Helhetslösning
-        </p>
         
         {/* Category label */}
         <div className="mt-auto">
