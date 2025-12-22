@@ -1,0 +1,30 @@
+# Fixco Security Contact
+# https://securitytxt.org/
+
+Contact: mailto:security@fixco.se
+Contact: mailto:info@fixco.se
+Contact: tel:+46-70-123-45-67
+
+Expires: 2026-12-31T23:59:59.000Z
+
+Preferred-Languages: sv, en
+
+Canonical: https://fixco.se/.well-known/security.txt
+
+Policy: https://fixco.se/integritetspolicy
+
+# Acknowledgments
+Acknowledgments: https://fixco.se/tack
+
+# Hiring
+Hiring: https://fixco.se/jobb
+
+# ---
+# Fixco AB
+# Kungsgatan 1
+# 753 18 Uppsala
+# Sverige
+# ---
+
+# We appreciate responsible disclosure of security vulnerabilities.
+# Please report any security issues to security@fixco.se

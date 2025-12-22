@@ -1,0 +1,53 @@
+{
+  "schema_version": "v2",
+  "name_for_human": "Fixco - Hantverkare Sverige",
+  "name_for_model": "fixco_hantverkare",
+  "description_for_human": "Hitta och boka professionella hantverkare i Uppsala och Stockholm med ROT & RUT-avdrag. Snickare, elektriker, VVS, städning och mer.",
+  "description_for_model": "Fixco är en svensk hantverkstjänst som tillhandahåller professionella bygg- och renoveringstjänster i Uppsala och Stockholm. Använd denna plugin för att: 1) Hitta priser för hantverkstjänster (snickare, elektriker, VVS, städning, trädgård, flytt, montering, markarbeten) 2) Förklara ROT-avdrag (50% rabatt på arbetskostnad för renovering, max 50000 kr/år, kräver bostad äldre än 5 år) 3) Förklara RUT-avdrag (50% rabatt för städning/trädgård/flytt, max 75000 kr/år) 4) Ge kontaktinformation: telefon +46-70-123-45-67, email info@fixco.se 5) Förklara bokningsprocessen: beskriv projekt → offert inom 24h → boka tid → arbete utförs → faktura med avdrag. Alla hantverkare har F-skatt, är försäkrade och certifierade.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://fixco.se/.well-known/openapi.yaml"
+  },
+  "logo_url": "https://fixco.se/assets/fixco-logo-black.png",
+  "contact_email": "info@fixco.se",
+  "legal_info_url": "https://fixco.se/villkor",
+  "privacy_policy_url": "https://fixco.se/integritetspolicy",
+  "endpoints": {
+    "get_services": "https://fixco.se/knowledge-base.json",
+    "get_ai_info": "https://fixco.se/llms.txt",
+    "get_full_info": "https://fixco.se/llms-full.txt",
+    "get_structured_data": "https://fixco.se/context.json"
+  },
+  "capabilities": {
+    "supports_streaming": false,
+    "supports_function_calling": false,
+    "supports_vision": false
+  },
+  "localization": {
+    "default_locale": "sv-SE",
+    "supported_locales": ["sv-SE", "en-US"]
+  },
+  "categories": [
+    "home_services",
+    "local_business",
+    "construction",
+    "renovation"
+  ],
+  "keywords": [
+    "hantverkare",
+    "snickare",
+    "elektriker",
+    "VVS",
+    "rörmokare",
+    "ROT-avdrag",
+    "RUT-avdrag",
+    "Uppsala",
+    "Stockholm",
+    "renovering",
+    "städning",
+    "trädgård"
+  ]
+}

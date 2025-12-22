@@ -1,0 +1,10 @@
+id,name,name_en,slug,description,price_min,price_max,currency,unit,price_after_deduction_min,price_after_deduction_max,tax_deduction,tax_deduction_percent,certification
+electrician,Elmontör,Electrician,elmontor,"Elinstallation, laddboxar, felsökning, säkringsbyten",595,895,SEK,hour,298,448,ROT,50,Elsäkerhetsverket
+plumber,VVS/Rörmokare,Plumber,vvs,"Badrumsrenovering, akuta läckor, värmepumpar",595,895,SEK,hour,298,448,ROT,50,Säker Vatten
+carpenter,Snickare,Carpenter,snickare,"Köksrenovering, garderober, altaner, fönster",545,795,SEK,hour,273,398,ROT,50,
+assembly,Montering,Assembly,montering,"IKEA-möbler, TV-fästen, vitvaror",445,695,SEK,hour,223,348,RUT,50,
+gardening,Trädgård,Gardening,tradgard,"Gräsklippning, häckklippning, plantering",395,595,SEK,hour,198,298,RUT,50,
+cleaning,Städning,Cleaning,stadning,"Hemstäd, flyttstäd, byggstäd, fönsterputs",345,495,SEK,hour,173,248,RUT,50,
+groundwork,Markarbeten,Groundwork,markarbeten,"Dränering, schaktning, plattläggning",595,895,SEK,hour,298,448,ROT,50,
+moving,Flytt,Moving,flytt,"Flytthjälp, packning, transport",395,595,SEK,hour,198,298,RUT,50,
+technical,Tekniska installationer,Technical Installations,tekniska-installationer,"Nätverk, larm, smart home",495,795,SEK,hour,,,Varies,,

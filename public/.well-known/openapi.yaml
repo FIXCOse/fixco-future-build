@@ -1,0 +1,222 @@
+openapi: "3.0.3"
+info:
+  title: Fixco Hantverkstjänster API
+  description: |
+    API för att hämta information om Fixcos hantverkstjänster i Uppsala och Stockholm.
+    
+    ## Tjänster som erbjuds:
+    - **Elmontör** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
+    - **VVS/Rörmokare** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
+    - **Snickare** (ROT): 545-795 kr/h → 273-398 kr/h efter avdrag
+    - **Montering** (RUT): 445-695 kr/h → 223-348 kr/h efter avdrag
+    - **Trädgård** (RUT): 395-595 kr/h → 198-298 kr/h efter avdrag
+    - **Städning** (RUT): 345-495 kr/h → 173-248 kr/h efter avdrag
+    - **Markarbeten** (ROT): 595-895 kr/h → 298-448 kr/h efter avdrag
+    - **Flytt** (RUT): 395-595 kr/h → 198-298 kr/h efter avdrag
+    
+    ## ROT-avdrag
+    50% rabatt på arbetskostnad, max 50 000 kr/år. Kräver bostad äldre än 5 år.
+    
+    ## RUT-avdrag
+    50% rabatt på arbetskostnad, max 75 000 kr/år. Inget ålderskrav på bostad.
+    
+    ## Kontakt
+    - Telefon: +46-70-123-45-67
+    - Email: info@fixco.se
+    - Adress: Kungsgatan 1, 753 18 Uppsala
+  version: "1.0.0"
+  contact:
+    name: Fixco Support
+    email: info@fixco.se
+    url: https://fixco.se/kontakt
+  license:
+    name: Proprietary
+    url: https://fixco.se/villkor
+  x-logo:
+    url: https://fixco.se/assets/fixco-logo-black.png
+    altText: Fixco Logo
+
+servers:
+  - url: https://fixco.se
+    description: Production server
+
+tags:
+  - name: Information
+    description: Hämta information om tjänster och priser
+  - name: Booking
+    description: Bokningsrelaterade endpoints
+  - name: AI
+    description: AI-specifika endpoints
+
+paths:
+  /knowledge-base.json:
+    get:
+      tags:
+        - Information
+        - AI
+      summary: Hämta all strukturerad data om Fixco
+      description: Returnerar komplett JSON med alla tjänster, priser, områden och FAQ
+      operationId: getKnowledgeBase
+      responses:
+        '200':
+          description: Strukturerad data om Fixco
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBase'
+              example:
+                name: Fixco
+                services:
+                  - name: Snickare
+                    priceRange: "545-795 kr/h"
+                    taxDeduction: ROT
+
+  /llms.txt:
+    get:
+      tags:
+        - AI
+      summary: AI-optimerad information i textformat
+      description: Markdown-formaterad information optimerad för LLM-parsing
+      operationId: getLlmsTxt
+      responses:
+        '200':
+          description: AI-optimerad textfil
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /context.json:
+    get:
+      tags:
+        - AI
+      summary: MCP Context för AI-modeller
+      description: Strukturerad JSON optimerad för AI context windows
+      operationId: getContextJson
+      responses:
+        '200':
+          description: AI context data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIContext'
+
+  /api/ai-info:
+    get:
+      tags:
+        - AI
+        - Information
+      summary: Live AI-information endpoint
+      description: Returnerar aktuell information för AI-system
+      operationId: getAiInfo
+      responses:
+        '200':
+          description: Live AI data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIInfo'
+
+  /boka-hembesok:
+    get:
+      tags:
+        - Booking
+      summary: Bokningssida för hembesök
+      description: Sida där kunder kan boka gratis hembesök för offert
+      operationId: getBookingPage
+      responses:
+        '200':
+          description: Bokningssida HTML
+          content:
+            text/html:
+              schema:
+                type: string
+
+components:
+  schemas:
+    KnowledgeBase:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Fixco"
+        description:
+          type: string
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        taxDeductions:
+          type: object
+          properties:
+            rot:
+              $ref: '#/components/schemas/TaxDeduction'
+            rut:
+              $ref: '#/components/schemas/TaxDeduction'
+        serviceAreas:
+          type: array
+          items:
+            type: string
+
+    Service:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Snickare"
+        description:
+          type: string
+        priceRange:
+          type: string
+          example: "545-795 kr/h"
+        priceAfterDeduction:
+          type: string
+          example: "273-398 kr/h"
+        taxDeduction:
+          type: string
+          enum: [ROT, RUT, None]
+
+    TaxDeduction:
+      type: object
+      properties:
+        name:
+          type: string
+        discount:
+          type: string
+          example: "50%"
+        maxYearly:
+          type: string
+          example: "50000 SEK"
+        requirements:
+          type: string
+
+    AIContext:
+      type: object
+      properties:
+        company:
+          type: object
+        services:
+          type: array
+          items:
+            type: object
+        instructions:
+          type: string
+
+    AIInfo:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        company:
+          type: string
+        services:
+          type: array
+          items:
+            type: object
+        contact:
+          type: object
+
+externalDocs:
+  description: Fixco huvudwebbplats
+  url: https://fixco.se
