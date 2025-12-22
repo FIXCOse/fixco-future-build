@@ -44,7 +44,6 @@ const LOW_PRIORITY = [
   () => import("../pages/Terms"),
   () => import("../pages/Privacy"),
   () => import("../pages/Cookies"),
-  () => import("../pages/Insurance"),
   () => import("../pages/AI"),
   () => import("../pages/HomeV2"),
 ];
