@@ -18,8 +18,8 @@ export const StickyPhoneButton = () => {
 
   return ReactDOM.createPortal(
     <div className="fixed bottom-28 md:bottom-6 right-6 z-50 flex flex-col items-end gap-2">
-      {/* Responstid badge */}
-      <div className="bg-card shadow-lg rounded-full px-4 py-2 flex items-center gap-2 text-sm border border-border/50 animate-pulse">
+      {/* Responstid badge - hidden on mobile */}
+      <div className="bg-card shadow-lg rounded-full px-4 py-2 hidden md:flex items-center gap-2 text-sm border border-border/50 animate-pulse">
         <Clock className="h-4 w-4 text-primary" />
         <span className="text-foreground">
           Vi svarar inom <strong className="text-primary">2 timmar</strong>
