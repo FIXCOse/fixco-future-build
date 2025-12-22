@@ -144,6 +144,14 @@ export default {
 					'50%': {
 						transform: 'translate(-8px, 18px)'
 					}
+				},
+				'marquee': {
+					'0%': {
+						transform: 'translateX(0%)'
+					},
+					'100%': {
+						transform: 'translateX(-33.33%)'
+					}
 				}
 			},
 			animation: {
@@ -163,7 +171,9 @@ export default {
 				'float-slow': 'float-slow 8s ease-in-out infinite',
 				'float-medium': 'float-medium 10s ease-in-out infinite',
 				'float-fast': 'float-fast 9s ease-in-out infinite',
-				'float-reverse': 'float-reverse 11s ease-in-out infinite'
+				'float-reverse': 'float-reverse 11s ease-in-out infinite',
+				// Marquee animation for TrustBar
+				'marquee': 'marquee 45s linear infinite'
 			},
 		backgroundImage: {
 			'gradient-primary': 'var(--gradient-primary)',
