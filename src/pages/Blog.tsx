@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Calendar, Clock, ArrowRight, Search, Tag, User, BookOpen } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Search, Tag, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { blogPosts, blogCategories, getFeaturedPosts } from '@/data/blogData';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import BlogThumbnail from '@/components/blog/BlogThumbnail';
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -141,14 +142,7 @@ const Blog = () => {
                     className="group"
                   >
                     <Card className={`h-full overflow-hidden hover:border-primary/50 transition-all ${idx === 0 ? 'lg:row-span-2' : ''}`}>
-                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5 relative">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <BookOpen className="h-12 w-12 text-primary/40" />
-                        </div>
-                        <Badge className="absolute top-4 left-4 bg-primary text-white">
-                          {blogCategories.find(c => c.slug === post.category)?.name}
-                        </Badge>
-                      </div>
+                      <BlogThumbnail category={post.category} className="rounded-t-lg" />
                       <CardContent className="p-6">
                         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                           <span className="flex items-center gap-1">
@@ -212,13 +206,9 @@ const Blog = () => {
                     to={`/blogg/${post.slug}`}
                     className="group"
                   >
-                    <Card className="h-full hover:border-primary/50 transition-all">
+                    <Card className="h-full hover:border-primary/50 transition-all overflow-hidden">
+                      <BlogThumbnail category={post.category} />
                       <CardHeader className="pb-3">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {blogCategories.find(c => c.slug === post.category)?.name}
-                          </Badge>
-                        </div>
                         <h3 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-2">
                           {post.title}
                         </h3>
