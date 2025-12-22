@@ -32,7 +32,6 @@ const AuthError = lazy(() => import("./pages/AuthError"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Cookies = lazy(() => import("./pages/Cookies"));
-const Insurance = lazy(() => import("./pages/Insurance"));
 
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -388,7 +387,6 @@ const App = () => {
                             <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
                             <Route path="rot-info" element={lazyElement(ROTInfo)} />
                             <Route path="cookies" element={lazyElement(Cookies)} />
-                            <Route path="ansvar-forsakring" element={lazyElement(Insurance)} />
                             <Route path="rot" element={lazyElement(ROTInfo)} />
                             <Route path="rut" element={lazyElement(RUT)} />
                             <Route path="referenser" element={lazyElement(Referenser)} />
@@ -427,7 +425,6 @@ const App = () => {
                             <Route path="terms" element={lazyElement(Terms)} />
                             <Route path="privacy" element={lazyElement(Privacy)} />
                             <Route path="cookies" element={lazyElement(Cookies)} />
-                            <Route path="insurance" element={lazyElement(Insurance)} />
                             <Route path="rot" element={lazyElement(ROTInfo)} />
                             <Route path="rut" element={lazyElement(RUT)} />
                             <Route path="book-visit" element={lazyElement(BookVisit)} />

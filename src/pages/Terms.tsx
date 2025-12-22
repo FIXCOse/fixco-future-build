@@ -88,8 +88,8 @@ export default function Terms() {
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
               {isEnglish
-                ? "We provide comprehensive warranties and carry full insurance coverage. See our Insurance & Liability page for complete details."
-                : "Vi tillhandahåller omfattande garantier och har fullständig försäkringsskydd. Se vår sida för Ansvar & Försäkring för fullständiga detaljer."
+                ? "We provide comprehensive warranties and carry full insurance coverage."
+                : "Vi tillhandahåller omfattande garantier och har fullständigt försäkringsskydd."
               }
             </p>
             <ul className="list-disc ml-6 space-y-2 text-muted-foreground">
