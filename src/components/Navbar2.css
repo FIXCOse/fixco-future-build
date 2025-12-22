@@ -145,7 +145,7 @@ p {
   border-radius: 1rem;
   padding: .5rem;
   position: fixed !important;
-  bottom: 1rem !important;
+  bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
   z-index: 9999 !important;
