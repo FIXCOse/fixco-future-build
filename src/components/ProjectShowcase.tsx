@@ -161,7 +161,7 @@ const ProjectShowcase = () => {
               {/* Project Image */}
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
+                  src={project.thumbnail_image || project.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'}
                   alt={project.title}
                   className="project-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
