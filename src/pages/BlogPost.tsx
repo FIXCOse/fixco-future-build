@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Share2, BookOpen, Info, AlertTriangle, Lightbulb, ExternalLink, TrendingUp } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Share2, TrendingUp, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { getBlogPostBySlug, getRelatedPosts, blogCategories } from '@/data/blogData';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
+import BlogThumbnail from '@/components/blog/BlogThumbnail';
 
 // Extend window for global modal function
 declare global {
@@ -277,8 +278,15 @@ const BlogPost = () => {
       <div className="min-h-screen bg-background">
         <Breadcrumbs />
 
+        {/* Hero Thumbnail */}
+        <div className="container mx-auto px-4 pt-6">
+          <div className="max-w-4xl mx-auto">
+            <BlogThumbnail category={post.category} className="rounded-2xl shadow-2xl" />
+          </div>
+        </div>
+
         {/* Article Header */}
-        <header className="pt-8 pb-12 bg-gradient-to-b from-primary/5 via-muted/30 to-background relative overflow-hidden">
+        <header className="pt-8 pb-12 bg-gradient-to-b from-background to-background relative overflow-hidden">
           {/* Background decoration */}
           <div className="absolute inset-0 opacity-30">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
