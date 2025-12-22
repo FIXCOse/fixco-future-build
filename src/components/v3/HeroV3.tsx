@@ -119,7 +119,7 @@ const HeroV3 = () => {
   }, [isHydrated]);
 
   return (
-    <section ref={heroRef} className="relative w-full overflow-hidden" style={{ height: '980px' }}>
+    <section ref={heroRef} className="relative w-full overflow-hidden h-[75vh] min-h-[500px] max-h-[750px]">
       {/* Background Gradient */}
       <div 
         className="absolute inset-0 animate-gradient-shift" 
