@@ -156,7 +156,7 @@ const HeroV3 = () => {
       </div>
 
       {/* Content Area */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 -mt-20 px-6">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-8 pt-8 px-6">
         <div className="flex flex-col items-center gap-6 max-w-5xl">
           
           <h1 ref={eyebrowRef} className="font-heading text-xl font-bold text-[#fafafa] text-center leading-[120%] mb-1">
