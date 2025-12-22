@@ -10,6 +10,7 @@ import useGlobalPricing from "@/hooks/useGlobalPricing";
 import { useCopy } from "@/copy/CopyProvider";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { gsap, CustomEase, ScrollTrigger } from '@/lib/gsap';
+import { useBookHomeVisitModal } from '@/hooks/useBookHomeVisitModal';
 
 interface ComparisonMetric {
   icon: React.ComponentType<any>;
@@ -28,6 +29,7 @@ const ComparisonUltra = () => {
   const { pricingMode, rotEnabled } = useGlobalPricing();
   const { t, locale } = useCopy();
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { open: openHomeVisitModal } = useBookHomeVisitModal();
 
   // Robust once-only counters
   const customerSatisfaction = useCountUpOnce({
@@ -339,16 +341,15 @@ const ComparisonUltra = () => {
                 
                 {/* Right: CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end items-center">
-                  <Link to={locale === 'en' ? '/en/contact' : '/kontakt'} className="w-full sm:w-auto">
-                    <Button
-                      variant="cta-primary"
-                      size="cta"
-                      className="w-full sm:w-auto"
-                    >
-                      {t('comparison.request_quote')}
-                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="cta-primary"
+                    size="cta"
+                    className="w-full sm:w-auto"
+                    onClick={openHomeVisitModal}
+                  >
+                    {t('comparison.request_quote')}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Button>
                   <Link to={locale === 'en' ? '/en/services' : '/tjanster'} className="w-full sm:w-auto">
                     <Button
                       variant="cta-secondary"
