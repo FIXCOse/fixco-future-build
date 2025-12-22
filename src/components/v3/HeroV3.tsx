@@ -119,7 +119,7 @@ const HeroV3 = () => {
   }, [isHydrated]);
 
   return (
-    <section ref={heroRef} className="relative w-full overflow-hidden min-h-[100svh] md:h-[85vh] md:min-h-[650px] md:max-h-[850px]">
+    <section ref={heroRef} className="relative w-full overflow-hidden h-auto md:h-[85vh] md:min-h-[650px] md:max-h-[850px]">
       {/* Background Gradient */}
       <div 
         className="absolute inset-0 animate-gradient-shift" 
@@ -145,19 +145,19 @@ const HeroV3 = () => {
       <div className="relative z-10 flex flex-col items-center w-full h-full px-4 md:px-6">
         
         {/* Fixco Logo - In document flow, not absolute */}
-        <div className="flex items-center justify-center pt-6 pb-4 md:pt-10 md:pb-6 shrink-0 animate-logo-fade-in">
+        <div className="flex items-center justify-center pt-8 pb-2 md:pt-10 md:pb-6 shrink-0 animate-logo-fade-in">
           <a href="/" className="inline-block max-w-full transition-transform duration-300 hover:scale-105 no-underline">
             <img 
               src={logoFixco} 
               loading="lazy"
               alt="Fixco" 
-              className="max-h-10 md:max-h-24 w-auto block"
+              className="max-h-16 md:max-h-24 w-auto block"
             />
           </a>
         </div>
 
         {/* Content Area - Flex grow to fill remaining space and center content */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-6 md:gap-8 w-full max-w-5xl pb-24 md:pb-8">
+        <div className="flex flex-col items-center justify-start gap-6 md:gap-8 w-full max-w-5xl py-6 md:py-8">
           <div className="flex flex-col items-center gap-4 md:gap-6">
             
             <h1 ref={eyebrowRef} className="font-heading text-lg md:text-xl font-bold text-[#fafafa] text-center leading-[120%]">
