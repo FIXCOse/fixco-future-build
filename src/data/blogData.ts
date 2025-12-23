@@ -1592,10 +1592,38 @@ Boverket | Plan- och bygglagen
     publishedAt: '2025-12-03',
     updatedAt: '2025-12-03',
     category: 'guider',
-    tags: ['altan', 'trädäck', 'bygglov', 'rot-avdrag', 'utomhus'],
+    tags: ['altan', 'trädäck', 'bygglov', 'rot-avdrag', 'utomhus', 'altanbygge pris 2026', 'bygglov altan', 'trädäck kostnad', 'komposit altan', 'ROT altan', 'attefallsregler altan', 'altan utan bygglov', '2025', '2026'],
     readingTime: 6,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Altanbygge kostar 30 000-150 000 kr beroende på storlek och material. Bygglov krävs ej för altangolv max 1,8 m över mark och max 15 m². ROT-avdrag 30% på arbetskostnaden. Tryckimpregnerat: 400-600 kr/m², komposit: 900-1 500 kr/m² men underhållsfritt. Tips: räkna på totalkostnad över 20 år.',
+    keyFacts: [
+      'Pris: 30 000-150 000 kr beroende på storlek',
+      'Bygglov ej krävs: max 1,8 m höjd, max 15 m²',
+      'ROT-avdrag 30% på arbetskostnad',
+      'Tryckimpregnerat: 400-600 kr/m²',
+      'Komposit: 900-1 500 kr/m², underhållsfritt',
+      'Byggtid: 2-3 dagar till 1-2 veckor'
+    ],
+    faqs: [
+      { q: 'Behöver jag bygglov för altan?', a: 'Nej, om altangolvet är max 1,8 m över mark, max 15 m² och minst 4,5 m från tomtgräns.' },
+      { q: 'Vad kostar det att bygga altan?', a: '30 000-150 000 kr beroende på storlek och material. Med ROT sparar du 30% på arbetet.' }
+    ],
+    sources: [
+      { name: 'Boverket', url: 'https://boverket.se' },
+      { name: 'Plan- och bygglagen', url: 'https://riksdagen.se' }
+    ],
+    expertise: ['Baserat på Boverkets regler 2025-2026'],
+    entityMentions: ['Boverket', 'Plan- och bygglagen', 'Sverige'],
+    quotableStatements: [
+      'En altan kostar typiskt 30 000-150 000 kr beroende på storlek och material.',
+      'Komposit kostar mer initialt men kräver noll underhåll – räkna på totalkostnaden över 20 år!'
+    ],
+    statistics: [
+      { stat: '30 000-150 000 kr altankostnad', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -3613,10 +3641,38 @@ Elsäkerhetsverket | SEK Svensk Elstandard | Elektriska Installatörsorganisatio
     publishedAt: '2025-12-16',
     updatedAt: '2025-12-22',
     category: 'lagstiftning',
-    tags: ['el', 'elsäkerhet', 'installation', 'regler', '2026', 'jordfelsbrytare'],
+    tags: ['el', 'elsäkerhet', 'installation', 'regler', '2026', 'jordfelsbrytare', 'elinstallation pris', 'behörig elektriker', 'elsäkerhetskopia', 'typ A jordfelsbrytare', 'elcentral uppgradering', 'laddbox installation', '2025'],
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Nya elregler 2026 kräver typ A jordfelsbrytare i badrum, kök och utomhus. Dokumentationskrav med elsäkerhetskopia obligatoriskt. Eluttag: 1 500-3 000 kr, elcentral: 15 000-40 000 kr, laddbox: 15 000-25 000 kr. ROT-avdrag 30% på arbetskostnad. Endast behörig elektriker får göra installationer.',
+    keyFacts: [
+      'Typ A jordfelsbrytare obligatoriskt 2026',
+      'Elsäkerhetskopia krävs vid all elinstallation',
+      'Nytt eluttag: 1 500-3 000 kr',
+      'Uppgradera elcentral: 15 000-40 000 kr',
+      'Laddbox: 15 000-25 000 kr',
+      'ROT-avdrag 30% på arbete'
+    ],
+    faqs: [
+      { q: 'Vad kostar elinstallation 2026?', a: 'Nytt uttag 1 500-3 000 kr, elcentral 15 000-40 000 kr, laddbox 15 000-25 000 kr.' },
+      { q: 'Vilken jordfelsbrytare krävs 2026?', a: 'Typ A är ny standard för badrum, kök och utomhus. Typ F för värmepumpar och laddbox.' }
+    ],
+    sources: [
+      { name: 'Elsäkerhetsverket', url: 'https://elsakerhetsverket.se' },
+      { name: 'SEK Svensk Elstandard', url: 'https://elstandard.se' }
+    ],
+    expertise: ['Baserat på Elsäkerhetsverkets föreskrifter'],
+    entityMentions: ['Elsäkerhetsverket', 'SEK Svensk Elstandard', 'EIO'],
+    quotableStatements: [
+      'Typ A jordfelsbrytare är nu standard för badrum, kök och utomhus.',
+      'Be alltid om komplett dokumentation vid elarbete – det är ditt bevis på säker installation!'
+    ],
+    statistics: [
+      { stat: '15 000-40 000 kr elcentraluppgradering', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -3787,10 +3843,37 @@ Byggahus.se | Villaägarna | IKEA | Marbodal
     publishedAt: '2025-12-15',
     updatedAt: '2025-12-22',
     category: 'guider',
-    tags: ['kök', 'renovering', 'budget', 'kostnad', 'ROT', '2026'],
+    tags: ['kök', 'renovering', 'budget', 'kostnad', 'ROT', '2026', 'köksrenovering pris', 'IKEA kök kostnad', 'köksskåp pris', 'köksmontering', 'bänkskiva kostnad', 'vitvaror pris', '2025'],
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Köksrenovering kostar 50 000-500 000 kr beroende på ambitionsnivå. Mellanklass (100-200 tkr): IKEA/Ballingslöv skåp, kompaktbänk, mellanmärkes vitvaror. ROT-avdrag 30% på arbetskostnad (montering, el, VVS, målning). Tips: behåll kökslayout för att spara 20-30% på VVS.',
+    keyFacts: [
+      'Budget: 50-100 tkr',
+      'Mellanklass: 100-200 tkr',
+      'Kvalitetskök: 200-350 tkr',
+      'Lyxkök: 350-500+ tkr',
+      'ROT-avdrag 30% på arbete',
+      'Aktiv byggtid: 2-3 veckor'
+    ],
+    faqs: [
+      { q: 'Vad kostar köksrenovering 2026?', a: '100 000-300 000 kr för mellanklass, 50-100 tkr budget, 350-500 tkr+ för lyxkök.' },
+      { q: 'Får jag ROT-avdrag för kök?', a: 'Ja, 30% på arbetskostnad: montering, el, VVS, målning. Material ger inget avdrag.' }
+    ],
+    sources: [
+      { name: 'Byggahus.se', url: 'https://byggahus.se' },
+      { name: 'Villaägarna', url: 'https://villaagarna.se' }
+    ],
+    expertise: ['Baserat på branschpriser 2025-2026'],
+    entityMentions: ['IKEA', 'Marbodal', 'Ballingslöv', 'Mio'],
+    quotableStatements: [
+      'Genomsnittskostnad för köksrenovering 2026: 100 000-300 000 kr för ett mellanklasskök på 10-15 m².'
+    ],
+    statistics: [
+      { stat: '100 000-300 000 kr mellanklasskök', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -3995,10 +4078,37 @@ Energimyndigheten | SKVP | NIBE | Thermia
     publishedAt: '2025-12-14',
     updatedAt: '2025-12-22',
     category: 'energi',
-    tags: ['värmepump', 'bergvärme', 'energi', 'besparing', 'uppvärmning', '2026'],
+    tags: ['värmepump', 'bergvärme', 'energi', 'besparing', 'uppvärmning', '2026', 'luft-vatten värmepump', 'luft-luft värmepump', 'värmepump pris', 'värmepump villa', 'energibesparing', 'COP värde', '2025'],
     readingTime: 12,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Värmepump minskar uppvärmningskostnader med 40-75%. Bergvärme: 150-250 tkr, 75% besparing, 7-8 års återbetalningstid. Luft-vatten: 100-180 tkr, 60% besparing. Luft-luft: 25-60 tkr, 40-50% besparing, bäst som komplement. ROT-avdrag 30% på installation.',
+    keyFacts: [
+      'Bergvärme: 150 000-250 000 kr, 75% besparing',
+      'Luft-vatten: 100 000-180 000 kr, 60% besparing',
+      'Luft-luft: 25 000-60 000 kr, 40-50% besparing',
+      'Återbetalningstid: 3-8 år',
+      'ROT-avdrag 30% på installation',
+      'Livslängd: 10-25 år beroende på typ'
+    ],
+    faqs: [
+      { q: 'Vilken värmepump är bäst?', a: 'Bergvärme för stora hus, luft-vatten för medelstora med vattenburet system, luft-luft som komplement.' },
+      { q: 'Vad kostar värmepump?', a: 'Bergvärme 150-250 tkr, luft-vatten 100-180 tkr, luft-luft 25-60 tkr.' }
+    ],
+    sources: [
+      { name: 'Energimyndigheten', url: 'https://energimyndigheten.se' },
+      { name: 'SKVP', url: 'https://skvp.se' }
+    ],
+    expertise: ['Baserat på Energimyndighetens data'],
+    entityMentions: ['Energimyndigheten', 'SKVP', 'NIBE', 'Thermia'],
+    quotableStatements: [
+      'En värmepump kan minska uppvärmningskostnaderna med 50-75% jämfört med direktverkande el.'
+    ],
+    statistics: [
+      { stat: '75% besparing bergvärme', source: 'Energimyndigheten' },
+      { stat: '7-8 års återbetalningstid', source: 'Branschdata 2026' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -4614,10 +4724,35 @@ Skatteverket.se – RUT-avdrag för städning | December 2025
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'rut',
-    tags: ['rut-avdrag', 'städning', 'hemstädning', 'flyttstädning', 'fönsterputs', '2026'],
+    tags: ['rut-avdrag', 'städning', 'hemstädning', 'flyttstädning', 'fönsterputs', '2026', 'städhjälp pris', 'RUT städning regler', 'storstädning kostnad', 'hemstädning timpris', 'flyttstäd pris', '2025'],
     readingTime: 7,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'RUT-avdrag för städning 2026 ger 50% rabatt på arbetskostnaden, max 75 000 kr per person. Hemstädning 350-500 kr/timme före RUT. Flyttstädning 3:a: ca 3 200 kr arbete = 1 600 kr efter RUT. Gäller: hemstädning, storstädning, fönsterputs, flyttstädning.',
+    keyFacts: [
+      'RUT-avdrag: 50% av arbetskostnad',
+      'Max 75 000 kr per person/år',
+      'Hemstädning: 350-500 kr/timme',
+      'Flyttstäd 3:a: ca 1 600 kr efter RUT',
+      'Gäller ej: företagsstädning, sanering'
+    ],
+    faqs: [
+      { q: 'Vad kostar hemstädning med RUT?', a: '175-250 kr/timme efter 50% RUT-avdrag. Normalt 350-500 kr/timme före avdrag.' },
+      { q: 'Får jag RUT för flyttstädning?', a: 'Ja, 50% avdrag på arbetskostnaden. Städtid 8 timmar kostar ca 1 600 kr efter RUT.' }
+    ],
+    sources: [
+      { name: 'Skatteverket', url: 'https://skatteverket.se' }
+    ],
+    expertise: ['Baserat på Skatteverkets regler 2025-2026'],
+    entityMentions: ['Skatteverket', 'F-skatt'],
+    quotableStatements: [
+      'Med RUT-avdrag betalar du halva priset för hemstädning, flyttstäd och fönsterputs.'
+    ],
+    statistics: [
+      { stat: '50% RUT-avdrag', source: 'Skatteverket' },
+      { stat: '75 000 kr max/person/år', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -4766,10 +4901,35 @@ Skatteverket.se – RUT-avdrag för flytt | December 2025
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'rut',
-    tags: ['rut-avdrag', 'flytt', 'flyttstädning', 'möbelmontering', '2026'],
+    tags: ['rut-avdrag', 'flytt', 'flyttstädning', 'möbelmontering', '2026', 'flytthjälp pris', 'flytt RUT-avdrag', 'packning RUT', 'gardinupphängning', 'flyttfirma kostnad', '2025'],
     readingTime: 7,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'RUT-avdrag vid flytt 2026 ger 50% rabatt på flytthjälp, flyttstädning och möbelmontering. Flytt 3:a: arbete 12 000 kr → 6 000 kr efter RUT. Transport och material ger INTE avdrag. Tips: boka flytt, städ och montering hos samma företag.',
+    keyFacts: [
+      'RUT 50% på: bärning, packning, uppackning',
+      'RUT 50% på: flyttstäd, möbelmontering',
+      'Max 75 000 kr per person/år',
+      'INTE avdrag: transport, kartonger, magasinering',
+      'Flytt 3:a: ca 6 000 kr efter RUT'
+    ],
+    faqs: [
+      { q: 'Får jag RUT för transport?', a: 'Nej, transport (körning) ger inte RUT-avdrag. Endast arbetskostnad räknas.' },
+      { q: 'Vad kostar flytt med RUT?', a: 'Flytt av 3:a: arbetskostnad ca 6 000 kr efter 50% RUT-avdrag, plus transport och material.' }
+    ],
+    sources: [
+      { name: 'Skatteverket', url: 'https://skatteverket.se' }
+    ],
+    expertise: ['Baserat på Skatteverkets regler 2025-2026'],
+    entityMentions: ['Skatteverket', 'F-skatt'],
+    quotableStatements: [
+      'Vid flytt kan du få RUT-avdrag för både flytthjälp, flyttstädning och montering i det nya hemmet.'
+    ],
+    statistics: [
+      { stat: '50% RUT-avdrag', source: 'Skatteverket' },
+      { stat: '6 000 kr flytt 3:a efter RUT', source: 'Branschpris 2026' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -4901,10 +5061,36 @@ Alcro | Beckers | Måleriföretagen
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'guider',
-    tags: ['målning', 'diy', 'renovering', 'steg-för-steg', 'tips'],
+    tags: ['målning', 'diy', 'renovering', 'steg-för-steg', 'tips', 'måla rum själv', 'väggmålning guide', 'måla tak', 'roller teknik', 'målarfärg tips', '2025', '2026'],
     readingTime: 9,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Måla rum själv sparar 5 000-15 000 kr jämfört med målare. Svårighetsgrad: lätt. Tidsåtgång: 4-6 timmar per rum. 10 steg: töm rum, tvätta, spackla, slipa, maskera, måla tak, måla kanter, rulla väggar, andra strykning, ta bort tejp.',
+    keyFacts: [
+      'Besparing: 5 000-15 000 kr vs målare',
+      'Tidsåtgång: 4-6 timmar per rum',
+      'Svårighetsgrad: Lätt',
+      'Färgåtgång: 0,1 liter per m²',
+      'Ordning: tak → väggar → snickerier → socklar'
+    ],
+    faqs: [
+      { q: 'Hur mycket färg behöver jag?', a: '0,1 liter per m² för två strykningar. 12 m² rum = ca 5 liter väggfärg.' },
+      { q: 'Måste jag grunda?', a: 'Ja, om ytan är ny (gips, trä) eller vid färgbyte. Annars räcker spädd färg.' }
+    ],
+    sources: [
+      { name: 'Alcro', url: 'https://alcro.se' },
+      { name: 'Beckers', url: 'https://beckers.se' }
+    ],
+    expertise: ['Steg-för-steg guide för nybörjare'],
+    entityMentions: ['Alcro', 'Beckers', 'Måleriföretagen'],
+    quotableStatements: [
+      'Att måla ett rum själv sparar dig 5 000–15 000 kr jämfört med att anlita målare.'
+    ],
+    statistics: [
+      { stat: '5 000-15 000 kr besparing', source: 'Jämförelse målare vs DIY' },
+      { stat: '4-6 timmar per rum', source: 'Genomsnittlig tid' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -5061,10 +5247,37 @@ Alcro | Bostik | GVK
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'guider',
-    tags: ['spackling', 'målning', 'diy', 'förberedelse', 'renovering'],
+    tags: ['spackling', 'målning', 'diy', 'förberedelse', 'renovering', 'spackla väggar', 'slipa spackel', 'grunda väggar', 'lagning hål vägg', 'målningsförberedelse', '2025', '2026'],
     readingTime: 8,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: '80% av målningsresultatet sitter i förberedelserna. Steg: identifiera skador, spackla hål (tunna lager), låt torka, slipa (120-180 korn), dammsug, grunda. Tips: flera tunna lager är bättre än ett tjockt. Använd andningsskydd vid slipning.',
+    keyFacts: [
+      '80% av resultatet är förberedelse',
+      'Tunna lager spackel = mindre sprickor',
+      'Grovslip: 120 korn, finslip: 180 korn',
+      'Grunda alltid spacklade ytor',
+      'Torktid spackel: 1-4 timmar (tunna lager)',
+      'Använd andningsskydd vid slipning'
+    ],
+    faqs: [
+      { q: 'Hur lång tid tar spackel att torka?', a: 'Tunna lager: 1-4 timmar. Tjocka lager: över natten.' },
+      { q: 'Måste jag grunda spacklade ytor?', a: 'Ja, annars suger spacklet upp mer färg och syns som matta fläckar.' }
+    ],
+    sources: [
+      { name: 'Alcro', url: 'https://alcro.se' },
+      { name: 'Bostik', url: 'https://bostik.se' }
+    ],
+    expertise: ['DIY-guide för hemmabruk'],
+    entityMentions: ['Alcro', 'Bostik', 'GVK'],
+    quotableStatements: [
+      '80% av ett bra målningsresultat sitter i förberedelserna. Slarva inte med spackling och slipning!'
+    ],
+    statistics: [
+      { stat: '80% av resultatet = förberedelse', source: 'Måleriproffs' },
+      { stat: '1-4 timmar torktid tunna lager', source: 'Produktanvisningar' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -5215,10 +5428,18 @@ Pergo | Tarkett | Golvbranschens Riksorganisation
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'guider',
-    tags: ['laminat', 'golv', 'diy', 'renovering', 'steg-för-steg'],
+    tags: ['laminat', 'golv', 'diy', 'renovering', 'steg-för-steg', 'lägga laminat', 'klickgolv guide', 'laminat pris', 'undergolv krav', 'laminat golvvärme', '2025', '2026'],
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Lägga laminat själv sparar ca 60% jämfört med golvläggare. Tidsåtgång: 1 dag för 20 m². Krav: plant undergolv (max 3 mm ojämnhet/2 m), acklimatisera 48 timmar, 8-10 mm distans vid väggar. Tips: köp 10% extra för svinn.',
+    keyFacts: ['Svårighetsgrad: Medel', 'Tidsåtgång: 1 dag för 20 m²', 'Besparing: 60% vs golvläggare', 'Distans vid vägg: 8-10 mm', 'Acklimatisering: 48 timmar'],
+    faqs: [{ q: 'Hur länge håller laminat?', a: '15-25 år beroende på slitsklass.' }],
+    sources: [{ name: 'Pergo', url: 'https://pergo.se' }],
+    entityMentions: ['Pergo', 'Tarkett'],
+    quotableStatements: ['Med rätt förberedelser kan du lägga laminatgolv på en dag.'],
+    statistics: [{ stat: '60% besparing vs golvläggare', source: 'Branschdata' }],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -5635,10 +5856,36 @@ Elsäkerhetsverket.se | Starkströmsföreskrifterna ELSÄK-FS
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'guider',
-    tags: ['el', 'eluttag', 'elsäkerhet', 'diy', 'regler', 'elsäkerhetsverket'],
+    tags: ['el', 'eluttag', 'elsäkerhet', 'diy', 'regler', 'elsäkerhetsverket', 'byta vägguttag', 'elarbete själv', 'strömbrytare byte', 'olagligt elarbete', 'elektriker pris', '2025', '2026'],
     readingTime: 9,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Du får byta vägguttag och strömbrytare (max 16A) själv. INTE: dra nya kablar, nya uttag, arbete i elcentral, våtrum. Böter upp till 200 000 kr för olagligt elarbete. Försäkring ogiltig vid skada. Steg: bryt ström, kontrollera, fotografera, byt, testa.',
+    keyFacts: [
+      'Tillåtet: byta befintligt uttag (max 16A)',
+      'Tillåtet: byta strömbrytare, stickkontakt',
+      'Förbjudet: dra nya kablar, elcentral',
+      'Förbjudet: våtrum, 3-fas, laddbox',
+      'Böter: upp till 200 000 kr',
+      'Försäkring ogiltig vid felaktigt arbete'
+    ],
+    faqs: [
+      { q: 'Vad får jag göra själv med el?', a: 'Byta befintliga uttag och strömbrytare (max 16A), lamphållare, stickkontakter.' },
+      { q: 'Vad händer om jag gör olagligt elarbete?', a: 'Böter upp till 200 000 kr, ogiltig försäkring, och du kan dömas för brott vid skada.' }
+    ],
+    sources: [
+      { name: 'Elsäkerhetsverket', url: 'https://elsakerhetsverket.se' }
+    ],
+    expertise: ['Baserat på Elsäkerhetsverkets föreskrifter'],
+    entityMentions: ['Elsäkerhetsverket', 'ELSÄK-FS'],
+    quotableStatements: [
+      'Felaktigt elarbete kan orsaka brand och dödsfall. Det kan också ogiltigförklara din försäkring.'
+    ],
+    statistics: [
+      { stat: 'Böter upp till 200 000 kr', source: 'Elsäkerhetsverket' },
+      { stat: 'Max 16A för DIY', source: 'Elsäkerhetsverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -5804,10 +6051,37 @@ Måleriföretagen | SCB Byggkostnadsindex | Konsumentverket
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'tips',
-    tags: ['målare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering'],
+    tags: ['målare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering', 'målare timpris', 'målning m2 pris', 'måla sovrum kostnad', 'väggmålning pris', 'takmålning kostnad', '2025'],
     readingTime: 8,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Målare kostar 450-600 kr/timme före ROT, 315-420 kr efter 30% ROT. Väggmålning: 80-150 kr/m². Sovrum (12 m²): 4 500-6 000 kr efter ROT. Vardagsrum (25 m²): 7 100-10 400 kr efter ROT. Tips: be om fast pris per rum.',
+    keyFacts: [
+      'Timpris: 450-600 kr före ROT',
+      'Med ROT: 315-420 kr/timme',
+      'Väggmålning: 80-150 kr/m²',
+      'Sovrum 12 m²: 4 500-6 000 kr totalt',
+      'Vardagsrum 25 m²: 7 100-10 400 kr totalt',
+      'Storstäder: +10-15%'
+    ],
+    faqs: [
+      { q: 'Vad kostar målare per timme?', a: '450-600 kr/timme före ROT, 315-420 kr efter 30% ROT-avdrag.' },
+      { q: 'Vad kostar det att måla ett sovrum?', a: 'Ca 4 500-6 000 kr totalt (arbete + material) efter ROT för 12 m² sovrum.' }
+    ],
+    sources: [
+      { name: 'Måleriföretagen', url: 'https://maleriforetagen.se' },
+      { name: 'SCB', url: 'https://scb.se' }
+    ],
+    expertise: ['Baserat på branschpriser 2025-2026'],
+    entityMentions: ['Måleriföretagen', 'SCB', 'Konsumentverket'],
+    quotableStatements: [
+      'Målare kostar 450-600 kr/timme före ROT-avdrag. Med 30% ROT betalar du 315-420 kr/timme.'
+    ],
+    statistics: [
+      { stat: '450-600 kr/timme målare', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -5966,10 +6240,37 @@ Konsumentverket | Byggföretagen | SCB Prisindex
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'tips',
-    tags: ['snickare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'altan', 'kök'],
+    tags: ['snickare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'altan', 'kök', 'snickare timpris', 'altanbygge pris', 'köksmontering kostnad', 'garderob pris', 'fönsterbyte kostnad', '2025'],
     readingTime: 9,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Snickare kostar 500-700 kr/timme före ROT, 350-490 kr efter 30% ROT. Altan 15 m²: 52 600 kr efter ROT. Köksmontering: 33 600 kr arbete efter ROT. Garderob: 1 500-15 000 kr per löpmeter. Lågsäsong nov-feb ger bättre priser.',
+    keyFacts: [
+      'Timpris: 500-700 kr före ROT',
+      'Med ROT: 350-490 kr/timme',
+      'Altan 15 m²: 52 600 kr totalt',
+      'Köksmontering: 33 600 kr arbete',
+      'Garderob: 1 500-15 000 kr/löpmeter',
+      'Dagspris: 4 000-5 600 kr'
+    ],
+    faqs: [
+      { q: 'Vad kostar snickare per timme?', a: '500-700 kr före ROT, 350-490 kr efter 30% ROT-avdrag.' },
+      { q: 'Vad kostar det att bygga altan?', a: 'Altan 15 m²: ca 52 600 kr totalt efter ROT-avdrag.' }
+    ],
+    sources: [
+      { name: 'Konsumentverket', url: 'https://konsumentverket.se' },
+      { name: 'Byggföretagen', url: 'https://byggforetagen.se' }
+    ],
+    expertise: ['Baserat på branschpriser 2025-2026'],
+    entityMentions: ['Konsumentverket', 'Byggföretagen', 'SCB'],
+    quotableStatements: [
+      'Snickare kostar 500-700 kr/timme före ROT-avdrag. Med 30% ROT betalar du 350-490 kr/timme.'
+    ],
+    statistics: [
+      { stat: '500-700 kr/timme snickare', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag', source: 'Skatteverket' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -6128,10 +6429,37 @@ VVS Företagen | Säker Vatten | Konsumentverket
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'tips',
-    tags: ['vvs', 'rörmokare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'jour'],
+    tags: ['vvs', 'rörmokare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'jour', 'rörmokare timpris', 'vvs pris', 'byta blandare kostnad', 'vattenläcka jour', 'stambyte pris', '2025'],
     readingTime: 9,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Rörmokare kostar 550-800 kr/timme dagtid, 385-490 kr efter 30% ROT. Jour: +50-100% påslag. Byta blandare: 2 000-6 800 kr totalt. Jourutryckning: 1 000-1 500 kr extra. Tips: lär dig var huvudkranen sitter – vattenskador kostar i snitt 100 000 kr.',
+    keyFacts: [
+      'Timpris dagtid: 550-800 kr',
+      'Med ROT: 385-490 kr/timme',
+      'Jour: +50-100% påslag',
+      'Utryckningsavgift: 500-1 500 kr',
+      'Byta blandare: 2 000-6 800 kr totalt',
+      'Stambyte: 80 000-150 000 kr/lägenhet'
+    ],
+    faqs: [
+      { q: 'Vad kostar rörmokare per timme?', a: '550-800 kr dagtid, 700-1 400 kr jour/kväll/helg.' },
+      { q: 'Vad kostar det att byta blandare?', a: '2 000-6 800 kr totalt (arbete + material) beroende på typ.' }
+    ],
+    sources: [
+      { name: 'VVS Företagen', url: 'https://vvsforetagen.se' },
+      { name: 'Säker Vatten', url: 'https://sakervatten.se' }
+    ],
+    expertise: ['Baserat på branschpriser 2025-2026'],
+    entityMentions: ['VVS Företagen', 'Säker Vatten', 'Konsumentverket'],
+    quotableStatements: [
+      'Rörmokare kostar 550-800 kr/timme på dagtid. Jourutryckning kan kosta dubbelt så mycket.'
+    ],
+    statistics: [
+      { stat: '550-800 kr/timme rörmokare', source: 'Branschpris 2026' },
+      { stat: '100 000 kr snitt vattenskada', source: 'Försäkringsstatistik' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -6302,10 +6630,37 @@ Boverket | Takläggaren | Konsumentverket | SCB
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'tips',
-    tags: ['tak', 'takbyte', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering'],
+    tags: ['tak', 'takbyte', 'pris', 'kostnad', 'rot-avdrag', '2026', 'renovering', 'takbyte pris', 'betongpannor', 'plåttak', 'tegelpannor', 'tak livslängd', '2025'],
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Takbyte kostar 600-1 200 kr/m² beroende på material. Villa 150 m²: 150 000-350 000 kr. Betongpannor: 600-900 kr/m², 40-60 år. Tegelpannor: billigast per år (1 875 kr). ROT-avdrag 30% på arbete. Tips: kontrollera råspont innan – kan öka kostnaden 30-50%.',
+    keyFacts: [
+      'Pris: 600-1 200 kr/m² totalt',
+      'Villa 150 m²: 150 000-350 000 kr',
+      'Betongpannor: 600-900 kr/m², 40-60 år',
+      'Tegelpannor: 800-1 100 kr/m², 60-100 år',
+      'Plåt ståndsfalsat: 900-1 200 kr/m²',
+      'ROT-avdrag 30% på arbete'
+    ],
+    faqs: [
+      { q: 'Vad kostar takbyte?', a: '600-1 200 kr/m². Villa 150 m²: 150 000-350 000 kr beroende på material.' },
+      { q: 'Vilken taktyp är billigast på sikt?', a: 'Tegelpannor – kostar ca 1 875 kr/år tack vare 60-100 års livslängd.' }
+    ],
+    sources: [
+      { name: 'Boverket', url: 'https://boverket.se' },
+      { name: 'Takläggaren', url: 'https://taklaggerna.se' }
+    ],
+    expertise: ['Baserat på branschpriser 2025-2026'],
+    entityMentions: ['Boverket', 'Takläggaren', 'Konsumentverket', 'SCB'],
+    quotableStatements: [
+      'Tegelpannor och ståndsfalsat plåt kostar mer initialt men blir billigast per år!'
+    ],
+    statistics: [
+      { stat: '600-1 200 kr/m² takbyte', source: 'Branschpris 2026' },
+      { stat: '40-100 år livslängd beroende på material', source: 'Takläggarna' }
+    ],
+    lastFactChecked: '2025-12-22'
   },
 
   // ============================================================
@@ -6497,10 +6852,18 @@ Boverket | Säker Vatten | VVS Företagen | Fuktcentrum
     publishedAt: '2025-12-22',
     updatedAt: '2025-12-22',
     category: 'tips',
-    tags: ['dränering', 'fukt', 'källare', 'pris', 'kostnad', 'rot-avdrag', '2026'],
+    tags: ['dränering', 'fukt', 'källare', 'pris', 'kostnad', 'rot-avdrag', '2026', 'dränering pris', 'fuktproblem källare', 'fuktutredning', 'mögelsanering', '2025'],
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
+    aiSummary: 'Dränering kostar 2 000-4 000 kr/löpmeter. Villa 80 m runt grund: 160 000-320 000 kr. ROT 30% på arbete. Varningssignaler: mögellukt, fuktfläckar, saltutfällningar. Tips: fuktutredning (5-15 tkr) kan spara hundratusentals kronor.',
+    keyFacts: ['Pris: 2 000-4 000 kr/löpmeter', 'Villa 80 m: 160 000-320 000 kr', 'ROT 30% på arbete', 'Livslängd: 40-60 år', 'Arbetstid: 1-3 veckor'],
+    faqs: [{ q: 'Vad kostar dränering?', a: '2 000-4 000 kr/löpmeter. Villa: 160 000-320 000 kr.' }],
+    sources: [{ name: 'Boverket', url: 'https://boverket.se' }],
+    entityMentions: ['Boverket', 'Säker Vatten', 'Fuktcentrum'],
+    quotableStatements: ['En fuktutredning kan avslöja problem som sparar dig hundratusentals kronor!'],
+    statistics: [{ stat: '2 000-4 000 kr/löpmeter', source: 'Branschpris 2026' }],
+    lastFactChecked: '2025-12-22'
   },
 ];
 
