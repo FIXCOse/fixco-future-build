@@ -535,6 +535,8 @@ const LocalServicePage = () => {
                       __html: content.rotRutSection.content
                         .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
                         .replace(/\n\n/g, '</p><p class="mt-3">')
+                        .replace(/\n(\d+)\. /g, '<br /><br />$1. ')
+                        .replace(/\n- /g, '<br />• ')
                     }} 
                   />
                 </motion.div>
