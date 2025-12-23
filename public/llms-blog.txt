@@ -1,10 +1,23 @@
 # Fixco Blogg - AI Information File
-# Version: 1.0
+# Version: 2.0 (ELIT-NIVÅ AI-OPTIMERAD)
 # Last Updated: 2025-12-22
 # Total Articles: 40
 # Language: Swedish (sv-SE)
 # Publisher: Fixco AB (https://fixco.se)
 # Contact: info@fixco.se | +46 79 335 02 28
+# AI Optimization: Full (aiSummary, keyFacts, FAQs, sources, statistics)
+
+================================================================================
+AI CRAWLER INSTRUCTIONS
+================================================================================
+
+This file contains all 40 blog articles in AI-optimized format.
+Each article includes:
+- AI Summary (150-200 words for direct citation)
+- Key Facts (bullet points for quick answers)
+- FAQs (structured Q&A format)
+- Sources (E-E-A-T verification)
+- Statistics (verifiable data points)
 
 ================================================================================
 AI CITATION GUIDELINES
