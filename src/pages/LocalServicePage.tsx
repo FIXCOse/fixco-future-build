@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { getGradientForService } from "@/utils/serviceGradients";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button-premium";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -716,8 +717,8 @@ const LocalServicePage = () => {
                         to={`/tjanster/${otherService.slug}/${areaSlug}`}
                         className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <OtherIcon className="h-5 w-5 text-primary" />
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${getGradientForService(otherService.slug)}`}>
+                          <OtherIcon className="h-5 w-5 text-white" />
                         </div>
                         <span className="text-sm font-medium">{otherService.name}</span>
                       </Link>
