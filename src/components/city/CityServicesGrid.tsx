@@ -15,9 +15,9 @@ interface ServiceItem {
 }
 
 const services: ServiceItem[] = [
-  { slug: "el", name: "Elektriker", icon: Zap, description: "El & installation" },
+  { slug: "elektriker", name: "Elektriker", icon: Zap, description: "El & installation" },
   { slug: "vvs", name: "VVS", icon: Wrench, description: "Rör & vatten" },
-  { slug: "snickeri", name: "Snickeri", icon: Hammer, description: "Trä & bygg" },
+  { slug: "snickare", name: "Snickeri", icon: Hammer, description: "Trä & bygg" },
   { slug: "malare", name: "Målare", icon: Paintbrush, description: "Färg & tapet" },
   { slug: "tradgard", name: "Trädgård", icon: TreePine, description: "Utemiljö" },
   { slug: "montering", name: "Montering", icon: Package, description: "Möbler & inredning" },

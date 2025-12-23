@@ -12,21 +12,21 @@ interface CityAreasTabsProps {
   categoryMap?: Record<string, string[]>;
 }
 
-// Default kategorisering för Uppsala
+// Default kategorisering för Uppsala - synkat med UPPSALA_AREAS
 const defaultUppsalaCategories: Record<string, string[]> = {
   "alla": [],  // Alla områden
-  "centralt": ["Uppsala", "Luthagen", "Svartbäcken", "Gränby", "Vaksala", "Eriksberg"],
+  "centralt": ["Uppsala", "Gränby", "Eriksberg", "Sävja"],
   "norr": ["Storvreta", "Björklinge", "Bälinge", "Gamla Uppsala", "Vattholma", "Skyttorp", "Lövstalöt"],
-  "soder": ["Gottsunda", "Sunnersta", "Sävja", "Ultuna", "Alsike", "Knivsta"],
+  "soder": ["Gottsunda", "Sunnersta", "Ultuna", "Alsike", "Knivsta"],
 };
 
-// Default kategorisering för Stockholm
+// Default kategorisering för Stockholm - synkat med STOCKHOLM_AREAS
 const defaultStockholmCategories: Record<string, string[]> = {
   "alla": [],
-  "innerstad": ["Södermalm", "Vasastan", "Östermalm", "Kungsholmen", "Norrmalm"],
-  "norr": ["Solna", "Sundbyberg", "Täby", "Danderyd", "Lidingö", "Vallentuna", "Upplands Väsby"],
-  "soder": ["Huddinge", "Botkyrka", "Haninge", "Tyresö", "Nacka", "Nynäshamn"],
-  "vast": ["Bromma", "Ekerö", "Järfälla", "Sollentuna", "Upplands-Bro"],
+  "innerstad": ["Stockholm", "Södermalm", "Vasastan", "Östermalm", "Kungsholmen"],
+  "norr": ["Solna", "Sundbyberg", "Täby", "Danderyd", "Lidingö", "Vallentuna", "Upplands Väsby", "Sigtuna", "Märsta"],
+  "soder": ["Huddinge", "Botkyrka", "Haninge", "Tyresö", "Nacka", "Nynäshamn", "Salem", "Södertälje"],
+  "vast": ["Bromma", "Ekerö", "Järfälla", "Sollentuna", "Upplands-Bro", "Hägersten"],
 };
 
 const categoryLabels: Record<string, string> = {
@@ -96,7 +96,7 @@ const AreaCard = ({ area, index }: AreaCardProps) => {
       transition={{ delay: index * 0.03, duration: 0.3 }}
     >
       <Link
-        to={`/tjanster/el/${areaSlug}`}
+        to={`/tjanster/snickare/${areaSlug}`}
         className="group flex flex-col p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-primary/30 hover:scale-[1.02] transition-all duration-300"
       >
         <div className="flex items-start justify-between mb-3">
