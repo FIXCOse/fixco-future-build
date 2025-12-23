@@ -101,8 +101,8 @@ export const CityHeroIllustration = ({ cityName }: CityHeroIllustrationProps) =>
       
       {/* Orbiting service icons */}
       {orbitingServices.map(({ Icon, angle, color, bgGradient, glow }, idx) => {
-        const radius = 155; // Distance from center on large screens
-        const radiusSm = 120; // Distance on smaller screens
+        const radius = 190; // Distance from center on large screens
+        const radiusSm = 150; // Distance on smaller screens
         const x = Math.cos((angle - 90) * (Math.PI / 180));
         const y = Math.sin((angle - 90) * (Math.PI / 180));
         

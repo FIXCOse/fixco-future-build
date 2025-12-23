@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Seo } from "@/components/SEO";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { cityData, CityKey } from "@/data/cityData";
+import { getAreaActivity, getAreaReviews, TestimonialData } from "@/data/areaActivityData";
+import { AreaKey } from "@/data/localServiceData";
 import { 
   CheckCircle2, 
   MapPin, 
@@ -20,6 +22,9 @@ import { GradientText } from "@/components/v2/GradientText";
 import { GlassCard } from "@/components/v2/GlassCard";
 import { CityHeroIllustration } from "@/components/city/CityHeroIllustration";
 import { CityServicesGrid } from "@/components/city/CityServicesGrid";
+import { CityStatsBar } from "@/components/city/CityStatsBar";
+import { CityAreasTabs } from "@/components/city/CityAreasTabs";
+import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { Button } from "@/components/ui/button-premium";
 import {
@@ -51,10 +56,67 @@ const itemVariants = {
   }
 };
 
+// Alla Uppsala-områden för att samla statistik och recensioner
+const uppsalaAreas = [
+  "Uppsala", "Gottsunda", "Luthagen", "Svartbäcken", "Gränby", "Vaksala", 
+  "Eriksberg", "Storvreta", "Björklinge", "Bälinge", "Gamla Uppsala", 
+  "Sunnersta", "Sävja", "Ultuna", "Alsike", "Knivsta", "Vattholma", "Skyttorp", "Lövstalöt"
+];
+
+const stockholmAreas = [
+  "Stockholm", "Södermalm", "Vasastan", "Östermalm", "Kungsholmen", "Norrmalm",
+  "Bromma", "Huddinge", "Nacka", "Solna", "Täby", "Sundbyberg", "Lidingö",
+  "Sollentuna", "Danderyd", "Järfälla", "Botkyrka", "Haninge", "Tyresö", "Värmdö"
+];
+
 export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
   const { locale } = useCopy();
   const data = cityData[city];
   const citySlug = city.toLowerCase();
+
+  // Bestäm vilka områden som tillhör denna stad
+  const cityAreas = city === "Uppsala" ? uppsalaAreas : stockholmAreas;
+
+  // Samla all statistik från alla områden
+  const aggregatedStats = useMemo(() => {
+    let totalProjects = 0;
+    let totalReviews = 0;
+    let totalWorkers = 0;
+    let ratingSum = 0;
+    let ratingCount = 0;
+
+    cityAreas.forEach(area => {
+      const activity = getAreaActivity(area as AreaKey);
+      totalProjects += activity.recentProjects;
+      totalReviews += activity.reviewCount;
+      totalWorkers = Math.max(totalWorkers, activity.activeWorkers); // Max istället för summa
+      ratingSum += activity.avgRating;
+      ratingCount++;
+    });
+
+    return {
+      totalProjects,
+      totalReviews,
+      activeWorkers: totalWorkers,
+      avgRating: ratingSum / ratingCount,
+    };
+  }, [cityAreas]);
+
+  // Samla alla recensioner från alla områden
+  const allTestimonials = useMemo(() => {
+    const reviews: TestimonialData[] = [];
+    const services = ["Elektriker", "VVS", "Snickeri", "Målare", "Montering"];
+    
+    // Hämta 3 recensioner per område och tjänst (varierar)
+    cityAreas.forEach((area, areaIdx) => {
+      const service = services[areaIdx % services.length];
+      const areaReviews = getAreaReviews(area, service, 2);
+      reviews.push(...areaReviews);
+    });
+
+    // Blanda recensionerna för variation
+    return reviews.sort(() => Math.random() - 0.5).slice(0, 20);
+  }, [cityAreas]);
 
   const breadcrumb = getBreadcrumbSchema([
     { name: "Hem", url: "/" },
@@ -78,8 +140,8 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "127",
+      "ratingValue": aggregatedStats.avgRating.toFixed(1),
+      "reviewCount": aggregatedStats.totalReviews.toString(),
       "bestRating": "5"
     }
   };
@@ -124,20 +186,8 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
                  style={{ animationDuration: '5s', animationDelay: '1s' }}>
               <FixcoFIcon className="w-full h-full" disableFilter />
             </div>
-            <div className="absolute top-1/2 left-6 w-12 h-12 rotate-[-8deg] opacity-[0.04] animate-pulse" 
-                 style={{ animationDuration: '7s', animationDelay: '2s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
             <div className="absolute top-1/3 right-8 w-20 h-20 rotate-[20deg] opacity-[0.05] animate-pulse" 
                  style={{ animationDuration: '5.5s', animationDelay: '0.5s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute bottom-12 left-20 w-20 h-20 rotate-[-25deg] opacity-[0.05] animate-pulse" 
-                 style={{ animationDuration: '6.5s', animationDelay: '1.5s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute bottom-8 right-24 w-16 h-16 rotate-[8deg] opacity-[0.04] animate-pulse" 
-                 style={{ animationDuration: '4.5s', animationDelay: '3s' }}>
               <FixcoFIcon className="w-full h-full" disableFilter />
             </div>
           </div>
@@ -250,126 +300,142 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
           </div>
         </section>
 
-        {/* Districts Section */}
-        {data.districts?.length > 0 && (
-          <section className="py-16 bg-muted/20">
-            <div className="container mx-auto px-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <GlassCard className="p-8" hoverEffect={false}>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-primary" />
-                    </div>
-                    <h2 className="text-2xl md:text-3xl font-bold">
-                      Vi arbetar i hela {city}
-                    </h2>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {data.districts.map((d) => (
-                      <motion.span 
-                        key={d} 
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-4 py-2 rounded-full bg-white/[0.08] border border-white/10 text-sm font-medium hover:bg-primary/20 hover:border-primary/30 transition-all cursor-default"
-                      >
-                        {d}
-                      </motion.span>
-                    ))}
-                  </div>
-                </GlassCard>
-              </motion.div>
-            </div>
-          </section>
-        )}
+        {/* ===== NY STRUKTUR EFTER TJÄNSTER ===== */}
 
-        {/* Cases and Testimonials */}
+        {/* Stats Section */}
+        <section className="py-16 bg-muted/20 relative overflow-hidden">
+          {/* Floating F Watermarks */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-8 left-12 w-20 h-20 rotate-[-12deg] opacity-[0.04] animate-pulse" 
+                 style={{ animationDuration: '7s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            <div className="absolute bottom-8 right-12 w-24 h-24 rotate-[15deg] opacity-[0.05] animate-pulse" 
+                 style={{ animationDuration: '6s', animationDelay: '2s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <GradientText>Fixco i {city}-regionen</GradientText>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Sammanställd statistik från alla {cityAreas.length} orter vi arbetar i.
+              </p>
+            </motion.div>
+            
+            <CityStatsBar stats={aggregatedStats} cityName={city} />
+          </div>
+        </section>
+
+        {/* Areas Tabs Section */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Cases */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <GlassCard className="p-8 h-full" hoverEffect={false}>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500/30 to-orange-500/10 flex items-center justify-center">
-                      <Briefcase className="w-5 h-5 text-amber-400" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-10"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-primary" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Områden i {city}
+                </h2>
+              </div>
+              <p className="text-muted-foreground max-w-2xl">
+                Klicka på ett område för att se våra tjänster och priser specifikt för den orten.
+              </p>
+            </motion.div>
+            
+            <CityAreasTabs cityName={city} areas={cityAreas} />
+          </div>
+        </section>
+
+        {/* Testimonials Carousel */}
+        <section className="py-16 bg-muted/20 relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-1/4 left-8 w-28 h-28 rotate-[-20deg] opacity-[0.04] animate-pulse" 
+                 style={{ animationDuration: '6s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            <div className="absolute bottom-1/4 right-8 w-20 h-20 rotate-[10deg] opacity-[0.05] animate-pulse" 
+                 style={{ animationDuration: '5s', animationDelay: '1.5s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <GradientText>Kundomdömen från {city}-regionen</GradientText>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Samlade recensioner från {aggregatedStats.totalReviews}+ nöjda kunder i hela {city}-området.
+              </p>
+            </motion.div>
+            
+            <TestimonialCarouselLocal testimonials={allTestimonials} />
+          </div>
+        </section>
+
+        {/* Cases Grid */}
+        <section className="py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-10"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/10 flex items-center justify-center">
+                  <Briefcase className="w-6 h-6 text-amber-400" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Senaste Case från {city}
+                </h2>
+              </div>
+            </motion.div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {data.cases.map((c, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <GlassCard className="p-6 h-full" hoverEffect>
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/30 to-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      </div>
+                      <h3 className="font-semibold text-foreground">{c.title}</h3>
                     </div>
-                    <h3 className="text-xl font-bold">Senaste Case från {city}</h3>
-                  </div>
-                  <ul className="space-y-6">
-                    {data.cases.map((c, i) => (
-                      <motion.li 
-                        key={i} 
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
-                        className="pb-6 border-b border-white/10 last:border-0 last:pb-0"
-                      >
-                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                          {c.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground pl-6">{c.desc}</p>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </GlassCard>
-              </motion.div>
-              
-              {/* Testimonials */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <GlassCard className="p-8 h-full" hoverEffect={false}>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500/30 to-amber-500/10 flex items-center justify-center">
-                      <Star className="w-5 h-5 text-yellow-400" />
-                    </div>
-                    <h3 className="text-xl font-bold">Kundomdömen från {city}</h3>
-                  </div>
-                  <ul className="space-y-6">
-                    {data.testimonials.map((t, i) => (
-                      <motion.li 
-                        key={i} 
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
-                        className="pb-6 border-b border-white/10 last:border-0 last:pb-0"
-                      >
-                        <div className="flex gap-2 mb-2">
-                          {[...Array(5)].map((_, j) => (
-                            <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                          ))}
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <Quote className="w-4 h-4 text-primary flex-shrink-0 mt-1" />
-                          <p className="text-sm text-muted-foreground italic">{t.text}</p>
-                        </div>
-                        <p className="text-sm font-medium mt-2 pl-6">
-                          – {t.author}
-                          {t.date && <span className="text-muted-foreground ml-1">({t.date})</span>}
-                        </p>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </GlassCard>
-              </motion.div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
+                  </GlassCard>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -442,7 +508,7 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               <p className="text-muted-foreground mb-8 text-lg">
                 Kontakta oss idag för en kostnadsfri offert. Vi återkommer inom 24 timmar.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div className="flex flex-wrap gap-4 justify-center mb-10">
                 <Button asChild size="lg" variant="cta">
                   <a href="tel:+46793350228">
                     <Phone className="w-5 h-5 mr-2" />
@@ -455,6 +521,25 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Link>
                 </Button>
+              </div>
+              
+              {/* Quick area links */}
+              <div className="pt-8 border-t border-white/10">
+                <p className="text-sm text-muted-foreground mb-4">Populära områden:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {cityAreas.slice(0, 8).map((area) => {
+                    const areaSlug = area.toLowerCase().replace(/\s+/g, "-").replace(/å/g, "a").replace(/ä/g, "a").replace(/ö/g, "o");
+                    return (
+                      <Link
+                        key={area}
+                        to={`/tjanster/el/${areaSlug}`}
+                        className="px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-sm hover:bg-primary/20 hover:border-primary/30 transition-all"
+                      >
+                        {area}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           </div>
