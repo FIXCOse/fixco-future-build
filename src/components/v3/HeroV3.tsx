@@ -142,44 +142,6 @@ const HeroV3 = () => {
         <div className="absolute bottom-20 left-10 w-56 h-56 bg-[#4a2490] opacity-20 blur-2xl rounded-full animate-float-reverse" />
       </div>
 
-      {/* Floating F Watermarks */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top left */}
-        <div className="absolute top-20 left-8 w-16 h-16 rotate-[-15deg] opacity-[0.08] animate-pulse" 
-             style={{ animationDuration: '6s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-        
-        {/* Top right */}
-        <div className="absolute top-32 right-16 w-24 h-24 rotate-12 opacity-[0.06] animate-pulse" 
-             style={{ animationDuration: '5s', animationDelay: '1s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-        
-        {/* Middle left */}
-        <div className="absolute top-1/2 left-6 w-12 h-12 rotate-[-8deg] opacity-[0.05] animate-pulse" 
-             style={{ animationDuration: '7s', animationDelay: '2s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-        
-        {/* Middle right */}
-        <div className="absolute top-1/3 right-8 w-20 h-20 rotate-[20deg] opacity-[0.07] animate-pulse" 
-             style={{ animationDuration: '5.5s', animationDelay: '0.5s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-        
-        {/* Bottom left */}
-        <div className="absolute bottom-40 left-20 w-28 h-28 rotate-[-25deg] opacity-[0.06] animate-pulse" 
-             style={{ animationDuration: '6.5s', animationDelay: '1.5s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-        
-        {/* Bottom right */}
-        <div className="absolute bottom-32 right-24 w-16 h-16 rotate-[8deg] opacity-[0.05] animate-pulse" 
-             style={{ animationDuration: '4.5s', animationDelay: '3s' }}>
-          <FixcoFIcon className="w-full h-full" disableFilter />
-        </div>
-      </div>
 
       {/* Foreground Content - Flex column layout to prevent overlap */}
       <div className="relative z-10 flex flex-col items-center w-full h-full px-4 md:px-6">
