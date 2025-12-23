@@ -39,10 +39,11 @@ const BlogPost = () => {
     };
   }, []);
 
-  // Schema.org för Article
+  // Schema.org för Article - UTÖKAT FÖR AI-SÖKMOTORER
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `https://fixco.se/blogg/${post.slug}#article`,
     "headline": post.title,
     "description": post.excerpt,
     "image": post.image,
@@ -51,7 +52,13 @@ const BlogPost = () => {
     "author": {
       "@type": "Person",
       "name": post.author.name,
-      "jobTitle": post.author.role
+      "jobTitle": post.author.role,
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Fixco AB",
+        "@id": "https://fixco.se#organization"
+      },
+      "knowsAbout": post.tags.slice(0, 10)
     },
     "publisher": {
       "@type": "Organization",
@@ -59,12 +66,88 @@ const BlogPost = () => {
       "logo": {
         "@type": "ImageObject",
         "url": "https://fixco.se/assets/fixco-logo-black.png"
-      }
+      },
+      "url": "https://fixco.se"
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://fixco.se/blogg/${post.slug}`
+    },
+    // AI-OPTIMERADE FÄLT
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": [".ai-summary", "h1", "h2", ".key-fact"]
+    },
+    "about": post.entityMentions?.slice(0, 3).map(entity => ({
+      "@type": "Thing",
+      "name": entity
+    })),
+    "mentions": post.entityMentions?.map(entity => ({
+      "@type": "Thing",
+      "name": entity
+    })),
+    "keywords": post.tags.join(", "),
+    "articleSection": categoryName,
+    "wordCount": post.content.split(/\s+/).length,
+    "inLanguage": "sv-SE",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "citation": post.sources?.map(s => ({
+      "@type": "CreativeWork",
+      "name": s.name,
+      "url": s.url
+    })),
+    "lastReviewed": post.lastFactChecked
+  };
+
+  // FAQPage Schema för AI-sökmotorer
+  const faqSchema = post.faqs?.length ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": post.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a,
+        "author": {
+          "@type": "Organization",
+          "name": "Fixco AB"
+        }
+      }
+    }))
+  } : null;
+
+  // HowTo Schema för guider
+  const isGuide = post.category === 'guider';
+  const howToSchema = isGuide ? {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": post.title,
+    "description": post.excerpt,
+    "totalTime": `PT${post.readingTime * 3}M`,
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "SEK",
+      "value": "0"
     }
+  } : null;
+
+  // Author Schema med E-E-A-T
+  const authorSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": post.author.name,
+    "jobTitle": post.author.role,
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Fixco AB",
+      "@id": "https://fixco.se#organization"
+    },
+    "knowsAbout": post.tags.slice(0, 10),
+    "hasCredential": [
+      { "@type": "EducationalOccupationalCredential", "name": "Certifierad expert inom byggsektorn" }
+    ]
   };
 
   const breadcrumbSchema = {
@@ -273,6 +356,9 @@ const BlogPost = () => {
         ))}
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        {faqSchema && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
+        {howToSchema && <script type="application/ld+json">{JSON.stringify(howToSchema)}</script>}
+        <script type="application/ld+json">{JSON.stringify(authorSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -356,6 +442,53 @@ const BlogPost = () => {
         <article className="py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
+              
+              {/* AI Summary Box - Snabb sammanfattning för AI och läsare */}
+              {post.aiSummary && (
+                <div className="ai-summary mb-10 p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 via-purple-500/5 to-cyan-500/10 border border-blue-500/20 backdrop-blur-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-lg">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg text-foreground mb-2 flex items-center gap-2">
+                        Snabb sammanfattning
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400">AI-optimerad</span>
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">{post.aiSummary}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Key Facts Box - Faktapunkter för AI-citeringar */}
+              {post.keyFacts && post.keyFacts.length > 0 && (
+                <div className="key-facts mb-10 p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-green-500/5 border border-emerald-500/20">
+                  <h3 className="font-bold text-lg text-foreground mb-4 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    Viktiga fakta
+                  </h3>
+                  <ul className="grid gap-2">
+                    {post.keyFacts.map((fact, i) => (
+                      <li key={i} className="key-fact flex items-start gap-3 p-2 rounded-lg hover:bg-emerald-500/5 transition-colors">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
+                          <svg className="w-3 h-3 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
+                        <span className="text-foreground/90">{fact}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <div 
                 className="prose prose-slate dark:prose-invert max-w-none
                   prose-headings:text-foreground prose-p:text-muted-foreground
@@ -363,6 +496,59 @@ const BlogPost = () => {
                   prose-li:text-muted-foreground prose-table:my-0"
                 dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
               />
+
+              {/* FAQ Section - Strukturerade frågor för AI */}
+              {post.faqs && post.faqs.length > 0 && (
+                <div className="mt-12 p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20">
+                  <h3 className="font-bold text-xl text-foreground mb-6 flex items-center gap-2">
+                    <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    Vanliga frågor
+                  </h3>
+                  <div className="space-y-4">
+                    {post.faqs.map((faq, i) => (
+                      <div key={i} className="p-4 rounded-xl bg-background/50 border border-border/50">
+                        <h4 className="font-semibold text-foreground mb-2">{faq.q}</h4>
+                        <p className="text-muted-foreground">{faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sources Box - E-E-A-T signaler */}
+              {post.sources && post.sources.length > 0 && (
+                <div className="mt-8 p-5 rounded-xl bg-muted/30 border border-border/50">
+                  <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    Källor
+                  </h4>
+                  <ul className="space-y-1">
+                    {post.sources.map((source, i) => (
+                      <li key={i}>
+                        <a 
+                          href={source.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-primary hover:underline text-sm"
+                        >
+                          {source.name} →
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {post.lastFactChecked && (
+                    <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border/50">
+                      Senast verifierad: {new Date(post.lastFactChecked).toLocaleDateString('sv-SE')}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/* Tags */}
               <div className="mt-12 pt-8 border-t border-border">

@@ -260,6 +260,70 @@
     "rotInfo": "https://fixco.se/rot-info",
     "faq": "https://fixco.se/faq",
     "llmsTxt": "https://fixco.se/llms.txt",
+    "llmsBlogTxt": "https://fixco.se/llms-blog.txt",
     "knowledgeBase": "https://fixco.se/knowledge-base.json"
+  },
+
+  "blog": {
+    "totalArticles": 40,
+    "lastUpdated": "2025-12-22",
+    "aiOptimized": true,
+    "categories": [
+      { "id": "rot-rut", "name": "ROT-avdrag", "count": 15 },
+      { "id": "rut", "name": "RUT-avdrag", "count": 4 },
+      { "id": "renovering", "name": "Renovering", "count": 5 },
+      { "id": "guider", "name": "DIY-guider", "count": 6 },
+      { "id": "tips", "name": "Prisguider", "count": 5 },
+      { "id": "energi", "name": "Energi", "count": 3 },
+      { "id": "brf", "name": "BRF", "count": 2 },
+      { "id": "lagstiftning", "name": "Regler 2026", "count": 3 },
+      { "id": "nyheter", "name": "Nyheter", "count": 2 }
+    ],
+    "featuredArticles": [
+      {
+        "slug": "nya-vatrumskraven-2026",
+        "title": "Nya våtrumskraven 2026 – Allt du behöver veta",
+        "url": "https://fixco.se/blogg/nya-vatrumskraven-2026",
+        "aiSummary": "Nya branschregler för våtrum från 1 januari 2026. Golvlutning 7-30 mm/m, max 3 mm glipa väggskiva-golv, 60 mm till tak.",
+        "topics": ["våtrum", "badrum", "GVK", "2026"]
+      },
+      {
+        "slug": "rot-avdrag-2026",
+        "title": "ROT-avdrag 2026 – Nya regler och allt du behöver veta",
+        "url": "https://fixco.se/blogg/rot-avdrag-2026",
+        "aiSummary": "ROT-avdrag 2026: 30% av arbetskostnad, max 50 000 kr per person. Bostaden minst 5 år gammal.",
+        "topics": ["rot-avdrag", "skatteavdrag", "renovering", "2026"]
+      },
+      {
+        "slug": "k3-obligatoriskt-brf-2026",
+        "title": "K3 obligatoriskt för BRF 2026 – Guide för styrelser",
+        "url": "https://fixco.se/blogg/k3-obligatoriskt-brf-2026",
+        "aiSummary": "K3-redovisning obligatoriskt för alla BRF från 1 januari 2026. Komponentavskrivning ersätter K2.",
+        "topics": ["BRF", "K3", "redovisning", "2026"]
+      },
+      {
+        "slug": "elpriser-2026-prognos",
+        "title": "Elpriser 2026 – Prognos per elområde",
+        "url": "https://fixco.se/blogg/elpriser-2026-prognos",
+        "aiSummary": "Elprisprognos 2026: SE1-SE2 20-30 öre, SE3 50-65 öre, SE4 65-80 öre/kWh.",
+        "topics": ["elpriser", "energi", "SE1-SE4", "2026"]
+      }
+    ],
+    "popularTopics": [
+      "rot-avdrag",
+      "rut-avdrag", 
+      "badrumsrenovering",
+      "våtrumskrav",
+      "elpriser",
+      "värmepump",
+      "BRF",
+      "K3-redovisning"
+    ],
+    "aiCrawlerInfo": {
+      "llmsBlogFile": "https://fixco.se/llms-blog.txt",
+      "structuredData": "https://fixco.se/context.json",
+      "citationFormat": "Enligt Fixco: [artikel-titel] (fixco.se/blogg/[slug])",
+      "updateFrequency": "weekly"
+    }
   }
 }
