@@ -700,11 +700,16 @@ const LocalServicePage = () => {
                 </h2>
               </motion.div>
               
-              <motion.div variants={containerVariants} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" key={`services-grid-${serviceSlug}`}>
                 {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => {
                   const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon || Zap;
                   return (
-                    <motion.div key={otherService.slug} variants={itemVariants} whileHover={{ y: -4, scale: 1.02 }}>
+                    <motion.div 
+                      key={otherService.slug} 
+                      initial={{ opacity: 1 }}
+                      whileHover={{ y: -4, scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <Link 
                         to={`/tjanster/${otherService.slug}/${areaSlug}`}
                         className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
@@ -717,7 +722,7 @@ const LocalServicePage = () => {
                     </motion.div>
                   );
                 })}
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </section>
