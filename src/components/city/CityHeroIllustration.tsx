@@ -101,10 +101,9 @@ export const CityHeroIllustration = ({ cityName }: CityHeroIllustrationProps) =>
       
       {/* Orbiting service icons */}
       {orbitingServices.map(({ Icon, angle, color, bgGradient, glow }, idx) => {
-        const radius = 220; // Distance from center on large screens
-        const radiusSm = 170; // Distance on smaller screens
-        const x = Math.cos((angle - 90) * (Math.PI / 180));
-        const y = Math.sin((angle - 90) * (Math.PI / 180));
+        const radius = 180; // Distance from center - gives enough space from the 130px center circle
+        const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+        const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
         
         return (
           <motion.div
@@ -114,7 +113,7 @@ export const CityHeroIllustration = ({ cityName }: CityHeroIllustrationProps) =>
             transition={{ delay: 0.4 + idx * 0.08, duration: 0.5, ease: "easeOut" }}
             className="absolute top-1/2 left-1/2"
             style={{ 
-              transform: `translate(calc(-50% + ${x * radiusSm}px), calc(-50% + ${y * radiusSm}px))`,
+              transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
             }}
           >
             <motion.div
