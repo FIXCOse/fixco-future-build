@@ -179,7 +179,7 @@ export const getAreaReviews = (area: string, serviceName: string, count: number 
       .replace('{area}', area);
     
     const firstName = extendedFirstNames[hash % extendedFirstNames.length];
-    const lastInitial = extendedLastInitials[(hash * 7) % extendedLastInitials.length];
+    const lastInitial = extendedLastInitials[(hash + i * 13) % extendedLastInitials.length];
     
     results.push({
       quote: template,
