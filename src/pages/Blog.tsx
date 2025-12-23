@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { blogPosts, blogCategories, getFeaturedPosts } from '@/data/blogData';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import BlogThumbnail from '@/components/blog/BlogThumbnail';
+import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -69,9 +70,48 @@ const Blog = () => {
       <div className="min-h-screen bg-background">
         <Breadcrumbs />
         
-        {/* Hero Section */}
         <section className="relative py-16 md:py-24 overflow-hidden">
           <div className="absolute inset-0 hero-background opacity-50" />
+          
+          {/* Floating F Watermarks */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Top left */}
+            <div className="absolute top-12 left-8 w-16 h-16 rotate-[-15deg] opacity-[0.08] animate-pulse" 
+                 style={{ animationDuration: '6s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            
+            {/* Top right */}
+            <div className="absolute top-8 right-16 w-24 h-24 rotate-12 opacity-[0.06] animate-pulse" 
+                 style={{ animationDuration: '5s', animationDelay: '1s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            
+            {/* Middle left */}
+            <div className="absolute top-1/2 left-6 w-12 h-12 rotate-[-8deg] opacity-[0.05] animate-pulse" 
+                 style={{ animationDuration: '7s', animationDelay: '2s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            
+            {/* Middle right */}
+            <div className="absolute top-1/3 right-8 w-20 h-20 rotate-[20deg] opacity-[0.07] animate-pulse" 
+                 style={{ animationDuration: '5.5s', animationDelay: '0.5s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            
+            {/* Bottom left */}
+            <div className="absolute bottom-12 left-20 w-20 h-20 rotate-[-25deg] opacity-[0.06] animate-pulse" 
+                 style={{ animationDuration: '6.5s', animationDelay: '1.5s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+            
+            {/* Bottom right */}
+            <div className="absolute bottom-8 right-24 w-16 h-16 rotate-[8deg] opacity-[0.05] animate-pulse" 
+                 style={{ animationDuration: '4.5s', animationDelay: '3s' }}>
+              <FixcoFIcon className="w-full h-full" disableFilter />
+            </div>
+          </div>
+          
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center max-w-3xl mx-auto">
               <Badge className="mb-4 gradient-primary text-white">
