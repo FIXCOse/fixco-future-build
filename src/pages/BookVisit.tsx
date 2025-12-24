@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button-premium";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle, Clock, Phone, Mail, MapPin, Star, User } from "lucide-react";
+import { CheckCircle, Clock, Phone, Mail, MapPin, Star, User, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { BookingAutofill } from "@/components/BookingAutofill";
@@ -119,10 +120,17 @@ const BookVisit = () => {
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
               Boka <span className="gradient-text">hembesök</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-6">
               Kostnadsfri konsultation och offert direkt hemma hos dig. 
               Vi kommer inom 24 timmar och ger dig en detaljerad genomgång.
             </p>
+            <Link 
+              to="/tjanster" 
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+            >
+              Se alla våra tjänster
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
