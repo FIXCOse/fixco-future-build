@@ -6,7 +6,7 @@ import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { cityData, CityKey } from "@/data/cityData";
 import { getAreaActivity, getAreaReviews, TestimonialData } from "@/data/areaActivityData";
-import { AreaKey } from "@/data/localServiceData";
+import { AreaKey, STOCKHOLM_AREAS, UPPSALA_AREAS, generateAreaSlug } from "@/data/localServiceData";
 import { 
   CheckCircle2, 
   MapPin, 
@@ -523,16 +523,16 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
                 </Button>
               </div>
               
-              {/* Quick area links */}
+              {/* Quick area links - only show areas with actual LocalServicePages */}
               <div className="pt-8 border-t border-white/10">
                 <p className="text-sm text-muted-foreground mb-4">Populära områden:</p>
                 <div className="flex flex-wrap gap-2 justify-center">
-                  {cityAreas.slice(0, 8).map((area) => {
-                    const areaSlug = area.toLowerCase().replace(/\s+/g, "-").replace(/å/g, "a").replace(/ä/g, "a").replace(/ö/g, "o");
+                  {(city === "Uppsala" ? UPPSALA_AREAS : STOCKHOLM_AREAS).slice(0, 8).map((area) => {
+                    const areaSlug = generateAreaSlug(area);
                     return (
                       <Link
                         key={area}
-                        to={`/tjanster/el/${areaSlug}`}
+                        to={`/tjanster/snickare/${areaSlug}`}
                         className="px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-sm hover:bg-primary/20 hover:border-primary/30 transition-all"
                       >
                         {area}
