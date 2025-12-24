@@ -48,7 +48,7 @@ export const en: Record<CopyKey, string> = {
   // Services
   'services.title': 'Our services',
   'services.subtitle': 'From small repairs to major construction projects – we have the expertise and experience to deliver professional solutions in all areas.',
-  'services.rot_benefit': 'Take advantage of the ROT deduction and save 50%.',
+  'services.rot_benefit': 'Take advantage of the ROT & RUT deduction and save 50%.',
   'services.choose_category': 'Choose category',
   'services.category_description': 'Find the right service for your home quickly and easily. We offer everything from small repairs to major renovation projects.',
   'services.all_services': 'All services',
