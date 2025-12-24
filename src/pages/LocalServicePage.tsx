@@ -33,6 +33,8 @@ import {
   type LocalServiceSlug,
   type AreaKey
 } from "@/data/localServiceData";
+import { generateUniqueLocalContent } from "@/data/localSeoData";
+import { Badge } from "@/components/ui/badge";
 import { 
   Accordion,
   AccordionContent,
