@@ -500,16 +500,16 @@ export const generateUniqueLocalContent = (
 // ============================================================
 export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): string => {
   const titles: Record<LocalServiceSlug, string> = {
-    "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 50% · Fri offert`,
-    "vvs": `VVS ${area} ★ Byte & reparation · Jour dygnet runt · ROT 50%`,
-    "elektriker": `Elektriker ${area} ★ Certifierade · Eljour & laddbox · ROT 50%`,
-    "malare": `Målare ${area} ★ Fasad & invändigt · Fasta priser · ROT 50%`,
-    "stad": `Städfirma ${area} ★ Flytt, hem & byggstäd · RUT 50% · Boka idag`,
-    "flytt": `Flytthjälp ${area} ★ Pack & bärhjälp · RUT 50% · Snabb bokning`,
-    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & plattor · ROT 50%`,
-    "montering": `Monteringshjälp ${area} ★ IKEA, kök & möbler · ROT 50%`,
-    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 50%`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 50%`
+    "snickare": `Snickare ${area} ★ Renovering, kök, garderob & mer · ROT 50%`,
+    "vvs": `VVS ${area} ★ Installation, reparation & mer · ROT 50%`,
+    "elektriker": `Elektriker ${area} ★ Laddbox, elinstallation & mer · ROT 50%`,
+    "malare": `Målare ${area} ★ Fasad, invändigt & mer · ROT 50%`,
+    "stad": `Städfirma ${area} ★ Flytt, hem, byggstäd & mer · RUT 50%`,
+    "flytt": `Flytthjälp ${area} ★ Pack, bärhjälp & mer · RUT 50%`,
+    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & mer · ROT 50%`,
+    "montering": `Monteringshjälp ${area} ★ IKEA, kök, möbler & mer · ROT 50%`,
+    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck, anläggning & mer · ROT 50%`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox, larm & mer · ROT 50%`
   };
   return titles[serviceSlug] || `${serviceSlug} ${area} | Fixco`;
 };
