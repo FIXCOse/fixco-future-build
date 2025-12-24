@@ -48,7 +48,7 @@ export const sv: Record<CopyKey, string> = {
   // Services
   'services.title': 'Våra tjänster',
   'services.subtitle': 'Från små reparationer till stora byggnationer – vi har expertisen och erfarenheten för att leverera professionella lösningar inom alla områden.',
-  'services.rot_benefit': 'Utnyttja ROT-avdraget och spara 50%.',
+  'services.rot_benefit': 'Utnyttja ROT- & RUT-avdraget och spara 50%.',
   'services.choose_category': 'Välj kategori',
   'services.category_description': 'Hitta rätt tjänst för ditt hem snabbt och enkelt. Vi erbjuder allt från små reparationer till stora renoveringsprojekt.',
   'services.all_services': 'Alla tjänster',
