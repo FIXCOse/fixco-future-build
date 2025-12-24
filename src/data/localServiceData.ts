@@ -547,12 +547,26 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   const rotRut = service.rotRut;
   const metadata = getAreaMetadata(area);
   
+  // Import improved titles from localSeoData
+  const titleTemplates: Record<LocalServiceSlug, string> = {
+    "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 50% · Fri offert`,
+    "vvs": `VVS ${area} ★ Byte & reparation · Jour dygnet runt · ROT 50%`,
+    "elektriker": `Elektriker ${area} ★ Certifierade · Eljour & laddbox · ROT 50%`,
+    "malare": `Målare ${area} ★ Fasad & invändigt · Fasta priser · ROT 50%`,
+    "stad": `Städfirma ${area} ★ Flytt, hem & byggstäd · RUT 50% · Boka idag`,
+    "flytt": `Flytthjälp ${area} ★ Pack & bärhjälp · RUT 50% · Snabb bokning`,
+    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & plattor · ROT 50%`,
+    "montering": `Monteringshjälp ${area} ★ IKEA, kök & möbler · ROT 50%`,
+    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 50%`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 50%`
+  };
+  
   return {
     h1: `${serviceNameCapital} ${area}`,
     
-    title: `${serviceNameCapital} ${area} – Professionella hantverkare i ${area} | ${rotRut} 50%`,
+    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – Professionella hantverkare | ${rotRut} 50%`,
     
-    description: `Söker du ${serviceName} i ${area}? Fixco erbjuder erfarna ${serviceName} i ${area} för alla typer av jobb. Snabb start, bra priser och ${rotRut}-avdrag i ${area}. Ring oss idag!`,
+    description: `Behöver du ${serviceName} i ${area}? ★ Erfarna hantverkare ★ 50% ${rotRut}-avdrag ★ Fasta priser ★ Svar inom 24h. Boka ${serviceName} i ${area} idag!`,
     
     intro: `Letar du efter en pålitlig **${serviceName} i ${area}**? Hos Fixco hjälper vi dig att hitta den bästa ${serviceName} i ${area} för ditt projekt. Våra ${serviceName} i ${area} har lång erfarenhet och levererar alltid kvalitetsarbete. Vi täcker hela ${area} ${metadata.type} med omnejd och kan ofta starta inom 24-48 timmar.
 
