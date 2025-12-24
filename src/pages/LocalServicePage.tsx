@@ -111,6 +111,7 @@ const LocalServicePage = () => {
   const service = getServiceFromSlug(serviceSlug);
   const content = generateLocalContent(serviceSlug as LocalServiceSlug, area);
   const metadata = getAreaMetadata(area);
+  const uniqueContent = generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area);
   
   const serviceData = servicesDataNew.find(s => s.slug === service?.serviceKey);
   const IconComponent = serviceData?.icon || Zap;
@@ -364,6 +365,192 @@ const LocalServicePage = () => {
           area={area}
           rotRut={service?.rotRut || "ROT"}
         />
+
+        {/* ============================================
+            NEW SEO SECTION 1: Vanliga projekt i {ort}
+            ============================================ */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVariants}
+              className="max-w-5xl mx-auto"
+            >
+              <motion.div variants={itemVariants} className="text-center mb-10">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Baserat på efterfrågan i {area}
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Vanliga <GradientText>{service?.name?.toLowerCase()}</GradientText>-projekt i {area}
+                </h2>
+              </motion.div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {uniqueContent.popularSearches.map((search, idx) => (
+                  <motion.div
+                    key={`search-${idx}`}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.02 }}
+                    className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-primary/30 transition-all"
+                  >
+                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-sm capitalize">{search} i {area}</span>
+                  </motion.div>
+                ))}
+                {uniqueContent.projectExamples.map((project, idx) => (
+                  <motion.div
+                    key={`project-${idx}`}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.02 }}
+                    className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-amber-500/30 transition-all"
+                  >
+                    <Zap className="h-4 w-4 text-amber-400 flex-shrink-0" />
+                    <span className="text-sm capitalize">{project}</span>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Local Tip */}
+              <motion.div 
+                variants={itemVariants}
+                className="mt-8 p-5 bg-gradient-to-br from-primary/[0.08] to-primary/[0.02] rounded-xl border border-primary/20"
+              >
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-medium mb-1">Tips för {service?.name?.toLowerCase()} i {area}</h4>
+                    <p className="text-sm text-muted-foreground">{uniqueContent.localTip}</p>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            NEW SEO SECTION 2: Akuta tjänster (if any)
+            ============================================ */}
+        {uniqueContent.urgentServices.length > 0 && (
+          <section className="py-10 relative overflow-hidden border-l-4 border-red-500/50">
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/[0.08] to-transparent" />
+            
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="max-w-5xl mx-auto">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-red-400" />
+                      Akut {service?.name?.toLowerCase()} i {area}?
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      Vi erbjuder snabb hjälp vid akuta situationer i {area}. Ring oss direkt så hjälper vi dig!
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {uniqueContent.urgentServices.map((urgent, idx) => (
+                      <Badge key={idx} variant="destructive" className="px-3 py-1">
+                        {urgent} i {area}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ============================================
+            NEW SEO SECTION 3: Om {tjänst} i {ort}
+            ============================================ */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+              className="max-w-4xl mx-auto"
+            >
+              <motion.div variants={itemVariants}>
+                <h2 className="text-2xl font-bold mb-6">
+                  Om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
+                </h2>
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {uniqueContent.uniqueIntro}
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            NEW SEO SECTION 4: Vi täcker grannorter
+            ============================================ */}
+        {uniqueContent.nearbyAreas.length > 0 && (
+          <section className="py-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,15%,9%)] to-[hsl(240,10%,8%)]" />
+            
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="max-w-5xl mx-auto">
+                <h3 className="text-lg font-semibold mb-4">
+                  {service?.name} i hela {area} och närliggande orter
+                </h3>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Förutom {area} täcker vi även dessa områden med {service?.name?.toLowerCase()}:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueContent.nearbyAreas.map((neighbor) => (
+                    <Link 
+                      key={neighbor}
+                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(neighbor)}`}
+                      className="group"
+                    >
+                      <Badge 
+                        variant="outline" 
+                        className="px-3 py-1.5 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer"
+                      >
+                        {service?.name} {neighbor}
+                        <ArrowRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ============================================
+            NEW SEO SECTION 5: Folk söker också
+            ============================================ */}
+        <section className="py-8 border-t border-white/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <h4 className="text-sm font-medium text-muted-foreground mb-3">
+                Relaterade sökningar i {area}:
+              </h4>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                {uniqueContent.relatedSearches.slice(0, 6).map((search, idx) => (
+                  <span 
+                    key={idx} 
+                    className="text-sm text-muted-foreground/70 hover:text-primary transition-colors cursor-default"
+                  >
+                    {search}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
 
         {/* ============================================
             HOW TO BOOK - Warmer Timeline
