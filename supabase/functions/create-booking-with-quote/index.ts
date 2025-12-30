@@ -230,41 +230,62 @@ serve(async (req) => {
     console.log("[create-booking-with-quote] Bokning skapad:", booking.id);
     console.log("[create-booking-with-quote] Mode:", mode);
 
-    // --- 4) Skicka admin-notifiering via edge function ---
-    try {
-      const notifyResponse = await fetch(
-        `${SUPABASE_URL}/functions/v1/notify-admin-booking`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SERVICE_KEY}`,
-          },
-          body: JSON.stringify({
-            bookingId: booking.id,
-            customerName: name,
-            customerEmail: email,
-            customerPhone: phone,
-            serviceSlug: service_slug,
-            mode,
-            address,
-            city,
-            postalCode: postal_code,
-            desiredTime: fields?.desired_time || null,
-            description: fields?.description || null,
-          }),
-        }
-      );
-      
-      if (!notifyResponse.ok) {
-        console.error("[create-booking-with-quote] Admin notification failed:", await notifyResponse.text());
+    // --- 4) Skicka admin-notifiering och kundbekräftelse via edge functions ---
+    // Admin notification (fire-and-forget)
+    fetch(`${SUPABASE_URL}/functions/v1/notify-admin-booking`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SERVICE_KEY}`,
+      },
+      body: JSON.stringify({
+        bookingId: booking.id,
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        serviceSlug: service_slug,
+        mode,
+        address,
+        city,
+        postalCode: postal_code,
+        desiredTime: fields?.desired_time || null,
+        description: fields?.description || null,
+      }),
+    }).then(res => {
+      if (!res.ok) {
+        res.text().then(t => console.error("[notify-admin] Failed:", t));
       } else {
-        console.log("[create-booking-with-quote] Admin notification sent successfully");
+        console.log("[notify-admin] Sent successfully");
       }
-    } catch (notifyErr) {
-      // Don't fail the booking if notification fails
-      console.error("[create-booking-with-quote] Error sending admin notification:", notifyErr);
-    }
+    }).catch(err => console.error("[notify-admin] Error:", err));
+
+    // Customer confirmation email (fire-and-forget)
+    fetch(`${SUPABASE_URL}/functions/v1/send-customer-confirmation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SERVICE_KEY}`,
+      },
+      body: JSON.stringify({
+        customerEmail: email,
+        customerName: name,
+        customerPhone: phone,
+        serviceName: fields?.service_name || service_slug,
+        serviceSlug: service_slug,
+        mode,
+        description: fields?.description || null,
+        address,
+        city,
+        postalCode: postal_code,
+        desiredTime: fields?.desired_time || null,
+      }),
+    }).then(res => {
+      if (!res.ok) {
+        res.text().then(t => console.error("[customer-confirmation] Failed:", t));
+      } else {
+        console.log("[customer-confirmation] Sent successfully");
+      }
+    }).catch(err => console.error("[customer-confirmation] Error:", err));
 
     return json({ 
       ok: true, 
