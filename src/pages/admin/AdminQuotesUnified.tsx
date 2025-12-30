@@ -109,14 +109,6 @@ export default function AdminQuotesUnified() {
           requestItems = requestItems.filter(item => getDesiredTime(item) === 'month');
         }
         
-        // Sort by urgency (ASAP first)
-        const urgencyOrder: Record<string, number> = { 'asap': 0, '1-2days': 1, 'week': 2, 'month': 3 };
-        requestItems.sort((a, b) => {
-          const aUrgency = getDesiredTime(a);
-          const bUrgency = getDesiredTime(b);
-          return (urgencyOrder[aUrgency] ?? 4) - (urgencyOrder[bUrgency] ?? 4);
-        });
-        
         return requestItems;
       
       case "active":
