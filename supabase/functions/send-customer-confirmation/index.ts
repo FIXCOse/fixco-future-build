@@ -90,16 +90,19 @@ const handler = async (req: Request): Promise<Response> => {
       <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
         <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           
-          <!-- Header with Logo (dark-mode robust) -->
-          <div style="text-align: center; margin-bottom: 32px; background: #000000; padding: 24px; border-radius: 16px;">
-            <div style="display: inline-block; background: #808080; padding: 14px 18px; border-radius: 14px;">
-              <img src="https://fnzjgohubvaxwpmnvwdq.supabase.co/storage/v1/object/public/assets/fixco-logo-white.png" 
-                   alt="Fixco" 
-                   width="150"
-                   style="display: block; margin: 0 auto; max-width: 150px; height: auto;" />
-            </div>
-            <p style="color: #d4d4d8; margin: 14px 0 0 0; font-size: 14px;">Hantverkare du kan lita på</p>
-          </div>
+          <!-- Header -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 28px 0;">
+            <tr>
+              <td align="center" style="padding: 0;">
+                <img src="https://fixco.se/assets/fixco-logo-black.png" 
+                     alt="Fixco" 
+                     width="180"
+                     style="display: block; border: 0; outline: none; text-decoration: none; height: auto;" />
+                <div style="height: 10px; line-height: 10px;">&nbsp;</div>
+                <div style="font-size: 14px; color: #52525b; margin: 0;">Hantverkare du kan lita på</div>
+              </td>
+            </tr>
+          </table>
 
           <!-- Main Card -->
           <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
