@@ -146,6 +146,9 @@ verify_jwt = false
 [functions.ai-info]
 verify_jwt = false
 
+[functions.notify-admin-booking]
+verify_jwt = false
+
 [edge_runtime.scheduler.execute-scheduled-flag-changes]
 schedule = "* * * * *"
 

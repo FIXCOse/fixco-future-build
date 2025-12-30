@@ -230,6 +230,42 @@ serve(async (req) => {
     console.log("[create-booking-with-quote] Bokning skapad:", booking.id);
     console.log("[create-booking-with-quote] Mode:", mode);
 
+    // --- 4) Skicka admin-notifiering via edge function ---
+    try {
+      const notifyResponse = await fetch(
+        `${SUPABASE_URL}/functions/v1/notify-admin-booking`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SERVICE_KEY}`,
+          },
+          body: JSON.stringify({
+            bookingId: booking.id,
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone,
+            serviceSlug: service_slug,
+            mode,
+            address,
+            city,
+            postalCode: postal_code,
+            desiredTime: fields?.desired_time || null,
+            description: fields?.description || null,
+          }),
+        }
+      );
+      
+      if (!notifyResponse.ok) {
+        console.error("[create-booking-with-quote] Admin notification failed:", await notifyResponse.text());
+      } else {
+        console.log("[create-booking-with-quote] Admin notification sent successfully");
+      }
+    } catch (notifyErr) {
+      // Don't fail the booking if notification fails
+      console.error("[create-booking-with-quote] Error sending admin notification:", notifyErr);
+    }
+
     return json({ 
       ok: true, 
       bookingId: booking.id,
