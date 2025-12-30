@@ -65,14 +65,10 @@ export default function ServiceRequestModal() {
   const goToStep1 = () => setCurrentStep(1);
   const goToStep2 = () => setCurrentStep(2);
   const goToStep3 = () => setCurrentStep(3);
-  const skipAddons = () => {
+const skipAddons = () => {
     setSelectedAddons([]);
     setSkipAddonsStep(false); // Reset flag when moving forward
-    if (mode === 'home_visit') {
-      setCurrentStep(2); // Go to desired time step
-    } else {
-      setCurrentStep(3); // Go to form step
-    }
+    setCurrentStep(2); // Always go to desired time step
   };
 
   // Hämta tillgängliga add-ons för vald tjänst
@@ -81,14 +77,10 @@ export default function ServiceRequestModal() {
   // Automatiskt hoppa över Steg 1 om inga tillägg finns
   useEffect(() => {
     if (currentStep === 1 && addons.length === 0 && open && service && !skipAddonsStep) {
-      if (mode === 'home_visit') {
-        setCurrentStep(2); // Go to desired time
-      } else {
-        setCurrentStep(3); // Go to form
-      }
+      setCurrentStep(2); // Always go to desired time step
       setSelectedAddons([]);
     }
-  }, [addons.length, currentStep, open, service, mode, skipAddonsStep]);
+  }, [addons.length, currentStep, open, service, skipAddonsStep]);
 
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -309,7 +301,8 @@ export default function ServiceRequestModal() {
         fields: {
           ...values,
           service_name: service.name,
-          uploaded_files: fileUrls
+          uploaded_files: fileUrls,
+          desired_time: desiredTime || undefined
         },
         fileUrls,
         selected_addons: selectedAddons.length > 0 ? JSON.stringify(selectedAddons) : undefined,
@@ -586,8 +579,8 @@ export default function ServiceRequestModal() {
                 </div>
               )}
             </motion.div>
-          ) : currentStep === 2 && mode === 'home_visit' ? (
-            // STEG 2 (Home Visit): ÖNSKAD TID
+          ) : currentStep === 2 ? (
+            // STEG 2: ÖNSKAD TID (för alla modes)
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -597,10 +590,10 @@ export default function ServiceRequestModal() {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <CalendarClock className="w-5 h-5 text-primary" />
-                  När vill du ha hembesök?
+                  Hur snart önskar du hjälp?
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Vi kontaktar dig för att bekräfta tid
+                  Hjälper oss prioritera din förfrågan
                 </p>
               </div>
 
@@ -648,7 +641,7 @@ export default function ServiceRequestModal() {
                 })}
               </div>
             </motion.div>
-          ) : currentStep === 3 || (currentStep === 2 && mode === 'quote') ? (
+          ) : currentStep === 3 ? (
             // STEG 3 (eller 2 för quote): FORMULÄR
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -1136,11 +1129,7 @@ export default function ServiceRequestModal() {
                   <Button
                     onClick={() => {
                       setSkipAddonsStep(false); // Reset flag when moving forward
-                      if (mode === 'home_visit') {
-                        goToStep2();
-                      } else {
-                        goToStep3();
-                      }
+                      goToStep2(); // Always go to desired time step
                     }}
                     className="flex-1"
                   >
@@ -1155,8 +1144,8 @@ export default function ServiceRequestModal() {
                 </>
               )}
 
-              {/* Step 2 (Home Visit): Continue */}
-              {currentStep === 2 && mode === 'home_visit' && (
+              {/* Step 2: Continue to form */}
+              {currentStep === 2 && (
                 <Button
                   onClick={goToStep3}
                   disabled={!desiredTime}

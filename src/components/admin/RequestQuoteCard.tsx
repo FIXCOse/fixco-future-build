@@ -266,6 +266,23 @@ export function RequestQuoteCard({
               <p className="text-sm">{booking.payload.description || booking.payload.beskrivning}</p>
             </div>
           )}
+
+          {/* Desired Time */}
+          {(booking.payload?.desired_time || booking.payload?.fields?.desired_time) && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-muted-foreground">Tidsönskemål</h4>
+              <p className="text-sm">
+                {(() => {
+                  const dt = booking.payload?.desired_time || booking.payload?.fields?.desired_time;
+                  if (dt === 'asap') return 'Så snart som möjligt';
+                  if (dt === '1-2days') return 'Inom 1-2 dagar';
+                  if (dt === 'week') return 'Inom en vecka';
+                  if (dt === 'month') return 'Nästa månad';
+                  return dt;
+                })()}
+              </p>
+            </div>
+          )}
           
           {/* Home visit specific info */}
           {isHomeVisit && (
