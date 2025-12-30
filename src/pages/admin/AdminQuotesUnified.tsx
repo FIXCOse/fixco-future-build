@@ -80,6 +80,11 @@ export default function AdminQuotesUnified() {
     }
   }, [searchParams.get('new')]);
 
+  // Helper to get desired_time from booking
+  const getDesiredTime = (item: typeof allData[0]) => {
+    return item.booking.payload?.desired_time || item.booking.payload?.fields?.desired_time;
+  };
+
   // Client-side filtering based on active tab
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
@@ -93,6 +98,25 @@ export default function AdminQuotesUnified() {
         } else if (subFilter === "quote") {
           requestItems = requestItems.filter(item => item.booking.mode !== 'home_visit');
         }
+        // Sub-filter by urgency
+        else if (subFilter === "asap") {
+          requestItems = requestItems.filter(item => getDesiredTime(item) === 'asap');
+        } else if (subFilter === "soon") {
+          requestItems = requestItems.filter(item => getDesiredTime(item) === '1-2days');
+        } else if (subFilter === "week") {
+          requestItems = requestItems.filter(item => getDesiredTime(item) === 'week');
+        } else if (subFilter === "month") {
+          requestItems = requestItems.filter(item => getDesiredTime(item) === 'month');
+        }
+        
+        // Sort by urgency (ASAP first)
+        const urgencyOrder: Record<string, number> = { 'asap': 0, '1-2days': 1, 'week': 2, 'month': 3 };
+        requestItems.sort((a, b) => {
+          const aUrgency = getDesiredTime(a);
+          const bUrgency = getDesiredTime(b);
+          return (urgencyOrder[aUrgency] ?? 4) - (urgencyOrder[bUrgency] ?? 4);
+        });
+        
         return requestItems;
       
       case "active":
@@ -159,6 +183,11 @@ export default function AdminQuotesUnified() {
       requests: allRequests.length,
       homeVisits: allRequests.filter(item => item.booking.mode === 'home_visit').length,
       quoteRequests: allRequests.filter(item => item.booking.mode !== 'home_visit').length,
+      // Urgency counts
+      asap: allRequests.filter(item => getDesiredTime(item) === 'asap').length,
+      soon: allRequests.filter(item => getDesiredTime(item) === '1-2days').length,
+      week: allRequests.filter(item => getDesiredTime(item) === 'week').length,
+      month: allRequests.filter(item => getDesiredTime(item) === 'month').length,
       active: allData.filter(item => 
         item.quote && ['draft', 'sent', 'viewed', 'change_requested'].includes(item.quote.status)
       ).length,
@@ -644,7 +673,7 @@ export default function AdminQuotesUnified() {
 
         {/* Sub-filters for Requests */}
         {activeTab === "requests" && (
-          <div className="flex gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 mt-4">
             <Button
               variant={subFilter === "all" ? "default" : "outline"}
               size="sm"
@@ -666,6 +695,46 @@ export default function AdminQuotesUnified() {
             >
               📋 Offertförfrågningar ({counts.quoteRequests})
             </Button>
+            
+            <div className="w-px h-8 bg-border mx-1" />
+            
+            {counts.asap > 0 && (
+              <Button
+                variant={subFilter === "asap" ? "destructive" : "outline"}
+                size="sm"
+                onClick={() => setSubFilterParam("asap")}
+                className={subFilter !== "asap" ? "border-destructive text-destructive hover:bg-destructive/10" : ""}
+              >
+                🔥 ASAP ({counts.asap})
+              </Button>
+            )}
+            {counts.soon > 0 && (
+              <Button
+                variant={subFilter === "soon" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSubFilterParam("soon")}
+              >
+                ⚡ 1-2 dagar ({counts.soon})
+              </Button>
+            )}
+            {counts.week > 0 && (
+              <Button
+                variant={subFilter === "week" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSubFilterParam("week")}
+              >
+                📅 Inom veckan ({counts.week})
+              </Button>
+            )}
+            {counts.month > 0 && (
+              <Button
+                variant={subFilter === "month" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSubFilterParam("month")}
+              >
+                🗓️ Nästa månad ({counts.month})
+              </Button>
+            )}
           </div>
         )}
 
