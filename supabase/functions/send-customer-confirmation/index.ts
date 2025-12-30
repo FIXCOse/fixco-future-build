@@ -91,7 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           
           <!-- Header with Logo -->
-          <div style="text-align: center; margin-bottom: 32px; background: #18181b; padding: 24px; border-radius: 16px;">
+          <div style="text-align: center; margin-bottom: 32px; background: #000000; padding: 24px; border-radius: 16px;">
             <img src="https://fnzjgohubvaxwpmnvwdq.supabase.co/storage/v1/object/public/assets/fixco-logo-white.png" 
                  alt="Fixco" 
                  style="max-width: 150px; height: auto;" />
