@@ -90,10 +90,12 @@ const handler = async (req: Request): Promise<Response> => {
       <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
         <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           
-          <!-- Header -->
-          <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #18181b; font-size: 28px; margin: 0; font-weight: 700;">Fixco</h1>
-            <p style="color: #71717a; margin: 8px 0 0 0; font-size: 14px;">Hantverkare du kan lita på</p>
+          <!-- Header with Logo -->
+          <div style="text-align: center; margin-bottom: 32px; background: #18181b; padding: 24px; border-radius: 16px;">
+            <img src="https://fnzjgohubvaxwpmnvwdq.supabase.co/storage/v1/object/public/assets/fixco-logo-white.png" 
+                 alt="Fixco" 
+                 style="max-width: 150px; height: auto;" />
+            <p style="color: #a1a1aa; margin: 12px 0 0 0; font-size: 14px;">Hantverkare du kan lita på</p>
           </div>
 
           <!-- Main Card -->
