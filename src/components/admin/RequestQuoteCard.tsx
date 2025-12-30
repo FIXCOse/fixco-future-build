@@ -260,10 +260,10 @@ export function RequestQuoteCard({
           </div>
           
           {/* Project Description */}
-          {booking.payload?.description && (
+          {(booking.payload?.description || booking.payload?.beskrivning) && (
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-muted-foreground">Projektbeskrivning</h4>
-              <p className="text-sm">{booking.payload.description}</p>
+              <p className="text-sm">{booking.payload.description || booking.payload.beskrivning}</p>
             </div>
           )}
           
