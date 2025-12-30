@@ -66,15 +66,15 @@ const handler = async (req: Request): Promise<Response> => {
 
     const addressSection = data.address ? `
       <tr>
-        <td style="padding: 8px 0; color: #666; width: 140px;">Adress:</td>
-        <td style="padding: 8px 0; color: #333;">${data.address}${data.postalCode ? `, ${data.postalCode}` : ''}${data.city ? ` ${data.city}` : ''}</td>
+        <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Adress</td>
+        <td style="padding: 12px 0; color: #1f2937; font-size: 14px;">${data.address}${data.postalCode ? `, ${data.postalCode}` : ''}${data.city ? ` ${data.city}` : ''}</td>
       </tr>
     ` : '';
 
     const descriptionSection = data.description ? `
-      <div style="margin-top: 24px;">
-        <h3 style="color: #333; font-size: 16px; margin: 0 0 12px 0;">Din beskrivning</h3>
-        <p style="color: #666; margin: 0; padding: 16px; background: #f8f9fa; border-radius: 8px; line-height: 1.6;">
+      <div style="background: #f9fafb; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #f3f4f6;">
+        <h3 style="color: #1e3a5f; font-size: 14px; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Din beskrivning</h3>
+        <p style="color: #4b5563; margin: 0; font-size: 14px; line-height: 1.7;">
           ${data.description}
         </p>
       </div>
@@ -87,69 +87,74 @@ const handler = async (req: Request): Promise<Response> => {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+      <body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #fafaf9;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 48px 24px;">
           
           <!-- Header -->
-          <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #18181b; font-size: 28px; margin: 0; font-weight: 700;">Fixco</h1>
-            <p style="color: #71717a; margin: 8px 0 0 0; font-size: 14px;">Hantverkare du kan lita på</p>
+          <div style="text-align: center; margin-bottom: 40px;">
+            <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%); border-radius: 12px;">
+              <h1 style="color: #ffffff; font-size: 32px; margin: 0; font-weight: 700; letter-spacing: -0.5px;">FIXCO</h1>
+            </div>
+            <p style="color: #6b7280; margin: 16px 0 0 0; font-size: 15px; font-weight: 400;">Professionella hantverkare</p>
           </div>
 
           <!-- Main Card -->
-          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          <div style="background: #ffffff; border-radius: 16px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.04);">
             
             <!-- Confirmation Badge -->
-            <div style="text-align: center; margin-bottom: 24px;">
-              <div style="display: inline-block; background: #dcfce7; color: #166534; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500;">
+            <div style="text-align: center; margin-bottom: 32px;">
+              <div style="display: inline-block; background: #f0fdf4; color: #166534; padding: 10px 20px; border-radius: 24px; font-size: 14px; font-weight: 600; border: 1px solid #bbf7d0;">
                 ✓ ${modeLabel} mottagen
               </div>
             </div>
 
-            <h2 style="color: #18181b; font-size: 20px; margin: 0 0 16px 0; text-align: center;">
-              Tack ${data.customerName}!
+            <h2 style="color: #1e3a5f; font-size: 24px; margin: 0 0 12px 0; text-align: center; font-weight: 600;">
+              Tack för din förfrågan, ${data.customerName}!
             </h2>
             
-            <p style="color: #52525b; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0; text-align: center;">
+            <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin: 0 0 32px 0; text-align: center;">
               Vi har tagit emot din förfrågan och återkommer till dig så snart som möjligt.
             </p>
 
+            <!-- Divider -->
+            <div style="height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); margin-bottom: 32px;"></div>
+
             <!-- Booking Details -->
-            <div style="background: #fafafa; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-              <h3 style="color: #333; font-size: 16px; margin: 0 0 16px 0;">Sammanfattning</h3>
+            <div style="background: #f9fafb; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #f3f4f6;">
+              <h3 style="color: #1e3a5f; font-size: 14px; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Sammanfattning</h3>
               <table style="width: 100%; border-collapse: collapse;">
                 <tr>
-                  <td style="padding: 8px 0; color: #666; width: 140px;">Tjänst:</td>
-                  <td style="padding: 8px 0; color: #333; font-weight: 500;">${data.serviceName}</td>
+                  <td style="padding: 12px 0; color: #6b7280; width: 130px; font-size: 14px; border-bottom: 1px solid #f3f4f6;">Tjänst</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-weight: 500; font-size: 14px; border-bottom: 1px solid #f3f4f6;">${data.serviceName}</td>
                 </tr>
                 <tr>
-                  <td style="padding: 8px 0; color: #666;">Typ:</td>
-                  <td style="padding: 8px 0; color: #333;">${modeLabel}</td>
+                  <td style="padding: 12px 0; color: #6b7280; font-size: 14px; border-bottom: 1px solid #f3f4f6;">Typ</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-size: 14px; border-bottom: 1px solid #f3f4f6;">${modeLabel}</td>
                 </tr>
                 <tr>
-                  <td style="padding: 8px 0; color: #666;">Önskad tid:</td>
-                  <td style="padding: 8px 0; color: #333;">${urgencyText}</td>
+                  <td style="padding: 12px 0; color: #6b7280; font-size: 14px;${data.address ? ' border-bottom: 1px solid #f3f4f6;' : ''}">Önskad tid</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-size: 14px;${data.address ? ' border-bottom: 1px solid #f3f4f6;' : ''}">${urgencyText}</td>
                 </tr>
                 ${addressSection}
               </table>
             </div>
 
             <!-- Contact Info -->
-            <div style="background: #fafafa; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-              <h3 style="color: #333; font-size: 16px; margin: 0 0 16px 0;">Dina kontaktuppgifter</h3>
+            <div style="background: #f9fafb; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #f3f4f6;">
+              <h3 style="color: #1e3a5f; font-size: 14px; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Dina kontaktuppgifter</h3>
               <table style="width: 100%; border-collapse: collapse;">
                 <tr>
-                  <td style="padding: 8px 0; color: #666; width: 140px;">Namn:</td>
-                  <td style="padding: 8px 0; color: #333;">${data.customerName}</td>
+                  <td style="padding: 12px 0; color: #6b7280; width: 130px; font-size: 14px; border-bottom: 1px solid #f3f4f6;">Namn</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-size: 14px; border-bottom: 1px solid #f3f4f6;">${data.customerName}</td>
                 </tr>
                 <tr>
-                  <td style="padding: 8px 0; color: #666;">E-post:</td>
-                  <td style="padding: 8px 0; color: #333;">${data.customerEmail}</td>
+                  <td style="padding: 12px 0; color: #6b7280; font-size: 14px;${data.customerPhone ? ' border-bottom: 1px solid #f3f4f6;' : ''}">E-post</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-size: 14px;${data.customerPhone ? ' border-bottom: 1px solid #f3f4f6;' : ''}">${data.customerEmail}</td>
                 </tr>
                 ${data.customerPhone ? `
                 <tr>
-                  <td style="padding: 8px 0; color: #666;">Telefon:</td>
-                  <td style="padding: 8px 0; color: #333;">${data.customerPhone}</td>
+                  <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Telefon</td>
+                  <td style="padding: 12px 0; color: #1f2937; font-size: 14px;">${data.customerPhone}</td>
                 </tr>
                 ` : ''}
               </table>
@@ -158,28 +163,56 @@ const handler = async (req: Request): Promise<Response> => {
             ${descriptionSection}
 
             <!-- What Happens Next -->
-            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-              <h3 style="color: #333; font-size: 16px; margin: 0 0 12px 0;">Vad händer nu?</h3>
-              <ol style="color: #666; margin: 0; padding-left: 20px; line-height: 1.8;">
-                <li>Vi granskar din förfrågan</li>
-                <li>En av våra specialister kontaktar dig inom kort</li>
-                <li>Vi bokar in ett lämpligt datum som passar dig</li>
-              </ol>
+            <div style="margin-top: 32px; padding: 28px; background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%); border-radius: 12px; border: 1px solid #fef08a;">
+              <h3 style="color: #854d0e; font-size: 14px; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Vad händer nu?</h3>
+              
+              <div style="display: flex; margin-bottom: 16px;">
+                <div style="flex-shrink: 0; width: 28px; height: 28px; background: #fef08a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 14px; border: 2px solid #eab308;">
+                  <span style="color: #854d0e; font-size: 13px; font-weight: 700;">1</span>
+                </div>
+                <div style="padding-top: 4px;">
+                  <p style="color: #713f12; font-size: 14px; margin: 0; line-height: 1.5;">Vi granskar din förfrågan noggrant</p>
+                </div>
+              </div>
+              
+              <div style="display: flex; margin-bottom: 16px;">
+                <div style="flex-shrink: 0; width: 28px; height: 28px; background: #fef08a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 14px; border: 2px solid #eab308;">
+                  <span style="color: #854d0e; font-size: 13px; font-weight: 700;">2</span>
+                </div>
+                <div style="padding-top: 4px;">
+                  <p style="color: #713f12; font-size: 14px; margin: 0; line-height: 1.5;">En specialist kontaktar dig inom kort</p>
+                </div>
+              </div>
+              
+              <div style="display: flex;">
+                <div style="flex-shrink: 0; width: 28px; height: 28px; background: #fef08a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 14px; border: 2px solid #eab308;">
+                  <span style="color: #854d0e; font-size: 13px; font-weight: 700;">3</span>
+                </div>
+                <div style="padding-top: 4px;">
+                  <p style="color: #713f12; font-size: 14px; margin: 0; line-height: 1.5;">Vi bokar tid som passar dig</p>
+                </div>
+              </div>
             </div>
 
           </div>
 
           <!-- Footer -->
-          <div style="text-align: center; margin-top: 32px; color: #71717a; font-size: 14px;">
-            <p style="margin: 0 0 8px 0;">Har du frågor? Kontakta oss:</p>
-            <p style="margin: 0;">
-              <a href="mailto:info@fixco.se" style="color: #2563eb; text-decoration: none;">info@fixco.se</a>
-              &nbsp;|&nbsp;
-              <a href="tel:+46812345678" style="color: #2563eb; text-decoration: none;">08-123 456 78</a>
+          <div style="text-align: center; margin-top: 40px;">
+            <p style="color: #6b7280; font-size: 14px; margin: 0 0 12px 0;">Har du frågor? Vi finns här för dig:</p>
+            <p style="margin: 0 0 8px 0;">
+              <a href="mailto:info@fixco.se" style="color: #1e3a5f; text-decoration: none; font-weight: 500; font-size: 14px;">info@fixco.se</a>
+              <span style="color: #d1d5db; margin: 0 12px;">|</span>
+              <a href="tel:+46812345678" style="color: #1e3a5f; text-decoration: none; font-weight: 500; font-size: 14px;">08-123 456 78</a>
             </p>
-            <p style="margin: 16px 0 0 0; color: #a1a1aa; font-size: 12px;">
-              © ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.
-            </p>
+            
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                © ${new Date().getFullYear()} Fixco AB. Alla rättigheter förbehållna.
+              </p>
+              <p style="margin: 8px 0 0 0; color: #9ca3af; font-size: 11px;">
+                Organisationsnummer: 559XXX-XXXX
+              </p>
+            </div>
           </div>
 
         </div>
