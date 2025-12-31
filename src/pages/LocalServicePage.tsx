@@ -432,39 +432,7 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            NEW SEO SECTION 2: Akuta tjänster (if any)
-            ============================================ */}
-        {uniqueContent.urgentServices.length > 0 && (
-          <section className="py-10 relative overflow-hidden border-l-4 border-red-500/50">
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/[0.08] to-transparent" />
-            
-            <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-5xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-center gap-6">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-red-400" />
-                      Akut {service?.name?.toLowerCase()} i {area}?
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      Vi erbjuder snabb hjälp vid akuta situationer i {area}. Ring oss direkt så hjälper vi dig!
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {uniqueContent.urgentServices.map((urgent, idx) => (
-                      <Badge key={idx} variant="destructive" className="px-3 py-1">
-                        {urgent} i {area}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ============================================
-            NEW SEO SECTION 3: Om {tjänst} i {ort}
+            SEO SECTION: Om {tjänst} i {ort}
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
@@ -488,66 +456,6 @@ const LocalServicePage = () => {
                 </div>
               </motion.div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* ============================================
-            NEW SEO SECTION 4: Vi täcker grannorter
-            ============================================ */}
-        {uniqueContent.nearbyAreas.length > 0 && (
-          <section className="py-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,15%,9%)] to-[hsl(240,10%,8%)]" />
-            
-            <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-5xl mx-auto">
-                <h3 className="text-lg font-semibold mb-4">
-                  {service?.name} i hela {area} och närliggande orter
-                </h3>
-                <p className="text-sm text-muted-foreground mb-6">
-                  Förutom {area} täcker vi även dessa områden med {service?.name?.toLowerCase()}:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {uniqueContent.nearbyAreas.map((neighbor) => (
-                    <Link 
-                      key={neighbor}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(neighbor)}`}
-                      className="group"
-                    >
-                      <Badge 
-                        variant="outline" 
-                        className="px-3 py-1.5 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer"
-                      >
-                        {service?.name} {neighbor}
-                        <ArrowRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Badge>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ============================================
-            NEW SEO SECTION 5: Folk söker också
-            ============================================ */}
-        <section className="py-8 border-t border-white/5">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <h4 className="text-sm font-medium text-muted-foreground mb-3">
-                Relaterade sökningar i {area}:
-              </h4>
-              <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {uniqueContent.relatedSearches.slice(0, 6).map((search, idx) => (
-                  <span 
-                    key={idx} 
-                    className="text-sm text-muted-foreground/70 hover:text-primary transition-colors cursor-default"
-                  >
-                    {search}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
@@ -981,8 +889,78 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            AREA LINKS - For SEO (Expandable)
+            SEO ZONE - Discrete sections for search engines
             ============================================ */}
+        
+        {/* Nearby Areas Links */}
+        {uniqueContent.nearbyAreas.length > 0 && (
+          <section className="py-8 border-t border-white/5">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <h4 className="text-sm font-medium text-zinc-500 mb-4">
+                  {service?.name} i hela {area} och närliggande orter
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueContent.nearbyAreas.map((neighbor) => (
+                    <Link 
+                      key={neighbor}
+                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(neighbor)}`}
+                      className="text-sm text-zinc-500 hover:text-primary transition-colors"
+                    >
+                      {service?.name} {neighbor}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+        
+        {/* Related Searches */}
+        <section className="py-6 border-t border-white/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <h4 className="text-xs font-medium text-zinc-600 mb-3">
+                Relaterade sökningar:
+              </h4>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => (
+                  <span 
+                    key={idx} 
+                    className="text-xs text-zinc-600"
+                  >
+                    {search}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Urgent Services - now subtle */}
+        {uniqueContent.urgentServices.length > 0 && (
+          <section className="py-6 border-t border-white/5">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <h4 className="text-xs font-medium text-zinc-600 mb-3">
+                  Akut hjälp i {area}:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {uniqueContent.urgentServices.map((urgent, idx) => (
+                    <span 
+                      key={idx} 
+                      className="text-xs px-2 py-1 bg-zinc-800 text-zinc-400 rounded"
+                    >
+                      {urgent} i {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Area Links - Expandable for SEO */}
         <ExpandableAreaLinks
           currentArea={area}
           serviceSlug={serviceSlug}
