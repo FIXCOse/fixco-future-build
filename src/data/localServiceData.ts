@@ -550,8 +550,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   // Import improved titles from localSeoData
   const titleTemplates: Record<LocalServiceSlug, string> = {
     "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 50% · Fri offert`,
-    "vvs": `VVS ${area} ★ Byte & reparation · Jour dygnet runt · ROT 50%`,
-    "elektriker": `Elektriker ${area} ★ Certifierade · Eljour & laddbox · ROT 50%`,
+    "vvs": `VVS ${area} ★ Byte & reparation · ROT 50% · Svar 24h`,
+    "elektriker": `Elektriker ${area} ★ Certifierade · Laddbox & el · ROT 50%`,
     "malare": `Målare ${area} ★ Fasad & invändigt · Fasta priser · ROT 50%`,
     "stad": `Städfirma ${area} ★ Flytt, hem & byggstäd · RUT 50% · Boka idag`,
     "flytt": `Flytthjälp ${area} ★ Pack & bärhjälp · RUT 50% · Snabb bokning`,
@@ -560,17 +560,39 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 50%`,
     "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 50%`
   };
+
+  // Meta descriptions per service - sales-focused with 5/5 rating
+  const descriptionTemplates: Record<LocalServiceSlug, string> = {
+    "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 50% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
+    "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 50% ROT-avdrag. Boka idag!`,
+    "vvs": `VVS-montör ${area} ★ 5/5 betyg ✓ Badrum, kök & värmesystem ✓ Auktoriserad ✓ 50% ROT-avdrag. Få offert inom 24h!`,
+    "malare": `Målare ${area} ★ 5/5 betyg ✓ Invändig & utvändig målning ✓ 50% ROT-avdrag ✓ Garanti på arbetet. Boka målare!`,
+    "stad": `Städhjälp ${area} ★ 5/5 betyg ✓ Hemstäd, flyttstäd & storstäd ✓ 50% RUT-avdrag ✓ Kvalitetsgaranti. Boka idag!`,
+    "flytt": `Flytthjälp ${area} ★ 5/5 betyg ✓ Packning, transport & bärhjälp ✓ 50% RUT-avdrag ✓ Försäkrad flytt. Få gratis offert!`,
+    "montering": `Monteringshjälp ${area} ★ 5/5 betyg ✓ IKEA-möbler, kök & garderober ✓ 50% RUT-avdrag. Ofta start samma dag!`,
+    "tradgard": `Trädgårdshjälp ${area} ★ 5/5 betyg ✓ Trädfällning, häck & gräsmatta ✓ 50% ROT-avdrag. Boka trädgårdsmästare!`,
+    "markarbeten": `Markarbeten ${area} ★ 5/5 betyg ✓ Dränering, plattsättning & grävning ✓ 50% ROT-avdrag. Gratis offert inom 24h!`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ 5/5 betyg ✓ Laddbox, smarta hem & AV ✓ 50% ROT-avdrag. Boka certifierad montör!`
+  };
   
   return {
     h1: `${serviceNameCapital} ${area}`,
     
     title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – Professionella hantverkare | ${rotRut} 50%`,
     
-    description: `Behöver du ${serviceName} i ${area}? ★ Erfarna hantverkare ★ 50% ${rotRut}-avdrag ★ Fasta priser ★ Svar inom 24h. Boka ${serviceName} i ${area} idag!`,
+    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} i ${area} ★ 5/5 betyg ✓ 50% ${rotRut}-avdrag ✓ Fast pris ✓ Kvalitetsgaranti. Få offert inom 24h!`,
     
-    intro: `Letar du efter en pålitlig **${serviceName} i ${area}**? Hos Fixco hjälper vi dig att hitta den bästa ${serviceName} i ${area} för ditt projekt. Våra ${serviceName} i ${area} har lång erfarenhet och levererar alltid kvalitetsarbete. Vi täcker hela ${area} ${metadata.type} med omnejd och kan ofta starta inom 24-48 timmar.
+    intro: `**Behöver du ${serviceName} i ${area}?** Du har kommit rätt!
 
-${area} är en ${metadata.type} i ${metadata.region}s län med cirka ${metadata.population} invånare. Vi på Fixco har hjälpt hundratals kunder i ${area} med ${serviceName}-tjänster och vet exakt vilka utmaningar som finns i området. Oavsett om du bor i en villa, lägenhet eller radhus i ${area} kan vi hjälpa dig.`,
+**Med Fixco får du:**
+- ★ 5/5 betyg – våra kunder älskar oss
+- Fast pris – inga överraskningar på fakturan
+- 50% ${rotRut}-avdrag – vi sköter pappersarbetet åt dig
+- Svar inom 24 timmar
+- Kvalitetsgaranti på allt arbete
+- Lokala hantverkare som känner ${area}
+
+**Beskriv ditt projekt** så återkommer vi med fast pris inom 24 timmar!`,
     
     localSection: {
       title: `Din lokala ${serviceName} i ${area} nära mig`,
@@ -653,13 +675,12 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
     })(),
 
     quickFacts: [
-      `${area} ligger i ${metadata.region}s län`,
-      `Cirka ${metadata.population} invånare i ${area}`,
-      `Fixco erbjuder ${serviceName} i hela ${area}`,
-      `50% ${rotRut}-avdrag på ${serviceName} i ${area}`,
-      `Start inom 24-48 timmar i ${area}`,
-      `Fasta priser för ${serviceName} i ${area}`,
-      `Lokala hantverkare med kännedom om ${area}`
+      `★ 5/5 betyg från våra kunder`,
+      `Svar inom 24 timmar`,
+      `Fast pris innan jobbet börjar`,
+      `50% ${rotRut}-avdrag`,
+      `Kvalitetsgaranti på allt arbete`,
+      `Lokala hantverkare i ${area}`
     ],
 
     funFacts: getAreaFunFacts(area),
