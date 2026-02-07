@@ -28,8 +28,8 @@ const fadeUp = {
 
 const DoorLockLandingPage: React.FC = () => {
   const seoElement = useSEO({
-    title: 'Installera Dörrlås | Yale Doorman, Linus, Nuki | 50% ROT',
-    description: 'Installation av smarta dörrlås ★ 5/5 betyg ✓ Yale Doorman, Linus, Nuki, ASSA ✓ 50% ROT-avdrag ✓ Fast pris. Boka certifierad montör!',
+    title: 'Installera Dörrlås | Yale Doorman, Linus, Nuki | 30% ROT',
+    description: 'Installation av smarta dörrlås ★ 5/5 betyg ✓ Yale Doorman, Linus, Nuki, ASSA ✓ 30% ROT-avdrag ✓ Fast pris. Boka certifierad montör!',
     keywords: 'installera dörrlås, yale doorman installation, smart dörrlås, kodlås montering, yale linus, nuki smart lock, assa abloy, ROT-avdrag dörrlås, byta cylinderlås',
     canonicalPath: '/tjanster/dorrlas',
     type: 'service',
@@ -74,7 +74,7 @@ const DoorLockLandingPage: React.FC = () => {
 
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
                 Yale Doorman, Linus, Nuki, ASSA ABLOY och fler. Certifierad installation med{' '}
-                <strong className="text-foreground">50% ROT-avdrag</strong>. Fast pris, inga dolda kostnader.
+                <strong className="text-foreground">30% ROT-avdrag</strong>. Fast pris, inga dolda kostnader.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -103,7 +103,7 @@ const DoorLockLandingPage: React.FC = () => {
               <div className="flex flex-wrap justify-center gap-6 mt-12">
                 {[
                   { icon: Shield, text: 'F-skatteregistrerat' },
-                  { icon: Percent, text: '50% ROT-avdrag' },
+                  { icon: Percent, text: '30% ROT-avdrag' },
                   { icon: Clock, text: 'Installation 1–2h' },
                   { icon: CheckCircle2, text: 'Garanti & försäkring' }
                 ].map(({ icon: Icon, text }) => (

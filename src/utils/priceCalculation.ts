@@ -10,10 +10,10 @@ export interface ServicePricing {
   fixedPrice?: boolean;   // om priset inte ska påverkas av avdrag
 }
 
-// ROT/RUT: 50% av arbetskostnad INKLUSIVE moms enligt Skatteverket
-// OBS: ROT-satsen är 50% fram till 2025-12-31, därefter 30%
-const ROT_RATE = 0.50; // 50% rabatt på arbetskostnad (inkl moms)
-const RUT_RATE = 0.50; // 50% rabatt på arbetskostnad (inkl moms)
+// ROT/RUT: 30% av arbetskostnad INKLUSIVE moms enligt Skatteverket
+// OBS: ROT-satsen sänktes till 30% från 2026-01-01
+const ROT_RATE = 0.30; // 30% rabatt på arbetskostnad (inkl moms)
+const RUT_RATE = 0.30; // 30% rabatt på arbetskostnad (inkl moms)
 
 export function calcDisplayPrice(service: ServicePricing, mode: PriceMode) {
   const base = service.basePrice;

@@ -318,7 +318,7 @@ const RotRutPage = () => {
                     <div className="text-sm space-y-1">
                       <p><strong>RUT</strong> - Rengöring, Underhåll, Tvätt</p>
                       <p className="text-muted-foreground">
-                        50% avdrag, max 75 000 kr per år
+                        30% avdrag, max 75 000 kr per år
                       </p>
                     </div>
                   </div>

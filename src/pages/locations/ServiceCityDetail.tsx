@@ -281,7 +281,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                     ? ` Du betalar ingen resekostnad för uppdrag i ${city}.`
                     : ` Resekostnad: ${cityDataItem.travelFee}.`
                   }
-                  {' '}Start inom 24-48 timmar och ROT/RUT-avdrag på 50% av arbetskostnaden.
+                  {' '}Start inom 24-48 timmar och ROT/RUT-avdrag på 30% av arbetskostnaden.
                 </p>
               </div>
               
@@ -328,7 +328,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                   <div className="text-sm text-muted-foreground">{t('serviceDetail.projectStart')}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">50%</div>
+                  <div className="text-2xl font-bold text-primary">30%</div>
                   <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + t('serviceDetail.discount') : 'ROT-' + t('serviceDetail.discount')}</div>
                 </div>
                 <div className="text-center">

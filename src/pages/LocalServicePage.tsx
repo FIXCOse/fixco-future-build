@@ -286,7 +286,7 @@ const LocalServicePage = () => {
                 >
                   {[
                     { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
-                    { icon: BadgeCheck, text: `50% ${service?.rotRut}`, color: "text-emerald-400" },
+                    { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
                     { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
                   ].map((badge, idx) => (
                     <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 text-sm">

@@ -11,7 +11,7 @@ export const CompactTrustBar = ({ rating, area, rotRut }: CompactTrustBarProps) 
   const trustItems = [
     { icon: Star, text: `${rating.toFixed(1)}/5 betyg`, highlight: true },
     { icon: Clock, text: "Svar inom 2h" },
-    { icon: BadgeCheck, text: `50% ${rotRut}-avdrag` },
+    { icon: BadgeCheck, text: `30% ${rotRut}-avdrag` },
     { icon: Shield, text: "Ansvarsförsäkrade" },
   ];
 

@@ -8,8 +8,8 @@ import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal
 import { GradientText } from "@/components/v2/GradientText";
 
 const VAT_RATE = 0.25;
-const ROT_RATE = 0.50;
-const RUT_RATE = 0.50;
+const ROT_RATE = 0.30;
+const RUT_RATE = 0.30;
 
 interface ServiceCardV3Props {
   title: string;

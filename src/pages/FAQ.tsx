@@ -29,14 +29,14 @@ const FAQ = () => {
         {
           question: isEnglish ? "What is ROT deduction and how does it work?" : "Vad är ROT-avdrag och hur funkar det?",
           answer: isEnglish ? 
-            "ROT deduction is a tax deduction that gives you 50% discount on labor costs for repair, renovation and extension of your home. You can get a maximum of 50,000 SEK per person per year. We help you with all applications and you only pay half the labor cost directly to us." :
-            "ROT-avdrag är ett skatteavdrag som ger dig 50% rabatt på arbetskostnaden för reparation, ombyggnad och tillbyggnad av din bostad. Du kan få maximalt 50 000 kr per person och år. Vi hjälper dig med alla ansökningar och du betalar endast hälften av arbetskostnaden direkt till oss."
+            "ROT deduction is a tax deduction that gives you 30% discount on labor costs for repair, renovation and extension of your home. You can get a maximum of 50,000 SEK per person per year. We help you with all applications and you only pay 70% of the labor cost directly to us." :
+            "ROT-avdrag är ett skatteavdrag som ger dig 30% rabatt på arbetskostnaden för reparation, ombyggnad och tillbyggnad av din bostad. Du kan få maximalt 50 000 kr per person och år. Vi hjälper dig med alla ansökningar och du betalar 70% av arbetskostnaden direkt till oss."
         },
         {
           question: isEnglish ? "What do your services cost?" : "Vad kostar era tjänster?",
           answer: isEnglish ? 
-            "Our hourly rate is 959 SEK/h, but with ROT deduction you only pay 480 SEK/h. Some services have fixed prices, like toilet replacement (1,750 SEK with ROT) or sink (1,250 SEK with ROT). We always provide a free quote before work begins." :
-            "Vårt timpris är 959 kr/h, men med ROT-avdrag betalar du endast 480 kr/h. Vissa tjänster har fast pris, som byte av toalettstol (1 750 kr med ROT) eller handfat (1 250 kr med ROT). Vi ger alltid kostnadsfri offert innan arbetet påbörjas."
+            "Our hourly rate is 959 SEK/h, but with ROT deduction you only pay 671 SEK/h. Some services have fixed prices, like toilet replacement (1,750 SEK with ROT) or sink (1,250 SEK with ROT). We always provide a free quote before work begins." :
+            "Vårt timpris är 959 kr/h, men med ROT-avdrag betalar du endast 671 kr/h. Vissa tjänster har fast pris, som byte av toalettstol (1 750 kr med ROT) eller handfat (1 250 kr med ROT). Vi ger alltid kostnadsfri offert innan arbetet påbörjas."
         }
       ]
     },
@@ -73,6 +73,12 @@ const FAQ = () => {
           answer: isEnglish ? 
             "It depends on the type of work. For smaller jobs you can leave keys, but for larger projects or where choices need to be made, we recommend that you are present at least at the start and end. We discuss this when we book." :
             "Det beror på typen av arbete. För mindre jobb kan du lämna nycklar, men för större projekt eller där val behöver göras rekommenderar vi att du är närvarande åtminstone vid start och avslut. Vi diskuterar detta när vi bokar."
+        },
+        {
+          question: isEnglish ? "Do I have to apply for the tax deduction myself?" : "Måste jag ansöka om avdraget själv?",
+          answer: isEnglish ? 
+            "ROT/RUT deduction gives you a 30% discount on the labor cost. We handle the entire process so you get the deduction directly on your invoice." :
+            "ROT/RUT-avdrag ger dig 30% rabatt direkt på fakturan. Vi sköter hela processen åt dig hos Skatteverket."
         }
       ]
     }

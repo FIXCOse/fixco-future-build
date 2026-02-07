@@ -25,8 +25,8 @@ export type EstimateResult = {
 /**
  * Beräknar offert med svensk ROT-regel:
  * - 25% moms på allt
- * - 50% ROT-avdrag på arbetskostnad INKLUSIVE moms (enligt Skatteverket)
- * - OBS: ROT-satsen är 50% fram till 2025-12-31, därefter 30%
+ * - 30% ROT-avdrag på arbetskostnad INKLUSIVE moms (enligt Skatteverket)
+ * - OBS: ROT-satsen sänktes till 30% från 2026-01-01
  */
 export function estimateQuote(input: EstimateInput, serviceBaseSek?: number): EstimateResult {
   const hourly = input.hourlySek ?? serviceBaseSek ?? 950;
@@ -38,10 +38,10 @@ export function estimateQuote(input: EstimateInput, serviceBaseSek?: number): Es
   const vat = subtotal * 0.25;
   const totalInclVat = subtotal + vat;
   
-  // ROT: 50% av arbetskostnaden INKLUSIVE moms (Skatteverkets regel)
+  // ROT: 30% av arbetskostnaden INKLUSIVE moms (Skatteverkets regel fr.o.m. 2026)
   const rotEligible = input.rotEligible ?? true;
   const workInclVat = work * 1.25;
-  const rotDeduction = rotEligible ? Math.round(workInclVat * 0.50) : 0;
+  const rotDeduction = rotEligible ? Math.round(workInclVat * 0.30) : 0;
   
   const totalAfterRot = Math.max(0, totalInclVat - rotDeduction);
   

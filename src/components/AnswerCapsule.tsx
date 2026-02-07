@@ -34,7 +34,7 @@ export const AnswerCapsule: React.FC<AnswerCapsuleProps> = ({
         itemProp="text"
       >
         <strong>{serviceName}{location}</strong> kostar {priceRange} per timme. 
-        Med {taxDeduction}-avdrag (50% rabatt) betalar du endast {priceAfterDeduction}. 
+        Med {taxDeduction}-avdrag (30% rabatt) betalar du endast {priceAfterDeduction}. 
         Alla hantverkare har F-skatt och är försäkrade. 
         Boka via Fixco på {phone} – offert inom 24 timmar, gratis hembesök.
       </p>

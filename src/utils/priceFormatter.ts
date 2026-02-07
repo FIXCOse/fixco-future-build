@@ -26,8 +26,8 @@ export function formatPrice(
   fixedPrice: boolean = false
 ): FormattedPrice {
   
-  const ROT_RATE = 0.50;
-  const RUT_RATE = 0.50;
+  const ROT_RATE = 0.30;
+  const RUT_RATE = 0.30;
   
   // Always show "inkl. moms" suffix
   const formatDisplay = (amount: number, unit: string) => {

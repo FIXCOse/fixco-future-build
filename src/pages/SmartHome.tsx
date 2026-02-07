@@ -188,7 +188,7 @@ export const SmartHome = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold gradient-text mb-2">
-                    50%
+                    30%
                   </div>
                   <EditableText 
                     id="smart-home-savings"
