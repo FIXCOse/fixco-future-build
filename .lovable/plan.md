@@ -1,156 +1,160 @@
 
-## Dörrlås och Smarta Lås -- Ultimate SEO-strategi
 
-### Sammanfattning
+## Uppdatera ROT och RUT till 30% -- Komplett guide
 
-Planen bygger en **tvådelad strategi** som ger er maximal SEO-täckning:
+### Bakgrund
 
-1. **Nya dörrlåstjänster** i databasen under rätt kategori (Montering + cross-listing till Tekniska installationer)
-2. **En dedikerad landningssida** (`/tjanster/dorrlas`) fullspäckad med SEO-innehåll, märkesspecifik info och boknings-CTA
+Sedan 1 januari 2026 har ROT-avdraget sänkts tillbaka till **30%** (från den tillfälliga höjningen till 50% under 2024-2025). RUT-avdraget ska också uppdateras till **30%**. Detta påverkar priskalkylerna, visningstexterna och alla AI-filer som beskriver avdragsnivåerna.
 
-Detta liknar Clas Fixares upplägg men med **bättre SEO** tack vare er befintliga lokala sidstruktur, Schema.org och AI-optimering.
+**OBS:** Vissa filer (blogginläggen, PlumberActionSection, GroundworkActionSection) har redan korrekta 30%-värden, medan resten av hemsidan fortfarande visar 50%.
 
 ---
 
-### DEL 1: Nya tjänster i databasen
+### Vad som ändras
 
-Lägg till dessa tjänster i `services`-tabellen:
+Ändringen berör **4 kategorier**:
 
-| Tjänst | Kategori | Cross-listing | ROT |
-|--------|----------|---------------|-----|
-| Installera smart dörrlås | montering | tekniska-installationer | Ja (50%) |
-| Installera Yale Doorman | montering | tekniska-installationer | Ja (50%) |
-| Installera Yale Linus | montering | tekniska-installationer | Ja (50%) |
-| Installera kodlås | montering | tekniska-installationer | Ja (50%) |
-| Byta cylinderlås | montering | -- | Ja (50%) |
-| Installera larm och dörrlås-paket | tekniska-installationer | montering | Ja (50%) |
-
-Varje tjänst får `search_keywords` med brett sökfält:
-- "yale doorman, yale linus, smart lås, kodlås, dörrlås, assa, assa abloy, nuki, glue lock, digitalt lås, elektriskt lås, ytterdörr, säkerhet, hemmasäkerhet, nyckelritt, nyckelritt lås"
-
-Tjänsterna visas automatiskt under **Montering** och **Tekniska installationer** i ert nuvarande filter tack vare cross-listing.
+1. **Priskalkyler (beräkningslogik)** -- 0.50 byts till 0.30
+2. **Komponenter och sidor (visningstexterna)** -- "50%" byts till "30%"
+3. **Översättningsfiler (sv.ts och en.ts)** -- alla "50%" i ROT/RUT-kontext
+4. **Publika AI-filer och SEO** -- llms.txt, context.json, knowledge-base osv.
 
 ---
 
-### DEL 2: Dedikerad landningssida `/tjanster/dorrlas`
+### DEL 1: Prisberäkningslogik (6 filer)
 
-En helt ny sida som fungerar som ett **SEO-nav** ("content hub") for allt som rör dörrlås. Sidan byggs som en ny komponent `DoorLockLandingPage.tsx`.
+Alla `ROT_RATE` och `RUT_RATE` konstanter ändras från `0.50` till `0.30`:
 
-#### Innehållsstruktur (uppifrån och ner):
+| Fil | Rad | Nuvarande | Nytt |
+|-----|-----|-----------|------|
+| `src/utils/priceCalculation.ts` | 15-16 | `ROT_RATE = 0.50`, `RUT_RATE = 0.50` | `ROT_RATE = 0.30`, `RUT_RATE = 0.30` |
+| `src/utils/priceFormatter.ts` | 29-30 | `ROT_RATE = 0.50`, `RUT_RATE = 0.50` | `ROT_RATE = 0.30`, `RUT_RATE = 0.30` |
+| `src/components/ServiceCardV3.tsx` | 11-12 | `ROT_RATE = 0.50`, `RUT_RATE = 0.50` | `ROT_RATE = 0.30`, `RUT_RATE = 0.30` |
+| `src/components/PriceSummary.tsx` | 8-9 | `ROT_RATE = 0.50`, `RUT_RATE = 0.50` | `ROT_RATE = 0.30`, `RUT_RATE = 0.30` |
+| `src/features/ai/tools/estimateQuote.ts` | 44 | `workInclVat * 0.50` | `workInclVat * 0.30` |
+| `src/lib/admin.ts` | 223 | `laborShare * 0.50` (RUT) | `laborShare * 0.30` |
 
-**1. Hero-sektion**
-- H1: "Installation av Dörrlås och Smarta Lås"
-- Intro: Kort, säljande text med USP:ar (5/5 betyg, ROT-avdrag 50%, fast pris)
-- CTA: "Begär offert" (öppnar ServiceRequestModal) + Telefonnummer
+**OBS:** `src/lib/admin.ts` rad 221 har redan korrekt `0.30` for ROT. Rad 223 (RUT) behöver ändras.
 
-**2. Märkessektion -- "Vi installerar alla märken"**
-- Visuella kort per märke med logotyp/ikon:
-  - **Yale Doorman** (L3S Flex, Classic, V2N)
-  - **Yale Linus**
-  - **ASSA ABLOY** (Connect, Seos)
-  - **Nuki** (Smart Lock 4.0)
-  - **Glue** (Smart Lock)
-  - **Danalock**
-  - **Kodlås** (generiskt)
-  - **Traditionella cylinderlås**
-- Varje kort har en kort beskrivning + "Boka installation" CTA
-
-**3. SEO-textsektion -- "Allt du behöver veta om smarta dörrlås"**
-- Lång, informativ text (~800-1000 ord) som täcker:
-  - Vad är ett smart dörrlås?
-  - Skillnaden mellan Yale Doorman, Linus, Nuki och Glue
-  - Vilka dörrar passar smarta lås på?
-  - Hur fungerar ROT-avdrag for dörrlåsinstallation?
-  - Behöver man en elektriker eller snickare?
-  - Säkerhet: certifieringar och försäkring
-
-**4. Jämförelsetabell**
-- Tabell med Yale Doorman vs Yale Linus vs Nuki vs Glue vs ASSA
-- Kolumner: Märke, Modell, Typ (Bluetooth/Z-Wave/WiFi), Passar dörrar, ROT-avdrag, Pris ca.
-
-**5. Så bokar du -- HowTo-steg**
-- 4 steg med ikoner (samma mönster som LocalServicePage)
-
-**6. FAQ-sektion (8-10 frågor)**
-- "Kan jag installera Yale Doorman själv?"
-- "Vilka dörrar passar Yale Doorman?"
-- "Vad kostar installation av smart dörrlås?"
-- "Får jag ROT-avdrag for dörrlåsinstallation?"
-- "Vad är skillnaden mellan Yale Doorman och Yale Linus?"
-- "Fungerar smarta lås om strömmen går?"
-- "Kan jag behålla mitt vanliga lås parallellt?"
-- "Hur lång tid tar installation?"
-
-**7. Interna länkar**
-- Länk till Tekniska installationer
-- Länk till Montering
-- Länk till Smart Hem-sidan
-- Lokala länkar: "Dörrlås installation Uppsala", "Dörrlås installation Stockholm"
+Kommentarer i koden som nämner "50%" uppdateras också.
 
 ---
 
-### DEL 3: SEO och Schema.org
+### DEL 2: RUT-beräknaren (1 fil)
 
-Sidan får:
-- **Meta title**: `Installera Dörrlås | Yale Doorman, Linus, Nuki | 50% ROT | Fixco`
-- **Meta description**: `Installation av smarta dörrlås ★ 5/5 betyg ✓ Yale Doorman, Linus, Nuki, ASSA ✓ 50% ROT-avdrag ✓ Fast pris. Boka certifierad montör!`
-- **Schema.org**: Product, FAQPage, HowTo, Service, Organization
-- **Canonical**: `https://fixco.se/tjanster/dorrlas`
-
----
-
-### DEL 4: Lokal SEO-integration
-
-Dörrlås-sidan blir en del av ert lokala SEO-nät:
-- Internt länkade från LocalServicePage (Montering + Tekniska installationer) i alla 54 orter
-- "Dörrlås installation Uppsala" och "Dörrlås installation Stockholm" länkas från sidan tillbaka till lokala sidor
+`src/components/RUTCalculator.tsx`:
+- Rad 11: Kommentar "50% av arbetskostnad" till "30%"
+- Rad 16: `rutPercentage = 50` till `rutPercentage = 30`
+- Rad 60: Text "50% rabatt" till "30% rabatt"
+- Rad 136: Text "minst X kr" (omberäknas med 30%-faktor)
+- Rad 152: "RUT-avdrag (50%)" till "RUT-avdrag (30%)"
 
 ---
 
-### Teknisk implementation
+### DEL 3: ROT-beräknaren
 
-#### Nya/ändrade filer:
-
-1. **`src/pages/DoorLockLandingPage.tsx`** -- Helt ny sida med all SEO-content
-2. **`src/data/doorLockData.ts`** -- Data for märken, FAQ:s, jämförelsetabell
-3. **`src/App.tsx`** -- Ny route: `tjanster/dorrlas`
-4. **Supabase `services`-tabell** -- 6 nya tjänsteposter med search_keywords
-5. **`src/data/servicesDataNew.ts`** -- Lägg till dörrlås som sub-services under Montering
-6. **`src/features/requests/serviceConfig.ts`** -- Ny config for dörrlåstjänster
-
-#### Routing:
-```text
-/tjanster/dorrlas          --> DoorLockLandingPage (ny)
-/tjanster/montering        --> ServiceDetail (visar dörrlås bland andra montering-tjänster)
-/tjanster/montering/uppsala --> LocalServicePage (befintlig, nämner dörrlås)
-```
-
-#### Designstil:
-Samma premium-design som era befintliga sidor -- GradientText, motion-animationer, glaseffekter, dark theme. Inga nya designsystem.
+`src/components/ROTCalculator.tsx`:
+- Kommentar "50% av arbetskostnad" till "30%"
 
 ---
 
-### Sökord som sidan rankar for
+### DEL 4: Sidor och komponenter (~15 filer)
 
-Primära:
-- "installera dörrlås"
-- "installera yale doorman"
-- "yale doorman installation"
-- "smart dörrlås installation"
-- "montera kodlås"
+| Fil | Vad ändras |
+|-----|-----------|
+| `src/pages/DoorLockLandingPage.tsx` | Meta title "50% ROT" -> "30% ROT", texten "50% ROT-avdrag" -> "30% ROT-avdrag" |
+| `src/pages/LocalServicePage.tsx` | Badge "50% ROT/RUT", stora "50%" texten, CTA-sektionen |
+| `src/pages/locations/ServiceCityDetail.tsx` | Texten "50% av arbetskostnaden", "50%" siffran, ROT/RUT-hantering text |
+| `src/pages/HomeV2.tsx` | "50% ROT-avdrag direkt", "50% rabatt" subtitle |
+| `src/pages/ROTInfo.tsx` | Meta title och description med "50%" |
+| `src/pages/RUT.tsx` | Meta title och description med "50%" |
+| `src/pages/FAQ.tsx` | FAQ-svar om ROT och RUT med "50%" |
+| `src/pages/SmartHome.tsx` | Stor "50%" siffra i statistik |
+| `src/pages/MyFixco/RotRutPage.tsx` | "50% avdrag" text |
+| `src/components/AnswerCapsule.tsx` | "50% rabatt" text |
+| `src/components/SEOSchema.tsx` | FAQ "50% rabatt", default meta description |
+| `src/components/SEOSchemaEnhanced.tsx` | "50% ROT/RUT-avdrag", "50% of labor cost" |
+| `src/components/Project3DVisualizer.tsx` | "50% ROT-avdrag" text |
+| `src/components/local-service/CompactTrustBar.tsx` | "50% ROT/RUT-avdrag" |
+| `src/components/local-service/GardenActionSection.tsx` | "RUT-avdrag 50%" |
+| `src/components/AIChat/KnowledgeBase.ts` | "50% avdrag" i ROT/RUT-regler och FAQ |
+| `src/components/AIChat/IntentEngine.ts` | Regex pattern `50%` |
 
-Long-tail:
-- "installera yale doorman l3s flex"
-- "yale doorman vs linus"
-- "smart dörrlås ROT-avdrag"
-- "byta dörrlås Uppsala"
-- "kodlås ytterdörr installation Stockholm"
-- "yale doorman pris installation"
-- "nuki smart lock installation Sverige"
+---
 
-LSI/relaterade:
-- "smarta hemlösningar"
-- "hemmasäkerhet"
-- "nyckelritt lås"
-- "digitalt lås"
-- "bluetooth lås"
+### DEL 5: Översättningsfiler (2 filer)
+
+**`src/copy/sv.ts`** -- Cirka 25+ ställen som nämner "50%":
+- `chips.rot_50` -> `chips.rot_30`
+- `chips.rut_50` -> `chips.rut_30`
+- Alla ROT/RUT-relaterade texter: "Spara 50%" -> "Spara 30%", "50% rabatt" -> "30% rabatt", osv.
+
+**`src/copy/en.ts`** -- Cirka 25+ ställen:
+- Motsvarande engelska texter: "Save 50%" -> "Save 30%", "50% discount" -> "30% discount"
+
+---
+
+### DEL 6: Data-filer (3 filer)
+
+| Fil | Vad ändras |
+|-----|-----------|
+| `src/data/doorLockData.ts` | FAQ-svar "50% ROT" -> "30%", rotInfo-text "50%", Schema.org description |
+| `src/data/serviceCityData.ts` | Alla title-taggar "ROT 50%" -> "ROT 30%", descriptions, "ROT-avdrag ger 50%" etc |
+| `src/data/serviceCityContent.ts` | "Du sparar 50%" -> "du sparar 30%" |
+| `src/data/localSeoData.ts` | Alla SEO-titlar "ROT 50%/RUT 50%" -> "30%", fallback-text "50%" |
+| `src/data/cityData.ts` | FAQ-svar "50%", stad-descriptions |
+
+---
+
+### DEL 7: Publika AI-filer (8+ filer)
+
+Alla publika filer som AI-modeller läser måste synkroniseras:
+
+| Fil | Vad ändras |
+|-----|-----------|
+| `public/llms.txt` | "50% rabatt" -> "30% rabatt", FAQ-svar |
+| `public/llms-ctx.txt` | Alla "ROT (50%)" -> "ROT (30%)", "50% rabatt", price-after-deduction (omräknas) |
+| `public/llms-full.txt` | Alla "50%" -> "30%", "After ROT deduction (50%)" -> "(30%)", prisomräkningar |
+| `public/context.json` | USP "50% rabatt", FAQ-svar |
+| `public/knowledge-base.json` | Schema "50% of labor cost" |
+| `public/knowledge-base.yaml` | USP "50% rabatt", FAQ-svar |
+| `public/.well-known/llms.txt` | Alla "ROT (50%)", "RUT (50%)", "50% discount" |
+| `public/.well-known/ai.txt` | Alla "ROT (50%)", discount: 50% |
+| `public/.well-known/ai-plugin.json` | Description "50% rabatt" |
+| `public/.well-known/openapi.yaml` | "50% rabatt", example "50%" |
+| `public/services.csv` | `tax_deduction_percent` kolumnen: 50 -> 30, samt omberäkning av `price_after_deduction_min/max` |
+
+**Prisomräkningar i AI-filerna:**
+- Snickare 958 kr/h: efter 30% ROT = **671 kr/h** (inte 479)
+- Målning 958 kr/h: efter 30% ROT = **671 kr/h**
+- Golv 958 kr/h: efter 30% ROT = **671 kr/h**
+- Flytt 559 kr/h: efter 30% RUT = **391 kr/h** (inte 280)
+- El ~1059 kr/h: efter 30% ROT = **~741 kr/h** (inte 530)
+
+---
+
+### DEL 8: Supabase-funktion
+
+`create_draft_quote_for_booking` i databasen har redan `rot_deduction := work_total * 0.30` -- detta stämmer redan.
+
+---
+
+### Sammanfattning av filer att ändra
+
+Totalt **~35-40 filer** som behöver uppdateras:
+
+- 6 filer med beräkningslogik
+- ~15 React-komponenter/sidor
+- 2 översättningsfiler (sv.ts, en.ts)
+- 5 data-filer
+- 10+ publika AI/SEO-filer
+- 1 CSV-fil (services.csv)
+
+### Ordningsföljd
+
+1. Beräkningslogiken (viktigast -- påverkar alla prisvisningar)
+2. Komponenter och sidor
+3. Översättningsfiler
+4. Data-filer
+5. AI-filer och CSV
+
