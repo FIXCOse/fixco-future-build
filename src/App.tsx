@@ -101,6 +101,7 @@ const LocalServicePage = lazy(() => import("./pages/LocalServicePage"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -352,6 +353,9 @@ const App = () => {
                             {/* Redirects: målning/måleri → målare (SEO-konsolidering) */}
                             <Route path="tjanster/malning" element={<Navigate to="/tjanster/malare" replace />} />
                             <Route path="tjanster/maleri" element={<Navigate to="/tjanster/malare" replace />} />
+                            
+                            {/* Dedikerad dörrlås-landningssida (SEO content hub) */}
+                            <Route path="tjanster/dorrlas" element={lazyElement(DoorLockLandingPage)} />
                             
                             {/* Redirects: gamla lokala tjänst-sidor → nya format (client-side) */}
                             <Route path="tjanster/elmontor-uppsala" element={<Navigate to="/tjanster/elektriker/uppsala" replace />} />

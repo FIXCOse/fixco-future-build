@@ -121,6 +121,69 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Antal våningar, färg, kondition..." },
       { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
     ]
+  },
+  // Dörrlås-tjänster
+  {
+    slug: "installera-smart-dorrlas",
+    name: "Installera smart dörrlås",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Märke/modell, dörrtyp, önskemål..." },
+      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "installera-yale-doorman",
+    name: "Installera Yale Doorman",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Modell (L3S Flex/Classic/V2N), dörrtyp, önskemål..." },
+      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "installera-yale-linus",
+    name: "Installera Yale Linus",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp, befintligt lås, önskemål..." },
+      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "installera-kodlas",
+    name: "Installera kodlås",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal", label: "Antal dörrar", min: 1, required: true },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp (ytterdörr/innerdörr), märke om valt..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "byta-cylinderlas",
+    name: "Byta cylinderlås",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal", label: "Antal lås", min: 1, required: true },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp, befintligt lås, säkerhetsklass..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "installera-larm-dorrlas",
+    name: "Installera larm och dörrlås-paket",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Typ av larm, antal dörrlås, befintliga system..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
   }
 ];
 

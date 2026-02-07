@@ -830,6 +830,67 @@ export const servicesDataNew = [
         category: "Kök",
         location: "inomhus",
         laborShare: 1.0
+      },
+      // Dörrlås
+      {
+        id: "montering-installera-smart-dorrlas",
+        title: "Installera smart dörrlås",
+        description: "Installation av smarta dörrlås (Yale Doorman, Linus, Nuki m.fl.)",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Dörrlås",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "montering-installera-yale-doorman",
+        title: "Installera Yale Doorman",
+        description: "Professionell installation av Yale Doorman (L3S Flex, Classic, V2N)",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Dörrlås",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "montering-installera-yale-linus",
+        title: "Installera Yale Linus",
+        description: "Installation av Yale Linus smart lås utan borrning",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Dörrlås",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "montering-installera-kodlas",
+        title: "Installera kodlås",
+        description: "Installation av kodlås på ytterdörr eller innerdörr",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Dörrlås",
+        location: "inomhus",
+        laborShare: 1.0
+      },
+      {
+        id: "montering-byta-cylinderlas",
+        title: "Byta cylinderlås",
+        description: "Byte av cylinderlås i ytterdörr eller innerdörr",
+        basePrice: 759,
+        priceUnit: "kr/h",
+        priceType: "hourly",
+        eligible: { rot: true, rut: false },
+        category: "Dörrlås",
+        location: "inomhus",
+        laborShare: 1.0
       }
     ]
   },
