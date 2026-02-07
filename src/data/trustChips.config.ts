@@ -34,8 +34,8 @@ export const TRUST_CHIPS_BASE: CopyKey[] = [
 
 export const TRUST_CHIPS_EXTENDED: CopyKey[] = [
   ...TRUST_CHIPS_BASE,
-  'chips.rot_50',
-  'chips.rut_50',
+  'chips.rot_30',
+  'chips.rut_30',
   'chips.transparent',
   'chips.free_quote',
   'chips.we_handle_rot',
@@ -70,13 +70,13 @@ export const getTrustChipConfig = (chipId: CopyKey): TrustChipConfig => {
       backgroundGradient: "bg-gradient-to-r from-purple-500 to-indigo-500",
       link: "/tjanster?filter=fast-pris"
     },
-    'chips.rot_50': {
+    'chips.rot_30': {
       icon: Calculator,
       color: "text-green-500",
       backgroundGradient: "bg-gradient-to-r from-green-500 to-emerald-500",
       link: "/rot"
     },
-    'chips.rut_50': {
+    'chips.rut_30': {
       icon: Home,
       color: "text-blue-500",
       backgroundGradient: "bg-gradient-to-r from-blue-500 to-cyan-500",
