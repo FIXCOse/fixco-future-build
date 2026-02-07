@@ -45,8 +45,8 @@ export function matchesSearchTerm(
   const stemmedTerm = stemSwedish(term);
   
   // 1. Direct matching (case-insensitive) - only title and sub-category, NOT description (too imprecise)
-  const titleLower = title.toLowerCase();
-  const subCatLower = subCategory.toLowerCase();
+  const titleLower = (title || '').toLowerCase();
+  const subCatLower = (subCategory || '').toLowerCase();
   
   if (titleLower.includes(term)) return true;
   if (subCatLower.includes(term)) return true;
