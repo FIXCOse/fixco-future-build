@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Zap, Wrench, Hammer, Paintbrush, TreePine, Package, Home, Truck, Settings, ArrowRight, type LucideIcon } from "lucide-react";
+import { Zap, Wrench, Hammer, Paintbrush, TreePine, Package, Home, Truck, Settings, Lock, ArrowRight, type LucideIcon } from "lucide-react";
 import { getGradientForService } from "@/utils/serviceGradients";
 
 interface CityServicesGridProps {
@@ -12,6 +12,7 @@ interface ServiceItem {
   name: string;
   icon: LucideIcon;
   description: string;
+  isGlobal?: boolean;
 }
 
 const services: ServiceItem[] = [
@@ -24,6 +25,7 @@ const services: ServiceItem[] = [
   { slug: "markarbeten", name: "Markarbeten", icon: Home, description: "Mark & grund" },
   { slug: "flytt", name: "Flytt", icon: Truck, description: "Flytt & transport" },
   { slug: "tekniska-installationer", name: "Tekniska installationer", icon: Settings, description: "Tech & automation" },
+  { slug: "dorrlas", name: "Dörrlås", icon: Lock, description: "Smarta lås & säkerhet", isGlobal: true },
 ];
 
 const containerVariants = {
@@ -60,7 +62,7 @@ export const CityServicesGrid = ({ citySlug }: CityServicesGridProps) => {
         return (
           <motion.div key={service.slug} variants={itemVariants}>
             <Link
-              to={`/tjanster/${service.slug}/${citySlug}`}
+              to={service.isGlobal ? `/tjanster/${service.slug}` : `/tjanster/${service.slug}/${citySlug}`}
               className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 hover:scale-[1.02] transition-all duration-300"
             >
               {/* Icon with gradient */}

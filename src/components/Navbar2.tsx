@@ -86,6 +86,7 @@ const Navbar2 = () => {
     stadning: '/en/services/stadning',
     markarbeten: '/en/services/markarbeten',
     tekniska: '/en/services/tekniska-installationer',
+    dorrlas: '/en/services/door-locks',
   } : {
     home: '/',
     services: '/tjanster',
@@ -106,6 +107,7 @@ const Navbar2 = () => {
     stadning: '/tjanster/stadning',
     markarbeten: '/tjanster/markarbeten',
     tekniska: '/tjanster/tekniska-installationer',
+    dorrlas: '/tjanster/dorrlas',
   };
 
   const services = [
@@ -117,6 +119,7 @@ const Navbar2 = () => {
     { href: paths.tradgard, title: t('serviceCategories.tradgard.title'), desc: t('serviceCategories.tradgard.description') },
     { href: paths.stadning, title: t('serviceCategories.stadning.title'), desc: t('serviceCategories.stadning.description') },
     { href: paths.tekniska, title: t('serviceCategories.tekniska-installationer.title'), desc: t('serviceCategories.tekniska-installationer.description') },
+    { href: paths.dorrlas, title: currentLanguage === 'en' ? 'Door Locks' : 'Dörrlås', desc: currentLanguage === 'en' ? 'Smart locks & security' : 'Smarta lås & säkerhet' },
   ];
 
   const moreLinks = [

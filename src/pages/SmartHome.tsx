@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,7 @@ import {
   Lightbulb,
   Thermometer,
   Shield,
+  Lock,
   Bot,
   Leaf,
   Speaker,
@@ -21,7 +23,8 @@ import {
   Target,
   Loader2,
   Star,
-  TrendingUp
+  TrendingUp,
+  ArrowRight
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSmartProducts, SortOption } from '@/hooks/useSmartProducts';
@@ -594,6 +597,29 @@ export const SmartHome = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Door Lock CTA */}
+        <section className="py-12 px-4">
+          <div className="container mx-auto max-w-4xl">
+            <Link to="/tjanster/dorrlas" className="block group">
+              <div className="rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5 p-8 flex flex-col md:flex-row items-center gap-6 hover:border-primary/40 transition-all duration-300">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Lock className="h-8 w-8 text-primary" />
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold mb-2">Smarta dörrlås</h3>
+                  <p className="text-muted-foreground">
+                    Yale Doorman, Linus, Nuki m.fl. — professionell installation med 30% ROT-avdrag. Det ultimata tillägget till ditt smarta hem.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-primary font-medium shrink-0">
+                  Se mer
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
           </div>
         </section>
 

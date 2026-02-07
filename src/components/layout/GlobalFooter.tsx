@@ -120,6 +120,11 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/tjanster/dorrlas" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Dörrlås
+                  </Link>
+                </li>
+                <li>
                   <Link to="/tjanster" className="text-primary hover:text-primary/80 transition-colors font-bold text-base">
                     🔧 Alla tjänster och priser →
                   </Link>

@@ -20,7 +20,8 @@ import {
   FileText,
   Calendar,
   MapPin,
-  Star
+  Star,
+  Lock
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -212,7 +213,7 @@ const ServiceDetail = () => {
                 <div className="text-sm text-muted-foreground">{t('serviceDetail.projectStart')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">50%</div>
+                <div className="text-2xl font-bold text-primary">30%</div>
                 <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + t('serviceDetail.discount') : 'ROT-' + t('serviceDetail.discount')}</div>
               </div>
               <div className="text-center">
@@ -248,6 +249,45 @@ const ServiceDetail = () => {
         </div>
       </section>
 
+
+      {/* Door Lock Highlight Banner - for montering & tekniska-installationer */}
+      {(normalizedSlug === 'montering' || normalizedSlug === 'tekniska-installationer') && (
+        <section className="py-6">
+          <div className="container mx-auto px-4">
+            <Link 
+              to={isEnglish ? '/en/services/door-locks' : '/tjanster/dorrlas'}
+              className="block group"
+            >
+              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 hover:border-primary/40 hover:bg-primary/10 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Lock className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                        {isEnglish ? 'New!' : 'Nytt!'}
+                      </Badge>
+                      <h3 className="font-bold text-foreground">
+                        {isEnglish ? 'Smart Door Lock Installation' : 'Installation av smarta dörrlås'}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {isEnglish 
+                        ? 'Yale Doorman, Linus, Nuki & more — 30% ROT deduction' 
+                        : 'Yale Doorman, Linus, Nuki m.fl. — 30% ROT-avdrag'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-primary font-medium text-sm shrink-0">
+                  {isEnglish ? 'Learn more' : 'Se mer'}
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Sub-services Grid */}
       <section className="py-20">
