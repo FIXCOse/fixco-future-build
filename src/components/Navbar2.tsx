@@ -222,7 +222,7 @@ const Navbar2 = () => {
               
               <div className="rd-navbar_block_columns">
                 <div className="rd-navbar_block_list">
-                  {services.slice(0, 4).map((service) => (
+                  {services.slice(0, 5).map((service) => (
                     <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
@@ -234,7 +234,7 @@ const Navbar2 = () => {
                 </div>
                 
                 <div className="rd-navbar_block_list">
-                  {services.slice(4, 8).map((service) => (
+                  {services.slice(5).map((service) => (
                     <Link key={service.href} to={service.href} className="rd-navbar_block_link w-inline-block" onClick={closeDropdown}>
                       <div>
                         <div className="rd-navbar_block_link_title">{service.title}</div>
