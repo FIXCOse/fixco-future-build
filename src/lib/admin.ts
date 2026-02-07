@@ -220,7 +220,7 @@ export async function getROTRUTSavings() {
     if (payload.rot_eligible) {
       savings = finalPrice * laborShare * 0.30;
     } else if (payload.rut_eligible) {
-      savings = finalPrice * laborShare * 0.50;
+      savings = finalPrice * laborShare * 0.30;
     }
     
     acc[month] = (acc[month] || 0) + savings;

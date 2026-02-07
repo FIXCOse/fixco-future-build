@@ -84,8 +84,8 @@ const RUT = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>{isEnglish ? 'RUT Tax Deduction - Save 50% on Home Services | Fixco' : 'RUT-avdrag - Spara 50% på hemservice | Fixco'}</title>
-        <meta name="description" content={isEnglish ? 'Save 50% on home service costs with RUT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 50% på hemservice med RUT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
+        <title>{isEnglish ? 'RUT Tax Deduction - Save 30% on Home Services | Fixco' : 'RUT-avdrag - Spara 30% på hemservice | Fixco'}</title>
+        <meta name="description" content={isEnglish ? 'Save 30% on home service costs with RUT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 30% på hemservice med RUT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
         <meta name="keywords" content={isEnglish ? 'RUT tax deduction, home cleaning, Sweden tax benefits, labor cost savings, home services' : 'RUT-avdrag, hemstäd, skatteavdrag, hemservice, besparingar'} />
       </Helmet>
 
@@ -284,7 +284,7 @@ const RUT = () => {
             <div className="card-premium p-6">
               <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '💰 Maximum Savings' : '💰 Maximal Besparing'}</h4>
               <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '50% on all RUT services' : '50% på alla RUT-tjänster'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '30% on all RUT services' : '30% på alla RUT-tjänster'}</li>
                 <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'No waiting for tax return' : 'Ingen väntan på skatteåterbäring'}</li>
                 <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Immediate discount' : 'Omedelbar rabatt'}</li>
               </ul>

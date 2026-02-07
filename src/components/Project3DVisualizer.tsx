@@ -142,7 +142,7 @@ export const Project3DVisualizer: React.FC<Project3DVisualizerProps> = ({
         <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 max-w-xs border border-border">
           <h4 className="font-semibold text-sm">ROT-berättigat projekt</h4>
           <p className="text-xs text-muted-foreground">
-            Detta projekt kvalificerar för 50% ROT-avdrag på arbetskostnaden.
+            Detta projekt kvalificerar för 30% ROT-avdrag på arbetskostnaden.
           </p>
         </div>
       </div>

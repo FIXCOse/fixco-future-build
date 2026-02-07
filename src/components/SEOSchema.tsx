@@ -102,7 +102,7 @@ const SEOSchema = ({ type, title, description, service, breadcrumbs }: SEOSchema
         "name": "Hur fungerar ROT-avdraget?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "ROT-avdrag ger 50% rabatt på arbetskostnaden. Vi sköter hela processen åt dig."
+          "text": "ROT-avdrag ger 30% rabatt på arbetskostnaden. Vi sköter hela processen åt dig."
         }
       }
     ]
@@ -150,7 +150,7 @@ const SEOSchema = ({ type, title, description, service, breadcrumbs }: SEOSchema
       
       {/* Page-specific meta tags */}
       <title>{title || 'Fixco - Professionella Bygg- och Renoveringstjänster'}</title>
-      <meta name="description" content={description || 'Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 50% rabatt med ROT-avdrag.'} />
+      <meta name="description" content={description || 'Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 30% rabatt med ROT-avdrag.'} />
       <link rel="canonical" href={window.location.href} />
       <meta name="robots" content="index, follow" />
       <meta property="og:title" content={title || 'Fixco - Professionella Bygg- och Renoveringstjänster'} />

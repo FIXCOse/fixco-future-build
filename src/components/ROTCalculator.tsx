@@ -8,12 +8,12 @@ const ROTCalculator = () => {
   const [householdSize, setHouseholdSize] = useState(2);
 
   // ROT-beräkning enligt Skatteverket:
-  // - 50% av arbetskostnad INKLUSIVE moms (fram till 2025-12-31, därefter 30%)
+  // - 30% av arbetskostnad INKLUSIVE moms (fr.o.m. 2026-01-01)
   // - Max 50 000 kr per person och år
   // - projectCost antas vara inkl moms (så kunden anger vad de betalar)
   const maxRotDeductionPerPerson = 50000;
   const maxTotalRotDeduction = householdSize * maxRotDeductionPerPerson; // 1=50k, 2=100k, 3=150k, 4=200k
-  const rotPercentage = 50; // 50% enligt Skatteverket (fram till 2026)
+  const rotPercentage = 30; // 30% enligt Skatteverket (fr.o.m. 2026)
   const calculatedDeduction = (projectCost * rotPercentage) / 100;
   const actualDeduction = Math.min(calculatedDeduction, maxTotalRotDeduction);
   const finalCost = projectCost - actualDeduction;
@@ -57,7 +57,7 @@ const ROTCalculator = () => {
             ROT-avdrag beräknare
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Beräkna din besparing med ROT-avdrag. 50% rabatt på arbetskostnaden, max 50 000 kr per person och år.
+            Beräkna din besparing med ROT-avdrag. 30% rabatt på arbetskostnaden, max 50 000 kr per person och år.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ const ROTCalculator = () => {
                       ({householdSize} × 50 000 kr = {(householdSize * 50000).toLocaleString('sv-SE')} kr)
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      💡 För att få fullt avdrag ({maxTotalRotDeduction.toLocaleString('sv-SE')} kr) behöver projektet kosta minst {(maxTotalRotDeduction * 2).toLocaleString('sv-SE')} kr
+                      💡 För att få fullt avdrag ({maxTotalRotDeduction.toLocaleString('sv-SE')} kr) behöver projektet kosta minst {Math.ceil(maxTotalRotDeduction / 0.30).toLocaleString('sv-SE')} kr
                     </p>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const ROTCalculator = () => {
                     <div className="flex justify-between items-center text-primary">
                       <div className="flex items-center gap-2">
                         <Percent className="h-4 w-4" />
-                        <span>ROT-avdrag (50%):</span>
+                        <span>ROT-avdrag (30%):</span>
                       </div>
                       <span className="font-semibold">
                         -{actualDeduction.toLocaleString('sv-SE')} kr
@@ -201,7 +201,7 @@ const ROTCalculator = () => {
 
             <div className="grid md:grid-cols-3 gap-6">
               {examples.map((example, index) => {
-                const exampleDeduction = Math.min(example.originalCost * 0.5, maxTotalRotDeduction);
+                const exampleDeduction = Math.min(example.originalCost * 0.3, maxTotalRotDeduction);
                 const exampleFinalCost = example.originalCost - exampleDeduction;
                 const IconComponent = example.icon;
                 

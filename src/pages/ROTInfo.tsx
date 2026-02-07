@@ -84,8 +84,8 @@ const ROTInfo = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>{isEnglish ? 'ROT Tax Deduction - Save 50% on Home Improvements | Fixco' : 'ROT-avdrag - Spara 50% på hemförbättringar | Fixco'}</title>
-        <meta name="description" content={isEnglish ? 'Save 50% on labor costs with ROT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 50% på arbetskostnaden med ROT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
+        <title>{isEnglish ? 'ROT Tax Deduction - Save 30% on Home Improvements | Fixco' : 'ROT-avdrag - Spara 30% på hemförbättringar | Fixco'}</title>
+        <meta name="description" content={isEnglish ? 'Save 30% on labor costs with ROT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 30% på arbetskostnaden med ROT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
         <meta name="keywords" content={isEnglish ? 'ROT tax deduction, home renovation, Sweden tax benefits, labor cost savings' : 'ROT-avdrag, hemrenovering, skatteavdrag, arbetskostnad, besparingar'} />
       </Helmet>
 
@@ -284,7 +284,7 @@ const ROTInfo = () => {
             <div className="card-premium p-6">
               <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '💰 Guaranteed Savings' : '💰 Garanterad Besparing'}</h4>
               <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '50% on all qualified work' : '50% på alla kvalificerade arbeten'}</li>
+                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '30% on all qualified work' : '30% på alla kvalificerade arbeten'}</li>
                 <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Maximize your annual deduction' : 'Maximera ditt årliga avdrag'}</li>
                 <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Professional advice' : 'Professionell rådgivning'}</li>
               </ul>

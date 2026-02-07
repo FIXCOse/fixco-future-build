@@ -29,7 +29,7 @@ export class IntentEngine {
     // ROT/RUT frågor
     rot_rut_question: [
       /\b(rot|rut|avdrag|skatteavdrag|skatteförmån|subvention)\b/i,
-      /\b(50%|femtio procent|rabatt)\b.*\b(skatt|avdrag)\b/i,
+      /\b(30%|trettio procent|rabatt)\b.*\b(skatt|avdrag)\b/i,
       /\bhur funkar\b.*\b(rot|rut|avdrag)\b/i
     ],
     
@@ -189,7 +189,7 @@ export class IntentEngine {
 
     // ROT/RUT stärks av procenttal
     if (intent === 'rot_rut_question') {
-      if (/\b(\d+%|procent|50|femtio)\b/.test(message)) {
+      if (/\b(\d+%|procent|30|trettio)\b/.test(message)) {
         confidence += 0.2;
       }
     }

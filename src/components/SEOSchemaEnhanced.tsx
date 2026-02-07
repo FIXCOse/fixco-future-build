@@ -390,7 +390,7 @@ export const getSiteNavigationSchema = () => ({
       "@type": "WebPageElement",
       "name": "ROT-avdrag",
       "url": `${baseUrl}/rot-info`,
-      "description": "Allt om ROT-avdrag 50% rabatt"
+      "description": "Allt om ROT-avdrag 30% rabatt"
     },
     {
       "@type": "WebPageElement",
@@ -484,7 +484,7 @@ export const getBookingHowToSchema = (serviceName: string, areaName?: string) =>
       },
       {
         name: "Betala med ROT/RUT-avdrag",
-        text: "Du betalar endast 50% av arbetskostnaden tack vare ROT/RUT-avdraget. Vi hanterar allt pappersarbete åt dig."
+        text: "Du betalar endast 70% av arbetskostnaden tack vare ROT/RUT-avdraget. Vi hanterar allt pappersarbete åt dig."
       }
     ]
   });
@@ -608,9 +608,9 @@ export const getLocalServiceSchema = (options: {
       "priceCurrency": "SEK",
       "unitText": "per timme",
       "description": options.hasROT 
-        ? "50% ROT-avdrag på arbetskostnad" 
+        ? "30% ROT-avdrag på arbetskostnad" 
         : options.hasRUT 
-          ? "50% RUT-avdrag på arbetskostnad"
+          ? "30% RUT-avdrag på arbetskostnad"
           : "Fast pris eller timpris"
     }
   },
@@ -712,12 +712,12 @@ export const getEntityMentionsSchema = () => ({
     {
       "@type": "Thing",
       "name": "ROT-avdrag",
-      "description": "Swedish tax deduction for renovation work, 50% of labor cost up to 50,000 SEK/year"
+      "description": "Swedish tax deduction for renovation work, 30% of labor cost up to 50,000 SEK/year"
     },
     {
       "@type": "Thing",
       "name": "RUT-avdrag",
-      "description": "Swedish tax deduction for household services, 50% of labor cost up to 75,000 SEK/year"
+      "description": "Swedish tax deduction for household services, 30% of labor cost up to 75,000 SEK/year"
     }
   ]
 });
@@ -786,7 +786,7 @@ export const getAIOptimizedSchema = (pageType: 'home' | 'service' | 'local', opt
     schemas.push(getEntityMentionsSchema());
     schemas.push(getSpeakableSchema({
       headline: "Fixco - Professionella Hantverkare med ROT & RUT-avdrag",
-      description: "Boka elmontör, snickare, rörmokare och fler hantverkare i Uppsala och Stockholm. 50% rabatt via ROT/RUT-avdrag.",
+      description: "Boka elmontör, snickare, rörmokare och fler hantverkare i Uppsala och Stockholm. 30% rabatt via ROT/RUT-avdrag.",
       url: baseUrl
     }));
   }

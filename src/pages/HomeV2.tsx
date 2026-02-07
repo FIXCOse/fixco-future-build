@@ -37,7 +37,7 @@ const HomeV2 = () => {
 
   const rotRutFeatures = [
     {
-      title: "50% ROT-avdrag direkt",
+      title: "30% ROT-avdrag direkt",
       description: "Vi hanterar all administration med Skatteverket så att du får ditt avdrag automatiskt."
     },
     {
@@ -81,7 +81,7 @@ const HomeV2 = () => {
       <div data-speed="0.9">
         <FeatureSplit
           title="ROT & RUT-avdrag – Vi sköter allt"
-          subtitle="Få upp till 50% rabatt på arbetskostnaden med skattesubventioner"
+          subtitle="Få upp till 30% rabatt på arbetskostnaden med skattesubventioner"
           features={rotRutFeatures}
           imageSrc={toolsProfessional}
           imageAlt="Professionella verktyg och hantverkare"

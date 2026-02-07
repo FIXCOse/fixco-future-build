@@ -8,7 +8,7 @@ export type CopyKey =
   
   // Trust chips
   | 'chips.f_skatt' | 'chips.insured' | 'chips.start_lt_5' | 'chips.fixed_price'
-  | 'chips.rot_50' | 'chips.rut_50' | 'chips.transparent' | 'chips.free_quote'
+  | 'chips.rot_30' | 'chips.rut_30' | 'chips.transparent' | 'chips.free_quote'
   | 'chips.we_handle_rot' | 'chips.happy_customers' | 'chips.fast_support'
   | 'chips.certified' | 'chips.warranty' | 'chips.eco_friendly' 
   | 'chips.quick_response' | 'chips.quality_work' | 'chips.more'

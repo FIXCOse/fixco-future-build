@@ -41,7 +41,7 @@ export class KnowledgeBase {
 
   private rotRules = `
 ROT-avdrag (Reparation, Ombyggnad, Tillbyggnad):
-- 50% avdrag på arbetskostnad
+- 30% avdrag på arbetskostnad
 - Max 50 000 kr per person och år
 - Gäller arbete på villa, radhus, bostadsrätt
 - Omfattar: el, VVS, målning, golv, snickeri, plattläggning
@@ -51,7 +51,7 @@ ROT-avdrag (Reparation, Ombyggnad, Tillbyggnad):
 
   private rutRules = `
 RUT-avdrag (Rengöring, Underhåll, Trädgård):
-- 50% avdrag på arbetskostnad
+- 30% avdrag på arbetskostnad
 - Max 75 000 kr per person och år
 - Gäller hushållstjänster i hemmet
 - Omfattar: städning, fönsterputs, trädgårdsskötsel, snöskottning
@@ -74,7 +74,7 @@ RUT-avdrag (Rengöring, Underhåll, Trädgård):
     },
     {
       question: "Hur funkar ROT/RUT-avdraget?",
-      answer: "Vi sköter hela processen. Du får 50% rabatt direkt på fakturan, vi ansöker åt dig hos Skatteverket."
+      answer: "Vi sköter hela processen. Du får 30% rabatt direkt på fakturan, vi ansöker åt dig hos Skatteverket."
     },
     {
       question: "Vad kostar ett hembesök?",
@@ -144,7 +144,7 @@ RUT-avdrag (Rengöring, Underhåll, Trädgård):
       content: this.rotRules,
       category: 'rot',
       keywords: ['rot', 'rotavdrag', 'avdrag', 'skatteavdrag', 'reparation'],
-      metadata: { type: 'rot', rate: 0.5, maxAmount: 50000 }
+      metadata: { type: 'rot', rate: 0.3, maxAmount: 50000 }
     });
 
     this.items.push({
@@ -154,7 +154,7 @@ RUT-avdrag (Rengöring, Underhåll, Trädgård):
       content: this.rutRules,
       category: 'rut',
       keywords: ['rut', 'rutavdrag', 'avdrag', 'skatteavdrag', 'hushållsarbete'],
-      metadata: { type: 'rut', rate: 0.5, maxAmount: 75000 }
+      metadata: { type: 'rut', rate: 0.3, maxAmount: 75000 }
     });
 
     // Lägg till FAQ

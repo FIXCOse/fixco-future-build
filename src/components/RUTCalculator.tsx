@@ -8,12 +8,12 @@ const RUTCalculator = () => {
   const [householdSize, setHouseholdSize] = useState(2);
 
   // RUT-beräkning enligt Skatteverket:
-  // - 50% av arbetskostnad INKLUSIVE moms
+  // - 30% av arbetskostnad INKLUSIVE moms (fr.o.m. 2026-01-01)
   // - Max 25 000 kr per person och år (lägre än ROT:s 50k)
   // - projectCost antas vara inkl moms (så kunden anger vad de betalar)
   const maxRutDeductionPerPerson = 25000; // RUT is 25k per person vs ROT's 50k
   const maxTotalRutDeduction = householdSize * maxRutDeductionPerPerson; // 1=25k, 2=50k
-  const rutPercentage = 50; // 50% enligt Skatteverket
+  const rutPercentage = 30; // 30% enligt Skatteverket (fr.o.m. 2026)
   const calculatedDeduction = (projectCost * rutPercentage) / 100;
   const actualDeduction = Math.min(calculatedDeduction, maxTotalRutDeduction);
   const finalCost = projectCost - actualDeduction;
@@ -57,7 +57,7 @@ const RUTCalculator = () => {
             RUT-avdrag beräknare
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Beräkna din besparing med RUT-avdrag. 50% rabatt på arbetskostnaden, max 25 000 kr per person och år.
+            Beräkna din besparing med RUT-avdrag. 30% rabatt på arbetskostnaden, max 25 000 kr per person och år.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ const RUTCalculator = () => {
                       ({householdSize} × 25 000 kr = {(householdSize * 25000).toLocaleString('sv-SE')} kr)
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      💡 För att få fullt avdrag ({maxTotalRutDeduction.toLocaleString('sv-SE')} kr) behöver projektet kosta minst {(maxTotalRutDeduction * 2).toLocaleString('sv-SE')} kr
+                      💡 För att få fullt avdrag ({maxTotalRutDeduction.toLocaleString('sv-SE')} kr) behöver projektet kosta minst {Math.ceil(maxTotalRutDeduction / 0.30).toLocaleString('sv-SE')} kr
                     </p>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const RUTCalculator = () => {
                     <div className="flex justify-between items-center text-primary">
                       <div className="flex items-center gap-2">
                         <Percent className="h-4 w-4" />
-                        <span>RUT-avdrag (50%):</span>
+                        <span>RUT-avdrag (30%):</span>
                       </div>
                       <span className="font-semibold">
                         -{actualDeduction.toLocaleString('sv-SE')} kr
@@ -201,7 +201,7 @@ const RUTCalculator = () => {
 
             <div className="grid md:grid-cols-3 gap-6">
               {examples.map((example, index) => {
-                const exampleDeduction = Math.min(example.originalCost * 0.5, maxTotalRutDeduction);
+                const exampleDeduction = Math.min(example.originalCost * 0.3, maxTotalRutDeduction);
                 const exampleFinalCost = example.originalCost - exampleDeduction;
                 const IconComponent = example.icon;
                 

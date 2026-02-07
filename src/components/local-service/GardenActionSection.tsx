@@ -9,7 +9,7 @@ interface GardenActionSectionProps {
 export const GardenActionSection = ({ area }: GardenActionSectionProps) => {
   const usps = [
     { icon: Shield, text: "Professionella trädgårdsmästare" },
-    { icon: Percent, text: "RUT-avdrag 50%" },
+    { icon: Percent, text: "RUT-avdrag 30%" },
     { icon: TreePine, text: "Säsongsentreprenad" },
   ];
 

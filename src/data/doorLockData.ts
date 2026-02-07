@@ -124,7 +124,7 @@ export const comparisonData = [
 export const doorLockFAQs = [
   {
     question: "Kan jag installera Yale Doorman själv?",
-    answer: "Tekniskt sett ja, men vi rekommenderar professionell installation. Felaktig montering kan påverka låsets funktion och din försäkring. Dessutom krävs korrekt anpassning till din dörr – fel mått eller vinkel kan göra att låset inte låser ordentligt. Med professionell installation får du även ROT-avdrag (50%) på arbetskostnaden."
+    answer: "Tekniskt sett ja, men vi rekommenderar professionell installation. Felaktig montering kan påverka låsets funktion och din försäkring. Dessutom krävs korrekt anpassning till din dörr – fel mått eller vinkel kan göra att låset inte låser ordentligt. Med professionell installation får du även ROT-avdrag (30%) på arbetskostnaden."
   },
   {
     question: "Vilka dörrar passar Yale Doorman på?",
@@ -132,11 +132,11 @@ export const doorLockFAQs = [
   },
   {
     question: "Vad kostar installation av smart dörrlås?",
-    answer: "Installationskostnaden beror på låstyp och dörr. Typiskt tar en installation 1–2 timmar. Med vår timpris på 759 kr/h och 50% ROT-avdrag betalar du från ca 380 kr/h efter avdrag. Själva låset köper du separat eller via oss. Kontakta oss för en exakt offert baserad på ditt val av lås."
+    answer: "Installationskostnaden beror på låstyp och dörr. Typiskt tar en installation 1–2 timmar. Med vår timpris på 759 kr/h och 30% ROT-avdrag betalar du från ca 531 kr/h efter avdrag. Själva låset köper du separat eller via oss. Kontakta oss för en exakt offert baserad på ditt val av lås."
   },
   {
     question: "Får jag ROT-avdrag för dörrlåsinstallation?",
-    answer: "Ja! Installation av dörrlås räknas som ROT-arbete (reparation, ombyggnad, tillbyggnad). Du får 50% avdrag på arbetskostnaden, upp till 50 000 kr per person och år. ROT-avdraget gäller oavsett om det är ett smart lås, kodlås eller traditionellt cylinderlås – så länge arbetet utförs i din bostad."
+    answer: "Ja! Installation av dörrlås räknas som ROT-arbete (reparation, ombyggnad, tillbyggnad). Du får 30% avdrag på arbetskostnaden, upp till 50 000 kr per person och år. ROT-avdraget gäller oavsett om det är ett smart lås, kodlås eller traditionellt cylinderlås – så länge arbetet utförs i din bostad."
   },
   {
     question: "Vad är skillnaden mellan Yale Doorman och Yale Linus?",
@@ -206,7 +206,7 @@ export const seoContent = {
 
 Har du en säkerhetsdörr, branddörr eller en dörr med ovanliga mått? Kontakta oss innan bokning – vi hjälper dig hitta rätt lösning. I vissa fall kan anpassningar behövas, vilket vi alltid informerar om i förväg.`,
 
-  rotInfo: `Installation av dörrlås berättigar till **ROT-avdrag**. Det innebär att du får tillbaka 50% av arbetskostnaden (inklusive moms), upp till 50 000 kr per person och år. ROT-avdraget gäller för:
+  rotInfo: `Installation av dörrlås berättigar till **ROT-avdrag**. Det innebär att du får tillbaka 30% av arbetskostnaden (inklusive moms), upp till 50 000 kr per person och år. ROT-avdraget gäller för:
 
 - Installation av smart dörrlås (Yale Doorman, Linus, Nuki m.fl.)
 - Byte av cylinderlås
@@ -240,7 +240,7 @@ export const getDoorLockSchema = () => ({
       "@type": "Service",
       "@id": "https://fixco.se/tjanster/dorrlas#service",
       "name": "Installation av Dörrlås och Smarta Lås",
-      "description": "Professionell installation av smarta dörrlås – Yale Doorman, Linus, Nuki, ASSA ABLOY m.fl. ROT-avdrag 50%. Certifierade montörer i Uppsala och Stockholm.",
+      "description": "Professionell installation av smarta dörrlås – Yale Doorman, Linus, Nuki, ASSA ABLOY m.fl. ROT-avdrag 30%. Certifierade montörer i Uppsala och Stockholm.",
       "provider": {
         "@type": "LocalBusiness",
         "name": "Fixco",
