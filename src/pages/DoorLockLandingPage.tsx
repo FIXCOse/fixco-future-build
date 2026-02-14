@@ -64,7 +64,7 @@ const DoorLockLandingPage: React.FC = () => {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border mb-8">
                 <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                <span className="text-sm text-muted-foreground">5/5 betyg • 127+ installationer</span>
+                <span className="text-sm text-muted-foreground">5/5 betyg</span>
               </div>
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">

@@ -254,7 +254,6 @@ export const getDoorLockSchema = () => ({
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "5.0",
-          "reviewCount": "127",
           "bestRating": "5"
         }
       },
