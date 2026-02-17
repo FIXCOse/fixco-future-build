@@ -45,22 +45,32 @@ import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
-import { HeroIllustration } from "@/components/local-service/HeroIllustration";
 import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
 import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
-import { CarpenterActionSection } from "@/components/local-service/CarpenterActionSection";
-import { PainterActionSection } from "@/components/local-service/PainterActionSection";
-import { PlumberActionSection } from "@/components/local-service/PlumberActionSection";
-import { ElectricianActionSection } from "@/components/local-service/ElectricianActionSection";
-import { GardenActionSection } from "@/components/local-service/GardenActionSection";
-import { GroundworkActionSection } from "@/components/local-service/GroundworkActionSection";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
   getOrganizationSchema 
 } from "@/components/SEOSchemaEnhanced";
+
+// Action section images — used as hero backgrounds for services that have them
+import carpenterImage from "@/assets/carpenter-team-action.png";
+import painterImage from "@/assets/malare-malar-vardagsrum.webp";
+import plumberImage from "@/assets/vvs-tekniker-badrum.webp";
+import electricianImage from "@/assets/elektriker-elinstallation.webp";
+import gardenImage from "@/assets/tradgard-plantering.webp";
+import groundworkImage from "@/assets/markarbeten-gravmaskiner.webp";
+
+const serviceHeroImages: Record<string, string> = {
+  snickare: carpenterImage,
+  malare: painterImage,
+  vvs: plumberImage,
+  el: electricianImage,
+  tradgard: gardenImage,
+  markarbeten: groundworkImage,
+};
 
 // Animation variants
 const containerVariants = {
@@ -91,57 +101,48 @@ const stepColors = [
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
   
-  if (!serviceSlug || !areaSlug || !isValidLocalServicePage(serviceSlug, areaSlug)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Sidan hittades inte</h1>
-          <p className="text-muted-foreground mb-6">
-            Vi kunde inte hitta den tjänst eller ort du söker.
-          </p>
-          <Button asChild>
-            <Link to="/tjanster">Visa alla tjänster</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const isValid = serviceSlug && areaSlug && isValidLocalServicePage(serviceSlug, areaSlug);
   
-  const area = getAreaFromSlug(areaSlug) as AreaKey;
-  const service = getServiceFromSlug(serviceSlug);
-  const content = generateLocalContent(serviceSlug as LocalServiceSlug, area);
-  const metadata = getAreaMetadata(area);
-  const uniqueContent = generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area);
+  const area = isValid ? getAreaFromSlug(areaSlug!) as AreaKey : "" as AreaKey;
+  const service = isValid ? getServiceFromSlug(serviceSlug!) : null;
+  const content = isValid ? generateLocalContent(serviceSlug as LocalServiceSlug, area) : null;
+  const metadata = isValid ? getAreaMetadata(area) : null;
+  const uniqueContent = isValid ? generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area) : null;
   
-  const serviceData = servicesDataNew.find(s => s.slug === service?.serviceKey);
+  const serviceData = isValid ? servicesDataNew.find(s => s.slug === service?.serviceKey) : null;
   const IconComponent = serviceData?.icon || Zap;
   
-  const areaActivity = getAreaActivity(area);
-  const howToSteps = getHowToSteps(service?.name || '', area);
-  
+  const areaActivity = isValid ? getAreaActivity(area) : { avgRating: 0, reviewCount: 0 };
+  const howToSteps = isValid ? getHowToSteps(service?.name || '', area) : [];
+
+  const heroImage = (serviceSlug && serviceHeroImages[serviceSlug]) || null;
+
   // Schema.org markup
-  const localBusinessSchema = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": `Fixco ${content.h1}`,
-    "description": content.description,
-    "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
-    "telephone": "+46-79-335-02-28",
-    "priceRange": "$$",
-    "areaServed": { "@type": "City", "name": area },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": area,
-      "addressRegion": metadata.region,
-      "addressCountry": "SE"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": areaActivity.avgRating.toFixed(1),
-      "reviewCount": areaActivity.reviewCount.toString(),
-      "bestRating": "5"
-    }
-  }), [content, serviceSlug, areaSlug, area, metadata, areaActivity]);
+  const localBusinessSchema = useMemo(() => {
+    if (!content || !metadata) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": `Fixco ${content.h1}`,
+      "description": content.description,
+      "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      "telephone": "+46-79-335-02-28",
+      "priceRange": "$$",
+      "areaServed": { "@type": "City", "name": area },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": area,
+        "addressRegion": metadata.region,
+        "addressCountry": "SE"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": areaActivity.avgRating.toFixed(1),
+        "reviewCount": areaActivity.reviewCount.toString(),
+        "bestRating": "5"
+      }
+    };
+  }, [content, serviceSlug, areaSlug, area, metadata, areaActivity]);
 
   const howToSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -157,15 +158,18 @@ const LocalServicePage = () => {
     }))
   }), [service, area, howToSteps]);
   
-  const faqSchema = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": content.faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.q,
-      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
-    }))
-  }), [content.faqs]);
+  const faqSchema = useMemo(() => {
+    if (!content) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": content.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+      }))
+    };
+  }, [content]);
 
   const breadcrumbSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -181,20 +185,37 @@ const LocalServicePage = () => {
   // AI-optimized schemas for maximum visibility
   const authorSchema = useMemo(() => getAuthorSchema(), []);
   const organizationSchema = useMemo(() => getOrganizationSchema(), []);
-  const speakableSchema = useMemo(() => getSpeakableSchema({
-    headline: content.h1,
-    description: content.description,
-    url: `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
-    speakableSelectors: ["h1", ".hero-description", ".service-intro"]
-  }), [content, serviceSlug, areaSlug]);
-
-  // Area links are now handled by ExpandableAreaLinks component
+  const speakableSchema = useMemo(() => {
+    if (!content) return null;
+    return getSpeakableSchema({
+      headline: content.h1,
+      description: content.description,
+      url: `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      speakableSelectors: ["h1", ".hero-description", ".service-intro"]
+    });
+  }, [content, serviceSlug, areaSlug]);
 
   // Combine myths into FAQ for consolidation
-  const allFaqItems = [
+  const allFaqItems = content ? [
     ...content.faqs,
     ...content.myths.map(m => ({ q: `Myt: "${m.myth}" – stämmer det?`, a: `Nej, det är en myt. Sanningen är: ${m.truth}` }))
-  ];
+  ] : [];
+
+  if (!isValid || !content || !uniqueContent || !metadata) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Sidan hittades inte</h1>
+          <p className="text-muted-foreground mb-6">
+            Vi kunde inte hitta den tjänst eller ort du söker.
+          </p>
+          <Button asChild>
+            <Link to="/tjanster">Visa alla tjänster</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <>
@@ -220,144 +241,103 @@ const LocalServicePage = () => {
         <Breadcrumbs />
         
         {/* ============================================
-            HERO SECTION - Split Layout with Illustration
+            HERO SECTION — Full-width image or clean gradient
             ============================================ */}
-        <section className="pt-8 pb-16 lg:pt-12 lg:pb-24 relative overflow-hidden">
-          {/* Background - warm deep gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,25%,12%)] via-[hsl(250,20%,10%)] to-[hsl(240,18%,8%)]" />
-          
-          {/* Ambient glows */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute -top-[20%] left-[20%] w-[600px] h-[600px] rounded-full blur-[120px] opacity-30"
-              style={{ background: "linear-gradient(135deg, hsl(262 70% 55%), hsl(200 80% 50%))" }} 
-            />
-            <div 
-              className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-20"
-              style={{ background: "hsl(340 70% 55%)" }} 
-            />
-          </div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Left Column - Content */}
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-                className="order-2 lg:order-1"
-              >
-                {/* Location badge */}
-                <motion.div variants={itemVariants} className="mb-6">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.08] border border-white/10 backdrop-blur-sm text-sm">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-foreground/80">Lokala hantverkare i {area}</span>
-                  </span>
-                </motion.div>
+        <section className="relative overflow-hidden">
+          {/* Background: action image OR gradient */}
+          {heroImage ? (
+            <>
+              <img
+                src={heroImage}
+                alt={`Fixco ${service?.name?.toLowerCase()} i ${area}`}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40" />
+            </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,20%,14%)] via-[hsl(250,18%,11%)] to-[hsl(240,15%,8%)]" />
+          )}
 
-                {/* H1 with icon */}
-                <motion.div variants={itemVariants} className="flex items-start gap-4 mb-6">
-                  <div className="hidden sm:flex relative flex-shrink-0">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 flex items-center justify-center">
-                      <IconComponent className="h-8 w-8 text-primary" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                      <FixcoFIcon className="h-3 w-3 text-primary-foreground" />
-                    </div>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-                    <GradientText gradient="rainbow">{content.h1}</GradientText>
-                  </h1>
-                </motion.div>
-                
-                {/* Intro text - shorter for hero */}
-                <motion.p 
-                  variants={itemVariants}
-                  className="text-lg text-muted-foreground mb-8 max-w-lg"
-                >
-                  Hitta kvalificerade {service?.name?.toLowerCase()} i {area}. 
-                  Fast pris, försäkrade hantverkare och {service?.rotRut}-avdrag.
-                </motion.p>
-                
-                {/* Quick trust badges - inline */}
-                <motion.div 
-                  variants={itemVariants}
-                  className="flex flex-wrap gap-3 mb-8"
-                >
-                  {[
-                    { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
-                    { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
-                    { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
-                  ].map((badge, idx) => (
-                    <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 text-sm">
-                      <badge.icon className={`h-4 w-4 ${badge.color}`} />
-                      <span className="text-foreground/80">{badge.text}</span>
-                    </div>
-                  ))}
-                </motion.div>
-
-                {/* CTA buttons */}
-                <motion.div 
-                  variants={itemVariants}
-                  className="flex flex-col sm:flex-row gap-3"
-                >
-                  <Button 
-                    size="lg"
-                    className="shadow-xl shadow-primary/25"
-                    onClick={() => {
-                      openServiceRequestModal({
-                        serviceSlug: service?.serviceKey || serviceSlug,
-                        prefill: { service_name: content.h1 }
-                      });
-                    }}
-                  >
-                    <FileText className="h-5 w-5 mr-2" />
-                    Begär gratis offert
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="lg"
-                    className="border-white/20 hover:bg-white/5"
-                    onClick={() => window.location.href = 'tel:+46793350228'}
-                  >
-                    <Phone className="h-5 w-5 mr-2" />
-                    079-335 02 28
-                  </Button>
-                </motion.div>
+          <div className="container mx-auto px-4 relative z-10 pt-12 pb-16 lg:pt-20 lg:pb-28">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="max-w-3xl"
+            >
+              {/* Location badge */}
+              <motion.div variants={itemVariants} className="mb-5">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.1] border border-white/15 backdrop-blur-sm text-sm text-white/90">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  Lokala hantverkare i {area}
+                </span>
               </motion.div>
+
+              {/* H1 */}
+              <motion.h1 
+                variants={itemVariants}
+                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-5 text-white"
+              >
+                <GradientText gradient="rainbow">{content.h1}</GradientText>
+              </motion.h1>
               
-              {/* Right Column - Illustration */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="order-1 lg:order-2"
+              {/* Intro text */}
+              <motion.p 
+                variants={itemVariants}
+                className="text-lg lg:text-xl text-white/70 mb-8 max-w-2xl hero-description"
               >
-                <HeroIllustration serviceIcon={IconComponent} />
+                Hitta kvalificerade {service?.name?.toLowerCase()} i {area}. 
+                Fast pris, försäkrade hantverkare och {service?.rotRut}-avdrag.
+              </motion.p>
+              
+              {/* Trust badges */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-wrap gap-3 mb-8"
+              >
+                {[
+                  { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
+                  { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
+                  { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
+                ].map((badge, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.08] border border-white/15 text-sm backdrop-blur-sm">
+                    <badge.icon className={`h-4 w-4 ${badge.color}`} />
+                    <span className="text-white/80">{badge.text}</span>
+                  </div>
+                ))}
               </motion.div>
-            </div>
+
+              {/* CTA buttons */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-3"
+              >
+                <Button 
+                  size="lg"
+                  className="shadow-xl shadow-primary/25"
+                  onClick={() => {
+                    openServiceRequestModal({
+                      serviceSlug: service?.serviceKey || serviceSlug,
+                      prefill: { service_name: content.h1 }
+                    });
+                  }}
+                >
+                  <FileText className="h-5 w-5 mr-2" />
+                  Begär gratis offert
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="border-white/20 hover:bg-white/10 text-white"
+                  onClick={() => window.location.href = 'tel:+46793350228'}
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  079-335 02 28
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
-
-        {/* Service Action Sections - Conditional by service type */}
-        {serviceSlug === "snickare" && (
-          <CarpenterActionSection area={area} />
-        )}
-        {serviceSlug === "malare" && (
-          <PainterActionSection area={area} />
-        )}
-        {serviceSlug === "vvs" && (
-          <PlumberActionSection area={area} />
-        )}
-        {serviceSlug === "el" && (
-          <ElectricianActionSection area={area} />
-        )}
-        {serviceSlug === "tradgard" && (
-          <GardenActionSection area={area} />
-        )}
-        {serviceSlug === "markarbeten" && (
-          <GroundworkActionSection area={area} />
-        )}
 
         {/* Compact Trust Bar */}
         <CompactTrustBar 
@@ -367,7 +347,7 @@ const LocalServicePage = () => {
         />
 
         {/* ============================================
-            NEW SEO SECTION 1: Vanliga projekt i {ort}
+            SEO SECTION 1: Vanliga projekt i {ort}
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
@@ -384,8 +364,8 @@ const LocalServicePage = () => {
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
                   Baserat på efterfrågan i {area}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-bold">
-                  Vanliga <GradientText>{service?.name?.toLowerCase()}</GradientText>-projekt i {area}
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Vanliga <span className="text-primary">{service?.name?.toLowerCase()}</span>-projekt i {area}
                 </h2>
               </motion.div>
               
@@ -435,7 +415,7 @@ const LocalServicePage = () => {
             SEO SECTION: Om {tjänst} i {ort}
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
+          <div className="absolute inset-0 bg-white/[0.02]" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -446,8 +426,8 @@ const LocalServicePage = () => {
               className="max-w-4xl mx-auto"
             >
               <motion.div variants={itemVariants}>
-                <h2 className="text-2xl font-bold mb-6">
-                  Om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
+                <h2 className="text-2xl font-bold mb-6 text-foreground">
+                  Om <span className="text-primary">{service?.name?.toLowerCase()}</span> i {area}
                 </h2>
                 <div className="prose prose-lg dark:prose-invert max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
@@ -467,12 +447,6 @@ const LocalServicePage = () => {
           {/* Warm gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-[hsl(35,15%,9%)] via-[hsl(30,12%,8%)] to-[hsl(260,12%,9%)]" />
           
-          {/* Warm ambient glow */}
-          <div 
-            className="absolute top-0 right-[20%] w-[500px] h-[400px] opacity-40"
-            style={{ background: "radial-gradient(ellipse, hsl(35 70% 50% / 0.12) 0%, transparent 60%)" }}
-          />
-          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -484,8 +458,8 @@ const LocalServicePage = () => {
                 <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
                   4 enkla steg
                 </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-3">
-                  Så bokar du <GradientText>{service?.name?.toLowerCase()}</GradientText>
+                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
+                  Så bokar du <span className="text-primary">{service?.name?.toLowerCase()}</span>
                 </h2>
                 <p className="text-muted-foreground">Från förfrågan till färdigt jobb på nolltid</p>
               </motion.div>
@@ -544,7 +518,7 @@ const LocalServicePage = () => {
             SERVICES SECTION - Larger Clickable Cards
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[hsl(240,10%,8%)]" />
+          <div className="absolute inset-0 bg-white/[0.02]" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -555,7 +529,7 @@ const LocalServicePage = () => {
               variants={containerVariants}
             >
               <motion.div variants={itemVariants} className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-3">
+                <h2 className="text-3xl font-bold mb-3 text-foreground">
                   {content.servicesSection.title}
                 </h2>
                 <p className="text-muted-foreground">Allt du behöver, samlat på ett ställe</p>
@@ -592,12 +566,6 @@ const LocalServicePage = () => {
         <section className="py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[hsl(165,18%,9%)] via-[hsl(180,15%,8%)] to-[hsl(200,15%,9%)]" />
           
-          {/* Teal glow */}
-          <div 
-            className="absolute top-1/2 right-0 w-[500px] h-[400px] -translate-y-1/2 opacity-50"
-            style={{ background: "radial-gradient(ellipse, hsl(165 60% 40% / 0.15) 0%, transparent 60%)" }}
-          />
-          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
               className="max-w-4xl mx-auto"
@@ -624,7 +592,7 @@ const LocalServicePage = () => {
                   <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
                     Spara pengar
                   </span>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">
                     {content.rotRutSection.title}
                   </h2>
                   <div 
@@ -647,7 +615,7 @@ const LocalServicePage = () => {
             TESTIMONIAL SECTION - Carousel with Multiple Reviews
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[hsl(240,10%,7%)]" />
+          <div className="absolute inset-0 bg-white/[0.02]" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -661,7 +629,7 @@ const LocalServicePage = () => {
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
                   Kundrecensioner
                 </span>
-                <h2 className="text-2xl font-bold">Vad våra kunder i {area} säger</h2>
+                <h2 className="text-2xl font-bold text-foreground">Vad våra kunder i {area} säger</h2>
               </motion.div>
               
               <motion.div variants={itemVariants}>
@@ -689,8 +657,8 @@ const LocalServicePage = () => {
             >
               {/* Quick Facts */}
               <motion.div variants={itemVariants} className="mb-12">
-                <h2 className="text-2xl font-bold mb-6 text-center">
-                  Snabbfakta: <GradientText>{content.h1}</GradientText>
+                <h2 className="text-2xl font-bold mb-6 text-center text-foreground">
+                  Snabbfakta: <span className="text-primary">{content.h1}</span>
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {content.quickFacts.slice(0, 8).map((fact, idx) => (
@@ -712,7 +680,7 @@ const LocalServicePage = () => {
                 <motion.div variants={itemVariants}>
                   <div className="flex items-center gap-3 mb-6 justify-center">
                     <Lightbulb className="h-5 w-5 text-amber-400" />
-                    <h3 className="text-xl font-semibold">Visste du detta om {area}?</h3>
+                    <h3 className="text-xl font-semibold text-foreground">Visste du detta om {area}?</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {content.funFacts.slice(0, 4).map((fact, idx) => (
@@ -734,12 +702,7 @@ const LocalServicePage = () => {
             FAQ SECTION - Includes Myths
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[hsl(240,8%,7%)]" />
-          
-          <div 
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-40"
-            style={{ background: "radial-gradient(ellipse, hsl(262 60% 50% / 0.1) 0%, transparent 60%)" }}
-          />
+          <div className="absolute inset-0 bg-white/[0.02]" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -753,8 +716,8 @@ const LocalServicePage = () => {
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
                   Vanliga frågor
                 </span>
-                <h2 className="text-3xl font-bold">
-                  FAQ om <GradientText>{service?.name?.toLowerCase()}</GradientText> i {area}
+                <h2 className="text-3xl font-bold text-foreground">
+                  FAQ om <span className="text-primary">{service?.name?.toLowerCase()}</span> i {area}
                 </h2>
               </motion.div>
               
@@ -795,8 +758,8 @@ const LocalServicePage = () => {
               variants={containerVariants}
             >
               <motion.div variants={itemVariants} className="text-center mb-10">
-                <h2 className="text-2xl font-bold">
-                  Fler tjänster i <GradientText>{area}</GradientText>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Fler tjänster i <span className="text-primary">{area}</span>
                 </h2>
               </motion.div>
               
@@ -833,14 +796,6 @@ const LocalServicePage = () => {
         <section className="py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-[hsl(260,15%,10%)] to-[hsl(240,12%,6%)]" />
           
-          {/* Strong glows */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[100px] opacity-30"
-              style={{ background: "linear-gradient(135deg, hsl(262 70% 55%), hsl(200 80% 50%))" }} 
-            />
-          </div>
-          
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -850,8 +805,8 @@ const LocalServicePage = () => {
             >
               <div className="max-w-2xl mx-auto text-center">
                 <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/15 rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                    Redo att boka <GradientText>{service?.name?.toLowerCase()}</GradientText>?
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                    Redo att boka <span className="text-primary">{service?.name?.toLowerCase()}</span>?
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8">
                     Få ett fast pris från lokala hantverkare i {area} – med 50% {service?.rotRut}-avdrag.
