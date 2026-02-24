@@ -255,7 +255,7 @@ const LocalServicePage = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40" />
             </>
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,20%,14%)] via-[hsl(250,18%,11%)] to-[hsl(240,15%,8%)]" />
+            <div className="absolute inset-0 bg-muted/30" />
           )}
 
           <div className="container mx-auto px-4 relative z-10 pt-12 pb-16 lg:pt-20 lg:pb-28">
@@ -267,7 +267,7 @@ const LocalServicePage = () => {
             >
               {/* Location badge */}
               <motion.div variants={itemVariants} className="mb-5">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.1] border border-white/15 backdrop-blur-sm text-sm text-white/90">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border backdrop-blur-sm text-sm text-foreground/90">
                   <MapPin className="h-4 w-4 text-primary" />
                   Lokala hantverkare i {area}
                 </span>
@@ -276,7 +276,7 @@ const LocalServicePage = () => {
               {/* H1 */}
               <motion.h1 
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-5 text-white"
+                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-5 text-foreground"
               >
                 <GradientText gradient="rainbow">{content.h1}</GradientText>
               </motion.h1>
@@ -284,7 +284,7 @@ const LocalServicePage = () => {
               {/* Intro text */}
               <motion.p 
                 variants={itemVariants}
-                className="text-lg lg:text-xl text-white/70 mb-8 max-w-2xl hero-description"
+                className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-2xl hero-description"
               >
                 Hitta kvalificerade {service?.name?.toLowerCase()} i {area}. 
                 Fast pris, försäkrade hantverkare och {service?.rotRut}-avdrag.
@@ -300,9 +300,9 @@ const LocalServicePage = () => {
                   { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
                   { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
                 ].map((badge, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.08] border border-white/15 text-sm backdrop-blur-sm">
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm backdrop-blur-sm">
                     <badge.icon className={`h-4 w-4 ${badge.color}`} />
-                    <span className="text-white/80">{badge.text}</span>
+                    <span className="text-foreground/80">{badge.text}</span>
                   </div>
                 ))}
               </motion.div>
@@ -328,7 +328,7 @@ const LocalServicePage = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  className="border-white/20 hover:bg-white/10 text-white"
+                  className="border-border hover:bg-muted"
                   onClick={() => window.location.href = 'tel:+46793350228'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -350,7 +350,7 @@ const LocalServicePage = () => {
             SEO SECTION 1: Vanliga projekt i {ort}
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -375,7 +375,7 @@ const LocalServicePage = () => {
                     key={`search-${idx}`}
                     variants={itemVariants}
                     whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-primary/30 transition-all"
+                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
                   >
                     <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-sm capitalize">{search} i {area}</span>
@@ -386,7 +386,7 @@ const LocalServicePage = () => {
                     key={`project-${idx}`}
                     variants={itemVariants}
                     whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-amber-500/30 transition-all"
+                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border hover:border-amber-500/30 transition-all"
                   >
                     <Zap className="h-4 w-4 text-amber-400 flex-shrink-0" />
                     <span className="text-sm capitalize">{project}</span>
@@ -415,7 +415,7 @@ const LocalServicePage = () => {
             SEO SECTION: Om {tjänst} i {ort}
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/[0.02]" />
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -445,7 +445,7 @@ const LocalServicePage = () => {
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
           {/* Warm gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(35,15%,9%)] via-[hsl(30,12%,8%)] to-[hsl(260,12%,9%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -489,7 +489,7 @@ const LocalServicePage = () => {
                         </div>
                         
                         {/* Card */}
-                        <div className="bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-2xl p-6 text-center h-full hover:border-white/20 transition-all">
+                        <div className="bg-card border border-border rounded-2xl p-6 text-center h-full hover:border-primary/20 transition-all">
                           <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
                             <StepIcon className={`h-6 w-6 ${colors.text}`} />
                           </div>
@@ -518,7 +518,7 @@ const LocalServicePage = () => {
             SERVICES SECTION - Larger Clickable Cards
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/[0.02]" />
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -543,7 +543,7 @@ const LocalServicePage = () => {
                     whileHover={{ scale: 1.03, y: -4 }}
                     className="group cursor-default"
                   >
-                    <div className="bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/10 rounded-xl p-5 h-full hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">
+                    <div className="bg-card border border-border rounded-xl p-5 h-full hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">
                       <div className="flex items-start gap-4">
                         <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                           <CheckCircle className="h-5 w-5 text-primary" />
@@ -564,7 +564,7 @@ const LocalServicePage = () => {
             ROT/RUT SECTION - Green/Teal Highlight Box
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(165,18%,9%)] via-[hsl(180,15%,8%)] to-[hsl(200,15%,9%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -615,7 +615,7 @@ const LocalServicePage = () => {
             TESTIMONIAL SECTION - Carousel with Multiple Reviews
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/[0.02]" />
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -645,7 +645,7 @@ const LocalServicePage = () => {
             COMBINED FACTS SECTION - Quick Facts + Fun Facts
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -666,7 +666,7 @@ const LocalServicePage = () => {
                       key={idx}
                       variants={itemVariants}
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/5 text-sm"
+                      className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border text-sm"
                     >
                       <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                       <span className="text-foreground/80">{fact}</span>
@@ -702,7 +702,7 @@ const LocalServicePage = () => {
             FAQ SECTION - Includes Myths
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/[0.02]" />
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -727,7 +727,7 @@ const LocalServicePage = () => {
                     <AccordionItem 
                       key={idx} 
                       value={`faq-${idx}`}
-                      className="bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 rounded-xl px-6 data-[state=open]:border-primary/30 transition-all"
+                      className="bg-card border border-border rounded-xl px-6 data-[state=open]:border-primary/30 transition-all"
                     >
                       <AccordionTrigger className="text-left hover:no-underline py-4">
                         <span className="font-medium pr-4">{faq.q}</span>
@@ -747,7 +747,7 @@ const LocalServicePage = () => {
             OTHER SERVICES IN AREA
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(260,12%,10%)] to-[hsl(240,10%,8%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -775,7 +775,7 @@ const LocalServicePage = () => {
                     >
                       <Link 
                         to={`/tjanster/${otherService.slug}/${areaSlug}`}
-                        className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
+                        className="flex flex-col items-center gap-3 p-4 rounded-xl bg-card border border-border hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
                       >
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${getGradientForService(otherService.slug)}`}>
                           <OtherIcon className="h-5 w-5 text-white" />
@@ -794,7 +794,7 @@ const LocalServicePage = () => {
             FINAL CTA
             ============================================ */}
         <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(260,15%,10%)] to-[hsl(240,12%,6%)]" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
@@ -804,7 +804,7 @@ const LocalServicePage = () => {
               variants={containerVariants}
             >
               <div className="max-w-2xl mx-auto text-center">
-                <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/15 rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
+                <motion.div variants={itemVariants} className="bg-card border border-border rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
                   <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     Redo att boka <span className="text-primary">{service?.name?.toLowerCase()}</span>?
                   </h2>
@@ -828,7 +828,7 @@ const LocalServicePage = () => {
                     <Button 
                       variant="outline" 
                       size="lg"
-                      className="border-white/20 hover:bg-white/5"
+                      className="border-border hover:bg-muted"
                       asChild
                     >
                       <Link to="/tjanster">
@@ -849,7 +849,7 @@ const LocalServicePage = () => {
         
         {/* Nearby Areas Links */}
         {uniqueContent.nearbyAreas.length > 0 && (
-          <section className="py-8 border-t border-white/5">
+          <section className="py-8 border-t border-border">
             <div className="container mx-auto px-4">
               <div className="max-w-5xl mx-auto">
                 <h4 className="text-sm font-medium text-zinc-500 mb-4">
@@ -872,7 +872,7 @@ const LocalServicePage = () => {
         )}
         
         {/* Related Searches */}
-        <section className="py-6 border-t border-white/5">
+        <section className="py-6 border-t border-border">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <h4 className="text-xs font-medium text-zinc-600 mb-3">
@@ -894,7 +894,7 @@ const LocalServicePage = () => {
         
         {/* Urgent Services - now subtle */}
         {uniqueContent.urgentServices.length > 0 && (
-          <section className="py-6 border-t border-white/5">
+          <section className="py-6 border-t border-border">
             <div className="container mx-auto px-4">
               <div className="max-w-5xl mx-auto">
                 <h4 className="text-xs font-medium text-zinc-600 mb-3">
@@ -904,7 +904,7 @@ const LocalServicePage = () => {
                   {uniqueContent.urgentServices.map((urgent, idx) => (
                     <span 
                       key={idx} 
-                      className="text-xs px-2 py-1 bg-zinc-800 text-zinc-400 rounded"
+                      className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded"
                     >
                       {urgent} i {area}
                     </span>

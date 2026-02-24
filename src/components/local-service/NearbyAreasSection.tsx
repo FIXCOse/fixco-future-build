@@ -57,7 +57,7 @@ export const NearbyAreasSection = ({ currentArea, serviceSlug, serviceName }: Ne
   
   return (
     <section className="py-12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(240,10%,8%)] to-[hsl(250,12%,9%)]" />
+      <div className="absolute inset-0 bg-muted/30" />
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -91,7 +91,7 @@ export const NearbyAreasSection = ({ currentArea, serviceSlug, serviceName }: Ne
                 >
                   <Link
                     to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
-                    className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-white/[0.06] to-white/[0.03] border border-white/10 text-sm text-foreground/80 hover:border-primary/40 hover:text-foreground hover:bg-primary/10 transition-all"
+                    className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card border border-border text-sm text-foreground/80 hover:border-primary/40 hover:text-foreground hover:bg-primary/10 transition-all"
                   >
                     <span>{area}</span>
                     <ArrowRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />

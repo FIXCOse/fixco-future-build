@@ -48,7 +48,7 @@ export const TestimonialCarouselLocal = ({ testimonials }: Props) => {
 
 const TestimonialSlide = ({ quote, name, location, rating }: TestimonialData) => (
   <motion.div 
-    className="flex-shrink-0 w-[300px] md:w-[350px] bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-primary/30 transition-colors"
+    className="flex-shrink-0 w-[300px] md:w-[350px] bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-colors"
     whileHover={{ scale: 1.02, y: -4 }}
   >
     {/* Quote icon */}
@@ -62,7 +62,7 @@ const TestimonialSlide = ({ quote, name, location, rating }: TestimonialData) =>
         <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
       ))}
       {Array.from({ length: 5 - rating }).map((_, i) => (
-        <Star key={i} className="w-4 h-4 text-white/20" />
+        <Star key={i} className="w-4 h-4 text-muted-foreground/30" />
       ))}
     </div>
     

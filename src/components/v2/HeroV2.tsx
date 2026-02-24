@@ -10,7 +10,7 @@ export const HeroV2 = () => {
       {/* Background Effects with Parallax */}
       <div className="absolute inset-0 -z-10" data-speed="0.5">
         {/* Dark gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,8%)] via-[hsl(222,47%,11%)] to-background" />
+        <div className="absolute inset-0 hero-background" />
         
         {/* Animated gradient orbs with parallax */}
         <motion.div
@@ -54,7 +54,7 @@ export const HeroV2 = () => {
         >
           {/* Trust badge */}
           <motion.div 
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border mb-8"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -101,7 +101,7 @@ export const HeroV2 = () => {
             <Button
               variant="outline"
               size="lg"
-              className="text-lg px-8 py-6 h-auto border-white/20 hover:bg-white/10 group"
+              className="text-lg px-8 py-6 h-auto border-border hover:bg-muted group"
               asChild
             >
               <a href="tel:+46793350228">

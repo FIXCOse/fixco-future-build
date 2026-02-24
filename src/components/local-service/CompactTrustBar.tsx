@@ -23,7 +23,7 @@ export const CompactTrustBar = ({ rating, area, rotRut }: CompactTrustBarProps) 
       className="relative py-6"
     >
       {/* Background bar */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
+      <div className="absolute inset-0 bg-muted/20" />
       
       {/* Trust items */}
       <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 relative z-10">
