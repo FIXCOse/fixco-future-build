@@ -1,82 +1,104 @@
 
 
-## Uppfräschning av lokala tjänstesidor
+## Byt till vitt tema som standard + fixa ljustema-buggar
 
-### Problem
+### Vad som behöver ändras
 
-**1. Hero-illustrationen ser barnslig ut**
-Den roterande "planetmodellen" med streckade cirklar, orbitande prickar och flytande verktygsikoner ser ut som en sci-fi-leksak -- inte som ett seriost hantverksforetag. Den tar halva skarmytan men ger noll information.
-
-**2. Rainbow-gradient pa for manga rubriker**
-Nastan varje sektion har en `GradientText gradient="rainbow"` -- "snickare" i regnbagsfarg i 6-7 rubriker pa samma sida. Det tappar all effekt och ser oserioest ut.
-
-**3. For manga micro-animationer**
-Flytande partiklar, orbitande prickar, pulserande ikoner, svavande verktyg -- det adderar "leksaks-kansla" och distraherar fran innehallet.
-
-**4. Sektionerna ser monotona ut**
-Varje sektion har nastan identisk mork gradient-bakgrund (hsl(240,10%,8%) vs hsl(260,12%,10%)) -- svart pa svart. Svart att se var en sektion slutar och nasta borjar.
+Hemsidan är byggd "dark-first" -- många bakgrunder, gradienter och textfärger är hårdkodade för mörkt tema. Att bara byta default till `light` (som du sett) ger konstiga resultat. Här är allt som behöver fixas:
 
 ---
 
-### Losning
+### 1. Ändra default-tema till `light`
 
-#### 1. Byt ut HeroIllustration mot en ren, professionell hero
+**Fil:** `src/theme/useTheme.ts`
 
-Ta bort hela HeroIllustration-komponenten (orbitande ikoner, partiklar, streckade cirklar). Ersatt med en av tva varianter beroende pa om tjansten har en action-bild:
-
-- **Tjanster MED action-bild** (snickare, malare, vvs, el, tradgard, markarbeten): Flytta action-bilden TILL heron som bakgrundsbild (fullbredd) med mork gradient-overlay och text ovanpa. Ta bort den separata ActionSection nedanfor -- allt i en hero.
-- **Tjanster UTAN action-bild** (stad, montering, flytt, tekniska installationer): Enkel clean hero utan illustration -- bara text, badges och CTA pa en ren gradient-bakgrund. Tjansteikonen visas som en subtil badge bredvid rubriken (som den ar nu), men inget mer.
-
-#### 2. Begransar GradientText till MAX 1 per sida
-
-Bara hero h1 far anvanda `GradientText`. Alla andra sektionsrubriker anvander vanlig `text-foreground` (vit text). Nyckelord kan fa `text-primary` for subtil betoning.
-
-#### 3. Rensa bort overflodiga animationer
-
-- Ta bort alla flytande partiklar
-- Ta bort orbitande cirklar och prickar
-- Behal enbart: fade-in pa scroll (whileInView), hover-effekter pa kort, och CTA-skuggeffekter
-- Mycket renare, mer professionell kansla
-
-#### 4. Battre visuell separation mellan sektioner
-
-Varannan sektion far en subtilt ljusare bakgrund (`bg-muted/30` eller `bg-white/[0.02]`) for att skapa tydlig visuell rytm. Inte alla sektioner ska vara nastan identiskt morka.
+- Ändra `theme: 'dark'` till `theme: 'light'` (rad 13)
+- Ändra fallback på rad 40 från `'dark'` till `'light'`
 
 ---
 
-### Tekniska detaljer
+### 2. Fixa `hero-background` CSS-klassen
 
-| Fil | Andring |
+**Fil:** `src/index.css`
+
+Nuvarande `.hero-background` använder hårdkodade mörka värden (`hsl(240 8% 10%)`). På ljust tema ser det svart ut.
+
+Lösning: Byt till tema-medvetna variabler så att hero-background automatiskt anpassas:
+
+```text
+Dark: radial-gradient med subtila mörka nyanser (som nu)
+Light: radial-gradient med subtila ljusa nyanser (grå/vit)
+```
+
+Lägg till en `[data-theme="light"] .hero-background`-override, eller gör den befintliga klassen dynamisk via CSS-variabler.
+
+---
+
+### 3. Förbättra `gradient-text` kontrast på ljust tema
+
+**Fil:** `src/index.css`
+
+Rainbow-gradienten (`hsl(262, 83%, 58%)`, `hsl(200, 100%, 50%)`, `hsl(320, 100%, 65%)`) är designad för mörk bakgrund. På vit bakgrund blir den ljusblåa delen nästan osynlig.
+
+Lösning: Lägg till `[data-theme="light"] .gradient-text` med mörkare gradient-färger (lägre lightness-värden) för bättre kontrast mot vit bakgrund.
+
+---
+
+### 4. Fixa ComparisonUltra för ljust tema
+
+**Fil:** `src/components/ComparisonUltra.tsx`
+
+- Bakgrundseffekterna (`hsl(280 100% 60% / 0.08)`) fungerar på mörkt men syns knappt/ser konstiga ut på ljust
+- `FixcoFIcon` watermarks med `opacity-20` + `animate-pulse` ser stökiga ut på ljust tema -- ta bort dem (redan identifierat som problem i tidigare plan)
+- `card-premium` och `bg-primary/5` behöver ses över
+
+---
+
+### 5. Fixa `shadow-card` och kort-styling för ljust tema
+
+**Fil:** `src/index.css`
+
+Lägg till starkare skuggor för ljust tema så att kort inte "försvinner" mot vit bakgrund:
+
+```text
+[data-theme="light"] .shadow-card {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.04);
+}
+
+[data-theme="light"] .card-premium {
+  border-color: hsl(220 14% 88%);
+}
+```
+
+---
+
+### 6. Fixa undersidornas hero-sektioner
+
+**Filer:** `Services.tsx`, `Contact.tsx`, `FAQ.tsx`, `AboutUs.tsx`, `ROTInfo.tsx`, `RUT.tsx`, `BookVisit.tsx`, `Referenser.tsx`
+
+Alla använder `hero-background`-klassen. Om CSS-fixen i steg 2 fungerar korrekt bör dessa automatiskt se bra ut. Men sektioner som har extra `opacity-50`/`opacity-30` på hero-background-diven kan behöva justeras för ljust tema.
+
+---
+
+### 7. Fixa Navigation/Navbar bakgrund för ljust tema
+
+**Fil:** `src/components/Navigation.tsx`
+
+Kontrollera att navbar-bakgrunden (troligtvis `bg-background/80 backdrop-blur`) ser bra ut på ljust tema. Kan behöva starkare `border-b` eller subtil skugga.
+
+---
+
+### Sammanfattning av filer
+
+| Fil | Ändring |
 |-----|---------|
-| `src/components/local-service/HeroIllustration.tsx` | **Tas bort helt** -- komponenten anvands inte langre |
-| `src/pages/LocalServicePage.tsx` | **Stor refaktor av hero-sektionen**: ersatt split-layout med antingen fullbredd action-bild-hero eller ren text-hero. Ta bort import av HeroIllustration. Flytta action-bild-logik in i heron. Ta bort alla `<GradientText>` utom h1. Justera sektionsbakgrunder for visuell variation. |
-| `src/components/local-service/CarpenterActionSection.tsx` | **Tas bort** -- bilden flyttas in i heron |
-| `src/components/local-service/PainterActionSection.tsx` | **Tas bort** |
-| `src/components/local-service/PlumberActionSection.tsx` | **Tas bort** |
-| `src/components/local-service/ElectricianActionSection.tsx` | **Tas bort** |
-| `src/components/local-service/GardenActionSection.tsx` | **Tas bort** |
-| `src/components/local-service/GroundworkActionSection.tsx` | **Tas bort** |
-| `src/components/city/CityHeroIllustration.tsx` | **Samma behandling** -- ta bort orbitande ikoner, ersatt med ren design |
+| `src/theme/useTheme.ts` | Default tema -> `light` |
+| `src/index.css` | Hero-background, gradient-text, shadow-card, card-premium -- ljustema-overrides |
+| `src/components/ComparisonUltra.tsx` | Ta bort FixcoFIcon watermarks, justera bakgrundseffekter |
+| Eventuellt: Navigation.tsx, undersidor | Mindre justeringar om CSS-fixarna inte räcker |
 
-### Hero-design (efter andring)
-
-For tjanster med bild (t.ex. snickare):
-- Fullbredd bakgrundsbild (samma foton som action-sektionerna anvander idag)
-- Mork gradient-overlay (`from-black/80 via-black/50 to-black/30`)
-- Text, badges och CTA-knappar ovanpa
-- Compact trust bar under
-
-For tjanster utan bild:
-- Ren gradient-bakgrund (som nu, men utan illustration)
-- Storre, mer centrerad text
-- Badges och CTA-knappar
-
-### Vad som INTE andras
-- All text/data/SEO-innehall behalls
-- Alla CTA-handlers (openServiceRequestModal, tel-lankar) behalls
-- Schema.org markup behalls
-- FAQ accordion behalls
-- CompactTrustBar, TestimonialCarouselLocal, NearbyAreasSection behalls
-- ExpandableAreaLinks behalls
-- Sektionsordning behalls (forutom att ActionSection slas ihop med hero)
+### Vad som INTE ändras
+- Alla tre teman (dark, light, ocean) finns kvar -- användaren kan byta
+- All funktionalitet, data, SEO behålls
+- Tema-switcher i navbar behålls
 
