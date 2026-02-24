@@ -1,24 +1,23 @@
 
 
-## Fix: Flytta FloatingSettingsWidget utanfor ScrollSmoother
+## Fix: FloatingSettingsWidget med Portal (som NavbarPortal och StickyPhoneButton)
 
-### Problem
-`FloatingSettingsWidget` renderas inuti `AppLayout`, som ligger inuti `#smooth-content`. GSAP ScrollSmoother applicerar en CSS `transform` pa `#smooth-content`, vilket bryter `position: fixed` -- elementet scrollar med sidan istallet for att stanna kvar pa skarmen.
-
-Samma problem har redan loests for `NavbarPortal` och `StickyPhoneButton` -- de renderas **utanfor** `#smooth-content` i `App.tsx`.
+### Problemet
+Widgeten ligger utanfor `#smooth-content` men fortfarande **inuti** `#smooth-wrapper`, som har `overflow: hidden`. Det klipps bort visuellt. `NavbarPortal` och `StickyPhoneButton` fungerar for att de anvander `ReactDOM.createPortal` for att rendera direkt till `document.body` -- helt utanfor GSAP:s DOM-trad.
 
 ### Losning
-Flytta `FloatingSettingsWidget` fran `AppLayout.tsx` till `App.tsx`, placerad utanfor `#smooth-content` bredvid `NavbarPortal` och `StickyPhoneButton`.
+Uppdatera `FloatingSettingsWidget` att anvanda `ReactDOM.createPortal` -- samma monster som `StickyPhoneButton`.
 
 ### Tekniska detaljer
 
-| Fil | Andring |
-|-----|---------|
-| `src/components/layouts/AppLayout.tsx` | Ta bort `<FloatingSettingsWidget />` och dess import |
-| `src/App.tsx` | Lagg till `<FloatingSettingsWidget />` utanfor `#smooth-content`, bredvid `StickyPhoneButton` (rad ~462) |
+**Fil:** `src/components/FloatingSettingsWidget.tsx`
 
-### Varfor detta fungerar
-- Utanfor `#smooth-content` paverkas inte elementet av ScrollSmothers `transform`
-- `position: fixed` fungerar korrekt igen
-- Samma monster som redan anvands for `NavbarPortal` och `StickyPhoneButton`
+Andra komponenten till:
+1. Anvanda `useState` + `useEffect` for att vanta pa mount (SSR-safe)
+2. Wrappa hela innehallet i `ReactDOM.createPortal(..., document.body)`
+3. Behalla all befintlig styling (`fixed bottom-4 left-4 z-40 ...`)
+
+Monstret ar identiskt med hur `StickyPhoneButton` redan fungerar (rad 7-24 i den filen).
+
+**Inga andra filer behover andras** -- placeringen i `App.tsx` ar redan korrekt.
 
