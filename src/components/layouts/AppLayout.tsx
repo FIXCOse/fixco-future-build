@@ -16,6 +16,7 @@ import { useAutoTranslate } from '@/hooks/useAutoTranslate';
 import GlobalFooter from '../layout/GlobalFooter';
 import { getLanguageFromPath } from '@/utils/routeMapping';
 import { FloatingAIWidget } from '../FloatingAIWidget';
+import FloatingSettingsWidget from '../FloatingSettingsWidget';
 
 interface AppLayoutProps {
   locale?: 'sv' | 'en';
@@ -71,6 +72,7 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
           <EditModeIndicator />
           <ContentLoadingIndicator />
           {chatEnabled && <FloatingAIWidget />}
+          <FloatingSettingsWidget />
         </div>
       </EditModeProvider>
     </CopyProvider>

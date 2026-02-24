@@ -227,11 +227,6 @@ function Navigation() {
           {/* Right: Actions with Proper Spacing */}
           <div className="flex items-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5">
             
-            {/* Language & Theme Switchers */}
-            <div className="flex items-center gap-x-2">
-              <LanguageSwitcher />
-              <ThemeSwitcher />
-            </div>
             
             {/* Contact - Desktop Only */}
             <a 
@@ -428,11 +423,6 @@ function Navigation() {
                   <span>+46 79 335 02 28</span>
                 </a>
 
-                {/* Mobile Language & Theme Switchers */}
-                <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
-                  <LanguageSwitcher />
-                  <ThemeSwitcher />
-                </div>
 
                 {user ? (
                   <div className="space-y-2 px-4">
