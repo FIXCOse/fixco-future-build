@@ -122,6 +122,7 @@ import { lazyElement } from './components/LazyRoute';
 import { ScrollSmoother } from '@/lib/gsap';
 import { NavbarPortal } from './components/NavbarPortal';
 import { StickyPhoneButton } from './components/StickyPhoneButton';
+import FloatingSettingsWidget from './components/FloatingSettingsWidget';
 import './components/Navbar2.css';
 
 // Suspense fallback component
@@ -458,8 +459,11 @@ const App = () => {
                   {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
                   <NavbarPortal />
                   
-                  {/* Sticky Phone Button - renders OUTSIDE smooth-content for proper fixed positioning */}
-                  <StickyPhoneButton />
+                   {/* Sticky Phone Button - renders OUTSIDE smooth-content for proper fixed positioning */}
+                   <StickyPhoneButton />
+                   
+                   {/* Floating Settings Widget - renders OUTSIDE smooth-content for proper fixed positioning */}
+                   <FloatingSettingsWidget />
                 </BrowserRouter>
               </div>
             </div>
