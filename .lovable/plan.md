@@ -1,31 +1,24 @@
 
 
-## Flytta tema- och språkväxlare till en flytande widget
+## Fix: Flytta FloatingSettingsWidget utanfor ScrollSmoother
 
 ### Problem
-Tema- och språkväxlarna sitter inbäddade i navbaren bland många andra knappar. De är svåra att hitta, speciellt på mobil där de göms i hamburgermenyn.
+`FloatingSettingsWidget` renderas inuti `AppLayout`, som ligger inuti `#smooth-content`. GSAP ScrollSmoother applicerar en CSS `transform` pa `#smooth-content`, vilket bryter `position: fixed` -- elementet scrollar med sidan istallet for att stanna kvar pa skarmen.
 
-### Lösning
-Skapa en liten flytande widget i nedre vänstra hörnet (bottom-left) som alltid är synlig oavsett scroll-position. Widgeten visar två kompakta knappar: en glob-ikon för språk (SV/EN) och en tema-ikon (sol/måne/våg).
+Samma problem har redan loests for `NavbarPortal` och `StickyPhoneButton` -- de renderas **utanfor** `#smooth-content` i `App.tsx`.
 
-### Design
-- Fast position i nedre vänstra hörnet (`fixed bottom-4 left-4`)
-- Kompakt pill-formad container med `bg-card border border-border shadow-lg rounded-full`
-- Två små knappar sida vid sida: glob + tema-ikon
-- Diskret men alltid tillgänglig
-- `z-40` så den inte krockar med andra flytande element
-- Dold på worker-layout (har egen nav)
+### Losning
+Flytta `FloatingSettingsWidget` fran `AppLayout.tsx` till `App.tsx`, placerad utanfor `#smooth-content` bredvid `NavbarPortal` och `StickyPhoneButton`.
 
 ### Tekniska detaljer
 
-| Fil | Ändring |
+| Fil | Andring |
 |-----|---------|
-| `src/components/FloatingSettingsWidget.tsx` | **Ny fil** -- flytande widget med LanguageSwitcher och ThemeSwitcher |
-| `src/components/layouts/AppLayout.tsx` | Lägg till `FloatingSettingsWidget` |
-| `src/components/Navigation.tsx` | Ta bort LanguageSwitcher och ThemeSwitcher från desktop-navbaren (rad 230-234) och mobil-menyn (rad 431-435) |
+| `src/components/layouts/AppLayout.tsx` | Ta bort `<FloatingSettingsWidget />` och dess import |
+| `src/App.tsx` | Lagg till `<FloatingSettingsWidget />` utanfor `#smooth-content`, bredvid `StickyPhoneButton` (rad ~462) |
 
-### Vad som INTE ändras
-- LanguageSwitcher och ThemeSwitcher komponenterna själva -- de återanvänds i den nya widgeten
-- All funktionalitet (språkbyte, temaval) behålls identiskt
-- Worker-layout påverkas inte
+### Varfor detta fungerar
+- Utanfor `#smooth-content` paverkas inte elementet av ScrollSmothers `transform`
+- `position: fixed` fungerar korrekt igen
+- Samma monster som redan anvands for `NavbarPortal` och `StickyPhoneButton`
 
