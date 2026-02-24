@@ -10,7 +10,7 @@ type ThemeState = {
 };
 
 export const useTheme = create<ThemeState>((set, get) => ({
-  theme: 'dark',
+  theme: 'light',
   setTheme: (t) => {
     set({ theme: t });
     document.documentElement.setAttribute('data-theme', t);
@@ -37,7 +37,7 @@ export const useTheme = create<ThemeState>((set, get) => ({
     // Check localStorage, fallback to system preference or default dark
     const saved = localStorage.getItem(STORAGE_KEY) as ThemeId | null;
     const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    const initial: ThemeId = saved ?? (prefersDark ? 'dark' : 'dark'); // default = dark
+    const initial: ThemeId = saved ?? (prefersDark ? 'dark' : 'light'); // default = light
     get().setTheme(initial);
   }
 }));

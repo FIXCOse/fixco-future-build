@@ -121,7 +121,7 @@ function Navigation() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border" style={{ "--header-h": "64px" } as any}>
+    <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm" style={{ "--header-h": "64px" } as any}>
       <nav className="mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
