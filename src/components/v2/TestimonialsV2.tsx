@@ -70,7 +70,7 @@ export const TestimonialsV2 = () => {
                 </p>
 
                 {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+                <div className="flex items-center gap-3 pt-4 border-t border-border">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[hsl(262,83%,58%)] to-[hsl(200,100%,50%)] flex items-center justify-center text-white font-bold">
                     {testimonial.avatar}
                   </div>

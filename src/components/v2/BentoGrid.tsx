@@ -91,7 +91,7 @@ export const BentoGrid = () => {
                   hoverEffect={true}
                 >
                   <div>
-                    <div className="inline-flex p-3 rounded-xl bg-white/10 mb-4">
+                    <div className="inline-flex p-3 rounded-xl bg-primary/10 mb-4">
                       <Icon className="w-6 h-6 md:w-8 md:h-8" />
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold mb-2">

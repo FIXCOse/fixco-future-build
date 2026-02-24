@@ -23,9 +23,9 @@ export const GlassCard = ({
   return (
     <Card
       className={cn(
-        "relative rounded-2xl backdrop-blur-xl bg-white/10 border border-white/10 shadow-2xl",
+        "relative rounded-2xl backdrop-blur-xl bg-card/80 border border-border shadow-2xl",
         "transition-all duration-300",
-        hoverEffect && "hover:bg-white/[0.12] hover:border-white/30 hover:scale-[1.02]",
+        hoverEffect && "hover:bg-muted hover:border-primary/30 hover:scale-[1.02]",
         className
       )}
       {...(hoverEffect && {

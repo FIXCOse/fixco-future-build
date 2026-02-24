@@ -45,7 +45,7 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
   
   return (
     <section className="py-14 relative">
-      <div className="absolute inset-0 bg-[hsl(240,8%,5%)]" />
+      <div className="absolute inset-0 bg-muted/30" />
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -79,7 +79,7 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   >
                     <Link
                       to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
-                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
+                      className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
                     >
                       {area}
                     </Link>
@@ -130,7 +130,7 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   >
                     <Link
                       to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
-                      className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
+                      className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
                     >
                       {area}
                     </Link>
