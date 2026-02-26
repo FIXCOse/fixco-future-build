@@ -42,7 +42,7 @@ const MicroFAQ = ({ service, className = "" }: MicroFAQProps) => {
       },
       {
         question: "Hur fungerar ROT-avdraget?",
-        answer: "Du får 50% avdrag på arbetskostnaden. Vi sköter hela ROT-processen åt dig."
+        answer: "Du får 30% avdrag på arbetskostnaden. Vi sköter hela ROT-processen åt dig."
       },
       {
         question: "Vilka områden täcker ni?",

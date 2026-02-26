@@ -12,8 +12,8 @@ const PricingToggle = ({ className, size = 'md' }: PricingToggleProps) => {
   
   const options: { value: PricingMode; label: string; description: string }[] = [
     { value: 'ordinarie', label: 'Ordinarie', description: 'Inkl. moms' },
-    { value: 'rot', label: 'ROT', description: '50% avdrag' },
-    { value: 'rut', label: 'RUT', description: '50% avdrag' }
+    { value: 'rot', label: 'ROT', description: '30% avdrag' },
+    { value: 'rut', label: 'RUT', description: '30% avdrag' }
   ];
 
   const sizeClasses = {

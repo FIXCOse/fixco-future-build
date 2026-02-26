@@ -304,7 +304,7 @@ const ComparisonUltra = () => {
                     </h3>
                   </div>
                   <p className="text-xs md:text-sm text-muted-foreground">
-                    {t('comparison.market_leader')}{rotEnabled && ` + upp till 50% ROT-besparing`}
+                    {t('comparison.market_leader')}{rotEnabled && ` + upp till 30% ROT-besparing`}
                   </p>
                 </div>
                 

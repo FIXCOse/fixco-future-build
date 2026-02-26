@@ -33,9 +33,9 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Uppsala",
     slug: "elmontor-uppsala",
     h1: "Elmontör i Uppsala",
-    title: "Elmontör i Uppsala – Installation & Felsökning | ROT 50%",
+    title: "Elmontör i Uppsala – Installation & Felsökning | ROT 30%",
     description:
-      "Auktoriserade elektriker i Uppsala för belysning, uttag, laddbox och felsökning. Snabb hjälp, ROT-avdrag 50%. Start inom 24h.",
+      "Auktoriserade elektriker i Uppsala för belysning, uttag, laddbox och felsökning. Snabb hjälp, ROT-avdrag 30%. Start inom 24h.",
     howItWorks: [
       { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Vi återkommer inom 2 timmar på vardagar." },
       { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer hem till dig i Uppsala för att se över jobbet. Ofta samma dag." },
@@ -52,7 +52,7 @@ export const serviceCityData: ServiceCityItem[] = [
     quickFacts: [
       "90% av Uppsalas fastigheter behöver eluppgradering inom 10 år",
       "Laddbox kan öka fastighetsvärdet med 2-5%",
-      "ROT-avdrag ger 50% rabatt på arbetskostnaden",
+      "ROT-avdrag ger 30% rabatt på arbetskostnaden",
       "Uppsala kommun kräver installationstillstånd för laddboxar",
       "LED-belysning sparar 80% energi jämfört med glödlampor",
       "Elinstallationer får endast utföras av auktoriserad elektriker enligt ellagen",
@@ -106,9 +106,9 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Stockholm",
     slug: "elmontor-stockholm",
     h1: "Elmontör i Stockholm",
-    title: "Elmontör i Stockholm – Elektriker för Hem & Företag | ROT 50%",
+    title: "Elmontör i Stockholm – Elektriker för Hem & Företag | ROT 30%",
     description:
-      "Elinstallation, belysning, laddbox och felsökning i Stockholm. Auktoriserade elektriker med tydliga priser och ROT-avdrag 50%.",
+      "Elinstallation, belysning, laddbox och felsökning i Stockholm. Auktoriserade elektriker med tydliga priser och ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Kontakta oss", desc: "Ring eller begär offert online. Svar inom 2 timmar på vardagar." },
       { step: 2, title: "Kostnadsfri besiktning", desc: "Vi kommer till dig i Stockholm för att bedöma jobbet. Ofta samma dag." },
@@ -125,7 +125,7 @@ export const serviceCityData: ServiceCityItem[] = [
     quickFacts: [
       "80% av Stockholms sekelskifteslägenheter har ursprunglig el",
       "Laddbox i Stockholm kräver anmälan till Ellevio 4-6 veckor innan",
-      "ROT-avdrag ger 50% rabatt på arbetskostnaden (max 50 000 kr/år)",
+      "ROT-avdrag ger 30% rabatt på arbetskostnaden (max 50 000 kr/år)",
       "Stockholm har Sveriges högsta efterfrågan på elbilsladdning",
       "Modern belysning kan spara 500-800 kr/år per rum",
       "Sekelskifteslägenheter har ofta schukuttag som ska bytas till jordat uttag",
@@ -173,9 +173,9 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Uppsala",
     slug: "vvs-uppsala",
     h1: "VVS-montör i Uppsala",
-    title: "VVS i Uppsala – Rörmokare för Badrum & Akut läcka | ROT 50%",
+    title: "VVS i Uppsala – Rörmokare för Badrum & Akut läcka | ROT 30%",
     description:
-      "Rörmokare i Uppsala för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabb hjälp vid akuta läckor och ROT-avdrag 50%.",
+      "Rörmokare i Uppsala för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabb hjälp vid akuta läckor och ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Ring vid akut läcka", desc: "Vid akuta läckor - ring direkt. Vi prioriterar nödfall och kommer ofta samma dag." },
       { step: 2, title: "Snabb utryckning", desc: "Vi kommer till din fastighet i Uppsala med verktyg och reservdelar." },
@@ -242,9 +242,9 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Stockholm",
     slug: "vvs-stockholm",
     h1: "VVS-montör i Stockholm",
-    title: "VVS i Stockholm – Rörmokare & Badrum | ROT 50%",
+    title: "VVS i Stockholm – Rörmokare & Badrum | ROT 30%",
     description:
-      "VVS-hjälp i Stockholm för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabbt på plats och tydliga prisexempel. ROT-avdrag 50%.",
+      "VVS-hjälp i Stockholm för blandare, WC, dusch, läckor och badrumsrenoveringar. Snabbt på plats och tydliga prisexempel. ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Kontakt & bokning", desc: "Ring oss för akuta läckor eller boka tid för planerade jobb. Svar inom 2h." },
       { step: 2, title: "Hembesök", desc: "Certifierad rörmokare kommer till dig i Stockholm med verktyg och vanliga reservdelar." },
@@ -309,8 +309,8 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Uppsala",
     slug: "snickare-uppsala",
     h1: "Snickare i Uppsala",
-    title: "Snickare i Uppsala – Kök, Garderober & Inredning | ROT 50%",
-    description: "Erfarna snickare i Uppsala för köksmontering, platsbyggda garderober, lister och alla typer av snickeriarbeten. ROT-avdrag 50%.",
+    title: "Snickare i Uppsala – Kök, Garderober & Inredning | ROT 30%",
+    description: "Erfarna snickare i Uppsala för köksmontering, platsbyggda garderober, lister och alla typer av snickeriarbeten. ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Planering", desc: "Berätta om ditt projekt. Vi bokar tid för mätning och diskussion om design och material." },
       { step: 2, title: "Mätning hemma", desc: "Vi kommer hem till dig i Uppsala för att mäta upp och diskutera lösningar." },
@@ -362,8 +362,8 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Stockholm",
     slug: "snickare-stockholm",
     h1: "Snickare i Stockholm",
-    title: "Snickare i Stockholm – Kök, Garderober & Renovering | ROT 50%",
-    description: "Professionella snickare i Stockholm för alla snickeriarbeten. ROT-avdrag 50%.",
+    title: "Snickare i Stockholm – Kök, Garderober & Renovering | ROT 30%",
+    description: "Professionella snickare i Stockholm för alla snickeriarbeten. ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Initial konsultation", desc: "Kontakta oss för att diskutera ditt projekt. Vi bokar tid för hembesök." },
       { step: 2, title: "Mätning & design", desc: "Snickare besöker dig i Stockholm för mätning och designdiskussion." },
@@ -416,8 +416,8 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Uppsala",
     slug: "montering-uppsala",
     h1: "Montering i Uppsala",
-    title: "Montering i Uppsala – IKEA-möbler, TV-fästen & Mer | ROT 50%",
-    description: "Snabb och professionell montering i Uppsala. IKEA-möbler, vitvaror, TV-fästen. ROT-avdrag 50%.",
+    title: "Montering i Uppsala – IKEA-möbler, TV-fästen & Mer | ROT 30%",
+    description: "Snabb och professionell montering i Uppsala. IKEA-möbler, vitvaror, TV-fästen. ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
       { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
@@ -469,8 +469,8 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Stockholm",
     slug: "montering-stockholm",
     h1: "Montering i Stockholm",
-    title: "Montering i Stockholm – IKEA, Vitvaror & Fästen | ROT 50%",
-    description: "Professionell monteringshjälp i Stockholm. IKEA-möbler, vitvaror och fästen. ROT-avdrag 50%.",
+    title: "Montering i Stockholm – IKEA, Vitvaror & Fästen | ROT 30%",
+    description: "Professionell monteringshjälp i Stockholm. IKEA-möbler, vitvaror och fästen. ROT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Bokning online/telefon", desc: "Berätta vad som ska monteras och när. Vi bokar tid som passar dig." },
       { step: 2, title: "Bekräftelse & förberedelse", desc: "Du får SMS-påminnelse och information om vad du behöver förbereda." },
@@ -523,14 +523,14 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Uppsala",
     slug: "tradgard-uppsala",
     h1: "Trädgårdstjänster i Uppsala",
-    title: "Trädgård i Uppsala – Gräsklippning, Häckar & Plantering | RUT 50%",
-    description: "Trädgårdshjälp i Uppsala. Gräsklippning, häckklippning, ogräsrensning och plantering. RUT-avdrag 50%.",
+    title: "Trädgård i Uppsala – Gräsklippning, Häckar & Plantering | RUT 30%",
+    description: "Trädgårdshjälp i Uppsala. Gräsklippning, häckklippning, ogräsrensning och plantering. RUT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
       { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
       { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
       { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
-      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
+      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 30% ingår." }
     ],
     priceExamples: [
       { job: "Gräsklippning 300 kvm", price: "800 kr", duration: "1 timme" },
@@ -576,14 +576,14 @@ export const serviceCityData: ServiceCityItem[] = [
     city: "Stockholm",
     slug: "tradgard-stockholm",
     h1: "Trädgårdstjänster i Stockholm",
-    title: "Trädgård i Stockholm – Gräs, Häckar & Plantering | RUT 50%",
-    description: "Professionell trädgårdshjälp i Stockholm. RUT-avdrag 50%.",
+    title: "Trädgård i Stockholm – Gräs, Häckar & Plantering | RUT 30%",
+    description: "Professionell trädgårdshjälp i Stockholm. RUT-avdrag 30%.",
     howItWorks: [
       { step: 1, title: "Beskriv ditt trädgårdsbehov", desc: "Gräsklippning, häck, plantering? Ring eller fyll i formulär online." },
       { step: 2, title: "Offert & schemaläggning", desc: "Vi bedömer arbetet och ger fast pris. Regelbundet eller engångsjobb." },
       { step: 3, title: "Vi kommer med utrustning", desc: "Proffs med gräsklippare, häcksax och trädgårdssäckar." },
       { step: 4, title: "Professionell trädgårdsskötsel", desc: "Vi klipper, rensar och planerar enligt säsong." },
-      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 50% ingår." }
+      { step: 5, title: "Bortforsling & RUT-avdrag", desc: "Vi tar hand om trädgårdsavfall. RUT 30% ingår." }
     ],
     priceExamples: [
       { job: "Gräsklippning 300 kvm", price: "950 kr", duration: "1 timme" },

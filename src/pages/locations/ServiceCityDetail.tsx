@@ -624,7 +624,7 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 </div>
                 <h3 className="font-semibold mb-2">ROT/RUT-hantering</h3>
                 <p className="text-sm text-muted-foreground">
-                  Vi sköter all administration för ROT/RUT-avdrag åt dig – helt kostnadsfritt. Du sparar 50% på arbetskostnaden.
+                  Vi sköter all administration för ROT/RUT-avdrag åt dig – helt kostnadsfritt. Du sparar 30% på arbetskostnaden.
                 </p>
               </div>
 

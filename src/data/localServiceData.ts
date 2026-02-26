@@ -549,45 +549,45 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   
   // Import improved titles from localSeoData
   const titleTemplates: Record<LocalServiceSlug, string> = {
-    "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 50% · Fri offert`,
-    "vvs": `VVS ${area} ★ Byte & reparation · ROT 50% · Svar 24h`,
-    "elektriker": `Elektriker ${area} ★ Certifierade · Laddbox & el · ROT 50%`,
-    "malare": `Målare ${area} ★ Fasad & invändigt · Fasta priser · ROT 50%`,
-    "stad": `Städfirma ${area} ★ Flytt, hem & byggstäd · RUT 50% · Boka idag`,
-    "flytt": `Flytthjälp ${area} ★ Pack & bärhjälp · RUT 50% · Snabb bokning`,
-    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & plattor · ROT 50%`,
-    "montering": `Monteringshjälp ${area} ★ IKEA, kök & möbler · ROT 50%`,
-    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 50%`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 50%`
+    "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 30% · Fri offert`,
+    "vvs": `VVS ${area} ★ Byte & reparation · ROT 30% · Svar 24h`,
+    "elektriker": `Elektriker ${area} ★ Certifierade · Laddbox & el · ROT 30%`,
+    "malare": `Målare ${area} ★ Fasad & invändigt · Fasta priser · ROT 30%`,
+    "stad": `Städfirma ${area} ★ Flytt, hem & byggstäd · RUT 30% · Boka idag`,
+    "flytt": `Flytthjälp ${area} ★ Pack & bärhjälp · RUT 30% · Snabb bokning`,
+    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & plattor · ROT 30%`,
+    "montering": `Monteringshjälp ${area} ★ IKEA, kök & möbler · ROT 30%`,
+    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 30%`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 30%`
   };
 
   // Meta descriptions per service - sales-focused with 5/5 rating
   const descriptionTemplates: Record<LocalServiceSlug, string> = {
-    "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 50% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
-    "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 50% ROT-avdrag. Boka idag!`,
-    "vvs": `VVS-montör ${area} ★ 5/5 betyg ✓ Badrum, kök & värmesystem ✓ Auktoriserad ✓ 50% ROT-avdrag. Få offert inom 24h!`,
-    "malare": `Målare ${area} ★ 5/5 betyg ✓ Invändig & utvändig målning ✓ 50% ROT-avdrag ✓ Garanti på arbetet. Boka målare!`,
-    "stad": `Städhjälp ${area} ★ 5/5 betyg ✓ Hemstäd, flyttstäd & storstäd ✓ 50% RUT-avdrag ✓ Kvalitetsgaranti. Boka idag!`,
-    "flytt": `Flytthjälp ${area} ★ 5/5 betyg ✓ Packning, transport & bärhjälp ✓ 50% RUT-avdrag ✓ Försäkrad flytt. Få gratis offert!`,
-    "montering": `Monteringshjälp ${area} ★ 5/5 betyg ✓ IKEA-möbler, kök & garderober ✓ 50% RUT-avdrag. Ofta start samma dag!`,
-    "tradgard": `Trädgårdshjälp ${area} ★ 5/5 betyg ✓ Trädfällning, häck & gräsmatta ✓ 50% ROT-avdrag. Boka trädgårdsmästare!`,
-    "markarbeten": `Markarbeten ${area} ★ 5/5 betyg ✓ Dränering, plattsättning & grävning ✓ 50% ROT-avdrag. Gratis offert inom 24h!`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ 5/5 betyg ✓ Laddbox, smarta hem & AV ✓ 50% ROT-avdrag. Boka certifierad montör!`
+    "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 30% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
+    "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
+    "vvs": `VVS-montör ${area} ★ 5/5 betyg ✓ Badrum, kök & värmesystem ✓ Auktoriserad ✓ 30% ROT-avdrag. Få offert inom 24h!`,
+    "malare": `Målare ${area} ★ 5/5 betyg ✓ Invändig & utvändig målning ✓ 30% ROT-avdrag ✓ Garanti på arbetet. Boka målare!`,
+    "stad": `Städhjälp ${area} ★ 5/5 betyg ✓ Hemstäd, flyttstäd & storstäd ✓ 30% RUT-avdrag ✓ Kvalitetsgaranti. Boka idag!`,
+    "flytt": `Flytthjälp ${area} ★ 5/5 betyg ✓ Packning, transport & bärhjälp ✓ 30% RUT-avdrag ✓ Försäkrad flytt. Få gratis offert!`,
+    "montering": `Monteringshjälp ${area} ★ 5/5 betyg ✓ IKEA-möbler, kök & garderober ✓ 30% RUT-avdrag. Ofta start samma dag!`,
+    "tradgard": `Trädgårdshjälp ${area} ★ 5/5 betyg ✓ Trädfällning, häck & gräsmatta ✓ 30% ROT-avdrag. Boka trädgårdsmästare!`,
+    "markarbeten": `Markarbeten ${area} ★ 5/5 betyg ✓ Dränering, plattsättning & grävning ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ 5/5 betyg ✓ Laddbox, smarta hem & AV ✓ 30% ROT-avdrag. Boka certifierad montör!`
   };
   
   return {
     h1: `${serviceNameCapital} ${area}`,
     
-    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – Professionella hantverkare | ${rotRut} 50%`,
+    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – Professionella hantverkare | ${rotRut} 30%`,
     
-    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} i ${area} ★ 5/5 betyg ✓ 50% ${rotRut}-avdrag ✓ Fast pris ✓ Kvalitetsgaranti. Få offert inom 24h!`,
+    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} i ${area} ★ 5/5 betyg ✓ 30% ${rotRut}-avdrag ✓ Fast pris ✓ Kvalitetsgaranti. Få offert inom 24h!`,
     
     intro: `**Behöver du ${serviceName} i ${area}?** Du har kommit rätt!
 
 **Med Fixco får du:**
 - ★ 5/5 betyg – våra kunder älskar oss
 - Fast pris – inga överraskningar på fakturan
-- 50% ${rotRut}-avdrag – vi sköter pappersarbetet åt dig
+- 30% ${rotRut}-avdrag – vi sköter pappersarbetet åt dig
 - Svar inom 24 timmar
 - Kvalitetsgaranti på allt arbete
 - Lokala hantverkare som känner ${area}
@@ -612,7 +612,7 @@ Vi förstår att det kan vara svårt att hitta en bra ${serviceName} i ${area}. 
       title: `Kontakta våra ${serviceName} i ${area} för offert`,
       content: `Genom Fixco kan du få offert på ${serviceName} i ${area} och många andra orter i ${metadata.region}s län. Vi prioriterar att alla ska ha möjligheten att förbättra sitt hem i ${area}. 
 
-När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avdraget på 50% av arbetskostnaden. Det betyder att ett jobb som kostar 20 000 kr i arbetskostnad bara kostar dig 10 000 kr efter avdrag!
+När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avdraget på 30% av arbetskostnaden. Det betyder att ett jobb som kostar 20 000 kr i arbetskostnad bara kostar dig 14 000 kr efter avdrag!
 
 **Kontakta oss för att hitta ${serviceName} i ${area}!**`
     },
@@ -624,18 +624,18 @@ När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avd
 
     rotRutSection: {
       title: `${serviceNameCapital} med ${rotRut}-avdrag i ${area}`,
-      content: `När du anlitar ${serviceName} i ${area} via Fixco kan du få ${rotRut}-avdrag på 50% av arbetskostnaden. ${rotRut}-avdraget gäller för ${rotRut === 'ROT' ? 'reparation, underhåll, om- och tillbyggnad' : 'hushållsnära tjänster'} i din bostad i ${area}.
+      content: `När du anlitar ${serviceName} i ${area} via Fixco kan du få ${rotRut}-avdrag på 30% av arbetskostnaden. ${rotRut}-avdraget gäller för ${rotRut === 'ROT' ? 'reparation, underhåll, om- och tillbyggnad' : 'hushållsnära tjänster'} i din bostad i ${area}.
 
 **Så fungerar ${rotRut}-avdrag i ${area}:**
 1. Du beställer ${serviceName} i ${area} via Fixco
 2. Vi utför arbetet i din bostad i ${area}
-3. Du betalar bara halva arbetskostnaden (50% ${rotRut})
+3. Du betalar bara 70% av arbetskostnaden (30% ${rotRut})
 4. Vi ansöker om avdraget åt dig hos Skatteverket
 
 **Exempel på ${rotRut}-avdrag för ${serviceName} i ${area}:**
 - Arbetskostnad: 30 000 kr
-- ${rotRut}-avdrag (50%): -15 000 kr
-- **Du betalar: 15 000 kr**
+- ${rotRut}-avdrag (30%): -9 000 kr
+- **Du betalar: 21 000 kr**
 
 Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr'} per person och år. Har du inte utnyttjat ditt ${rotRut}-avdrag i år är det perfekt tillfälle att anlita ${serviceName} i ${area}!`
     },
@@ -643,8 +643,8 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
     faqs: (() => {
       const pricing = SERVICE_PRICING[serviceSlug];
       const priceAnswer = pricing.isQuoteOnly 
-        ? `Priset för ${serviceName} i ${area} varierar beroende på projektets omfattning och komplexitet. Kontakta oss för en kostnadsfri offert på ditt projekt i ${area}. Alla priser inkluderar ${rotRut}-avdrag (50%) när du anlitar ${serviceName} via Fixco.`
-        : `Timpriset för ${serviceName} i ${area} är ${pricing.base} före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (50%) betalar du ${pricing.afterDeduction} för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`;
+        ? `Priset för ${serviceName} i ${area} varierar beroende på projektets omfattning och komplexitet. Kontakta oss för en kostnadsfri offert på ditt projekt i ${area}. Alla priser inkluderar ${rotRut}-avdrag (30%) när du anlitar ${serviceName} via Fixco.`
+        : `Timpriset för ${serviceName} i ${area} är ${pricing.base} före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (30%) betalar du ${pricing.afterDeduction} för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`;
       
       return [
         {
@@ -657,7 +657,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
         },
         {
           q: `Får jag ${rotRut}-avdrag för ${serviceName} i ${area}?`,
-          a: `Ja! Du får 50% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.`
+          a: `Ja! Du får 30% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.`
         },
         {
           q: `Vilka områden i ${area} täcker ni?`,
@@ -678,7 +678,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
       `★ 5/5 betyg från våra kunder`,
       `Svar inom 24 timmar`,
       `Fast pris innan jobbet börjar`,
-      `50% ${rotRut}-avdrag`,
+      `30% ${rotRut}-avdrag`,
       `Kvalitetsgaranti på allt arbete`,
       `Lokala hantverkare i ${area}`
     ],

@@ -63,7 +63,7 @@ Quality: We take pride in our work
 Trust: F-skatt, insured, certified
 Transparency: Clear pricing, no surprises
 Speed: Quotes within 24-48 hours
-Value: 50% off labor via ROT/RUT
+Value: 30% off labor via ROT/RUT
 
 /* SOCIAL */
 
