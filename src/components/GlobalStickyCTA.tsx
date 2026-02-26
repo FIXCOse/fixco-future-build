@@ -134,7 +134,7 @@ const GlobalStickyCTA = () => {
                     Uppsala & Stockholm
                   </div>
                   <div className="text-primary font-medium">
-                    ROT-avdrag 50%
+                    ROT-avdrag 30%
                   </div>
                 </div>
 

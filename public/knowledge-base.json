@@ -187,7 +187,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% discount, max 50000 SEK/year"
+        "value": "30% discount, max 50000 SEK/year"
       }
     },
     {
@@ -209,7 +209,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% discount, max 50000 SEK/year"
+        "value": "30% discount, max 50000 SEK/year"
       }
     },
     {
@@ -231,7 +231,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% rabatt → 479 kr/h efter avdrag"
+        "value": "30% rabatt → 671 kr/h efter avdrag"
       }
     },
     {
@@ -253,7 +253,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% rabatt → 479 kr/h efter avdrag"
+        "value": "30% rabatt → 671 kr/h efter avdrag"
       }
     },
     {
@@ -275,7 +275,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% rabatt → 479 kr/h efter avdrag"
+        "value": "30% rabatt → 671 kr/h efter avdrag"
       }
     },
     {
@@ -297,7 +297,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "RUT-avdrag",
-        "value": "50% rabatt → 280 kr/h efter avdrag"
+        "value": "30% rabatt → 391 kr/h efter avdrag"
       }
     },
     {
@@ -318,7 +318,7 @@
       "additionalProperty": {
         "@type": "PropertyValue",
         "name": "ROT-avdrag",
-        "value": "50% discount, max 50000 SEK/year"
+        "value": "30% discount, max 50000 SEK/year"
       }
     }
   ],
@@ -327,7 +327,7 @@
     "ROT": {
       "name": "ROT-avdrag",
       "description": "Renovation tax deduction for construction and renovation work",
-      "discountPercentage": 50,
+      "discountPercentage": 30,
       "maxAmountPerYear": 50000,
       "currency": "SEK",
       "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Flooring", "Groundwork"],
@@ -336,7 +336,7 @@
     "RUT": {
       "name": "RUT-avdrag", 
       "description": "Household services tax deduction",
-      "discountPercentage": 50,
+      "discountPercentage": 30,
       "maxAmountPerYear": 75000,
       "currency": "SEK",
       "eligibleServices": ["Cleaning", "Gardening", "Moving", "Assembly"],
@@ -345,16 +345,16 @@
   },
   
   "pricingExamples": [
-    {"service": "Snickare", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
-    {"service": "Målning", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
-    {"service": "Golv", "hourlyRate": 958, "afterDeduction": 479, "deductionType": "ROT"},
-    {"service": "Flytt & Packning", "hourlyRate": 559, "afterDeduction": 280, "deductionType": "RUT"},
-    {"service": "Elmontör", "note": "Offert krävs - indikativt ~1059 kr/h", "afterDeduction": "~530 kr/h", "deductionType": "ROT"},
+    {"service": "Snickare", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
+    {"service": "Målning", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
+    {"service": "Golv", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
+    {"service": "Flytt & Packning", "hourlyRate": 559, "afterDeduction": 391, "deductionType": "RUT"},
+    {"service": "Elmontör", "note": "Offert krävs - indikativt ~1059 kr/h", "afterDeduction": "~741 kr/h", "deductionType": "ROT"},
     {"service": "VVS", "note": "Offert krävs - varje projekt är unikt", "deductionType": "ROT"}
   ],
   
   "uniqueSellingPoints": [
-    "50% rabatt via ROT/RUT-avdrag på arbetskostnad",
+    "30% rabatt via ROT/RUT-avdrag på arbetskostnad",
     "Gratis hembesök för offert",
     "Offert inom 24-48 timmar",
     "Alla hantverkare har F-skatt och är försäkrade",
@@ -373,7 +373,7 @@
   "faq": [
     {
       "question": "Vad kostar en snickare?",
-      "answer": "958 kr/h. Efter ROT-avdrag (50%) betalar du endast 479 kr/h."
+      "answer": "958 kr/h. Efter ROT-avdrag (30%) betalar du endast 671 kr/h."
     },
     {
       "question": "Vad kostar en elektriker?",
@@ -385,7 +385,7 @@
     },
     {
       "question": "Vad är ROT-avdrag?",
-      "answer": "ROT-avdrag är ett skatteavdrag på 50% av arbetskostnaden för renovering, max 50 000 kr per person och år."
+      "answer": "ROT-avdrag är ett skatteavdrag på 30% av arbetskostnaden för renovering, max 50 000 kr per person och år."
     },
     {
       "question": "Erbjuder ni gratis offert?",

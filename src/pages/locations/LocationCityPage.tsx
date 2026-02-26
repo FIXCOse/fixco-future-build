@@ -163,7 +163,7 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
   return (
     <>
       <Seo
-        title={`Byggfirma ${city} – Fixco | ROT 50% & Start inom 24h`}
+        title={`Byggfirma ${city} – Fixco | ROT 30% & Start inom 24h`}
         description={data.description}
         canonicalPath={`/omraden/${citySlug}`}
         schemas={[breadcrumb, localSchema, faqSchema]}
@@ -232,7 +232,7 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
                   </span>
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-400 font-medium text-sm border border-emerald-500/20">
                     <CheckCircle2 className="w-4 h-4" />
-                    ROT/RUT 50%
+                    ROT/RUT 30%
                   </span>
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-cyan-500/10 text-cyan-400 font-medium text-sm border border-cyan-500/20">
                     <MapPin className="w-4 h-4" />

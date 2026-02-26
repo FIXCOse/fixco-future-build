@@ -579,7 +579,7 @@ const LocalServicePage = () => {
                 <motion.div variants={itemVariants} className="flex justify-center">
                   <div className="relative">
                     <div className="w-40 h-40 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20 flex items-center justify-center">
-                      <span className="text-6xl font-bold text-emerald-400">50%</span>
+                      <span className="text-6xl font-bold text-emerald-400">30%</span>
                     </div>
                     <div className="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-medium">
                       {service?.rotRut}-avdrag
@@ -809,7 +809,7 @@ const LocalServicePage = () => {
                     Redo att boka <span className="text-primary">{service?.name?.toLowerCase()}</span>?
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8">
-                    Få ett fast pris från lokala hantverkare i {area} – med 50% {service?.rotRut}-avdrag.
+                    Få ett fast pris från lokala hantverkare i {area} – med 30% {service?.rotRut}-avdrag.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button 

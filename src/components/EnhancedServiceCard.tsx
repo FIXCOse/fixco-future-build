@@ -44,7 +44,7 @@ export const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
 
   const calculateROTSavings = () => {
     const laborCost = service.basePrice * 0.7; // 70% labor typically
-    return Math.round(laborCost * 0.5); // 50% ROT deduction
+    return Math.round(laborCost * 0.3); // 30% ROT deduction
   };
 
   return (

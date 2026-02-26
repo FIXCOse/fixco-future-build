@@ -119,7 +119,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         {
           title: "För få eluttag i kök och vardagsrum",
           description: "Många äldre bostäder har endast 2-3 uttag per rum, vilket inte räcker för dagens behov med kaffemaskin, mikrovågsugn, mixer, laddare och ljudanläggning.",
-          solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 50% på arbetskostnaden."
+           solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 30% på arbetskostnaden."
         },
         {
           title: "Överlast vid laddning av elbil",
@@ -208,7 +208,7 @@ export const serviceCityContent: Record<ServiceKey, Record<"Uppsala" | "Stockhol
         {
           title: "För få eluttag i kök och vardagsrum",
           description: "Många äldre bostäder har endast 2-3 uttag per rum, vilket inte räcker för dagens behov med kaffemaskin, mikrovågsugn, mixer, laddare och ljudanläggning.",
-          solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 50% på arbetskostnaden."
+          solution: "Vi drar nya ledningar och installerar moderna uttag enligt dina behov. ROT-avdraget gör det billigare än du tror – du sparar 30% på arbetskostnaden."
         },
         {
           title: "Överlast vid laddning av elbil",

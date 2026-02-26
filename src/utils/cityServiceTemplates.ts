@@ -9,7 +9,7 @@ export const generateCityServiceData = (serviceSlug: string, city: string) => {
   const service = servicesDataNew.find(s => s.slug === serviceSlug);
   if (!service) return null;
 
-  const rotRate = service.eligible.rot ? '30%' : service.eligible.rut ? '50%' : '50%';
+  const rotRate = '30%';
 
   return {
     h1: `${service.title} i ${city}`,

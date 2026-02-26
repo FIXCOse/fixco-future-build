@@ -82,7 +82,7 @@ const Home = () => {
   const faqSchema = getFAQSchema([
     {
       question: "Vad kostar era tjänster?",
-      answer: "Våra priser varierar från 480 kr/h med ROT-avdrag till 1300 kr/h för specialiserade tjänster. Med ROT-avdrag får du 50% rabatt på arbetskostnaden."
+      answer: "Våra priser varierar från 480 kr/h med ROT-avdrag till 1300 kr/h för specialiserade tjänster. Med ROT-avdrag får du 30% rabatt på arbetskostnaden."
     },
     {
       question: "Vilka områden täcker ni?",
@@ -94,7 +94,7 @@ const Home = () => {
     },
     {
       question: "Hur fungerar ROT-avdraget?",
-      answer: "ROT-avdrag ger 50% rabatt på arbetskostnaden upp till 75 000 kr per person och år. Vi sköter hela administrationen åt dig så du får rabatten direkt på fakturan."
+      answer: "ROT-avdrag ger 30% rabatt på arbetskostnaden upp till 50 000 kr per person och år. Vi sköter hela administrationen åt dig så du får rabatten direkt på fakturan."
     },
     {
       question: "Är ni försäkrade och F-skattsedel?",
@@ -128,7 +128,7 @@ const Home = () => {
 
   useSEO({
     title: "Fixco | Privat • BRF • Företag",
-    description: "Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 50% rabatt med ROT-avdrag. Över 15 000 nöjda kunder i Uppsala och Stockholm.",
+    description: "Snabbare, billigare och mer professionellt än konkurrenterna. Start inom 5 dagar, 30% rabatt med ROT-avdrag. Över 15 000 nöjda kunder i Uppsala och Stockholm.",
     keywords: "ROT-avdrag, RUT-avdrag, byggtjänster, renovering, elmontör, VVS, målning, snickare, Uppsala, Stockholm, hemtjänster, hantverkare, byggfirma",
     image: "https://fixco.se/assets/hero-construction.jpg",
     type: "website",
@@ -177,7 +177,7 @@ const Home = () => {
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. 
-            Alla med 50% rabatt via ROT/RUT-avdrag.
+            Alla med 30% rabatt via ROT/RUT-avdrag.
           </p>
           <Button size="lg" className="font-semibold">
             <Link to="/tjanster" className="flex items-center gap-2">

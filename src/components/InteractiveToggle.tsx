@@ -71,7 +71,7 @@ const InteractiveToggle = ({ showROT, onROTChange, region, onRegionChange, disab
             className="absolute top-full mt-2 p-3 bg-card border border-border rounded-lg shadow-lg z-10 w-64"
           >
             <p className="text-sm text-muted-foreground">
-              ROT-avdrag ger 50% rabatt på arbetskostnaden. Fixco hanterar hela processen åt dig.
+              ROT-avdrag ger 30% rabatt på arbetskostnaden. Fixco hanterar hela processen åt dig.
             </p>
           </motion.div>
         )}

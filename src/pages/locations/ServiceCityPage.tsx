@@ -95,7 +95,7 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-600 font-medium text-sm">
                 <CheckCircle2 className="w-4 h-4" />
-                ROT/RUT 50%
+                ROT/RUT 30%
               </span>
               {item.priceHint && (
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-600 font-medium text-sm">
