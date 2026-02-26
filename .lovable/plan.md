@@ -1,97 +1,85 @@
 
 
-## Tema-fix: Hardkodade dark-mode farger overallt
+## Fix: Uppdatera alla ROT/RUT-procenttal fran 50% till 30%
 
 ### Problem
-Nastan alla sidor och komponenter har hardkodade morklagsfarger (t.ex. `bg-white/[0.04]`, `border-white/10`, `from-[hsl(260,12%,10%)]`) istallet for CSS-variabelbaserade klasser (`bg-card`, `border-border`, `bg-muted`). I ljust tema blir text osynlig, bakgrunder felaktiga och korten ser helt trasiga ut -- precis som pa skarmbilden.
+ROT/RUT-avdraget andrades fran 50% till 30% den 1 januari 2026. Berakningslogiken (`priceCalculation.ts`, `ROTCalculator.tsx`) ar redan uppdaterad till 30%, men hardkodad text, SEO-titlar, meta-beskrivningar, FAQ-svar och AI-filer visar fortfarande "50%" overallt pa sajten.
+
+Bilden visar tydligt: "50%" star kvar i den stora visuella displayen, i brödtexten ("50% av arbetskostnaden"), i exemplet ("ROT-avdrag (50%): -15 000 kr") och i CTA-texten.
 
 ### Omfattning
-Problemet finns i **minst 10 filer**. Har ar en fullstandig genomgang:
+Totalt **~20 filer** behover uppdateras. Alla forandringar ar text/copy -- ingen berakningslogik andras (den ar redan korrekt pa 30%).
 
-### Filer som behover andras
+---
 
-#### 1. `src/pages/LocalServicePage.tsx` (STORSTA PROBLEMET)
-Hardkodade bakgrunder pa **varje sektion**:
-- Rad 258: `bg-gradient-to-br from-[hsl(260,20%,14%)]...` (hero utan bild)
-- Rad 270: `bg-white/[0.1]`, `border-white/15` (badge)
-- Rad 303: `bg-white/[0.08]`, `border-white/15` (trust badges)
-- Rad 353: `bg-gradient-to-br from-[hsl(260,12%,10%)]...` (Vanliga projekt sektion)
-- Rad 378-389: `bg-white/[0.04]`, `border-white/10` (projektkort)
-- Rad 448: `bg-gradient-to-br from-[hsl(35,15%,9%)]...` (How to book sektion)
-- Rad 492: `bg-gradient-to-br from-white/[0.06]...` (stegkort)
-- Rad 521: `bg-white/[0.02]` (tjanstersektioner)
-- Rad 546: `bg-gradient-to-br from-white/[0.06]...` (tjanstkort)
-- Rad 567: `bg-gradient-to-br from-[hsl(165,18%,9%)]...` (ROT-sektion)
-- Rad 648: `bg-gradient-to-br from-[hsl(260,12%,10%)]...` (fakta-sektion)
-- Rad 669: `bg-white/[0.04]`, `border-white/5` (faktakort)
-- Rad 730: `bg-gradient-to-br from-white/[0.04]...`, `border-white/10` (FAQ-items)
-- Rad 750: `bg-gradient-to-br from-[hsl(260,12%,10%)]...` (andra tjanster sektion)
-- Rad 778: `bg-white/[0.04]`, `border-white/10` (tjanstlankar)
-- Rad 797: `bg-gradient-to-b from-[hsl(260,15%,10%)]...` (CTA sektion)
-- Rad 807: `bg-gradient-to-br from-white/[0.08]...`, `border-white/15` (CTA-kort)
-- Rad 831: `border-white/20` (outline-knapp)
-- Rad 852: `border-white/5` (SEO-sektion borders)
-- Rad 907: `bg-zinc-800` (akut-tjanster)
+### Filer att andra
 
-**Losning:** Ersatta ALLA hardkodade farger med temamedvetna CSS-klasser:
-- `bg-white/[0.04]` -> `bg-muted/50`
-- `border-white/10` -> `border-border`
-- `bg-gradient-to-br from-[hsl(260,12%,10%)]...` -> `bg-muted/30`
-- `bg-white/[0.08]` -> `bg-card`
-- Sektionsbakgrunder: alternera mellan `bg-background` och `bg-muted/30`
+#### Kundsynliga sidor och komponenter
 
-#### 2. `src/components/local-service/NearbyAreasSection.tsx`
-- Rad 60: `bg-gradient-to-b from-[hsl(240,10%,8%)]...` -> `bg-muted/30`
-- Rad 94: `bg-gradient-to-r from-white/[0.06]...`, `border-white/10` -> `bg-card border-border`
+| Fil | Andring |
+|-----|---------|
+| `src/pages/LocalServicePage.tsx` | Rad 582: `50%` -> `30%` i stor visuell display. Rad 812: `50%` -> `30%` i CTA-text |
+| `src/data/localServiceData.ts` | Alla 50%-referenser i titlar (rad 552-561), meta-beskrivningar (rad 566-575), intro-text (rad 590), CTA-text (rad 615), ROT-sektion (rad 627-640), FAQ-svar (rad 646-660), quickFacts (rad 681). Fallback-varden (rad 581, 583). Totalt ~30+ forekomster |
+| `src/data/serviceCityData.ts` | Alla titlar, beskrivningar och quickFacts for alla stader (Uppsala, Stockholm etc.) -- typ 20+ forekomster av "ROT 50%", "50% rabatt" etc. |
+| `src/data/serviceCityContent.ts` | Rad 122, 211: "du sparar 50% på arbetskostnaden" -> "30%" |
+| `src/components/GlobalStickyCTA.tsx` | Rad 137: "ROT-avdrag 50%" -> "ROT-avdrag 30%" |
+| `src/components/MicroFAQ.tsx` | Rad 45: "50% avdrag" -> "30% avdrag" |
+| `src/components/InteractiveToggle.tsx` | Rad 74: "50% rabatt" -> "30% rabatt" |
+| `src/components/PricingToggle.tsx` | Rad 15-16: "50% avdrag" -> "30% avdrag" for bade ROT och RUT |
+| `src/components/FAQTeaser.tsx` | Rad 19: "50% ROT deduction" -> "30%" |
+| `src/components/ComparisonUltra.tsx` | Rad 307: "50% ROT-besparing" -> "30%" |
+| `src/components/EnhancedServiceCard.tsx` | Rad 47: `laborCost * 0.5` -> `laborCost * 0.3` (berakningsfel) |
+| `src/pages/Home.tsx` | Rad 85, 97, 131, 180: Alla "50%" -> "30%" i FAQ och meta-beskrivning. Rad 97 har ocksa felaktigt maxtak "75 000 kr" for ROT (ska vara 50 000 kr) |
+| `src/pages/locations/LocationCityPage.tsx` | Rad 166: Titel "ROT 50%" -> "ROT 30%". Rad 235: Badge "ROT/RUT 50%" -> "ROT/RUT 30%" |
+| `src/pages/locations/ServiceCityPage.tsx` | Rad 98: "ROT/RUT 50%" -> "ROT/RUT 30%" |
+| `src/pages/locations/ServiceCityDetail.tsx` | Rad 627: "50% på arbetskostnaden" -> "30%" |
 
-#### 3. `src/components/local-service/TestimonialCarouselLocal.tsx`
-- Rad 51: `bg-gradient-to-br from-white/[0.08]...`, `border-white/10` -> `bg-card border-border`
+#### Copy-filer (svenska och engelska)
 
-#### 4. `src/components/local-service/ExpandableAreaLinks.tsx`
-- Rad 48: `bg-[hsl(240,8%,5%)]` -> `bg-muted/30`
-- Rad 82, 133: `bg-white/[0.03]`, `border-white/5` -> `bg-muted/50 border-border`
+| Fil | Andring |
+|-----|---------|
+| `src/copy/sv.ts` | ~25 forekomster av "50%" -> "30%" (ROT-sidan, RUT-sidan, hero, comparison, serviceDetail). Texten "hälften" -> "70%" eller "bara 70% av arbetskostnaden" |
+| `src/copy/en.ts` | ~25 forekomster, samma andringar pa engelska. "half" -> "70%" |
 
-#### 5. `src/components/local-service/CompactTrustBar.tsx`
-- Rad 26: `bg-gradient-to-r from-transparent via-white/[0.03]` -> `bg-muted/20`
+#### Admin-verktyg
 
-#### 6. `src/components/v2/HeroV2.tsx`
-- Rad 13: `bg-gradient-to-b from-[hsl(222,47%,8%)]...` -> anvand `hero-background` CSS-klass
-- Rad 57: `bg-white/5`, `border-white/10` -> `bg-muted/50 border-border`
-- Rad 104: `border-white/20`, `hover:bg-white/10` -> `border-border hover:bg-muted`
+| Fil | Andring |
+|-----|---------|
+| `src/components/admin/QuoteFormModal.tsx` | Rad 71: `setRotRate(50)` -> `setRotRate(30)`. Rad 73: `setRutRate(50)` -> `setRutRate(30)`. Alla kommentarer och defaults (rad 69, 158, 173, 198, 200, 305) |
 
-#### 7. `src/components/v2/GlassCard.tsx`
-- Rad 28: `bg-white/10`, `border-white/10` -> `bg-card/80 border-border`
-- Rad 29: `hover:bg-white/[0.12]`, `hover:border-white/30` -> `hover:bg-muted hover:border-primary/30`
+#### Publika AI/SEO-filer
 
-#### 8. `src/components/v2/TestimonialsV2.tsx`
-- Rad 73: `border-white/10` -> `border-border`
+| Fil | Andring |
+|-----|---------|
+| `public/knowledge-base.json` | Alla "50%" -> "30%" i ROT/RUT-beskrivningar, priser efter avdrag, FAQ-svar, USP:er |
+| `public/context.json` | "50%" -> "30%" i USP:er och FAQ |
+| `public/llms-ctx.txt` | Alla "50%" -> "30%" i ROT/RUT-sektioner, priser, FAQ |
+| `public/llms-full.txt` | Alla "50%" -> "30%" |
+| `public/humans.txt` | Rad 66: "50% off" -> "30% off" |
+| `public/services.csv` | Kolumnen `tax_deduction_percent`: alla "50" -> "30" |
 
-#### 9. `src/components/v2/CTAV2.tsx`
-- Rad 50: `bg-white text-background` -> dessa far behallas for CTA-kontrast men verifieras
+#### Edge Functions
 
-#### 10. `src/components/v2/BentoGrid.tsx`
-- Rad 94: `bg-white/10` -> `bg-primary/10`
+| Fil | Andring |
+|-----|---------|
+| `supabase/functions/ai-info/index.ts` | Rad 100, 106: `"50%"` -> `"30%"` |
+| `supabase/functions/ai-smart-analysis/index.ts` | Rad 340: "50%" -> "30%" |
+| `supabase/functions/generate-quote-pdf/index.ts` | Rad 185: "50%" -> "30%" |
 
-### Steg-for-steg
-
-1. **Borja med LocalServicePage.tsx** -- det ar den storsta och mest trasiga sidan
-2. **Fixa local-service/ subkomponenter** (4 filer)
-3. **Fixa v2/ komponenter** (GlassCard, HeroV2, TestimonialsV2, BentoGrid, CTAV2)
-4. **Verifiera ovriga sidor** (Contact, FAQ, AboutUs, Services -- dessa anvander redan mestadels CSS-klasser som `card-premium`, `hero-background`, `gradient-primary-subtle` som ar temamedvetna)
-
-### Principer for fixarna
-- Anvand befintliga CSS-klasser: `bg-card`, `bg-muted`, `border-border`, `bg-background`, `card-premium`
-- Sektions-alternering: `bg-background` och `bg-muted/30` (eller `bg-muted/5`)
-- Kort: `bg-card border border-border` (eller `card-premium`)
-- Badges/chips: `bg-muted/50 border-border` istallet for `bg-white/[0.08] border-white/15`
-- Inga hardkodade `hsl()` sektionsbakgrunder
-- Hero-sektioner med bild behallar sin morklagning (overlay pa foto ar OK)
-- `stepColors` i LocalServicePage far behallas da de ar dekorativa accentfarger
+#### Specialfall: cityServiceTemplates.ts
+Rad 12 har redan delvis korrekt logik (`rot ? '30%'`) men RUT-fallet sager fortfarande `'50%'`. Andras till `'30%'` for alla.
 
 ### Vad som INTE andras
-- Hero-overlayen pa bilder (`from-black/85 via-black/60` pa foton) -- det ar korrekt
-- Gradient-accentfarger pa stegikoner (dekorativa, inte bakgrunder)
-- ROT-sektionens grona accentfarg (dekorativ)
-- `gradient-text` och `GradientText` -- dessa har redan ljust-tema-stod i CSS
-- Sidor som redan anvander CSS-klasser korrekt (Contact, FAQ, Services)
+- `priceCalculation.ts` -- redan korrekt (30%)
+- `ROTCalculator.tsx` -- redan korrekt (30%)
+- `useGlobalROT.ts` -- ingen procentsats hardkodad
+- Max-beloppet 50 000 kr per person -- det ar fortfarande korrekt
+- RUT max 75 000 kr -- det ar korrekt for RUT-sidan (RUT har hoger tak)
+- Bloggartiklar som specifikt diskuterar forandringen 50% -> 30% (historisk kontext)
 
+### Koppling till berakningslogik
+Texterna "halva arbetskostnaden" och "du betalar bara hälften" maste ocksa andras -- med 30% avdrag betalar kunden 70% av arbetskostnaden, inte halften.
+
+Exempel-berakningar i texten maste uppdateras:
+- Gammalt: "Arbetskostnad 30 000 kr, avdrag 15 000 kr, du betalar 15 000 kr"
+- Nytt: "Arbetskostnad 30 000 kr, avdrag 9 000 kr, du betalar 21 000 kr"
