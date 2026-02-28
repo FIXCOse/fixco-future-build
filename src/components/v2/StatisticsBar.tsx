@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import useCountUpOnce from "@/hooks/useCountUpOnce";
 import { GradientText } from "./GradientText";
+import { useCopy } from "@/copy/CopyProvider";
+import type { CopyKey } from "@/copy/keys";
 
 const statistics = [
-  { key: "customers", label: "Nöjda kunder", value: 15000, suffix: "+" },
-  { key: "days", label: "Dagars starttid", value: 5, suffix: "" },
-  { key: "discount", label: "ROT-rabatt", value: 50, suffix: "%" },
-  { key: "rating", label: "Kundbetyg", value: 4.9, suffix: "/5", decimals: 1 }
+  { key: "customers", labelKey: "v2.stats.customers" as CopyKey, value: 15000, suffix: "+" },
+  { key: "days", labelKey: "v2.stats.days" as CopyKey, value: 5, suffix: "" },
+  { key: "discount", labelKey: "v2.stats.discount" as CopyKey, value: 30, suffix: "%" },
+  { key: "rating", labelKey: "v2.stats.rating" as CopyKey, value: 4.9, suffix: "/5", decimals: 1 }
 ];
 
 export const StatisticsBar = () => {
@@ -29,6 +31,7 @@ interface StatItemProps {
 }
 
 const StatItem = ({ stat, index }: StatItemProps) => {
+  const { t } = useCopy();
   const { value, observe } = useCountUpOnce({
     key: `v2-stat-${stat.key}`,
     from: 0,
@@ -52,7 +55,7 @@ const StatItem = ({ stat, index }: StatItemProps) => {
         </GradientText>
       </div>
       <div className="text-sm md:text-base text-muted-foreground">
-        {stat.label}
+        {t(stat.labelKey)}
       </div>
     </motion.div>
   );

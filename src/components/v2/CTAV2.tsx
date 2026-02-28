@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Phone, Mail } from "lucide-react";
 import { GradientText } from "./GradientText";
 import MagneticButton from "@/components/MagneticButton";
+import { useCopy } from "@/copy/CopyProvider";
 
 export const CTAV2 = () => {
+  const { t, locale } = useCopy();
+
   return (
     <section className="relative py-32 md:py-40 px-4 overflow-hidden">
       {/* Gradient Background */}
@@ -29,33 +32,29 @@ export const CTAV2 = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          {/* Main Headline */}
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-            Redo att börja<br />
+            {t('v2.cta.title1')}<br />
             <GradientText gradient="rainbow">
-              ditt projekt?
+              {t('v2.cta.title2')}
             </GradientText>
           </h2>
 
-          {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Få en kostnadsfri offert inom 24 timmar och upptäck varför tusentals kunder väljer Fixco
+            {t('v2.cta.subtitle')}
           </p>
 
-          {/* Primary CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <MagneticButton
               variant="default"
               size="lg"
               className="text-lg px-10 py-7 h-auto bg-white text-background hover:bg-white/90 group shadow-2xl"
-              href="/boka/standard"
+              href={locale === 'en' ? '/en/book/standard' : '/boka/standard'}
             >
-              Boka gratis offert nu
+              {t('v2.cta.button')}
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </MagneticButton>
           </div>
 
-          {/* Contact Options */}
           <motion.div
             className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm"
             initial={{ opacity: 0 }}
@@ -63,7 +62,7 @@ export const CTAV2 = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <a 
+            <a
               href="tel:+46793350228"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -71,7 +70,7 @@ export const CTAV2 = () => {
               <span>+46 79 335 02 28</span>
             </a>
             <span className="hidden sm:block text-muted-foreground">•</span>
-            <a 
+            <a
               href="mailto:info@fixco.se"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -80,7 +79,6 @@ export const CTAV2 = () => {
             </a>
           </motion.div>
 
-          {/* Trust badges */}
           <motion.div
             className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground"
             initial={{ opacity: 0 }}
@@ -88,22 +86,17 @@ export const CTAV2 = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Snabb offert</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>ROT & RUT-avdrag</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Erfarna hantverkare</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-500">✓</span>
-              <span>Garanti på arbete</span>
-            </div>
+            {[
+              t('v2.cta.trust.quote'),
+              t('v2.cta.trust.rot'),
+              t('v2.cta.trust.exp'),
+              t('v2.cta.trust.warranty'),
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-2">
+                <span className="text-green-500">✓</span>
+                <span>{text}</span>
+              </div>
+            ))}
           </motion.div>
         </motion.div>
       </div>

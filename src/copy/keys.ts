@@ -371,4 +371,71 @@ export type CopyKey =
     | 'ai_widget.image_instruction_placeholder' | 'ai_widget.generate' | 'ai_widget.error'
     | 'ai_widget.upload_file'
     
-    | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days';
+    | 'comparison.see_all_services' | 'comparison.days' | 'comparison.within_days'
+
+    // v2 Hero
+    | 'v2.hero.badge' | 'v2.hero.title1' | 'v2.hero.title2'
+    | 'v2.hero.subtitle' | 'v2.hero.cta' | 'v2.hero.call'
+    | 'v2.hero.trust.rot' | 'v2.hero.trust.ftax' | 'v2.hero.trust.insured' | 'v2.hero.trust.warranty'
+
+    // v2 CTA
+    | 'v2.cta.title1' | 'v2.cta.title2' | 'v2.cta.subtitle' | 'v2.cta.button'
+    | 'v2.cta.trust.quote' | 'v2.cta.trust.rot' | 'v2.cta.trust.exp' | 'v2.cta.trust.warranty'
+
+    // v2 Services (BentoGrid)
+    | 'v2.services.title' | 'v2.services.subtitle' | 'v2.services.readMore'
+    | 'v2.services.electrician' | 'v2.services.electrician.desc'
+    | 'v2.services.plumbing' | 'v2.services.plumbing.desc'
+    | 'v2.services.painting' | 'v2.services.painting.desc'
+    | 'v2.services.carpentry' | 'v2.services.carpentry.desc'
+    | 'v2.services.locksmith' | 'v2.services.locksmith.desc'
+    | 'v2.services.total_renovation' | 'v2.services.total_renovation.desc'
+
+    // v2 Testimonials
+    | 'v2.testimonials.title' | 'v2.testimonials.subtitle'
+    | 'v2.testimonials.1.content' | 'v2.testimonials.1.role'
+    | 'v2.testimonials.2.content' | 'v2.testimonials.2.role'
+    | 'v2.testimonials.3.content' | 'v2.testimonials.3.role'
+
+    // v2 Statistics
+    | 'v2.stats.customers' | 'v2.stats.days' | 'v2.stats.discount' | 'v2.stats.rating'
+
+    // v2 HomeV2 FeatureSplit
+    | 'v2.whyFixco.title' | 'v2.whyFixco.subtitle'
+    | 'v2.whyFixco.f1.title' | 'v2.whyFixco.f1.desc'
+    | 'v2.whyFixco.f2.title' | 'v2.whyFixco.f2.desc'
+    | 'v2.whyFixco.f3.title' | 'v2.whyFixco.f3.desc'
+    | 'v2.whyFixco.f4.title' | 'v2.whyFixco.f4.desc'
+    | 'v2.rotRut.title' | 'v2.rotRut.subtitle'
+    | 'v2.rotRut.f1.title' | 'v2.rotRut.f1.desc'
+    | 'v2.rotRut.f2.title' | 'v2.rotRut.f2.desc'
+    | 'v2.rotRut.f3.title' | 'v2.rotRut.f3.desc'
+
+    // v2 SEO
+    | 'v2.seo.title' | 'v2.seo.description'
+
+    // Sticky CTAs
+    | 'sticky.bookService' | 'sticky.callNow' | 'sticky.requestQuote' | 'sticky.callUs'
+
+    // ProjectShowcase extra
+    | 'projects.loading' | 'projects.newProjectBtn' | 'projects.seeDetails'
+    | 'projects.totalPrice' | 'projects.client' | 'projects.completedDate'
+    | 'projects.stats.year' | 'projects.stats.satisfied' | 'projects.stats.response'
+
+    // MicroFAQ
+    | 'microfaq.title' | 'microfaq.whatsIncluded' | 'microfaq.whatsIncluded.answer'
+    | 'microfaq.howRot' | 'microfaq.howRot.answer'
+    | 'microfaq.areas' | 'microfaq.areas.answer'
+    | 'microfaq.insured' | 'microfaq.insured.answer'
+    | 'microfaq.warranty' | 'microfaq.warranty.answer'
+
+    // FAQTeaser
+    | 'faqteaser.title' | 'faqteaser.subtitle' | 'faqteaser.seeAll'
+    | 'faqteaser.q1' | 'faqteaser.a1'
+    | 'faqteaser.q2' | 'faqteaser.a2'
+    | 'faqteaser.q3' | 'faqteaser.a3'
+    | 'faqteaser.q4' | 'faqteaser.a4'
+    | 'faqteaser.q5' | 'faqteaser.a5'
+
+    // GlobalStickyCTA
+    | 'sticky.rotDeduction';

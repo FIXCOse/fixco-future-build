@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import OfferWizardModal from './OfferWizardModal';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { useCopy } from '@/copy/CopyProvider';
 
 const GlobalStickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,19 +13,19 @@ const GlobalStickyCTA = () => {
   const [isDismissed, setIsDismissed] = useState(false);
   const [showOfferWizard, setShowOfferWizard] = useState(false);
   const location = useLocation();
+  const { t } = useCopy();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY > 200;
       setIsScrolled(scrolled);
       
-      // Always show on mobile, show after scroll on desktop/service pages
       const isMobile = window.innerWidth < 768;
       const shouldShow = isMobile || scrolled || location.pathname.startsWith('/tjanster/');
       setIsVisible(shouldShow && !isDismissed);
     };
 
-    handleScroll(); // Check initial state
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
     
@@ -34,33 +35,18 @@ const GlobalStickyCTA = () => {
     };
   }, [location.pathname, isDismissed]);
 
-  // Reset dismissed state when navigating to new page
   useEffect(() => {
     setIsDismissed(false);
   }, [location.pathname]);
 
   const getContextualCta = () => {
     if (location.pathname.startsWith('/tjanster/')) {
-      return {
-        text: "Boka denna tjänst",
-        icon: ArrowRight,
-        variant: "default" as const
-      };
+      return { text: t('sticky.bookService'), icon: ArrowRight, variant: "default" as const };
     }
-    
     if (location.pathname === '/kontakt') {
-      return {
-        text: "Ring nu",
-        icon: Phone,
-        variant: "default" as const
-      };
+      return { text: t('sticky.callNow'), icon: Phone, variant: "default" as const };
     }
-
-    return {
-      text: "Begär offert",
-      icon: Calculator,
-      variant: "default" as const
-    };
+    return { text: t('sticky.requestQuote'), icon: Calculator, variant: "default" as const };
   };
 
   const contextualCta = getContextualCta();
@@ -78,13 +64,11 @@ const GlobalStickyCTA = () => {
         {/* Mobile CTA Bar */}
         <div className="md:hidden">
           <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow p-4 relative">
-            {/* F Brand Badge - Make More Visible */}
             <div className="absolute top-1 left-1 w-10 h-10 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-20">
               <FixcoFIcon className="h-6 w-6" />
             </div>
 
             <div className="flex items-center space-x-3">
-              {/* Dismiss Button */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -94,7 +78,6 @@ const GlobalStickyCTA = () => {
                 <X className="h-4 w-4" />
               </Button>
 
-              {/* Phone Button */}
               <Button
                 variant="outline"
                 size="sm"
@@ -104,7 +87,6 @@ const GlobalStickyCTA = () => {
                 <Phone className="h-4 w-4" />
               </Button>
 
-              {/* Main CTA */}
               <Button
                 className="flex-1 gradient-primary text-primary-foreground font-medium"
                 onClick={() => setShowOfferWizard(true)}
@@ -121,7 +103,6 @@ const GlobalStickyCTA = () => {
             <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-glow">
               <div className="container mx-auto px-4 py-3">
                 <div className="flex items-center justify-between">
-                  {/* Contact Info with F Brand */}
                   <div className="flex items-center space-x-6 text-sm">
                     <div className="flex items-center space-x-2">
                       <div className="w-10 h-10 flex items-center justify-center mr-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10">
@@ -134,13 +115,11 @@ const GlobalStickyCTA = () => {
                     Uppsala & Stockholm
                   </div>
                   <div className="text-primary font-medium">
-                    ROT-avdrag 30%
+                    {t('sticky.rotDeduction')}
                   </div>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="flex items-center space-x-3">
-                  {/* Dismiss Button */}
                   <Button
                     variant="ghost"
                     size="icon"
@@ -150,7 +129,6 @@ const GlobalStickyCTA = () => {
                     <X className="h-4 w-4" />
                   </Button>
 
-                  {/* Phone CTA */}
                   <Button
                     variant="outline"
                     size="sm"
@@ -158,10 +136,9 @@ const GlobalStickyCTA = () => {
                     onClick={() => window.open('tel:08-123-456-78')}
                   >
                     <Phone className="h-4 w-4 mr-2" />
-                    Ring nu
+                    {t('sticky.callNow')}
                   </Button>
 
-                  {/* Main CTA */}
                   <Button
                     size="sm"
                     className="gradient-primary text-primary-foreground font-medium hover:shadow-glow"
@@ -177,7 +154,6 @@ const GlobalStickyCTA = () => {
         </div>
       </div>
 
-      {/* Offer Wizard Modal */}
       <OfferWizardModal
         isOpen={showOfferWizard}
         onClose={() => setShowOfferWizard(false)}
