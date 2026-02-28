@@ -1,85 +1,160 @@
 
 
-## Fix: Uppdatera alla ROT/RUT-procenttal fran 50% till 30%
+## Internationalisering: Hardkodad svensk text till oversattningssystemet
 
 ### Problem
-ROT/RUT-avdraget andrades fran 50% till 30% den 1 januari 2026. Berakningslogiken (`priceCalculation.ts`, `ROTCalculator.tsx`) ar redan uppdaterad till 30%, men hardkodad text, SEO-titlar, meta-beskrivningar, FAQ-svar och AI-filer visar fortfarande "50%" overallt pa sajten.
-
-Bilden visar tydligt: "50%" star kvar i den stora visuella displayen, i brödtexten ("50% av arbetskostnaden"), i exemplet ("ROT-avdrag (50%): -15 000 kr") och i CTA-texten.
+Manga komponenter har hardkodad svensk text direkt i JSX istallet for att anvanda `useCopy()` / `t()` oversattningssystemet. Nar man byter till engelska med sprakswitcharen forblir stora delar av sajten pa svenska.
 
 ### Omfattning
-Totalt **~20 filer** behover uppdateras. Alla forandringar ar text/copy -- ingen berakningslogik andras (den ar redan korrekt pa 30%).
+Problemet finns i **~15 komponenter** uppdelade i tva kategorier:
 
----
+**Kategori 1: v2-komponenter (HomeV2-sidan) -- helt utan oversattning**
+Dessa komponenter anvander inte `useCopy()` alls och har all text hardkodad pa svenska:
 
-### Filer att andra
+| Komponent | Hardkodad text |
+|-----------|---------------|
+| `HeroV2.tsx` | "Vi bygger framtidens hem", "Boka gratis offert", trust badges, etc. |
+| `CTAV2.tsx` | "Redo att borja ditt projekt?", "Boka gratis offert nu", trust badges |
+| `BentoGrid.tsx` | Alla tjanstenamn och beskrivningar, "Vara tjanster", "Las mer" |
+| `TestimonialsV2.tsx` | "Vad sager vara kunder?", alla omdomen |
+| `StatisticsBar.tsx` | "Nojda kunder", "ROT-rabatt", "Kundbetyg", "Dagars starttid" |
+| `HomeV2.tsx` | SEO-titlar, FeatureSplit-titlar och features |
 
-#### Kundsynliga sidor och komponenter
+**Kategori 2: Ovriga komponenter -- delvis hardkodade**
 
-| Fil | Andring |
-|-----|---------|
-| `src/pages/LocalServicePage.tsx` | Rad 582: `50%` -> `30%` i stor visuell display. Rad 812: `50%` -> `30%` i CTA-text |
-| `src/data/localServiceData.ts` | Alla 50%-referenser i titlar (rad 552-561), meta-beskrivningar (rad 566-575), intro-text (rad 590), CTA-text (rad 615), ROT-sektion (rad 627-640), FAQ-svar (rad 646-660), quickFacts (rad 681). Fallback-varden (rad 581, 583). Totalt ~30+ forekomster |
-| `src/data/serviceCityData.ts` | Alla titlar, beskrivningar och quickFacts for alla stader (Uppsala, Stockholm etc.) -- typ 20+ forekomster av "ROT 50%", "50% rabatt" etc. |
-| `src/data/serviceCityContent.ts` | Rad 122, 211: "du sparar 50% på arbetskostnaden" -> "30%" |
-| `src/components/GlobalStickyCTA.tsx` | Rad 137: "ROT-avdrag 50%" -> "ROT-avdrag 30%" |
-| `src/components/MicroFAQ.tsx` | Rad 45: "50% avdrag" -> "30% avdrag" |
-| `src/components/InteractiveToggle.tsx` | Rad 74: "50% rabatt" -> "30% rabatt" |
-| `src/components/PricingToggle.tsx` | Rad 15-16: "50% avdrag" -> "30% avdrag" for bade ROT och RUT |
-| `src/components/FAQTeaser.tsx` | Rad 19: "50% ROT deduction" -> "30%" |
-| `src/components/ComparisonUltra.tsx` | Rad 307: "50% ROT-besparing" -> "30%" |
-| `src/components/EnhancedServiceCard.tsx` | Rad 47: `laborCost * 0.5` -> `laborCost * 0.3` (berakningsfel) |
-| `src/pages/Home.tsx` | Rad 85, 97, 131, 180: Alla "50%" -> "30%" i FAQ och meta-beskrivning. Rad 97 har ocksa felaktigt maxtak "75 000 kr" for ROT (ska vara 50 000 kr) |
-| `src/pages/locations/LocationCityPage.tsx` | Rad 166: Titel "ROT 50%" -> "ROT 30%". Rad 235: Badge "ROT/RUT 50%" -> "ROT/RUT 30%" |
-| `src/pages/locations/ServiceCityPage.tsx` | Rad 98: "ROT/RUT 50%" -> "ROT/RUT 30%" |
-| `src/pages/locations/ServiceCityDetail.tsx` | Rad 627: "50% på arbetskostnaden" -> "30%" |
+| Komponent | Problem |
+|-----------|---------|
+| `StickyCtaBar.tsx` | "Boka denna tjanst", "Ring direkt", "Begar offert", "Ring oss" |
+| `GlobalStickyCTA.tsx` | "Boka denna tjanst", "Ring nu", "Begar offert" |
+| `ProjectShowcase.tsx` | "Vill du se ditt hem har?", CTA-text, "Projekt 2024", "Nojda kunder", "Svarstid" |
+| `MicroFAQ.tsx` | Alla fragor och svar ar hardkodade pa svenska |
+| `FAQTeaser.tsx` | FAQ-fragor ar hardkodade i komponenten |
+| `SmartIntegrations.tsx` | "Begar installationsoffert", "Begar komplett offert" |
+| `ROTCalculator.tsx` | "Begar offert med ROT-priser", "Boka kostnadsfri konsultation" |
+| `hero.trust_rot_desc` i sv.ts | Visar fortfarande "50% rabatt" (borde vara "30% rabatt") |
 
-#### Copy-filer (svenska och engelska)
+### Losning
 
-| Fil | Andring |
-|-----|---------|
-| `src/copy/sv.ts` | ~25 forekomster av "50%" -> "30%" (ROT-sidan, RUT-sidan, hero, comparison, serviceDetail). Texten "hälften" -> "70%" eller "bara 70% av arbetskostnaden" |
-| `src/copy/en.ts` | ~25 forekomster, samma andringar pa engelska. "half" -> "70%" |
+**Steg 1: Lagg till nya copy-nycklar i `sv.ts` och `en.ts`**
 
-#### Admin-verktyg
+Lagga till ~40 nya nycklar for v2-komponenterna och ovriga hardkodade texter:
 
-| Fil | Andring |
-|-----|---------|
-| `src/components/admin/QuoteFormModal.tsx` | Rad 71: `setRotRate(50)` -> `setRotRate(30)`. Rad 73: `setRutRate(50)` -> `setRutRate(30)`. Alla kommentarer och defaults (rad 69, 158, 173, 198, 200, 305) |
+```
+// v2 Hero
+'v2.hero.badge': 'Snabb service - 15 000+ nojda kunder' / 'Fast service - 15,000+ happy customers'
+'v2.hero.title1': 'Vi bygger' / 'We build'  
+'v2.hero.title2': 'framtidens hem' / 'the home of the future'
+'v2.hero.subtitle': '...' / '...'
+'v2.hero.cta': 'Boka gratis offert' / 'Book free quote'
+'v2.hero.call': 'Ring: +46 79 335 02 28' / 'Call: +46 79 335 02 28'
+'v2.hero.trust.rot': 'ROT & RUT-godkant' / 'ROT & RUT approved'
+'v2.hero.trust.ftax': 'F-skattsedel' / 'F-tax certificate'
+'v2.hero.trust.insured': 'Forsakrade hantverkare' / 'Insured craftsmen'
+'v2.hero.trust.warranty': 'Garanti pa arbete' / 'Work guarantee'
 
-#### Publika AI/SEO-filer
+// v2 CTA
+'v2.cta.title1': 'Redo att borja' / 'Ready to start'
+'v2.cta.title2': 'ditt projekt?' / 'your project?'
+'v2.cta.subtitle': '...' / '...'
+'v2.cta.button': 'Boka gratis offert nu' / 'Book free quote now'
+'v2.cta.trust.quote': 'Snabb offert' / 'Quick quote'
+'v2.cta.trust.rot': 'ROT & RUT-avdrag' / 'ROT & RUT deductions'
+'v2.cta.trust.exp': 'Erfarna hantverkare' / 'Experienced craftsmen'
+'v2.cta.trust.warranty': 'Garanti pa arbete' / 'Work guarantee'
 
-| Fil | Andring |
-|-----|---------|
-| `public/knowledge-base.json` | Alla "50%" -> "30%" i ROT/RUT-beskrivningar, priser efter avdrag, FAQ-svar, USP:er |
-| `public/context.json` | "50%" -> "30%" i USP:er och FAQ |
-| `public/llms-ctx.txt` | Alla "50%" -> "30%" i ROT/RUT-sektioner, priser, FAQ |
-| `public/llms-full.txt` | Alla "50%" -> "30%" |
-| `public/humans.txt` | Rad 66: "50% off" -> "30% off" |
-| `public/services.csv` | Kolumnen `tax_deduction_percent`: alla "50" -> "30" |
+// v2 BentoGrid - tjanster
+'v2.services.title': 'Vara tjanster' / 'Our services'
+'v2.services.subtitle': '...' / '...'
+'v2.services.readMore': 'Las mer' / 'Read more'
+'v2.services.electrician': 'Elmontor' / 'Electrician'
+'v2.services.electrician.desc': '...' / '...'
+... (6 tjanster totalt)
 
-#### Edge Functions
+// v2 Testimonials
+'v2.testimonials.title': 'Vad sager vara kunder?' / 'What do our customers say?'
+'v2.testimonials.subtitle': '...' / '...'
+... (3 omdomen med content och role)
 
-| Fil | Andring |
-|-----|---------|
-| `supabase/functions/ai-info/index.ts` | Rad 100, 106: `"50%"` -> `"30%"` |
-| `supabase/functions/ai-smart-analysis/index.ts` | Rad 340: "50%" -> "30%" |
-| `supabase/functions/generate-quote-pdf/index.ts` | Rad 185: "50%" -> "30%" |
+// v2 Statistics  
+'v2.stats.customers': 'Nojda kunder' / 'Happy customers'
+'v2.stats.days': 'Dagars starttid' / 'Days to start'
+'v2.stats.discount': 'ROT-rabatt' / 'ROT discount'
+'v2.stats.rating': 'Kundbetyg' / 'Customer rating'
 
-#### Specialfall: cityServiceTemplates.ts
-Rad 12 har redan delvis korrekt logik (`rot ? '30%'`) men RUT-fallet sager fortfarande `'50%'`. Andras till `'30%'` for alla.
+// HomeV2 FeatureSplit
+'v2.whyFixco.title': 'Varfor valja Fixco?' / 'Why choose Fixco?'
+... (features)
+'v2.rotRut.title': 'ROT & RUT-avdrag - Vi skoter allt' / 'ROT & RUT - We handle everything'
+... (features)
+
+// Sticky CTAs
+'sticky.bookService': 'Boka denna tjanst' / 'Book this service'
+'sticky.callNow': 'Ring nu' / 'Call now'  
+'sticky.requestQuote': 'Begar offert' / 'Request quote'
+'sticky.callUs': 'Ring oss' / 'Call us'
+
+// ProjectShowcase CTA
+'projects.cta_title': 'Vill du se ditt hem har?' / 'Want to see your home here?'
+'projects.cta_desc': '...' / '...'
+'projects.stats.year': 'Projekt 2024' / 'Projects 2024'
+'projects.stats.satisfied': 'Nojda kunder' / 'Happy customers'  
+'projects.stats.response': 'Svarstid' / 'Response time'
+```
+
+**Steg 2: Uppdatera `keys.ts`**
+
+Lagga till alla nya nycklar i CopyKey-typen.
+
+**Steg 3: Uppdatera v2-komponenterna att anvanda `useCopy()`**
+
+For varje v2-komponent:
+1. Importera `useCopy` fran `@/copy/CopyProvider`
+2. Kalla `const { t, locale } = useCopy()`
+3. Ersatt alla hardkodade textstrangar med `t('nyckel')`
+4. For lankar: anvand locale-medvetna sokvagar (t.ex. `locale === 'en' ? '/en/...' : '/...'`)
+
+**Steg 4: Uppdatera ovriga hardkodade komponenter**
+
+- `StickyCtaBar.tsx`: Importera `useCopy`, ersatt CTA-texter
+- `GlobalStickyCTA.tsx`: Ersatt CTA-texter med t()-anrop
+- `ProjectShowcase.tsx`: Ersatt CTA-sektion och stats
+- `MicroFAQ.tsx`: Antingen anvand copy-nycklar eller gora locale-medveten med `useCopy()`
+- `FAQTeaser.tsx`: FAQ-fragorna ar hardkodade -- flytta till copy-systemet
+
+**Steg 5: Fixa kvarvarande 50%-text**
+
+- `hero.trust_rot_desc` i `sv.ts` rad 676: "50% rabatt" -> "30% rabatt"
+- `comparison.price_rot_desc` i `sv.ts` rad 690: "Med 50% ROT-avdrag" -> "Med 30% ROT-avdrag"
+- Motsvarande i `en.ts`
+- `StatisticsBar.tsx` rad 8: `value: 50` -> `value: 30` for ROT-rabatt
+
+### Tekniska detaljer
+
+- Alla v2-komponenter maste wrappas inne i `CopyProvider` -- de ar det redan via `AppLayout`
+- `HomeV2.tsx` renderas via routes inuti `AppLayout`, sa `useCopy()` fungerar
+- Copy-nycklarna kravs i `keys.ts` for typ-sakerhet -- detta ar en union type av alla giltiga nycklar
+- `StatisticsBar` behover inte oversatta siffror, bara labels
+- For `MicroFAQ` ar det enklast att ha tva arrayer (sv/en) och valja baserat pa locale, istallet for 15+ individuella copy-nycklar
+
+### Filer som andras
+
+1. `src/copy/keys.ts` -- lagg till ~40 nya nycklar
+2. `src/copy/sv.ts` -- lagg till ~40 nya svenska texter + fixa 50% -> 30%
+3. `src/copy/en.ts` -- lagg till ~40 nya engelska texter + fixa 50% -> 30%
+4. `src/components/v2/HeroV2.tsx` -- anvand t()
+5. `src/components/v2/CTAV2.tsx` -- anvand t()
+6. `src/components/v2/BentoGrid.tsx` -- anvand t()
+7. `src/components/v2/TestimonialsV2.tsx` -- anvand t()
+8. `src/components/v2/StatisticsBar.tsx` -- anvand t() + fixa 50 -> 30
+9. `src/pages/HomeV2.tsx` -- anvand t() for FeatureSplit-props och SEO
+10. `src/components/StickyCtaBar.tsx` -- anvand t()
+11. `src/components/GlobalStickyCTA.tsx` -- anvand t()
+12. `src/components/ProjectShowcase.tsx` -- anvand t()
+13. `src/components/MicroFAQ.tsx` -- locale-medveten
+14. `src/components/FAQTeaser.tsx` -- flytta fragor till copy
 
 ### Vad som INTE andras
-- `priceCalculation.ts` -- redan korrekt (30%)
-- `ROTCalculator.tsx` -- redan korrekt (30%)
-- `useGlobalROT.ts` -- ingen procentsats hardkodad
-- Max-beloppet 50 000 kr per person -- det ar fortfarande korrekt
-- RUT max 75 000 kr -- det ar korrekt for RUT-sidan (RUT har hoger tak)
-- Bloggartiklar som specifikt diskuterar forandringen 50% -> 30% (historisk kontext)
+- Admin-komponenter (behover inte oversattas)
+- Worker-komponenter
+- Komponenter som redan anvander `useCopy()` korrekt (Hero.tsx, Navigation, etc.)
 
-### Koppling till berakningslogik
-Texterna "halva arbetskostnaden" och "du betalar bara hälften" maste ocksa andras -- med 30% avdrag betalar kunden 70% av arbetskostnaden, inte halften.
-
-Exempel-berakningar i texten maste uppdateras:
-- Gammalt: "Arbetskostnad 30 000 kr, avdrag 15 000 kr, du betalar 15 000 kr"
-- Nytt: "Arbetskostnad 30 000 kr, avdrag 9 000 kr, du betalar 21 000 kr"
