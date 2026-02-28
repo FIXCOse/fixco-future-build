@@ -3,72 +3,44 @@ import { Helmet } from "react-helmet-async";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
+import { useCopy } from '@/copy/CopyProvider';
 
 interface GlobalFooterProps {
   locale?: 'sv' | 'en';
 }
 
 export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
+  const { t } = useCopy();
   const isEnglish = locale === 'en';
-  
-  // Translation function
-  const t = (key: string) => {
-    const translations = {
-      sv: {
-        tagline: "Din helhetslösning inom hem & byggnad",
-        org: "Org.nr",
-        address: "Adress",
-        phone: "Telefon",
-        email: "E-post",
-        linksTitle: "Snabblänkar",
-        services: "Tjänster",
-        references: "Referenser",
-        contact: "Kontakt",
-        about: "Om oss",
-        legalTitle: "Juridiskt",
-        privacy: "Integritetspolicy",
-        terms: "Villkor",
-        cookies: "Cookies",
-        rot: "ROT & RUT",
-        ctaTitle: "Kom igång",
-        ctaText: "Få offert inom 24 timmar.",
-        ctaContact: "Kontakta oss",
-        ctaQuote: "Begär offert",
-        rights: "Alla rättigheter förbehålls",
-        reg: "Registrerad i Sverige",
-        servicesPerArea: "Tjänster per område"
-      },
-      en: {
-        tagline: "Your complete solution for home & construction",
-        org: "Org. No.",
-        address: "Address",
-        phone: "Phone",
-        email: "Email",
-        linksTitle: "Quick links",
-        services: "Services",
-        references: "References",
-        contact: "Contact",
-        about: "About us",
-        legalTitle: "Legal",
-        privacy: "Privacy Policy",
-        terms: "Terms of Service",
-        cookies: "Cookies",
-        rot: "ROT & RUT",
-        ctaTitle: "Get started",
-        ctaText: "Get a quote within 24 hours.",
-        ctaContact: "Contact us",
-        ctaQuote: "Request a quote",
-        rights: "All rights reserved",
-        reg: "Registered in Sweden",
-        servicesPerArea: "Services by Area"
-      }
-    };
-    
-    return translations[locale][key as keyof typeof translations.sv] || key;
-  };
-
   const basePath = isEnglish ? '/en' : '';
   
+  // Service links - locale-aware
+  const serviceLinks = [
+    { label: t('footer.electrician'), path: isEnglish ? '/en/services/electrical' : '/tjanster/el' },
+    { label: t('footer.plumbing'), path: isEnglish ? '/en/services/plumbing' : '/tjanster/vvs' },
+    { label: t('footer.carpentry'), path: isEnglish ? '/en/services/carpentry' : '/tjanster/snickeri' },
+    { label: t('footer.painting'), path: isEnglish ? '/en/services/painting' : '/tjanster/malning' },
+    { label: t('footer.doorLock'), path: isEnglish ? '/en/services/locks' : '/tjanster/dorrlas' },
+  ];
+
+  const servicesByArea = [
+    { label: t('footer.electricianLabel'), sv: 'elektriker', en: 'electrician' },
+    { label: t('footer.plumbingLabel'), sv: 'vvs', en: 'plumbing' },
+    { label: t('footer.carpentryLabel'), sv: 'snickare', en: 'carpenter' },
+    { label: t('footer.paintingLabel'), sv: 'malare', en: 'painter' },
+    { label: t('footer.assemblyLabel'), sv: 'montering', en: 'assembly' },
+    { label: t('footer.gardenLabel'), sv: 'tradgard', en: 'garden' },
+    { label: t('footer.cleaningLabel'), sv: 'stad', en: 'cleaning' },
+    { label: t('footer.groundworkLabel'), sv: 'markarbeten', en: 'groundwork' },
+    { label: t('footer.techInstallLabel'), sv: 'tekniska-installationer', en: 'technical-installations' },
+    { label: t('footer.movingLabel'), sv: 'flytt', en: 'moving' },
+  ];
+
+  const cities = [
+    { label: t('footer.cityUppsala'), slug: 'uppsala' },
+    { label: t('footer.cityStockholm'), slug: 'stockholm' },
+  ];
+
   return (
     <>
       <Helmet>
@@ -78,7 +50,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
             "@type": "Organization",
             "name": "Fixco AB",
             "url": "https://fixco.se",
-            "telephone": "+46812345678",
+            "telephone": "+46793350228",
             "email": "support@fixco.se",
             "address": {
               "@type": "PostalAddress",
@@ -95,227 +67,112 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
-            {/* Våra Tjänster */}
+            {/* Services */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Våra Tjänster</h3>
+              <h3 className="font-bold text-lg mb-4">{t('footer.ourServices')}</h3>
               <ul className="space-y-2 text-sm">
+                {serviceLinks.map(link => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="text-muted-foreground hover:text-foreground transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
                 <li>
-                  <Link to="/tjanster/el" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Elmontör
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/vvs" className="text-muted-foreground hover:text-foreground transition-colors">
-                    VVS
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/snickeri" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Snickeri
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/malning" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Målning
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster/dorrlas" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Dörrlås
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tjanster" className="text-primary hover:text-primary/80 transition-colors font-bold text-base">
-                    🔧 Alla tjänster och priser →
+                  <Link to={isEnglish ? '/en/services' : '/tjanster'} className="text-primary hover:text-primary/80 transition-colors font-bold text-base">
+                    {t('footer.allServicesLink')}
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Områden */}
+            {/* Areas */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Områden</h3>
+              <h3 className="font-bold text-lg mb-4">{t('footer.areas')}</h3>
               <ul className="space-y-2 text-sm">
-                <li>
-                  <Link to="/omraden/uppsala" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Uppsala
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/omraden/stockholm" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Stockholm
-                  </Link>
-                </li>
+                {cities.map(city => (
+                  <li key={city.slug}>
+                    <Link to={isEnglish ? `/en/areas/${city.slug}` : `/omraden/${city.slug}`} className="text-muted-foreground hover:text-foreground transition-colors">
+                      {city.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Tjänster per område - Collapsible */}
+            {/* Services per area - Collapsible */}
             <div>
               <Collapsible>
                 <CollapsibleTrigger className="flex items-center gap-2 font-bold text-lg mb-4 hover:text-primary transition-colors">
-                  <span>{t('servicesPerArea')}</span>
+                  <span>{t('footer.servicesPerArea')}</span>
                   <ChevronDown className="h-4 w-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3">
-                  
-                  {/* Elektriker */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Elektriker</div>
-                    <Link to="/tjanster/elektriker/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Elektriker Uppsala
-                    </Link>
-                    <Link to="/tjanster/elektriker/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Elektriker Stockholm
-                    </Link>
-                  </div>
-
-                  {/* VVS */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">VVS</div>
-                    <Link to="/tjanster/vvs/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      VVS Uppsala
-                    </Link>
-                    <Link to="/tjanster/vvs/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      VVS Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Snickare */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Snickare</div>
-                    <Link to="/tjanster/snickare/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Snickare Uppsala
-                    </Link>
-                    <Link to="/tjanster/snickare/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Snickare Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Målare */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Målare</div>
-                    <Link to="/tjanster/malare/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Målare Uppsala
-                    </Link>
-                    <Link to="/tjanster/malare/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Målare Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Montering */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Montering</div>
-                    <Link to="/tjanster/montering/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Montering Uppsala
-                    </Link>
-                    <Link to="/tjanster/montering/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Montering Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Trädgård */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Trädgård</div>
-                    <Link to="/tjanster/tradgard/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Trädgård Uppsala
-                    </Link>
-                    <Link to="/tjanster/tradgard/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Trädgård Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Städning */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Städning</div>
-                    <Link to="/tjanster/stad/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Städning Uppsala
-                    </Link>
-                    <Link to="/tjanster/stad/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Städning Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Markarbeten */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Markarbeten</div>
-                    <Link to="/tjanster/markarbeten/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Markarbeten Uppsala
-                    </Link>
-                    <Link to="/tjanster/markarbeten/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Markarbeten Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Tekniska installationer */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Tekniska installationer</div>
-                    <Link to="/tjanster/tekniska-installationer/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Tekniska installationer Uppsala
-                    </Link>
-                    <Link to="/tjanster/tekniska-installationer/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Tekniska installationer Stockholm
-                    </Link>
-                  </div>
-
-                  {/* Flytt */}
-                  <div className="text-sm">
-                    <div className="font-medium mb-1 text-foreground">Flytthjälp</div>
-                    <Link to="/tjanster/flytt/uppsala" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Flytthjälp Uppsala
-                    </Link>
-                    <Link to="/tjanster/flytt/stockholm" className="text-muted-foreground hover:text-primary transition-colors block">
-                      Flytthjälp Stockholm
-                    </Link>
-                  </div>
-
+                  {servicesByArea.map(service => (
+                    <div key={service.sv} className="text-sm">
+                      <div className="font-medium mb-1 text-foreground">{service.label}</div>
+                      {cities.map(city => (
+                        <Link
+                          key={`${service.sv}-${city.slug}`}
+                          to={isEnglish
+                            ? `/en/services/${service.en}/${city.slug}`
+                            : `/tjanster/${service.sv}/${city.slug}`
+                          }
+                          className="text-muted-foreground hover:text-primary transition-colors block"
+                        >
+                          {service.label} {city.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
                 </CollapsibleContent>
               </Collapsible>
             </div>
 
             {/* Information */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Information</h3>
+              <h3 className="font-bold text-lg mb-4">{t('footer.information')}</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/rot-info" className="text-muted-foreground hover:text-foreground transition-colors">
-                    ROT-avdrag
+                  <Link to={isEnglish ? '/en/rot-info' : '/rot-info'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.rotDeduction')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/rut" className="text-muted-foreground hover:text-foreground transition-colors">
-                    RUT-avdrag
+                  <Link to={isEnglish ? '/en/rut' : '/rut'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.rutDeduction')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Vanliga frågor
+                  <Link to={isEnglish ? '/en/faq' : '/faq'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.faq')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/om-oss" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Om oss
+                  <Link to={isEnglish ? '/en/about' : '/om-oss'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.aboutUs')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/referenser" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Referenser
+                  <Link to={isEnglish ? '/en/references' : '/referenser'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.references')}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blogg" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-                    📝 Blogg & Guider
+                  <Link to={isEnglish ? '/en/blog' : '/blogg'} className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+                    {t('footer.blogGuides')}
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Kontakt */}
+            {/* Contact */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Kontakt</h3>
+              <h3 className="font-bold text-lg mb-4">{t('footer.contact')}</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/kontakt" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Kontakta oss
+                  <Link to={isEnglish ? '/en/contact' : '/kontakt'} className="text-muted-foreground hover:text-foreground transition-colors">
+                    {t('footer.contactUs')}
                   </Link>
                 </li>
                 <li>
@@ -323,7 +180,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                     onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                     className="text-muted-foreground hover:text-foreground transition-colors text-left"
                   >
-                    Boka hembesök
+                    {t('footer.bookHomeVisit')}
                   </button>
                 </li>
                 <li>
@@ -342,8 +199,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground">
-            <p>© {new Date().getFullYear()} Fixco AB. {t('rights')}</p>
-            <p>{t('reg')} • VAT: SE559123456701</p>
+            <p>© {new Date().getFullYear()} Fixco AB. {t('footer.rights')}</p>
+            <p>{t('footer.registered')} • VAT: SE559123456701</p>
           </div>
         </div>
       </footer>

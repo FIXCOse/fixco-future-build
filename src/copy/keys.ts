@@ -438,4 +438,43 @@ export type CopyKey =
     | 'faqteaser.q5' | 'faqteaser.a5'
 
     // GlobalStickyCTA
-    | 'sticky.rotDeduction';
+    | 'sticky.rotDeduction'
+
+    // GlobalFooter
+    | 'footer.ourServices' | 'footer.allServicesLink'
+    | 'footer.electrician' | 'footer.plumbing' | 'footer.carpentry' | 'footer.painting' | 'footer.doorLock'
+    | 'footer.areas' | 'footer.servicesPerArea'
+    | 'footer.electricianLabel' | 'footer.plumbingLabel' | 'footer.carpentryLabel' | 'footer.paintingLabel'
+    | 'footer.assemblyLabel' | 'footer.gardenLabel' | 'footer.cleaningLabel'
+    | 'footer.groundworkLabel' | 'footer.techInstallLabel' | 'footer.movingLabel'
+    | 'footer.information' | 'footer.rotDeduction' | 'footer.rutDeduction' | 'footer.faq' | 'footer.aboutUs' | 'footer.references' | 'footer.blogGuides'
+    | 'footer.contact' | 'footer.contactUs' | 'footer.bookHomeVisit'
+    | 'footer.rights' | 'footer.registered'
+    | 'footer.cityUppsala' | 'footer.cityStockholm'
+
+    // ROTCalculator
+    | 'rot_calc.title' | 'rot_calc.subtitle'
+    | 'rot_calc.projectCost' | 'rot_calc.householdSize' | 'rot_calc.person' | 'rot_calc.persons'
+    | 'rot_calc.maxDeduction' | 'rot_calc.fullDeductionTip'
+    | 'rot_calc.costLabel' | 'rot_calc.rotDeduction30' | 'rot_calc.moreDeduction' | 'rot_calc.youPay'
+    | 'rot_calc.maxSavingsReached' | 'rot_calc.requestQuoteRot'
+    | 'rot_calc.popularProjects' | 'rot_calc.popularSubtitle'
+    | 'rot_calc.kitchen' | 'rot_calc.kitchenDesc' | 'rot_calc.bathroom' | 'rot_calc.bathroomDesc'
+    | 'rot_calc.deckGarden' | 'rot_calc.deckGardenDesc'
+    | 'rot_calc.originalPrice' | 'rot_calc.rotSaving' | 'rot_calc.withRot'
+    | 'rot_calc.startToday' | 'rot_calc.startTodayDesc'
+    | 'rot_calc.bookConsultation' | 'rot_calc.readMoreRot'
+
+    // SmartIntegrations
+    | 'smart.connectedDevices' | 'smart.monthlySavings' | 'smart.energyConsumption' | 'smart.systemUptime'
+    | 'smart.devicesTitle' | 'smart.installCost' | 'smart.statusConnected' | 'smart.statusDisconnected'
+    | 'smart.category' | 'smart.readMoreInstall' | 'smart.requestInstallQuote'
+    | 'smart.rotEligible' | 'smart.withRot'
+    | 'smart.catSecurity' | 'smart.catComfort' | 'smart.catEnergy' | 'smart.catEntertainment'
+    | 'smart.ctaTitle' | 'smart.ctaDesc' | 'smart.freeConsultation' | 'smart.requestFullQuote'
+
+    // ComparisonUltra extras
+    | 'comparison.rot_saving_note'
+
+    // ProjectShowcase extras
+    | 'projects.moreFeatures';
