@@ -416,6 +416,7 @@ export type CopyKey =
 
     // Sticky CTAs
     | 'sticky.bookService' | 'sticky.callNow' | 'sticky.requestQuote' | 'sticky.callUs'
+    | 'sticky.responseTime' | 'sticky.callLabel' | 'sticky.rotDeduction'
 
     // ProjectShowcase extra
     | 'projects.loading' | 'projects.newProjectBtn' | 'projects.seeDetails'

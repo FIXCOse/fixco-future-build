@@ -928,6 +928,8 @@ export const en: Record<CopyKey, string> = {
   'sticky.requestQuote': 'Request quote',
   'sticky.callUs': 'Call us',
   'sticky.rotDeduction': 'ROT deduction 30%',
+  'sticky.responseTime': 'We respond within 2 hours',
+  'sticky.callLabel': 'Call us at 079-335 02 28',
 
   // ProjectShowcase
   'projects.loading': 'Loading projects...',
