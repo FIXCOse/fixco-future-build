@@ -101,14 +101,14 @@ const stepColors = [
 
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
-  const { locale } = useCopy();
+  const { locale, t } = useCopy();
   const servicePrefix = locale === 'en' ? '/en/services' : '/tjanster';
   
   const isValid = serviceSlug && areaSlug && isValidLocalServicePage(serviceSlug, areaSlug);
   
   const area = isValid ? getAreaFromSlug(areaSlug!) as AreaKey : "" as AreaKey;
   const service = isValid ? getServiceFromSlug(serviceSlug!) : null;
-  const content = isValid ? generateLocalContent(serviceSlug as LocalServiceSlug, area) : null;
+  const content = isValid ? generateLocalContent(serviceSlug as LocalServiceSlug, area, locale) : null;
   const metadata = isValid ? getAreaMetadata(area) : null;
   const uniqueContent = isValid ? generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area) : null;
   
@@ -116,7 +116,7 @@ const LocalServicePage = () => {
   const IconComponent = serviceData?.icon || Zap;
   
   const areaActivity = isValid ? getAreaActivity(area) : { avgRating: 0, reviewCount: 0 };
-  const howToSteps = isValid ? getHowToSteps(service?.name || '', area) : [];
+  const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
 
   const heroImage = (serviceSlug && serviceHeroImages[serviceSlug]) || null;
 
@@ -208,12 +208,10 @@ const LocalServicePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Sidan hittades inte</h1>
-          <p className="text-muted-foreground mb-6">
-            Vi kunde inte hitta den tjänst eller ort du söker.
-          </p>
+          <h1 className="text-2xl font-bold mb-4">{t('local.notFound')}</h1>
+          <p className="text-muted-foreground mb-6">{t('local.notFoundDesc')}</p>
           <Button asChild>
-            <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>{locale === 'en' ? 'View all services' : 'Visa alla tjänster'}</Link>
+            <Link to={servicePrefix}>{t('local.allServices')}</Link>
           </Button>
         </div>
       </div>
@@ -272,7 +270,7 @@ const LocalServicePage = () => {
               <motion.div variants={itemVariants} className="mb-5">
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border backdrop-blur-sm text-sm text-foreground/90">
                   <MapPin className="h-4 w-4 text-primary" />
-                  Lokala hantverkare i {area}
+                  {t('local.heroBadge')} {area}
                 </span>
               </motion.div>
 
@@ -289,8 +287,8 @@ const LocalServicePage = () => {
                 variants={itemVariants}
                 className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-2xl hero-description"
               >
-                Hitta kvalificerade {service?.name?.toLowerCase()} i {area}. 
-                Fast pris, försäkrade hantverkare och {service?.rotRut}-avdrag.
+                {t('local.heroIntro')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}. 
+                {locale === 'en' ? 'Fixed price, insured contractors and' : 'Fast pris, försäkrade hantverkare och'} {service?.rotRut}{t('local.rotDeduction')}.
               </motion.p>
               
               {/* Trust badges */}
@@ -301,7 +299,7 @@ const LocalServicePage = () => {
                 {[
                   { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
                   { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
-                  { icon: Clock, text: "Svar 2h", color: "text-blue-400" },
+                  { icon: Clock, text: t('local.response2h'), color: "text-blue-400" },
                 ].map((badge, idx) => (
                   <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm backdrop-blur-sm">
                     <badge.icon className={`h-4 w-4 ${badge.color}`} />
@@ -326,7 +324,7 @@ const LocalServicePage = () => {
                   }}
                 >
                   <FileText className="h-5 w-5 mr-2" />
-                  Begär gratis offert
+                  {t('local.ctaQuote')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -365,10 +363,10 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-10">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Baserat på efterfrågan i {area}
+                  {t('local.demandBadge')} {area}
                 </span>
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                  Vanliga <span className="text-primary">{service?.name?.toLowerCase()}</span>-projekt i {area}
+                  {locale === 'en' ? 'Common' : 'Vanliga'} <span className="text-primary">{service?.name?.toLowerCase()}</span>{t('local.commonProjects')} {area}
                 </h2>
               </motion.div>
               
@@ -381,7 +379,7 @@ const LocalServicePage = () => {
                     className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
                   >
                     <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span className="text-sm capitalize">{search} i {area}</span>
+                    <span className="text-sm capitalize">{search} {locale === 'en' ? 'in' : 'i'} {area}</span>
                   </motion.div>
                 ))}
                 {uniqueContent.projectExamples.map((project, idx) => (
@@ -405,7 +403,7 @@ const LocalServicePage = () => {
                 <div className="flex items-start gap-3">
                   <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium mb-1">Tips för {service?.name?.toLowerCase()} i {area}</h4>
+                    <h4 className="font-medium mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
                     <p className="text-sm text-muted-foreground">{uniqueContent.localTip}</p>
                   </div>
                 </div>
@@ -430,7 +428,7 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants}>
                 <h2 className="text-2xl font-bold mb-6 text-foreground">
-                  Om <span className="text-primary">{service?.name?.toLowerCase()}</span> i {area}
+                  {t('local.aboutServiceIn')} <span className="text-primary">{service?.name?.toLowerCase()}</span> {locale === 'en' ? 'in' : 'i'} {area}
                 </h2>
                 <div className="prose prose-lg dark:prose-invert max-w-none">
                   <p className="text-muted-foreground leading-relaxed">
@@ -459,12 +457,12 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-14">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
-                  4 enkla steg
+                  {t('local.fourSteps')}
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
-                  Så bokar du <span className="text-primary">{service?.name?.toLowerCase()}</span>
+                  {t('local.howToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>
                 </h2>
-                <p className="text-muted-foreground">Från förfrågan till färdigt jobb på nolltid</p>
+                <p className="text-muted-foreground">{t('local.fromRequestToDone')}</p>
               </motion.div>
 
               <div className="max-w-5xl mx-auto">
@@ -535,7 +533,7 @@ const LocalServicePage = () => {
                 <h2 className="text-3xl font-bold mb-3 text-foreground">
                   {content.servicesSection.title}
                 </h2>
-                <p className="text-muted-foreground">Allt du behöver, samlat på ett ställe</p>
+                <p className="text-muted-foreground">{t('local.allYouNeed')}</p>
               </motion.div>
               
               <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -585,7 +583,7 @@ const LocalServicePage = () => {
                       <span className="text-6xl font-bold text-emerald-400">30%</span>
                     </div>
                     <div className="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-medium">
-                      {service?.rotRut}-avdrag
+                      {service?.rotRut}{t('local.rotDeduction')}
                     </div>
                   </div>
                 </motion.div>
@@ -593,7 +591,7 @@ const LocalServicePage = () => {
                 {/* Right - Content */}
                 <motion.div variants={itemVariants}>
                   <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
-                    Spara pengar
+                    {t('local.saveMoney')}
                   </span>
                   <h2 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">
                     {content.rotRutSection.title}
@@ -630,14 +628,14 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-8">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Kundrecensioner
+                  {t('local.reviews')}
                 </span>
-                <h2 className="text-2xl font-bold text-foreground">Vad våra kunder i {area} säger</h2>
+                <h2 className="text-2xl font-bold text-foreground">{t('local.whatCustomersSay')} {area} {locale === 'en' ? 'say' : 'säger'}</h2>
               </motion.div>
               
               <motion.div variants={itemVariants}>
                 <TestimonialCarouselLocal 
-                  testimonials={getAreaReviews(area, service?.name || '', 15)}
+                  testimonials={getAreaReviews(area, service?.name || '', 15, locale)}
                 />
               </motion.div>
             </motion.div>
@@ -661,7 +659,7 @@ const LocalServicePage = () => {
               {/* Quick Facts */}
               <motion.div variants={itemVariants} className="mb-12">
                 <h2 className="text-2xl font-bold mb-6 text-center text-foreground">
-                  Snabbfakta: <span className="text-primary">{content.h1}</span>
+                  {t('local.quickFacts')} <span className="text-primary">{content.h1}</span>
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {content.quickFacts.slice(0, 8).map((fact, idx) => (
@@ -683,7 +681,7 @@ const LocalServicePage = () => {
                 <motion.div variants={itemVariants}>
                   <div className="flex items-center gap-3 mb-6 justify-center">
                     <Lightbulb className="h-5 w-5 text-amber-400" />
-                    <h3 className="text-xl font-semibold text-foreground">Visste du detta om {area}?</h3>
+                    <h3 className="text-xl font-semibold text-foreground">{t('local.didYouKnow')} {area}?</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {content.funFacts.slice(0, 4).map((fact, idx) => (
@@ -717,10 +715,10 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-10">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Vanliga frågor
+                  {t('local.faq')}
                 </span>
                 <h2 className="text-3xl font-bold text-foreground">
-                  FAQ om <span className="text-primary">{service?.name?.toLowerCase()}</span> i {area}
+                  {t('local.faqTitle')} <span className="text-primary">{service?.name?.toLowerCase()}</span> {locale === 'en' ? 'in' : 'i'} {area}
                 </h2>
               </motion.div>
               
@@ -762,7 +760,7 @@ const LocalServicePage = () => {
             >
               <motion.div variants={itemVariants} className="text-center mb-10">
                 <h2 className="text-2xl font-bold text-foreground">
-                  Fler tjänster i <span className="text-primary">{area}</span>
+                  {t('local.moreServices')} <span className="text-primary">{area}</span>
                 </h2>
               </motion.div>
               
@@ -809,10 +807,10 @@ const LocalServicePage = () => {
               <div className="max-w-2xl mx-auto text-center">
                 <motion.div variants={itemVariants} className="bg-card border border-border rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
                   <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                    Redo att boka <span className="text-primary">{service?.name?.toLowerCase()}</span>?
+                    {t('local.readyToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>?
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8">
-                    Få ett fast pris från lokala hantverkare i {area} – med 30% {service?.rotRut}-avdrag.
+                    {t('local.fixedPrice')} {area} – {locale === 'en' ? 'with' : 'med'} 30% {service?.rotRut}{t('local.rotDeduction')}.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button 
@@ -826,7 +824,7 @@ const LocalServicePage = () => {
                       }}
                     >
                       <FileText className="h-5 w-5 mr-2" />
-                      Begär gratis offert
+                      {t('local.ctaQuote')}
                     </Button>
                     <Button 
                       variant="outline" 
@@ -835,7 +833,7 @@ const LocalServicePage = () => {
                       asChild
                     >
                       <Link to={servicePrefix}>
-                        {locale === 'en' ? 'All services' : 'Alla tjänster'}
+                        {t('local.allServices')}
                         <ArrowRight className="h-5 w-5 ml-2" />
                       </Link>
                     </Button>
@@ -856,7 +854,7 @@ const LocalServicePage = () => {
             <div className="container mx-auto px-4">
               <div className="max-w-5xl mx-auto">
                 <h4 className="text-sm font-medium text-zinc-500 mb-4">
-                  {service?.name} i hela {area} och närliggande orter
+                  {service?.name} {locale === 'en' ? 'in' : 'i hela'} {area} {t('local.nearbyTitle')}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {uniqueContent.nearbyAreas.map((neighbor) => (
@@ -879,7 +877,7 @@ const LocalServicePage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <h4 className="text-xs font-medium text-zinc-600 mb-3">
-                Relaterade sökningar:
+                {t('local.relatedSearches')}
               </h4>
               <div className="flex flex-wrap gap-x-3 gap-y-1.5">
                 {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => (
@@ -901,7 +899,7 @@ const LocalServicePage = () => {
             <div className="container mx-auto px-4">
               <div className="max-w-5xl mx-auto">
                 <h4 className="text-xs font-medium text-zinc-600 mb-3">
-                  Akut hjälp i {area}:
+                  {t('local.urgentHelp')} {area}:
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {uniqueContent.urgentServices.map((urgent, idx) => (
@@ -909,7 +907,7 @@ const LocalServicePage = () => {
                       key={idx} 
                       className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded"
                     >
-                      {urgent} i {area}
+                      {urgent} {locale === 'en' ? 'in' : 'i'} {area}
                     </span>
                   ))}
                 </div>

@@ -156,6 +156,29 @@ const reviewTemplates = [
   `Super nöjd med {service}. Fixade allt på en dag!`,
 ];
 
+const reviewTemplatesEn = [
+  `Amazing {service} in {area}! Professional and punctual.`,
+  `Best contractors we've hired in {area}. Great work!`,
+  `Very satisfied with the work in our home in {area}. Will hire again!`,
+  `Reliable and skilled! Fixed everything on time in {area}.`,
+  `Excellent service from start to finish. Highly recommended!`,
+  `Absolutely fantastic treatment! Professionally done in {area}.`,
+  `Fast, efficient and cleaned up afterwards. Perfect for us!`,
+  `ROT deduction handled smoothly. Super happy customer in {area}!`,
+  `Great price and quality. Did exactly what we wanted.`,
+  `Incredibly satisfied! Would hire again without hesitation.`,
+  `Professional team that delivered on time. Thank you!`,
+  `Exceeded our expectations. Strongly recommended!`,
+  `Beautiful finish and great communication throughout.`,
+  `Amazing service and helpful contractors in {area}!`,
+  `Everything went smoothly from quote to finished result.`,
+  `Great from start to finish. Friendly and professional.`,
+  `Best decision we've made! Fantastic result in {area}.`,
+  `Great value and quality work. Happy to recommend!`,
+  `Punctual and thorough. Will definitely come back!`,
+  `Super happy with {service}. Fixed everything in a day!`,
+];
+
 // Interface för recensionsdata
 export interface TestimonialData {
   quote: string;
@@ -165,16 +188,16 @@ export interface TestimonialData {
 }
 
 // Generera FLERA unika recensioner per ort och tjänst
-export const getAreaReviews = (area: string, serviceName: string, count: number = 15): TestimonialData[] => {
+export const getAreaReviews = (area: string, serviceName: string, count: number = 15, locale: 'sv' | 'en' = 'sv'): TestimonialData[] => {
   const results: TestimonialData[] = [];
+  const templates = locale === 'en' ? reviewTemplatesEn : reviewTemplates;
   
   for (let i = 0; i < count; i++) {
-    // Unik hash per index som kombinerar area + service + index
     const hash = (area + serviceName + i.toString()).split('').reduce((acc, char, idx) => 
       acc + char.charCodeAt(0) * (idx + 1), 0
     );
     
-    const template = reviewTemplates[(hash * 3) % reviewTemplates.length]
+    const template = templates[(hash * 3) % templates.length]
       .replace('{service}', serviceName?.toLowerCase() || 'service')
       .replace('{area}', area);
     
@@ -185,7 +208,7 @@ export const getAreaReviews = (area: string, serviceName: string, count: number 
       quote: template,
       name: `${firstName} ${lastInitial}.`,
       location: area,
-      rating: [4, 5, 5, 5, 5][(hash * 11) % 5] // 80% 5-stjärnor, 20% 4-stjärnor
+      rating: [4, 5, 5, 5, 5][(hash * 11) % 5]
     });
   }
   
@@ -205,25 +228,19 @@ export const getRandomReviewer = (area: string): string => {
 };
 
 // Generera HowTo-steg för tjänst
-export const getHowToSteps = (serviceName: string, area: string) => [
-  {
-    title: "Beskriv ditt projekt",
-    description: `Berätta vad du behöver hjälp med. Ju mer detaljer, desto bättre offert kan vi ge dig för ${serviceName?.toLowerCase()} i ${area}.`,
-    icon: "FileText"
-  },
-  {
-    title: "Få gratis offert",
-    description: `Vi återkommer inom 24 timmar med en kostnadsfri offert för din ${serviceName?.toLowerCase()} i ${area}.`,
-    icon: "Clock"
-  },
-  {
-    title: "Boka tid som passar",
-    description: `Välj en tid som passar dig. Vi kan ofta börja inom 24-48 timmar i ${area}.`,
-    icon: "Calendar"
-  },
-  {
-    title: "Jobbet utförs",
-    description: `Våra certifierade ${serviceName?.toLowerCase()} utför arbetet professionellt med garanti.`,
-    icon: "CheckCircle"
+export const getHowToSteps = (serviceName: string, area: string, locale: 'sv' | 'en' = 'sv') => {
+  if (locale === 'en') {
+    return [
+      { title: "Describe your project", description: `Tell us what you need help with. The more details, the better quote we can give you for ${serviceName?.toLowerCase()} in ${area}.`, icon: "FileText" },
+      { title: "Get a free quote", description: `We'll get back to you within 24 hours with a free quote for your ${serviceName?.toLowerCase()} in ${area}.`, icon: "Clock" },
+      { title: "Book a time that suits you", description: `Choose a time that works for you. We can often start within 24-48 hours in ${area}.`, icon: "Calendar" },
+      { title: "Work is completed", description: `Our certified ${serviceName?.toLowerCase()} professionals complete the work with guarantee.`, icon: "CheckCircle" }
+    ];
   }
-];
+  return [
+    { title: "Beskriv ditt projekt", description: `Berätta vad du behöver hjälp med. Ju mer detaljer, desto bättre offert kan vi ge dig för ${serviceName?.toLowerCase()} i ${area}.`, icon: "FileText" },
+    { title: "Få gratis offert", description: `Vi återkommer inom 24 timmar med en kostnadsfri offert för din ${serviceName?.toLowerCase()} i ${area}.`, icon: "Clock" },
+    { title: "Boka tid som passar", description: `Välj en tid som passar dig. Vi kan ofta börja inom 24-48 timmar i ${area}.`, icon: "Calendar" },
+    { title: "Jobbet utförs", description: `Våra certifierade ${serviceName?.toLowerCase()} utför arbetet professionellt med garanti.`, icon: "CheckCircle" }
+  ];
+};

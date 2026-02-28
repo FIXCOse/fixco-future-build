@@ -540,15 +540,41 @@ export interface LocalServiceContent {
   myths: Array<{ myth: string; truth: string }>;
 }
 
-export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey): LocalServiceContent => {
+// English service name mapping
+const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
+  "snickare": "Carpenter",
+  "elektriker": "Electrician",
+  "vvs": "Plumbing",
+  "malare": "Painter",
+  "tradgard": "Gardening",
+  "stad": "Cleaning",
+  "markarbeten": "Groundwork",
+  "montering": "Assembly",
+  "flytt": "Moving",
+  "tekniska-installationer": "Technical Installation",
+};
+
+export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
   const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug)!;
-  const serviceName = service.name.toLowerCase();
-  const serviceNameCapital = service.name;
+  const isEn = locale === 'en';
+  const serviceName = isEn ? SERVICE_NAME_EN[serviceSlug].toLowerCase() : service.name.toLowerCase();
+  const serviceNameCapital = isEn ? SERVICE_NAME_EN[serviceSlug] : service.name;
   const rotRut = service.rotRut;
   const metadata = getAreaMetadata(area);
   
   // Import improved titles from localSeoData
-  const titleTemplates: Record<LocalServiceSlug, string> = {
+  const titleTemplates: Record<LocalServiceSlug, string> = isEn ? {
+    "snickare": `Carpenter ${area} ★ Kitchen, wardrobe & deck · ROT 30% · Free quote`,
+    "vvs": `Plumbing ${area} ★ Repair & installation · ROT 30% · Response 24h`,
+    "elektriker": `Electrician ${area} ★ Certified · EV charger & electrical · ROT 30%`,
+    "malare": `Painter ${area} ★ Facade & interior · Fixed prices · ROT 30%`,
+    "stad": `Cleaning ${area} ★ Move-out, home & construction · RUT 30% · Book today`,
+    "flytt": `Moving help ${area} ★ Packing & carrying · RUT 30% · Quick booking`,
+    "markarbeten": `Groundwork ${area} ★ Excavation, drainage & paving · ROT 30%`,
+    "montering": `Assembly ${area} ★ IKEA, kitchen & furniture · ROT 30%`,
+    "tradgard": `Gardening ${area} ★ Trees, hedges & landscaping · ROT 30%`,
+    "tekniska-installationer": `Technical installation ${area} ★ EV charger & smart home · ROT 30%`
+  } : {
     "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 30% · Fri offert`,
     "vvs": `VVS ${area} ★ Byte & reparation · ROT 30% · Svar 24h`,
     "elektriker": `Elektriker ${area} ★ Certifierade · Laddbox & el · ROT 30%`,
@@ -561,8 +587,18 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 30%`
   };
 
-  // Meta descriptions per service - sales-focused with 5/5 rating
-  const descriptionTemplates: Record<LocalServiceSlug, string> = {
+  const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
+    "snickare": `Carpenter in ${area} ★ 5/5 rating ✓ Kitchen renovation, deck & flooring ✓ 30% ROT deduction ✓ Fixed price. Get quote within 24h!`,
+    "elektriker": `Electrician ${area} ★ 5/5 rating ✓ Electrical installation & lighting ✓ Certified ✓ 30% ROT deduction. Book today!`,
+    "vvs": `Plumber ${area} ★ 5/5 rating ✓ Bathroom, kitchen & heating ✓ Certified ✓ 30% ROT deduction. Get quote within 24h!`,
+    "malare": `Painter ${area} ★ 5/5 rating ✓ Interior & exterior painting ✓ 30% ROT deduction ✓ Work guarantee. Book painter!`,
+    "stad": `Cleaning ${area} ★ 5/5 rating ✓ Home, move-out & deep cleaning ✓ 30% RUT deduction ✓ Quality guarantee. Book today!`,
+    "flytt": `Moving help ${area} ★ 5/5 rating ✓ Packing, transport & carrying ✓ 30% RUT deduction ✓ Insured moving. Free quote!`,
+    "montering": `Assembly ${area} ★ 5/5 rating ✓ IKEA furniture, kitchen & wardrobes ✓ 30% RUT deduction. Often same-day start!`,
+    "tradgard": `Gardening ${area} ★ 5/5 rating ✓ Tree felling, hedges & lawn ✓ 30% ROT deduction. Book gardener!`,
+    "markarbeten": `Groundwork ${area} ★ 5/5 rating ✓ Drainage, paving & excavation ✓ 30% ROT deduction. Free quote within 24h!`,
+    "tekniska-installationer": `Technical installation ${area} ★ 5/5 rating ✓ EV charger, smart home & AV ✓ 30% ROT deduction. Book certified installer!`
+  } : {
     "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 30% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
     "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
     "vvs": `VVS-montör ${area} ★ 5/5 betyg ✓ Badrum, kök & värmesystem ✓ Auktoriserad ✓ 30% ROT-avdrag. Få offert inom 24h!`,
@@ -578,11 +614,23 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   return {
     h1: `${serviceNameCapital} ${area}`,
     
-    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – Professionella hantverkare | ${rotRut} 30%`,
+    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – ${isEn ? 'Professional contractors' : 'Professionella hantverkare'} | ${rotRut} 30%`,
     
-    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} i ${area} ★ 5/5 betyg ✓ 30% ${rotRut}-avdrag ✓ Fast pris ✓ Kvalitetsgaranti. Få offert inom 24h!`,
+    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} ${isEn ? 'in' : 'i'} ${area} ★ 5/5 ${isEn ? 'rating' : 'betyg'} ✓ 30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'} ✓ ${isEn ? 'Fixed price' : 'Fast pris'} ✓ ${isEn ? 'Quality guarantee' : 'Kvalitetsgaranti'}. ${isEn ? 'Get quote within 24h!' : 'Få offert inom 24h!'}`,
     
-    intro: `**Behöver du ${serviceName} i ${area}?** Du har kommit rätt!
+    intro: isEn
+      ? `**Need ${serviceName} in ${area}?** You've come to the right place!
+
+**With Fixco you get:**
+- ★ 5/5 rating – our customers love us
+- Fixed price – no surprises on the invoice
+- 30% ${rotRut} deduction – we handle the paperwork for you
+- Response within 24 hours
+- Quality guarantee on all work
+- Local contractors who know ${area}
+
+**Describe your project** and we'll get back to you with a fixed price within 24 hours!`
+      : `**Behöver du ${serviceName} i ${area}?** Du har kommit rätt!
 
 **Med Fixco får du:**
 - ★ 5/5 betyg – våra kunder älskar oss
@@ -595,8 +643,19 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
 **Beskriv ditt projekt** så återkommer vi med fast pris inom 24 timmar!`,
     
     localSection: {
-      title: `Din lokala ${serviceName} i ${area} nära mig`,
-      content: `Våra ${serviceName} i ${area} har erfarenhet av att hjälpa alla sorters kunder. Oavsett om du behöver hjälp med ett stort eller litet projekt i ${area} kan du vara säker på att hitta rätt ${serviceName} i ${area}. 
+      title: isEn ? `Your local ${serviceName} in ${area}` : `Din lokala ${serviceName} i ${area} nära mig`,
+      content: isEn
+        ? `Our ${serviceName} professionals in ${area} have experience helping all kinds of customers. Whether you need help with a large or small project in ${area}, you can be sure to find the right ${serviceName} in ${area}.
+
+**${serviceNameCapital} in ${area} with Fixco:**
+- Performs work according to your wishes in ${area}
+- Works with high-quality materials in ${area}
+- Gives you a fixed price and ${rotRut} deduction in ${area}
+- Has local knowledge of ${area} and surrounding areas
+- Can often start within 1-3 business days in ${area}
+
+We understand it can be difficult to find a good ${serviceName} in ${area}. That's why we make it easy – you describe your project, we match you with the right ${serviceName} in ${area}, and you get a fixed price with ${rotRut} deduction directly.`
+        : `Våra ${serviceName} i ${area} har erfarenhet av att hjälpa alla sorters kunder. Oavsett om du behöver hjälp med ett stort eller litet projekt i ${area} kan du vara säker på att hitta rätt ${serviceName} i ${area}. 
 
 **${serviceNameCapital} i ${area} hos Fixco:**
 - Utför arbetet enligt dina önskemål i ${area}
@@ -609,8 +668,14 @@ Vi förstår att det kan vara svårt att hitta en bra ${serviceName} i ${area}. 
     },
     
     ctaSection: {
-      title: `Kontakta våra ${serviceName} i ${area} för offert`,
-      content: `Genom Fixco kan du få offert på ${serviceName} i ${area} och många andra orter i ${metadata.region}s län. Vi prioriterar att alla ska ha möjligheten att förbättra sitt hem i ${area}. 
+      title: isEn ? `Contact our ${serviceName} in ${area} for a quote` : `Kontakta våra ${serviceName} i ${area} för offert`,
+      content: isEn
+        ? `Through Fixco you can get a quote for ${serviceName} in ${area} and many other locations in ${metadata.region} county. We prioritize that everyone should have the opportunity to improve their home in ${area}.
+
+When you hire ${serviceName} in ${area} through Fixco, you can use the ${rotRut} deduction of 30% on labor costs. This means a job costing 20,000 SEK in labor only costs you 14,000 SEK after the deduction!
+
+**Contact us to find ${serviceName} in ${area}!**`
+        : `Genom Fixco kan du få offert på ${serviceName} i ${area} och många andra orter i ${metadata.region}s län. Vi prioriterar att alla ska ha möjligheten att förbättra sitt hem i ${area}. 
 
 När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avdraget på 30% av arbetskostnaden. Det betyder att ett jobb som kostar 20 000 kr i arbetskostnad bara kostar dig 14 000 kr efter avdrag!
 
@@ -618,13 +683,28 @@ När du anlitar ${serviceName} i ${area} via Fixco kan du utnyttja ${rotRut}-avd
     },
 
     servicesSection: {
-      title: `${serviceNameCapital} i ${area} kan hjälpa till med`,
-      items: getServiceItems(serviceSlug, area)
+      title: isEn ? `${serviceNameCapital} in ${area} can help with` : `${serviceNameCapital} i ${area} kan hjälpa till med`,
+      items: getServiceItems(serviceSlug, area, locale)
     },
 
     rotRutSection: {
-      title: `${serviceNameCapital} med ${rotRut}-avdrag i ${area}`,
-      content: `När du anlitar ${serviceName} i ${area} via Fixco kan du få ${rotRut}-avdrag på 30% av arbetskostnaden. ${rotRut}-avdraget gäller för ${rotRut === 'ROT' ? 'reparation, underhåll, om- och tillbyggnad' : 'hushållsnära tjänster'} i din bostad i ${area}.
+      title: isEn ? `${serviceNameCapital} with ${rotRut} deduction in ${area}` : `${serviceNameCapital} med ${rotRut}-avdrag i ${area}`,
+      content: isEn
+        ? `When you hire ${serviceName} in ${area} through Fixco, you get a ${rotRut} deduction of 30% on labor costs. The ${rotRut} deduction applies to ${rotRut === 'ROT' ? 'repair, maintenance, conversion and extension' : 'household services'} in your home in ${area}.
+
+**How ${rotRut} deduction works in ${area}:**
+1. You order ${serviceName} in ${area} through Fixco
+2. We perform the work in your home in ${area}
+3. You only pay 70% of the labor cost (30% ${rotRut})
+4. We apply for the deduction for you at the Swedish Tax Agency
+
+**Example of ${rotRut} deduction for ${serviceName} in ${area}:**
+- Labor cost: 30,000 SEK
+- ${rotRut} deduction (30%): -9,000 SEK
+- **You pay: 21,000 SEK**
+
+The maximum ${rotRut} deduction is ${rotRut === 'ROT' ? '50,000 SEK' : '75,000 SEK'} per person per year. If you haven't used your ${rotRut} deduction this year, it's the perfect time to hire ${serviceName} in ${area}!`
+        : `När du anlitar ${serviceName} i ${area} via Fixco kan du få ${rotRut}-avdrag på 30% av arbetskostnaden. ${rotRut}-avdraget gäller för ${rotRut === 'ROT' ? 'reparation, underhåll, om- och tillbyggnad' : 'hushållsnära tjänster'} i din bostad i ${area}.
 
 **Så fungerar ${rotRut}-avdrag i ${area}:**
 1. Du beställer ${serviceName} i ${area} via Fixco
@@ -642,39 +722,39 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
 
     faqs: (() => {
       const pricing = SERVICE_PRICING[serviceSlug];
-      const priceAnswer = pricing.isQuoteOnly 
-        ? `Priset för ${serviceName} i ${area} varierar beroende på projektets omfattning och komplexitet. Kontakta oss för en kostnadsfri offert på ditt projekt i ${area}. Alla priser inkluderar ${rotRut}-avdrag (30%) när du anlitar ${serviceName} via Fixco.`
-        : `Timpriset för ${serviceName} i ${area} är ${pricing.base} före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (30%) betalar du ${pricing.afterDeduction} för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`;
+      const priceAnswer = isEn
+        ? (pricing.isQuoteOnly 
+          ? `The price for ${serviceName} in ${area} varies depending on the scope and complexity of the project. Contact us for a free quote on your project in ${area}. All prices include ${rotRut} deduction (30%) when you hire ${serviceName} through Fixco.`
+          : `The hourly rate for ${serviceName} in ${area} is ${pricing.base} before ${rotRut} deduction. After ${rotRut} deduction (30%) you pay ${pricing.afterDeduction} for ${serviceName} in ${area}. Contact us for an exact price on your project in ${area}.`)
+        : (pricing.isQuoteOnly 
+          ? `Priset för ${serviceName} i ${area} varierar beroende på projektets omfattning och komplexitet. Kontakta oss för en kostnadsfri offert på ditt projekt i ${area}. Alla priser inkluderar ${rotRut}-avdrag (30%) när du anlitar ${serviceName} via Fixco.`
+          : `Timpriset för ${serviceName} i ${area} är ${pricing.base} före ${rotRut}-avdrag. Efter ${rotRut}-avdrag (30%) betalar du ${pricing.afterDeduction} för ${serviceName} i ${area}. Kontakta oss för exakt pris på ditt projekt i ${area}.`);
       
-      return [
-        {
-          q: `Vad kostar ${serviceName} i timmen i ${area}?`,
-          a: priceAnswer
-        },
-        {
-          q: `Hur snabbt kan ${serviceName} komma till ${area}?`,
-          a: `Våra ${serviceName} i ${area} kan ofta komma inom 24-48 timmar för mindre uppdrag. För större projekt i ${area} bokar vi in ett startdatum som passar dig, vanligtvis inom 1-2 veckor. Vid akuta ärenden i ${area} försöker vi alltid hitta en snabb lösning.`
-        },
-        {
-          q: `Får jag ${rotRut}-avdrag för ${serviceName} i ${area}?`,
-          a: `Ja! Du får 30% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.`
-        },
-        {
-          q: `Vilka områden i ${area} täcker ni?`,
-          a: `Vi täcker hela ${area} ${metadata.type} och alla närliggande områden. Oavsett var i ${area} du bor kan vi hjälpa dig med ${serviceName}. Vi har lokalkännedom om ${area} och vet hur man tar sig fram snabbt och effektivt.`
-        },
-        {
-          q: `Är era ${serviceName} i ${area} certifierade?`,
-          a: `Ja, alla våra ${serviceName} i ${area} är certifierade och har relevant utbildning för sina arbetsuppgifter. ${getCertificationText(serviceSlug)} Vi ställer höga krav på alla hantverkare som arbetar för Fixco i ${area}.`
-        },
-        {
-          q: `Hur bokar jag ${serviceName} i ${area}?`,
-          a: `Det är enkelt att boka ${serviceName} i ${area}! Du kan antingen ringa oss, fylla i vårt offertformulär eller använda vår bokningsguide online. Beskriv ditt projekt i ${area} så kontaktar vi dig med ett fast pris inom 24 timmar.`
-        }
+      return isEn ? [
+        { q: `What does ${serviceName} cost per hour in ${area}?`, a: priceAnswer },
+        { q: `How quickly can ${serviceName} come to ${area}?`, a: `Our ${serviceName} in ${area} can often come within 24-48 hours for smaller tasks. For larger projects in ${area}, we schedule a start date that suits you, usually within 1-2 weeks.` },
+        { q: `Do I get ${rotRut} deduction for ${serviceName} in ${area}?`, a: `Yes! You get 30% ${rotRut} deduction on labor costs when you hire ${serviceName} in ${area} for work in your home. We handle all administration with the Swedish Tax Agency for you.` },
+        { q: `What areas in ${area} do you cover?`, a: `We cover all of ${area} and all nearby areas. Regardless of where in ${area} you live, we can help you with ${serviceName}.` },
+        { q: `Are your ${serviceName} in ${area} certified?`, a: `Yes, all our ${serviceName} in ${area} are certified and have relevant training. ${getCertificationText(serviceSlug, locale)}` },
+        { q: `How do I book ${serviceName} in ${area}?`, a: `It's easy to book ${serviceName} in ${area}! You can call us, fill in our quote form, or use our online booking guide. Describe your project and we'll contact you with a fixed price within 24 hours.` }
+      ] : [
+        { q: `Vad kostar ${serviceName} i timmen i ${area}?`, a: priceAnswer },
+        { q: `Hur snabbt kan ${serviceName} komma till ${area}?`, a: `Våra ${serviceName} i ${area} kan ofta komma inom 24-48 timmar för mindre uppdrag. För större projekt i ${area} bokar vi in ett startdatum som passar dig, vanligtvis inom 1-2 veckor. Vid akuta ärenden i ${area} försöker vi alltid hitta en snabb lösning.` },
+        { q: `Får jag ${rotRut}-avdrag för ${serviceName} i ${area}?`, a: `Ja! Du får 30% ${rotRut}-avdrag på arbetskostnaden när du anlitar ${serviceName} i ${area} för arbeten i din bostad i ${area}. Detta gäller för privatpersoner som äger eller hyr sin bostad i ${area}. Vi hanterar all administration med Skatteverket åt dig.` },
+        { q: `Vilka områden i ${area} täcker ni?`, a: `Vi täcker hela ${area} ${metadata.type} och alla närliggande områden. Oavsett var i ${area} du bor kan vi hjälpa dig med ${serviceName}. Vi har lokalkännedom om ${area} och vet hur man tar sig fram snabbt och effektivt.` },
+        { q: `Är era ${serviceName} i ${area} certifierade?`, a: `Ja, alla våra ${serviceName} i ${area} är certifierade och har relevant utbildning för sina arbetsuppgifter. ${getCertificationText(serviceSlug, locale)} Vi ställer höga krav på alla hantverkare som arbetar för Fixco i ${area}.` },
+        { q: `Hur bokar jag ${serviceName} i ${area}?`, a: `Det är enkelt att boka ${serviceName} i ${area}! Du kan antingen ringa oss, fylla i vårt offertformulär eller använda vår bokningsguide online. Beskriv ditt projekt i ${area} så kontaktar vi dig med ett fast pris inom 24 timmar.` }
       ];
     })(),
 
-    quickFacts: [
+    quickFacts: isEn ? [
+      `★ 5/5 rating from our customers`,
+      `Response within 24 hours`,
+      `Fixed price before work starts`,
+      `30% ${rotRut} deduction`,
+      `Quality guarantee on all work`,
+      `Local contractors in ${area}`
+    ] : [
       `★ 5/5 betyg från våra kunder`,
       `Svar inom 24 timmar`,
       `Fast pris innan jobbet börjar`,
@@ -690,136 +770,53 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
 };
 
 // Hjälpfunktion för att hämta tjänster per kategori
-function getServiceItems(serviceSlug: LocalServiceSlug, area: string): string[] {
+function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 'sv' | 'en' = 'sv'): string[] {
+  const isEn = locale === 'en';
+  if (isEn) {
+    const enItems: Record<LocalServiceSlug, string[]> = {
+      "snickare": [`Kitchen renovation in ${area}`, `Build deck in ${area}`, `Interior carpentry in ${area}`, `Window & door replacement in ${area}`, `Flooring in ${area}`, `Bathroom renovation in ${area}`, `Attic/basement conversion in ${area}`, `Facade renovation in ${area}`, `Kitchen & wardrobe assembly in ${area}`, `Extensions in ${area}`],
+      "elektriker": [`Electrical installation in ${area}`, `Electrical troubleshooting in ${area}`, `Panel upgrade in ${area}`, `Lighting installation in ${area}`, `Ground fault breaker in ${area}`, `EV charger in ${area}`, `Smart home installation in ${area}`, `Electrical inspection in ${area}`, `Outlet & switch replacement in ${area}`, `Outdoor lighting in ${area}`],
+      "vvs": [`Plumbing installation in ${area}`, `Faucet replacement in ${area}`, `Heat pump installation in ${area}`, `Drain cleaning in ${area}`, `Bathroom plumbing in ${area}`, `Underfloor heating in ${area}`, `Emergency water leak in ${area}`, `Toilet replacement in ${area}`, `Radiator installation in ${area}`, `Water heater in ${area}`],
+      "malare": [`Interior painting in ${area}`, `Facade painting in ${area}`, `Wallpapering in ${area}`, `Woodwork lacquering in ${area}`, `Ceiling painting in ${area}`, `Kitchen painting in ${area}`, `Wood facade renovation in ${area}`, `Plastering & sanding in ${area}`, `Color consultation in ${area}`, `Window & door painting in ${area}`],
+      "tradgard": [`Lawn mowing in ${area}`, `Hedge trimming in ${area}`, `Tree felling in ${area}`, `Garden landscaping in ${area}`, `Paving in ${area}`, `Planting in ${area}`, `Weed removal in ${area}`, `Bush & tree pruning in ${area}`, `Garden design in ${area}`, `Snow removal in ${area}`],
+      "stad": [`Home cleaning in ${area}`, `Office cleaning in ${area}`, `Move-out cleaning in ${area}`, `Window cleaning in ${area}`, `Deep cleaning in ${area}`, `Stairwell cleaning in ${area}`, `Construction cleaning in ${area}`, `Regular cleaning in ${area}`, `Deep sanitizing in ${area}`, `Post-renovation cleaning in ${area}`],
+      "markarbeten": [`Excavation in ${area}`, `Drainage in ${area}`, `Driveway construction in ${area}`, `Foundation work in ${area}`, `Retaining walls in ${area}`, `Land planning in ${area}`, `Utility work in ${area}`, `Paving & tiling in ${area}`, `Digging work in ${area}`, `Pool construction in ${area}`],
+      "montering": [`Furniture assembly in ${area}`, `IKEA assembly in ${area}`, `Kitchen assembly in ${area}`, `Wardrobe assembly in ${area}`, `TV mounting in ${area}`, `Light fixture mounting in ${area}`, `Bathroom furniture in ${area}`, `Office furniture in ${area}`, `Outdoor furniture in ${area}`, `Children's furniture in ${area}`],
+      "flytt": [`Moving help in ${area}`, `Office moving in ${area}`, `Storage in ${area}`, `Packing help in ${area}`, `Piano moving in ${area}`, `Household moving in ${area}`, `Student moving in ${area}`, `Business moving in ${area}`, `Estate clearance in ${area}`, `Heavy item moving in ${area}`],
+      "tekniska-installationer": [`Smart home installation in ${area}`, `Alarm installation in ${area}`, `Security cameras in ${area}`, `Motorized blinds in ${area}`, `Sound system in ${area}`, `Network installation in ${area}`, `Home automation in ${area}`, `Solar panel installation in ${area}`, `Ventilation installation in ${area}`, `Gate automation in ${area}`],
+    };
+    return enItems[serviceSlug] || [];
+  }
   const serviceItems: Record<LocalServiceSlug, string[]> = {
-    "snickare": [
-      `Köksrenovering i ${area}`,
-      `Bygga altan och trädäck i ${area}`,
-      `Inredningssnickeri i ${area}`,
-      `Fönster- och dörrbyte i ${area}`,
-      `Golvläggning i ${area}`,
-      `Badrumsrenovering i ${area}`,
-      `Bygga om vind/källare i ${area}`,
-      `Fasadrenovering i ${area}`,
-      `Montering av kök och garderober i ${area}`,
-      `Tillbyggnader och utbyggnader i ${area}`
-    ],
-    "elektriker": [
-      `Elinstallation i ${area}`,
-      `Felsökning av el i ${area}`,
-      `Byte av elcentral i ${area}`,
-      `Installation av belysning i ${area}`,
-      `Jordfelsbrytare installation i ${area}`,
-      `Laddbox för elbil i ${area}`,
-      `Smart hem installation i ${area}`,
-      `Elbesiktning i ${area}`,
-      `Byte av uttag och strömbrytare i ${area}`,
-      `Utomhusbelysning i ${area}`
-    ],
-    "vvs": [
-      `VVS-installation i ${area}`,
-      `Byte av blandare i ${area}`,
-      `Värmepump installation i ${area}`,
-      `Avloppsrensning i ${area}`,
-      `Badrumsrenovering VVS i ${area}`,
-      `Golvvärme installation i ${area}`,
-      `Vattenläcka akut i ${area}`,
-      `Byte av toalettstol i ${area}`,
-      `Radiatorinstallation i ${area}`,
-      `Varmvattenberedare i ${area}`
-    ],
-    "malare": [
-      `Invändig målning i ${area}`,
-      `Fasadmålning i ${area}`,
-      `Tapetsering i ${area}`,
-      `Lackning av snickerier i ${area}`,
-      `Målning av tak i ${area}`,
-      `Målning av kök i ${area}`,
-      `Renovering av träfasad i ${area}`,
-      `Spackling och slipning i ${area}`,
-      `Färgsättning och rådgivning i ${area}`,
-      `Målning av fönster och dörrar i ${area}`
-    ],
-    "tradgard": [
-      `Gräsklippning i ${area}`,
-      `Häckklippning i ${area}`,
-      `Trädfällning i ${area}`,
-      `Anlägga trädgård i ${area}`,
-      `Stenläggning i ${area}`,
-      `Plantering i ${area}`,
-      `Ogräsrensning i ${area}`,
-      `Beskärning av buskar och träd i ${area}`,
-      `Trädgårdsdesign i ${area}`,
-      `Snöröjning i ${area}`
-    ],
-    "stad": [
-      `Hemstädning i ${area}`,
-      `Kontorsstädning i ${area}`,
-      `Flyttstädning i ${area}`,
-      `Fönsterputs i ${area}`,
-      `Storstädning i ${area}`,
-      `Trappstädning i ${area}`,
-      `Byggstädning i ${area}`,
-      `Regelbunden städning i ${area}`,
-      `Djuprengöring i ${area}`,
-      `Städning efter renovering i ${area}`
-    ],
-    "markarbeten": [
-      `Schaktning i ${area}`,
-      `Dränering i ${area}`,
-      `Anlägga uppfart i ${area}`,
-      `Grundläggning i ${area}`,
-      `Murar och stödmurar i ${area}`,
-      `Planering av tomt i ${area}`,
-      `VA-arbeten i ${area}`,
-      `Stenläggning och plattsättning i ${area}`,
-      `Grävarbeten i ${area}`,
-      `Pool- och dammanläggning i ${area}`
-    ],
-    "montering": [
-      `Möbelmontering i ${area}`,
-      `IKEA-montering i ${area}`,
-      `Köksmontering i ${area}`,
-      `Garderobsmontering i ${area}`,
-      `TV-montering i ${area}`,
-      `Lampmontering i ${area}`,
-      `Badrumsmöbler i ${area}`,
-      `Kontorsmöbler i ${area}`,
-      `Utomhusmöbler i ${area}`,
-      `Barnmöbler och leksaker i ${area}`
-    ],
-    "flytt": [
-      `Flytthjälp i ${area}`,
-      `Kontorsflytt i ${area}`,
-      `Magasinering i ${area}`,
-      `Packhjälp i ${area}`,
-      `Pianoflytt i ${area}`,
-      `Bohagsflytt i ${area}`,
-      `Studentflytt i ${area}`,
-      `Företagsflytt i ${area}`,
-      `Dödsbo och tömning i ${area}`,
-      `Flytt av tunga saker i ${area}`
-    ],
-    "tekniska-installationer": [
-      `Smart hem installation i ${area}`,
-      `Larminstallation i ${area}`,
-      `Kameraövervakning i ${area}`,
-      `Motoriserade persienner i ${area}`,
-      `Ljudsystem i ${area}`,
-      `Nätverksinstallation i ${area}`,
-      `Hemautomation i ${area}`,
-      `Solceller installation i ${area}`,
-      `Ventilationsinstallation i ${area}`,
-      `Portautomatik i ${area}`
-    ]
+    "snickare": [`Köksrenovering i ${area}`, `Bygga altan och trädäck i ${area}`, `Inredningssnickeri i ${area}`, `Fönster- och dörrbyte i ${area}`, `Golvläggning i ${area}`, `Badrumsrenovering i ${area}`, `Bygga om vind/källare i ${area}`, `Fasadrenovering i ${area}`, `Montering av kök och garderober i ${area}`, `Tillbyggnader och utbyggnader i ${area}`],
+    "elektriker": [`Elinstallation i ${area}`, `Felsökning av el i ${area}`, `Byte av elcentral i ${area}`, `Installation av belysning i ${area}`, `Jordfelsbrytare installation i ${area}`, `Laddbox för elbil i ${area}`, `Smart hem installation i ${area}`, `Elbesiktning i ${area}`, `Byte av uttag och strömbrytare i ${area}`, `Utomhusbelysning i ${area}`],
+    "vvs": [`VVS-installation i ${area}`, `Byte av blandare i ${area}`, `Värmepump installation i ${area}`, `Avloppsrensning i ${area}`, `Badrumsrenovering VVS i ${area}`, `Golvvärme installation i ${area}`, `Vattenläcka akut i ${area}`, `Byte av toalettstol i ${area}`, `Radiatorinstallation i ${area}`, `Varmvattenberedare i ${area}`],
+    "malare": [`Invändig målning i ${area}`, `Fasadmålning i ${area}`, `Tapetsering i ${area}`, `Lackning av snickerier i ${area}`, `Målning av tak i ${area}`, `Målning av kök i ${area}`, `Renovering av träfasad i ${area}`, `Spackling och slipning i ${area}`, `Färgsättning och rådgivning i ${area}`, `Målning av fönster och dörrar i ${area}`],
+    "tradgard": [`Gräsklippning i ${area}`, `Häckklippning i ${area}`, `Trädfällning i ${area}`, `Anlägga trädgård i ${area}`, `Stenläggning i ${area}`, `Plantering i ${area}`, `Ogräsrensning i ${area}`, `Beskärning av buskar och träd i ${area}`, `Trädgårdsdesign i ${area}`, `Snöröjning i ${area}`],
+    "stad": [`Hemstädning i ${area}`, `Kontorsstädning i ${area}`, `Flyttstädning i ${area}`, `Fönsterputs i ${area}`, `Storstädning i ${area}`, `Trappstädning i ${area}`, `Byggstädning i ${area}`, `Regelbunden städning i ${area}`, `Djuprengöring i ${area}`, `Städning efter renovering i ${area}`],
+    "markarbeten": [`Schaktning i ${area}`, `Dränering i ${area}`, `Anlägga uppfart i ${area}`, `Grundläggning i ${area}`, `Murar och stödmurar i ${area}`, `Planering av tomt i ${area}`, `VA-arbeten i ${area}`, `Stenläggning och plattsättning i ${area}`, `Grävarbeten i ${area}`, `Pool- och dammanläggning i ${area}`],
+    "montering": [`Möbelmontering i ${area}`, `IKEA-montering i ${area}`, `Köksmontering i ${area}`, `Garderobsmontering i ${area}`, `TV-montering i ${area}`, `Lampmontering i ${area}`, `Badrumsmöbler i ${area}`, `Kontorsmöbler i ${area}`, `Utomhusmöbler i ${area}`, `Barnmöbler och leksaker i ${area}`],
+    "flytt": [`Flytthjälp i ${area}`, `Kontorsflytt i ${area}`, `Magasinering i ${area}`, `Packhjälp i ${area}`, `Pianoflytt i ${area}`, `Bohagsflytt i ${area}`, `Studentflytt i ${area}`, `Företagsflytt i ${area}`, `Dödsbo och tömning i ${area}`, `Flytt av tunga saker i ${area}`],
+    "tekniska-installationer": [`Smart hem installation i ${area}`, `Larminstallation i ${area}`, `Kameraövervakning i ${area}`, `Motoriserade persienner i ${area}`, `Ljudsystem i ${area}`, `Nätverksinstallation i ${area}`, `Hemautomation i ${area}`, `Solceller installation i ${area}`, `Ventilationsinstallation i ${area}`, `Portautomatik i ${area}`],
   };
-
   return serviceItems[serviceSlug] || [];
 }
 
 // Hjälpfunktion för certifieringstext
-function getCertificationText(serviceSlug: LocalServiceSlug): string {
-  const certTexts: Record<LocalServiceSlug, string> = {
+function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en' = 'sv'): string {
+  const isEn = locale === 'en';
+  const certTexts: Record<LocalServiceSlug, string> = isEn ? {
+    "elektriker": "Electricians are authorized according to the Swedish Electrical Safety Authority and work according to current regulations.",
+    "vvs": "Plumbers have Safe Water Installation certification and work according to industry standards.",
+    "snickare": "Carpenters have professional certificates and extensive experience in all types of carpentry.",
+    "malare": "Painters are trained professionals with experience in both interior and exterior painting.",
+    "tradgard": "Gardeners have relevant training and certification for safe work.",
+    "stad": "Cleaning staff are trained and follow high hygiene standards.",
+    "markarbeten": "Groundwork contractors are licensed for excavation and carry liability insurance.",
+    "montering": "Assemblers have experience with all types of furniture assembly and are meticulous.",
+    "flytt": "Moving staff are trained in safe handling and have good physical fitness.",
+    "tekniska-installationer": "Technicians are certified for their respective systems and products."
+  } : {
     "elektriker": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "vvs": "VVS-montörer har Säker Vatteninstallation-certifiering och arbetar enligt branschregler.",
     "snickare": "Snickare har yrkesbevis och lång erfarenhet av alla typer av snickeritjänster.",

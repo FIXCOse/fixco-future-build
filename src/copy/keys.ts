@@ -511,4 +511,14 @@ export type CopyKey =
 
     // AnswerCapsule
     | 'answer.costsPerHour' | 'answer.withDeduction' | 'answer.allCraftsmen'
-    | 'answer.bookVia';
+    | 'answer.bookVia'
+
+    // Local Service Pages
+    | 'local.heroBadge' | 'local.heroIntro' | 'local.response2h' | 'local.ctaQuote'
+    | 'local.demandBadge' | 'local.commonProjects' | 'local.tipsFor' | 'local.aboutServiceIn'
+    | 'local.fourSteps' | 'local.howToBook' | 'local.fromRequestToDone'
+    | 'local.allYouNeed' | 'local.saveMoney' | 'local.reviews' | 'local.whatCustomersSay'
+    | 'local.quickFacts' | 'local.didYouKnow' | 'local.faq' | 'local.faqTitle'
+    | 'local.moreServices' | 'local.readyToBook' | 'local.fixedPrice' | 'local.allServices'
+    | 'local.nearbyTitle' | 'local.relatedSearches' | 'local.urgentHelp'
+    | 'local.notFound' | 'local.notFoundDesc' | 'local.rotDeduction';

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Star, Clock, Shield, BadgeCheck } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface CompactTrustBarProps {
   rating: number;
@@ -8,11 +9,14 @@ interface CompactTrustBarProps {
 }
 
 export const CompactTrustBar = ({ rating, area, rotRut }: CompactTrustBarProps) => {
+  const { locale } = useCopy();
+  const isEn = locale === 'en';
+
   const trustItems = [
-    { icon: Star, text: `${rating.toFixed(1)}/5 betyg`, highlight: true },
-    { icon: Clock, text: "Svar inom 2h" },
-    { icon: BadgeCheck, text: `30% ${rotRut}-avdrag` },
-    { icon: Shield, text: "Ansvarsförsäkrade" },
+    { icon: Star, text: `${rating.toFixed(1)}/5 ${isEn ? 'rating' : 'betyg'}`, highlight: true },
+    { icon: Clock, text: isEn ? "Response within 2h" : "Svar inom 2h" },
+    { icon: BadgeCheck, text: `30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'}` },
+    { icon: Shield, text: isEn ? "Liability insured" : "Ansvarsförsäkrade" },
   ];
 
   return (
@@ -22,10 +26,8 @@ export const CompactTrustBar = ({ rating, area, rotRut }: CompactTrustBarProps) 
       transition={{ delay: 0.6, duration: 0.5 }}
       className="relative py-6"
     >
-      {/* Background bar */}
       <div className="absolute inset-0 bg-muted/20" />
       
-      {/* Trust items */}
       <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 relative z-10">
         {trustItems.map((item, idx) => (
           <motion.div
