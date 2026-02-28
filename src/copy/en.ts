@@ -1064,4 +1064,71 @@ export const en: Record<CopyKey, string> = {
 
   // ProjectShowcase extras
   'projects.moreFeatures': 'more',
+
+  // HeroV3
+  'hero3.eyebrow': "Sweden's Leading Craftsmen",
+  'hero3.headline': 'Construction & property services',
+  'hero3.headlineSuffix': 'for private, HOA & business',
+  'hero3.subtitle': 'Expert solutions for all property needs – from electrical to painting. Fixed price. ROT/RUT guaranteed. Free quote within 24h.',
+  'hero3.cta1': 'Request Free Quote',
+  'hero3.cta2': 'Our Services',
+
+  // TrustBar
+  'trustbar.quality': 'Fixco Quality',
+  'trustbar.startTime': 'Start within < 5 days',
+  'trustbar.location': '#1 in Uppsala & Stockholm',
+  'trustbar.google': '4.9 ★ on Google',
+  'trustbar.insured': 'Insured & guaranteed',
+  'trustbar.experience': '10+ years experience',
+  'trustbar.personal': 'Personal service',
+  'trustbar.quickQuote': 'Quick quote – same day',
+  'trustbar.rot': 'ROT deduction included',
+  'trustbar.freeVisit': 'Free home visit',
+  'trustbar.recommended': 'Recommended by 9 out of 10',
+  'trustbar.satisfied': '98% satisfied customers',
+
+  // Home sections
+  'home.allServices.title': 'All Services with ROT & RUT Deduction',
+  'home.allServices.subtitle': 'Explore our full range of services – from electricians and plumbing to painting, carpentry and cleaning. All with 30% discount via ROT/RUT deduction.',
+  'home.allServices.cta': 'See all services and prices',
+
+  // Services page area links
+  'services.areaLinks.title': 'Services in Your Area',
+  'services.areaLinks.subtitle': 'See specific information for your city and service',
+
+  // ServiceFinder
+  'serviceFinder.title': 'Find your service',
+  'serviceFinder.subtitle': 'Search our services or filter to find exactly what you need. We operate in Uppsala & Stockholm with options for national projects.',
+  'serviceFinder.searchPlaceholder': "Search service, e.g. 'replace toilet' or 'ikea assembly'...",
+  'serviceFinder.sort': 'Sort:',
+  'serviceFinder.sortRelevance': 'Relevance',
+  'serviceFinder.sortPrice': 'Price',
+  'serviceFinder.sortRating': 'Rating',
+  'serviceFinder.showing': 'Showing',
+  'serviceFinder.servicesFor': 'services',
+  'serviceFinder.noResults': 'No services found',
+  'serviceFinder.noResultsDesc': 'Try adjusting your search criteria or contact us for custom solutions.',
+  'serviceFinder.contactCta': 'Contact us for custom solution',
+  'serviceFinder.bookNow': 'Book now',
+  'serviceFinder.startWithin': 'Start within < 5 days',
+
+  // ServiceComparisonCard
+  'comparison.badge': '⚡ Comparison',
+  'comparison.vsOthers': 'Fixco vs other',
+  'comparison.seeWhy': 'See why',
+  'comparison.criteria': 'Criteria',
+  'comparison.others': 'Other companies',
+  'comparison.winsCategories': 'categories',
+  'comparison.marketLeader': 'We are market leaders in',
+  'comparison.requestQuote': 'Request quote',
+  'comparison.seeAllServices': 'See all services',
+  'comparison.afterQuote': 'After quote',
+  'comparison.projectsDone': 'Projects completed',
+  'comparison.supportHours': 'Support weekdays',
+
+  // AnswerCapsule
+  'answer.costsPerHour': 'costs',
+  'answer.withDeduction': 'With',
+  'answer.allCraftsmen': 'All craftsmen have F-tax and are insured.',
+  'answer.bookVia': 'Book via Fixco at',
 };

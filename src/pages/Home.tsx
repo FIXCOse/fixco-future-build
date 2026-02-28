@@ -29,7 +29,7 @@ import {
 } from "@/components/LazyComponents";
 
 const Home = () => {
-  const { t } = useCopy();
+  const { t, locale } = useCopy();
   const allServicesRef = useRef<HTMLDivElement>(null);
   const glow1Ref = useRef<HTMLDivElement>(null);
   const glow2Ref = useRef<HTMLDivElement>(null);
@@ -173,15 +173,14 @@ const Home = () => {
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Alla Tjänster med ROT & RUT-avdrag
+            {t('home.allServices.title')}
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. 
-            Alla med 30% rabatt via ROT/RUT-avdrag.
+            {t('home.allServices.subtitle')}
           </p>
           <Button size="lg" className="font-semibold">
-            <Link to="/tjanster" className="flex items-center gap-2">
-              Se alla tjänster och priser
+            <Link to={locale === 'en' ? '/en/services' : '/tjanster'} className="flex items-center gap-2">
+              {t('home.allServices.cta')}
               <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>

@@ -1064,4 +1064,71 @@ export const sv: Record<CopyKey, string> = {
 
   // ProjectShowcase extras
   'projects.moreFeatures': 'mer',
+
+  // HeroV3
+  'hero3.eyebrow': 'Sveriges Ledande Hantverkare',
+  'hero3.headline': 'Bygg- & fastighetstjänster',
+  'hero3.headlineSuffix': 'för privat, BRF & företag',
+  'hero3.subtitle': 'Expertlösningar för alla fastighetsbehov – från el till målning. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.',
+  'hero3.cta1': 'Begär Kostnadsfri Offert',
+  'hero3.cta2': 'Våra Tjänster',
+
+  // TrustBar
+  'trustbar.quality': 'Fixco Kvalitet',
+  'trustbar.startTime': 'Start inom < 5 dagar',
+  'trustbar.location': '#1 i Uppsala & Stockholm',
+  'trustbar.google': '4.9 ★ på Google',
+  'trustbar.insured': 'Försäkrad & garanterad',
+  'trustbar.experience': '10+ års erfarenhet',
+  'trustbar.personal': 'Personlig service',
+  'trustbar.quickQuote': 'Snabb offert – samma dag',
+  'trustbar.rot': 'ROT-avdrag inkluderat',
+  'trustbar.freeVisit': 'Gratis hembesök',
+  'trustbar.recommended': 'Rekommenderas av 9 av 10',
+  'trustbar.satisfied': '98% nöjda kunder',
+
+  // Home sections
+  'home.allServices.title': 'Alla Tjänster med ROT & RUT-avdrag',
+  'home.allServices.subtitle': 'Utforska hela vårt tjänsteutbud – från elmontör och VVS till målning, snickeri och städning. Alla med 30% rabatt via ROT/RUT-avdrag.',
+  'home.allServices.cta': 'Se alla tjänster och priser',
+
+  // Services page area links
+  'services.areaLinks.title': 'Tjänster i Ditt Område',
+  'services.areaLinks.subtitle': 'Se specifik information för din stad och tjänst',
+
+  // ServiceFinder
+  'serviceFinder.title': 'Hitta din tjänst',
+  'serviceFinder.subtitle': 'Sök bland våra tjänster eller filtrera för att hitta exakt vad du behöver. Vi arbetar i Uppsala & Stockholm med möjlighet för nationella projekt.',
+  'serviceFinder.searchPlaceholder': "Sök tjänst, t.ex. 'byta toalett' eller 'ikea montering'...",
+  'serviceFinder.sort': 'Sortera:',
+  'serviceFinder.sortRelevance': 'Relevans',
+  'serviceFinder.sortPrice': 'Pris',
+  'serviceFinder.sortRating': 'Betyg',
+  'serviceFinder.showing': 'Visar',
+  'serviceFinder.servicesFor': 'tjänster',
+  'serviceFinder.noResults': 'Inga tjänster hittades',
+  'serviceFinder.noResultsDesc': 'Prova att ändra dina sökkriterier eller kontakta oss för anpassade lösningar.',
+  'serviceFinder.contactCta': 'Kontakta oss för speciallösning',
+  'serviceFinder.bookNow': 'Boka nu',
+  'serviceFinder.startWithin': 'Start inom < 5 dagar',
+
+  // ServiceComparisonCard
+  'comparison.badge': '⚡ Jämförelse',
+  'comparison.vsOthers': 'Fixco vs andra',
+  'comparison.seeWhy': 'Se varför',
+  'comparison.criteria': 'Kriterie',
+  'comparison.others': 'Andra företag',
+  'comparison.winsCategories': 'kategorier',
+  'comparison.marketLeader': 'Vi är marknadsledande inom',
+  'comparison.requestQuote': 'Begär offert',
+  'comparison.seeAllServices': 'Se alla tjänster',
+  'comparison.afterQuote': 'Efter offert',
+  'comparison.projectsDone': 'Projekt genomförda',
+  'comparison.supportHours': 'Support vardagar',
+
+  // AnswerCapsule
+  'answer.costsPerHour': 'kostar',
+  'answer.withDeduction': 'Med',
+  'answer.allCraftsmen': 'Alla hantverkare har F-skatt och är försäkrade.',
+  'answer.bookVia': 'Boka via Fixco på',
 };

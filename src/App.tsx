@@ -430,8 +430,20 @@ const App = () => {
                             <Route index element={lazyElement(Home)} />
                             <Route path="home-v2" element={lazyElement(HomeV2)} />
                             <Route path="services" element={lazyElement(Services)} />
+                            <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
+                            <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
                             <Route path="contact" element={lazyElement(Contact)} />
+                            <Route path="blog" element={lazyElement(Blog)} />
+                            <Route path="blog/:slug" element={lazyElement(BlogPost)} />
+                            <Route path="book/:slug" element={
+                              <MaintenanceGate>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <BookingWizard />
+                                </Suspense>
+                              </MaintenanceGate>
+                            } />
+                            <Route path="insurance" element={lazyElement(ROTInfo)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
                             <Route path="about" element={lazyElement(AboutUs)} />
                             <Route path="references" element={lazyElement(Referenser)} />

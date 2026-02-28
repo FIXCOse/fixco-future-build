@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { serviceComparisonData, ServiceComparisonItem, serviceCategoryNames } from "@/data/serviceComparisonData";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface ServiceComparisonCardProps {
   serviceKey: string;
@@ -31,6 +32,10 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
   const serviceTypeName = serviceCategoryNames[serviceKey] || serviceCategoryNames.default;
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true });
+  const { t, locale } = useCopy();
+
+  const contactPath = locale === 'en' ? '/en/contact' : '/kontakt';
+  const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
 
   return (
     <section 
@@ -74,13 +79,13 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
           className="text-center mb-6 md:mb-8"
         >
           <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <span className="text-sm font-semibold gradient-text">⚡ Jämförelse</span>
+            <span className="text-sm font-semibold gradient-text">{t('comparison.badge')}</span>
           </div>
           <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3">
-            Fixco vs andra {serviceTypeName} i {city}
+            {t('comparison.vsOthers')} {serviceTypeName} i {city}
           </h2>
           <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
-            Se varför {serviceTypeName} från Fixco är det bästa valet i {city}
+            {t('comparison.seeWhy')} {serviceTypeName} {locale === 'en' ? 'from' : 'från'} Fixco {locale === 'en' ? 'is the best choice in' : 'är det bästa valet i'} {city}
           </p>
         </motion.div>
 
@@ -93,7 +98,7 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
             className="hidden md:grid grid-cols-3 gap-3 mb-4"
           >
             <div className="text-center">
-              <h3 className="text-base font-semibold text-muted-foreground">Kriterie</h3>
+              <h3 className="text-base font-semibold text-muted-foreground">{t('comparison.criteria')}</h3>
             </div>
             <div className="card-premium p-3 text-center border-primary/20">
               <Trophy className="h-5 w-5 mx-auto mb-1 text-primary" />
@@ -101,7 +106,7 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
             </div>
             <div className="card-premium p-3 text-center border-muted/20">
               <Timer className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
-              <h3 className="text-lg font-bold text-muted-foreground">Andra företag</h3>
+              <h3 className="text-lg font-bold text-muted-foreground">{t('comparison.others')}</h3>
             </div>
           </motion.div>
 
@@ -112,9 +117,9 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
             transition={{ delay: 0.2, duration: 0.5 }}
             className="md:hidden grid grid-cols-3 gap-2 mb-4 text-center"
           >
-            <div className="text-xs font-medium text-muted-foreground">Kriterie</div>
+            <div className="text-xs font-medium text-muted-foreground">{t('comparison.criteria')}</div>
             <div className="text-xs font-bold gradient-text">Fixco</div>
-            <div className="text-xs font-medium text-muted-foreground">Andra</div>
+            <div className="text-xs font-medium text-muted-foreground">{locale === 'en' ? 'Others' : 'Andra'}</div>
           </motion.div>
 
           {/* Metrics Grid */}
@@ -188,25 +193,25 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
                       <FixcoFIcon className="h-6 w-6" />
                     </div>
                     <h3 className="text-lg md:text-xl font-bold gradient-text">
-                      Fixco vinner {comparisonData.length}/{comparisonData.length} kategorier
+                      Fixco {locale === 'en' ? 'wins' : 'vinner'} {comparisonData.length}/{comparisonData.length} {t('comparison.winsCategories')}
                     </h3>
                   </div>
                   <p className="text-xs md:text-sm text-muted-foreground">
-                    Vi är marknadsledande inom {serviceTypeName.toLowerCase()} i {city}
+                    {t('comparison.marketLeader')} {serviceTypeName.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {city}
                   </p>
                 </div>
                 
                 {/* Right: CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-end items-center">
-                  <Link to="/kontakt" className="w-full sm:w-auto">
+                  <Link to={contactPath} className="w-full sm:w-auto">
                     <Button variant="cta-primary" size="cta" className="w-full sm:w-auto">
-                      Begär offert
+                      {t('comparison.requestQuote')}
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link to="/tjanster" className="w-full sm:w-auto">
+                  <Link to={servicesPath} className="w-full sm:w-auto">
                     <Button variant="cta-secondary" size="cta" className="w-full sm:w-auto">
-                      Se alla tjänster
+                      {t('comparison.seeAllServices')}
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
@@ -224,15 +229,15 @@ export const ServiceComparisonCard = ({ serviceKey, city }: ServiceComparisonCar
           >
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">24-48h</div>
-              <p className="text-xs text-muted-foreground">Efter offert</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.afterQuote')}</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">3000+</div>
-              <p className="text-xs text-muted-foreground">Projekt genomförda</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.projectsDone')}</p>
             </div>
             <div className="card-premium p-3 md:p-4 text-center min-h-[60px] flex flex-col justify-center">
               <div className="text-sm md:text-xl font-bold gradient-text mb-1">08-19:00</div>
-              <p className="text-xs text-muted-foreground">Support vardagar</p>
+              <p className="text-xs text-muted-foreground">{t('comparison.supportHours')}</p>
             </div>
           </motion.div>
         </div>
