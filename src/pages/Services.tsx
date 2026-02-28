@@ -99,68 +99,38 @@ const Services = () => {
       {/* Geographic Links */}
       <section className="py-12 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold mb-4">Tjänster i Ditt Område</h3>
+          <h3 className="text-2xl font-bold mb-4">{t('services.areaLinks.title')}</h3>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Se specifik information för din stad och tjänst
+            {t('services.areaLinks.subtitle')}
           </p>
           <div className="flex flex-wrap gap-3 justify-center max-w-5xl mx-auto">
-            {/* Uppsala */}
-            <Link to="/tjanster/elektriker/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Elektriker Uppsala
-            </Link>
-            <Link to="/tjanster/vvs/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              VVS Uppsala
-            </Link>
-            <Link to="/tjanster/snickare/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Snickare Uppsala
-            </Link>
-            <Link to="/tjanster/montering/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Montering Uppsala
-            </Link>
-            <Link to="/tjanster/tradgard/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Trädgård Uppsala
-            </Link>
-            <Link to="/tjanster/stad/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Städ Uppsala
-            </Link>
-            <Link to="/tjanster/markarbeten/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Markarbeten Uppsala
-            </Link>
-            <Link to="/tjanster/tekniska-installationer/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Teknik Uppsala
-            </Link>
-            <Link to="/tjanster/flytt/uppsala" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Flytt Uppsala
-            </Link>
-            
-            {/* Stockholm */}
-            <Link to="/tjanster/elektriker/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Elektriker Stockholm
-            </Link>
-            <Link to="/tjanster/vvs/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              VVS Stockholm
-            </Link>
-            <Link to="/tjanster/snickare/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Snickare Stockholm
-            </Link>
-            <Link to="/tjanster/montering/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Montering Stockholm
-            </Link>
-            <Link to="/tjanster/tradgard/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Trädgård Stockholm
-            </Link>
-            <Link to="/tjanster/stad/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Städ Stockholm
-            </Link>
-            <Link to="/tjanster/markarbeten/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Markarbeten Stockholm
-            </Link>
-            <Link to="/tjanster/tekniska-installationer/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Teknik Stockholm
-            </Link>
-            <Link to="/tjanster/flytt/stockholm" className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium">
-              Flytt Stockholm
-            </Link>
+            {(() => {
+              const prefix = locale === 'en' ? '/en/services' : '/tjanster';
+              const areas = [
+                { slug: 'elektriker', sv: 'Elektriker', en: 'Electrician' },
+                { slug: 'vvs', sv: 'VVS', en: 'Plumbing' },
+                { slug: 'snickare', sv: 'Snickare', en: 'Carpentry' },
+                { slug: 'montering', sv: 'Montering', en: 'Assembly' },
+                { slug: 'tradgard', sv: 'Trädgård', en: 'Garden' },
+                { slug: 'stad', sv: 'Städ', en: 'Cleaning' },
+                { slug: 'markarbeten', sv: 'Markarbeten', en: 'Groundwork' },
+                { slug: 'tekniska-installationer', sv: 'Teknik', en: 'Tech' },
+                { slug: 'flytt', sv: 'Flytt', en: 'Moving' },
+              ];
+              const cities = ['Uppsala', 'Stockholm'];
+              
+              return cities.flatMap(city =>
+                areas.map(area => (
+                  <Link
+                    key={`${area.slug}-${city.toLowerCase()}`}
+                    to={`${prefix}/${area.slug}/${city.toLowerCase()}`}
+                    className="px-4 py-2 rounded-lg border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium"
+                  >
+                    {locale === 'en' ? area.en : area.sv} {city}
+                  </Link>
+                ))
+              );
+            })()}
           </div>
         </div>
       </section>

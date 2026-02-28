@@ -2,23 +2,26 @@ import { useRef, useEffect } from 'react';
 import { Shield, MapPin, Clock, Award, Star, Briefcase, Heart, Zap, Calculator, Home, ThumbsUp, TrendingUp } from 'lucide-react';
 import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
 import { gsap } from '@/lib/gsap';
+import { useCopy } from '@/copy/CopyProvider';
+import type { CopyKey } from '@/copy/keys';
 
 const TrustBar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useCopy();
   
-  const trustItems = [
-    { icon: "image", text: "Fixco Kvalitet" },
-    { icon: Clock, text: "Start inom < 5 dagar" },
-    { icon: MapPin, text: "#1 i Uppsala & Stockholm" },
-    { icon: Star, text: "4.9 ★ på Google" },
-    { icon: Award, text: "Försäkrad & garanterad" },
-    { icon: Briefcase, text: "10+ års erfarenhet" },
-    { icon: Heart, text: "Personlig service" },
-    { icon: Zap, text: "Snabb offert – samma dag" },
-    { icon: Calculator, text: "ROT-avdrag inkluderat" },
-    { icon: Home, text: "Gratis hembesök" },
-    { icon: ThumbsUp, text: "Rekommenderas av 9 av 10" },
-    { icon: TrendingUp, text: "98% nöjda kunder" },
+  const trustItems: { icon: any; textKey: CopyKey }[] = [
+    { icon: "image", textKey: "trustbar.quality" },
+    { icon: Clock, textKey: "trustbar.startTime" },
+    { icon: MapPin, textKey: "trustbar.location" },
+    { icon: Star, textKey: "trustbar.google" },
+    { icon: Award, textKey: "trustbar.insured" },
+    { icon: Briefcase, textKey: "trustbar.experience" },
+    { icon: Heart, textKey: "trustbar.personal" },
+    { icon: Zap, textKey: "trustbar.quickQuote" },
+    { icon: Calculator, textKey: "trustbar.rot" },
+    { icon: Home, textKey: "trustbar.freeVisit" },
+    { icon: ThumbsUp, textKey: "trustbar.recommended" },
+    { icon: TrendingUp, textKey: "trustbar.satisfied" },
   ];
 
   // GSAP hover effects only
@@ -59,7 +62,7 @@ const TrustBar = () => {
                   })()
                 )}
                 <span className="text-sm font-medium text-foreground">
-                  {item.text}
+                  {t(item.textKey)}
                 </span>
               </div>
             ))}

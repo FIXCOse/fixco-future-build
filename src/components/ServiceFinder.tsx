@@ -153,10 +153,9 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
     <div className="space-y-6">
       {/* Search Header */}
       <div className="text-center space-y-4">
-        <h2 className="text-3xl font-bold gradient-text">Hitta din tjänst</h2>
+        <h2 className="text-3xl font-bold gradient-text">{t('serviceFinder.title')}</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Sök bland våra tjänster eller filtrera för att hitta exakt vad du behöver. 
-          Vi arbetar i Uppsala & Stockholm med möjlighet för nationella projekt.
+          {t('serviceFinder.subtitle')}
         </p>
       </div>
 
@@ -164,7 +163,7 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
       <div className="relative max-w-xl mx-auto">
         <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
         <Input 
-          placeholder="Sök tjänst, t.ex. 'byta toalett' eller 'ikea montering'..."
+          placeholder={t('serviceFinder.searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10 pr-4 py-3 text-base"
@@ -231,15 +230,15 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
         </label>
         
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">Sortera:</span>
+          <span className="text-sm text-muted-foreground">{t('serviceFinder.sort')}</span>
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'price' | 'rating' | 'relevance')}
             className="px-3 py-1 border border-border rounded-md bg-background text-sm"
           >
-            <option value="relevance">Relevans</option>
-            <option value="price">Pris</option>
-            <option value="rating">Betyg</option>
+            <option value="relevance">{t('serviceFinder.sortRelevance')}</option>
+            <option value="price">{t('serviceFinder.sortPrice')}</option>
+            <option value="rating">{t('serviceFinder.sortRating')}</option>
           </select>
         </div>
       </div>
@@ -247,8 +246,8 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
       {/* Results Count */}
       <div className="text-center">
         <p className="text-muted-foreground">
-          Visar {filteredServices.length} tjänster
-          {searchQuery && ` för "${searchQuery}"`}
+          {t('serviceFinder.showing')} {filteredServices.length} {t('serviceFinder.servicesFor')}
+          {searchQuery && ` "${searchQuery}"`}
         </p>
       </div>
 
@@ -303,12 +302,12 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
 
               <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
-                <span>Start inom {'< 5 dagar'}</span>
+                <span>{t('serviceFinder.startWithin')}</span>
               </div>
             </div>
 
             <Button variant="premium" className="w-full mt-4">
-              Boka nu
+              {t('serviceFinder.bookNow')}
             </Button>
           </div>
         ))}
@@ -317,12 +316,12 @@ const ServiceFinder = ({ onServiceSelect }: ServiceFinderProps) => {
       {filteredServices.length === 0 && (
         <div className="text-center py-12">
           <Filter className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Inga tjänster hittades</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('serviceFinder.noResults')}</h3>
           <p className="text-muted-foreground mb-4">
-            Prova att ändra dina sökkriterier eller kontakta oss för anpassade lösningar.
+            {t('serviceFinder.noResultsDesc')}
           </p>
           <Button variant="cta">
-            Kontakta oss för speciallösning
+            {t('serviceFinder.contactCta')}
           </Button>
         </div>
       )}

@@ -478,4 +478,37 @@ export type CopyKey =
     | 'comparison.rot_saving_note'
 
     // ProjectShowcase extras
-    | 'projects.moreFeatures';
+    | 'projects.moreFeatures'
+
+    // HeroV3
+    | 'hero3.eyebrow' | 'hero3.headline' | 'hero3.headlineSuffix' | 'hero3.subtitle'
+    | 'hero3.cta1' | 'hero3.cta2'
+
+    // TrustBar
+    | 'trustbar.quality' | 'trustbar.startTime' | 'trustbar.location' | 'trustbar.google'
+    | 'trustbar.insured' | 'trustbar.experience' | 'trustbar.personal' | 'trustbar.quickQuote'
+    | 'trustbar.rot' | 'trustbar.freeVisit' | 'trustbar.recommended' | 'trustbar.satisfied'
+
+    // Home sections
+    | 'home.allServices.title' | 'home.allServices.subtitle' | 'home.allServices.cta'
+
+    // Services page area links
+    | 'services.areaLinks.title' | 'services.areaLinks.subtitle'
+
+    // ServiceFinder
+    | 'serviceFinder.title' | 'serviceFinder.subtitle' | 'serviceFinder.searchPlaceholder'
+    | 'serviceFinder.sort' | 'serviceFinder.sortRelevance' | 'serviceFinder.sortPrice' | 'serviceFinder.sortRating'
+    | 'serviceFinder.showing' | 'serviceFinder.servicesFor'
+    | 'serviceFinder.noResults' | 'serviceFinder.noResultsDesc' | 'serviceFinder.contactCta'
+    | 'serviceFinder.bookNow' | 'serviceFinder.startWithin'
+
+    // ServiceComparisonCard
+    | 'comparison.badge' | 'comparison.vsOthers' | 'comparison.seeWhy'
+    | 'comparison.criteria' | 'comparison.others'
+    | 'comparison.winsCategories' | 'comparison.marketLeader'
+    | 'comparison.requestQuote' | 'comparison.seeAllServices'
+    | 'comparison.afterQuote' | 'comparison.projectsDone' | 'comparison.supportHours'
+
+    // AnswerCapsule
+    | 'answer.costsPerHour' | 'answer.withDeduction' | 'answer.allCraftsmen'
+    | 'answer.bookVia';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCopy } from '@/copy/CopyProvider';
 
 interface AnswerCapsuleProps {
   serviceName: string;
@@ -9,10 +10,6 @@ interface AnswerCapsuleProps {
   phone?: string;
 }
 
-/**
- * AnswerCapsule - Optimerad för AI Overviews
- * 40-60 ord som AI-system kan extrahera som "featured snippet"
- */
 export const AnswerCapsule: React.FC<AnswerCapsuleProps> = ({
   serviceName,
   areaName,
@@ -21,7 +18,14 @@ export const AnswerCapsule: React.FC<AnswerCapsuleProps> = ({
   taxDeduction,
   phone = '+46-70-123-45-67'
 }) => {
-  const location = areaName ? ` i ${areaName}` : ' i Uppsala och Stockholm';
+  const { t, locale } = useCopy();
+  const location = areaName 
+    ? ` ${locale === 'en' ? 'in' : 'i'} ${areaName}` 
+    : locale === 'en' ? ' in Uppsala and Stockholm' : ' i Uppsala och Stockholm';
+  
+  const deductionLabel = locale === 'en' ? `${taxDeduction} deduction (30% discount)` : `${taxDeduction}-avdrag (30% rabatt)`;
+  const payOnly = locale === 'en' ? 'you only pay' : 'betalar du endast';
+  const quoteTime = locale === 'en' ? '– quote within 24 hours, free home visit.' : '– offert inom 24 timmar, gratis hembesök.';
   
   return (
     <div 
@@ -33,10 +37,10 @@ export const AnswerCapsule: React.FC<AnswerCapsuleProps> = ({
         className="text-base leading-relaxed text-foreground/90"
         itemProp="text"
       >
-        <strong>{serviceName}{location}</strong> kostar {priceRange} per timme. 
-        Med {taxDeduction}-avdrag (30% rabatt) betalar du endast {priceAfterDeduction}. 
-        Alla hantverkare har F-skatt och är försäkrade. 
-        Boka via Fixco på {phone} – offert inom 24 timmar, gratis hembesök.
+        <strong>{serviceName}{location}</strong> {t('answer.costsPerHour')} {priceRange} {locale === 'en' ? 'per hour' : 'per timme'}. 
+        {t('answer.withDeduction')} {deductionLabel} {payOnly} {priceAfterDeduction}. 
+        {t('answer.allCraftsmen')} 
+        {t('answer.bookVia')} {phone} {quoteTime}
       </p>
     </div>
   );

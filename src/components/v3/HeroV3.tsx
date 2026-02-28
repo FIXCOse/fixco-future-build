@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { useContentStore } from "@/stores/contentStore";
 import { gsap, SplitText } from "@/lib/gsap";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
+import { useCopy } from "@/copy/CopyProvider";
 import logoBauhaus from "@/assets/bauhaus-logo-red.png";
 import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
@@ -20,6 +21,9 @@ const HeroV3 = () => {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
   const { isHydrated } = useContentStore();
+  const { t, locale } = useCopy();
+
+  const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -27,7 +31,6 @@ const HeroV3 = () => {
     let ctx: gsap.Context | null = null;
     let isMounted = true;
 
-    // Fallback: Visa element om animering misslyckas efter 2 sekunder
     const fallbackTimer = setTimeout(() => {
       [eyebrowRef, starsRef, paragraphRef, buttonsRef].forEach(ref => {
         if (ref.current) {
@@ -37,16 +40,14 @@ const HeroV3 = () => {
       });
     }, 2000);
 
-    // Wait for fonts to load before SplitText to avoid layout shifts
     document.fonts.ready.then(() => {
-      if (!isMounted) return; // Avbryt om komponenten unmountat
+      if (!isMounted) return;
       
-      clearTimeout(fallbackTimer); // Rensa fallback om fonts laddade
+      clearTimeout(fallbackTimer);
 
       ctx = gsap.context(() => {
         const tl = gsap.timeline({ delay: 0.1 });
 
-        // 1. Animate eyebrow text
         if (eyebrowRef.current) {
           tl.from(eyebrowRef.current, {
             autoAlpha: 0,
@@ -56,7 +57,6 @@ const HeroV3 = () => {
           });
         }
 
-        // 2. Stagger stars (med null-check för children)
         if (starsRef.current && starsRef.current.children.length > 0) {
           tl.from(starsRef.current.children, {
             autoAlpha: 0,
@@ -67,7 +67,6 @@ const HeroV3 = () => {
           }, "-=0.3");
         }
 
-        // 3. SplitText animation on headline (fonts are now loaded)
         if (headlineRef.current) {
           const split = new SplitText(headlineRef.current, { 
             type: "chars,words",
@@ -87,7 +86,6 @@ const HeroV3 = () => {
           }, "-=0.2");
         }
 
-        // 4. Animate paragraph
         if (paragraphRef.current) {
           tl.from(paragraphRef.current, {
             autoAlpha: 0,
@@ -97,7 +95,6 @@ const HeroV3 = () => {
           }, "-=0.4");
         }
 
-        // 5. Animate buttons (med null-check för children)
         if (buttonsRef.current && buttonsRef.current.children.length > 0) {
           tl.from(buttonsRef.current.children, {
             autoAlpha: 0,
@@ -111,7 +108,6 @@ const HeroV3 = () => {
       }, heroRef);
     });
 
-    // KORREKT: Cleanup returneras direkt från useEffect
     return () => {
       isMounted = false;
       clearTimeout(fallbackTimer);
@@ -130,23 +126,18 @@ const HeroV3 = () => {
         }}
       />
       
-      {/* Glow Effects - Reduced blur for performance, CSS animations instead of GSAP */}
+      {/* Glow Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Deep purple glow - top */}
         <div className="absolute top-20 left-1/4 w-72 h-72 bg-[#592db5] opacity-30 blur-3xl rounded-full animate-float-slow" />
-        {/* Bright purple glow - center */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#7d40ff] opacity-35 blur-3xl rounded-full animate-float-medium" />
-        {/* Light purple accent - bottom right */}
         <div className="absolute bottom-32 right-1/4 w-64 h-64 bg-[#9d6fff] opacity-25 blur-2xl rounded-full animate-float-fast" />
-        {/* Deep purple glow - bottom left */}
         <div className="absolute bottom-20 left-10 w-56 h-56 bg-[#4a2490] opacity-20 blur-2xl rounded-full animate-float-reverse" />
       </div>
 
-
-      {/* Foreground Content - Flex column layout to prevent overlap */}
+      {/* Foreground Content */}
       <div className="relative z-10 flex flex-col items-center w-full h-full px-4 md:px-6">
         
-        {/* Fixco Logo - In document flow, not absolute */}
+        {/* Fixco Logo */}
         <div className="flex items-center justify-center pt-8 pb-2 md:pt-10 md:pb-6 shrink-0 animate-logo-fade-in">
           <a href="/" className="inline-block max-w-full transition-transform duration-300 hover:scale-105 no-underline">
             <img 
@@ -158,12 +149,12 @@ const HeroV3 = () => {
           </a>
         </div>
 
-        {/* Content Area - Flex grow to fill remaining space and center content */}
+        {/* Content Area */}
         <div className="flex flex-col items-center justify-start gap-6 md:gap-8 w-full max-w-5xl py-6 md:py-8">
           <div className="flex flex-col items-center gap-4 md:gap-6">
             
             <h1 ref={eyebrowRef} className="font-heading text-lg md:text-xl font-bold text-[#fafafa] text-center leading-[120%]">
-              Sveriges Ledande Hantverkare
+              {t('hero3.eyebrow')}
             </h1>
             <div ref={starsRef} className="flex items-center justify-center gap-1 mb-2 md:mb-6">
               <span className="text-sm text-[#fbfaf6] tracking-wide">4.9</span>
@@ -172,109 +163,58 @@ const HeroV3 = () => {
               ))}
             </div>
             <h1 ref={headlineRef} className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-[#fafafa] text-center leading-[120%]">
-              <span className="font-brand italic">Bygg- & fastighetstjänster</span> för privat, BRF & företag
+              <span className="font-brand italic">{t('hero3.headline')}</span> {t('hero3.headlineSuffix')}
             </h1>
             <p ref={paragraphRef} className="text-base md:text-xl lg:text-2xl text-[#fafafa] opacity-90 text-center max-w-3xl leading-relaxed">
-              Expertlösningar för alla fastighetsbehov – från el till målning. Fast pris. ROT/RUT garanterat. Gratis offert inom 24h.
+              {t('hero3.subtitle')}
             </p>
           </div>
           
           <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center">
             <GradientButton onClick={() => openServiceRequestModal({ showCategories: true })}>
-              Begär Kostnadsfri Offert
+              {t('hero3.cta1')}
             </GradientButton>
-            <GradientButton href="/tjanster">
-              Våra Tjänster
+            <GradientButton href={servicesPath}>
+              {t('hero3.cta2')}
             </GradientButton>
           </div>
           
           {/* Client Logos Section */}
           <div className="flex flex-col items-center gap-4 md:gap-6 mt-4 md:mt-8">
             <div className="relative w-full max-w-5xl overflow-hidden">
-              {/* Scrolling logos container */}
               <div className="flex gap-8 md:gap-16 animate-scroll">
                 {/* First set of logos */}
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoBauhaus} 
-                    alt="BAUHAUS" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity"
-                  />
+                  <img loading="lazy" src={logoBauhaus} alt="BAUHAUS" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoByggmax} 
-                    alt="BYGGMAX" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-90"
-                  />
+                  <img loading="lazy" src={logoByggmax} alt="BYGGMAX" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-90" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoKRauta} 
-                    alt="K-Rauta" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-110"
-                  />
+                  <img loading="lazy" src={logoKRauta} alt="K-Rauta" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-110" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoLimont} 
-                    alt="Limont Entreprenad" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-125"
-                  />
+                  <img loading="lazy" src={logoLimont} alt="Limont Entreprenad" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-125" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoNordgren} 
-                    alt="Nordgren & Partners" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-100"
-                  />
+                  <img loading="lazy" src={logoNordgren} alt="Nordgren & Partners" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-100" />
                 </div>
                 
-                {/* Duplicate set of logos for seamless loop */}
+                {/* Duplicate set for seamless loop */}
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoBauhaus} 
-                    alt="BAUHAUS" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity"
-                  />
+                  <img loading="lazy" src={logoBauhaus} alt="BAUHAUS" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoByggmax} 
-                    alt="BYGGMAX" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-90"
-                  />
+                  <img loading="lazy" src={logoByggmax} alt="BYGGMAX" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-90" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoKRauta} 
-                    alt="K-Rauta" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-110"
-                  />
+                  <img loading="lazy" src={logoKRauta} alt="K-Rauta" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-110" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoLimont} 
-                    alt="Limont Entreprenad" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-125"
-                  />
+                  <img loading="lazy" src={logoLimont} alt="Limont Entreprenad" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity scale-125" />
                 </div>
                 <div className="h-5 md:h-8 flex items-center shrink-0">
-                  <img 
-                    loading="lazy" 
-                    src={logoNordgren} 
-                    alt="Nordgren & Partners" 
-                    className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-100"
-                  />
+                  <img loading="lazy" src={logoNordgren} alt="Nordgren & Partners" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-100" />
                 </div>
               </div>
             </div>
