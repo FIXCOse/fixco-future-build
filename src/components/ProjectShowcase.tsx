@@ -247,7 +247,7 @@ const ProjectShowcase = () => {
                   ))}
                   {project.features.length > 2 && (
                     <Badge variant="outline" className="text-xs">
-                      +{project.features.length - 2} mer
+                      +{project.features.length - 2} {t('projects.moreFeatures')}
                     </Badge>
                   )}
                 </div>
