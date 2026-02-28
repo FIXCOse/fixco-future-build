@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -10,33 +10,15 @@ const FAQTeaser = () => {
   const { t, locale } = useCopy();
 
   const faqs = [
-    {
-      question: "Hur snabbt kan ni starta mitt projekt?",
-      answer: "Vi kan starta de flesta projekt inom 24 timmar. För akuta ärenden erbjuder vi samma dag-service (inom 4 timmar) mot ett mindre tillägg. Vi har alltid hantverkare tillgängliga i Uppsala och Stockholm."
-    },
-    {
-      question: "Vad kostar era tjänster med ROT-avdrag?",
-      answer: "Med ROT-avdrag betalar du endast 480 kr/h för el, VVS och snickeri (normalt 959 kr/h). Montering kostar 350 kr/h (normalt 699 kr/h). ROT-avdraget ger dig 30% rabatt på arbetskostnaden, max 50,000 kr per person och år."
-    },
-    {
-      question: "Vilka områden arbetar ni i?",
-      answer: "Vi arbetar främst i Uppsala län och Stockholms län. För större projekt (över 100,000 kr) åker vi även till andra delar av Sverige. Vi har kontor i både Uppsala och Stockholm för snabb service."
-    },
-    {
-      question: "Är ni försäkrade och certifierade?",
-      answer: "Ja, vi har fullständig ansvarsförsäkring och är ROT-certifierade. Alla våra hantverkare är utbildade och erfarna. Vi ger även garanti på allt arbete vi utför."
-    },
-    {
-      question: "Hur fungerar offertprocessen?",
-      answer: "Du kan begära offert via vår hemsida, telefon eller genom vår 2-minuters offertguide. Vi återkommer inom 1 timme med en preliminär kostnad och bokar hembesök samma dag om önskat. Alla offerter är kostnadsfria."
-    }
+    { question: t('faqteaser.q1'), answer: t('faqteaser.a1') },
+    { question: t('faqteaser.q2'), answer: t('faqteaser.a2') },
+    { question: t('faqteaser.q3'), answer: t('faqteaser.a3') },
+    { question: t('faqteaser.q4'), answer: t('faqteaser.a4') },
+    { question: t('faqteaser.q5'), answer: t('faqteaser.a5') },
   ];
-
-
 
   return (
     <section className="py-24 bg-gradient-primary-subtle relative">
-      {/* F Watermark Background Elements - CSS-based for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
         <div 
           className="absolute top-16 right-16 w-18 h-18 bg-primary/30 rotate-12 animate-pulse rounded-sm"
@@ -52,17 +34,15 @@ const FAQTeaser = () => {
 
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Vanliga frågor
+              {t('faqteaser.title')}
             </h2>
             <p className="text-xl text-muted-foreground">
-              Svar på de vanligaste frågorna om våra tjänster
+              {t('faqteaser.subtitle')}
             </p>
           </div>
 
-          {/* FAQ Items */}
           <div className="space-y-4 mb-12">
             {faqs.map((faq, index) => (
               <div
@@ -98,7 +78,6 @@ const FAQTeaser = () => {
             ))}
           </div>
 
-          {/* CTA to full FAQ */}
           <div className="text-center">
             <Button
               variant="cta-primary"
@@ -106,14 +85,13 @@ const FAQTeaser = () => {
               className="group"
               asChild
             >
-              <Link to="/faq">
-                Se alla frågor &amp; svar
+              <Link to={locale === 'en' ? '/en/faq' : '/faq'}>
+                {t('faqteaser.seeAll')}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
           </div>
 
-            {/* Quick Contact */}
             <div className="mt-16 text-center">
               <div className="card-premium p-8 relative">
                 <h3 className="text-2xl font-bold mb-4">
@@ -127,7 +105,7 @@ const FAQTeaser = () => {
                   variant="cta-primary"
                   size="cta"
                   className="group"
-                  onClick={() => window.open('tel:08-123-456-78')}
+                  onClick={() => window.open('tel:+46793350228')}
                 >
                   {t('faq.call_us_with_phone')}
                 </Button>

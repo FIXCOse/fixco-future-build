@@ -75,7 +75,7 @@ const ProjectShowcase = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="text-muted-foreground mt-4">Laddar projekt...</p>
+            <p className="text-muted-foreground mt-4">{t('projects.loading')}</p>
           </div>
         </div>
       </section>
@@ -115,7 +115,7 @@ const ProjectShowcase = () => {
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Nytt projekt
+                {t('projects.newProjectBtn')}
               </Button>
             )}
           </div>
@@ -203,7 +203,7 @@ const ProjectShowcase = () => {
                     onClick={() => setSelectedProject(project)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
-                    Se detaljer
+                    {t('projects.seeDetails')}
                   </Button>
                 </div>
               </div>
@@ -255,11 +255,11 @@ const ProjectShowcase = () => {
                 {/* Price and Client */}
                 <div className="flex justify-between items-center pt-4 border-t border-border">
                   <div>
-                    <p className="text-sm text-muted-foreground">Totalpris</p>
+                    <p className="text-sm text-muted-foreground">{t('projects.totalPrice')}</p>
                     <p className="font-bold text-primary">{project.price_amount.toLocaleString('sv-SE')} kr</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Klient</p>
+                    <p className="text-sm text-muted-foreground">{t('projects.client')}</p>
                     <p className="font-semibold">{project.client_initials}</p>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ const ProjectShowcase = () => {
                 {/* Completion Date */}
                 <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3" />
-                  Färdigställt {new Date(project.completed_date).toLocaleDateString('sv-SE')}
+                  {t('projects.completedDate')} {new Date(project.completed_date).toLocaleDateString(locale === 'en' ? 'en-GB' : 'sv-SE')}
                 </div>
               </CardContent>
 
@@ -281,23 +281,22 @@ const ProjectShowcase = () => {
         <div className="text-center">
           <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-8 max-w-2xl mx-auto shadow-xl">
             <h3 className="text-2xl font-bold mb-4">
-              Vill du se ditt hem här?
+              {t('projects.cta_title')}
             </h3>
             <p className="text-muted-foreground mb-6">
-              Vi skapar drömhemmet du alltid velat ha. Från första skissen till färdigt resultat - 
-              vi finns med dig hela vägen. Alla projekt inkluderar ROT-avdrag för maximal besparing.
+              {t('projects.cta_subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={locale === 'en' ? '/en/contact' : '/kontakt'}>
                 <MagneticButton size="lg" className="group" magneticStrength={0.3}>
-                  Begär kostnadsfri offert
+                  {t('projects.request_quote')}
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </MagneticButton>
               </Link>
               <Button size="lg" variant="outline">
                 <Link to={locale === 'en' ? '/en/references' : '/referenser'} className="flex items-center">
-                  {locale === 'en' ? 'See more projects' : 'Se fler projekt'}
+                  {t('projects.see_more')}
                 </Link>
               </Button>
             </div>
@@ -305,15 +304,15 @@ const ProjectShowcase = () => {
             <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">{projects.length}</p>
-                <p className="text-sm text-muted-foreground">Projekt 2024</p>
+                <p className="text-sm text-muted-foreground">{t('projects.stats.year')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">100%</p>
-                <p className="text-sm text-muted-foreground">Nöjda kunder</p>
+                <p className="text-sm text-muted-foreground">{t('projects.stats.satisfied')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">48h</p>
-                <p className="text-sm text-muted-foreground">Svarstid</p>
+                <p className="text-sm text-muted-foreground">{t('projects.stats.response')}</p>
               </div>
             </div>
           </div>

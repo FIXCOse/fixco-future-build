@@ -2,18 +2,19 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button-premium";
 import { Phone, Calculator, Calendar } from "lucide-react";
+import { useCopy } from "@/copy/CopyProvider";
 
 const StickyCtaBar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useCopy();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 200);
       
-      // Show on service pages and after scrolling
       const showOnPages = ['/tjanster', '/kontakt', '/om-oss'];
       const shouldShow = scrollY > 400 || showOnPages.some(path => location.pathname.startsWith(path));
       setIsVisible(shouldShow);
@@ -25,15 +26,14 @@ const StickyCtaBar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location]);
 
-  // Context-aware CTA text based on current page
   const getContextualCta = () => {
     if (location.pathname.startsWith('/tjanster/')) {
-      return { text: "Boka denna tjänst", icon: Calendar, variant: "cta" as const };
+      return { text: t('sticky.bookService'), icon: Calendar, variant: "cta" as const };
     }
     if (location.pathname === '/kontakt') {
-      return { text: "Ring direkt", icon: Phone, variant: "hero" as const };
+      return { text: t('sticky.callNow'), icon: Phone, variant: "hero" as const };
     }
-    return { text: "Begär offert", icon: Calculator, variant: "cta" as const };
+    return { text: t('sticky.requestQuote'), icon: Calculator, variant: "cta" as const };
   };
 
   const contextualCta = getContextualCta();
@@ -50,7 +50,6 @@ const StickyCtaBar = () => {
       <div className="bg-background/95 backdrop-blur-md border-t border-border shadow-premium">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-4">
-            {/* Contact Info - Hidden on mobile */}
             <div className="hidden sm:flex items-center space-x-4 text-sm">
               <div className="flex items-center space-x-1 text-muted-foreground">
                 <Phone className="h-4 w-4" />
@@ -61,10 +60,7 @@ const StickyCtaBar = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex items-center space-x-2 flex-1 sm:flex-initial">
-
-              {/* Mobile: Call button */}
               <Button 
                 variant="ghost-premium" 
                 size="sm" 
@@ -72,10 +68,8 @@ const StickyCtaBar = () => {
                 onClick={() => window.open('tel:+46793350228')}
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Ring oss
+                {t('sticky.callUs')}
               </Button>
-
-              {/* Desktop: Call button */}
 
               <Button 
                 variant="ghost-premium" 
@@ -84,10 +78,9 @@ const StickyCtaBar = () => {
                 onClick={() => window.open('tel:+46793350228')}
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Ring oss
+                {t('sticky.callUs')}
               </Button>
 
-              {/* Main CTA - Context aware */}
               <Button 
                 variant={contextualCta.variant}
                 size="sm"

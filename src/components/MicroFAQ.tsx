@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
+import { useCopy } from '@/copy/CopyProvider';
 
 interface MicroFAQProps {
   service?: string;
@@ -14,56 +10,23 @@ interface MicroFAQProps {
 
 const MicroFAQ = ({ service, className = "" }: MicroFAQProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { t } = useCopy();
 
-  // Dynamic FAQ based on service or default general FAQs
-  const getFAQs = (service?: string): FAQItem[] => {
-    if (service?.includes('elektrik')) {
-      return [
-        {
-          question: "Är era elektriker behöriga?",
-          answer: "Ja, alla våra elektriker är behöriga och certifierade enligt Elinstallationsreglerna (SER)."
-        },
-        {
-          question: "Ingår ROT-avdrag i priset?",
-          answer: "Ja, vårt pris på 480 kr/h är efter ROT-avdrag. Ordinarie pris är 960 kr/h."
-        },
-        {
-          question: "Hur snabbt kan ni komma?",
-          answer: "Vi startar vanligtvis inom 3-5 dagar, akuta ärenden samma dag eller nästa dag."
-        }
-      ];
-    }
-
-    // Default general FAQs
+  const getFAQs = () => {
     return [
-      {
-        question: "Vad ingår i priset?",
-        answer: "Priset inkluderar arbetskostnad, resor inom vårt verksamhetsområde och moms. Material tillkommer."
-      },
-      {
-        question: "Hur fungerar ROT-avdraget?",
-        answer: "Du får 30% avdrag på arbetskostnaden. Vi sköter hela ROT-processen åt dig."
-      },
-      {
-        question: "Vilka områden täcker ni?",
-        answer: "Vi verkar främst i Uppsala och Stockholm län, men tar även större projekt nationellt."
-      },
-      {
-        question: "Är ni försäkrade?",
-        answer: "Ja, vi har full yrkesansvarighet och alla nödvändiga försäkringar."
-      },
-      {
-        question: "Ger ni garanti på arbetet?",
-        answer: "Ja, vi ger 5 års garanti på allt arbete och 2 års garanti på material."
-      }
+      { question: t('microfaq.whatsIncluded'), answer: t('microfaq.whatsIncluded.answer') },
+      { question: t('microfaq.howRot'), answer: t('microfaq.howRot.answer') },
+      { question: t('microfaq.areas'), answer: t('microfaq.areas.answer') },
+      { question: t('microfaq.insured'), answer: t('microfaq.insured.answer') },
+      { question: t('microfaq.warranty'), answer: t('microfaq.warranty.answer') },
     ];
   };
 
-  const faqs = getFAQs(service);
+  const faqs = getFAQs();
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <h3 className="text-lg font-semibold mb-4">Vanliga frågor</h3>
+      <h3 className="text-lg font-semibold mb-4">{t('microfaq.title')}</h3>
       
       {faqs.map((faq, index) => (
         <div
