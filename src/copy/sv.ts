@@ -928,6 +928,8 @@ export const sv: Record<CopyKey, string> = {
   'sticky.requestQuote': 'Begär offert',
   'sticky.callUs': 'Ring oss',
   'sticky.rotDeduction': 'ROT-avdrag 30%',
+  'sticky.responseTime': 'Vi svarar inom 2 timmar',
+  'sticky.callLabel': 'Ring oss på 079-335 02 28',
 
   // ProjectShowcase
   'projects.loading': 'Laddar projekt...',

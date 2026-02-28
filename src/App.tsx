@@ -110,6 +110,7 @@ const SmartHome = lazy(() => import('./pages/SmartHome'));
 const BookingWizard = lazy(() => import('./pages/BookingWizard'));
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CopyProvider } from '@/copy/CopyProvider';
+import { getLanguageFromPath } from '@/utils/routeMapping';
 import { useEventTracking } from '@/hooks/useEventTracking';
 import { useLocation } from 'react-router-dom';
 import { MaintenanceGate } from './components/MaintenanceGate';
@@ -131,6 +132,13 @@ const SuspenseFallback = () => (
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
   </div>
 );
+
+// Dynamic CopyProvider that reads locale from URL
+const DynamicCopyProvider = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const locale = getLanguageFromPath(location.pathname);
+  return <CopyProvider locale={locale} key={locale}>{children}</CopyProvider>;
+};
 
 // queryClient is now imported from @/lib/queryClient
 
@@ -225,7 +233,6 @@ const App = () => {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProfileProvider>
-          <CopyProvider locale="sv">
             <SecurityWrapper>
               <TooltipProvider>
                 <div id="smooth-wrapper">
@@ -234,6 +241,7 @@ const App = () => {
                     <Sonner />
                     <ServiceRequestModal />
                     <BrowserRouter>
+                      <DynamicCopyProvider>
                       <FeatureFlagInitializer>
                         <URLDecodeGuard />
                         <PageViewTracker />
@@ -463,13 +471,13 @@ const App = () => {
                    <StickyPhoneButton />
                    
                    {/* Floating Settings Widget - renders OUTSIDE smooth-content for proper fixed positioning */}
-                   <FloatingSettingsWidget />
+                    <FloatingSettingsWidget />
+                </DynamicCopyProvider>
                 </BrowserRouter>
               </div>
             </div>
           </TooltipProvider>
         </SecurityWrapper>
-      </CopyProvider>
     </AuthProfileProvider>
   </QueryClientProvider>
 </HelmetProvider>
