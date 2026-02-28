@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button-premium";
 import { generateAreaSlug, STOCKHOLM_AREAS, UPPSALA_AREAS, type AreaKey } from "@/data/localServiceData";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface ExpandableAreaLinksProps {
   currentArea: AreaKey;
@@ -31,6 +32,8 @@ const itemVariants = {
 export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: ExpandableAreaLinksProps) => {
   const [showAllStockholm, setShowAllStockholm] = useState(false);
   const [showAllUppsala, setShowAllUppsala] = useState(false);
+  const { locale } = useCopy();
+  const servicePrefix = locale === 'en' ? '/en/services' : '/tjanster';
   
   const stockholmAreas = STOCKHOLM_AREAS.filter(a => a !== currentArea);
   const uppsalaAreas = UPPSALA_AREAS.filter(a => a !== currentArea);
@@ -78,7 +81,7 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                     transition={{ duration: 0.2 }}
                   >
                     <Link
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
+                      to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(area)}`}
                       className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
                     >
                       {area}
@@ -129,7 +132,7 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                     transition={{ duration: 0.2 }}
                   >
                     <Link
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
+                      to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(area)}`}
                       className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
                     >
                       {area}

@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/accordion";
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
+import { useCopy } from "@/copy/CopyProvider";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
 import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
@@ -100,6 +101,8 @@ const stepColors = [
 
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
+  const { locale } = useCopy();
+  const servicePrefix = locale === 'en' ? '/en/services' : '/tjanster';
   
   const isValid = serviceSlug && areaSlug && isValidLocalServicePage(serviceSlug, areaSlug);
   
@@ -210,7 +213,7 @@ const LocalServicePage = () => {
             Vi kunde inte hitta den tjänst eller ort du söker.
           </p>
           <Button asChild>
-            <Link to="/tjanster">Visa alla tjänster</Link>
+            <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>{locale === 'en' ? 'View all services' : 'Visa alla tjänster'}</Link>
           </Button>
         </div>
       </div>
@@ -774,7 +777,7 @@ const LocalServicePage = () => {
                       transition={{ duration: 0.2 }}
                     >
                       <Link 
-                        to={`/tjanster/${otherService.slug}/${areaSlug}`}
+                        to={`${servicePrefix}/${otherService.slug}/${areaSlug}`}
                         className="flex flex-col items-center gap-3 p-4 rounded-xl bg-card border border-border hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
                       >
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${getGradientForService(otherService.slug)}`}>
@@ -831,8 +834,8 @@ const LocalServicePage = () => {
                       className="border-border hover:bg-muted"
                       asChild
                     >
-                      <Link to="/tjanster">
-                        Alla tjänster
+                      <Link to={servicePrefix}>
+                        {locale === 'en' ? 'All services' : 'Alla tjänster'}
                         <ArrowRight className="h-5 w-5 ml-2" />
                       </Link>
                     </Button>
@@ -859,7 +862,7 @@ const LocalServicePage = () => {
                   {uniqueContent.nearbyAreas.map((neighbor) => (
                     <Link 
                       key={neighbor}
-                      to={`/tjanster/${serviceSlug}/${generateAreaSlug(neighbor)}`}
+                      to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(neighbor)}`}
                       className="text-sm text-zinc-500 hover:text-primary transition-colors"
                     >
                       {service?.name} {neighbor}
