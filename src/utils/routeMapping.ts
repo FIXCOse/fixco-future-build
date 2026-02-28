@@ -50,11 +50,29 @@ export const convertPath = (currentPath: string, targetLang: 'sv' | 'en'): strin
   let targetPath: string;
 
   if (targetLang === 'en') {
-    // Swedish to English
-    targetPath = svToEnRoutes[cleanPath] || cleanPath.replace(/^\//, '/en/');
+    // Swedish to English — exact match first, then dynamic prefix swap
+    targetPath = svToEnRoutes[cleanPath];
+    if (!targetPath) {
+      if (cleanPath.startsWith('/tjanster/')) {
+        targetPath = '/en/services/' + cleanPath.slice('/tjanster/'.length);
+      } else if (cleanPath.startsWith('/boka/')) {
+        targetPath = '/en/book/' + cleanPath.slice('/boka/'.length);
+      } else {
+        targetPath = cleanPath.replace(/^\//, '/en/');
+      }
+    }
   } else {
-    // English to Swedish
-    targetPath = enToSvRoutes[cleanPath] || cleanPath.replace(/^\/en\/?/, '/') || '/';
+    // English to Swedish — exact match first, then dynamic prefix swap
+    targetPath = enToSvRoutes[cleanPath];
+    if (!targetPath) {
+      if (cleanPath.startsWith('/en/services/')) {
+        targetPath = '/tjanster/' + cleanPath.slice('/en/services/'.length);
+      } else if (cleanPath.startsWith('/en/book/')) {
+        targetPath = '/boka/' + cleanPath.slice('/en/book/'.length);
+      } else {
+        targetPath = cleanPath.replace(/^\/en\/?/, '/') || '/';
+      }
+    }
   }
 
   return `${targetPath}${search}${hash}`;

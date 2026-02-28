@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateAreaSlug, STOCKHOLM_AREAS, UPPSALA_AREAS, getAreaMetadata, type AreaKey } from "@/data/localServiceData";
+import { useCopy } from "@/copy/CopyProvider";
 
 interface NearbyAreasSectionProps {
   currentArea: AreaKey;
@@ -39,6 +40,8 @@ const itemVariants = {
 
 export const NearbyAreasSection = ({ currentArea, serviceSlug, serviceName }: NearbyAreasSectionProps) => {
   const [showAll, setShowAll] = useState(false);
+  const { locale } = useCopy();
+  const servicePrefix = locale === 'en' ? '/en/services' : '/tjanster';
   
   const metadata = getAreaMetadata(currentArea);
   const isStockholm = metadata.region === "Stockholm";
@@ -90,7 +93,7 @@ export const NearbyAreasSection = ({ currentArea, serviceSlug, serviceName }: Ne
                   layout
                 >
                   <Link
-                    to={`/tjanster/${serviceSlug}/${generateAreaSlug(area)}`}
+                    to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(area)}`}
                     className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card border border-border text-sm text-foreground/80 hover:border-primary/40 hover:text-foreground hover:bg-primary/10 transition-all"
                   >
                     <span>{area}</span>
