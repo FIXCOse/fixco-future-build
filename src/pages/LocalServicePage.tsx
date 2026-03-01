@@ -44,6 +44,7 @@ import {
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
 import { useCopy } from "@/copy/CopyProvider";
+import { SEARCH_ACTION_PATTERNS } from "@/data/localSeoData";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
 import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
@@ -99,6 +100,43 @@ const stepColors = [
   { bg: "from-amber-500/20 to-amber-500/5", text: "text-amber-400", border: "border-amber-500/20" },
   { bg: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-400", border: "border-emerald-500/20" },
 ];
+
+/**
+ * Maps a related search term to the correct service+area URL instead of self-linking.
+ * Analyzes the term against SEARCH_ACTION_PATTERNS to find the best matching service.
+ */
+const getRelatedSearchUrl = (
+  term: string, 
+  currentServiceSlug: string, 
+  currentAreaSlug: string,
+  servicePrefix: string
+): string => {
+  const lowerTerm = term.toLowerCase();
+  
+  // Try to match term against other services' synonyms/projectTypes
+  let bestMatch: string | null = null;
+  
+  for (const [slug, patterns] of Object.entries(SEARCH_ACTION_PATTERNS)) {
+    if (slug === currentServiceSlug) continue; // Skip current service
+    
+    const allTerms = [...patterns.synonyms, ...patterns.projectTypes];
+    if (allTerms.some(t => lowerTerm.includes(t.toLowerCase()))) {
+      bestMatch = slug;
+      break;
+    }
+  }
+  
+  // If no match to another service, try matching current service's synonyms 
+  // and link to a nearby service instead
+  if (!bestMatch) {
+    const serviceKeys = Object.keys(SEARCH_ACTION_PATTERNS);
+    const currentIdx = serviceKeys.indexOf(currentServiceSlug);
+    // Pick the next service in the list as a cross-link
+    bestMatch = serviceKeys[(currentIdx + 1) % serviceKeys.length];
+  }
+  
+  return `${servicePrefix}/${bestMatch}/${currentAreaSlug}`;
+};
 
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
@@ -259,6 +297,13 @@ const LocalServicePage = () => {
         <meta property="og:title" content={content.title} />
         <meta property="og:description" content={content.description} />
         <meta property="og:url" content={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        {/* hreflang for multilingual SEO */}
+        <link rel="alternate" hrefLang="sv" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <link rel="alternate" hrefLang="en" href={`https://fixco.se/en/services/${serviceSlug}/${areaSlug}`} />
+        <link rel="alternate" hrefLang="x-default" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        {/* Geo meta tags for local ranking */}
+        {metadata?.region && <meta name="geo.region" content={`SE-${metadata.region === 'Uppsala' ? 'C' : 'AB'}`} />}
+        <meta name="geo.placename" content={area} />
         {/* Core SEO schemas */}
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
@@ -916,15 +961,18 @@ const LocalServicePage = () => {
                 {t('local.relatedSearches')}
               </h4>
               <div className="flex flex-wrap gap-x-3 gap-y-1.5">
-                {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => (
-                  <Link 
-                    key={idx} 
-                    to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
-                    className="text-xs text-zinc-600 hover:text-primary transition-colors"
-                  >
-                    {search}
-                  </Link>
-                ))}
+                {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => {
+                  const targetUrl = getRelatedSearchUrl(search, serviceSlug!, areaSlug!, servicePrefix);
+                  return (
+                    <Link 
+                      key={idx} 
+                      to={targetUrl}
+                      className="text-xs text-zinc-600 hover:text-primary transition-colors"
+                    >
+                      {search}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -940,12 +988,13 @@ const LocalServicePage = () => {
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {uniqueContent.urgentServices.map((urgent, idx) => (
-                    <span 
-                      key={idx} 
-                      className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded"
+                    <Link 
+                      key={idx}
+                      to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
+                      className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded hover:text-primary transition-colors"
                     >
                       {urgent} {locale === 'en' ? 'in' : 'i'} {area}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
