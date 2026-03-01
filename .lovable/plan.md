@@ -1,110 +1,72 @@
 
-## SEO-optimering: Ranka pa forsta sidan for "snickare uppsala" m.fl.
 
-Baserat pa er GSC-data (144 klick, 1503 exponeringar for "snickare uppsala" = ~9.6% CTR) och en genomgang av kodbasen har jag identifierat 6 atgarder -- fran kritiska fel till nya optimeringar.
+## SEO-optimering: Dominera "snickare uppsala", "snickare stockholm" m.fl.
 
----
-
-### 1. KRITISKT: index.html sager "50% ROT-avdrag" (FELAKTIG INFO)
-
-Google laser `index.html` innan React laddas. Er meta description sager fortfarande **"50% ROT-avdrag"** -- det ar 30% sedan januari 2026. Samma fel i OG- och Twitter-taggar.
-
-**Fix:** Uppdatera meta description, OG description och Twitter description fran "50%" till "30%". Ocksa ta bort "15 000+ nojda kunder" om det inte ar verifierat.
-
-**Fil:** `index.html` (rad 34, 51, 66)
+Jag har identifierat **5 atgarder** som kan gora verklig skillnad for era lokala sidor.
 
 ---
 
-### 2. KRITISKT: Sitemap lastmod fran december 2025
+### 1. Lagg till individuella Review-schemas pa lokala sidor
 
-Alla 1135 rader i `sitemap.xml` har `lastmod: 2025-12-22`. Google ser detta som att inget andrats pa 14 manader --> lagre crawl-prioritet.
+**Problem:** Ni har `AggregateRating` (stjarnor) i schemat, men Google behover individuella `Review`-schemas for att validera att betyget ar trovärdigt och visa det i SERP. Funktionen `getReviewSchema()` finns redan i `SEOSchemaEnhanced.tsx` men anvands **aldrig** pa lokala sidor.
 
-Dessutom finns en **duplicerad `/en/ai`-entry** (rad 531-548 duplicerar rad 540-548).
+**Fix:** I `LocalServicePage.tsx`, generera 3-5 individuella Review-schemas fran `getAreaReviews()` och injektera dem som `<script type="application/ld+json">` i Helmet. Dessa validerar era AggregateRating-stjarnor och ger Google bevis for att betyget ar riktigt.
 
-**Fix:** Uppdatera alla `lastmod` till `2026-03-01`. Ta bort duplicerad /en/ai.
-
-**Fil:** `public/sitemap.xml`
+**Fil:** `src/pages/LocalServicePage.tsx`
 
 ---
 
-### 3. _headers cachar HTML i 1 ar (TEKNISKT FEL)
+### 2. Gor "Relaterade sokningar" till interna lankar (ej bara text)
 
-Forsta regeln `/* Cache-Control: public, max-age=31536000, immutable` matchar ALLA filer -- inklusive SPA-routes som `/tjanster/snickare/uppsala`. Google kan alltsa fa en cachad version av sidan.
+**Problem:** Rad 884-890 i `LocalServicePage.tsx` visar relaterade sokningar som `<span>`-element -- dessa ger **noll SEO-varde**. Google kan inte folja dem, och de distribuerar ingen PageRank.
 
-**Fix:** Flytta `/*` till botten och anvand den bara for security headers. Lagg explicit `index.html` no-cache forst.
+**Fix:** Omvandla varje relaterad sokning till en `<Link>` som pekar pa ratt tjanst+ort-kombination (t.ex. "hantverkare uppsala" -> `/tjanster/snickare/uppsala`). For soktermer som inte har en exakt match (t.ex. "koksrenovering pris") lankar vi till naermaste tjanst-sida.
 
-**Fil:** `public/_headers`
-
-```text
-/index.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.webp
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.png
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.jpg
-  Cache-Control: public, max-age=31536000, immutable
-
-/*
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-```
+**Fil:** `src/pages/LocalServicePage.tsx`
 
 ---
 
-### 4. Blogartiklar med foraldrade "50% ROT 2025"-referenser
+### 3. Fixa kvarvarande "50% ROT" i localSeoData.ts
 
-Flera blogartiklar namner "50% ROT-avdrag 2025" i statistik, tips och berakningar. Vi ar i 2026 -- dessa behover uppdateras for att inte skada E-E-A-T.
+**Problem:** Trots att vi fixade `index.html` och `blogData.ts`, har `localSeoData.ts` kvar **24 forekomster av "50%"** -- i `localTip` fallback (rad 472), alla 10 `getImprovedTitle`-templates (rad 503-512), och `getImprovedDescription` (rad 538). Aven om dessa inte anvands pa alla sidor idag, ar `localTip`-fallbacken aktiv for orter utan specifik `AREA_UNIQUE_CONTENT`.
 
-Specifika andringar i `src/data/blogData.ts`:
-- Rad ~1904: quotableStatements - uppdatera till historisk referens
-- Rad ~1907: statistics "50% ROT-avdrag 2025" --> "30% ROT-avdrag 2026"
-- Rad ~1980: ROT-berakningsexempel 50% --> 30%
-- Rad ~1985: tip-box om "passa pa 2025" -- ta bort/uppdatera
-- Rad ~2069: statistics "50% ROT-avdrag 2025" --> "30% ROT-avdrag 2026"
-- Rad ~2079-2089: elektriker-guiden namnder "50% ROT" i excerpt och prisexempel
+**Fix:** Byt alla "50%" till "30%" i hela filen.
 
-**Fil:** `src/data/blogData.ts`
+**Fil:** `src/data/localSeoData.ts`
 
 ---
 
-### 5. Saknar worstRating i lokal AggregateRating-schema
+### 4. Lagg till "sameAs" och "hasMap" i lokalt schema
 
-I `LocalServicePage.tsx` (rad 141-146) saknar AggregateRating `worstRating: "1"`. Google rekommenderar detta for fullstandig schema-validering. Samma fix som gjordes for dorrlassidan.
+**Problem:** Ert `ProfessionalService`-schema pa lokala sidor saknar `sameAs` (sociala medier) och `hasMap` (Google Maps-lank). Dessa stärker Googles fortroende for att ert foretag ar legitimt och hjalper med Knowledge Panel-visning.
 
-**Fix:** Lagg till `"worstRating": "1"` i AggregateRating-schemat.
+**Fix:** Lagg till `sameAs`-array (Facebook, Instagram, LinkedIn) och `hasMap` (Google Maps embed-URL med ort) i `localBusinessSchema` i `LocalServicePage.tsx`.
 
-**Fil:** `src/pages/LocalServicePage.tsx` (rad 141-146)
-
----
-
-### 6. Lagg till security headers (liten SEO-signal)
-
-Google anvander HTTPS och sakerhetsheaders som rankning-signal. Ni saknar `X-Content-Type-Options`, `X-Frame-Options` och `Referrer-Policy`. Dessa laggs till via punkt 3 ovan.
+**Fil:** `src/pages/LocalServicePage.tsx`
 
 ---
 
-### Sammanfattning
+### 5. Lagg till `hasOfferCatalog` pa varje lokal sida
 
-| Fil | Andring | Paverkan |
-|-----|---------|----------|
-| `index.html` | 50% --> 30% ROT i meta tags | HOG - Google laser detta forst |
-| `public/sitemap.xml` | lastmod 2026-03-01, ta bort duplikat | HOG - crawl-frekvens |
-| `public/_headers` | Fix caching + security headers | MEDEL - teknisk SEO |
-| `src/data/blogData.ts` | Uppdatera foraldrade 50%-referenser | MEDEL - E-E-A-T |
-| `src/pages/LocalServicePage.tsx` | worstRating i schema | LAG - schema-fullstandighet |
+**Problem:** Varje lokal sida listar specifika tjanster (t.ex. "Koksrenovering i Uppsala", "Altanbygge i Uppsala") men dessa exponeras inte som strukturerad data. Google kan inte indexera ert fulla tjansteutbud per ort.
+
+**Fix:** Lagg till `hasOfferCatalog`-schema i `localBusinessSchema` baserat pa `content.servicesSection.items`, sa att Google ser exakt vilka tjanster ni erbjuder pa varje ort.
+
+**Fil:** `src/pages/LocalServicePage.tsx`
+
+---
+
+### Teknisk sammanfattning
+
+| Fil | Andring |
+|-----|---------|
+| `src/pages/LocalServicePage.tsx` | Review-schemas, relaterade sokningar som lankar, sameAs/hasMap, hasOfferCatalog |
+| `src/data/localSeoData.ts` | 50% -> 30% ROT (24 forekomster) |
 
 ### Forvantat resultat
 
-- Google ser korrekt, uppdaterat innehall vid crawl
-- Sitemap signalerar "ny content" --> okad crawl-frekvens
-- Inga caching-problem som hindrar Google fran att se senaste versionen
-- Battre E-E-A-T genom korrekt information genomgaende
-- Fullstandiga schemas for rika resultat i SERP
+- **Stjarnor i SERP**: Individuella reviews validerar AggregateRating -- Google visar gula stjarnor under ert resultat
+- **Battre intern lankning**: Relaterade sokningar som lankar fordelar PageRank och hjalper Google forsta sidstrukturen
+- **Korrekt info**: Inga "50% ROT"-pastaenden som skadar trovärdighet
+- **Starkare lokalt schema**: sameAs + hasMap + OfferCatalog ger Google mer data for att visa ert resultat framfor konkurrenterna
+
