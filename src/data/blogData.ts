@@ -1891,9 +1891,9 @@ Skatteverket.se | Beslut om förhöjt ROT-avdrag 2025
       'Företaget måste ha F-skattsedel'
     ],
     faqs: [
-      { q: 'Hur mycket är ROT-avdraget 2025?', a: '50% av arbetskostnaden, max 75 000 kr per person. Tillfälligt höjt från 30%.' },
+      { q: 'Hur mycket är ROT-avdraget 2026?', a: '30% av arbetskostnaden, max 50 000 kr per person och år.' },
       { q: 'Vilka arbeten ger ROT-avdrag?', a: 'Renovering, ombyggnad och tillbyggnad: badrum, kök, el, VVS, målning, snickeri, markarbeten.' },
-      { q: 'När återgår ROT till 30%?', a: 'Från 1 januari 2026 blir det åter 30% och max 50 000 kr per person.' }
+      { q: 'Vad var ROT-avdraget 2025?', a: 'Under 2025 var ROT-avdraget tillfälligt höjt till 50% (max 75 000 kr). Från 2026 är det åter 30%.' }
     ],
     sources: [
       { name: 'Skatteverket', url: 'https://skatteverket.se' }
@@ -1901,13 +1901,13 @@ Skatteverket.se | Beslut om förhöjt ROT-avdrag 2025
     expertise: ['Baserat på Skatteverkets regler', 'Uppdateras vid regeländringar'],
     entityMentions: ['Skatteverket', 'Sverige', 'F-skatt'],
     quotableStatements: [
-      'Under 2025 ger ROT-avdraget 50% rabatt på arbetskostnaden - passa på innan det sänks till 30% 2026!'
+      'ROT-avdraget 2026 ger 30% rabatt på arbetskostnaden – max 50 000 kr per person och år.'
     ],
     statistics: [
-      { stat: '50% ROT-avdrag 2025', source: 'Skatteverket' },
-      { stat: '75 000 kr max per person', source: 'Skatteverket' }
+      { stat: '30% ROT-avdrag 2026', source: 'Skatteverket' },
+      { stat: '50 000 kr max per person', source: 'Skatteverket' }
     ],
-    lastFactChecked: '2025-12-22'
+    lastFactChecked: '2026-03-01'
   },
   {
     id: '2',
@@ -1925,8 +1925,8 @@ En badrumsrenovering kostar normalt **80 000-350 000 kr** beroende på storlek o
 
 :::stats
 80-350 tkr | Totalkostnad
-50% | ROT-avdrag 2025
-75 000 kr | Max avdrag per person
+30% | ROT-avdrag 2026
+50 000 kr | Max avdrag per person
 :::
 
 ### Prisöversikt per badrumsstorlek
@@ -1977,12 +1977,12 @@ Spara ALDRIG pengar på tätskiktet – det skyddar mot fuktskador som kan kosta
 - Material (kakel, porslin, etc): 70 000 kr
 - Arbetskostnad: 130 000 kr
 
-**ROT-avdrag (50% av arbete):** 65 000 kr
+**ROT-avdrag (30% av arbete):** 39 000 kr
 
-**Din slutkostnad:** 135 000 kr
+**Din slutkostnad:** 161 000 kr
 
 :::tip
-Passa på att renovera badrummet 2025 – då får du 50% ROT-avdrag. Från 2026 sänks det till 30%!
+ROT-avdraget 2026 ger 30% rabatt på arbetskostnaden – max 50 000 kr per person och år.
 :::
 
 ## Så här går en badrumsrenovering till
@@ -2017,7 +2017,7 @@ Redo att renovera badrummet?
 2. **Välj standardformat på kakel** – specialstorlekar kostar mer
 3. **Planera noga** – ändringar under arbetets gång är dyra
 4. **Jämför offerter** – begär minst 3 offerter
-5. **Utnyttja ROT-avdraget** – spara 50% på arbetskostnaden
+5. **Utnyttja ROT-avdraget** – spara 30% på arbetskostnaden
 
 :::source
 Byggahus.se | Säker Vatten
@@ -2040,10 +2040,10 @@ Byggahus.se | Säker Vatten
     readingTime: 10,
     image: '/placeholder.svg',
     featured: false,
-    aiSummary: 'Badrumsrenovering kostar 80 000-350 000 kr beroende på storlek och standard. Litet badrum (3-4 m²): 80 000-180 000 kr, medium (5-7 m²): 120 000-250 000 kr. ROT-avdrag 50% på arbetskostnad 2025, max 75 000 kr. Tätskikt (15 000-30 000 kr) är viktigast - spara aldrig där! Tips: behåll rörens placering för att spara 20 000-50 000 kr.',
+    aiSummary: 'Badrumsrenovering kostar 80 000-350 000 kr beroende på storlek och standard. Litet badrum (3-4 m²): 80 000-180 000 kr, medium (5-7 m²): 120 000-250 000 kr. ROT-avdrag 30% på arbetskostnad 2026, max 50 000 kr. Tätskikt (15 000-30 000 kr) är viktigast - spara aldrig där! Tips: behåll rörens placering för att spara 20 000-50 000 kr.',
     keyFacts: [
       'Total kostnad: 80 000-350 000 kr',
-      'ROT-avdrag 50% på arbete 2025',
+      'ROT-avdrag 30% på arbete 2026',
       'Tätskikt: 15 000-30 000 kr (viktigast!)',
       'Kakel: 300-2 000 kr/m²',
       'VVS-arbeten: 25 000-50 000 kr',
@@ -2065,10 +2065,10 @@ Byggahus.se | Säker Vatten
       'Spara aldrig på tätskiktet - det skyddar mot fuktskador som kan kosta 100 000+ kr att åtgärda.'
     ],
     statistics: [
-      { stat: '80 000-350 000 kr badrumsrenovering', source: 'Branschpris 2025' },
-      { stat: '50% ROT-avdrag 2025', source: 'Skatteverket' }
+      { stat: '80 000-350 000 kr badrumsrenovering', source: 'Branschpris 2026' },
+      { stat: '30% ROT-avdrag 2026', source: 'Skatteverket' }
     ],
-    lastFactChecked: '2025-12-22'
+    lastFactChecked: '2026-03-01'
   },
   {
     id: '3',
@@ -2076,17 +2076,17 @@ Byggahus.se | Säker Vatten
     title: 'Vad kostar elektriker 2025? Prisguide för elarbeten',
     metaTitle: 'Elektriker Pris 2025 | Kostnad för Elarbeten med ROT',
     metaDescription: 'Vad kostar en elektriker 2025? Komplett prisguide för elinstallationer, från uttag till elbilsladdare. Lär dig hur ROT-avdrag minskar kostnaden.',
-    excerpt: 'Få koll på vad olika elarbeten kostar och hur du sparar 50% med ROT-avdrag. Från nya uttag till komplett elinstallation.',
+    excerpt: 'Få koll på vad olika elarbeten kostar och hur du sparar 30% med ROT-avdrag 2026. Från nya uttag till komplett elinstallation.',
     content: `
 :::info
-En behörig elektriker tar normalt **550-850 kr per timme** exklusive moms. Med ROT-avdrag 2025 betalar du effektivt **275-425 kr per timme**.
+En behörig elektriker tar normalt **550-850 kr per timme** exklusive moms. Med ROT-avdrag 2026 (30%) betalar du effektivt **385-595 kr per timme**.
 :::
 
 ## Elektriker timpris 2025
 
 :::stats
 550-850 kr | Per timme exkl. moms
-275-425 kr | Med 50% ROT-avdrag
+385-595 kr | Med 30% ROT-avdrag
 :::
 
 ### Priser för vanliga elarbeten
@@ -2163,7 +2163,7 @@ En köksrenovering kostar normalt **100 000-500 000 kr** beroende på storlek oc
 
 :::stats
 100-500 tkr | Totalkostnad
-50% | ROT-avdrag 2025
+30% | ROT-avdrag 2026
 4-6 veckor | Typisk projekttid
 :::
 

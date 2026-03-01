@@ -142,7 +142,8 @@ const LocalServicePage = () => {
         "@type": "AggregateRating",
         "ratingValue": areaActivity.avgRating.toFixed(1),
         "reviewCount": areaActivity.reviewCount.toString(),
-        "bestRating": "5"
+        "bestRating": "5",
+        "worstRating": "1"
       }
     };
   }, [content, serviceSlug, areaSlug, area, metadata, areaActivity]);
