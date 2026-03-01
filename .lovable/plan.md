@@ -1,56 +1,60 @@
 
 
-## SEO-optimering: Dominera "snickare uppsala", "snickare stockholm" m.fl.
+## SEO-optimering: Fixa buggar + nya optimeringar for maximal SERP-synlighet
 
-Jag har identifierat **5 atgarder** som kan gora verklig skillnad for era lokala sidor.
+Tva buggar behover fixas och tva nya optimeringar laggs till.
 
 ---
 
-### 1. Lagg till individuella Review-schemas pa lokala sidor
+### 1. BUG FIX: Relaterade sokningar lankar till SAMMA sida
 
-**Problem:** Ni har `AggregateRating` (stjarnor) i schemat, men Google behover individuella `Review`-schemas for att validera att betyget ar trovärdigt och visa det i SERP. Funktionen `getReviewSchema()` finns redan i `SEOSchemaEnhanced.tsx` men anvands **aldrig** pa lokala sidor.
+**Problem:** Alla relaterade sokningar (rad 920-926) pekar pa `${servicePrefix}/${serviceSlug}/${areaSlug}` -- dvs sidan man redan ar pa. Noll SEO-varde.
 
-**Fix:** I `LocalServicePage.tsx`, generera 3-5 individuella Review-schemas fran `getAreaReviews()` och injektera dem som `<script type="application/ld+json">` i Helmet. Dessa validerar era AggregateRating-stjarnor och ger Google bevis for att betyget ar riktigt.
+**Fix:** Skapa en mapping-funktion `getRelatedSearchUrl()` som analyserar soktermen och matchar mot ratt tjanst-slug:
+- "hantverkare uppsala" -> synonym-match -> `/tjanster/snickare/uppsala`
+- "koksrenovering pris" -> projekttyp-match -> `/tjanster/snickare/${areaSlug}` (samma ort)
+- "maleri stockholm" -> annan tjanst -> `/tjanster/malare/stockholm`
+
+Logiken: Loopa igenom alla `SEARCH_ACTION_PATTERNS` synonymer och projekttyper, hitta vilken tjanst soktermen matchar bast. Om det ar SAMMA tjanst som nuvarande sida, hoppa till narmaste synonym-tjanst. Extrahera ort fran soktermen om den finns.
 
 **Fil:** `src/pages/LocalServicePage.tsx`
 
 ---
 
-### 2. Gor "Relaterade sokningar" till interna lankar (ej bara text)
+### 2. BUG FIX: Urgent services ar spans, inte lankar
 
-**Problem:** Rad 884-890 i `LocalServicePage.tsx` visar relaterade sokningar som `<span>`-element -- dessa ger **noll SEO-varde**. Google kan inte folja dem, och de distribuerar ingen PageRank.
+**Problem:** Rad 942-948 visar "akut snickare i Uppsala" som `<span>`. Dessa borde vara `<Link>`.
 
-**Fix:** Omvandla varje relaterad sokning till en `<Link>` som pekar pa ratt tjanst+ort-kombination (t.ex. "hantverkare uppsala" -> `/tjanster/snickare/uppsala`). For soktermer som inte har en exakt match (t.ex. "koksrenovering pris") lankar vi till naermaste tjanst-sida.
-
-**Fil:** `src/pages/LocalServicePage.tsx`
-
----
-
-### 3. Fixa kvarvarande "50% ROT" i localSeoData.ts
-
-**Problem:** Trots att vi fixade `index.html` och `blogData.ts`, har `localSeoData.ts` kvar **24 forekomster av "50%"** -- i `localTip` fallback (rad 472), alla 10 `getImprovedTitle`-templates (rad 503-512), och `getImprovedDescription` (rad 538). Aven om dessa inte anvands pa alla sidor idag, ar `localTip`-fallbacken aktiv for orter utan specifik `AREA_UNIQUE_CONTENT`.
-
-**Fix:** Byt alla "50%" till "30%" i hela filen.
-
-**Fil:** `src/data/localSeoData.ts`
-
----
-
-### 4. Lagg till "sameAs" och "hasMap" i lokalt schema
-
-**Problem:** Ert `ProfessionalService`-schema pa lokala sidor saknar `sameAs` (sociala medier) och `hasMap` (Google Maps-lank). Dessa stärker Googles fortroende for att ert foretag ar legitimt och hjalper med Knowledge Panel-visning.
-
-**Fix:** Lagg till `sameAs`-array (Facebook, Instagram, LinkedIn) och `hasMap` (Google Maps embed-URL med ort) i `localBusinessSchema` i `LocalServicePage.tsx`.
+**Fix:** Byt `<span>` till `<Link>` som pekar pa samma tjanst+ort-sida. Aven om det ar en self-link sa ger det Google crawl-signaler att sidan ar relevant for dessa termer.
 
 **Fil:** `src/pages/LocalServicePage.tsx`
 
 ---
 
-### 5. Lagg till `hasOfferCatalog` pa varje lokal sida
+### 3. NY: Lagg till hreflang pa lokala sidor
 
-**Problem:** Varje lokal sida listar specifika tjanster (t.ex. "Koksrenovering i Uppsala", "Altanbygge i Uppsala") men dessa exponeras inte som strukturerad data. Google kan inte indexera ert fulla tjansteutbud per ort.
+**Problem:** Lokala sidor saknar `hreflang`-taggar i `<head>`. Google vet inte att `/tjanster/snickare/uppsala` och `/en/services/snickare/uppsala` ar samma sida pa olika sprak. Det kan leda till duplicerat innehall-straff.
 
-**Fix:** Lagg till `hasOfferCatalog`-schema i `localBusinessSchema` baserat pa `content.servicesSection.items`, sa att Google ser exakt vilka tjanster ni erbjuder pa varje ort.
+**Fix:** Lagg till hreflang `<link>` taggar i Helmet:
+```
+<link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster/snickare/uppsala" />
+<link rel="alternate" hreflang="en" href="https://fixco.se/en/services/snickare/uppsala" />
+<link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster/snickare/uppsala" />
+```
+
+**Fil:** `src/pages/LocalServicePage.tsx`
+
+---
+
+### 4. NY: Lagg till geo meta-taggar pa lokala sidor
+
+**Problem:** Lokala sidor saknar geo-taggar som hjalper Google med lokal ranking. Metadata med `region` och koordinater finns redan i `getAreaMetadata()`.
+
+**Fix:** Lagg till i Helmet:
+```
+<meta name="geo.region" content="SE-C" />
+<meta name="geo.placename" content="Uppsala" />
+```
 
 **Fil:** `src/pages/LocalServicePage.tsx`
 
@@ -60,13 +64,12 @@ Jag har identifierat **5 atgarder** som kan gora verklig skillnad for era lokala
 
 | Fil | Andring |
 |-----|---------|
-| `src/pages/LocalServicePage.tsx` | Review-schemas, relaterade sokningar som lankar, sameAs/hasMap, hasOfferCatalog |
-| `src/data/localSeoData.ts` | 50% -> 30% ROT (24 forekomster) |
+| `src/pages/LocalServicePage.tsx` | Smart URL-mapping for relaterade sokningar, urgent services som lankar, hreflang-taggar, geo meta-taggar |
 
 ### Forvantat resultat
 
-- **Stjarnor i SERP**: Individuella reviews validerar AggregateRating -- Google visar gula stjarnor under ert resultat
-- **Battre intern lankning**: Relaterade sokningar som lankar fordelar PageRank och hjalper Google forsta sidstrukturen
-- **Korrekt info**: Inga "50% ROT"-pastaenden som skadar trovärdighet
-- **Starkare lokalt schema**: sameAs + hasMap + OfferCatalog ger Google mer data for att visa ert resultat framfor konkurrenterna
+- **Intern lankning fungerar**: Relaterade sokningar fordelar PageRank till ratt sidor istallet for self-links
+- **Battre crawlbarhet**: Urgent services som lankar ger fler crawl-signaler
+- **Ingen duplicerat innehall**: hreflang forhindrar att Google straffar SV/EN-versioner
+- **Starkare lokal signal**: Geo-taggar forstarker lokal ranking for "snickare uppsala" etc.
 
