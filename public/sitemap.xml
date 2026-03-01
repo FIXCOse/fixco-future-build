@@ -7,7 +7,7 @@
   <!-- Landing SV -->
   <url>
     <loc>https://fixco.se/</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
@@ -18,7 +18,7 @@
   <!-- Landing EN -->
   <url>
     <loc>https://fixco.se/en/</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
@@ -29,7 +29,7 @@
   <!-- Tjänster Hub SV -->
   <url>
     <loc>https://fixco.se/tjanster</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
@@ -40,7 +40,7 @@
   <!-- Services Hub EN -->
   <url>
     <loc>https://fixco.se/en/services</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
@@ -51,7 +51,7 @@
   <!-- Referenser SV -->
   <url>
     <loc>https://fixco.se/referenser</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
@@ -62,7 +62,7 @@
   <!-- References EN -->
   <url>
     <loc>https://fixco.se/en/references</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
@@ -73,7 +73,7 @@
   <!-- Kontakt SV -->
   <url>
     <loc>https://fixco.se/kontakt</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
@@ -84,7 +84,7 @@
   <!-- Contact EN -->
   <url>
     <loc>https://fixco.se/en/contact</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.82</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
@@ -95,7 +95,7 @@
   <!-- Om Oss SV -->
   <url>
     <loc>https://fixco.se/om-oss</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
@@ -106,7 +106,7 @@
   <!-- About EN -->
   <url>
     <loc>https://fixco.se/en/about</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.83</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
@@ -117,7 +117,7 @@
   <!-- Boka Hembesök SV -->
   <url>
     <loc>https://fixco.se/boka-hembesok</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
@@ -128,7 +128,7 @@
   <!-- Book Visit EN -->
   <url>
     <loc>https://fixco.se/en/book-visit</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
@@ -139,7 +139,7 @@
   <!-- FAQ SV -->
   <url>
     <loc>https://fixco.se/faq</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
@@ -150,7 +150,7 @@
   <!-- FAQ EN -->
   <url>
     <loc>https://fixco.se/en/faq</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
@@ -161,7 +161,7 @@
   <!-- ROT Info SV -->
   <url>
     <loc>https://fixco.se/rot-info</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
@@ -172,7 +172,7 @@
   <!-- ROT Info EN -->
   <url>
     <loc>https://fixco.se/en/rot-info</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
@@ -183,7 +183,7 @@
   <!-- RUT SV -->
   <url>
     <loc>https://fixco.se/rut</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
@@ -194,7 +194,7 @@
   <!-- RUT EN -->
   <url>
     <loc>https://fixco.se/en/rut</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
@@ -205,7 +205,7 @@
   <!-- Smart Hem SV -->
   <url>
     <loc>https://fixco.se/smart-hem</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
@@ -216,7 +216,7 @@
   <!-- Smart Home EN -->
   <url>
     <loc>https://fixco.se/en/smart-home</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
@@ -227,7 +227,7 @@
   <!-- Blogg SV -->
   <url>
     <loc>https://fixco.se/blogg</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
   </url>
@@ -235,243 +235,53 @@
   <!-- ==================== BLOGG ARTIKLAR (40 st från blogData.ts) ==================== -->
 
   <!-- Featured Articles (priority 0.50) -->
-  <url>
-    <loc>https://fixco.se/blogg/nya-vatrumskraven-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/rot-avdrag-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/k3-obligatoriskt-brf-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/elpriser-2026-prognos</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/bolaneranta-2026-prognos</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/riksbanken-ranteprognos-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
+  <url><loc>https://fixco.se/blogg/nya-vatrumskraven-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://fixco.se/blogg/rot-avdrag-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://fixco.se/blogg/k3-obligatoriskt-brf-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://fixco.se/blogg/elpriser-2026-prognos</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://fixco.se/blogg/bolaneranta-2026-prognos</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://fixco.se/blogg/riksbanken-ranteprognos-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.50</priority></url>
 
   <!-- Regular Articles (priority 0.45) -->
-  <url>
-    <loc>https://fixco.se/blogg/gront-skatteavdrag-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/varmepump-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/stambyte-brf-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/altanbygge-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/fonsterbyte-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/rot-avdrag-guide-2025</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/badrumsrenovering-kostnad-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/elektriker-pris-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/koksrenovering-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vanliga-renoveringsmisstag</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/bostadsprisutveckling-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/bygglov-digital-ansokan-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/gron-renovering-miljosmarta-val-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/brf-underhallsplan-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/stambyte-kostnad-guide-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/sakra-elinstallationer-regler-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/solceller-batterilager-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/renovera-till-salu-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/tvatterier-rut-avdrag-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/rut-tradgard-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/rut-stadning-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/rut-flytt-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/mala-rum-sjalv-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/lagga-golv-sjalv-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/tapetsera-sjalv-guide</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/byta-blandare-sjalv</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-elektriker-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-malare-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-snickare-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-vvs-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-takbyte-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://fixco.se/blogg/vad-kostar-dranering-2026</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.45</priority>
-  </url>
+  <url><loc>https://fixco.se/blogg/gront-skatteavdrag-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/varmepump-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/stambyte-brf-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/altanbygge-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/fonsterbyte-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/rot-avdrag-guide-2025</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/badrumsrenovering-kostnad-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/elektriker-pris-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/koksrenovering-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vanliga-renoveringsmisstag</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/bostadsprisutveckling-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/bygglov-digital-ansokan-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/gron-renovering-miljosmarta-val-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/brf-underhallsplan-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/stambyte-kostnad-guide-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/sakra-elinstallationer-regler-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/solceller-batterilager-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/renovera-till-salu-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/tvatterier-rut-avdrag-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/rut-tradgard-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/rut-stadning-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/rut-flytt-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/mala-rum-sjalv-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/lagga-golv-sjalv-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/tapetsera-sjalv-guide</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/byta-blandare-sjalv</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-elektriker-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-malare-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-snickare-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-vvs-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-takbyte-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://fixco.se/blogg/vad-kostar-dranering-2026</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
 
   <!-- ==================== SLUT BLOGG ARTIKLAR (40 st) ==================== -->
 
   <!-- Karriär SV -->
   <url>
     <loc>https://fixco.se/karriar</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.65</priority>
   </url>
@@ -479,7 +289,7 @@
   <!-- Områden Uppsala -->
   <url>
     <loc>https://fixco.se/omraden/uppsala</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -487,7 +297,7 @@
   <!-- Områden Stockholm -->
   <url>
     <loc>https://fixco.se/omraden/stockholm</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -495,7 +305,7 @@
   <!-- Cookies SV -->
   <url>
     <loc>https://fixco.se/cookies</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.40</priority>
   </url>
@@ -503,7 +313,7 @@
   <!-- Privacy SV -->
   <url>
     <loc>https://fixco.se/privacy</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.40</priority>
   </url>
@@ -511,7 +321,7 @@
   <!-- Terms SV -->
   <url>
     <loc>https://fixco.se/terms</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.40</priority>
   </url>
@@ -519,7 +329,7 @@
   <!-- AI SV -->
   <url>
     <loc>https://fixco.se/ai</loc>
-    <lastmod>2025-12-22</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
@@ -530,16 +340,7 @@
   <!-- AI EN -->
   <url>
     <loc>https://fixco.se/en/ai</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.70</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
-    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
-  </url>
-  <url>
-    <loc>https://fixco.se/en/ai</loc>
-    <lastmod>2025-12-19</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
@@ -549,587 +350,587 @@
 
   <!-- ==================== TJÄNSTESIDOR (ALLMÄNNA) ==================== -->
   
-  <url><loc>https://fixco.se/tjanster/el</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/el</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
 
   <!-- ==================== LOKALA TJÄNSTESIDOR (540+ SIDOR) ==================== -->
   
   <!-- ========== SNICKARE - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/snickare/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== SNICKARE - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/snickare/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/snickare/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/snickare/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== ELEKTRIKER - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/elektriker/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== ELEKTRIKER - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/elektriker/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/elektriker/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/elektriker/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== VVS - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/vvs/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== VVS - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/vvs/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/vvs/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/vvs/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== MÅLARE - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/malare/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== MÅLARE - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/malare/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/malare/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/malare/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== TRÄDGÅRD - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/tradgard/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== TRÄDGÅRD - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/tradgard/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tradgard/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tradgard/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== STÄD - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/stad/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== STÄD - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/stad/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/stad/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/stad/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== MARKARBETEN - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/markarbeten/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== MARKARBETEN - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/markarbeten/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/markarbeten/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/markarbeten/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== MONTERING - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/montering/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== MONTERING - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/montering/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/montering/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/montering/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== FLYTT - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/flytt/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== FLYTT - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/flytt/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/flytt/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/flytt/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- ========== TEKNISKA INSTALLATIONER - STOCKHOLM (35 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/stockholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/bromma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/hagersten</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/kungsholmen</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sodermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vasastan</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ostermalm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/danderyd</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ekero</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/haninge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/huddinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/jarfalla</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/jarna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/lidingo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/marsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nacka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/norrtalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nykvarn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nynashamn</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/salem</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sigtuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sollentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/solna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sundbyberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sodertalje</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/tyreso</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/taby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/upplands-vasby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/upplands-bro</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vallentuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vaxholm</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/varmdo</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/akersberga</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/botkyrka</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/stockholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/bromma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/hagersten</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/kungsholmen</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sodermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vasastan</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ostermalm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/danderyd</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ekero</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/haninge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/huddinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/jarfalla</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/jarna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/lidingo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/marsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nacka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/norrtalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nykvarn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/nynashamn</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/salem</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sigtuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sollentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/solna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sundbyberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sodertalje</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/tyreso</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/taby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/upplands-vasby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/upplands-bro</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vallentuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vaxholm</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/varmdo</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/akersberga</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/botkyrka</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   
   <!-- ========== TEKNISKA INSTALLATIONER - UPPSALA (19 orter) ========== -->
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/knivsta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/enkoping</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/tierp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/osthammar</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/storvreta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/bjorklinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/balinge</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vattholma</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/alsike</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/granby</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/savja</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/eriksberg</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/gottsunda</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sunnersta</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/skyttorp</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/lovstalot</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/gamla-uppsala</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ultuna</loc><lastmod>2025-12-19</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/knivsta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/enkoping</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/tierp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/osthammar</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/storvreta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/bjorklinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/balinge</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/vattholma</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/alsike</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/granby</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/savja</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/eriksberg</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/gottsunda</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/sunnersta</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/skyttorp</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/lovstalot</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/gamla-uppsala</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fixco.se/tjanster/tekniska-installationer/ultuna</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
 </urlset>
