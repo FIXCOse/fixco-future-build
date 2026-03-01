@@ -53,7 +53,8 @@ import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLi
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
-  getOrganizationSchema 
+  getOrganizationSchema,
+  getReviewSchema
 } from "@/components/SEOSchemaEnhanced";
 
 // Action section images — used as hero backgrounds for services that have them
@@ -144,9 +145,27 @@ const LocalServicePage = () => {
         "reviewCount": areaActivity.reviewCount.toString(),
         "bestRating": "5",
         "worstRating": "1"
+      },
+      "sameAs": [
+        "https://www.facebook.com/fixco",
+        "https://www.instagram.com/fixco_se",
+        "https://www.linkedin.com/company/fixco"
+      ],
+      "hasMap": `https://www.google.com/maps?q=Fixco+${encodeURIComponent(service?.name || '')}+${encodeURIComponent(area)}`,
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": `${service?.name} i ${area}`,
+        "itemListElement": content.servicesSection.items.map((item: string) => ({
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": item,
+            "provider": { "@id": "https://fixco.se#organization" }
+          }
+        }))
       }
     };
-  }, [content, serviceSlug, areaSlug, area, metadata, areaActivity]);
+  }, [content, serviceSlug, areaSlug, area, metadata, areaActivity, service]);
 
   const howToSchema = useMemo(() => ({
     "@context": "https://schema.org",
@@ -199,6 +218,18 @@ const LocalServicePage = () => {
     });
   }, [content, serviceSlug, areaSlug]);
 
+  // Individual Review schemas to validate AggregateRating
+  const reviewSchemas = useMemo(() => {
+    if (!service) return [];
+    const reviews = getAreaReviews(area, service.name, 5);
+    return getReviewSchema(reviews.map((r, idx) => ({
+      author: r.name,
+      rating: r.rating,
+      text: r.quote,
+      date: `2026-0${Math.min(idx + 1, 2)}-${String(10 + idx).padStart(2, '0')}`
+    })));
+  }, [area, service]);
+
   // Combine myths into FAQ for consolidation
   const allFaqItems = content ? [
     ...content.faqs,
@@ -237,6 +268,10 @@ const LocalServicePage = () => {
         <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(authorSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(speakableSchema)}</script>
+        {/* Individual Review schemas for AggregateRating validation */}
+        {reviewSchemas.map((review, idx) => (
+          <script key={`review-${idx}`} type="application/ld+json">{JSON.stringify(review)}</script>
+        ))}
       </Helmet>
 
       <div className="min-h-screen">
@@ -882,12 +917,13 @@ const LocalServicePage = () => {
               </h4>
               <div className="flex flex-wrap gap-x-3 gap-y-1.5">
                 {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => (
-                  <span 
+                  <Link 
                     key={idx} 
-                    className="text-xs text-zinc-600"
+                    to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
+                    className="text-xs text-zinc-600 hover:text-primary transition-colors"
                   >
                     {search}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -469,7 +469,7 @@ export const generateUniqueLocalContent = (
   // Lokal tip
   const localTip = areaContent
     ? `I ${area} ser vi ofta projekt inom ${areaContent.popularDistricts.slice(0, 3).join(', ')}. Typiskt projektvärde ligger på ${areaContent.avgProjectValue} efter ${service?.rotRut}-avdrag.`
-    : `Vi täcker hela ${area} och kan ofta starta inom 24-48 timmar. Glöm inte att du får 50% ${service?.rotRut}-avdrag på arbetskostnaden!`;
+    : `Vi täcker hela ${area} och kan ofta starta inom 24-48 timmar. Glöm inte att du får 30% ${service?.rotRut}-avdrag på arbetskostnaden!`;
   
   // Relaterade sökningar för "Folk söker också"
   const relatedSearches = [
@@ -500,16 +500,16 @@ export const generateUniqueLocalContent = (
 // ============================================================
 export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): string => {
   const titles: Record<LocalServiceSlug, string> = {
-    "snickare": `Snickare ${area} ★ Renovering, kök, garderob & mer · ROT 50%`,
-    "vvs": `VVS ${area} ★ Installation, reparation & mer · ROT 50%`,
-    "elektriker": `Elektriker ${area} ★ Laddbox, elinstallation & mer · ROT 50%`,
-    "malare": `Målare ${area} ★ Fasad, invändigt & mer · ROT 50%`,
-    "stad": `Städfirma ${area} ★ Flytt, hem, byggstäd & mer · RUT 50%`,
-    "flytt": `Flytthjälp ${area} ★ Pack, bärhjälp & mer · RUT 50%`,
-    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & mer · ROT 50%`,
-    "montering": `Monteringshjälp ${area} ★ IKEA, kök, möbler & mer · ROT 50%`,
-    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck, anläggning & mer · ROT 50%`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox, larm & mer · ROT 50%`
+    "snickare": `Snickare ${area} ★ Renovering, kök, garderob & mer · ROT 30%`,
+    "vvs": `VVS ${area} ★ Installation, reparation & mer · ROT 30%`,
+    "elektriker": `Elektriker ${area} ★ Laddbox, elinstallation & mer · ROT 30%`,
+    "malare": `Målare ${area} ★ Fasad, invändigt & mer · ROT 30%`,
+    "stad": `Städfirma ${area} ★ Flytt, hem, byggstäd & mer · RUT 30%`,
+    "flytt": `Flytthjälp ${area} ★ Pack, bärhjälp & mer · RUT 30%`,
+    "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & mer · ROT 30%`,
+    "montering": `Monteringshjälp ${area} ★ IKEA, kök, möbler & mer · ROT 30%`,
+    "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck, anläggning & mer · ROT 30%`,
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox, larm & mer · ROT 30%`
   };
   return titles[serviceSlug] || `${serviceSlug} ${area} | Fixco`;
 };
@@ -535,7 +535,7 @@ export const getImprovedDescription = (
     ? ` Specialister på ${areaContent.buildingTypes[0]}.` 
     : '';
   
-  return `Behöver du ${serviceName} i ${area}? ★ Erfarna hantverkare ★ 50% ${service?.rotRut}-avdrag ★ ${patterns.projectTypes.slice(0, 2).join(', ')}.${specialtyText}${nearbyText} Fri offert!`;
+  return `Behöver du ${serviceName} i ${area}? ★ Erfarna hantverkare ★ 30% ${service?.rotRut}-avdrag ★ ${patterns.projectTypes.slice(0, 2).join(', ')}.${specialtyText}${nearbyText} Fri offert!`;
 };
 
 // ============================================================
