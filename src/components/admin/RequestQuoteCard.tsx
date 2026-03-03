@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -264,6 +264,41 @@ export function RequestQuoteCard({
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-muted-foreground">Projektbeskrivning</h4>
               <p className="text-sm">{booking.payload.description || booking.payload.beskrivning}</p>
+            </div>
+          )}
+
+          {/* Attached Images */}
+          {booking.file_urls && booking.file_urls.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
+                <Camera className="h-4 w-4" />
+                Bifogade bilder ({booking.file_urls.length})
+              </h4>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {booking.file_urls.map((url, i) => (
+                  <a
+                    key={i}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block overflow-hidden rounded-md border border-border hover:border-primary transition-colors"
+                  >
+                    <img
+                      src={url}
+                      alt={`Bifogad bild ${i + 1}`}
+                      className="aspect-square w-full object-cover"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'aspect-square w-full flex items-center justify-center bg-muted text-muted-foreground text-xs';
+                        placeholder.textContent = 'Kunde inte ladda bild';
+                        target.parentElement?.appendChild(placeholder);
+                      }}
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           )}
 
