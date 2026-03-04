@@ -46,6 +46,7 @@ import {
 import { servicesDataNew } from "@/data/servicesDataNew";
 import { useMemo } from "react";
 import { useCopy } from "@/copy/CopyProvider";
+import logoFixco from "@/assets/fixco-logo-white.png";
 import { SEARCH_ACTION_PATTERNS } from "@/data/localSeoData";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
@@ -331,7 +332,15 @@ const LocalServicePage = () => {
           </div>
 
           {/* Foreground Content */}
-          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-8 pb-20 md:pt-10 md:pb-28">
+            
+            {/* Fixco Logo */}
+            <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+              <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+                <img src={logoFixco} alt="Fixco" className="max-h-14 md:max-h-20 w-auto block" />
+              </a>
+            </div>
+
             <motion.div
               initial="hidden"
               animate="visible"
