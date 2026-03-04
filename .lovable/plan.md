@@ -1,23 +1,32 @@
 
 
-## Plan: Live-uppdatering av Trafik & SEO-data
+## Problem identifierade
 
-### Problem
-`useAnalytics`-hooken har `staleTime: 5 min` och ingen automatisk uppdatering. Data visas bara vid första laddning eller manuell refresh.
+### 1. RLS-policy blockerar läsning av events
+`events`-tabellen har en SELECT-policy `events_select_own` som bara tillåter `user_id = auth.uid()`. Men tracking-events sparas med `user_id IS NULL` (anonyma besökare). Resultatet: **admin kan inte läsa några anonyma tracking-events** — därför visar dashboarden tom data trots att events faktiskt sparas i databasen.
 
-### Lösning
-Två mekanismer för live-data:
+### 2. Realtime ej aktiverat på `events`-tabellen
+`events` finns inte i Supabase Realtime-publikationen. Tabeller som `jobs`, `bookings`, `feature_flags` etc. är tillagda, men inte `events`. Därför triggar realtime-prenumerationen i `useAnalytics` aldrig — inga live-uppdateringar.
 
-1. **Supabase Realtime-prenumeration** på `events`-tabellen — invaliderar analytics-cachen direkt när nya events kommer in (t.ex. page_view, cta_click, booking_completed).
+## Lösning
 
-2. **Polling som fallback** — `refetchInterval: 30000` (var 30:e sek) ifall realtime missar något.
+### Steg 1: Fixa RLS — Låt admin/owner läsa alla events
+```sql
+DROP POLICY IF EXISTS "events_select_own" ON events;
+CREATE POLICY "events_select_all_for_admin"
+  ON events FOR SELECT TO authenticated
+  USING (
+    user_id = auth.uid()
+    OR is_admin_or_owner()
+  );
+```
+Detta låter vanliga användare se sina egna events, och admin/owner ser alla.
 
-### Ändringar
+### Steg 2: Aktivera Realtime på events-tabellen
+```sql
+ALTER PUBLICATION supabase_realtime ADD TABLE events;
+```
 
-**`src/hooks/useAnalytics.ts`**:
-- Lägg till `refetchInterval: 30_000` i query-optionerna
-- Sänk `staleTime` till `30_000` (30 sek)
-- Lägg till `useEffect` med Supabase realtime-kanal som lyssnar på `INSERT` i `events`-tabellen → anropar `queryClient.invalidateQueries(['analytics'])` vid nya events (debounced 2 sek för att inte spamma vid burst)
-
-Ingen ny fil behövs, inga databasändringar.
+### Inga kodändringar behövs
+Koden i `useAnalytics.ts`, `useEventTracking.ts` och `AdminTrafficSEO.tsx` är korrekt. Problemet är enbart i databasens konfiguration.
 
