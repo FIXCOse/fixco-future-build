@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
-import { getGradientForService } from "@/utils/serviceGradients";
+import { getGradientForService, getHeroGradientStyle } from "@/utils/serviceGradients";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button-premium";
+import GradientButton from "@/components/GradientButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { 
@@ -59,22 +60,7 @@ import {
   getReviewSchema
 } from "@/components/SEOSchemaEnhanced";
 
-// Action section images — used as hero backgrounds for services that have them
-import carpenterImage from "@/assets/carpenter-team-action.png";
-import painterImage from "@/assets/malare-malar-vardagsrum.webp";
-import plumberImage from "@/assets/vvs-tekniker-badrum.webp";
-import electricianImage from "@/assets/elektriker-elinstallation.webp";
-import gardenImage from "@/assets/tradgard-plantering.webp";
-import groundworkImage from "@/assets/markarbeten-gravmaskiner.webp";
 
-const serviceHeroImages: Record<string, string> = {
-  snickare: carpenterImage,
-  malare: painterImage,
-  vvs: plumberImage,
-  el: electricianImage,
-  tradgard: gardenImage,
-  markarbeten: groundworkImage,
-};
 
 // Animation variants
 const containerVariants = {
@@ -159,7 +145,7 @@ const LocalServicePage = () => {
   const areaActivity = isValid ? getAreaActivity(area) : { avgRating: 0, reviewCount: 0 };
   const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
 
-  const heroImage = (serviceSlug && serviceHeroImages[serviceSlug]) || null;
+  
 
   // Schema.org markup
   const localBusinessSchema = useMemo(() => {
@@ -327,39 +313,52 @@ const LocalServicePage = () => {
         {/* ============================================
             1. HERO — Conversion-focused, no filler
             ============================================ */}
-        <section className="relative overflow-hidden">
-          {heroImage ? (
-            <>
-              <img
-                src={heroImage}
-                alt={`Fixco ${service?.name?.toLowerCase()} i ${area}`}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40" />
-            </>
-          ) : (
-            <div className="absolute inset-0 bg-muted/30" />
-          )}
+        <section className="relative w-full overflow-hidden">
+          {/* Gradient Background — service-specific */}
+          <div 
+            className="absolute inset-0 animate-gradient-shift" 
+            style={{ 
+              backgroundImage: getHeroGradientStyle(serviceSlug!),
+              backgroundSize: '200% 200%'
+            }}
+          />
+          
+          {/* Glow Effects */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-20 left-1/4 w-72 h-72 opacity-30 blur-3xl rounded-full animate-float-slow" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 opacity-25 blur-3xl rounded-full animate-float-medium" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+            <div className="absolute bottom-32 right-1/4 w-64 h-64 opacity-20 blur-2xl rounded-full animate-float-fast" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }} />
+          </div>
 
-          <div className="container mx-auto px-4 relative z-10 pt-12 pb-16 lg:pt-20 lg:pb-28">
+          {/* Foreground Content */}
+          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-12 pb-16 md:pt-20 md:pb-24">
             <motion.div
               initial="hidden"
               animate="visible"
               variants={containerVariants}
-              className="max-w-3xl"
+              className="flex flex-col items-center gap-4 md:gap-6 w-full max-w-4xl"
             >
+              {/* Stars */}
+              <motion.div variants={itemVariants} className="flex items-center justify-center gap-1">
+                <span className="text-sm text-white/90 tracking-wide">{areaActivity.avgRating.toFixed(1)}</span>
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#fbbf24] text-[#fbbf24]" />
+                ))}
+                <span className="text-sm text-white/70 ml-1">({areaActivity.reviewCount}+ {locale === 'en' ? 'reviews' : 'omdömen'})</span>
+              </motion.div>
+
               {/* H1 */}
               <motion.h1 
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-5 text-foreground"
+                className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center leading-[120%]"
               >
-                <GradientText gradient="rainbow">{content.h1}</GradientText>
+                {content.h1}
               </motion.h1>
               
-              {/* Strong value prop */}
+              {/* Value prop */}
               <motion.p 
                 variants={itemVariants}
-                className="text-lg lg:text-xl text-muted-foreground mb-6 max-w-2xl hero-description"
+                className="text-base md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed hero-description"
               >
                 {locale === 'en' 
                   ? `Top-rated in ${metadata?.region || 'the region'} — free quote within 24h. Fixed price, insured contractors and ${service?.rotRut} deduction.`
@@ -367,31 +366,12 @@ const LocalServicePage = () => {
                 }
               </motion.p>
               
-              {/* Trust badges inline */}
+              {/* CTA buttons — GradientButton */}
               <motion.div 
                 variants={itemVariants}
-                className="flex flex-wrap gap-3 mb-8"
+                className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center mt-2"
               >
-                {[
-                  { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5 ${locale === 'en' ? 'rating' : 'betyg'}`, color: "text-amber-400" },
-                  { icon: BadgeCheck, text: `30% ${service?.rotRut}-${locale === 'en' ? 'deduction' : 'avdrag'}`, color: "text-emerald-400" },
-                  { icon: Clock, text: t('local.response2h'), color: "text-blue-400" },
-                ].map((badge, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm backdrop-blur-sm">
-                    <badge.icon className={`h-4 w-4 ${badge.color}`} />
-                    <span className="text-foreground/80">{badge.text}</span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* CTA buttons */}
-              <motion.div 
-                variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-3"
-              >
-                <Button 
-                  size="lg"
-                  className="shadow-xl shadow-primary/25"
+                <GradientButton 
                   onClick={() => {
                     trackClick('hero_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                     openServiceRequestModal({
@@ -400,18 +380,29 @@ const LocalServicePage = () => {
                     });
                   }}
                 >
-                  <FileText className="h-5 w-5 mr-2" />
                   {t('local.ctaQuote')}
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="border-border hover:bg-muted"
-                  onClick={() => window.location.href = 'tel:+46793350228'}
-                >
-                  <Phone className="h-5 w-5 mr-2" />
-                  079-335 02 28
-                </Button>
+                </GradientButton>
+                <GradientButton href={servicePrefix}>
+                  {t('local.allServices')}
+                </GradientButton>
+              </motion.div>
+
+              {/* Trust badges */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-wrap justify-center gap-3 mt-2"
+              >
+                {[
+                  `30% ${service?.rotRut}`,
+                  'F-skatt',
+                  locale === 'en' ? 'Insured' : 'Försäkrade',
+                  locale === 'en' ? 'Fixed price' : 'Fast pris',
+                ].map((badge, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm text-white/90">
+                    <CheckCircle className="h-3.5 w-3.5 text-white/80" />
+                    <span>{badge}</span>
+                  </div>
+                ))}
               </motion.div>
             </motion.div>
           </div>
@@ -448,7 +439,68 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            3. TJÄNSTER — Vad vi gör (kompakt)
+            3. HOW TO BOOK — 4 steg (moved up for conversion)
+            ============================================ */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-muted/30" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-14">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                  {t('local.fourSteps')}
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
+                  {t('local.howToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>
+                </h2>
+                <p className="text-muted-foreground">{t('local.fromRequestToDone')}</p>
+              </motion.div>
+
+              <div className="max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                  <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-amber-500/40 to-emerald-500/40" />
+                  </div>
+                  
+                  {howToSteps.map((step, idx) => {
+                    const StepIcon = stepIcons[idx] || CheckCircle;
+                    const colors = stepColors[idx] || stepColors[0];
+                    return (
+                      <motion.div 
+                        key={idx} 
+                        variants={itemVariants}
+                        whileHover={{ y: -6, scale: 1.02 }}
+                        className="relative group"
+                      >
+                        <div className="flex justify-center mb-4">
+                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} ${colors.border} border-2 flex items-center justify-center font-bold text-lg ${colors.text} shadow-lg group-hover:scale-110 transition-transform`}>
+                            {idx + 1}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-card border border-border rounded-2xl p-6 text-center h-full hover:border-primary/20 transition-all">
+                          <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
+                            <StepIcon className={`h-6 w-6 ${colors.text}`} />
+                          </div>
+                          <h3 className="font-semibold mb-2">{step.title}</h3>
+                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================
+            4. TJÄNSTER — Vad vi gör (kompakt)
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-muted/30" />
@@ -543,67 +595,6 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            5. HOW TO BOOK — 4 steg
-            ============================================ */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/30" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-14">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
-                  {t('local.fourSteps')}
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
-                  {t('local.howToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>
-                </h2>
-                <p className="text-muted-foreground">{t('local.fromRequestToDone')}</p>
-              </motion.div>
-
-              <div className="max-w-5xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-                  <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-amber-500/40 to-emerald-500/40" />
-                  </div>
-                  
-                  {howToSteps.map((step, idx) => {
-                    const StepIcon = stepIcons[idx] || CheckCircle;
-                    const colors = stepColors[idx] || stepColors[0];
-                    return (
-                      <motion.div 
-                        key={idx} 
-                        variants={itemVariants}
-                        whileHover={{ y: -6, scale: 1.02 }}
-                        className="relative group"
-                      >
-                        <div className="flex justify-center mb-4">
-                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} ${colors.border} border-2 flex items-center justify-center font-bold text-lg ${colors.text} shadow-lg group-hover:scale-110 transition-transform`}>
-                            {idx + 1}
-                          </div>
-                        </div>
-                        
-                        <div className="bg-card border border-border rounded-2xl p-6 text-center h-full hover:border-primary/20 transition-all">
-                          <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
-                            <StepIcon className={`h-6 w-6 ${colors.text}`} />
-                          </div>
-                          <h3 className="font-semibold mb-2">{step.title}</h3>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ============================================
             6. ANDRA TJÄNSTER — Korsförsäljning
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
@@ -672,9 +663,7 @@ const LocalServicePage = () => {
                     {t('local.fixedPrice')} {area} – {locale === 'en' ? 'with' : 'med'} 30% {service?.rotRut}{t('local.rotDeduction')}.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      size="lg"
-                      className="shadow-xl shadow-primary/30"
+                    <GradientButton 
                       onClick={() => {
                         trackClick('bottom_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                         openServiceRequestModal({
@@ -683,20 +672,11 @@ const LocalServicePage = () => {
                         });
                       }}
                     >
-                      <FileText className="h-5 w-5 mr-2" />
                       {t('local.ctaQuote')}
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="lg"
-                      className="border-border hover:bg-muted"
-                      asChild
-                    >
-                      <Link to={servicePrefix}>
-                        {t('local.allServices')}
-                        <ArrowRight className="h-5 w-5 ml-2" />
-                      </Link>
-                    </Button>
+                    </GradientButton>
+                    <GradientButton href={servicePrefix}>
+                      {t('local.allServices')}
+                    </GradientButton>
                   </div>
                 </motion.div>
               </div>
