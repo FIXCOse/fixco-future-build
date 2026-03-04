@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Wand2, Save, RefreshCw, ImagePlus } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, Wand2, Save, RefreshCw, ImagePlus, X, Image } from 'lucide-react';
 
 const CATEGORIES = [
   { value: 'bathroom', label: 'Badrum', sv: 'Badrumsrenovering', en: 'Bathroom Renovation' },
@@ -19,17 +20,18 @@ const CATEGORIES = [
   { value: 'painting', label: 'Målning', sv: 'Målning', en: 'Painting' },
 ];
 
-interface GeneratedPair {
-  beforeUrl: string | null;
-  afterUrl: string | null;
+interface GeneratedImage {
+  url: string;
+  style: 'before' | 'after';
+  label: string;
   category: string;
 }
 
 const AdminAiImageGenerator = () => {
   const [category, setCategory] = useState('bathroom');
-  const [isGeneratingBefore, setIsGeneratingBefore] = useState(false);
-  const [isGeneratingAfter, setIsGeneratingAfter] = useState(false);
-  const [generatedPair, setGeneratedPair] = useState<GeneratedPair>({ beforeUrl: null, afterUrl: null, category: 'bathroom' });
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatingLabel, setGeneratingLabel] = useState('');
+  const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
   const [projectTitle, setProjectTitle] = useState('');
   const [projectLocation, setProjectLocation] = useState('Stockholm');
   const [projectDescription, setProjectDescription] = useState('');
@@ -37,55 +39,73 @@ const AdminAiImageGenerator = () => {
   const createProject = useCreateReferenceProject();
   const { toast } = useToast();
 
-  const generateImage = async (style: 'before' | 'after') => {
-    const setLoading = style === 'before' ? setIsGeneratingBefore : setIsGeneratingAfter;
-    setLoading(true);
+  const beforeImages = generatedImages.filter(i => i.style === 'before');
+  const afterImages = generatedImages.filter(i => i.style === 'after');
+
+  const generateImage = async (style: 'before' | 'after', sourceImageUrl?: string) => {
+    setIsGenerating(true);
+    setGeneratingLabel(`Genererar ${style === 'before' ? 'före' : 'efter'}-bild...`);
 
     try {
       const { data, error } = await supabase.functions.invoke('ai-generate-image', {
-        body: { category, style }
+        body: { category, style, sourceImageUrl }
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      setGeneratedPair(prev => ({
-        ...prev,
-        [style === 'before' ? 'beforeUrl' : 'afterUrl']: data.url,
-        category
-      }));
+      const count = generatedImages.filter(i => i.style === style).length + 1;
+      const newImage: GeneratedImage = {
+        url: data.url,
+        style,
+        label: `${style === 'before' ? 'Före' : 'Efter'} #${count}`,
+        category,
+      };
 
-      toast({
-        title: `${style === 'before' ? 'Före' : 'Efter'}-bild genererad!`,
-        description: 'Bilden har sparats i Supabase Storage.',
-      });
+      setGeneratedImages(prev => [...prev, newImage]);
+      toast({ title: `${newImage.label} genererad!` });
+      return data.url;
     } catch (err: any) {
       console.error('Generation error:', err);
-      toast({
-        title: 'Fel vid bildgenerering',
-        description: err?.message || 'Kunde inte generera bild. Försök igen.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Fel vid bildgenerering', description: err?.message || 'Försök igen.', variant: 'destructive' });
+      return null;
     } finally {
-      setLoading(false);
+      setIsGenerating(false);
+      setGeneratingLabel('');
     }
   };
 
-  const generateBoth = async () => {
-    await generateImage('before');
-    await generateImage('after');
+  const generatePair = async () => {
+    const beforeUrl = await generateImage('before');
+    if (beforeUrl) {
+      await generateImage('after', beforeUrl);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setGeneratedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const generateMoreAfter = async () => {
+    const lastBefore = beforeImages[beforeImages.length - 1];
+    if (!lastBefore) {
+      toast({ title: 'Generera en före-bild först', variant: 'destructive' });
+      return;
+    }
+    await generateImage('after', lastBefore.url);
   };
 
   const saveAsReferenceProject = async () => {
-    if (!generatedPair.beforeUrl || !generatedPair.afterUrl) {
-      toast({ title: 'Generera båda bilderna först', variant: 'destructive' });
+    if (beforeImages.length === 0 || afterImages.length === 0) {
+      toast({ title: 'Du behöver minst 1 före- och 1 efter-bild', variant: 'destructive' });
       return;
     }
 
     setIsSaving(true);
-    const cat = CATEGORIES.find(c => c.value === generatedPair.category);
+    const cat = CATEGORIES.find(c => c.value === category);
 
     try {
+      const allUrls = generatedImages.map(i => i.url);
       await createProject.mutateAsync({
         title: projectTitle || `${cat?.sv || 'Projekt'} — AI-genererat`,
         title_sv: projectTitle || `${cat?.sv || 'Projekt'} — AI-genererat`,
@@ -109,15 +129,15 @@ const AdminAiImageGenerator = () => {
         rut_saving_amount: 0,
         rating: 5,
         client_initials: 'AI',
-        images: [generatedPair.beforeUrl, generatedPair.afterUrl],
-        thumbnail_image: generatedPair.afterUrl,
+        images: allUrls,
+        thumbnail_image: afterImages[0]?.url || allUrls[0],
         is_featured: false,
         sort_order: 99,
         is_active: true,
       });
 
-      toast({ title: 'Referensprojekt skapat!', description: 'Projektet finns nu i referenslistan.' });
-      setGeneratedPair({ beforeUrl: null, afterUrl: null, category: 'bathroom' });
+      toast({ title: 'Referensprojekt skapat!', description: `${allUrls.length} bilder sparade.` });
+      setGeneratedImages([]);
       setProjectTitle('');
       setProjectDescription('');
     } catch (err: any) {
@@ -131,14 +151,14 @@ const AdminAiImageGenerator = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">AI Bildgenerator</h1>
-        <p className="text-muted-foreground">Generera realistiska före/efter-bilder för referensprojekt med AI.</p>
+        <p className="text-muted-foreground">Generera realistiska före/efter-bilder. Efter-bilden baseras på före-bilden för konsistens.</p>
       </div>
 
       {/* Controls */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2"><Wand2 className="h-5 w-5" /> Generera bildpar</CardTitle>
-          <CardDescription>Välj kategori och generera ett före/efter-par. Pro-modellen ger bäst resultat men tar ~30s per bild.</CardDescription>
+          <CardTitle className="flex items-center gap-2"><Wand2 className="h-5 w-5" /> Generera bilder</CardTitle>
+          <CardDescription>Välj kategori och generera bilder. Du kan lägga till flera bilder från olika vinklar.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -153,70 +173,88 @@ const AdminAiImageGenerator = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-end gap-2 md:col-span-2">
-              <Button onClick={generateBoth} disabled={isGeneratingBefore || isGeneratingAfter} className="flex-1">
-                {(isGeneratingBefore || isGeneratingAfter) ? (
-                  <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Genererar...</>
+            <div className="flex items-end gap-2 md:col-span-2 flex-wrap">
+              <Button onClick={generatePair} disabled={isGenerating} className="flex-1 min-w-[180px]">
+                {isGenerating ? (
+                  <><Loader2 className="h-4 w-4 animate-spin mr-2" /> {generatingLabel}</>
                 ) : (
                   <><ImagePlus className="h-4 w-4 mr-2" /> Generera före + efter</>
                 )}
               </Button>
-              <Button variant="outline" onClick={() => generateImage('before')} disabled={isGeneratingBefore || isGeneratingAfter}>
-                {isGeneratingBefore ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Före'}
+              <Button variant="outline" onClick={() => generateImage('before')} disabled={isGenerating}>
+                Ny före-bild
               </Button>
-              <Button variant="outline" onClick={() => generateImage('after')} disabled={isGeneratingBefore || isGeneratingAfter}>
-                {isGeneratingAfter ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Efter'}
+              <Button variant="outline" onClick={generateMoreAfter} disabled={isGenerating || beforeImages.length === 0}>
+                Ny efter-bild
               </Button>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Preview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader><CardTitle className="text-destructive">Före</CardTitle></CardHeader>
-          <CardContent>
-            {isGeneratingBefore ? (
-              <div className="aspect-[4/3] bg-muted rounded-lg flex items-center justify-center">
-                <div className="text-center space-y-2">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">Genererar före-bild...</p>
-                </div>
-              </div>
-            ) : generatedPair.beforeUrl ? (
-              <img src={generatedPair.beforeUrl} alt="Före" className="w-full rounded-lg aspect-[4/3] object-cover" />
-            ) : (
-              <div className="aspect-[4/3] bg-muted rounded-lg flex items-center justify-center">
-                <p className="text-sm text-muted-foreground">Ingen bild genererad ännu</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      {/* Image count badges */}
+      {generatedImages.length > 0 && (
+        <div className="flex gap-2 items-center">
+          <Image className="h-4 w-4 text-muted-foreground" />
+          <Badge variant="secondary">{beforeImages.length} före-bilder</Badge>
+          <Badge variant="secondary">{afterImages.length} efter-bilder</Badge>
+          <span className="text-sm text-muted-foreground">({generatedImages.length} totalt)</span>
+        </div>
+      )}
 
-        <Card>
-          <CardHeader><CardTitle className="text-primary">Efter</CardTitle></CardHeader>
-          <CardContent>
-            {isGeneratingAfter ? (
-              <div className="aspect-[4/3] bg-muted rounded-lg flex items-center justify-center">
-                <div className="text-center space-y-2">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">Genererar efter-bild...</p>
-                </div>
+      {/* Gallery */}
+      {generatedImages.length > 0 && (
+        <div className="space-y-4">
+          {beforeImages.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold text-destructive mb-3">Före</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {beforeImages.map((img) => {
+                  const idx = generatedImages.indexOf(img);
+                  return (
+                    <Card key={idx} className="relative group overflow-hidden">
+                      <button
+                        onClick={() => removeImage(idx)}
+                        className="absolute top-2 right-2 z-10 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                      <img src={img.url} alt={img.label} className="w-full aspect-[4/3] object-cover" />
+                      <div className="p-2 text-sm text-muted-foreground">{img.label}</div>
+                    </Card>
+                  );
+                })}
               </div>
-            ) : generatedPair.afterUrl ? (
-              <img src={generatedPair.afterUrl} alt="Efter" className="w-full rounded-lg aspect-[4/3] object-cover" />
-            ) : (
-              <div className="aspect-[4/3] bg-muted rounded-lg flex items-center justify-center">
-                <p className="text-sm text-muted-foreground">Ingen bild genererad ännu</p>
+            </div>
+          )}
+
+          {afterImages.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold text-primary mb-3">Efter</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {afterImages.map((img) => {
+                  const idx = generatedImages.indexOf(img);
+                  return (
+                    <Card key={idx} className="relative group overflow-hidden">
+                      <button
+                        onClick={() => removeImage(idx)}
+                        className="absolute top-2 right-2 z-10 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                      <img src={img.url} alt={img.label} className="w-full aspect-[4/3] object-cover" />
+                      <div className="p-2 text-sm text-muted-foreground">{img.label}</div>
+                    </Card>
+                  );
+                })}
               </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Save as reference project */}
-      {generatedPair.beforeUrl && generatedPair.afterUrl && (
+      {beforeImages.length > 0 && afterImages.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><Save className="h-5 w-5" /> Spara som referensprojekt</CardTitle>
@@ -237,16 +275,16 @@ const AdminAiImageGenerator = () => {
               <Textarea value={projectDescription} onChange={e => setProjectDescription(e.target.value)} placeholder="Beskriv projektet..." rows={3} />
             </div>
             <Button onClick={saveAsReferenceProject} disabled={isSaving}>
-              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Sparar...</> : <><Save className="h-4 w-4 mr-2" /> Skapa referensprojekt</>}
+              {isSaving ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Sparar...</> : <><Save className="h-4 w-4 mr-2" /> Skapa referensprojekt ({generatedImages.length} bilder)</>}
             </Button>
           </CardContent>
         </Card>
       )}
 
-      {/* Regenerate */}
-      {(generatedPair.beforeUrl || generatedPair.afterUrl) && (
+      {/* Reset */}
+      {generatedImages.length > 0 && (
         <div className="flex justify-center">
-          <Button variant="ghost" onClick={() => setGeneratedPair({ beforeUrl: null, afterUrl: null, category: 'bathroom' })}>
+          <Button variant="ghost" onClick={() => setGeneratedImages([])}>
             <RefreshCw className="h-4 w-4 mr-2" /> Börja om
           </Button>
         </div>
