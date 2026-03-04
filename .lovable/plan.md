@@ -1,36 +1,23 @@
 
 
-## Plan: Ny Admin-sida "Trafik & SEO" — Dedikerad Dashboard
+## Plan: Live-uppdatering av Trafik & SEO-data
 
-### Översikt
+### Problem
+`useAnalytics`-hooken har `staleTime: 5 min` och ingen automatisk uppdatering. Data visas bara vid första laddning eller manuell refresh.
 
-Skapa en helt ny sida `/admin/traffic` med en samlad, användarvänlig dashboard som kombinerar **trafik, SEO, användarresor, funnel-analys och performance** — allt på en sida utan flikar. Samtidigt tas SEO-fliken bort från Rapporter så den blir ren igen.
+### Lösning
+Två mekanismer för live-data:
 
-### Nya filer
+1. **Supabase Realtime-prenumeration** på `events`-tabellen — invaliderar analytics-cachen direkt när nya events kommer in (t.ex. page_view, cta_click, booking_completed).
 
-**`src/pages/admin/AdminTrafficSEO.tsx`** — Huvudsidan med följande layout uppifrån och ned:
+2. **Polling som fallback** — `refetchInterval: 30000` (var 30:e sek) ifall realtime missar något.
 
-1. **Header** med titel "Trafik & SEO", refresh-knapp och datumfilter (återanvänd `AnalyticsFilters`)
-2. **SEO KPI-kort** (4 st) — Bounce Rate, Sidor/session, Top källa, Bästa landing page (befintlig `SEOKPICards`)
-3. **Två-kolumns grid:**
-   - Vänster: **Bokningsfunnel Dropoff** (`BookingFunnelDropoff`)
-   - Höger: **Landing Page Performance** (`LandingPagePerformance`)
-4. **Trafikkällor** — Befintlig `TrafficSourcesChart` med besök/konverteringar per källa
-5. **Conversion Funnel** — Befintlig `ConversionFunnelChart` (visuell steg-för-steg)
-6. **Populära sidor** — Topp-sidor med visningar och genomsnittlig tid (inline, samma data som i trafik-fliken)
-7. **Sessionsresor** — Full `SessionJourneyPanel` med källfiltrering och expanderbara rader
+### Ändringar
 
-Sidan använder `useAnalytics`-hooken som redan hämtar all data (traffic, funnel, journeys, detailedFunnel, bounceAnalytics).
+**`src/hooks/useAnalytics.ts`**:
+- Lägg till `refetchInterval: 30_000` i query-optionerna
+- Sänk `staleTime` till `30_000` (30 sek)
+- Lägg till `useEffect` med Supabase realtime-kanal som lyssnar på `INSERT` i `events`-tabellen → anropar `queryClient.invalidateQueries(['analytics'])` vid nya events (debounced 2 sek för att inte spamma vid burst)
 
-### Ändringar i befintliga filer
-
-| Fil | Ändring |
-|-----|---------|
-| `src/App.tsx` | Lägg till lazy import + route `<Route path="traffic" element={lazyElement(AdminTrafficSEO)} />` |
-| `src/components/admin/AdminSidebar.tsx` | Lägg till menypost "Trafik & SEO" med `Globe`-ikon under "Ekonomi"-kategorin |
-| `src/pages/admin/AdminReports.tsx` | Ta bort SEO-fliken (tab 8), återställ `grid-cols-7`, ta bort SEO-imports |
-
-### Layout-princip
-
-Ingen flik-navigering — allt visas vertikalt i logisk ordning: KPI:er → Funnel → Källor → Sidor → Resor. Scroll-baserad dashboard med tydliga sektionsrubriker. Samma datumfilter styr all data.
+Ingen ny fil behövs, inga databasändringar.
 
