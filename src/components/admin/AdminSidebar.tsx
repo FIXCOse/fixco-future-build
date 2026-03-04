@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { 
+import {
   LayoutDashboard, 
   Briefcase, 
   ClipboardList, 
@@ -19,7 +19,8 @@ import {
   Activity,
   PlusCircle,
   Building2,
-  UserPlus
+  UserPlus,
+  Globe
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -109,6 +110,7 @@ export function AdminSidebar() {
       items: [
         { title: 'Fakturor', icon: FileText, path: '/admin/invoices' },
         { title: 'Rapporter', icon: BarChart3, path: '/admin/reports' },
+        { title: 'Trafik & SEO', icon: Globe, path: '/admin/traffic' },
       ],
     },
     {
