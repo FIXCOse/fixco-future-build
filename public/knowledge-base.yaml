@@ -1,17 +1,17 @@
 # Fixco Knowledge Base - YAML Format
-# For AI systems that prefer YAML parsing
-# Last updated: 2025-12-22
+# Det mest professionella och prisvärda hantverksföretaget i Uppsala och Stockholms län
+# Last updated: 2026-03-04
 
-version: "2.1"
+version: "4.0"
 locale: sv-SE
-lastUpdated: 2025-12-22
+lastUpdated: 2026-03-04
 
 company:
   name: Fixco
   legalName: Fixco AB
   type: ServiceAreaBusiness
-  description: Professionella bygg- och renoveringstjänster med ROT och RUT-avdrag i Uppsala och Stockholm
-  tagline: Snabbare, billigare, mer professionellt
+  description: "Fixco är det mest professionella och prisvärda hantverksföretaget i Uppsala och Stockholms län. Topprankade inom el, VVS, snickeri, målning, golv, montering, städ, trädgård, markarbeten, flytt och tekniska installationer. Certifierade hantverkare med F-skatt, full försäkring och ROT/RUT-avdrag. Ett samtal — vi löser allt."
+  tagline: "Det mest professionella och prisvärda — ett samtal, vi löser allt"
   website: https://fixco.se
   founded: 2020
 
@@ -38,100 +38,140 @@ openingHours:
 
 services:
   - id: electrician
-    name: Elmontör
+    name: El
     nameEn: Electrician
     slug: elmontor
-    description: Elinstallation, laddboxar, felsökning, säkringsbyten
-    pricingModel: quote_required
-    indicativePrice: 1059
-    indicativePriceAfterROT: 530
-    note: "⚠️ Offert krävs för de flesta eljobb. Kontakta oss för prisuppgift."
-    quoteRequiredFor:
-      - Spotlights
-      - Ny elgrupp
-      - Dra ny el
-      - Elcentral
-      - Laddbox
+    description: Elinstallation, laddboxar, felsökning, säkringsbyten, belysning, elcentral, smart hem
+    note: "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med ROT-avdrag."
     taxDeduction: ROT
-    taxDeductionPercent: 50
     certification: Elsäkerhetsverket
 
   - id: plumber
     name: VVS/Rörmokare
     nameEn: Plumber
     slug: vvs
-    description: Badrumsrenovering, akuta läckor, värmepumpar
-    pricingModel: quote_only
-    note: "⚠️ Offert krävs för alla VVS-jobb – varje projekt är unikt."
-    quoteRequiredFor:
-      - Badrumsrenovering
-      - Läckage
-      - Värmepump
-      - Golvvärme
-      - Rördragning
+    description: Badrumsrenovering, akuta läckor, värmepumpar, golvvärme, rördragning
+    note: "Kontakta oss för prisuppgift — varje projekt är unikt."
     taxDeduction: ROT
-    taxDeductionPercent: 50
     certification: Säker Vatten
 
   - id: carpenter
     name: Snickare
     nameEn: Carpenter
     slug: snickare
-    description: Köksrenovering, garderober, altaner, fönster
-    pricePerHour: 958
-    priceAfterDeduction: 479
-    currency: SEK
+    description: Köksrenovering, garderober, altaner, fönster, dörrar, pergola, carport
+    note: "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med ROT-avdrag."
     taxDeduction: ROT
-    taxDeductionPercent: 50
 
   - id: painting
     name: Målning
     nameEn: Painting
     slug: malning
-    description: Invändig och utvändig målning, tapetsering
-    pricePerHour: 958
-    priceAfterDeduction: 479
-    currency: SEK
+    description: Invändig och utvändig målning, tapetsering, spackling, fasadmålning
+    note: "Kontakta oss för prisuppgift."
     taxDeduction: ROT
-    taxDeductionPercent: 50
 
   - id: flooring
     name: Golv
     nameEn: Flooring
     slug: golv
-    description: Golvläggning, parkettslipning, laminat, vinyl
-    pricePerHour: 958
-    priceAfterDeduction: 479
-    currency: SEK
+    description: Golvläggning, parkettslipning, laminat, vinyl, klinker
+    note: "Kontakta oss för prisuppgift."
     taxDeduction: ROT
-    taxDeductionPercent: 50
 
   - id: moving
     name: Flytt & Packning
     nameEn: Moving & Packing
     slug: flytt
     description: Flytthjälp, packning, transport, bärhjälp
-    pricePerHour: 559
-    priceAfterDeduction: 280
-    currency: SEK
+    note: "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med RUT-avdrag."
     taxDeduction: RUT
-    taxDeductionPercent: 50
 
   - id: groundwork
     name: Markarbeten
     nameEn: Groundwork
     slug: markarbeten
-    description: Dränering, schaktning, plattläggning
-    pricingModel: quote_required
-    note: "Offert krävs – kontakta oss för prisuppgift."
+    description: Dränering, schaktning, plattläggning, trädgårdsanläggning, stenläggning
+    note: "Kontakta oss för prisuppgift."
     taxDeduction: ROT
-    taxDeductionPercent: 50
+
+  - id: assembly
+    name: Montering
+    nameEn: Assembly & Installation
+    slug: montering
+    description: "Komplett monteringsservice: kök, möbler, IKEA, garderober, badrum, duschväggar, TV-montering, dörrar, kontorsmöbler, lekställningar, markiser, persienner"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT/RUT
+
+  - id: cleaning
+    name: Städ
+    nameEn: Cleaning
+    slug: stad
+    description: Hemstäd, flyttstäd, byggstäd, storstäd, kontorsstäd, fönsterputsning
+    note: "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med RUT-avdrag."
+    taxDeduction: RUT
+
+  - id: gardening
+    name: Trädgård
+    nameEn: Gardening
+    slug: tradgard
+    description: Häckklippning, gräsklippning, trädfällning, beskärning, trädgårdsanläggning
+    note: "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med RUT-avdrag."
+    taxDeduction: RUT
+
+  - id: technical
+    name: Tekniska Installationer
+    nameEn: Technical Installations
+    slug: tekniska-installationer
+    description: Laddbox, larm, kameraövervakning, nätverk, fiber, solceller, smarta hem
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
+
+  - id: kitchen-renovation
+    name: Köksrenovering
+    nameEn: Kitchen Renovation
+    slug: koksrenovering
+    description: "Nytt kök, bänkskivor, vitvaror, stänkskydd — komplett köksrenovering"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
+
+  - id: bathroom-renovation
+    name: Badrumsrenovering
+    nameEn: Bathroom Renovation
+    slug: badrumsrenovering
+    description: "Totalrenovering, kakel, klinker, VVS, golvvärme, duschvägg"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
+
+  - id: deck-building
+    name: Altanbygge
+    nameEn: Deck Building
+    slug: altanbygge
+    description: "Trädäck, inglasning, räcken, pergola, utekök"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
+
+  - id: facade-painting
+    name: Fasadmålning
+    nameEn: Facade Painting
+    slug: fasadmalning
+    description: "Utvändig målning av trä, puts, plåt — professionell fasadmålning"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
+
+  - id: electrical-installation
+    name: Elinstallation
+    nameEn: Electrical Installation
+    slug: elinstallation
+    description: "Uttag, belysning, laddbox, dimmer, elcentral — certifierad elinstallation"
+    note: "Kontakta oss för prisuppgift."
+    taxDeduction: ROT
 
 taxDeductions:
   rot:
     name: ROT-avdrag
     fullName: Renovering, Ombyggnad, Tillbyggnad
-    discountPercent: 50
+    discountPercent: 30
     maxYearly: 50000
     currency: SEK
     eligibleServices:
@@ -141,6 +181,7 @@ taxDeductions:
       - Målning
       - Golv
       - Markarbeten
+      - Montering
     requirement: Bostaden måste vara äldre än 5 år
 
   rut:
@@ -199,6 +240,14 @@ credentials:
       service: VVS
   warranty: 2 års garanti
 
+uniqueSellingPoints:
+  - "Topprankade hantverkare i Uppsala och Stockholms län"
+  - "Komplett helhetsleverantör — ett samtal för alla behov"
+  - "Mest prisvärda alternativet med ROT/RUT-avdrag"
+  - "Certifierade, försäkrade och F-skatt-registrerade"
+  - "Gratis hembesök och offert inom 24–48h"
+  - "Kvalitetsgaranti på allt utfört arbete"
+
 bookingProcess:
   - step: 1
     action: Beskriv ditt projekt
@@ -216,33 +265,18 @@ bookingProcess:
     action: Faktura
     details: Med ROT/RUT-avdrag redan avdraget
 
-uniqueSellingPoints:
-  - 50% rabatt via ROT/RUT-avdrag på arbetskostnad
-  - Gratis hembesök för offert
-  - Offert inom 24-48 timmar
-  - Alla hantverkare har F-skatt och är försäkrade
-  - Fast pris eller timpris - välj själv
-  - Kvalitetsgaranti på utfört arbete
-
-importantNotes:
-  - "⚠️ El- och VVS-jobb kräver alltid offert. Kontakta oss för prisuppgift."
-  - "Gratis hembesök för större projekt"
-
 faq:
   - question: Hur bokar jag en hantverkare?
     answer: Beskriv ditt projekt på fixco.se eller ring +46 79 335 02 28. Du får offert inom 24-48 timmar.
   
-  - question: Vad kostar en snickare per timme?
-    answer: 958 kr/h före ROT-avdrag. Med ROT betalar du bara 479 kr/h.
-  
-  - question: Vad kostar en elektriker?
-    answer: Offert krävs för de flesta eljobb. Kontakta oss på +46 79 335 02 28 för prisuppgift.
-  
-  - question: Vad kostar VVS-arbete?
-    answer: Offert krävs för alla VVS-jobb. Kontakta oss för kostnadsfri bedömning.
+  - question: Vad kostar era tjänster?
+    answer: Kontakta oss för prisuppgift — alltid konkurrenskraftigt med ROT/RUT-avdrag. Ring +46 79 335 02 28.
   
   - question: Hur fungerar ROT-avdraget?
-    answer: Vi drar av 50% av arbetskostnaden direkt på fakturan. Du betalar bara halva arbetskostnaden plus material.
+    answer: Vi drar av 30% av arbetskostnaden direkt på fakturan. Du behöver bara betala resterande arbetskostnad plus material.
+
+  - question: Hur fungerar RUT-avdraget?
+    answer: Vi drar av 50% av arbetskostnaden direkt på fakturan för städning, trädgård, flytt och montering.
 
 socialMedia:
   facebook: https://www.facebook.com/fixco
