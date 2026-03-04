@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Calendar, MapPin, Clock, Star, ExternalLink, Plus, Edit } from 'lucide-react';
+import { ArrowRight, MapPin, Star, ExternalLink, Plus, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MagneticButton from '@/components/MagneticButton';
 import { Card, CardContent } from '@/components/ui/card';
@@ -134,7 +134,7 @@ const ProjectShowcase = () => {
               {t('projects.satisfied_customers')}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
-              <Clock className="w-4 h-4 mr-1" />
+              <Star className="w-4 h-4 mr-1" />
               {t('projects.on_time_budget')}
             </Badge>
             <Badge variant="secondary" className="px-4 py-2">
@@ -221,15 +221,11 @@ const ProjectShowcase = () => {
                   </div>
                 </div>
 
-                {/* Location and Duration */}
+                {/* Location */}
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                   <div className="flex items-center gap-1">
                     <MapPin className="w-4 h-4" />
                     {project.location}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {project.duration}
                   </div>
                 </div>
 
@@ -264,11 +260,6 @@ const ProjectShowcase = () => {
                   </div>
                 </div>
 
-                {/* Completion Date */}
-                <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                  <Calendar className="w-3 h-3" />
-                  {t('projects.completedDate')} {new Date(project.completed_date).toLocaleDateString(locale === 'en' ? 'en-GB' : 'sv-SE')}
-                </div>
               </CardContent>
 
               {/* Hover Effect Border */}
