@@ -36,8 +36,7 @@ export const useTheme = create<ThemeState>((set, get) => ({
     
     // Check localStorage, fallback to system preference or default dark
     const saved = localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    const initial: ThemeId = saved ?? (prefersDark ? 'dark' : 'light'); // default = light
+    const initial: ThemeId = saved ?? 'light';
     get().setTheme(initial);
   }
 }));
