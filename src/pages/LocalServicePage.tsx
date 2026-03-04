@@ -48,7 +48,7 @@ import { useCopy } from "@/copy/CopyProvider";
 import { SEARCH_ACTION_PATTERNS } from "@/data/localSeoData";
 import { getAreaActivity, getAreaReview, getRandomReviewer, getHowToSteps, getAreaReviews } from "@/data/areaActivityData";
 import { GradientText } from "@/components/v2/GradientText";
-import { CompactTrustBar } from "@/components/local-service/CompactTrustBar";
+// CompactTrustBar removed — trust badges integrated in hero
 import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
@@ -325,10 +325,9 @@ const LocalServicePage = () => {
         <Breadcrumbs />
         
         {/* ============================================
-            HERO SECTION — Full-width image or clean gradient
+            1. HERO — Conversion-focused, no filler
             ============================================ */}
         <section className="relative overflow-hidden">
-          {/* Background: action image OR gradient */}
           {heroImage ? (
             <>
               <img
@@ -349,14 +348,6 @@ const LocalServicePage = () => {
               variants={containerVariants}
               className="max-w-3xl"
             >
-              {/* Location badge */}
-              <motion.div variants={itemVariants} className="mb-5">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border backdrop-blur-sm text-sm text-foreground/90">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  {t('local.heroBadge')} {area}
-                </span>
-              </motion.div>
-
               {/* H1 */}
               <motion.h1 
                 variants={itemVariants}
@@ -365,23 +356,25 @@ const LocalServicePage = () => {
                 <GradientText gradient="rainbow">{content.h1}</GradientText>
               </motion.h1>
               
-              {/* Intro text */}
+              {/* Strong value prop */}
               <motion.p 
                 variants={itemVariants}
-                className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-2xl hero-description"
+                className="text-lg lg:text-xl text-muted-foreground mb-6 max-w-2xl hero-description"
               >
-                {t('local.heroIntro')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}. 
-                {locale === 'en' ? 'Fixed price, insured contractors and' : 'Fast pris, försäkrade hantverkare och'} {service?.rotRut}{t('local.rotDeduction')}.
+                {locale === 'en' 
+                  ? `Top-rated in ${metadata?.region || 'the region'} — free quote within 24h. Fixed price, insured contractors and ${service?.rotRut} deduction.`
+                  : `Topprankade i ${metadata?.region || 'regionen'} — gratis offert inom 24h. Fast pris, försäkrade hantverkare och ${service?.rotRut}-avdrag.`
+                }
               </motion.p>
               
-              {/* Trust badges */}
+              {/* Trust badges inline */}
               <motion.div 
                 variants={itemVariants}
                 className="flex flex-wrap gap-3 mb-8"
               >
                 {[
-                  { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5`, color: "text-amber-400" },
-                  { icon: BadgeCheck, text: `30% ${service?.rotRut}`, color: "text-emerald-400" },
+                  { icon: Star, text: `${areaActivity.avgRating.toFixed(1)}/5 ${locale === 'en' ? 'rating' : 'betyg'}`, color: "text-amber-400" },
+                  { icon: BadgeCheck, text: `30% ${service?.rotRut}-${locale === 'en' ? 'deduction' : 'avdrag'}`, color: "text-emerald-400" },
                   { icon: Clock, text: t('local.response2h'), color: "text-blue-400" },
                 ].map((badge, idx) => (
                   <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm backdrop-blur-sm">
@@ -424,186 +417,41 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Compact Trust Bar */}
-        <CompactTrustBar 
-          rating={areaActivity.avgRating}
-          area={area}
-          rotRut={service?.rotRut || "ROT"}
-        />
-
         {/* ============================================
-            SEO SECTION 1: Vanliga projekt i {ort}
+            2. SOCIAL PROOF — Testimonials direkt efter hero
             ============================================ */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/30" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-              className="max-w-5xl mx-auto"
-            >
-              <motion.div variants={itemVariants} className="text-center mb-10">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  {t('local.demandBadge')} {area}
-                </span>
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                  {locale === 'en' ? 'Common' : 'Vanliga'} <span className="text-primary">{service?.name?.toLowerCase()}</span>{t('local.commonProjects')} {area}
-                </h2>
-              </motion.div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {uniqueContent.popularSearches.map((search, idx) => (
-                  <motion.div
-                    key={`search-${idx}`}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
-                  >
-                    <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span className="text-sm capitalize">{search} {locale === 'en' ? 'in' : 'i'} {area}</span>
-                  </motion.div>
-                ))}
-                {uniqueContent.projectExamples.map((project, idx) => (
-                  <motion.div
-                    key={`project-${idx}`}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border hover:border-amber-500/30 transition-all"
-                  >
-                    <Zap className="h-4 w-4 text-amber-400 flex-shrink-0" />
-                    <span className="text-sm capitalize">{project}</span>
-                  </motion.div>
-                ))}
-              </div>
-              
-              {/* Local Tip */}
-              <motion.div 
-                variants={itemVariants}
-                className="mt-8 p-5 bg-gradient-to-br from-primary/[0.08] to-primary/[0.02] rounded-xl border border-primary/20"
-              >
-                <div className="flex items-start gap-3">
-                  <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
-                    <p className="text-sm text-muted-foreground">{uniqueContent.localTip}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ============================================
-            SEO SECTION: Om {tjänst} i {ort}
-            ============================================ */}
-        <section className="py-16 relative overflow-hidden">
+        <section className="py-14 relative overflow-hidden">
           <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
-            <motion.div
+            <motion.div 
+              className="max-w-6xl mx-auto"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={containerVariants}
-              className="max-w-4xl mx-auto"
             >
-              <motion.div variants={itemVariants}>
-                <h2 className="text-2xl font-bold mb-6 text-foreground">
-                  {t('local.aboutServiceIn')} <span className="text-primary">{service?.name?.toLowerCase()}</span> {locale === 'en' ? 'in' : 'i'} {area}
-                </h2>
-                <div className="prose prose-lg dark:prose-invert max-w-none">
-                  <p className="text-muted-foreground leading-relaxed">
-                    {uniqueContent.uniqueIntro}
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-
-        {/* ============================================
-            HOW TO BOOK - Warmer Timeline
-            ============================================ */}
-        <section className="py-20 relative overflow-hidden">
-          {/* Warm gradient background */}
-          <div className="absolute inset-0 bg-muted/30" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-14">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
-                  {t('local.fourSteps')}
+              <motion.div variants={itemVariants} className="text-center mb-8">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  {t('local.reviews')}
                 </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
-                  {t('local.howToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>
-                </h2>
-                <p className="text-muted-foreground">{t('local.fromRequestToDone')}</p>
+                <h2 className="text-2xl font-bold text-foreground">{t('local.whatCustomersSay')} {area} {locale === 'en' ? 'say' : 'säger'}</h2>
               </motion.div>
-
-              <div className="max-w-5xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-                  {/* Connecting line - desktop */}
-                  <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-amber-500/40 to-emerald-500/40" />
-                  </div>
-                  
-                  {howToSteps.map((step, idx) => {
-                    const StepIcon = stepIcons[idx] || CheckCircle;
-                    const colors = stepColors[idx] || stepColors[0];
-                    return (
-                      <motion.div 
-                        key={idx} 
-                        variants={itemVariants}
-                        whileHover={{ y: -6, scale: 1.02 }}
-                        className="relative group"
-                      >
-                        {/* Step number - floating above */}
-                        <div className="flex justify-center mb-4">
-                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} ${colors.border} border-2 flex items-center justify-center font-bold text-lg ${colors.text} shadow-lg group-hover:scale-110 transition-transform`}>
-                            {idx + 1}
-                          </div>
-                        </div>
-                        
-                        {/* Card */}
-                        <div className="bg-card border border-border rounded-2xl p-6 text-center h-full hover:border-primary/20 transition-all">
-                          <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
-                            <StepIcon className={`h-6 w-6 ${colors.text}`} />
-                          </div>
-                          <h3 className="font-semibold mb-2">{step.title}</h3>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
+              
+              <motion.div variants={itemVariants}>
+                <TestimonialCarouselLocal 
+                  testimonials={getAreaReviews(area, service?.name || '', 15, locale)}
+                />
+              </motion.div>
             </motion.div>
           </div>
         </section>
 
         {/* ============================================
-            NEARBY AREAS - For easy navigation
+            3. TJÄNSTER — Vad vi gör (kompakt)
             ============================================ */}
-        <NearbyAreasSection
-          currentArea={area}
-          serviceSlug={serviceSlug}
-          serviceName={service?.name || ""}
-        />
-
-        {/* ============================================
-            SERVICES SECTION - Larger Clickable Cards
-            ============================================ */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-background" />
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -646,10 +494,10 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            ROT/RUT SECTION - Green/Teal Highlight Box
+            4. ROT/RUT — Prisincitament
             ============================================ */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/30" />
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -660,7 +508,6 @@ const LocalServicePage = () => {
               variants={containerVariants}
             >
               <div className="grid md:grid-cols-2 gap-8 items-center">
-                {/* Left - Icon/visual */}
                 <motion.div variants={itemVariants} className="flex justify-center">
                   <div className="relative">
                     <div className="w-40 h-40 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20 flex items-center justify-center">
@@ -672,7 +519,6 @@ const LocalServicePage = () => {
                   </div>
                 </motion.div>
                 
-                {/* Right - Content */}
                 <motion.div variants={itemVariants}>
                   <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-4">
                     {t('local.saveMoney')}
@@ -697,142 +543,71 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            TESTIMONIAL SECTION - Carousel with Multiple Reviews
-            ============================================ */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-background" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-6xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              <motion.div variants={itemVariants} className="text-center mb-8">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  {t('local.reviews')}
-                </span>
-                <h2 className="text-2xl font-bold text-foreground">{t('local.whatCustomersSay')} {area} {locale === 'en' ? 'say' : 'säger'}</h2>
-              </motion.div>
-              
-              <motion.div variants={itemVariants}>
-                <TestimonialCarouselLocal 
-                  testimonials={getAreaReviews(area, service?.name || '', 15, locale)}
-                />
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ============================================
-            COMBINED FACTS SECTION - Quick Facts + Fun Facts
-            ============================================ */}
-        <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/30" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-5xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-            >
-              {/* Quick Facts */}
-              <motion.div variants={itemVariants} className="mb-12">
-                <h2 className="text-2xl font-bold mb-6 text-center text-foreground">
-                  {t('local.quickFacts')} <span className="text-primary">{content.h1}</span>
-                </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {content.quickFacts.slice(0, 8).map((fact, idx) => (
-                    <motion.div
-                      key={idx}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border text-sm"
-                    >
-                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                      <span className="text-foreground/80">{fact}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-              
-              {/* Fun Facts */}
-              {content.funFacts.length > 0 && (
-                <motion.div variants={itemVariants}>
-                  <div className="flex items-center gap-3 mb-6 justify-center">
-                    <Lightbulb className="h-5 w-5 text-amber-400" />
-                    <h3 className="text-xl font-semibold text-foreground">{t('local.didYouKnow')} {area}?</h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {content.funFacts.slice(0, 4).map((fact, idx) => (
-                      <div 
-                        key={idx}
-                        className="p-4 rounded-xl bg-gradient-to-br from-amber-500/[0.06] to-amber-500/[0.02] border border-amber-500/10"
-                      >
-                        <p className="text-sm text-foreground/80">{fact}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ============================================
-            FAQ SECTION - Includes Myths
+            5. HOW TO BOOK — 4 steg
             ============================================ */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-background" />
+          <div className="absolute inset-0 bg-muted/30" />
           
           <div className="container mx-auto px-4 relative z-10">
-            <motion.div 
-              className="max-w-3xl mx-auto"
+            <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={containerVariants}
             >
-              <motion.div variants={itemVariants} className="text-center mb-10">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  {t('local.faq')}
+              <motion.div variants={itemVariants} className="text-center mb-14">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                  {t('local.fourSteps')}
                 </span>
-                <h2 className="text-3xl font-bold text-foreground">
-                  {t('local.faqTitle')} <span className="text-primary">{service?.name?.toLowerCase()}</span> {locale === 'en' ? 'in' : 'i'} {area}
+                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
+                  {t('local.howToBook')} <span className="text-primary">{service?.name?.toLowerCase()}</span>
                 </h2>
+                <p className="text-muted-foreground">{t('local.fromRequestToDone')}</p>
               </motion.div>
-              
-              <motion.div variants={itemVariants}>
-                <Accordion type="single" collapsible className="w-full space-y-3">
-                  {allFaqItems.map((faq, idx) => (
-                    <AccordionItem 
-                      key={idx} 
-                      value={`faq-${idx}`}
-                      className="bg-card border border-border rounded-xl px-6 data-[state=open]:border-primary/30 transition-all"
-                    >
-                      <AccordionTrigger className="text-left hover:no-underline py-4">
-                        <span className="font-medium pr-4">{faq.q}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4">
-                        {faq.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </motion.div>
+
+              <div className="max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                  <div className="hidden md:block absolute top-20 left-[12%] right-[12%] h-0.5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/40 via-blue-500/40 via-amber-500/40 to-emerald-500/40" />
+                  </div>
+                  
+                  {howToSteps.map((step, idx) => {
+                    const StepIcon = stepIcons[idx] || CheckCircle;
+                    const colors = stepColors[idx] || stepColors[0];
+                    return (
+                      <motion.div 
+                        key={idx} 
+                        variants={itemVariants}
+                        whileHover={{ y: -6, scale: 1.02 }}
+                        className="relative group"
+                      >
+                        <div className="flex justify-center mb-4">
+                          <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors.bg} ${colors.border} border-2 flex items-center justify-center font-bold text-lg ${colors.text} shadow-lg group-hover:scale-110 transition-transform`}>
+                            {idx + 1}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-card border border-border rounded-2xl p-6 text-center h-full hover:border-primary/20 transition-all">
+                          <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center`}>
+                            <StepIcon className={`h-6 w-6 ${colors.text}`} />
+                          </div>
+                          <h3 className="font-semibold mb-2">{step.title}</h3>
+                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
 
         {/* ============================================
-            OTHER SERVICES IN AREA
+            6. ANDRA TJÄNSTER — Korsförsäljning
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/30" />
+          <div className="absolute inset-0 bg-background" />
           
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 
@@ -876,7 +651,7 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            FINAL CTA
+            7. FINAL CTA — Stark avslutning
             ============================================ */}
         <section className="py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-muted/30" />
@@ -929,11 +704,155 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* ============================================
-            SEO ZONE - Discrete sections for search engines
-            ============================================ */}
-        
-        {/* Nearby Areas Links */}
+        {/* ════════════════════════════════════════════
+            SEO ZONE — Diskret, längst ner
+            ════════════════════════════════════════════ */}
+
+        {/* FAQ + Myths */}
+        <section className="py-12 relative overflow-hidden">
+          <div className="absolute inset-0 bg-background" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-3xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-muted-foreground">
+                  {t('local.faqTitle')} <span className="text-primary/70">{service?.name?.toLowerCase()}</span> {locale === 'en' ? 'in' : 'i'} {area}
+                </h2>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <Accordion type="single" collapsible className="w-full space-y-3">
+                  {allFaqItems.map((faq, idx) => (
+                    <AccordionItem 
+                      key={idx} 
+                      value={`faq-${idx}`}
+                      className="bg-card border border-border rounded-xl px-6 data-[state=open]:border-primary/30 transition-all"
+                    >
+                      <AccordionTrigger className="text-left hover:no-underline py-4">
+                        <span className="font-medium pr-4">{faq.q}</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-4">
+                        {faq.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Vanliga projekt (SEO) */}
+        <section className="py-10 relative overflow-hidden">
+          <div className="absolute inset-0 bg-muted/20" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto">
+              <h3 className="text-lg font-semibold text-muted-foreground mb-6 text-center">
+                {locale === 'en' ? 'Common' : 'Vanliga'} {service?.name?.toLowerCase()}{t('local.commonProjects')} {area}
+              </h3>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                {uniqueContent.popularSearches.map((search, idx) => (
+                  <div
+                    key={`search-${idx}`}
+                    className="flex items-center gap-2 p-2.5 rounded-lg bg-card border border-border text-sm text-muted-foreground"
+                  >
+                    <CheckCircle className="h-3.5 w-3.5 text-primary/50 flex-shrink-0" />
+                    <span className="capitalize">{search} {locale === 'en' ? 'in' : 'i'} {area}</span>
+                  </div>
+                ))}
+                {uniqueContent.projectExamples.map((project, idx) => (
+                  <div
+                    key={`project-${idx}`}
+                    className="flex items-center gap-2 p-2.5 rounded-lg bg-card border border-border text-sm text-muted-foreground"
+                  >
+                    <Zap className="h-3.5 w-3.5 text-amber-400/50 flex-shrink-0" />
+                    <span className="capitalize">{project}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Om tjänst i ort (SEO) */}
+        <section className="py-10 relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-lg font-semibold text-muted-foreground mb-4">
+                {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
+              </h3>
+              <p className="text-sm text-muted-foreground/80 leading-relaxed">
+                {uniqueContent.uniqueIntro}
+              </p>
+              {/* Local Tip */}
+              <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-border">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="h-4 w-4 text-muted-foreground/60 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
+                    <p className="text-xs text-muted-foreground/70">{uniqueContent.localTip}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Facts + Fun Facts (SEO) */}
+        <section className="py-8 relative overflow-hidden">
+          <div className="absolute inset-0 bg-muted/20" />
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto">
+              <h3 className="text-sm font-medium text-muted-foreground/70 mb-4 text-center">
+                {t('local.quickFacts')} {content.h1}
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {content.quickFacts.slice(0, 8).map((fact, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 p-2 rounded-lg bg-card border border-border text-xs text-muted-foreground/70"
+                  >
+                    <CheckCircle className="h-3 w-3 text-primary/40 flex-shrink-0" />
+                    <span>{fact}</span>
+                  </div>
+                ))}
+              </div>
+              
+              {content.funFacts.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="text-sm font-medium text-muted-foreground/60 mb-3 text-center">
+                    {t('local.didYouKnow')} {area}?
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {content.funFacts.slice(0, 4).map((fact, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-card border border-border">
+                        <p className="text-xs text-muted-foreground/60">{fact}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Nearby Areas */}
+        <NearbyAreasSection
+          currentArea={area}
+          serviceSlug={serviceSlug}
+          serviceName={service?.name || ""}
+        />
+
+        {/* Nearby Areas Links (SEO) */}
         {uniqueContent.nearbyAreas.length > 0 && (
           <section className="py-8 border-t border-border">
             <div className="container mx-auto px-4">
@@ -957,7 +876,7 @@ const LocalServicePage = () => {
           </section>
         )}
         
-        {/* Related Searches */}
+        {/* Related Searches (SEO) */}
         <section className="py-6 border-t border-border">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
@@ -982,7 +901,7 @@ const LocalServicePage = () => {
           </div>
         </section>
         
-        {/* Urgent Services - now subtle */}
+        {/* Urgent Services (SEO) */}
         {uniqueContent.urgentServices.length > 0 && (
           <section className="py-6 border-t border-border">
             <div className="container mx-auto px-4">
@@ -1006,7 +925,7 @@ const LocalServicePage = () => {
           </section>
         )}
 
-        {/* Area Links - Expandable for SEO */}
+        {/* Area Links (SEO) */}
         <ExpandableAreaLinks
           currentArea={area}
           serviceSlug={serviceSlug}
