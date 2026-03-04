@@ -1,30 +1,42 @@
 
 
-## Plan: Skapa nytt referensprojekt — Garderobsbyte & Fixartjänster i Liljeholmen
+## Plan: Uppdatera referensprojekt H.W — ny text, fler bilder & videofråga
 
-### Vad som ska göras
+### 1. Uppdatera beskrivningstexten
 
-Skapa en SQL-migration som insertar ett nytt referensprojekt i `reference_projects`-tabellen med de uppladdade bilderna och en engagerande beskrivning.
+Nuvarande text nämner bara hallgarderober och är lite för "hypeig" i slutet. Ny text ska:
+- Nämna garderober i **både hall och sovrum**
+- Ta bort "kunden var överlycklig"-delen
+- Vara engagerande men inte överdrivet säljig
+- Behålla professionell ton
 
-### Projektdata
+**Ny svensk text (utkast):**
+> "Hemma hos H.W i Liljeholmen väntade flera uppdrag. Balkongdörren hade slutat stänga ordentligt — utslitna gångjärn gjorde att den hängde snett och lämnade en springa som släppte in drag. Vi bytte gångjärnen och justerade dörren tills den åter satt perfekt i karmen. I hallen demonterade vi de gamla, uttjänta garderoberna och ersatte dem med nya skjutdörrsgarderober som utnyttjar utrymmet betydligt bättre. Samma uppgradering gjordes i sovrummet, där ytterligare garderober monterades för att ge mer och smartare förvaring. Snyggt, funktionellt och klart på två dagar."
 
-- **Titel (SV):** Garderobsbyte & Hemfixar i Liljeholmen
-- **Titel (EN):** Wardrobe Replacement & Home Repairs in Liljeholmen
-- **Klient:** H.W
-- **Plats:** Liljeholmen, Stockholm
-- **Kategori:** Hemfixar / Home Repairs
-- **Betyg:** 5
-- **Bilder:** De tre uppladdade bilderna (IMG_8962.HEIC, garderob.webp, Garderob_hall.webp)
-- **Pris/ROT:** Rimliga värden baserat på arbetstypen
-- **Beskrivning (SV):** En engagerande text om att kunden hade en balkongdörr med trasiga gångjärn som inte gick att stänga ordentligt, samt gamla garderober som behövde demonteras och ersättas med nya moderna lösningar. Allt utfört smidigt och professionellt.
-- **Features:** Balkongdörrsreparation, Garderobsdemontering, Garderobsmontering, Gångjärnsbyte
+**Ny engelsk text (utkast):**
+> "At H.W's home in Liljeholmen, several tasks were waiting. The balcony door had stopped closing properly — worn-out hinges left it hanging at an angle, letting in drafts. We replaced the hinges and adjusted the door until it sat perfectly in the frame again. In the hallway, we dismantled the old, worn-out wardrobes and replaced them with new sliding-door wardrobes that make much better use of the space. The same upgrade was carried out in the bedroom, where additional wardrobes were installed for more and smarter storage. Clean, functional, and completed in two days."
 
-### Teknisk implementation
+**Features uppdateras:** Lägg till "Sovrumsgarderober" / "Bedroom Wardrobes"
 
-1. **Ny SQL-migration** som insertar projektet med alla fält (title, description, location, category, features, multilingual fields, images, etc.)
-2. Bilderna refereras via sina uppladdade sökvägar
-3. `sort_order` sätts till 1 (eller nästa lediga)
-4. `is_featured: true`, `is_active: true`
+### 2. Kopiera 3 nya bilder till projektet
 
-Inga kodändringar behövs — projektet dyker upp automatiskt via befintliga queries.
+- `IMG_2331.jpg` → `public/images/references/balkongdorr_gangjarn.jpg` (gångjärnsdetalj)
+- `IMG_2330.jpg` → `public/images/references/garderob_sovrum.jpg` (färdig sovrumsgarderob)
+- `IMG_2329.jpg` → `public/images/references/garderob_stomme.jpg` (garderobsstomme under montering)
+
+### 3. Uppdatera databasen
+
+Kör `UPDATE` på `reference_projects` för att:
+- Sätta ny description/description_sv/description_en
+- Lägga till de 3 nya bilderna i `images`-arrayen
+- Uppdatera features med "Sovrumsgarderober"
+
+### 4. Videor
+
+Lovable kan hantera videofiler som statiska assets i `public/`-mappen, men det finns begränsningar:
+- Videofiler kan bli **mycket stora** och Lovable har filstorleksgränser
+- De kan inte streamas via Supabase Storage utan extra konfiguration
+- Bästa alternativet: ladda upp videorna till t.ex. YouTube/Vimeo och bädda in dem, eller ladda upp dem till Supabase Storage via dashboarden
+
+Jag kan absolut lägga till videostöd i referensprojektkorten om du vill — men själva videofilerna bör helst hostas externt.
 
