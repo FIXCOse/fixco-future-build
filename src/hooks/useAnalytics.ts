@@ -12,6 +12,8 @@ import {
   fetchQuotePipeline,
   type AnalyticsFilters,
 } from '@/lib/api/analytics';
+import { fetchSessionJourneys } from '@/lib/api/analyticsJourneys';
+import { fetchDetailedFunnel, fetchBounceAnalytics } from '@/lib/api/analyticsDetailed';
 
 export function useAnalytics(filters: AnalyticsFilters) {
   const { data, isLoading, error, refetch } = useQuery({
@@ -28,6 +30,9 @@ export function useAnalytics(filters: AnalyticsFilters) {
           revenueTimeline,
           topCustomers,
           quotePipeline,
+          journeys,
+          detailedFunnel,
+          bounceAnalytics,
         ] = await Promise.all([
           fetchRevenueAnalytics(filters),
           fetchBookingAnalytics(filters),
@@ -38,6 +43,9 @@ export function useAnalytics(filters: AnalyticsFilters) {
           fetchRevenueTimeline(filters),
           fetchTopCustomers(filters, 10),
           fetchQuotePipeline(filters),
+          fetchSessionJourneys(filters),
+          fetchDetailedFunnel(filters),
+          fetchBounceAnalytics(filters),
         ]);
 
         return {
@@ -50,6 +58,9 @@ export function useAnalytics(filters: AnalyticsFilters) {
           revenueTimeline,
           topCustomers,
           quotePipeline,
+          journeys,
+          detailedFunnel,
+          bounceAnalytics,
         };
       } catch (err) {
         console.error('Analytics query error:', err);
@@ -57,8 +68,8 @@ export function useAnalytics(filters: AnalyticsFilters) {
         throw err;
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     retry: 1,
   });
 
