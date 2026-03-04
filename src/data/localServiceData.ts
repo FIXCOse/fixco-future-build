@@ -38,6 +38,16 @@ export const LOCAL_SERVICES = [
   { slug: "montering", name: "Montering", serviceKey: "montering", rotRut: "ROT" },
   { slug: "flytt", name: "Flytt", serviceKey: "flytt", rotRut: "RUT" },
   { slug: "tekniska-installationer", name: "Tekniska installationer", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  // Nischade sub-tjänster för long-tail SEO
+  { slug: "koksmontering", name: "Köksmontering", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "mobelmontering", name: "Möbelmontering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "badrumsrenovering", name: "Badrumsrenovering", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "koksrenovering", name: "Köksrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "altanbygge", name: "Altanbygge", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "fasadmalning", name: "Fasadmålning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "inomhusmalning", name: "Inomhusmålning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "golvlaggning", name: "Golvläggning", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "elinstallation", name: "Elinstallation", serviceKey: "el", rotRut: "ROT" },
 ] as const;
 
 export type LocalServiceSlug = typeof LOCAL_SERVICES[number]["slug"];
@@ -464,18 +474,54 @@ const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: strin
     }
   ],
   "tekniska-installationer": [
-    { 
-      myth: "Smart hem-system är för komplicerade för vanliga användare", 
-      truth: "Moderna system är designade för enkelhet. Efter installation styrs allt via mobilapp eller röstkommandon." 
-    },
-    { 
-      myth: "Solceller lönar sig bara i södra Sverige", 
-      truth: "Även i Mellansverige producerar solceller tillräckligt för att betala sig inom 8-12 år tack vare långa somrar." 
-    },
-    { 
-      myth: "Övervakningskameror är bara för stora företag", 
-      truth: "Moderna hemsystem kostar från några tusen kronor och ger trygghet dygnet runt med mobilnotiser." 
-    }
+    { myth: "Smart hem-system är för komplicerade för vanliga användare", truth: "Moderna system är designade för enkelhet. Efter installation styrs allt via mobilapp eller röstkommandon." },
+    { myth: "Solceller lönar sig bara i södra Sverige", truth: "Även i Mellansverige producerar solceller tillräckligt för att betala sig inom 8-12 år tack vare långa somrar." },
+    { myth: "Övervakningskameror är bara för stora företag", truth: "Moderna hemsystem kostar från några tusen kronor och ger trygghet dygnet runt med mobilnotiser." }
+  ],
+  "koksmontering": [
+    { myth: "IKEA-kök är lätta att montera själv", truth: "Köksmontering kräver precision på millimetern – felaktigt monterade skåp kan leda till skeva luckor, läckande rör och ogiltig garanti." },
+    { myth: "Alla köksmontörer kan hantera IKEA-kök", truth: "IKEA-kök har unika beslag och system. Erfarna IKEA-köksmontörer monterar snabbare och med färre misstag." },
+    { myth: "Man kan montera vitvaror själv för att spara pengar", truth: "Felaktigt anslutna vitvaror kan orsaka vattenskador och elektriska fel. Diskmaskin och spis bör installeras av behörig personal." }
+  ],
+  "mobelmontering": [
+    { myth: "Alla IKEA-möbler är enkla att montera", truth: "Garderober som PAX och hyllsystem som BESTÅ kräver precision och rätt verktyg. Felmontering gör möbler instabila." },
+    { myth: "Man behöver inga specialverktyg för möbelmontering", truth: "Professionella montörer har specialverktyg som borrmall, vattenpass och momentnyckel som ger bättre resultat." },
+    { myth: "Det är billigare att montera själv", truth: "Felmontering leder ofta till trasiga delar och omköp. Professionell montering sparar tid och frustration." }
+  ],
+  "badrumsrenovering": [
+    { myth: "Man kan renovera badrummet själv för att spara pengar", truth: "Badrumsrenovering kräver certifierad våtrumsarbetare enligt GVK. Felaktig tätning kan leda till fuktskador för hundratusentals kronor." },
+    { myth: "Billigt kakel fungerar lika bra som dyrt", truth: "Kvalitetskakel har bättre frostresistens, slitstyrka och jämnare mått. Skillnaden märks efter några år." },
+    { myth: "Golvvärme i badrum är en lyxprodukt", truth: "Golvvärme förhindrar fukt och mögel, torkar golvet snabbare och minskar energikostnaden jämfört med handdukstork." }
+  ],
+  "koksrenovering": [
+    { myth: "Köksrenovering tar bara en vecka", truth: "En fullständig köksrenovering tar vanligtvis 3-6 veckor beroende på el, VVS och eventuella väggjobb." },
+    { myth: "Man kan behålla gamla rör vid köksrenovering", truth: "Gamla koppar- eller blyrör bör bytas vid renovering. Moderna plaströr är säkrare och enklare att underhålla." },
+    { myth: "Bänkskivor i laminat är lika bra som sten", truth: "Stenbänkskivor (granit, kvarts) är mer tåliga mot värme och repor, men laminat är ett utmärkt budgetalternativ." }
+  ],
+  "altanbygge": [
+    { myth: "Altan kräver inget bygglov", truth: "Altaner högre än 1,8 meter eller inom 4,5 meter från tomtgräns kräver ofta bygglov. Kontrollera alltid med din kommun." },
+    { myth: "Tryckimpregnerat virke behöver ingen behandling", truth: "Tryckimpregnerat virke skyddar mot röta men behöver oljas eller laseras för att behålla utseendet och förhindra sprickor." },
+    { myth: "Alla trädäck kan byggas utan grund", truth: "Utan ordentlig grund med plintar eller betongblock sjunker altanen och blir sned inom några år." }
+  ],
+  "fasadmalning": [
+    { myth: "Fasadmålning kan göras när som helst på året", truth: "Fasadfärg kräver minst +10°C och torrt väder i 24 timmar. Målning i fel väder ger flagning inom 1-2 år." },
+    { myth: "Man kan måla direkt på gammal fasadfärg", truth: "Gammal färg måste skrapas, slipas och grundas noggrant. Annars fäster inte den nya färgen ordentligt." },
+    { myth: "Alla fasadfärger är likvärdiga", truth: "Silikatfärg andas bättre än latexfärg och passar bäst för puts. Linoljefärg är optimal för trähus." }
+  ],
+  "inomhusmalning": [
+    { myth: "En yta räcker alltid för att måla om", truth: "De flesta väggar behöver 2-3 strykningar för jämnt resultat, särskilt vid färgbyte eller mörka nyanser." },
+    { myth: "Man behöver inte flytta möbler vid målning", truth: "Möbler bör flyttas helt eller täckas med plast. Färgstänk och damm från spackling förstör textilier." },
+    { myth: "Tapetsering är lättare än målning", truth: "Tapetsering kräver precision vid mönstermatchning och foghantering. Felaktig tapetsering ger synliga skarvar." }
+  ],
+  "golvlaggning": [
+    { myth: "Laminat och parkett är samma sak", truth: "Parkett har ett äkta trälager som kan slipas om 3-5 gånger. Laminat har en tryckt yta som inte kan renoveras." },
+    { myth: "Click-golv kan läggas utan underlag", truth: "Underlagsmatta är avgörande för att dämpa ljud, jämna ut ojämnheter och förhindra fuktskador underifrån." },
+    { myth: "Golvläggning kan göras direkt på gammalt golv", truth: "Underlaget måste vara torrt, plant och stabilt. Ojämnt underlag ger knakande golv och synliga skarvar." }
+  ],
+  "elinstallation": [
+    { myth: "Man kan byta eluttag och strömbrytare själv", truth: "Alla elarbeten kräver behörighet enligt Elsäkerhetsverket. Felaktigt utförda elarbeten kan leda till brand." },
+    { myth: "LED-belysning kräver ingen ny eldragning", truth: "Dimbar LED-belysning kräver ofta kompatibla dimmers och ibland ny kabling för att fungera flimmerfritt." },
+    { myth: "Laddbox för elbil kan anslutas till vanligt uttag", truth: "En laddbox kräver dedikerad säkring och professionell installation. Vanliga uttag kan överhettas vid lång laddning." }
   ]
 };
 
@@ -500,6 +546,16 @@ const SERVICE_PRICING: Record<LocalServiceSlug, {
   "montering":   { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "flytt":       { base: "559 kr/h",  afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "tekniska-installationer": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Nischade sub-tjänster
+  "koksmontering":      { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "mobelmontering":     { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "badrumsrenovering":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksrenovering":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "altanbygge":         { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "fasadmalning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "inomhusmalning":     { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "golvlaggning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "elinstallation":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
 };
 
 // Funktion för att hämta rolig fakta
@@ -552,6 +608,15 @@ const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
   "montering": "Assembly",
   "flytt": "Moving",
   "tekniska-installationer": "Technical Installation",
+  "koksmontering": "Kitchen Assembly",
+  "mobelmontering": "Furniture Assembly",
+  "badrumsrenovering": "Bathroom Renovation",
+  "koksrenovering": "Kitchen Renovation",
+  "altanbygge": "Deck Building",
+  "fasadmalning": "Facade Painting",
+  "inomhusmalning": "Interior Painting",
+  "golvlaggning": "Floor Installation",
+  "elinstallation": "Electrical Installation",
 };
 
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
@@ -573,7 +638,16 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "markarbeten": `Groundwork ${area} ★ Excavation, drainage & paving · ROT 30%`,
     "montering": `Assembly ${area} ★ IKEA, kitchen & furniture · ROT 30%`,
     "tradgard": `Gardening ${area} ★ Trees, hedges & landscaping · ROT 30%`,
-    "tekniska-installationer": `Technical installation ${area} ★ EV charger & smart home · ROT 30%`
+    "tekniska-installationer": `Technical installation ${area} ★ EV charger & smart home · ROT 30%`,
+    "koksmontering": `Kitchen Assembly ${area} ★ IKEA kitchen & custom · ROT 30% · Free quote`,
+    "mobelmontering": `Furniture Assembly ${area} ★ IKEA, wardrobes & shelving · RUT 30%`,
+    "badrumsrenovering": `Bathroom Renovation ${area} ★ Full reno, tiles & plumbing · ROT 30%`,
+    "koksrenovering": `Kitchen Renovation ${area} ★ New kitchen & countertops · ROT 30%`,
+    "altanbygge": `Deck Building ${area} ★ Wood deck, glazing & railings · ROT 30%`,
+    "fasadmalning": `Facade Painting ${area} ★ Exterior painting & plaster · ROT 30%`,
+    "inomhusmalning": `Interior Painting ${area} ★ Wallpapering & plastering · ROT 30%`,
+    "golvlaggning": `Floor Installation ${area} ★ Parquet, vinyl & tiles · ROT 30%`,
+    "elinstallation": `Electrical Installation ${area} ★ Outlets, lighting & EV charger · ROT 30%`
   } : {
     "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 30% · Fri offert`,
     "vvs": `VVS ${area} ★ Byte & reparation · ROT 30% · Svar 24h`,
@@ -584,7 +658,16 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & plattor · ROT 30%`,
     "montering": `Monteringshjälp ${area} ★ IKEA, kök & möbler · ROT 30%`,
     "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck & anläggning · ROT 30%`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 30%`
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox & smarta hem · ROT 30%`,
+    "koksmontering": `Köksmontering ${area} ★ IKEA-kök & platsbyggt · ROT 30% · Fri offert`,
+    "mobelmontering": `Möbelmontering ${area} ★ IKEA, garderober & hyllsystem · RUT 30%`,
+    "badrumsrenovering": `Badrumsrenovering ${area} ★ Totalrenovering, kakel & VVS · ROT 30%`,
+    "koksrenovering": `Köksrenovering ${area} ★ Nytt kök, bänkskivor & vitvaror · ROT 30%`,
+    "altanbygge": `Altanbygge ${area} ★ Trädäck, inglasning & räcken · ROT 30%`,
+    "fasadmalning": `Fasadmålning ${area} ★ Utvändig målning & puts · ROT 30%`,
+    "inomhusmalning": `Inomhusmålning ${area} ★ Tapetsering & spackling · ROT 30%`,
+    "golvlaggning": `Golvläggning ${area} ★ Parkett, vinyl & klinker · ROT 30%`,
+    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`
   };
 
   const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
@@ -597,7 +680,16 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "montering": `Assembly ${area} ★ 5/5 rating ✓ IKEA furniture, kitchen & wardrobes ✓ 30% RUT deduction. Often same-day start!`,
     "tradgard": `Gardening ${area} ★ 5/5 rating ✓ Tree felling, hedges & lawn ✓ 30% ROT deduction. Book gardener!`,
     "markarbeten": `Groundwork ${area} ★ 5/5 rating ✓ Drainage, paving & excavation ✓ 30% ROT deduction. Free quote within 24h!`,
-    "tekniska-installationer": `Technical installation ${area} ★ 5/5 rating ✓ EV charger, smart home & AV ✓ 30% ROT deduction. Book certified installer!`
+    "tekniska-installationer": `Technical installation ${area} ★ 5/5 rating ✓ EV charger, smart home & AV ✓ 30% ROT deduction. Book certified installer!`,
+    "koksmontering": `Kitchen assembly ${area} ★ 5/5 rating ✓ IKEA kitchen, custom kitchen & appliances ✓ 30% ROT deduction. Free quote!`,
+    "mobelmontering": `Furniture assembly ${area} ★ 5/5 rating ✓ IKEA, wardrobes & shelving ✓ 30% RUT deduction. Often same-day!`,
+    "badrumsrenovering": `Bathroom renovation ${area} ★ 5/5 rating ✓ Full renovation, tiles & plumbing ✓ 30% ROT deduction. Free quote!`,
+    "koksrenovering": `Kitchen renovation ${area} ★ 5/5 rating ✓ New kitchen, countertops & appliances ✓ 30% ROT deduction. Free quote!`,
+    "altanbygge": `Deck building ${area} ★ 5/5 rating ✓ Wood deck, glazing & railings ✓ 30% ROT deduction. Free quote within 24h!`,
+    "fasadmalning": `Facade painting ${area} ★ 5/5 rating ✓ Exterior painting & plaster ✓ 30% ROT deduction ✓ Work guarantee!`,
+    "inomhusmalning": `Interior painting ${area} ★ 5/5 rating ✓ Wallpapering & plastering ✓ 30% ROT deduction ✓ Work guarantee!`,
+    "golvlaggning": `Floor installation ${area} ★ 5/5 rating ✓ Parquet, vinyl & tiles ✓ 30% ROT deduction. Free quote within 24h!`,
+    "elinstallation": `Electrical installation ${area} ★ 5/5 rating ✓ Outlets, lighting & EV charger ✓ 30% ROT deduction. Book today!`
   } : {
     "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 30% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
     "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
@@ -608,7 +700,16 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "montering": `Monteringshjälp ${area} ★ 5/5 betyg ✓ IKEA-möbler, kök & garderober ✓ 30% RUT-avdrag. Ofta start samma dag!`,
     "tradgard": `Trädgårdshjälp ${area} ★ 5/5 betyg ✓ Trädfällning, häck & gräsmatta ✓ 30% ROT-avdrag. Boka trädgårdsmästare!`,
     "markarbeten": `Markarbeten ${area} ★ 5/5 betyg ✓ Dränering, plattsättning & grävning ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ 5/5 betyg ✓ Laddbox, smarta hem & AV ✓ 30% ROT-avdrag. Boka certifierad montör!`
+    "tekniska-installationer": `Teknisk installation ${area} ★ 5/5 betyg ✓ Laddbox, smarta hem & AV ✓ 30% ROT-avdrag. Boka certifierad montör!`,
+    "koksmontering": `Köksmontering ${area} ★ 5/5 betyg ✓ IKEA-kök, platsbyggt kök & vitvaror ✓ 30% ROT-avdrag. Fri offert!`,
+    "mobelmontering": `Möbelmontering ${area} ★ 5/5 betyg ✓ IKEA, garderober & hyllsystem ✓ 30% RUT-avdrag. Ofta start samma dag!`,
+    "badrumsrenovering": `Badrumsrenovering ${area} ★ 5/5 betyg ✓ Totalrenovering, kakel & VVS ✓ 30% ROT-avdrag. Gratis offert!`,
+    "koksrenovering": `Köksrenovering ${area} ★ 5/5 betyg ✓ Nytt kök, bänkskivor & vitvaror ✓ 30% ROT-avdrag. Gratis offert!`,
+    "altanbygge": `Altanbygge ${area} ★ 5/5 betyg ✓ Trädäck, inglasning & räcken ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
+    "fasadmalning": `Fasadmålning ${area} ★ 5/5 betyg ✓ Utvändig målning & puts ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
+    "inomhusmalning": `Inomhusmålning ${area} ★ 5/5 betyg ✓ Tapetsering & spackling ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
+    "golvlaggning": `Golvläggning ${area} ★ 5/5 betyg ✓ Parkett, vinyl & klinker ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
+    "elinstallation": `Elinstallation ${area} ★ 5/5 betyg ✓ Uttag, belysning & laddbox ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`
   };
   
   return {
@@ -784,6 +885,15 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
       "montering": [`Furniture assembly in ${area}`, `IKEA assembly in ${area}`, `Kitchen assembly in ${area}`, `Wardrobe assembly in ${area}`, `TV mounting in ${area}`, `Light fixture mounting in ${area}`, `Bathroom furniture in ${area}`, `Office furniture in ${area}`, `Outdoor furniture in ${area}`, `Children's furniture in ${area}`],
       "flytt": [`Moving help in ${area}`, `Office moving in ${area}`, `Storage in ${area}`, `Packing help in ${area}`, `Piano moving in ${area}`, `Household moving in ${area}`, `Student moving in ${area}`, `Business moving in ${area}`, `Estate clearance in ${area}`, `Heavy item moving in ${area}`],
       "tekniska-installationer": [`Smart home installation in ${area}`, `Alarm installation in ${area}`, `Security cameras in ${area}`, `Motorized blinds in ${area}`, `Sound system in ${area}`, `Network installation in ${area}`, `Home automation in ${area}`, `Solar panel installation in ${area}`, `Ventilation installation in ${area}`, `Gate automation in ${area}`],
+      "koksmontering": [`IKEA kitchen assembly in ${area}`, `Custom kitchen assembly in ${area}`, `Appliance installation in ${area}`, `Kitchen countertop mounting in ${area}`, `Kitchen cabinet assembly in ${area}`, `Dishwasher installation in ${area}`, `Kitchen island assembly in ${area}`, `Drawer & hinge adjustment in ${area}`, `Ventilation hood mounting in ${area}`, `Backsplash installation in ${area}`],
+      "mobelmontering": [`IKEA furniture assembly in ${area}`, `PAX wardrobe assembly in ${area}`, `BESTÅ shelving assembly in ${area}`, `KALLAX & BILLY assembly in ${area}`, `Bed frame assembly in ${area}`, `Desk assembly in ${area}`, `Children's furniture in ${area}`, `Garden furniture assembly in ${area}`, `Office furniture setup in ${area}`, `TV bench & media unit in ${area}`],
+      "badrumsrenovering": [`Full bathroom renovation in ${area}`, `Tile installation in ${area}`, `Shower installation in ${area}`, `Bathroom plumbing in ${area}`, `Underfloor heating bathroom in ${area}`, `Wet room certification in ${area}`, `Bathroom design in ${area}`, `Vanity & mirror mounting in ${area}`, `Bathtub installation in ${area}`, `Accessibility bathroom in ${area}`],
+      "koksrenovering": [`Full kitchen renovation in ${area}`, `Kitchen cabinet replacement in ${area}`, `Countertop installation in ${area}`, `Kitchen plumbing in ${area}`, `Kitchen electrical in ${area}`, `Kitchen flooring in ${area}`, `Kitchen painting in ${area}`, `Appliance installation in ${area}`, `Kitchen design in ${area}`, `Kitchen demolition in ${area}`],
+      "altanbygge": [`Wood deck building in ${area}`, `Composite deck in ${area}`, `Glazed patio in ${area}`, `Deck railing in ${area}`, `Deck stairs in ${area}`, `Pergola building in ${area}`, `Outdoor kitchen in ${area}`, `Deck lighting in ${area}`, `Deck renovation in ${area}`, `Deck foundation in ${area}`],
+      "fasadmalning": [`Exterior house painting in ${area}`, `Wood facade painting in ${area}`, `Plaster rendering in ${area}`, `Facade renovation in ${area}`, `Window trim painting in ${area}`, `Garage painting in ${area}`, `Fence painting in ${area}`, `Pressure washing in ${area}`, `Facade repair in ${area}`, `Color consultation exterior in ${area}`],
+      "inomhusmalning": [`Wall painting in ${area}`, `Ceiling painting in ${area}`, `Wallpapering in ${area}`, `Plastering & sanding in ${area}`, `Kitchen painting in ${area}`, `Bedroom painting in ${area}`, `Living room painting in ${area}`, `Stairwell painting in ${area}`, `Trim & molding painting in ${area}`, `Color consultation in ${area}`],
+      "golvlaggning": [`Parquet installation in ${area}`, `Vinyl floor installation in ${area}`, `Laminate flooring in ${area}`, `Tile flooring in ${area}`, `Hardwood floor sanding in ${area}`, `Underfloor heating in ${area}`, `Floor leveling in ${area}`, `Bathroom flooring in ${area}`, `Kitchen flooring in ${area}`, `Carpet installation in ${area}`],
+      "elinstallation": [`Electrical outlet installation in ${area}`, `Lighting installation in ${area}`, `EV charger installation in ${area}`, `Dimmer installation in ${area}`, `Panel upgrade in ${area}`, `Outdoor lighting in ${area}`, `Smart home wiring in ${area}`, `Ground fault breaker in ${area}`, `Electrical inspection in ${area}`, `Kitchen electrical in ${area}`],
     };
     return enItems[serviceSlug] || [];
   }
@@ -798,6 +908,15 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     "montering": [`Möbelmontering i ${area}`, `IKEA-montering i ${area}`, `Köksmontering i ${area}`, `Garderobsmontering i ${area}`, `TV-montering i ${area}`, `Lampmontering i ${area}`, `Badrumsmöbler i ${area}`, `Kontorsmöbler i ${area}`, `Utomhusmöbler i ${area}`, `Barnmöbler och leksaker i ${area}`],
     "flytt": [`Flytthjälp i ${area}`, `Kontorsflytt i ${area}`, `Magasinering i ${area}`, `Packhjälp i ${area}`, `Pianoflytt i ${area}`, `Bohagsflytt i ${area}`, `Studentflytt i ${area}`, `Företagsflytt i ${area}`, `Dödsbo och tömning i ${area}`, `Flytt av tunga saker i ${area}`],
     "tekniska-installationer": [`Smart hem installation i ${area}`, `Larminstallation i ${area}`, `Kameraövervakning i ${area}`, `Motoriserade persienner i ${area}`, `Ljudsystem i ${area}`, `Nätverksinstallation i ${area}`, `Hemautomation i ${area}`, `Solceller installation i ${area}`, `Ventilationsinstallation i ${area}`, `Portautomatik i ${area}`],
+    "koksmontering": [`IKEA-köksmontering i ${area}`, `Montering av platsbyggt kök i ${area}`, `Vitvaruinstallation i ${area}`, `Bänkskivemontering i ${area}`, `Köksskåp montering i ${area}`, `Diskmaskin installation i ${area}`, `Köksö montering i ${area}`, `Justering av lådor och gångjärn i ${area}`, `Fläkt montering i ${area}`, `Stänkskydd montering i ${area}`],
+    "mobelmontering": [`IKEA-möbelmontering i ${area}`, `PAX garderob montering i ${area}`, `BESTÅ hyllsystem i ${area}`, `KALLAX & BILLY montering i ${area}`, `Sängstomme montering i ${area}`, `Skrivbord montering i ${area}`, `Barnmöbler montering i ${area}`, `Trädgårdsmöbler montering i ${area}`, `Kontorsmöbler uppsättning i ${area}`, `TV-bänk & mediamöbel i ${area}`],
+    "badrumsrenovering": [`Helrenovering badrum i ${area}`, `Kakel och klinker i ${area}`, `Duschinstallation i ${area}`, `VVS-arbeten badrum i ${area}`, `Golvvärme badrum i ${area}`, `GVK-certifierat våtrumsarbete i ${area}`, `Badrumsdesign i ${area}`, `Kommod och spegel montering i ${area}`, `Badkarsinstallation i ${area}`, `Tillgänglighetsanpassat badrum i ${area}`],
+    "koksrenovering": [`Helrenovering kök i ${area}`, `Byte av köksluckor i ${area}`, `Bänkskiva installation i ${area}`, `Kök VVS-arbeten i ${area}`, `Kök elarbeten i ${area}`, `Köksgolv i ${area}`, `Målning av kök i ${area}`, `Vitvaruinstallation i ${area}`, `Köksdesign i ${area}`, `Rivning av gammalt kök i ${area}`],
+    "altanbygge": [`Bygga trädäck i ${area}`, `Komposittrall i ${area}`, `Inglasad altan i ${area}`, `Altanräcke i ${area}`, `Altantrappa i ${area}`, `Pergola i ${area}`, `Utekök i ${area}`, `Altanbelysning i ${area}`, `Renovera altan i ${area}`, `Altangrund och plintar i ${area}`],
+    "fasadmalning": [`Utvändig husmålning i ${area}`, `Träfasad målning i ${area}`, `Putsning och rendering i ${area}`, `Fasadrenovering i ${area}`, `Fönsterfoder målning i ${area}`, `Garagemålning i ${area}`, `Staketmålning i ${area}`, `Högtryckstvätt fasad i ${area}`, `Fasadlagning i ${area}`, `Färgrådgivning utvändig i ${area}`],
+    "inomhusmalning": [`Väggmålning i ${area}`, `Takmålning i ${area}`, `Tapetsering i ${area}`, `Spackling och slipning i ${area}`, `Köksmålning i ${area}`, `Sovrum målning i ${area}`, `Vardagsrum målning i ${area}`, `Trapphus målning i ${area}`, `Lister och foder målning i ${area}`, `Färgrådgivning i ${area}`],
+    "golvlaggning": [`Parkettläggning i ${area}`, `Vinylgolv i ${area}`, `Laminatgolv i ${area}`, `Klinkergolv i ${area}`, `Parkettslipning i ${area}`, `Golvvärme installation i ${area}`, `Avjämning av golv i ${area}`, `Badrumsgolv i ${area}`, `Köksgolv i ${area}`, `Mattläggning i ${area}`],
+    "elinstallation": [`Eluttag installation i ${area}`, `Belysning installation i ${area}`, `Laddbox installation i ${area}`, `Dimmer installation i ${area}`, `Byte av elcentral i ${area}`, `Utomhusbelysning i ${area}`, `Smart hem kabeldragning i ${area}`, `Jordfelsbrytare i ${area}`, `Elbesiktning i ${area}`, `Kök elinstallation i ${area}`],
   };
   return serviceItems[serviceSlug] || [];
 }
@@ -815,7 +934,16 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "markarbeten": "Groundwork contractors are licensed for excavation and carry liability insurance.",
     "montering": "Assemblers have experience with all types of furniture assembly and are meticulous.",
     "flytt": "Moving staff are trained in safe handling and have good physical fitness.",
-    "tekniska-installationer": "Technicians are certified for their respective systems and products."
+    "tekniska-installationer": "Technicians are certified for their respective systems and products.",
+    "koksmontering": "Kitchen assemblers are experienced with IKEA, Marbodal, Vedum and custom kitchens.",
+    "mobelmontering": "Furniture assemblers have experience with all IKEA product lines and other brands.",
+    "badrumsrenovering": "Bathroom renovators are GVK-certified for wet room work and Safe Water Installation.",
+    "koksrenovering": "Kitchen renovators coordinate carpentry, plumbing and electrical for seamless results.",
+    "altanbygge": "Deck builders are skilled carpenters with experience in outdoor constructions.",
+    "fasadmalning": "Facade painters are experienced with all facade types and use weather-resistant quality paints.",
+    "inomhusmalning": "Interior painters are trained in wallpapering, plastering and color matching.",
+    "golvlaggning": "Floor installers are trained in parquet, vinyl, laminate and tile flooring.",
+    "elinstallation": "Electricians are authorized according to the Swedish Electrical Safety Authority."
   } : {
     "elektriker": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "vvs": "VVS-montörer har Säker Vatteninstallation-certifiering och arbetar enligt branschregler.",
@@ -826,7 +954,16 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "markarbeten": "Markentreprenörer har behörighet för grävmaskin och är ansvarsförsäkrade.",
     "montering": "Montörer har erfarenhet av alla typer av möbelmontering och är noggranna.",
     "flytt": "Flyttpersonal är utbildade i säker hantering och har god fysik.",
-    "tekniska-installationer": "Tekniker har certifiering för respektive system och produkter."
+    "tekniska-installationer": "Tekniker har certifiering för respektive system och produkter.",
+    "koksmontering": "Köksmontörer har erfarenhet av IKEA, Marbodal, Vedum och platsbyggda kök.",
+    "mobelmontering": "Möbelmontörer har erfarenhet av alla IKEA-produktlinjer och andra varumärken.",
+    "badrumsrenovering": "Badrumsrenoverare är GVK-certifierade för våtrumsarbete och Säker Vatteninstallation.",
+    "koksrenovering": "Köksrenoverare samordnar snickeri, VVS och el för ett sömlöst resultat.",
+    "altanbygge": "Altanbyggare är skickliga snickare med erfarenhet av utomhuskonstruktioner.",
+    "fasadmalning": "Fasadmålare har erfarenhet av alla fasadtyper och använder väderbeständig kvalitetsfärg.",
+    "inomhusmalning": "Inomhusmålare är utbildade i tapetsering, spackling och färgmatchning.",
+    "golvlaggning": "Golvläggare är utbildade inom parkett, vinyl, laminat och klinker.",
+    "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter."
   };
   return certTexts[serviceSlug];
 }
