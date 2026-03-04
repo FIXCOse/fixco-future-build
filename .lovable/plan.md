@@ -1,58 +1,21 @@
 
 
-## Plan: Maximal Analytics Dashboard med SEO & Användarresa-insikter
+## Problem
 
-### Vad som saknas idag
+Det finns **två** `AdminReports`-filer:
+- `src/pages/admin/AdminReports.tsx` — **denna används av routern** (`App.tsx` importerar härifrån)
+- `src/pages/MyFixco/AdminReports.tsx` — **denna har SEO-fliken, men används aldrig**
 
-Den nuvarande `/admin/reports`-dashboarden har ekonomi, kunder, tjänster, trafik och offert-pipeline. Men den saknar:
+SEO & Resor-komponenterna (`SEOKPICards`, `BookingFunnelDropoff`, `LandingPagePerformance`, `SessionJourneyPanel`) skapades korrekt, men kopplades till fel fil.
 
-1. **Användarresa-data** -- `fetchSessionJourneys` finns i koden men används aldrig i UI:t
-2. **SEO-specifika insikter** -- vilka lokala sidor (t.ex. `/tjanster/malare/stockholm`) driver trafik och konverteringar
-3. **Google-källa-analys** -- vilka sökord/UTM-kampanjer ger bäst ROI
-4. **Funnel dropoff per steg** -- var i bokningsflödet tappar ni folk (modal öppnad → steg 1 → 2 → 3 → slutförd)
-5. **Landing page performance** -- vilka sidor konverterar bäst, vilka behöver förbättras
-6. **Bounce-analys** -- sessioner med bara 1 sidvisning
+## Fix
 
-### Vad vi bygger
+Lägg till en **"SEO & Resor"**-flik i `src/pages/admin/AdminReports.tsx` (den som faktiskt används):
 
-**Ny flik "SEO & Resor"** i AdminReports + 3 nya visualiseringskomponenter:
+1. Importera de fyra nya komponenterna + `fetchSessionJourneys`, `fetchDetailedFunnel`, `fetchBounceAnalytics`
+2. Lägg till en åttonde tab `"seo"` i TabsList med Globe-ikon
+3. Lägg till TabsContent med `SEOKPICards`, `BookingFunnelDropoff`, `LandingPagePerformance`, `SessionJourneyPanel` — exakt samma upplägg som i MyFixco-versionen
+4. Data kommer redan från `useAnalytics`-hooken som redan hämtar `journeys`, `detailedFunnel`, och `bounceAnalytics`
 
-#### 1. `SessionJourneyPanel` -- Användarresor
-- Tabell med sessioner: landing page → sidor besökta → CTA-klick → konverterad?
-- Filtrera på källa (Google, direkt, etc.)
-- Visa konverteringsgrad per källa som horisontellt stapeldiagram
-- Expanderbar rad som visar hela resan steg-för-steg
-
-#### 2. `LandingPagePerformance` -- Landing Page Rankings
-- Tabell: URL | Sessioner | Konverteringar | Konverteringsgrad | Bounce Rate
-- Sorterar efter mest trafik, markerar sidor med hög trafik men låg konvertering (= SEO-möjligheter)
-- Färgkodade badges: grön (>5% conv), gul (1-5%), röd (<1%)
-
-#### 3. `BookingFunnelDropoff` -- Detaljerad Bokningsfunnel
-- Använder de nya `funnel_*`-eventsen från `useEventTracking`
-- Visar: Sidbesök → CTA-klick → Modal öppnad → Steg 1 → Steg 2 → Steg 3 → Bokning slutförd
-- Dropoff-procent mellan varje steg
-- Horisontellt funnel-diagram med Recharts
-
-#### 4. Nya KPI-kort överst
-- **Bounce Rate** (sessioner med 1 page_view / totala sessioner)
-- **Avg. sidor/session**
-- **Top konverterande källa** (Google/direkt/etc)
-- **Bästa landing page** (högst konverteringsgrad med min 10 sessioner)
-
-### Teknisk sammanfattning
-
-| Fil | Ändring |
-|-----|---------|
-| `src/components/admin/analytics/SessionJourneyPanel.tsx` | **Ny** -- resevy med källanalys |
-| `src/components/admin/analytics/LandingPagePerformance.tsx` | **Ny** -- landing page-tabell |
-| `src/components/admin/analytics/BookingFunnelDropoff.tsx` | **Ny** -- detaljerad funnel med nya event-typer |
-| `src/components/admin/analytics/SEOKPICards.tsx` | **Ny** -- SEO-specifika KPI-kort |
-| `src/hooks/useAnalytics.ts` | Lägg till `fetchSessionJourneys` + ny `fetchDetailedFunnel` i queryn |
-| `src/lib/api/analytics.ts` | Ny `fetchDetailedFunnel` (hämtar `funnel_*`-events) + `fetchBounceRate` |
-| `src/pages/admin/AdminReports.tsx` | Ny flik "SEO & Resor" med alla nya komponenter |
-
-### Dataflöde
-
-Alla data kommer från befintliga tabeller (`events`, `bookings`, `invoices`). Inga databasändringar behövs. `fetchSessionJourneys` från `analyticsJourneys.ts` kopplas in i `useAnalytics`-hooken så dashboarden laddar allt på en gång.
+Inga nya filer behövs — bara en ändring i `src/pages/admin/AdminReports.tsx`.
 
