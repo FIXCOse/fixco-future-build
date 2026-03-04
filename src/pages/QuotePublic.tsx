@@ -581,6 +581,8 @@ export default function QuotePublic() {
                 
                 const workItems = parsedItems.filter((item: any) => item.type === 'work');
                 const materialItems = parsedItems.filter((item: any) => item.type === 'material');
+                const materialMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'material_included');
+                const materialNotIncluded = materialMeta && materialMeta.value === false;
                 
                 return (
                   <div className="space-y-2 pt-4 pb-2 border-b border-border">
@@ -694,6 +696,16 @@ export default function QuotePublic() {
                             )}
                           </div>
                         ))}
+                      </div>
+                    )}
+
+                    {/* Material not included info box */}
+                    {materialNotIncluded && (
+                      <div className="mt-3 flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/30 p-3">
+                        <Package className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                        <p className="text-sm text-blue-800 dark:text-blue-300">
+                          Material ingår ej i denna offert och faktureras separat efter slutfört arbete.
+                        </p>
                       </div>
                     )}
                   </div>

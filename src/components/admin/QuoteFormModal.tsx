@@ -99,8 +99,15 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       
       try {
         const parsedItems = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
-        if (parsedItems.length > 0) {
-          setItems(parsedItems);
+        // Check for material_included metadata
+        const metaItem = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'material_included');
+        if (metaItem && metaItem.value === false) {
+          setMaterialIncluded(false);
+        }
+        // Filter out meta items for display
+        const displayItems = parsedItems.filter((item: any) => item.type !== '_meta');
+        if (displayItems.length > 0) {
+          setItems(displayItems);
         }
       } catch (e) {
         console.error('Failed to parse items:', e);
@@ -360,10 +367,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setLoading(true);
 
     try {
+      // Add metadata to items array for material_included flag
+      const itemsWithMeta = [
+        ...items.filter((item: any) => item.type !== '_meta'), // Remove old meta entries
+        ...(!materialIncluded ? [{ type: '_meta' as const, key: 'material_included', value: false }] : [])
+      ];
+
       const quoteData = {
         customer_id: selectedCustomerId,
         title: title.trim(),
-        items: items,
+        items: itemsWithMeta,
         request_id: bookingData?.id || undefined,
         subtotal_work_sek: Math.round(calculateSubtotalWork()),
         subtotal_mat_sek: Math.round(calculateSubtotalMaterial()),
