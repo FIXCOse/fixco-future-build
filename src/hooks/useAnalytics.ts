@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import {
   fetchRevenueAnalytics,
@@ -14,8 +15,35 @@ import {
 } from '@/lib/api/analytics';
 import { fetchSessionJourneys } from '@/lib/api/analyticsJourneys';
 import { fetchDetailedFunnel, fetchBounceAnalytics } from '@/lib/api/analyticsDetailed';
+import { supabase } from '@/integrations/supabase/client';
 
 export function useAnalytics(filters: AnalyticsFilters) {
+  const queryClient = useQueryClient();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Supabase Realtime subscription — invalidate cache on new events
+  useEffect(() => {
+    const channel = supabase
+      .channel('analytics-live')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'events' },
+        () => {
+          // Debounce 2s to avoid spamming during burst
+          if (debounceRef.current) clearTimeout(debounceRef.current);
+          debounceRef.current = setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ['analytics'] });
+          }, 2000);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['analytics', filters],
     queryFn: async () => {
@@ -68,8 +96,9 @@ export function useAnalytics(filters: AnalyticsFilters) {
         throw err;
       }
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30_000,
     gcTime: 10 * 60 * 1000,
+    refetchInterval: 30_000,
     retry: 1,
   });
 
