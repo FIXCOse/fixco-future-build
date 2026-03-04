@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, RefreshCw, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart, FileText, Target, Clock, Hourglass, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Download, RefreshCw, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart, FileText, Target, Clock, Hourglass, CheckCircle2, AlertCircle, Globe } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { AnalyticsFilters } from '@/components/admin/analytics/AnalyticsFilters';
 import { RevenueTimelineChart } from '@/components/admin/analytics/RevenueTimelineChart';
@@ -14,6 +14,10 @@ import { TrafficSourcesChart } from '@/components/admin/analytics/TrafficSources
 import { exportAnalyticsCSV, type AnalyticsFilters as Filters } from '@/lib/api/analytics';
 import { toast } from 'sonner';
 import { useFeatureFlag } from '@/hooks/useFeatureFlag';
+import SEOKPICards from '@/components/admin/analytics/SEOKPICards';
+import BookingFunnelDropoff from '@/components/admin/analytics/BookingFunnelDropoff';
+import LandingPagePerformance from '@/components/admin/analytics/LandingPagePerformance';
+import SessionJourneyPanel from '@/components/admin/analytics/SessionJourneyPanel';
 
 const AdminReports = () => {
   const { data: advancedEnabled } = useFeatureFlag('advanced_reporting');
@@ -226,7 +230,7 @@ const AdminReports = () => {
 
       {/* Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Översikt</TabsTrigger>
           <TabsTrigger value="ekonomi">Ekonomi</TabsTrigger>
           <TabsTrigger value="kunder">Kunder</TabsTrigger>
@@ -234,6 +238,10 @@ const AdminReports = () => {
           <TabsTrigger value="tidsanalys">Tid</TabsTrigger>
           <TabsTrigger value="tjanster">Tjänster</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="seo">
+            <Globe className="h-4 w-4 mr-1" />
+            SEO & Resor
+          </TabsTrigger>
         </TabsList>
 
         {/* Tab 1: Overview */}
@@ -472,6 +480,19 @@ const AdminReports = () => {
           </div>
 
           <ConversionFunnelChart data={analytics.funnel} />
+        </TabsContent>
+
+        {/* Tab 8: SEO & Resor */}
+        <TabsContent value="seo" className="space-y-6">
+          <SEOKPICards
+            data={analytics.bounceAnalytics}
+            loading={false}
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            <BookingFunnelDropoff data={analytics.detailedFunnel} loading={false} />
+            <LandingPagePerformance data={analytics.journeys} loading={false} />
+          </div>
+          <SessionJourneyPanel data={analytics.journeys} loading={false} />
         </TabsContent>
       </Tabs>
     </div>
