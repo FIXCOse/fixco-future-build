@@ -152,6 +152,9 @@ verify_jwt = false
 [functions.send-customer-confirmation]
 verify_jwt = false
 
+[functions.ai-generate-image]
+verify_jwt = false
+
 [edge_runtime.scheduler.execute-scheduled-flag-changes]
 schedule = "* * * * *"
 

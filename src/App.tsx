@@ -82,6 +82,7 @@ const AdminJobDetail = lazy(() => import("./pages/admin/AdminJobDetail"));
 const AdminApplications = lazy(() => import("./pages/admin/AdminApplications"));
 const AdminFeatureFlags = lazy(() => import("./pages/admin/AdminFeatureFlags"));
 const AdminTrafficSEO = lazy(() => import("./pages/admin/AdminTrafficSEO"));
+const AdminAiImageGenerator = lazy(() => import("./pages/admin/AdminAiImageGenerator"));
 
 // Worker pages
 const JobPool = lazy(() => import("./pages/worker/JobPool"));
@@ -327,6 +328,7 @@ const App = () => {
                             <Route path="leads" element={lazyElement(AdminLeads)} />
                             <Route path="worker-analytics" element={lazyElement(AdminWorkerAnalytics)} />
                             <Route path="applications" element={lazyElement(AdminApplications)} />
+                            <Route path="ai-images" element={lazyElement(AdminAiImageGenerator)} />
                           </Route>
 
                           {/* Worker Routes */}
