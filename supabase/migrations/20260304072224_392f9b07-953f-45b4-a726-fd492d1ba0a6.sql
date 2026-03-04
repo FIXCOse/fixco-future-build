@@ -1,0 +1,12 @@
+
+UPDATE reference_projects 
+SET 
+  description = 'Hemma hos H.W i Liljeholmen väntade flera uppdrag. Balkongdörren hade slutat stänga ordentligt — utslitna gångjärn gjorde att den hängde snett och lämnade en springa som släppte in drag. Vi bytte gångjärnen och justerade dörren tills den åter satt perfekt i karmen. I hallen demonterade vi de gamla, uttjänta garderoberna och ersatte dem med nya skjutdörrsgarderober som utnyttjar utrymmet betydligt bättre. Samma uppgradering gjordes i sovrummet, där ytterligare garderober monterades för att ge mer och smartare förvaring. Snyggt, funktionellt och klart på två dagar.',
+  description_sv = 'Hemma hos H.W i Liljeholmen väntade flera uppdrag. Balkongdörren hade slutat stänga ordentligt — utslitna gångjärn gjorde att den hängde snett och lämnade en springa som släppte in drag. Vi bytte gångjärnen och justerade dörren tills den åter satt perfekt i karmen. I hallen demonterade vi de gamla, uttjänta garderoberna och ersatte dem med nya skjutdörrsgarderober som utnyttjar utrymmet betydligt bättre. Samma uppgradering gjordes i sovrummet, där ytterligare garderober monterades för att ge mer och smartare förvaring. Snyggt, funktionellt och klart på två dagar.',
+  description_en = 'At H.W''s home in Liljeholmen, several tasks were waiting. The balcony door had stopped closing properly — worn-out hinges left it hanging at an angle, letting in drafts. We replaced the hinges and adjusted the door until it sat perfectly in the frame again. In the hallway, we dismantled the old, worn-out wardrobes and replaced them with new sliding-door wardrobes that make much better use of the space. The same upgrade was carried out in the bedroom, where additional wardrobes were installed for more and smarter storage. Clean, functional, and completed in two days.',
+  features = ARRAY['Balkongdörrsreparation', 'Garderobsdemontering', 'Garderobsmontering', 'Gångjärnsbyte', 'Sovrumsgarderober'],
+  features_sv = ARRAY['Balkongdörrsreparation', 'Garderobsdemontering', 'Garderobsmontering', 'Gångjärnsbyte', 'Sovrumsgarderober'],
+  features_en = ARRAY['Balcony Door Repair', 'Wardrobe Dismantling', 'Wardrobe Installation', 'Hinge Replacement', 'Bedroom Wardrobes'],
+  images = ARRAY['/images/references/garderob.webp', '/images/references/garderob_hall.webp', '/images/references/balkongdorr_gangjarn.jpg', '/images/references/garderob_sovrum.jpg', '/images/references/garderob_stomme.jpg'],
+  updated_at = now()
+WHERE id = '4955b801-8880-436c-be96-c3a640ec69d1';
