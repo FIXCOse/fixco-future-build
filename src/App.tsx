@@ -81,6 +81,7 @@ const AdminWorkerAnalytics = lazy(() => import("./pages/admin/AdminWorkerAnalyti
 const AdminJobDetail = lazy(() => import("./pages/admin/AdminJobDetail"));
 const AdminApplications = lazy(() => import("./pages/admin/AdminApplications"));
 const AdminFeatureFlags = lazy(() => import("./pages/admin/AdminFeatureFlags"));
+const AdminTrafficSEO = lazy(() => import("./pages/admin/AdminTrafficSEO"));
 
 // Worker pages
 const JobPool = lazy(() => import("./pages/worker/JobPool"));
@@ -310,6 +311,7 @@ const App = () => {
                             <Route path="users" element={lazyElement(AdminUsers)} />
                             <Route path="database" element={lazyElement(AdminDatabase)} />
                             <Route path="reports" element={lazyElement(AdminReports)} />
+                            <Route path="traffic" element={lazyElement(AdminTrafficSEO)} />
                             <Route path="jobs" element={lazyElement(AdminJobsUnified)} />
                             <Route path="jobs/:jobId" element={lazyElement(AdminJobDetail)} />
                             <Route path="jobs/trash" element={lazyElement(AdminJobsTrash)} />
