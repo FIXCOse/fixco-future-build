@@ -1,99 +1,86 @@
 
 
-## Plan: Lokala tjänstesidor — maximal konvertering
+## Plan: Lokala tjänstesidor — Landing Page Hero med maximal konvertering
 
-### Nuvarande layout (10+ sektioner, konvertering utspädd)
+### Koncept
 
-```text
-1. Hero + CTA
-2. TrustBar
-3. "Vanliga projekt i Knivsta"    ← SEO-filler, kunden bryr sig inte
-4. "Om snickare i Knivsta"       ← Wikipedia-text, ingen konverterar
-5. How to Book (4 steg)           ← Bra men för tidigt
-6. Nearby Areas                   ← SEO-intern länkning
-7. Tjänster vi erbjuder           ← Borde vara högre
-8. ROT/RUT 30%                    ← Konverteringsdriver, borde vara högre
-9. Testimonials                   ← Social proof, borde vara DIREKT efter hero
-10. Quick Facts + Fun Facts       ← "Visste du om Knivsta?" — onödigt
-11. FAQ + Myter
-12. Andra tjänster i området
-13. Final CTA
-14. SEO-zon (nearby, related searches, urgent)
-```
+Varje lokal tjänstesida blir en **mini-landing page** som fångar kunden direkt. Heroon inspireras av HeroV3 (lila gradient-bakgrund, centrerad text, GradientButton) men anpassas för lokal kontext. Ingen bild, ingen filler — ren konverteringskraft.
 
-### Ny layout — konverteringstratt
+### Ny Hero-design
 
 ```text
-─── KONVERTERINGSZON (ovan fold) ───────────────────
-1. HERO — Ny design, tydligare landing page-känsla
-   • Stor H1 med gradient
-   • 1 rad value prop (ej Wikipedia om orten)
-   • 2 CTA-knappar (Begär offert + Ring oss)
-   • 3 trust-badges inline (★ 5/5, 30% ROT, Svar <2h)
-   
-2. SOCIAL PROOF — Testimonials direkt under hero
-   • Karusell med omdömen, bygger förtroende omedelbart
-
-3. TJÄNSTER — Vad vi gör (kompakt grid)
-   • "Vi hjälper dig med allt inom [tjänst] i [ort]"
-   • Checkmark-lista
-
-4. ROT/RUT — Prisincitament
-   • "Spara 30% med ROT-avdrag" — konverteringsdriver
-
-5. HOW TO BOOK — 4 steg (enkel process)
-   • Visar att det är lätt att komma igång
-
-6. ANDRA TJÄNSTER — Korsförsäljning
-   • Kompakt grid med andra tjänster i området
-
-7. FINAL CTA — Stark avslutning
-   • "Redo att boka?" + CTA-knappar
-
-─── SEO-ZON (långt ner, diskret) ──────────────────
-8. FAQ + Myter (accordion, bra för schema)
-9. "Vanliga projekt" (popular searches)
-10. "Om tjänst i ort" (unique intro text)
-11. Quick Facts
-12. Fun Facts
-13. Nearby Areas / Related Searches / Urgent / Area Links
+┌─────────────────────────────────────────────┐
+│  [Gradient bakgrund — tjänstespecifik färg] │
+│                                             │
+│         ★★★★★ 4.9 betyg                    │
+│                                             │
+│    Snickare i Uppsala                       │
+│    (H1, stor, gradient-rainbow text)        │
+│                                             │
+│  Topprankade i Uppsala län —                │
+│  gratis offert inom 24h                     │
+│                                             │
+│  ┌──────────────────┐  ┌────────────────┐   │
+│  │ ✨ BEGÄR OFFERT  │  │ SE TJÄNSTER    │   │
+│  │ (GradientButton) │  │ (GradientBtn)  │   │
+│  └──────────────────┘  └────────────────┘   │
+│                                             │
+│  ✓ 30% ROT  ✓ F-skatt  ✓ Försäkrade       │
+│                                             │
+└─────────────────────────────────────────────┘
 ```
 
-### Hero-design — landing page-inspirerad men unik
+**Skillnad mot HeroV3:** Använder tjänstespecifik gradient-färg (blå för VVS, gul för el, amber för snickare etc) istället för lila. Ingen logotyp, inga klient-logos. Visar service+ort i H1.
 
-Heroon behåller bildbaserad/gradient-bakgrund som idag, men blir mer **fokuserad och ren**:
+### Ny sidlayout (7 sektioner → sedan SEO-zon)
 
-- **Ta bort** location badge ("Professionella hantverkare i Knivsta") — onödig, orten finns i H1
-- **Starkare value prop** — istället för generisk "Fast pris, försäkrade hantverkare" → mer säljande: "Topprankade i Uppsala län — gratis offert inom 24h"
-- **Trust badges flyttas in i hero** som kompakta pills (inte separat CompactTrustBar-sektion)
-- **Skillnad mot landing page**: Heroon har bakgrundsbild/gradient per tjänst (snickare = foto, el = foto), landing page har inte det. Behåller den visuella identiteten per tjänst.
+```text
+1. HERO — Gradient-bakgrund, centrerad, GradientButton CTA
+2. SOCIAL PROOF — Testimonials (behålls som idag)  
+3. HOW TO BOOK — 4 steg (flyttas upp)
+4. TJÄNSTER — Checkmark-grid (behålls)
+5. ROT/RUT — 30% sparning (behålls)
+6. ANDRA TJÄNSTER — Korsförsäljning (behålls)
+7. FINAL CTA — GradientButton igen
+─── SEO ZONE ───
+8-13. FAQ, Vanliga projekt, Om-text, Facts, Nearby, etc
+```
 
-### Tekniska ändringar
+### Tekniska ändringar i `src/pages/LocalServicePage.tsx`
 
-**1. `src/pages/LocalServicePage.tsx`** — Omordna sektioner
+**Hero-sektion (rad 330-418) ersätts helt:**
+- Ta bort `heroImage`-logik (ingen bakgrundsbild)
+- Gradient-bakgrund per tjänst med `getGradientForService()` — men med fasta CSS-gradienter istället (likt HeroV3-stilen, inte Tailwind utility-klasser)
+- Centrerad layout istället för vänsterställd
+- Stjärnor + betyg ovanför H1 (som HeroV3)
+- GradientButton för "Begär offert" (öppnar ServiceRequestModal)
+- GradientButton för "Se tjänster" (länk till /tjanster)
+- Trust-badges under knappar (kompakta, vita mot gradient)
+- **Ta bort telefonnummer-knappen** från hero
 
-Flytta sektioner i JSX:
-- Hero (behålls position 1, men förfinas)
-- CompactTrustBar **tas bort** (badges integreras i hero)
-- Testimonials **flyttas upp** till position 2 (direkt efter hero)
-- Services **flyttas upp** till position 3
-- ROT/RUT **flyttas upp** till position 4
-- How to Book **flyttas** till position 5
-- Other Services **behålls** position 6
-- Final CTA **behålls** position 7
-- **Allt annat pushas till SEO-zon**: FAQ, Vanliga projekt, Om-text, Quick Facts, Fun Facts, NearbyAreas
+**Sektionsordning ändras:**
+- How to Book flyttas upp till position 3 (direkt efter testimonials)
+- Resten behålls i ordning
 
-**2. Hero-förändringar i samma fil**
-- Ta bort location badge (`<span className="inline-flex items-center gap-2 px-4 py-2...">`)
-- Uppdatera intro-text till starkare value prop
-- Integrera trust badges tightare (ta bort CompactTrustBar som separat komponent)
-- Behåll bakgrundsbildslogik (heroImage) — det är det som skiljer från landing page
+**Final CTA (rad 656-705) uppgraderas:**
+- Byt från vanlig Button till GradientButton
+- Ta bort telefonnummer, bara "Begär offert" + "Se alla tjänster"
 
-**3. SEO-zon styling**
-- Alla SEO-sektioner längst ner får dämpad styling (`text-muted-foreground`, mindre padding)
-- Behåll all schema.org-markup (FAQ, HowTo, etc) — den funkar oavsett visuell position
+**Nya gradient-färger per tjänst** (i hero-bakgrunden):
+- Snickare: amber/orange toner
+- VVS: blå/cyan
+- El: gul/orange
+- Målare: turkos/rosa
+- Trädgård: grön/lime
+- Markarbeten: brun/amber
+- Städ: rosa/rose
+- Montering: lila/violet
+- Flytt: röd/rosa
+- Tekniska: grå/silver
+
+Mappningen finns redan i `serviceGradients.ts` men hero-bakgrunden behöver fullständiga CSS-gradienter (med `backgroundImage` inline style, likt HeroV3).
 
 ### Sammanfattning
 
-Inga nya komponenter behövs. Inga dataändringar. Enbart **omordning av sektioner** i `LocalServicePage.tsx` + förfining av hero-text. En fil ändras.
+En fil ändras: `LocalServicePage.tsx`. Hero blir centrerad gradient-landing page med GradientButton. Telefonnummer tas bort från CTA. How to Book flyttas upp. Allt annat behålls.
 
