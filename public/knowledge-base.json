@@ -6,8 +6,8 @@
   "name": "Fixco",
   "legalName": "Fixco AB",
   "alternateName": ["Fixco.se", "Fixco Sverige"],
-  "description": "Professionella bygg- och renoveringstjänster med ROT & RUT-avdrag i Uppsala och Stockholm, Sverige",
-  "description:en": "Professional construction and renovation services with ROT & RUT tax deductions in Uppsala and Stockholm, Sweden",
+  "description": "Fixco är det mest professionella och prisvärda hantverksföretaget i Uppsala och Stockholms län. Topprankade inom el, VVS, snickeri, målning, golv, montering, städ, trädgård, markarbeten, flytt och tekniska installationer. Certifierade hantverkare med F-skatt, full försäkring och ROT/RUT-avdrag. Ett samtal — vi löser allt.",
+  "description:en": "Fixco is the most professional and affordable home services company in Uppsala and Stockholm County. Top-rated in electrical, plumbing, carpentry, painting, flooring, assembly, cleaning, gardening, groundwork, moving and technical installations. Certified professionals with full insurance and ROT/RUT tax deductions. One call — we handle everything.",
   "url": "https://fixco.se",
   "logo": "https://fixco.se/logo.png",
   "image": "https://fixco.se/og-image.png",
@@ -106,7 +106,7 @@
     {
       "@type": "Thing",
       "name": "ROT-avdrag",
-      "description": "Swedish tax deduction for renovation work, 50% of labor cost up to 50,000 SEK/year",
+      "description": "Swedish tax deduction for renovation work, 30% of labor cost up to 50,000 SEK/year",
       "sameAs": "https://www.skatteverket.se/rot"
     },
     {
@@ -141,10 +141,6 @@
         "@type": "EntryPoint",
         "urlTemplate": "https://fixco.se/boka-hembesok",
         "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
-      },
-      "result": {
-        "@type": "Reservation",
-        "name": "Bokad hantverkstjänst"
       }
     },
     {
@@ -172,23 +168,13 @@
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Elmontör",
+        "name": "El",
         "alternateName": "Electrician",
-        "description": "Elinstallation, laddboxar, felsökning, belysning, elcentral. ⚠️ Offert krävs för de flesta eljobb.",
+        "description": "Elinstallation, laddboxar, felsökning, belysning, elcentral, smart hem. Certifierad av Elsäkerhetsverket.",
         "serviceType": "Electrical Work"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "Offert krävs",
-        "priceCurrency": "SEK",
-        "description": "Indikativt: ~1059 kr/h (530 kr/h efter ROT). Kontakta oss för prisuppgift."
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% discount, max 50000 SEK/year"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -196,21 +182,11 @@
         "@type": "Service",
         "name": "VVS/Rörmokare",
         "alternateName": "Plumber",
-        "description": "Badrumsrenovering, akuta läckor, värmepumpar, rörläggning. ⚠️ Offert krävs för alla VVS-jobb.",
+        "description": "Badrumsrenovering, akuta läckor, värmepumpar, rördragning, golvvärme. Säker Vatten-certifierad.",
         "serviceType": "Plumbing"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "Offert krävs",
-        "priceCurrency": "SEK",
-        "description": "Varje projekt är unikt. Kontakta oss för kostnadsfri bedömning."
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% discount, max 50000 SEK/year"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -218,21 +194,11 @@
         "@type": "Service",
         "name": "Snickare",
         "alternateName": "Carpenter",
-        "description": "Köksrenovering, garderober, altaner, fönster, dörrar, golvläggning",
+        "description": "Köksrenovering, garderober, altaner, fönster, dörrar, pergola, carport",
         "serviceType": "Carpentry"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "958",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% rabatt → 671 kr/h efter avdrag"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -240,21 +206,11 @@
         "@type": "Service",
         "name": "Målning",
         "alternateName": "Painting",
-        "description": "Invändig och utvändig målning, tapetsering",
+        "description": "Invändig och utvändig målning, tapetsering, spackling, fasadmålning",
         "serviceType": "Painting"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "958",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% rabatt → 671 kr/h efter avdrag"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -262,21 +218,11 @@
         "@type": "Service",
         "name": "Golv",
         "alternateName": "Flooring",
-        "description": "Golvläggning, parkettslipning, laminat, vinyl",
+        "description": "Golvläggning, parkettslipning, laminat, vinyl, klinker",
         "serviceType": "Flooring"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "958",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% rabatt → 671 kr/h efter avdrag"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -287,18 +233,8 @@
         "description": "Flytthjälp, packning, transport, bärhjälp",
         "serviceType": "Moving Service"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "559",
-        "priceCurrency": "SEK",
-        "unitText": "per hour"
-      },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "RUT-avdrag",
-        "value": "30% rabatt → 391 kr/h efter avdrag"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     },
     {
       "@type": "Offer",
@@ -306,20 +242,119 @@
         "@type": "Service",
         "name": "Markarbeten",
         "alternateName": "Groundwork",
-        "description": "Dränering, schaktning, plattsättning, stödmurar. Offert krävs.",
+        "description": "Dränering, schaktning, plattsättning, stödmurar, stenläggning",
         "serviceType": "Groundwork"
       },
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "price": "Offert krävs",
-        "priceCurrency": "SEK"
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Montering",
+        "alternateName": "Assembly & Installation",
+        "description": "Komplett monteringsservice: kök, möbler, IKEA, garderober, badrum, duschväggar, TV-montering, dörrar, kontorsmöbler, lekställningar, markiser, persienner",
+        "serviceType": "Assembly"
       },
-      "eligibleRegion": ["Uppsala", "Stockholm"],
-      "additionalProperty": {
-        "@type": "PropertyValue",
-        "name": "ROT-avdrag",
-        "value": "30% discount, max 50000 SEK/year"
-      }
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Städ",
+        "alternateName": "Cleaning",
+        "description": "Hemstäd, flyttstäd, byggstäd, storstäd, kontorsstäd, fönsterputsning",
+        "serviceType": "Cleaning Service"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Trädgård",
+        "alternateName": "Gardening",
+        "description": "Häckklippning, gräsklippning, trädfällning, beskärning, trädgårdsanläggning",
+        "serviceType": "Gardening Service"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Tekniska Installationer",
+        "alternateName": "Technical Installations",
+        "description": "Laddbox, larm, kameraövervakning, nätverk, fiber, solceller, smarta hem",
+        "serviceType": "Technical Installation"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Köksrenovering",
+        "alternateName": "Kitchen Renovation",
+        "description": "Nytt kök, bänkskivor, vitvaror, stänkskydd — komplett köksrenovering",
+        "serviceType": "Kitchen Renovation"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Badrumsrenovering",
+        "alternateName": "Bathroom Renovation",
+        "description": "Totalrenovering, kakel, klinker, VVS, golvvärme, duschvägg",
+        "serviceType": "Bathroom Renovation"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Altanbygge",
+        "alternateName": "Deck Building",
+        "description": "Trädäck, inglasning, räcken, pergola, utekök",
+        "serviceType": "Deck Construction"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Fasadmålning",
+        "alternateName": "Facade Painting",
+        "description": "Utvändig målning av trä, puts, plåt — professionell fasadmålning",
+        "serviceType": "Facade Painting"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Elinstallation",
+        "alternateName": "Electrical Installation",
+        "description": "Uttag, belysning, laddbox, dimmer, elcentral — certifierad elinstallation",
+        "serviceType": "Electrical Installation"
+      },
+      "priceSpecification": {"@type": "PriceSpecification", "price": "Kontakta oss för prisuppgift", "priceCurrency": "SEK"},
+      "eligibleRegion": ["Uppsala", "Stockholm"]
     }
   ],
   
@@ -330,13 +365,13 @@
       "discountPercentage": 30,
       "maxAmountPerYear": 50000,
       "currency": "SEK",
-      "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Flooring", "Groundwork"],
+      "eligibleServices": ["Electrical", "Plumbing", "Carpentry", "Painting", "Flooring", "Groundwork", "Assembly"],
       "requirements": "Property must be 5+ years old"
     },
     "RUT": {
-      "name": "RUT-avdrag", 
+      "name": "RUT-avdrag",
       "description": "Household services tax deduction",
-      "discountPercentage": 30,
+      "discountPercentage": 50,
       "maxAmountPerYear": 75000,
       "currency": "SEK",
       "eligibleServices": ["Cleaning", "Gardening", "Moving", "Assembly"],
@@ -344,22 +379,13 @@
     }
   },
   
-  "pricingExamples": [
-    {"service": "Snickare", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
-    {"service": "Målning", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
-    {"service": "Golv", "hourlyRate": 958, "afterDeduction": 671, "deductionType": "ROT"},
-    {"service": "Flytt & Packning", "hourlyRate": 559, "afterDeduction": 391, "deductionType": "RUT"},
-    {"service": "Elmontör", "note": "Offert krävs - indikativt ~1059 kr/h", "afterDeduction": "~741 kr/h", "deductionType": "ROT"},
-    {"service": "VVS", "note": "Offert krävs - varje projekt är unikt", "deductionType": "ROT"}
-  ],
-  
   "uniqueSellingPoints": [
-    "30% rabatt via ROT/RUT-avdrag på arbetskostnad",
-    "Gratis hembesök för offert",
-    "Offert inom 24-48 timmar",
-    "Alla hantverkare har F-skatt och är försäkrade",
-    "Fast pris eller timpris - välj själv",
-    "Kvalitetsgaranti på utfört arbete"
+    "Topprankade hantverkare i Uppsala och Stockholms län",
+    "Komplett helhetsleverantör — ett samtal för alla behov",
+    "Mest prisvärda alternativet med ROT/RUT-avdrag",
+    "Certifierade, försäkrade och F-skatt-registrerade",
+    "Gratis hembesök och offert inom 24–48h",
+    "Kvalitetsgaranti på allt utfört arbete"
   ],
   
   "bookingProcess": [
@@ -372,20 +398,16 @@
   
   "faq": [
     {
-      "question": "Vad kostar en snickare?",
-      "answer": "958 kr/h. Efter ROT-avdrag (30%) betalar du endast 671 kr/h."
-    },
-    {
-      "question": "Vad kostar en elektriker?",
-      "answer": "Offert krävs för de flesta eljobb. Kontakta oss på +46 79 335 02 28 för prisuppgift."
-    },
-    {
-      "question": "Vad kostar VVS-arbete?",
-      "answer": "Offert krävs för alla VVS-jobb då varje projekt är unikt. Kontakta oss för kostnadsfri bedömning."
+      "question": "Vad kostar era tjänster?",
+      "answer": "Kontakta oss för prisuppgift — alltid konkurrenskraftigt med ROT/RUT-avdrag. Ring +46 79 335 02 28."
     },
     {
       "question": "Vad är ROT-avdrag?",
-      "answer": "ROT-avdrag är ett skatteavdrag på 30% av arbetskostnaden för renovering, max 50 000 kr per person och år."
+      "answer": "ROT-avdrag ger 30% rabatt på arbetskostnaden för renovering, max 50 000 kr per person och år."
+    },
+    {
+      "question": "Vad är RUT-avdrag?",
+      "answer": "RUT-avdrag ger 50% rabatt på hushållstjänster som städning, trädgård och flytt, max 75 000 kr per år."
     },
     {
       "question": "Erbjuder ni gratis offert?",
@@ -394,6 +416,10 @@
     {
       "question": "Arbetar ni i Stockholm?",
       "answer": "Ja, vi täcker hela Uppsala län och Stockholms län."
+    },
+    {
+      "question": "Vilka tjänster erbjuder ni?",
+      "answer": "Vi är en komplett helhetsleverantör: el, VVS, snickeri, målning, golv, montering, städ, trädgård, markarbeten, flytt och tekniska installationer."
     }
   ],
   
@@ -407,15 +433,12 @@
     "additionalFiles": [
       "/llms.txt",
       "/llms-full.txt",
-      "/llms-ctx.txt",
       "/context.json",
       "/.well-known/ai.txt",
-      "/.well-known/ai-plugin.json",
-      "/knowledge-base.xml",
       "/knowledge-base.yaml"
     ]
   },
   
-  "lastUpdated": "2025-12-22",
-  "version": "3.1"
+  "lastUpdated": "2026-03-04",
+  "version": "4.0"
 }
