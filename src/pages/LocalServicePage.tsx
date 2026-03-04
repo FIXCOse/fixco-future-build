@@ -331,7 +331,7 @@ const LocalServicePage = () => {
           </div>
 
           {/* Foreground Content */}
-          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-12 pb-16 md:pt-20 md:pb-24">
+          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-16 pb-20 md:pt-24 md:pb-28">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -350,7 +350,7 @@ const LocalServicePage = () => {
               {/* H1 */}
               <motion.h1 
                 variants={itemVariants}
-                className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center leading-[120%]"
+                className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight"
               >
                 {content.h1}
               </motion.h1>
@@ -358,7 +358,7 @@ const LocalServicePage = () => {
               {/* Value prop */}
               <motion.p 
                 variants={itemVariants}
-                className="text-base md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed hero-description"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed hero-description"
               >
                 {locale === 'en' 
                   ? `Top-rated in ${metadata?.region || 'the region'} — free quote within 24h. Fixed price, insured contractors and ${service?.rotRut} deduction.`
@@ -372,6 +372,7 @@ const LocalServicePage = () => {
                 className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center mt-2"
               >
                 <GradientButton 
+                  className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
                   onClick={() => {
                     trackClick('hero_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                     openServiceRequestModal({
@@ -382,7 +383,7 @@ const LocalServicePage = () => {
                 >
                   {t('local.ctaQuote')}
                 </GradientButton>
-                <GradientButton href={servicePrefix}>
+                <GradientButton className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5" href={servicePrefix}>
                   {t('local.allServices')}
                 </GradientButton>
               </motion.div>
@@ -398,7 +399,7 @@ const LocalServicePage = () => {
                   locale === 'en' ? 'Insured' : 'Försäkrade',
                   locale === 'en' ? 'Fixed price' : 'Fast pris',
                 ].map((badge, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm text-white/90">
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm md:text-base text-white/90">
                     <CheckCircle className="h-3.5 w-3.5 text-white/80" />
                     <span>{badge}</span>
                   </div>
