@@ -1,34 +1,46 @@
 
 
-## Plan: Fetare hero-text på lokala tjänstesidor — landing page-stil
+## Plan: Fixa färger i serviceGradients
 
-### Vad som ändras
+### Problem
 
-Heroon i `src/pages/LocalServicePage.tsx` uppgraderas med samma textstorlekar och typografi som landing page (HeroUltra):
+`getGradientForService()` i `src/utils/serviceGradients.ts` har mappningar för slugs som `'el'`, `'snickeri'`, `'malare'` — men flera komponenter (CityServicesGrid, LocalServicePage "Andra tjänster") använder andra slugs:
 
-### Specifika ändringar
+- `'elektriker'` → ingen mappning → **grå** (borde vara gul/orange som `'el'`)
+- `'snickare'` → ingen mappning → **grå** (borde vara amber som `'snickeri'`)
+- `'koksmontering'` → ingen mappning → **grå**
+- `'mobelmontering'` → ingen mappning → **grå**
+- `'badrumsrenovering'` → ingen mappning → **grå**
+- `'koksrenovering'` → ingen mappning → **grå**
+- `'altanbygge'` → ingen mappning → **grå**
+- `'fasadmalning'` → ingen mappning → **grå**
+- `'inomhusmalning'` → ingen mappning → **grå**
+- `'golvlaggning'` → ingen mappning → **grå**
+- `'elinstallation'` → ingen mappning → **grå**
+- `'dorrlas'` → ingen mappning → **grå**
 
-**H1 (rad 351-356):**
-- Nuvarande: `text-3xl md:text-5xl lg:text-6xl`
-- Ny: `text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl` — matchar HeroUltra exakt
-- Lägg till `leading-tight` för tätare radavstånd
+### Lösning
 
-**Value prop / subtitle (rad 359-367):**
-- Nuvarande: `text-base md:text-xl lg:text-2xl`
-- Ny: `text-base sm:text-lg md:text-xl lg:text-2xl` — smooth scaling
-- Öka `max-w-3xl` eventuellt, behåll `leading-relaxed`
+Uppdatera **båda** gradient-mappningarna i `src/utils/serviceGradients.ts`:
 
-**Hero padding (rad 334):**
-- Nuvarande: `pt-12 pb-16 md:pt-20 md:pb-24`
-- Ny: `pt-16 pb-20 md:pt-24 md:pb-28` — mer andrum, hero känns större/mer dominant
+**`getGradientForService` (Tailwind-klasser)** — lägg till:
+- `'elektriker'` → samma som `'el'` (gul/orange)
+- `'snickare'` → samma som `'snickeri'` (amber/orange)
+- `'malning'` → samma som `'malare'` (turkos/rosa/gul/lila)
+- `'dorrlas'` → grå/slate (lås/säkerhet)
+- `'koksmontering'` → lila/violet (ärver från montering)
+- `'mobelmontering'` → lila/violet (ärver från montering)
+- `'badrumsrenovering'` → blå/cyan (ärver från vvs)
+- `'koksrenovering'` → amber/orange (ärver från snickeri)
+- `'altanbygge'` → amber/orange (ärver från snickeri)
+- `'fasadmalning'` → turkos/rosa (ärver från målare)
+- `'inomhusmalning'` → turkos/rosa (ärver från målare)
+- `'golvlaggning'` → amber/brun (trä/golv)
+- `'elinstallation'` → gul/orange (ärver från el)
+- `'golv'` → amber/brun
 
-**Trust badges (rad 401):**
-- Nuvarande: `text-sm`
-- Ny: `text-sm md:text-base` — lite fetare badges på desktop
-
-**CTA-knappar:**
-- Lägg till `className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"` på GradientButton — större, mer dominanta knappar
+**`getHeroGradientStyle` (CSS inline gradients)** — lägg till samma slugs med matchande CSS-gradienter för hero-bakgrunder.
 
 ### En fil ändras
-`src/pages/LocalServicePage.tsx` — enbart CSS-klasser, ingen strukturändring.
+`src/utils/serviceGradients.ts` — utöka båda mappningarna med alla saknade slugs.
 
