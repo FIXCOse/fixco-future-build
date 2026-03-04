@@ -337,7 +337,7 @@ const LocalServicePage = () => {
             {/* Fixco Logo */}
             <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
               <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
-                <img src={logoFixco} alt="Fixco" className="max-h-14 md:max-h-20 w-auto block" />
+                <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
               </a>
             </div>
 
