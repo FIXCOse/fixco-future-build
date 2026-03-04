@@ -1,26 +1,30 @@
 
 
-## Plan: Lägg till Fixco-logga i hero på lokala tjänstesidor
+## Plan: Visa "Material faktureras separat" på offerten
 
-### Vad som ändras
+### Problem
+När man skapar offert och väljer "Materialkostnad ingår inte" sparas aldrig den informationen — `materialIncluded` är bara ett lokalt state i formuläret. Det enda som händer är att `subtotal_mat_sek` sätts till 0. Den publika offerten visar då bara ingen materialrad alls, utan att förklara att material tillkommer separat.
 
-Lägga till Fixco-logotypen (vit version, samma som HeroV3) överst i heroon på `LocalServicePage.tsx`, precis som landing page-heroon gör.
+### Lösning (2 delar)
 
-### Tekniska ändringar i `src/pages/LocalServicePage.tsx`
-
-1. **Import** `logoFixco` från `@/assets/fixco-logo-white.png` (samma som HeroV3 använder)
-
-2. **Lägg till logotyp-block** direkt efter hero-bakgrunden, innan stars/H1-blocket (rad ~334). Exakt samma struktur som HeroV3:
-```tsx
-<div className="flex items-center justify-center pt-8 pb-2 md:pt-10 md:pb-4 shrink-0">
-  <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
-    <img src={logoFixco} alt="Fixco" className="max-h-14 md:max-h-20 w-auto block" />
-  </a>
-</div>
+**1. Spara flaggan i items-metadata (QuoteFormModal.tsx)**
+Lägg till ett metadata-objekt i items-arrayen vid spara, t.ex.:
+```ts
+items: [
+  ...items,
+  ...(materialIncluded ? [] : [{ type: '_meta', key: 'material_included', value: false }])
+]
 ```
+Detta kräver ingen databasändring — items är redan en JSONB-kolumn.
 
-3. Justera padding på content-wrappern (`pt-16` → `pt-8`) så loggan inte hamnar för långt ner.
+**2. Visa info-ruta i publika vyn (QuotePublic.tsx)**
+Efter kostnadsspecifikationen, om `_meta.material_included === false` finns i items, visa:
+```
+ℹ️ Material ingår ej i denna offert och faktureras separat efter slutfört arbete.
+```
+Stilas som en info-ruta (blå/neutral bakgrund med Package-ikon), placerad i "Betalning"-kortet eller direkt efter prissammanställningen.
 
-### En fil ändras
-`src/pages/LocalServicePage.tsx`
+### Filer som ändras
+- `src/components/admin/QuoteFormModal.tsx` — spara `material_included` i items-metadata
+- `src/pages/QuotePublic.tsx` — läs metadata och visa info-ruta
 
