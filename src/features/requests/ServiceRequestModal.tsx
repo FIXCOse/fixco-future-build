@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { getServiceBySlug, ServiceConfig, SERVICE_CONFIG } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useEventTracking } from "@/hooks/useEventTracking";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
 import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange } from "lucide-react";
@@ -57,18 +58,21 @@ export default function ServiceRequestModal() {
   const [desiredTime, setDesiredTime] = useState<string>('');
   const [skipAddonsStep, setSkipAddonsStep] = useState(false);
 
+  const { trackFunnelStep, trackConversion, trackClick } = useEventTracking();
+
   // Lock scroll when modal is open
   useScrollLock(open);
 
-  // Navigation functions
-  const goToStep0 = () => setCurrentStep(0);
-  const goToStep1 = () => setCurrentStep(1);
-  const goToStep2 = () => setCurrentStep(2);
-  const goToStep3 = () => setCurrentStep(3);
+  // Navigation functions with tracking
+  const goToStep0 = () => { setCurrentStep(0); trackFunnelStep('step_0', { service: service?.slug }); };
+  const goToStep1 = () => { setCurrentStep(1); trackFunnelStep('step_1_addons', { service: service?.slug }); };
+  const goToStep2 = () => { setCurrentStep(2); trackFunnelStep('step_2_time', { service: service?.slug }); };
+  const goToStep3 = () => { setCurrentStep(3); trackFunnelStep('step_3_details', { service: service?.slug }); };
 const skipAddons = () => {
     setSelectedAddons([]);
-    setSkipAddonsStep(false); // Reset flag when moving forward
-    setCurrentStep(2); // Always go to desired time step
+    setSkipAddonsStep(false);
+    setCurrentStep(2);
+    trackFunnelStep('step_2_time', { service: service?.slug, skipped_addons: true });
   };
 
   // Hämta tillgängliga add-ons för vald tjänst
@@ -105,6 +109,7 @@ const skipAddons = () => {
         setCurrentStep(0);
         setShowCategories(shouldShowCategories);
         setOpen(true);
+        trackFunnelStep('modal_opened', { mode: requestMode, showCategories: shouldShowCategories });
         return;
       }
       
@@ -145,6 +150,7 @@ const skipAddons = () => {
       // Sätt initialt steg baserat på om addons finns (kommer justeras av useEffect om addons=0)
       setCurrentStep(1);
       setOpen(true);
+      trackFunnelStep('modal_opened', { service: slug, mode: requestMode });
     };
     
     window.addEventListener("openServiceRequestModal", onOpen);
@@ -320,6 +326,14 @@ const skipAddons = () => {
       if (!data?.ok) throw new Error(data?.error || 'Unknown error');
 
       const booking = { id: data.bookingId };
+
+      trackConversion(data.bookingId, {
+        service: service.slug,
+        service_name: service.name,
+        customer_type: customerType,
+        mode,
+        addons_count: selectedAddons.length,
+      });
 
       toast.success("Tack! Vi återkommer så snart som möjligt.");
       setDone(true);

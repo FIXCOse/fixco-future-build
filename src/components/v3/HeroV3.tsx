@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import { useEventTracking } from "@/hooks/useEventTracking";
 import { Star } from "lucide-react";
 import { useContentStore } from "@/stores/contentStore";
 import { gsap, SplitText } from "@/lib/gsap";
@@ -22,6 +23,7 @@ const HeroV3 = () => {
   const buttonsRef = useRef<HTMLDivElement>(null);
   const { isHydrated } = useContentStore();
   const { t, locale } = useCopy();
+  const { trackClick } = useEventTracking();
 
   const servicesPath = locale === 'en' ? '/en/services' : '/tjanster';
 
@@ -171,7 +173,7 @@ const HeroV3 = () => {
           </div>
           
           <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center">
-            <GradientButton onClick={() => openServiceRequestModal({ showCategories: true })}>
+            <GradientButton onClick={() => { trackClick('hero_cta_primary'); openServiceRequestModal({ showCategories: true }); }}>
               {t('hero3.cta1')}
             </GradientButton>
             <GradientButton href={servicesPath}>
