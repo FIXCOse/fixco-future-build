@@ -19,8 +19,31 @@ function getUTMFromURL() {
   };
 }
 
+/** Persist landing page + UTM on first page load of the session */
+function ensureSessionOrigin() {
+  if (!sessionStorage.getItem('landing_page')) {
+    sessionStorage.setItem('landing_page', window.location.pathname + window.location.search);
+    const utm = getUTMFromURL();
+    if (utm.source) sessionStorage.setItem('utm_source', utm.source);
+    if (utm.medium) sessionStorage.setItem('utm_medium', utm.medium);
+    if (utm.campaign) sessionStorage.setItem('utm_campaign', utm.campaign);
+    sessionStorage.setItem('referrer', document.referrer || '');
+  }
+}
+
+function getSessionOrigin() {
+  return {
+    landing_page: sessionStorage.getItem('landing_page') || window.location.pathname,
+    utm_source: sessionStorage.getItem('utm_source') || null,
+    utm_medium: sessionStorage.getItem('utm_medium') || null,
+    utm_campaign: sessionStorage.getItem('utm_campaign') || null,
+    referrer: sessionStorage.getItem('referrer') || document.referrer || '',
+  };
+}
+
 export function useEventTracking() {
   const trackPageView = useCallback((page_url: string, metadata?: any) => {
+    ensureSessionOrigin();
     const sessionId = getSessionId();
     const utmParams = getUTMFromURL();
 
@@ -44,17 +67,52 @@ export function useEventTracking() {
     const sessionId = getSessionId();
 
     supabase.from('events').insert({
-      event_type: 'button_click',
+      event_type: 'cta_click',
       page_url: window.location.pathname,
       session_id: sessionId,
       user_agent: navigator.userAgent,
       event_data: {
         element,
         ...metadata,
+        ...getSessionOrigin(),
         timestamp: new Date().toISOString(),
       },
     }).then();
   }, []);
 
-  return { trackPageView, trackClick };
+  const trackFunnelStep = useCallback((step: string, metadata?: any) => {
+    const sessionId = getSessionId();
+
+    supabase.from('events').insert({
+      event_type: `funnel_${step}`,
+      page_url: window.location.pathname,
+      session_id: sessionId,
+      user_agent: navigator.userAgent,
+      event_data: {
+        step,
+        ...metadata,
+        ...getSessionOrigin(),
+        timestamp: new Date().toISOString(),
+      },
+    }).then();
+  }, []);
+
+  const trackConversion = useCallback((bookingId: string, metadata?: any) => {
+    const sessionId = getSessionId();
+
+    supabase.from('events').insert({
+      event_type: 'booking_completed',
+      page_url: window.location.pathname,
+      session_id: sessionId,
+      user_agent: navigator.userAgent,
+      event_data: {
+        booking_id: bookingId,
+        ...metadata,
+        ...getSessionOrigin(),
+        timestamp: new Date().toISOString(),
+      },
+    }).then();
+  }, []);
+
+  return { trackPageView, trackClick, trackFunnelStep, trackConversion };
 }

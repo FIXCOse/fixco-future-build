@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import { useEventTracking } from "@/hooks/useEventTracking";
 import {
   generateLocalContent,
   getAreaFromSlug,
@@ -141,6 +142,7 @@ const getRelatedSearchUrl = (
 const LocalServicePage = () => {
   const { serviceSlug, areaSlug } = useParams<{ serviceSlug: string; areaSlug: string }>();
   const { locale, t } = useCopy();
+  const { trackClick } = useEventTracking();
   const servicePrefix = locale === 'en' ? '/en/services' : '/tjanster';
   
   const isValid = serviceSlug && areaSlug && isValidLocalServicePage(serviceSlug, areaSlug);
@@ -398,6 +400,7 @@ const LocalServicePage = () => {
                   size="lg"
                   className="shadow-xl shadow-primary/25"
                   onClick={() => {
+                    trackClick('hero_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                     openServiceRequestModal({
                       serviceSlug: service?.serviceKey || serviceSlug,
                       prefill: { service_name: content.h1 }
@@ -898,6 +901,7 @@ const LocalServicePage = () => {
                       size="lg"
                       className="shadow-xl shadow-primary/30"
                       onClick={() => {
+                        trackClick('bottom_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                         openServiceRequestModal({
                           serviceSlug: service?.serviceKey || serviceSlug,
                           prefill: { service_name: content.h1 }
