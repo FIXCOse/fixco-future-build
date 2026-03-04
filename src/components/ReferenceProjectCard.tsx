@@ -1,9 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Calendar, Star, Edit, Trash2, Eye } from "lucide-react";
-import { format } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
+import { MapPin, Star, Edit, Trash2, Eye } from "lucide-react";
 import type { Locale } from "@/i18n/context";
 
 interface ReferenceProject {
@@ -56,12 +54,6 @@ export const ReferenceProjectCard = ({
     : project.location_sv || project.location;
   const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
-
-  const formattedDate = project.completion_date
-    ? format(new Date(project.completion_date), "MMM yyyy", {
-        locale: locale === "sv" ? sv : enUS,
-      })
-    : null;
 
   return (
     <Card
@@ -128,17 +120,11 @@ export const ReferenceProjectCard = ({
         )}
 
         {/* Location and date */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4" />
             <span>{location}</span>
           </div>
-          {formattedDate && (
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{formattedDate}</span>
-            </div>
-          )}
         </div>
 
         {/* Price */}
