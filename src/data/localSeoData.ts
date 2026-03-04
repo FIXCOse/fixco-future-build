@@ -85,6 +85,69 @@ export const SEARCH_ACTION_PATTERNS: Record<LocalServiceSlug, {
     urgentTerms: [],
     projectTypes: ["laddbox installation", "larm montering", "nätverksinstallation", "fiberinstallation", "smart hem installation", "tv installation service"],
     synonyms: ["installatör", "tekniker", "fiberinstallatör"]
+  },
+  "koksmontering": {
+    actions: ["montera", "installera", "sätta upp", "boka"],
+    objects: ["IKEA-kök", "köksskåp", "bänkskiva", "vitvaror", "diskmaskin", "fläkt", "köksö"],
+    urgentTerms: ["snabb köksmontering", "köksmontering idag"],
+    projectTypes: ["IKEA köksmontering", "platsbyggt kök montering", "kök installation", "vitvaruinstallation"],
+    synonyms: ["köksmontör", "köksinstallatör", "montera kök", "IKEA kök montering"]
+  },
+  "mobelmontering": {
+    actions: ["montera", "bygga", "sätta ihop", "boka"],
+    objects: ["IKEA-möbler", "PAX", "BESTÅ", "KALLAX", "garderob", "säng", "skrivbord", "bokhylla"],
+    urgentTerms: ["snabb möbelmontering", "möbelmontering idag", "akut möbelmontering"],
+    projectTypes: ["IKEA montering", "garderobsmontering", "hyllmontering", "möbelmontering hemma"],
+    synonyms: ["möbelmontör", "IKEA montör", "montera möbler", "möbelmonterare"]
+  },
+  "badrumsrenovering": {
+    actions: ["renovera", "bygga om", "totalrenovera", "boka"],
+    objects: ["badrum", "dusch", "kakel", "klinker", "badkar", "kommod", "toalett"],
+    urgentTerms: ["akut badrumsrenovering", "snabb badrumsrenovering"],
+    projectTypes: ["helrenovering badrum", "kakelsättning", "våtrumsrenovering", "duschinstallation"],
+    synonyms: ["badrumsrenoverare", "badrumsrenovering firma", "renovera badrum", "badrumsbyggare"]
+  },
+  "koksrenovering": {
+    actions: ["renovera", "bygga om", "byta", "boka"],
+    objects: ["kök", "köksluckor", "bänkskiva", "vitvaror", "köksgolv"],
+    urgentTerms: [],
+    projectTypes: ["helrenovering kök", "byte köksluckor", "nytt kök", "kök totalrenovering"],
+    synonyms: ["köksrenoverare", "köksrenovering firma", "renovera kök", "ny kök"]
+  },
+  "altanbygge": {
+    actions: ["bygga", "anlägga", "renovera", "boka"],
+    objects: ["altan", "trädäck", "pergola", "räcke", "trappa", "utekök"],
+    urgentTerms: [],
+    projectTypes: ["bygga trädäck", "inglasad altan", "komposittrall", "altanrenovering"],
+    synonyms: ["altanbyggare", "trädäcksbyggare", "bygga altan firma", "altansnickare"]
+  },
+  "fasadmalning": {
+    actions: ["måla", "renovera", "putsa", "boka"],
+    objects: ["fasad", "husfasad", "träfasad", "putsfasad", "fönsterfoder", "garage"],
+    urgentTerms: [],
+    projectTypes: ["fasadmålning hus", "utvändig målning", "fasadrenovering", "måla om hus"],
+    synonyms: ["fasadmålare", "husmålare", "utvändig målare", "måla hus"]
+  },
+  "inomhusmalning": {
+    actions: ["måla", "tapetsera", "spackla", "boka"],
+    objects: ["väggar", "tak", "kök", "sovrum", "vardagsrum", "hall", "trapphus"],
+    urgentTerms: [],
+    projectTypes: ["invändig målning", "väggmålning", "tapetsering", "spackling"],
+    synonyms: ["inomhusmålare", "väggmålare", "tapetserare", "målare inomhus"]
+  },
+  "golvlaggning": {
+    actions: ["lägga", "installera", "slipa", "boka"],
+    objects: ["parkett", "vinylgolv", "laminat", "klinker", "trägolv"],
+    urgentTerms: [],
+    projectTypes: ["parkettläggning", "vinylgolv installation", "laminatgolv", "golvslipning"],
+    synonyms: ["golvläggare", "parkettläggare", "golvfirma", "lägga golv"]
+  },
+  "elinstallation": {
+    actions: ["installera", "montera", "byta", "dra", "boka"],
+    objects: ["eluttag", "belysning", "laddbox", "dimmer", "elcentral", "jordfelsbrytare"],
+    urgentTerms: ["akut elektriker", "snabb elinstallation"],
+    projectTypes: ["eluttag installation", "belysning installation", "laddbox montering", "elcentral byte"],
+    synonyms: ["elinstallatör", "elmontör", "elektriker installation"]
   }
 };
 
@@ -509,7 +572,16 @@ export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): s
     "markarbeten": `Markarbeten ${area} ★ Schakt, dränering & mer · ROT 30%`,
     "montering": `Monteringshjälp ${area} ★ IKEA, kök, möbler & mer · ROT 30%`,
     "tradgard": `Trädgårdshjälp ${area} ★ Träd, häck, anläggning & mer · ROT 30%`,
-    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox, larm & mer · ROT 30%`
+    "tekniska-installationer": `Teknisk installation ${area} ★ Laddbox, larm & mer · ROT 30%`,
+    "koksmontering": `Köksmontering ${area} ★ IKEA-kök & platsbyggt · ROT 30%`,
+    "mobelmontering": `Möbelmontering ${area} ★ IKEA, garderober & hyllsystem · RUT 30%`,
+    "badrumsrenovering": `Badrumsrenovering ${area} ★ Totalrenovering, kakel & VVS · ROT 30%`,
+    "koksrenovering": `Köksrenovering ${area} ★ Nytt kök & bänkskivor · ROT 30%`,
+    "altanbygge": `Altanbygge ${area} ★ Trädäck, inglasning & räcken · ROT 30%`,
+    "fasadmalning": `Fasadmålning ${area} ★ Utvändig målning & puts · ROT 30%`,
+    "inomhusmalning": `Inomhusmålning ${area} ★ Tapetsering & spackling · ROT 30%`,
+    "golvlaggning": `Golvläggning ${area} ★ Parkett, vinyl & klinker · ROT 30%`,
+    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`
   };
   return titles[serviceSlug] || `${serviceSlug} ${area} | Fixco`;
 };
