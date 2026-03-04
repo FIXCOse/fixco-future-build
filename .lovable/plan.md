@@ -1,50 +1,44 @@
 
 
-## Plan: Generera AI-bilder för referensprojekt (före/efter)
+## Plan: Konsistent före/efter-generering + stöd för flera bilder
 
-### Sammanfattning
+### Problem
+Före- och efter-bilderna genereras helt oberoende av varandra med separata textprompts, vilket ger helt olika rum. Efter-bilden måste baseras på före-bilden för att se ut som samma rum — bara renoverat.
 
-Skapa en edge function som genererar realistiska före/efter-bilder med **google/gemini-3-pro-image-preview** (Nano Banana Pro — bästa kvalitet för bildgenerering). Bilderna sparas automatiskt i Supabase Storage och kan sedan användas för att skapa referensprojekt.
+### Lösning
 
-### Varför en ny edge function?
+**1. Tvåstegsprocess i edge function `ai-generate-image`**
 
-Den befintliga `ai-image-edit` redigerar befintliga bilder. Vi behöver en ny funktion som **genererar bilder från text-prompts** — t.ex. "ett slitet badrum i svenskt 70-talshus" och "samma badrum efter totalrenovering med vit kakel och spotlights".
+Ändra flödet så att:
+- **Före-bild**: Genereras från textprompt (som idag)
+- **Efter-bild**: Skickas som **bildredigering** — före-bilden skickas med som input tillsammans med en prompt som säger "Visa samma rum efter professionell renovering". Detta använder multimodal input (bild + text) till Gemini-modellen.
 
-### Teknisk implementation
+Ny parameter: `sourceImageUrl` (optional). När den skickas, använd image editing istället för ren textgenerering.
 
-**1. Ny edge function: `ai-generate-image`**
-- Tar emot: `prompt` (text), `style` (before/after), `category` (bathroom/kitchen/exterior etc.)
-- Skickar prompten till `google/gemini-3-pro-image-preview` via Lovable AI Gateway
-- Laddar upp genererad bild till Supabase Storage (`reference-projects/ai-generated/`)
-- Returnerar public URL
+**2. Uppdatera admin-UI:t**
 
-**2. Ny admin-sida eller komponent: AI Bildgenerator**
-- Formulär där man väljer kategori (badrum, kök, fasad, garderob, etc.)
-- Genererar ett par bilder (före + efter) per klick
-- Visar preview med before/after slider
-- Knapp för att direkt skapa referensprojekt från genererade bilder
+- Efter att före-bilden genererats, skicka dess URL automatiskt som `sourceImageUrl` till efter-genereringen
+- `generateBoth()` genererar före först, väntar, sedan skickar före-bildens URL med efter-requesten
 
-**3. Promptstrategi för realism**
-- Före-bilder: "Ultra-realistic photograph of a worn-out Swedish [category], natural lighting, showing age and wear, 70s/80s era Swedish interior..."
-- Efter-bilder: "Ultra-realistic photograph of the same [category] after professional renovation, modern Scandinavian design, same room layout and angle..."
-- Pro-modellen (`gemini-3-pro-image-preview`) ger betydligt bättre resultat än flash-varianten
+**3. Stöd för flera bilder per projekt**
 
-**4. Uppdatera config.toml**
-- Lägg till `[functions.ai-generate-image]` med `verify_jwt = true` (admin-only)
+Byt från `GeneratedPair` till `GeneratedImage[]`-array:
+- Varje genererad bild appendas till listan
+- Användaren kan generera fler bilder (olika vinklar) och ta bort enskilda
+- Vid sparning skickas alla URL:er som `images`-array
 
-### Kategorier att generera
+### Tekniska ändringar
 
-Jag kan generera före/efter-par för t.ex.:
-- Badrumsrenovering
-- Köksrenovering
-- Fasadrenovering
-- Garderobsinstallation
-- Golvläggning
-- Målning (interiör/exteriör)
+**`supabase/functions/ai-generate-image/index.ts`:**
+- Lägg till stöd för `sourceImageUrl` i request body
+- Om `sourceImageUrl` finns: skicka multimodal message med `[{type: "text", text: prompt}, {type: "image_url", image_url: {url: sourceImageUrl}}]`
+- Om inte: generera från enbart text (som idag)
+- Justera efter-prompten till: "Transform this exact room to show it after a professional renovation. Keep the same room layout, window positions, and dimensions. Modern Scandinavian design..."
 
-### Begränsningar
-
-- AI-genererade bilder kan ibland se "för perfekta" ut — prompten måste justeras för att lägga till naturliga imperfektioner
-- Före/efter-bilderna genereras separat, så rumslayouten kan skilja sig något mellan paren
-- Pro-modellen är långsammare och dyrare men ger markant bättre realism
+**`src/pages/admin/AdminAiImageGenerator.tsx`:**
+- Ny state: `generatedImages: GeneratedImage[]` istället för `generatedPair`
+- `generateImage('after')` skickar senaste före-bildens URL som `sourceImageUrl`
+- Dynamiskt bildgalleri med möjlighet att lägga till/ta bort bilder
+- Räknare: "X före-bilder, Y efter-bilder"
+- Spara-knappen skickar hela bildlistan
 
