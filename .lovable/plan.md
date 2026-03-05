@@ -1,22 +1,28 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Lägg till CTA-knapp under "Så bokar du"-stegen
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Ändring
 
-### Fil som ändras
+Lägg till en centrerad CTA-knapp ("Begär gratis offert") direkt under how-to-steg-gridden (rad 506-507), innan sektionen stängs. Knappen använder `openServiceRequestModal` enligt projektets konverteringsstrategi (inga telefonnummer i primära CTAs).
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+### Fil: `src/pages/LocalServicePage.tsx`
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+Efter steg-gridden (rad 506, `</div>`) och innan `</motion.div>` (rad 508), lägg till:
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+```tsx
+<motion.div variants={itemVariants} className="text-center mt-10">
+  <Button
+    variant="cta-primary"
+    size="cta"
+    onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+  >
+    {t('hero.cta_request_quote')}
+  </Button>
+</motion.div>
+```
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+Importerar `openServiceRequestModal` om den inte redan finns i filen.
+
+En fil ändras, en rad läggs till.
 
