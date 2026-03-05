@@ -15,6 +15,9 @@ const GlobalStickyCTA = () => {
   const location = useLocation();
   const { t } = useCopy();
 
+  const HIDDEN_ROUTES = ['/q/', '/invoice/', '/offert/', '/faktura/'];
+  const isHiddenRoute = HIDDEN_ROUTES.some(r => location.pathname.startsWith(r));
+
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY > 200;
@@ -51,7 +54,7 @@ const GlobalStickyCTA = () => {
 
   const contextualCta = getContextualCta();
 
-  if (!isVisible) return null;
+  if (!isVisible || isHiddenRoute) return null;
 
   return (
     <>

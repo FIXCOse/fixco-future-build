@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useLocation } from 'react-router-dom';
 import LanguageSwitcher from './LanguageSwitcher';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
+const HIDDEN_ROUTES = ['/q/', '/invoice/', '/offert/', '/faktura/'];
+
 const FloatingSettingsWidget = () => {
   const [mounted, setMounted] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
   }, []);
 
-  if (!mounted || typeof document === 'undefined') {
+  const shouldHide = HIDDEN_ROUTES.some(r => location.pathname.startsWith(r));
+
+  if (!mounted || typeof document === 'undefined' || shouldHide) {
     return null;
   }
 
