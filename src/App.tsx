@@ -483,8 +483,8 @@ const App = () => {
                   {/* Navbar2 Portal - renders OUTSIDE smooth-content to avoid transform issues */}
                   <NavbarPortal />
                   
-                   {/* Sticky Phone Button - renders OUTSIDE smooth-content for proper fixed positioning */}
-                   <StickyPhoneButton />
+                   {/* Sticky Phone Button - temporarily hidden, uncomment to re-enable */}
+                   {/* <StickyPhoneButton /> */}
                    
                    {/* Floating Settings Widget - renders OUTSIDE smooth-content for proper fixed positioning */}
                     <FloatingSettingsWidget />
