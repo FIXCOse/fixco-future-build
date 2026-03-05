@@ -9,6 +9,8 @@ function buildQuoteHTML(quote: any): string {
   const materialItems = items.filter((item: any) => item.type === 'material');
   const materialMeta = items.find((item: any) => item.type === '_meta' && item.key === 'material_included');
   const materialNotIncluded = materialMeta && materialMeta.value === false;
+  const customerNotesMeta = items.find((item: any) => item.type === '_meta' && item.key === 'customer_notes');
+  const customerNotesText = customerNotesMeta?.value || '';
 
   const daysLeft = quote.valid_until
     ? Math.ceil((new Date(quote.valid_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
@@ -88,6 +90,11 @@ function buildQuoteHTML(quote: any): string {
           <div style="margin-top: 12px; display: flex; align-items: flex-start; gap: 12px; border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 8px; padding: 12px;">
             <span>📦</span>
             <p style="font-size: 13px; color: #1e40af; margin: 0;">Material ingår ej i denna offert och faktureras separat efter slutfört arbete.</p>
+          </div>` : ''}
+
+          ${customerNotesText ? `
+          <div style="margin-top: 12px; padding: 12px; background: #f1f5f9; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <p style="font-size: 13px; color: #334155; margin: 0; white-space: pre-line;">${customerNotesText}</p>
           </div>` : ''}
         </div>` : ''}
 

@@ -708,6 +708,17 @@ export default function QuotePublic() {
                         </p>
                       </div>
                     )}
+
+                    {/* Customer notes */}
+                    {(() => {
+                      const customerNotesMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'customer_notes');
+                      if (!customerNotesMeta?.value) return null;
+                      return (
+                        <div className="mt-3 p-3 rounded-lg bg-muted/50 border border-border">
+                          <p className="text-sm text-foreground whitespace-pre-line">{customerNotesMeta.value}</p>
+                        </div>
+                      );
+                    })()}
                   </div>
                 );
               })()}
