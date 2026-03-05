@@ -106,7 +106,7 @@ serve(async (req) => {
       );
     }
 
-    console.log("Follow-up email sent successfully to:", customerEmail);
+    console.log(`${isTest ? '🧪 TEST' : '✅'} Follow-up email sent to:`, recipientEmail);
 
     return new Response(JSON.stringify({ success: true, message: "Uppföljningsmail skickat!" }), {
       status: 200,

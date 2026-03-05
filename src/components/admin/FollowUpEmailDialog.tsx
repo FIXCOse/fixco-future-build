@@ -142,11 +142,19 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="flex-col sm:flex-row gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Avbryt
           </Button>
-          <Button onClick={handleSend} disabled={sending || !subject.trim() || !body.trim()}>
+          <Button
+            variant="secondary"
+            onClick={() => handleSend('imedashviliomar@gmail.com')}
+            disabled={sending || !subject.trim() || !body.trim()}
+          >
+            {sending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Send className="h-4 w-4 mr-2" />}
+            🧪 Testmail
+          </Button>
+          <Button onClick={() => handleSend()} disabled={sending || !subject.trim() || !body.trim()}>
             {sending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Send className="h-4 w-4 mr-2" />}
             Skicka mail
           </Button>
