@@ -1,41 +1,22 @@
 
 
-## Plan: Rensa upp botten-sektionerna till ett professionellt utseende
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Botten av lokala tjänstesidor har för många separata sektioner med liknande visuell vikt som skapar ett "spammigt" intryck: Vanliga projekt-grid, Om-text med tips, Quick Facts-grid, Fun Facts-grid, Relaterade sökningar-chips, och ExpandableAreaLinks. Det är för mycket "småkort" och grids som ser ut som SEO-fyllnad.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
-Konsolidera alla SEO-sektioner till **en enda sammanhållen sektion** med en diskret, professionell design. Flytta fokus från många separata grids till en strukturerad, minimalistisk layout.
+### Fil som ändras
 
-### Ändringar
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**`src/pages/LocalServicePage.tsx` (rad 741-865)**
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-1. **Ta bort** "Vanliga projekt"-gridden (rad 741-773) helt — innehållet är redundant med popularSearches som redan visas i relatedSearches.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-2. **Slå ihop** "Om tjänst i ort" + "Facts & Lokalt" + "Relaterat" till **en sektion** med rubriken typ "Om {tjänst} i {ort}". Sektionen får:
-   - Om-texten (uniqueIntro) som löpande text
-   - Local Tip i ett diskret kort under texten
-   - Quick Facts som en enkel kommaseparerad eller punktlista (inte grid-kort)
-   - Fun Facts som en kort lista med ikoner (inte separata kort)
-   - Relaterade sökningar som diskreta textlänkar (inte chips)
-
-3. **ExpandableAreaLinks** behålls men läggs sist som enda navigationssektion.
-
-**`src/components/local-service/ExpandableAreaLinks.tsx`**
-- Ingen ändring behövs, ser redan bra ut.
-
-**`src/components/local-service/NearbyAreasSection.tsx`**
-- Ingen ändring behövs.
-
-### Designprincip
-- En sammanhållen sektion istället för 5 separata
-- Textbaserat innehåll istället för grid-kort för facts
-- Renare visuell hierarki — mindre "boxy"
-
-### Filer
-| Fil | Ändring |
-|-----|---------|
-| `src/pages/LocalServicePage.tsx` | Ta bort "Vanliga projekt"-sektion, slå ihop Om/Facts/Relaterat till en sektion |
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
