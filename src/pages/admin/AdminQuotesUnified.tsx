@@ -294,6 +294,24 @@ export default function AdminQuotesUnified() {
     }
   };
 
+  const handleSendTestEmail = async (quoteId: string) => {
+    const testEmail = window.prompt('Ange test-emailadress:', 'imedashviliomar@gmail.com');
+    if (!testEmail) return;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-quote-email-new', {
+        body: { quoteId, testEmail }
+      });
+
+      if (error) throw error;
+
+      toast.success(`Testmail skickat till ${testEmail}`);
+    } catch (error: any) {
+      console.error('Error sending test email:', error);
+      toast.error('Kunde inte skicka testmail');
+    }
+  };
+
   const handleViewPdf = async (quoteId: string) => {
     try {
       toast.loading('Genererar PDF...');
@@ -756,6 +774,7 @@ export default function AdminQuotesUnified() {
                   onCreateQuote={handleCreateQuote}
                   onEditQuote={handleEditQuote}
                   onSendQuote={handleSendQuote}
+                  onSendTestEmail={handleSendTestEmail}
                   onViewPdf={handleViewPdf}
                   onDeleteBooking={(id) => setDeleteId(id)}
                   onCopyLink={handleCopyLink}
