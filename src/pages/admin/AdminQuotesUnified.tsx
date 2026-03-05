@@ -297,18 +297,16 @@ export default function AdminQuotesUnified() {
   const handleViewPdf = async (quoteId: string) => {
     try {
       toast.loading('Genererar PDF...');
-      const { data, error } = await supabase.functions.invoke('generate-pdf-from-quote', {
-        body: { quoteId }
-      });
-
-      if (error) throw error;
+      
+      const { generateQuotePdfClientSide } = await import('@/lib/generateQuotePdf');
+      const pdfUrl = await generateQuotePdfClientSide(quoteId);
 
       toast.dismiss();
       toast.success('PDF genererad!');
       
-      if (data?.pdfUrl) {
+      if (pdfUrl) {
         const timestamp = new Date().getTime();
-        const pdfUrlWithTimestamp = `${data.pdfUrl}?t=${timestamp}`;
+        const pdfUrlWithTimestamp = `${pdfUrl}?t=${timestamp}`;
         
         const newWindow = window.open(pdfUrlWithTimestamp, '_blank');
         
