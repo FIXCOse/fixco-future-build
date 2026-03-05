@@ -1,19 +1,20 @@
 
 
-## Diagnos: Admin-notiser skickas inte vid offertöppning/accept
+## Plan: Fix CTA-knapp som hamnar bakom stegkorten
 
 ### Problem
-Edge functions `get-quote-public` och `accept-quote-public` innehåller korrekt `notifyAdmin()`-logik som anropar Resend API till `imedashviliomar@gmail.com`. Men funktionerna är troligen **inte deployade** med senaste koden — loggarna visar inga anrop alls.
+"Begär offert"-knappen (rad 508) ligger under stegkorten visuellt. Stegkorten har `whileHover={{ y: -6, scale: 1.02 }}` som gör att de expanderar och kan överlappa knappen. Knappen saknar `relative z-10` för att ligga ovanpå.
 
-### Lösning
-Deploya alla relevanta edge functions som hanterar kundinteraktioner med offerter:
+### Ändring i `src/pages/LocalServicePage.tsx`
 
-1. **`get-quote-public`** — skickar 👁️-notis när kund öppnar offert (status ändras från `sent` → `viewed`)
-2. **`accept-quote-public`** — skickar ✅-notis vid accept
-3. **`reject-quote-public`** — skickar notis vid avvisning  
-4. **`ask-question-quote`** — skickar notis vid frågor
-5. **`request-change-quote-public`** — skickar notis vid ändringsbegäran
+**Rad 508** — Lägg till `relative z-10` på knappens wrapper:
+```tsx
+// Från:
+<motion.div variants={itemVariants} className="text-center mt-10">
 
-### Åtgärd
-Deploya dessa 5 edge functions. Ingen kodändring behövs — koden är redan korrekt.
+// Till:
+<motion.div variants={itemVariants} className="text-center mt-10 relative z-10">
+```
+
+En rad, en ändring.
 
