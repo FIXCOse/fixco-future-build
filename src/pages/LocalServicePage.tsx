@@ -773,22 +773,22 @@ const LocalServicePage = () => {
         </section>
 
         {/* Om tjänst i ort (SEO) */}
-        <section className="py-10 relative overflow-hidden">
+        <section className="py-10">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h3 className="text-lg font-semibold text-muted-foreground mb-4">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
                 {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
               </h3>
-              <p className="text-sm text-muted-foreground/80 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {uniqueContent.uniqueIntro}
               </p>
               {/* Local Tip */}
-              <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-border">
+              <div className="mt-6 p-4 bg-card rounded-xl border border-border">
                 <div className="flex items-start gap-3">
-                  <Lightbulb className="h-4 w-4 text-muted-foreground/60 flex-shrink-0 mt-0.5" />
+                  <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
-                    <p className="text-xs text-muted-foreground/70">{uniqueContent.localTip}</p>
+                    <h4 className="text-sm font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
+                    <p className="text-xs text-muted-foreground">{uniqueContent.localTip}</p>
                   </div>
                 </div>
               </div>
@@ -796,124 +796,66 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Quick Facts + Fun Facts (SEO) */}
-        <section className="py-8 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/20" />
-          
-          <div className="container mx-auto px-4 relative z-10">
+        {/* Facts & Lokalt (SEO) */}
+        <section className="py-10">
+          <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
-              <h3 className="text-sm font-medium text-muted-foreground/70 mb-4 text-center">
-                {t('local.quickFacts')} {content.h1}
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {content.quickFacts.slice(0, 8).map((fact, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 p-2 rounded-lg bg-card border border-border text-xs text-muted-foreground/70"
+                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border text-xs text-muted-foreground"
                   >
-                    <CheckCircle className="h-3 w-3 text-primary/40 flex-shrink-0" />
+                    <CheckCircle className="h-3.5 w-3.5 text-primary flex-shrink-0" />
                     <span>{fact}</span>
                   </div>
                 ))}
               </div>
               
               {content.funFacts.length > 0 && (
-                <div className="mt-6">
-                  <h4 className="text-sm font-medium text-muted-foreground/60 mb-3 text-center">
-                    {t('local.didYouKnow')} {area}?
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {content.funFacts.slice(0, 4).map((fact, idx) => (
-                      <div key={idx} className="p-3 rounded-lg bg-card border border-border">
-                        <p className="text-xs text-muted-foreground/60">{fact}</p>
-                      </div>
-                    ))}
-                  </div>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {content.funFacts.slice(0, 4).map((fact, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
+                      <Lightbulb className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-muted-foreground">{fact}</p>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           </div>
         </section>
 
-        {/* Nearby Areas */}
-        <NearbyAreasSection
-          currentArea={area}
-          serviceSlug={serviceSlug}
-          serviceName={service?.name || ""}
-        />
-
-        {/* Nearby Areas Links (SEO) */}
-        {uniqueContent.nearbyAreas.length > 0 && (
-          <section className="py-8 border-t border-border">
-            <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto">
-                <h4 className="text-sm font-medium text-zinc-500 mb-4">
-                  {service?.name} {locale === 'en' ? 'in' : 'i hela'} {area} {t('local.nearbyTitle')}
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {uniqueContent.nearbyAreas.map((neighbor) => (
-                    <Link 
-                      key={neighbor}
-                      to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(neighbor)}`}
-                      className="text-sm text-zinc-500 hover:text-primary transition-colors"
-                    >
-                      {service?.name} {neighbor}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-        
-        {/* Related Searches (SEO) */}
-        <section className="py-6 border-t border-border">
+        {/* Relaterat (SEO) – merged related searches + urgent */}
+        <section className="py-8">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
-              <h4 className="text-xs font-medium text-zinc-600 mb-3">
-                {t('local.relatedSearches')}
-              </h4>
-              <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+              <div className="flex flex-wrap gap-2">
                 {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => {
                   const targetUrl = getRelatedSearchUrl(search, serviceSlug!, areaSlug!, servicePrefix);
                   return (
                     <Link 
-                      key={idx} 
+                      key={`search-${idx}`} 
                       to={targetUrl}
-                      className="text-xs text-zinc-600 hover:text-primary transition-colors"
+                      className="text-xs px-3 py-1.5 rounded-lg bg-card border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all"
                     >
                       {search}
                     </Link>
                   );
                 })}
+                {uniqueContent.urgentServices.map((urgent, idx) => (
+                  <Link 
+                    key={`urgent-${idx}`}
+                    to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-card border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all"
+                  >
+                    {urgent} {locale === 'en' ? 'in' : 'i'} {area}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </section>
-        
-        {/* Urgent Services (SEO) */}
-        {uniqueContent.urgentServices.length > 0 && (
-          <section className="py-6 border-t border-border">
-            <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto">
-                <h4 className="text-xs font-medium text-zinc-600 mb-3">
-                  {t('local.urgentHelp')} {area}:
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {uniqueContent.urgentServices.map((urgent, idx) => (
-                    <Link 
-                      key={idx}
-                      to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
-                      className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded hover:text-primary transition-colors"
-                    >
-                      {urgent} {locale === 'en' ? 'in' : 'i'} {area}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* Area Links (SEO) */}
         <ExpandableAreaLinks

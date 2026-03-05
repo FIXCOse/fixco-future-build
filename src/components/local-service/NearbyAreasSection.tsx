@@ -59,8 +59,7 @@ export const NearbyAreasSection = ({ currentArea, serviceSlug, serviceName }: Ne
   if (sameRegionAreas.length === 0) return null;
   
   return (
-    <section className="py-12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-muted/30" />
+    <section className="py-12">
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
