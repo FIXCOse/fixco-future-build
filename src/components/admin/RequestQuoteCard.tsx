@@ -793,6 +793,16 @@ export function RequestQuoteCard({
         onOpenChange={setScheduleDialogOpen}
       />
     )}
+
+    {quote && (
+      <FollowUpEmailDialog
+        open={followUpDialogOpen}
+        onOpenChange={setFollowUpDialogOpen}
+        quoteId={quote.id}
+        customerName={customerName}
+        onSuccess={handleRefresh}
+      />
+    )}
     </>
   );
 }
