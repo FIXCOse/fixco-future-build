@@ -47,27 +47,25 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
   const remainingUppsala = uppsalaAreas.length - INITIAL_COUNT;
   
   return (
-    <section className="py-14 relative">
-      <div className="absolute inset-0 bg-muted/30" />
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
-      
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-12">
+      <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={containerVariants}
+          className="max-w-5xl mx-auto"
         >
-          <motion.h2 variants={itemVariants} className="text-xl font-bold mb-6 text-center text-foreground/80">
+          <motion.h2 variants={itemVariants} className="text-lg font-semibold mb-6 text-foreground">
             {serviceName} i andra områden
           </motion.h2>
           
           {/* Stockholm */}
-          <motion.div variants={itemVariants} className="mb-8">
+          <motion.div variants={itemVariants} className="mb-6">
             <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
+              <MapPin className="h-4 w-4 text-primary" />
               Stockholmsområdet
-              <span className="text-xs text-muted-foreground/60">({stockholmAreas.length} orter)</span>
+              <span className="text-xs text-muted-foreground">({stockholmAreas.length})</span>
             </h3>
             <div className="flex flex-wrap gap-2">
               <AnimatePresence mode="popLayout">
@@ -75,14 +73,14 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   <motion.div
                     key={area}
                     layout
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
                   >
                     <Link
                       to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(area)}`}
-                      className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
+                      className="px-3 py-1.5 rounded-lg bg-card border border-border text-sm text-foreground hover:border-primary/40 hover:bg-primary/10 transition-all inline-block"
                     >
                       {area}
                     </Link>
@@ -95,18 +93,12 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowAllStockholm(!showAllStockholm)}
-                  className="text-primary hover:text-primary/80 hover:bg-primary/10"
+                  className="text-primary hover:text-primary hover:bg-primary/10"
                 >
                   {showAllStockholm ? (
-                    <>
-                      Visa färre
-                      <ChevronUp className="h-4 w-4 ml-1" />
-                    </>
+                    <>Visa färre <ChevronUp className="h-4 w-4 ml-1" /></>
                   ) : (
-                    <>
-                      + {remainingStockholm} fler orter
-                      <ChevronDown className="h-4 w-4 ml-1" />
-                    </>
+                    <>+ {remainingStockholm} fler <ChevronDown className="h-4 w-4 ml-1" /></>
                   )}
                 </Button>
               )}
@@ -116,9 +108,9 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
           {/* Uppsala */}
           <motion.div variants={itemVariants}>
             <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
+              <MapPin className="h-4 w-4 text-primary" />
               Uppsalaområdet
-              <span className="text-xs text-muted-foreground/60">({uppsalaAreas.length} orter)</span>
+              <span className="text-xs text-muted-foreground">({uppsalaAreas.length})</span>
             </h3>
             <div className="flex flex-wrap gap-2">
               <AnimatePresence mode="popLayout">
@@ -126,14 +118,14 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   <motion.div
                     key={area}
                     layout
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
                   >
                     <Link
                       to={`${servicePrefix}/${serviceSlug}/${generateAreaSlug(area)}`}
-                      className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm text-foreground/70 hover:bg-primary/10 hover:border-primary/30 hover:text-foreground transition-all inline-block"
+                      className="px-3 py-1.5 rounded-lg bg-card border border-border text-sm text-foreground hover:border-primary/40 hover:bg-primary/10 transition-all inline-block"
                     >
                       {area}
                     </Link>
@@ -146,18 +138,12 @@ export const ExpandableAreaLinks = ({ currentArea, serviceSlug, serviceName }: E
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowAllUppsala(!showAllUppsala)}
-                  className="text-primary hover:text-primary/80 hover:bg-primary/10"
+                  className="text-primary hover:text-primary hover:bg-primary/10"
                 >
                   {showAllUppsala ? (
-                    <>
-                      Visa färre
-                      <ChevronUp className="h-4 w-4 ml-1" />
-                    </>
+                    <>Visa färre <ChevronUp className="h-4 w-4 ml-1" /></>
                   ) : (
-                    <>
-                      + {remainingUppsala} fler orter
-                      <ChevronDown className="h-4 w-4 ml-1" />
-                    </>
+                    <>+ {remainingUppsala} fler <ChevronDown className="h-4 w-4 ml-1" /></>
                   )}
                 </Button>
               )}
