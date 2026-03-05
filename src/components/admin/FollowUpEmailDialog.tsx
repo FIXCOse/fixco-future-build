@@ -50,7 +50,7 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
     }
   };
 
-  const handleSend = async () => {
+  const handleSend = async (testEmail?: string) => {
     if (!subject.trim() || !body.trim()) {
       toast.error('Fyll i både ämnesrad och mailtext');
       return;
@@ -58,8 +58,11 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
 
     setSending(true);
     try {
+      const payload: any = { quoteId, subject: subject.trim(), body: body.trim() };
+      if (testEmail) payload.testEmail = testEmail;
+
       const { data, error } = await supabase.functions.invoke('send-followup-email', {
-        body: { quoteId, subject: subject.trim(), body: body.trim() }
+        body: payload
       });
 
       if (error) throw error;
