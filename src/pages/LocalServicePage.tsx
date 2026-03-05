@@ -738,121 +738,78 @@ const LocalServicePage = () => {
           </div>
         </section>
 
-        {/* Vanliga projekt (SEO) */}
-        <section className="py-10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-muted/20" />
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-5xl mx-auto">
-              <h3 className="text-lg font-semibold text-muted-foreground mb-6 text-center">
-                {locale === 'en' ? 'Common' : 'Vanliga'} {service?.name?.toLowerCase()}{t('local.commonProjects')} {area}
-              </h3>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {uniqueContent.popularSearches.map((search, idx) => (
-                  <div
-                    key={`search-${idx}`}
-                    className="flex items-center gap-2 p-2.5 rounded-lg bg-card border border-border text-sm text-muted-foreground"
-                  >
-                    <CheckCircle className="h-3.5 w-3.5 text-primary/50 flex-shrink-0" />
-                    <span className="capitalize">{search} {locale === 'en' ? 'in' : 'i'} {area}</span>
-                  </div>
-                ))}
-                {uniqueContent.projectExamples.map((project, idx) => (
-                  <div
-                    key={`project-${idx}`}
-                    className="flex items-center gap-2 p-2.5 rounded-lg bg-card border border-border text-sm text-muted-foreground"
-                  >
-                    <Zap className="h-3.5 w-3.5 text-amber-400/50 flex-shrink-0" />
-                    <span className="capitalize">{project}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Om tjänst i ort (SEO) */}
-        <section className="py-10">
+        {/* Om tjänsten i området – konsoliderad SEO-sektion */}
+        <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-lg font-semibold text-foreground mb-4">
+            <div className="max-w-3xl mx-auto space-y-6">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
               </h3>
+              
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {uniqueContent.uniqueIntro}
               </p>
+
               {/* Local Tip */}
-              <div className="mt-6 p-4 bg-card rounded-xl border border-border">
-                <div className="flex items-start gap-3">
-                  <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-sm font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
-                    <p className="text-xs text-muted-foreground">{uniqueContent.localTip}</p>
-                  </div>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
+                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
+                  <p className="text-xs text-muted-foreground">{uniqueContent.localTip}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Facts & Lokalt (SEO) */}
-        <section className="py-10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {content.quickFacts.slice(0, 8).map((fact, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-card border border-border text-xs text-muted-foreground"
-                  >
-                    <CheckCircle className="h-3.5 w-3.5 text-primary flex-shrink-0" />
-                    <span>{fact}</span>
-                  </div>
-                ))}
-              </div>
-              
-              {content.funFacts.length > 0 && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {content.funFacts.slice(0, 4).map((fact, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
-                      <Lightbulb className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">{fact}</p>
-                    </div>
+              {/* Quick Facts – inline list */}
+              {content.quickFacts.length > 0 && (
+                <ul className="text-xs text-muted-foreground space-y-1.5">
+                  {content.quickFacts.slice(0, 6).map((fact, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
+                      <CheckCircle className="h-3 w-3 text-primary/60 flex-shrink-0" />
+                      {fact}
+                    </li>
                   ))}
+                </ul>
+              )}
+
+              {/* Fun Facts – inline list */}
+              {content.funFacts.length > 0 && (
+                <ul className="text-xs text-muted-foreground space-y-1.5">
+                  {content.funFacts.slice(0, 3).map((fact, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Lightbulb className="h-3 w-3 text-amber-500 flex-shrink-0 mt-0.5" />
+                      {fact}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Related searches – discrete text links */}
+              {(uniqueContent.relatedSearches.length > 0 || uniqueContent.urgentServices.length > 0) && (
+                <div className="pt-4 border-t border-border">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {locale === 'en' ? 'Related' : 'Relaterat'}:{' '}
+                    {[
+                      ...uniqueContent.relatedSearches.slice(0, 6).map((search, idx) => {
+                        const targetUrl = getRelatedSearchUrl(search, serviceSlug!, areaSlug!, servicePrefix);
+                        return (
+                          <Link key={`s-${idx}`} to={targetUrl} className="underline decoration-border hover:decoration-primary hover:text-foreground transition-colors">
+                            {search}
+                          </Link>
+                        );
+                      }),
+                      ...uniqueContent.urgentServices.slice(0, 3).map((urgent, idx) => (
+                        <Link key={`u-${idx}`} to={`${servicePrefix}/${serviceSlug}/${areaSlug}`} className="underline decoration-border hover:decoration-primary hover:text-foreground transition-colors">
+                          {urgent} {locale === 'en' ? 'in' : 'i'} {area}
+                        </Link>
+                      ))
+                    ].reduce<React.ReactNode[]>((acc, link, i) => {
+                      if (i > 0) acc.push(<span key={`sep-${i}`}> · </span>);
+                      acc.push(link);
+                      return acc;
+                    }, [])}
+                  </p>
                 </div>
               )}
-            </div>
-          </div>
-        </section>
-
-        {/* Relaterat (SEO) – merged related searches + urgent */}
-        <section className="py-8">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="flex flex-wrap gap-2">
-                {uniqueContent.relatedSearches.slice(0, 8).map((search, idx) => {
-                  const targetUrl = getRelatedSearchUrl(search, serviceSlug!, areaSlug!, servicePrefix);
-                  return (
-                    <Link 
-                      key={`search-${idx}`} 
-                      to={targetUrl}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-card border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all"
-                    >
-                      {search}
-                    </Link>
-                  );
-                })}
-                {uniqueContent.urgentServices.map((urgent, idx) => (
-                  <Link 
-                    key={`urgent-${idx}`}
-                    to={`${servicePrefix}/${serviceSlug}/${areaSlug}`}
-                    className="text-xs px-3 py-1.5 rounded-lg bg-card border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all"
-                  >
-                    {urgent} {locale === 'en' ? 'in' : 'i'} {area}
-                  </Link>
-                ))}
-              </div>
             </div>
           </div>
         </section>
