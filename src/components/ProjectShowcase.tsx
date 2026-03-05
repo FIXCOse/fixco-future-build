@@ -294,10 +294,6 @@ const ProjectShowcase = () => {
 
             <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
               <div className="text-center">
-                <p className="text-2xl font-bold text-primary">{projects.length}</p>
-                <p className="text-sm text-muted-foreground">{t('projects.stats.year')}</p>
-              </div>
-              <div className="text-center">
                 <p className="text-2xl font-bold text-primary">100%</p>
                 <p className="text-sm text-muted-foreground">{t('projects.stats.satisfied')}</p>
               </div>
