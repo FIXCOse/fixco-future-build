@@ -29,7 +29,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import logoFixco from "@/assets/logo-fixco-white.webp";
+import logoFixco from "@/assets/fixco-logo-white.png";
 
 interface LocationCityPageProps {
   city: CityKey;
