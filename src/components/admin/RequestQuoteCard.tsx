@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FollowUpEmailDialog } from "./FollowUpEmailDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -53,6 +54,7 @@ export function RequestQuoteCard({
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
   const { booking, quote, customer, invoice, job, timeLogs, materialLogs, expenseLogs, totalHours: jobTotalHours, totalMaterialCost, totalExpenses } = item;
   const { workers, totalHours: workerTotalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
   
@@ -546,6 +548,17 @@ export function RequestQuoteCard({
                         Skapa faktura direkt
                       </Button>
                     </>
+                   )}
+                  {/* Follow-up email button for sent/viewed/change_requested */}
+                  {['sent', 'viewed', 'change_requested'].includes(quote.status) && (
+                    <Button
+                      onClick={() => setFollowUpDialogOpen(true)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Uppföljningsmail
+                    </Button>
                   )}
                 </div>
               </div>
@@ -778,6 +791,16 @@ export function RequestQuoteCard({
         quoteNumber={quote.number}
         open={scheduleDialogOpen}
         onOpenChange={setScheduleDialogOpen}
+      />
+    )}
+
+    {quote && (
+      <FollowUpEmailDialog
+        open={followUpDialogOpen}
+        onOpenChange={setFollowUpDialogOpen}
+        quoteId={quote.id}
+        customerName={customerName}
+        onSuccess={handleRefresh}
       />
     )}
     </>

@@ -146,6 +146,12 @@ verify_jwt = false
 [functions.execute-scheduled-quote-sends]
 verify_jwt = false
 
+[functions.send-followup-email]
+verify_jwt = false
+
+[functions.generate-followup-text]
+verify_jwt = false
+
 [edge_runtime.scheduler.execute-scheduled-flag-changes]
 schedule = "* * * * *"
 
