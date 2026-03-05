@@ -5,6 +5,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+async function notifyAdmin(subject: string, html: string) {
+  try {
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY) return;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Fixco <info@fixco.se>',
+        to: ['imedashviliomar@gmail.com'],
+        subject,
+        html,
+      }),
+    });
+  } catch (e) {
+    console.error('Admin notification failed:', e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -14,20 +33,16 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const pathParts = url.pathname.split('/').filter(p => p);
     
-    // Find the 'get-quote-public' segment and extract parts after it
     const funcIndex = pathParts.findIndex(p => p === 'get-quote-public');
     const relevantParts = funcIndex >= 0 ? pathParts.slice(funcIndex + 1) : pathParts;
     
-    // Support both formats: /number/token (new) and /token (legacy)
     let quoteNumber: string | null = null;
     let token: string;
     
     if (relevantParts.length >= 2) {
-      // New format: /get-quote-public/Q-2025-042/Xk9m
       quoteNumber = relevantParts[0];
       token = relevantParts[1];
     } else if (relevantParts.length === 1) {
-      // Legacy format: /get-quote-public/long-token
       token = relevantParts[0];
     } else {
       return new Response(
@@ -47,7 +62,6 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hämta offert - stödjer både nummer+token och bara token
     let query = supabase
       .from('quotes_new')
       .select(`
@@ -76,10 +90,8 @@ Deno.serve(async (req) => {
       `);
     
     if (quoteNumber) {
-      // New format: verify both number and token
       query = query.eq('number', quoteNumber).eq('public_token', token);
     } else {
-      // Legacy format: verify only token
       query = query.eq('public_token', token);
     }
     
@@ -93,14 +105,12 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Hämta frågor och svar
     const { data: questions } = await supabase
       .from('quote_questions')
       .select('*')
       .eq('quote_id', quote.id)
       .order('asked_at', { ascending: true });
 
-    // Kontrollera om offerten är raderad
     if (quote.deleted_at) {
       return new Response(
         JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats' }),
@@ -108,7 +118,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Om status är 'sent', uppdatera till 'viewed'
+    // Om status är 'sent', uppdatera till 'viewed' och skicka notis
     if (quote.status === 'sent') {
       const { error: updateError } = await supabase
         .from('quotes_new')
@@ -121,9 +131,19 @@ Deno.serve(async (req) => {
       if (updateError) {
         console.error('Failed to update status:', updateError);
       }
+
+      const customerName = quote.customer?.name || 'Okänd kund';
+      const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+      notifyAdmin(
+        `👁️ Offert ${quote.number} öppnad av ${customerName}`,
+        `<h2>Offert öppnad</h2>
+        <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+        <p><strong>Kund:</strong> ${customerName}</p>
+        <p><strong>Tidpunkt:</strong> ${now}</p>
+        <p>Kunden har öppnat offertlänken och tittar på offerten.</p>`
+      );
     }
 
-    // Returnera endast icke-känslig data
     const publicData = {
       number: quote.number,
       title: quote.title,
