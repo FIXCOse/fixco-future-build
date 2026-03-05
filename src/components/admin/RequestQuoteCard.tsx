@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube } from "lucide-react";
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -15,6 +15,7 @@ type Props = {
   onCreateQuote: (bookingId: string) => void;
   onEditQuote: (quoteId: string) => void;
   onSendQuote: (quoteId: string) => void;
+  onSendTestEmail?: (quoteId: string) => void;
   onViewPdf: (quoteId: string) => void;
   onDeleteBooking: (bookingId: string) => void;
   onCopyLink: (quoteId: string) => void;
@@ -34,6 +35,7 @@ export function RequestQuoteCard({
   onCreateQuote,
   onEditQuote,
   onSendQuote,
+  onSendTestEmail,
   onViewPdf,
   onDeleteBooking,
   onCopyLink,
@@ -401,13 +403,25 @@ export function RequestQuoteCard({
                     Redigera
                   </Button>
                   {(quote.status === 'draft' || quote.status === 'sent') && (
-                    <Button
-                      onClick={() => onSendQuote(quote.id)}
-                      size="sm"
-                    >
-                      <Send className="h-4 w-4 mr-2" />
-                      {quote.status === 'sent' ? 'Skicka igen' : 'Skicka'}
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => onSendQuote(quote.id)}
+                        size="sm"
+                      >
+                        <Send className="h-4 w-4 mr-2" />
+                        {quote.status === 'sent' ? 'Skicka igen' : 'Skicka'}
+                      </Button>
+                      {onSendTestEmail && (
+                        <Button
+                          onClick={() => onSendTestEmail(quote.id)}
+                          variant="outline"
+                          size="sm"
+                        >
+                          <TestTube className="h-4 w-4 mr-2" />
+                          Testmail
+                        </Button>
+                      )}
+                    </>
                   )}
                   {quote.status === 'accepted' && 
                    quote.updated_at && 
