@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
+import { Resend } from "https://esm.sh/resend@4.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,6 +17,7 @@ serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
     // Find all pending scheduled sends that are due
     const { data: pending, error: fetchError } = await supabase
@@ -67,6 +69,37 @@ serve(async (req: Request) => {
           
           processed++;
           console.log(`✅ Sent scheduled quote ${item.quote_id}`);
+
+          // Send confirmation email to admin
+          try {
+            const { data: quote } = await supabase
+              .from('quotes_new')
+              .select('number, title, customer:customers!customer_id(name, email)')
+              .eq('id', item.quote_id)
+              .single();
+
+            const custName = quote?.customer?.name || 'Okänd kund';
+            const custEmail = quote?.customer?.email || 'okänd';
+            const quoteNum = quote?.number || item.quote_id;
+            const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+
+            await resend.emails.send({
+              from: "Fixco <info@fixco.se>",
+              to: ["imedashviliomar@gmail.com"],
+              subject: `✅ Offert ${quoteNum} skickad till ${custName}`,
+              html: `<p>Hej Omar!</p>
+<p>Det schemalagda offertmailet har skickats:</p>
+<ul>
+  <li><strong>Offert:</strong> ${quoteNum} – ${quote?.title || ''}</li>
+  <li><strong>Kund:</strong> ${custName} (${custEmail})</li>
+  <li><strong>Skickat:</strong> ${now}</li>
+</ul>
+<p>/ Fixco System</p>`,
+            });
+            console.log(`📧 Admin confirmation sent for quote ${quoteNum}`);
+          } catch (confirmErr) {
+            console.error('Failed to send admin confirmation:', confirmErr);
+          }
         } else {
           console.error(`❌ Failed to send quote ${item.quote_id}:`, sendResult.error);
           errors.push(`Quote ${item.quote_id}: ${sendResult.error}`);
