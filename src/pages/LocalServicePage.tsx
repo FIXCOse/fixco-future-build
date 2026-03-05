@@ -752,7 +752,7 @@ const LocalServicePage = () => {
 
               {/* Local Tip */}
               <div className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
-                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
                   <p className="text-xs text-muted-foreground">{uniqueContent.localTip}</p>
