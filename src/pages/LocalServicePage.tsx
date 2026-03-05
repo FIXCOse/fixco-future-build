@@ -862,7 +862,7 @@ const LocalServicePage = () => {
           currentArea={area}
           serviceSlug={serviceSlug}
           serviceName={service?.name || ""}
-      </div>
+        />
     </>
   );
 };
