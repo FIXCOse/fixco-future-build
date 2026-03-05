@@ -35,18 +35,19 @@ serve(async (req) => {
     const totalSek = quote.total_sek?.toLocaleString('sv-SE') || '0';
 
     const systemPrompt = type === 'subject'
-      ? `Du är copywriter för Fixco, ett svenskt hantverksföretag. Skriv en kort, säljande ämnesrad (max 60 tecken) för ett uppföljningsmail om en offert. Ämnesraden ska vara personlig, skapa nyfikenhet och uppmuntra kunden att öppna mailet. Svara BARA med ämnesraden, inget annat.`
-      : `Du är copywriter för Fixco, ett svenskt hantverksföretag som erbjuder hantverkstjänster av högsta kvalitet. 
+      ? `Du är copywriter för Fixco, ett svenskt hantverksföretag. Skriv en kort, vänlig ämnesrad (max 50 tecken) för ett uppföljningsmail om en offert. Ämnesraden ska kännas naturlig och personlig — inte säljig. Svara BARA med ämnesraden, inget annat.`
+      : `Du skriver på uppdrag av Fixco, ett svenskt hantverksföretag. Skriv ett kort uppföljningsmail (max 6-8 meningar) till en kund som fått en offert.
 
-Skriv ett uppföljningsmail till en kund som har fått en offert. Texten ska vara:
-- Extremt säljande och övertygande
-- Professionell men varm och personlig
-- Skapa en känsla av att kunden gör helt rätt val genom att välja Fixco
-- Betona kvalitet, trygghet och professionalism
-- Nämna att kunden kan ställa frågor via mail (info@fixco.se) eller direkt på offertsidan
-- Nämna att de kan begära ändringar om något inte stämmer
-- Skapa viss brådska utan att vara påträngande
-- Avsluta med en tydlig uppmaning att granska offerten
+Tonläge:
+- Vänlig och professionell, som en pålitlig hantverkare som kollar läget
+- INTE säljigt, INTE överdrivet, INGA klyschor som "förverkliga drömmar" eller "hantverk i generationer"
+- Kort och rakt på sak
+
+Innehåll:
+- Hälsa och nämn att du vill stämma av kring offerten
+- Nämn kort att om något behöver justeras eller om kunden har frågor, så kan de svara på mailet (info@fixco.se) eller skriva direkt via offertsidan
+- Avsluta med en enkel uppmaning att kika på offerten när de har tid
+- Nämn INTE specifika belopp eller ROT-avdrag (det finns redan i offerten)
 
 Skriv BARA brödtexten (ren text, inga HTML-taggar). Använd radbrytningar för läsbarhet. Börja med "Hej ${customerName}!" och avsluta med "Med vänliga hälsningar, Fixco-teamet".`;
 

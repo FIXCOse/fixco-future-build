@@ -15,7 +15,8 @@ serve(async (req) => {
   }
 
   try {
-    const { quoteId, subject, body } = await req.json();
+    const { quoteId, subject, body, testEmail } = await req.json();
+    const isTest = !!testEmail;
 
     if (!quoteId || !subject || !body) {
       throw new Error("quoteId, subject och body krävs");
@@ -35,7 +36,8 @@ serve(async (req) => {
     if (quoteError || !quote) throw new Error("Kunde inte hämta offerten");
 
     const customerEmail = quote.customer?.email;
-    if (!customerEmail) throw new Error("Ingen e-postadress hittades för kunden");
+    if (!customerEmail && !isTest) throw new Error("Ingen e-postadress hittades för kunden");
+    const recipientEmail = isTest ? testEmail : customerEmail;
 
     const customerName = quote.customer?.name || 'Kund';
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
@@ -86,10 +88,12 @@ serve(async (req) => {
       </html>
     `;
 
+    console.log(`${isTest ? '🧪 TEST' : '📧'} Sending follow-up to:`, recipientEmail);
+
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
-      to: [customerEmail],
-      subject: subject,
+      to: [recipientEmail],
+      subject: `${isTest ? '[TEST] ' : ''}${subject}`,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });
@@ -102,7 +106,7 @@ serve(async (req) => {
       );
     }
 
-    console.log("Follow-up email sent successfully to:", customerEmail);
+    console.log(`${isTest ? '🧪 TEST' : '✅'} Follow-up email sent to:`, recipientEmail);
 
     return new Response(JSON.stringify({ success: true, message: "Uppföljningsmail skickat!" }), {
       status: 200,

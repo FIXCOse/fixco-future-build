@@ -1,24 +1,22 @@
 
 
-## Plan: Testmail-knapp + förbättrad AI-prompt
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### 1. Testmail-stöd i `send-followup-email/index.ts`
-Lägg till `testEmail`-parameter (samma mönster som `send-quote-email-new`). Om `testEmail` skickas, override:a mottagaren till den adressen istället för kundens email.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### 2. Testmail-knapp i `FollowUpEmailDialog.tsx`
-Lägg till en "Skicka testmail"-knapp bredvid "Skicka mail" som skickar med `testEmail: "imedashviliomar@gmail.com"`. Visa tydligt att det är ett test.
+### Fil som ändras
 
-### 3. Förbättrad AI-prompt i `generate-followup-text/index.ts`
-Skriva om system-prompten för body-generering:
-- **Max 6-8 meningar** — kort och koncist
-- **Professionell, vänlig, inte säljig** — inga överdrifter, inga "generationer", inga "förverkliga drömmar"
-- Tonläge: som en pålitlig hantverkare som kollar läget
-- Nämn att kunden kan ställa frågor via mail eller offertsidan
-- Kort nudge om att kika på offerten, inte press
-- Ingen ROT-detalj i texten (det finns redan i offerten)
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-### Filöversikt
-- **Ändrad:** `supabase/functions/send-followup-email/index.ts` — `testEmail`-parameter
-- **Ändrad:** `supabase/functions/generate-followup-text/index.ts` — ny prompt
-- **Ändrad:** `src/components/admin/FollowUpEmailDialog.tsx` — testmail-knapp
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
