@@ -863,6 +863,7 @@ const LocalServicePage = () => {
           serviceSlug={serviceSlug}
           serviceName={service?.name || ""}
         />
+      </div>
     </>
   );
 };
