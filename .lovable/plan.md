@@ -1,33 +1,35 @@
 
 
-## Plan: Generera PDF klient-sida med jsPDF + html2canvas (utan PDFBolt)
+## Plan: Lägg till noteringar vid Radposter (behåll Ytterligare information)
 
 ### Problem
-PDFBolt API ger 400-fel. Istället för att felsöka en extern tjänst kan vi generera PDF:en direkt i webbläsaren med **jsPDF** och **html2canvas** som redan är installerade.
+`notes` sparas aldrig till databasen — det är bara ett lokalt state. Dessutom vill användaren ha ett separat noteringsfält direkt under radposterna (utöver det befintliga under "Ytterligare information").
 
 ### Lösning
-Skapa en ny funktion som:
-1. Hämtar offertdata från Supabase (samma som edge functionen gör)
-2. Återanvänder HTML-mallen från `_shared/pdf-html-templates.ts` — men som en klient-sida funktion
-3. Renderar HTML → canvas → PDF med html2canvas + jsPDF
-4. Laddar upp PDF:en till Supabase Storage (`quotes`-bucketen)
-5. Uppdaterar `quotes_new.pdf_url`
+
+Två separata noteringsfält:
+1. **Nytt fält "Notering till kund"** — placeras direkt efter radposterna i Radposter-kortet. Sparas som `_meta` i items-arrayen och visas för kunden i publika vyn + PDF.
+2. **Befintligt "Anteckningar"** under Ytterligare information — sparas också som `_meta` men markeras som intern (visas ej för kund).
 
 ### Filer som ändras
 
-**1. Ny fil: `src/lib/generateQuotePdf.ts`**
-- Klient-sida PDF-generator som tar ett `quoteId`
-- Hämtar offertdata + kunddata från Supabase
-- Bygger HTML (portar logiken från `_shared/pdf-html-templates.ts`)
-- Använder html2canvas + jsPDF för att skapa PDF
-- Laddar upp till Supabase Storage och uppdaterar `pdf_url`
+**1. `src/components/admin/QuoteFormModal.tsx`**
+- Lägg till nytt state `customerNotes` för kundsynliga noteringar
+- Lägg till Textarea direkt efter items-listan (rad 676, innan `</Card>`) med label "Notering till kund" och placeholder "Visas på offerten för kunden..."
+- Spara som `{ type: '_meta', key: 'customer_notes', value: '...' }` i `itemsWithMeta`
+- Spara befintliga `notes` som `{ type: '_meta', key: 'internal_notes', value: '...' }` i `itemsWithMeta`
+- Vid edit: läs ut båda metadata-fälten och återställ state
 
-**2. Ändra: `src/pages/admin/AdminQuotesUnified.tsx`**
-- `handleViewPdf` anropar den nya klient-sida funktionen istället för edge function `generate-pdf-from-quote`
+**2. `src/pages/QuotePublic.tsx`**
+- Läs `customer_notes` från items-metadata
+- Visa texten under radposterna (efter "Vad ingår"-sektionen) med en enkel stil
 
-### Fördelar
-- Ingen extern API-nyckel behövs
-- Ingen edge function-deploy krävs
-- Snabbare (ingen nätverksrunda till PDFBolt)
-- Redan installerade beroenden (jsPDF, html2canvas)
+**3. `src/lib/generateQuotePdf.ts`**
+- Läs `customer_notes` från items-metadata
+- Visa texten i PDF:en under radposterna
+
+### Resultat
+- Kundnoteringar visas på offerten (publik + PDF)
+- Interna anteckningar sparas men visas bara i admin
+- Befintligt "Ytterligare information"-kort behålls oförändrat
 
