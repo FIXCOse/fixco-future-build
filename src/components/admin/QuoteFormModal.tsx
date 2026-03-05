@@ -64,6 +64,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [pdfUrl, setPdfUrl] = useState('');
   const [validUntil, setValidUntil] = useState('');
   const [notes, setNotes] = useState('');
+  const [customerNotes, setCustomerNotes] = useState('');
   
   // ROT/RUT settings
   // OBS: ROT/RUT är 30% från 2026-01-01 (Skatteverket)
@@ -104,6 +105,11 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         if (metaItem && metaItem.value === false) {
           setMaterialIncluded(false);
         }
+        // Read customer_notes and internal_notes metadata
+        const customerNotesMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'customer_notes');
+        if (customerNotesMeta) setCustomerNotes(customerNotesMeta.value || '');
+        const internalNotesMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'internal_notes');
+        if (internalNotesMeta) setNotes(internalNotesMeta.value || '');
         // Filter out meta items for display
         const displayItems = parsedItems.filter((item: any) => item.type !== '_meta');
         if (displayItems.length > 0) {
@@ -201,6 +207,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setPdfUrl('');
     setValidUntil('');
     setNotes('');
+    setCustomerNotes('');
     setEnableRot(false);
     setRotRate(30); // 30% enligt Skatteverket (från 2026)
     setEnableRut(false);
@@ -367,10 +374,12 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setLoading(true);
 
     try {
-      // Add metadata to items array for material_included flag
+      // Add metadata to items array
       const itemsWithMeta = [
-        ...items.filter((item: any) => item.type !== '_meta'), // Remove old meta entries
-        ...(!materialIncluded ? [{ type: '_meta' as const, key: 'material_included', value: false }] : [])
+        ...items.filter((item: any) => item.type !== '_meta'),
+        ...(!materialIncluded ? [{ type: '_meta' as const, key: 'material_included', value: false }] : []),
+        ...(customerNotes.trim() ? [{ type: '_meta' as const, key: 'customer_notes', value: customerNotes.trim() }] : []),
+        ...(notes.trim() ? [{ type: '_meta' as const, key: 'internal_notes', value: notes.trim() }] : []),
       ];
 
       const quoteData = {
@@ -673,6 +682,19 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                   </div>
                 );
               })}
+              {/* Customer-facing note */}
+              <div className="space-y-2 pt-4 border-t border-border">
+                <Label className="text-sm font-medium">Notering till kund</Label>
+                <Textarea
+                  value={customerNotes}
+                  onChange={(e) => setCustomerNotes(e.target.value)}
+                  placeholder="Visas på offerten för kunden..."
+                  rows={2}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Denna text visas i den publika offerten och i PDF:en
+                </p>
+              </div>
             </CardContent>
           </Card>
 
