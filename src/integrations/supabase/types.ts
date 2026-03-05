@@ -2791,6 +2791,47 @@ export type Database = {
           },
         ]
       }
+      scheduled_quote_sends: {
+        Row: {
+          cancelled: boolean
+          created_at: string
+          created_by: string | null
+          executed: boolean
+          executed_at: string | null
+          id: string
+          quote_id: string
+          scheduled_for: string
+        }
+        Insert: {
+          cancelled?: boolean
+          created_at?: string
+          created_by?: string | null
+          executed?: boolean
+          executed_at?: string | null
+          id?: string
+          quote_id: string
+          scheduled_for: string
+        }
+        Update: {
+          cancelled?: boolean
+          created_at?: string
+          created_by?: string | null
+          executed?: boolean
+          executed_at?: string | null
+          id?: string
+          quote_id?: string
+          scheduled_for?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_quote_sends_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_addons: {
         Row: {
           addon_price: number
