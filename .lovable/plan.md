@@ -1,38 +1,22 @@
 
 
-## Plan: Offert-spårning med visuell tidslinje
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Vad vi bygger
-En visuell tidslinje inne i varje offert-kort som visar offertens resa med tidsstämplar, plus möjlighet att manuellt ändra status.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Redan på plats
-- `quotes_new` har kolumner: `sent_at`, `viewed_at`, `accepted_at`, `declined_at`, `change_req_at`
-- `get-quote-public` sätter `viewed_at` automatiskt när kunden öppnar länken
-- Statusar visas redan som badges
+### Fil som ändras
 
-### Vad som läggs till
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-#### 1. Ny komponent: `QuoteStatusTimeline.tsx`
-Visuell steg-tidslinje:
-```text
-● Skapad    (5 mar 2026, 10:30)
-● Skickad   (5 mar 2026, 14:00)
-● Öppnad    (5 mar 2026, 15:22)
-○ Accepterad (väntar...)
-```
-Grön prick = klart, grå = väntar. Visar även avböjd/ändringsbegäran.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-#### 2. Manuell statusändring
-Dropdown i offert-sektionen för att manuellt sätta status (skickad, accepterad, etc.).
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-#### 3. Integration i RequestQuoteCard
-Tidslinjen visas i expanderad vy under offertinfo.
-
-### Filer
-- **Ny:** `src/components/admin/QuoteStatusTimeline.tsx`
-- **Ändras:** `src/components/admin/RequestQuoteCard.tsx` — visa tidslinje + statusändring
-- **Ändras:** `src/hooks/useRequestsQuotes.ts` — säkerställ att tidsstämplar hämtas
-
-### Inga databasändringar
-All data finns redan i `quotes_new`.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

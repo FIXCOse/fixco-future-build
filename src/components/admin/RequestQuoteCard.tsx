@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock } from "lucide-react";
 import { ScheduleQuoteSendDialog } from './ScheduleQuoteSendDialog';
+import { QuoteStatusTimeline } from './QuoteStatusTimeline';
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -395,6 +396,9 @@ export function RequestQuoteCard({
                     <span className="text-xl font-bold ml-2">{quote.total_sek?.toLocaleString('sv-SE')} kr</span>
                   </div>
                 </div>
+
+                {/* Quote Status Timeline */}
+                <QuoteStatusTimeline quote={quote} onRefresh={handleRefresh} />
 
                 <div className="flex gap-2 flex-wrap pt-2">
                   <Button
