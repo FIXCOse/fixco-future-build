@@ -1,46 +1,22 @@
 
 
-## Plan: Fixa ServiceRequestModal för mobil
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Modalen är inte mobilanpassad:
-1. Ingen max-höjd på hela modalen — footer med "Fortsätt"-knappen hamnar utanför skärmen/bakom mobilens bottom nav
-2. `max-h-[60vh]` på innehållsytan räcker inte — med header + progress + footer blir totalhöjden > 100vh
-3. Ingen `-webkit-overflow-scrolling: touch` för smidig scroll på iOS
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändringar i `src/features/requests/ServiceRequestModal.tsx`
+### Fil som ändras
 
-**1. Modal-container — begränsa höjd på mobil:**
-```
-// Nuvarande (rad 363):
-className="relative w-full md:w-[800px] ... overflow-hidden"
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-// Nytt:
-className="relative w-full md:w-[800px] ... overflow-hidden 
-  max-h-[100dvh] md:max-h-[85vh] flex flex-col"
-```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**2. Scrollbart innehåll — flex-1 istället för fast max-h:**
-```
-// Nuvarande (rad 413):
-className="p-6 max-h-[60vh] overflow-y-auto"
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-// Nytt:
-className="p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain"
-```
-
-**3. Footer — säkerställ att den alltid syns med safe-area padding:**
-```
-// Nuvarande (rad 1023):
-className="px-6 py-4 border-t ..."
-
-// Nytt:
-className="px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t ... flex-shrink-0"
-```
-
-**4. Header — flex-shrink-0 för att inte komprimeras:**
-Lägg till `flex-shrink-0` på header och progress-bar divarna.
-
-### Fil
-- **`src/features/requests/ServiceRequestModal.tsx`** — mobilanpassning av layout
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
