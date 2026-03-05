@@ -15,7 +15,8 @@ serve(async (req) => {
   }
 
   try {
-    const { quoteId, subject, body } = await req.json();
+    const { quoteId, subject, body, testEmail } = await req.json();
+    const isTest = !!testEmail;
 
     if (!quoteId || !subject || !body) {
       throw new Error("quoteId, subject och body krävs");
