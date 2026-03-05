@@ -397,6 +397,9 @@ export function RequestQuoteCard({
                   </div>
                 </div>
 
+                {/* Quote Status Timeline */}
+                <QuoteStatusTimeline quote={quote} onRefresh={handleRefresh} />
+
                 <div className="flex gap-2 flex-wrap pt-2">
                   <Button
                     onClick={() => onEditQuote(quote.id)}
