@@ -1,20 +1,22 @@
 
-## Plan: Öka textstorlekar i "Om"-sektionen
 
-### Problem
-Hela den konsoliderade "Om"-sektionen använder `text-xs` och `text-sm` genomgående, vilket gör texten svårläst och oprofessionell.
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Ändringar i `src/pages/LocalServicePage.tsx` (rad 741-815)
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-| Element | Nu | Ändras till |
-|---------|-----|------------|
-| Rubrik (h3) | `text-lg` | `text-2xl font-bold` |
-| Intro-text (p) | `text-sm` | `text-base` |
-| Local Tip rubrik (h4) | `text-sm` | `text-base` |
-| Local Tip text (p) | `text-xs` | `text-sm` |
-| Lightbulb ikon i tip | `h-4 w-4` | `h-5 w-5` |
-| Quick Facts lista | `text-xs`, ikon `h-3 w-3` | `text-sm`, ikon `h-4 w-4` |
-| Fun Facts lista | `text-xs`, ikon `h-3 w-3` | `text-sm`, ikon `h-4 w-4` |
-| Relaterat-text | `text-xs` | `text-sm` |
+### Fil som ändras
 
-En fil ändras: `src/pages/LocalServicePage.tsx`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+

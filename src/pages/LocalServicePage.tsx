@@ -742,29 +742,29 @@ const LocalServicePage = () => {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto space-y-6">
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-2xl font-bold text-foreground">
                 {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
               </h3>
               
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 {uniqueContent.uniqueIntro}
               </p>
 
               {/* Local Tip */}
               <div className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
-                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
-                  <p className="text-xs text-muted-foreground">{uniqueContent.localTip}</p>
+                  <h4 className="text-base font-medium text-foreground mb-1">{t('local.tipsFor')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}</h4>
+                  <p className="text-sm text-muted-foreground">{uniqueContent.localTip}</p>
                 </div>
               </div>
 
               {/* Quick Facts – inline list */}
               {content.quickFacts.length > 0 && (
-                <ul className="text-xs text-muted-foreground space-y-1.5">
+                <ul className="text-sm text-muted-foreground space-y-1.5">
                   {content.quickFacts.slice(0, 6).map((fact, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <CheckCircle className="h-3 w-3 text-primary/60 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-primary/60 flex-shrink-0" />
                       {fact}
                     </li>
                   ))}
@@ -773,10 +773,10 @@ const LocalServicePage = () => {
 
               {/* Fun Facts – inline list */}
               {content.funFacts.length > 0 && (
-                <ul className="text-xs text-muted-foreground space-y-1.5">
+                <ul className="text-sm text-muted-foreground space-y-1.5">
                   {content.funFacts.slice(0, 3).map((fact, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <Lightbulb className="h-3 w-3 text-amber-500 flex-shrink-0 mt-0.5" />
+                      <Lightbulb className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
                       {fact}
                     </li>
                   ))}
@@ -786,7 +786,7 @@ const LocalServicePage = () => {
               {/* Related searches – discrete text links */}
               {(uniqueContent.relatedSearches.length > 0 || uniqueContent.urgentServices.length > 0) && (
                 <div className="pt-4 border-t border-border">
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {locale === 'en' ? 'Related' : 'Relaterat'}:{' '}
                     {[
                       ...uniqueContent.relatedSearches.slice(0, 6).map((search, idx) => {
