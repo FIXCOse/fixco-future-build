@@ -786,7 +786,7 @@ const LocalServicePage = () => {
               {/* Related searches – discrete text links */}
               {(uniqueContent.relatedSearches.length > 0 || uniqueContent.urgentServices.length > 0) && (
                 <div className="pt-4 border-t border-border">
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {locale === 'en' ? 'Related' : 'Relaterat'}:{' '}
                     {[
                       ...uniqueContent.relatedSearches.slice(0, 6).map((search, idx) => {
