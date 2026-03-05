@@ -746,7 +746,7 @@ const LocalServicePage = () => {
                 {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
               </h3>
               
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 {uniqueContent.uniqueIntro}
               </p>
 
