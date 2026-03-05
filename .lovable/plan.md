@@ -1,18 +1,22 @@
 
 
-## Plan: Fixa CTA-knappens storlek under "Så bokar du"
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Knappen "Begär offert" under stegen har `size="cta"` (h-12, px-8, text-base, rounded-xl) och `variant="cta-primary"` med hover-scale, vilket gör den oproportionerligt stor och dominant i kontexten.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändring i `src/pages/LocalServicePage.tsx` (rad 508-522)
+### Fil som ändras
 
-Byt till en mindre, mer subtil knappstorlek:
-- `size="cta"` → `size="default"` 
-- `variant="cta-primary"` → `variant="default"`
-- Behåll `mt-10` för avstånd
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Detta ger en `h-10 px-4` knapp som passar bättre proportionellt under steg-korten.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-En fil, en ändring.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

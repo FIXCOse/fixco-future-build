@@ -507,8 +507,8 @@ const LocalServicePage = () => {
 
                 <motion.div variants={itemVariants} className="text-center mt-10">
                   <Button
-                    variant="cta-primary"
-                    size="cta"
+                    variant="default"
+                    size="default"
                     onClick={() => {
                       trackClick('howto_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
                       openServiceRequestModal({
