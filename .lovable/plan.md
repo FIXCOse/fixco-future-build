@@ -1,31 +1,40 @@
 
 
-## Plan: Dölj Ring oss-knapp och inställningswidget på offert/faktura-sidor
+## Plan: Schemalägg automatisk utskick av offerter
 
-### Problem
-"Ring oss"-knappen och språk/tema-widgeten syns på kundens publika offert- och fakturasida, vilket ser oprofessionellt ut.
+### Vad vi bygger
+En funktion i admin-panelen där du kan välja datum och tid för när en offert automatiskt ska skickas till kunden via email. Du ser en "Schemalägg"-knapp bredvid "Skicka"-knappen på varje offert.
 
-### Lösning
-Lägg till CSS-regler i `Navbar2.css` (som redan döljer navbaren med `data-page-type`) för att dölja dessa element på quote/invoice-sidor.
+### Steg
 
-### Fil som ändras
+#### 1. Ny databastabell: `scheduled_quote_sends`
+Skapar en tabell som lagrar schemalagda utskick:
+- `id`, `quote_id` (FK → quotes_new), `scheduled_for` (timestamptz), `executed` (bool), `executed_at`, `cancelled`, `created_by`, `created_at`
+- RLS: admin/owner kan läsa/skriva
 
-**`src/components/Navbar2.css`** — Lägg till regler:
-```css
-body[data-page-type="quote"] .sticky-phone-button,
-body[data-page-type="invoice"] .sticky-phone-button,
-body[data-page-type="quote"] .sticky-phone-button ~ div, /* response time badge parent */
-body[data-page-type="invoice"] .sticky-phone-button ~ div {
-  display: none !important;
-}
-```
+#### 2. Ny Edge Function: `execute-scheduled-quote-sends`
+En cron-triggad funktion som:
+1. Hämtar alla rader i `scheduled_quote_sends` där `scheduled_for <= now()` och `executed = false` och `cancelled = false`
+2. För varje rad: anropar `send-quote-email-new` internt (skickar email + uppdaterar status till "sent")
+3. Markerar raden som `executed = true`
 
-**`src/components/StickyPhoneButton.tsx`** — Alternativt, kolla `data-page-type` i komponenten och returnera `null`.
+#### 3. Cron-jobb (pg_cron)
+Kör `execute-scheduled-quote-sends` varje minut via `pg_cron` + `pg_net`.
 
-**`src/components/FloatingSettingsWidget.tsx`** — Samma approach: kolla `data-page-type` och returnera `null`.
+#### 4. UI: "Schemalägg utskick"-dialog i admin
+- Ny komponent `ScheduleQuoteSendDialog` med en datetime-picker
+- Visar befintliga schemalagda utskick för offerten (med möjlighet att avbryta)
+- Knappen visas bredvid "Skicka" på offert-kortet i `RequestQuoteCard.tsx`
 
-### Föredragen approach
-Enklast och renast: Lägg till `useLocation()` check i båda komponenterna och returnera `null` om vi är på `/offert/` eller `/faktura/` routes. Alternativt CSS-baserat via `data-page-type`.
+#### 5. Hook: `useScheduledQuoteSends`
+React Query-hook för att skapa, lista och avbryta schemalagda utskick.
 
-Jag föredrar **JS-check med useLocation** i `StickyPhoneButton.tsx` och `FloatingSettingsWidget.tsx` — kollar om pathname startar med `/offert/` eller `/faktura/` och returnerar null. Rent, inga CSS-hack.
+### Filer som ändras/skapas
+- **Migration SQL** — ny tabell `scheduled_quote_sends` + RLS policies
+- **`supabase/functions/execute-scheduled-quote-sends/index.ts`** — ny edge function
+- **`src/components/admin/ScheduleQuoteSendDialog.tsx`** — ny UI-komponent
+- **`src/hooks/useScheduledQuoteSends.ts`** — ny hook
+- **`src/components/admin/RequestQuoteCard.tsx`** — lägg till "Schemalägg"-knapp
+- **`src/pages/admin/AdminQuotesUnified.tsx`** — wire up callbacks
+- **Cron SQL** — schemalägg edge function varje minut
 
