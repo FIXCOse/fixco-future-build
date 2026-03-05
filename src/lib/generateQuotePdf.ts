@@ -156,7 +156,7 @@ function buildQuoteHTML(quote: any): string {
           <div style="flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
             <p style="font-size: 14px; font-weight: 600; margin: 0 0 8px;">🛡️ Trygg handel</p>
             <div style="font-size: 12px; color: #64748b; line-height: 1.8;">
-              <p style="margin: 0;">• Org.nr: 559240-3418</p>
+              <p style="margin: 0;">• Org.nr: 559224-6671</p>
               <p style="margin: 0;">• F-skatt & försäkring</p>
               <p style="margin: 0;">• 2 års garanti på arbete</p>
             </div>
@@ -175,7 +175,7 @@ function buildQuoteHTML(quote: any): string {
       <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #e2e8f0; text-align: center;">
         <p style="font-size: 18px; font-weight: 700; color: #1e3a5f; margin: 0 0 8px;">FIXCO AB</p>
         <div style="font-size: 12px; color: #64748b; line-height: 1.8;">
-          <p style="margin: 0;">Org.nr: 559240-3418 | info@fixco.se | Tel: 073-123 45 67</p>
+          <p style="margin: 0;">Org.nr: 559224-6671 | info@fixco.se | Tel: 073-123 45 67</p>
           <p style="margin: 0;">Besöksadress: Testgatan 1, 123 45 Stockholm</p>
         </div>
       </div>

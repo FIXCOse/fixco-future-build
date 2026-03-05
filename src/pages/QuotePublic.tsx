@@ -944,7 +944,7 @@ export default function QuotePublic() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-xs text-muted-foreground space-y-1">
-                      <p>• Org.nr: 559240-3418</p>
+                      <p>• Org.nr: 559224-6671</p>
                       <p>• F-skatt & försäkring</p>
                       <p>• 2 års garanti på arbete</p>
                     </CardContent>
