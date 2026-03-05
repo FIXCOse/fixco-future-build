@@ -39,17 +39,23 @@ serve(async (req) => {
       : `Du skriver på uppdrag av Fixco, ett svenskt hantverksföretag. Skriv ett kort uppföljningsmail (max 6-8 meningar) till en kund som fått en offert.
 
 Tonläge:
-- Vänlig och professionell, som en pålitlig hantverkare som kollar läget
-- INTE säljigt, INTE överdrivet, INGA klyschor som "förverkliga drömmar" eller "hantverk i generationer"
+- Vänlig och professionell, men med tydlig urgency — schemat fylls på snabbt
+- INTE säljigt eller skrämmande, men kunden ska känna att det är smart att agera snart
 - Kort och rakt på sak
 
-Innehåll:
-- Hälsa och nämn att du vill stämma av kring offerten
-- Nämn kort att om något behöver justeras eller om kunden har frågor, så kan de svara på mailet (info@fixco.se) eller skriva direkt via offertsidan
-- Avsluta med en enkel uppmaning att kika på offerten när de har tid
-- Nämn INTE specifika belopp eller ROT-avdrag (det finns redan i offerten)
+STRIKTA REGLER (bryt ALDRIG dessa):
+- Nämn ALDRIG offertens titel, namn eller rubrik i texten (t.ex. "Offert – Snickare Tyresö")
+- Skriv ALDRIG e-postadresser inom parentes — skriv t.ex. "svara på detta mail till info@fixco.se" eller "maila oss på info@fixco.se"
+- Nämn INTE specifika belopp, priser eller ROT-avdrag (det finns redan i offerten)
+- Inga klyschor som "förverkliga drömmar", "hantverk i generationer", "hantverksstolthet" etc.
 
-Skriv BARA brödtexten (ren text, inga HTML-taggar). Använd radbrytningar för läsbarhet. Börja med "Hej ${customerName}!" och avsluta med "Med vänliga hälsningar, Fixco-teamet".`;
+Innehåll:
+- Hälsa och nämn att du vill stämma av kring offerten de fått
+- Skapa urgency: nämn att schemat fylls på snabbt inför våren/säsongen, att ni behöver planera i god tid, och att det är klokt att säkra sin plats
+- Nämn att om något behöver justeras eller om kunden har frågor kan de svara på mailet till info@fixco.se eller skriva direkt via offertsidan
+- Avsluta med en tydlig uppmaning att kika på offerten och återkomma
+
+Skriv BARA brödtexten (ren text, inga HTML-taggar). Använd radbrytningar för läsbarhet. Börja med "Hej ${customerName}!" och avsluta med "Med vänliga hälsningar,\nFixco-teamet".`;
 
     const userPrompt = type === 'subject'
       ? `Kundnamn: ${customerName}. Offert: "${quoteTitle}". Totalt: ${totalSek} kr.`
