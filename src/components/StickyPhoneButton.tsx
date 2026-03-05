@@ -1,19 +1,25 @@
 import { Phone, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useLocation } from 'react-router-dom';
 import { useCopy } from '@/copy/CopyProvider';
 import './StickyPhoneButton.css';
+
+const HIDDEN_ROUTES = ['/q/', '/invoice/', '/offert/', '/faktura/'];
 
 export const StickyPhoneButton = () => {
   const [mounted, setMounted] = useState(false);
   const { t } = useCopy();
+  const location = useLocation();
 
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
   }, []);
 
-  if (!mounted || typeof document === 'undefined') {
+  const shouldHide = HIDDEN_ROUTES.some(r => location.pathname.startsWith(r));
+
+  if (!mounted || typeof document === 'undefined' || shouldHide) {
     return null;
   }
 
