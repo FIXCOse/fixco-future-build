@@ -742,7 +742,7 @@ const LocalServicePage = () => {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto space-y-6">
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-2xl font-bold text-foreground">
                 {t('local.aboutServiceIn')} {service?.name?.toLowerCase()} {locale === 'en' ? 'in' : 'i'} {area}
               </h3>
               
