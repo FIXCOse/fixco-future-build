@@ -504,6 +504,22 @@ const LocalServicePage = () => {
                     );
                   })}
                 </div>
+
+                <motion.div variants={itemVariants} className="text-center mt-10">
+                  <Button
+                    variant="cta-primary"
+                    size="cta"
+                    onClick={() => {
+                      trackClick('howto_cta_quote', { service: service?.serviceKey || serviceSlug, area: areaSlug });
+                      openServiceRequestModal({
+                        serviceSlug: service?.serviceKey || serviceSlug,
+                        prefill: { service_name: content.h1 }
+                      });
+                    }}
+                  >
+                    {t('hero.cta_request_quote')}
+                  </Button>
+                </motion.div>
               </div>
             </motion.div>
           </div>
