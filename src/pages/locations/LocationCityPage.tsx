@@ -10,35 +10,31 @@ import { AreaKey, STOCKHOLM_AREAS, UPPSALA_AREAS, generateAreaSlug } from "@/dat
 import { 
   CheckCircle2, 
   MapPin, 
-  Phone, 
   Calendar, 
   Star, 
   ArrowRight,
-  Quote,
-  Briefcase
+  Briefcase,
+  CheckCircle
 } from "lucide-react";
 import { useCopy } from "@/copy/CopyProvider";
-import { GradientText } from "@/components/v2/GradientText";
-import { GlassCard } from "@/components/v2/GlassCard";
-import { CityHeroIllustration } from "@/components/city/CityHeroIllustration";
+import GradientButton from "@/components/GradientButton";
 import { CityServicesGrid } from "@/components/city/CityServicesGrid";
 import { CityStatsBar } from "@/components/city/CityStatsBar";
 import { CityAreasTabs } from "@/components/city/CityAreasTabs";
 import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
-import { FixcoFIcon } from "@/components/icons/FixcoFIcon";
-import { Button } from "@/components/ui/button-premium";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import logoFixco from "@/assets/fixco-logo-white.png";
 
 interface LocationCityPageProps {
   city: CityKey;
 }
 
-// Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -56,7 +52,6 @@ const itemVariants = {
   }
 };
 
-// Alla Uppsala-områden för att samla statistik och recensioner
 const uppsalaAreas = [
   "Uppsala", "Gottsunda", "Luthagen", "Svartbäcken", "Gränby", "Vaksala", 
   "Eriksberg", "Storvreta", "Björklinge", "Bälinge", "Gamla Uppsala", 
@@ -69,15 +64,17 @@ const stockholmAreas = [
   "Sollentuna", "Danderyd", "Järfälla", "Botkyrka", "Haninge", "Tyresö", "Värmdö"
 ];
 
+const cityGradients: Record<string, string> = {
+  Uppsala: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 25%, #3b82f6 50%, #1d4ed8 75%, #1e3a5f 100%)',
+  Stockholm: 'linear-gradient(135deg, #1e293b 0%, #334155 25%, #475569 50%, #1e293b 75%, #0f172a 100%)',
+};
+
 export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
   const { locale } = useCopy();
   const data = cityData[city];
   const citySlug = city.toLowerCase();
-
-  // Bestäm vilka områden som tillhör denna stad
   const cityAreas = city === "Uppsala" ? uppsalaAreas : stockholmAreas;
 
-  // Samla all statistik från alla områden
   const aggregatedStats = useMemo(() => {
     let totalProjects = 0;
     let totalReviews = 0;
@@ -89,7 +86,7 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
       const activity = getAreaActivity(area as AreaKey);
       totalProjects += activity.recentProjects;
       totalReviews += activity.reviewCount;
-      totalWorkers = Math.max(totalWorkers, activity.activeWorkers); // Max istället för summa
+      totalWorkers = Math.max(totalWorkers, activity.activeWorkers);
       ratingSum += activity.avgRating;
       ratingCount++;
     });
@@ -102,19 +99,16 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
     };
   }, [cityAreas]);
 
-  // Samla alla recensioner från alla områden
   const allTestimonials = useMemo(() => {
     const reviews: TestimonialData[] = [];
     const services = ["Elektriker", "VVS", "Snickeri", "Målare", "Montering"];
     
-    // Hämta 3 recensioner per område och tjänst (varierar)
     cityAreas.forEach((area, areaIdx) => {
       const service = services[areaIdx % services.length];
       const areaReviews = getAreaReviews(area, service, 2);
       reviews.push(...areaReviews);
     });
 
-    // Blanda recensionerna för variation
     return reviews.sort(() => Math.random() - 0.5).slice(0, 20);
   }, [cityAreas]);
 
@@ -170,117 +164,113 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
         image={data.heroImage}
       />
       
-      <div className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="relative py-12 md:py-20 overflow-hidden">
-          {/* Background gradient */}
-          <div className="absolute inset-0 hero-background opacity-60" />
-          
-          {/* Floating F Watermarks */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-12 left-8 w-16 h-16 rotate-[-15deg] opacity-[0.06] animate-pulse" 
-                 style={{ animationDuration: '6s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute top-8 right-16 w-24 h-24 rotate-12 opacity-[0.05] animate-pulse" 
-                 style={{ animationDuration: '5s', animationDelay: '1s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute top-1/3 right-8 w-20 h-20 rotate-[20deg] opacity-[0.05] animate-pulse" 
-                 style={{ animationDuration: '5.5s', animationDelay: '0.5s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-          </div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <Breadcrumbs 
-              items={[
-                { name: "Hem", url: "/" },
-                { name: "Områden", url: "/" },
-                { name: city, url: `/omraden/${citySlug}` }
-              ]}
-            />
-            
-            <div className="grid lg:grid-cols-2 gap-12 items-center mt-8">
-              {/* Text Content */}
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <motion.div variants={itemVariants}>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                    <GradientText>{data.title}</GradientText>
-                  </h1>
-                </motion.div>
-                
-                <motion.p 
-                  variants={itemVariants}
-                  className="text-lg text-muted-foreground mb-8 max-w-xl"
-                >
-                  {data.description}
-                </motion.p>
-                
-                {/* Trust badges */}
-                <motion.div 
-                  variants={itemVariants}
-                  className="flex flex-wrap gap-3 mb-8"
-                >
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-primary/10 text-primary font-medium text-sm border border-primary/20">
-                    <Calendar className="w-4 h-4" />
-                    Start inom 24h
-                  </span>
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-400 font-medium text-sm border border-emerald-500/20">
-                    <CheckCircle2 className="w-4 h-4" />
-                    ROT/RUT 30%
-                  </span>
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-cyan-500/10 text-cyan-400 font-medium text-sm border border-cyan-500/20">
-                    <MapPin className="w-4 h-4" />
-                    Resa: {data.travelFee}
-                  </span>
-                </motion.div>
+      <div className="min-h-screen">
+        <Breadcrumbs />
 
-                {/* CTA Buttons */}
-                <motion.div 
-                  variants={itemVariants}
-                  className="flex flex-wrap gap-4"
-                >
-                  <Button asChild size="lg" variant="cta">
-                    <Link to={locale === 'en' ? '/en/services' : '/tjanster'}>
-                      Visa tjänster
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline">
-                    <a href="tel:+46793350228">
-                      <Phone className="w-5 h-5 mr-2" />
-                      Ring 079-335 02 28
-                    </a>
-                  </Button>
-                  <Button asChild size="lg" variant="outline">
-                    <Link to="/boka-hembesok">
-                      Boka gratis hembesök
-                    </Link>
-                  </Button>
-                </motion.div>
-              </motion.div>
-              
-              {/* Hero Illustration */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="hidden lg:block"
-              >
-                <CityHeroIllustration cityName={city} />
-              </motion.div>
+        {/* ============================================
+            1. HERO — Centered, conversion-focused
+            ============================================ */}
+        <section className="relative w-full overflow-hidden">
+          <div 
+            className="absolute inset-0 animate-gradient-shift" 
+            style={{ 
+              backgroundImage: cityGradients[city] || cityGradients.Stockholm,
+              backgroundSize: '200% 200%'
+            }}
+          />
+          
+          {/* Glow Effects */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-20 left-1/4 w-72 h-72 opacity-30 blur-3xl rounded-full animate-float-slow" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 opacity-25 blur-3xl rounded-full animate-float-medium" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+            <div className="absolute bottom-32 right-1/4 w-64 h-64 opacity-20 blur-2xl rounded-full animate-float-fast" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }} />
+          </div>
+
+          <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-8 pb-20 md:pt-10 md:pb-28">
+            {/* Fixco Logo */}
+            <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+              <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+                <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
+              </a>
             </div>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="flex flex-col items-center gap-4 md:gap-6 w-full max-w-4xl"
+            >
+              {/* Stars */}
+              <motion.div variants={itemVariants} className="flex items-center justify-center gap-1">
+                <span className="text-sm text-white/90 tracking-wide">{aggregatedStats.avgRating.toFixed(1)}</span>
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#fbbf24] text-[#fbbf24]" />
+                ))}
+                <span className="text-sm text-white/70 ml-1">({aggregatedStats.totalReviews}+ omdömen)</span>
+              </motion.div>
+
+              {/* H1 */}
+              <motion.h1 
+                variants={itemVariants}
+                className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight"
+              >
+                {data.title}
+              </motion.h1>
+              
+              {/* Value prop */}
+              <motion.p 
+                variants={itemVariants}
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed"
+              >
+                {data.description}
+              </motion.p>
+              
+              {/* CTA buttons */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center mt-2"
+              >
+                <GradientButton 
+                  className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
+                  onClick={() => openServiceRequestModal({ showCategories: true })}
+                >
+                  Begär offert
+                </GradientButton>
+                <GradientButton 
+                  className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5" 
+                  href={locale === 'en' ? '/en/services' : '/tjanster'}
+                >
+                  Visa tjänster
+                </GradientButton>
+              </motion.div>
+
+              {/* Trust badges */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-wrap justify-center gap-3 mt-2"
+              >
+                {[
+                  'Start inom 24h',
+                  'ROT/RUT 30%',
+                  `Resa: ${data.travelFee}`,
+                  'Fast pris',
+                ].map((badge, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm md:text-base text-white/90">
+                    <CheckCircle className="h-3.5 w-3.5 text-white/80" />
+                    <span>{badge}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
-        {/* Services Section */}
+        {/* ============================================
+            2. SERVICES
+            ============================================ */}
         <section className="py-16 md:py-24 relative">
-          <div className="container mx-auto px-4">
+          <div className="absolute inset-0 bg-background" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -288,8 +278,11 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               transition={{ duration: 0.5 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <GradientText>Våra tjänster i {city}</GradientText>
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                Tjänster
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                Våra tjänster i <span className="text-primary">{city}</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Klicka på en tjänst för att se priser, förväntad tid och boka direkt i {city}.
@@ -300,22 +293,40 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
           </div>
         </section>
 
-        {/* ===== NY STRUKTUR EFTER TJÄNSTER ===== */}
-
-        {/* Stats Section */}
-        <section className="py-16 bg-muted/20 relative overflow-hidden">
-          {/* Floating F Watermarks */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-8 left-12 w-20 h-20 rotate-[-12deg] opacity-[0.04] animate-pulse" 
-                 style={{ animationDuration: '7s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute bottom-8 right-12 w-24 h-24 rotate-[15deg] opacity-[0.05] animate-pulse" 
-                 style={{ animationDuration: '6s', animationDelay: '2s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
+        {/* ============================================
+            3. TESTIMONIALS
+            ============================================ */}
+        <section className="py-14 relative overflow-hidden">
+          <div className="absolute inset-0 bg-muted/30" />
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="max-w-6xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+            >
+              <motion.div variants={itemVariants} className="text-center mb-8">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Omdömen
+                </span>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Vad kunder i <span className="text-primary">{city}</span> säger
+                </h2>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <TestimonialCarouselLocal testimonials={allTestimonials} />
+              </motion.div>
+            </motion.div>
           </div>
-          
+        </section>
+
+        {/* ============================================
+            4. STATS
+            ============================================ */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-background" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -324,8 +335,11 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               transition={{ duration: 0.5 }}
               className="text-center mb-10"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <GradientText>Fixco i {city}-regionen</GradientText>
+              <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-medium mb-4">
+                Statistik
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                Fixco i <span className="text-primary">{city}-regionen</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Sammanställd statistik från alla {cityAreas.length} orter vi arbetar i.
@@ -336,9 +350,12 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
           </div>
         </section>
 
-        {/* Areas Tabs Section */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
+        {/* ============================================
+            5. AREAS TABS
+            ============================================ */}
+        <section className="py-16 md:py-24 relative">
+          <div className="absolute inset-0 bg-muted/30" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -347,10 +364,10 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               className="mb-10"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                   <MapPin className="w-6 h-6 text-primary" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold">
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                   Områden i {city}
                 </h2>
               </div>
@@ -363,42 +380,12 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
           </div>
         </section>
 
-        {/* Testimonials Carousel */}
-        <section className="py-16 bg-muted/20 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-1/4 left-8 w-28 h-28 rotate-[-20deg] opacity-[0.04] animate-pulse" 
-                 style={{ animationDuration: '6s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute bottom-1/4 right-8 w-20 h-20 rotate-[10deg] opacity-[0.05] animate-pulse" 
-                 style={{ animationDuration: '5s', animationDelay: '1.5s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-          </div>
-          
+        {/* ============================================
+            6. CASES
+            ============================================ */}
+        <section className="py-16 md:py-24 relative">
+          <div className="absolute inset-0 bg-background" />
           <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-10"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <GradientText>Kundomdömen från {city}-regionen</GradientText>
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Samlade recensioner från {aggregatedStats.totalReviews}+ nöjda kunder i hela {city}-området.
-              </p>
-            </motion.div>
-            
-            <TestimonialCarouselLocal testimonials={allTestimonials} />
-          </div>
-        </section>
-
-        {/* Cases Grid */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -407,11 +394,11 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               className="mb-10"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/30 to-orange-500/10 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center">
                   <Briefcase className="w-6 h-6 text-amber-400" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold">
-                  Senaste Case från {city}
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Senaste case från {city}
                 </h2>
               </div>
             </motion.div>
@@ -424,25 +411,29 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -4, scale: 1.02 }}
                 >
-                  <GlassCard className="p-6 h-full" hoverEffect>
+                  <div className="bg-card border border-border rounded-xl p-6 h-full hover:border-primary/20 transition-all">
                     <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/30 to-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
                         <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                       </div>
                       <h3 className="font-semibold text-foreground">{c.title}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
-                  </GlassCard>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-16 bg-muted/20">
-          <div className="container mx-auto px-4">
+        {/* ============================================
+            7. FAQ
+            ============================================ */}
+        <section className="py-16 relative">
+          <div className="absolute inset-0 bg-muted/30" />
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -451,95 +442,83 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
               className="max-w-3xl mx-auto"
             >
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  <GradientText>Vanliga frågor om Fixco i {city}</GradientText>
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  FAQ
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                  Vanliga frågor om Fixco i <span className="text-primary">{city}</span>
                 </h2>
                 <p className="text-muted-foreground">
                   Hittar du inte svaret på din fråga? Kontakta oss direkt!
                 </p>
               </div>
               
-              <GlassCard className="p-6 md:p-8" hoverEffect={false}>
-                <Accordion type="single" collapsible className="w-full">
-                  {data.faqs.map((f, i) => (
-                    <AccordionItem key={i} value={`faq-${i}`} className="border-white/10">
-                      <AccordionTrigger className="text-left hover:text-primary transition-colors py-4">
-                        {f.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4">
-                        {f.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </GlassCard>
+              <Accordion type="single" collapsible className="w-full space-y-3">
+                {data.faqs.map((f, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`} className="bg-card border border-border rounded-xl px-6 data-[state=open]:border-primary/20 transition-colors">
+                    <AccordionTrigger className="text-left hover:text-primary transition-colors py-4">
+                      {f.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-4">
+                      {f.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </motion.div>
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="py-20 relative overflow-hidden">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-violet-500/20" />
-          
-          {/* Floating F Watermarks */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-1/4 left-10 w-32 h-32 rotate-[-20deg] opacity-[0.08] animate-pulse" 
-                 style={{ animationDuration: '5s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-            <div className="absolute bottom-1/4 right-10 w-40 h-40 rotate-[15deg] opacity-[0.06] animate-pulse" 
-                 style={{ animationDuration: '6s', animationDelay: '1s' }}>
-              <FixcoFIcon className="w-full h-full" disableFilter />
-            </div>
-          </div>
-          
+        {/* ============================================
+            8. FINAL CTA
+            ============================================ */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-background" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center max-w-2xl mx-auto"
+              variants={containerVariants}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <GradientText>Redo att komma igång?</GradientText>
-              </h2>
-              <p className="text-muted-foreground mb-8 text-lg">
-                Kontakta oss idag för en kostnadsfri offert. Vi återkommer inom 24 timmar.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center mb-10">
-                <Button asChild size="lg" variant="cta">
-                  <a href="tel:+46793350228">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Ring 079-335 02 28
-                  </a>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link to="/boka-hembesok">
-                    Boka gratis hembesök
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Link>
-                </Button>
-              </div>
-              
-              {/* Quick area links - only show areas with actual LocalServicePages */}
-              <div className="pt-8 border-t border-white/10">
-                <p className="text-sm text-muted-foreground mb-4">Populära områden:</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {(city === "Uppsala" ? UPPSALA_AREAS : STOCKHOLM_AREAS).slice(0, 8).map((area) => {
-                    const areaSlug = generateAreaSlug(area);
-                    return (
-                      <Link
-                        key={area}
-                        to={`/tjanster/snickare/${areaSlug}`}
-                        className="px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-sm hover:bg-primary/20 hover:border-primary/30 transition-all"
-                      >
-                        {area}
-                      </Link>
-                    );
-                  })}
-                </div>
+              <div className="max-w-2xl mx-auto text-center">
+                <motion.div variants={itemVariants} className="bg-card border border-border rounded-3xl p-10 md:p-14 shadow-2xl shadow-primary/10">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                    Redo att komma igång i <span className="text-primary">{city}</span>?
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    Kontakta oss idag för en kostnadsfri offert. Vi återkommer inom 24 timmar.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <GradientButton 
+                      onClick={() => openServiceRequestModal({ showCategories: true })}
+                    >
+                      Begär offert
+                    </GradientButton>
+                    <GradientButton href={locale === 'en' ? '/en/services' : '/tjanster'}>
+                      Visa tjänster
+                    </GradientButton>
+                  </div>
+                  
+                  {/* Quick area links */}
+                  <div className="pt-8 mt-8 border-t border-border">
+                    <p className="text-sm text-muted-foreground mb-4">Populära områden:</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {(city === "Uppsala" ? UPPSALA_AREAS : STOCKHOLM_AREAS).slice(0, 8).map((area) => {
+                        const areaSlug = generateAreaSlug(area);
+                        return (
+                          <Link
+                            key={area}
+                            to={`/tjanster/snickare/${areaSlug}`}
+                            className="px-3 py-1.5 rounded-full bg-muted border border-border text-sm hover:bg-primary/10 hover:border-primary/30 transition-all"
+                          >
+                            {area}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
