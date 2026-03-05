@@ -65,6 +65,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [validUntil, setValidUntil] = useState('');
   const [notes, setNotes] = useState('');
   const [customerNotes, setCustomerNotes] = useState('');
+  const [scopeDescription, setScopeDescription] = useState('');
   
   // ROT/RUT settings
   // OBS: ROT/RUT är 30% från 2026-01-01 (Skatteverket)
@@ -105,11 +106,13 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         if (metaItem && metaItem.value === false) {
           setMaterialIncluded(false);
         }
-        // Read customer_notes and internal_notes metadata
+        // Read customer_notes, internal_notes, and scope_description metadata
         const customerNotesMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'customer_notes');
         if (customerNotesMeta) setCustomerNotes(customerNotesMeta.value || '');
         const internalNotesMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'internal_notes');
         if (internalNotesMeta) setNotes(internalNotesMeta.value || '');
+        const scopeMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'scope_description');
+        if (scopeMeta) setScopeDescription(scopeMeta.value || '');
         // Filter out meta items for display
         const displayItems = parsedItems.filter((item: any) => item.type !== '_meta');
         if (displayItems.length > 0) {
@@ -208,6 +211,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setValidUntil('');
     setNotes('');
     setCustomerNotes('');
+    setScopeDescription('');
     setEnableRot(false);
     setRotRate(30); // 30% enligt Skatteverket (från 2026)
     setEnableRut(false);
@@ -380,6 +384,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         ...(!materialIncluded ? [{ type: '_meta' as const, key: 'material_included', value: false }] : []),
         ...(customerNotes.trim() ? [{ type: '_meta' as const, key: 'customer_notes', value: customerNotes.trim() }] : []),
         ...(notes.trim() ? [{ type: '_meta' as const, key: 'internal_notes', value: notes.trim() }] : []),
+        ...(scopeDescription.trim() ? [{ type: '_meta' as const, key: 'scope_description', value: scopeDescription.trim() }] : []),
       ];
 
       const quoteData = {
@@ -518,6 +523,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="T.ex. Renovering badrum"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Arbetets omfattning</Label>
+                <Textarea
+                  value={scopeDescription}
+                  onChange={(e) => setScopeDescription(e.target.value)}
+                  placeholder="Kort beskrivning av arbetet..."
+                  rows={2}
                 />
               </div>
 
