@@ -68,7 +68,7 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Kunde inte skicka');
 
-      toast.success('Uppföljningsmail skickat! 🎉');
+      toast.success(testEmail ? `Testmail skickat till ${testEmail}! 🧪` : 'Uppföljningsmail skickat! 🎉');
       onOpenChange(false);
       setSubject("");
       setBody("");
