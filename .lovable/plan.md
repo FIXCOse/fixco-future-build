@@ -1,35 +1,27 @@
 
 
-## Plan: Lägg till noteringar vid Radposter (behåll Ytterligare information)
+## Plan: Lägg till "Arbetets omfattning" under Offerttitel
 
-### Problem
-`notes` sparas aldrig till databasen — det är bara ett lokalt state. Dessutom vill användaren ha ett separat noteringsfält direkt under radposterna (utöver det befintliga under "Ytterligare information").
+### Vad
+Ett nytt fritextfält **"Arbetets omfattning"** placeras direkt efter Offerttitel-fältet i admin-formuläret. Kort beskrivning av arbetet som visas för kunden i publika vyn och PDF.
 
-### Lösning
-
-Två separata noteringsfält:
-1. **Nytt fält "Notering till kund"** — placeras direkt efter radposterna i Radposter-kortet. Sparas som `_meta` i items-arrayen och visas för kunden i publika vyn + PDF.
-2. **Befintligt "Anteckningar"** under Ytterligare information — sparas också som `_meta` men markeras som intern (visas ej för kund).
+### Lagring
+Samma mönster som `customer_notes` — sparas som `{ type: '_meta', key: 'scope_description', value: '...' }` i items-arrayen. Ingen databasändring behövs.
 
 ### Filer som ändras
 
 **1. `src/components/admin/QuoteFormModal.tsx`**
-- Lägg till nytt state `customerNotes` för kundsynliga noteringar
-- Lägg till Textarea direkt efter items-listan (rad 676, innan `</Card>`) med label "Notering till kund" och placeholder "Visas på offerten för kunden..."
-- Spara som `{ type: '_meta', key: 'customer_notes', value: '...' }` i `itemsWithMeta`
-- Spara befintliga `notes` som `{ type: '_meta', key: 'internal_notes', value: '...' }` i `itemsWithMeta`
-- Vid edit: läs ut båda metadata-fälten och återställ state
+- Nytt state `scopeDescription`
+- Textarea efter Offerttitel (rad ~522, före "Giltig till") med label "Arbetets omfattning" och placeholder "Kort beskrivning av arbetet..."
+- Spara som `_meta` key `scope_description` i `itemsWithMeta`
+- Vid edit: läs ut metadata och sätt state
+- Vid reset: nollställ
 
 **2. `src/pages/QuotePublic.tsx`**
-- Läs `customer_notes` från items-metadata
-- Visa texten under radposterna (efter "Vad ingår"-sektionen) med en enkel stil
+- Läs `scope_description` från items-metadata
+- Visa direkt under offerttiteln, före radposterna
 
 **3. `src/lib/generateQuotePdf.ts`**
-- Läs `customer_notes` från items-metadata
-- Visa texten i PDF:en under radposterna
-
-### Resultat
-- Kundnoteringar visas på offerten (publik + PDF)
-- Interna anteckningar sparas men visas bara i admin
-- Befintligt "Ytterligare information"-kort behålls oförändrat
+- Läs `scope_description` från items-metadata
+- Visa under titeln i PDF:en
 
