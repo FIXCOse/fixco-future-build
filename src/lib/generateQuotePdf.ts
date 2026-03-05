@@ -11,6 +11,8 @@ function buildQuoteHTML(quote: any): string {
   const materialNotIncluded = materialMeta && materialMeta.value === false;
   const customerNotesMeta = items.find((item: any) => item.type === '_meta' && item.key === 'customer_notes');
   const customerNotesText = customerNotesMeta?.value || '';
+  const scopeMeta = items.find((item: any) => item.type === '_meta' && item.key === 'scope_description');
+  const scopeDescription = scopeMeta?.value || '';
 
   const daysLeft = quote.valid_until
     ? Math.ceil((new Date(quote.valid_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
@@ -36,6 +38,7 @@ function buildQuoteHTML(quote: any): string {
       <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 16px;">
         <div style="text-align: center; padding-bottom: 24px; border-bottom: 1px solid #e2e8f0; margin-bottom: 24px;">
           <h2 style="font-size: 24px; font-weight: 700; margin: 0;">${quote.title}</h2>
+          ${scopeDescription ? `<p style="margin: 8px 0 0; font-size: 14px; color: #64748b; white-space: pre-line;">${scopeDescription}</p>` : ''}
         </div>
 
         <!-- Customer & Date -->

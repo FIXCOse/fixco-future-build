@@ -547,6 +547,14 @@ export default function QuotePublic() {
               {/* Title */}
               <div className="text-center pb-4 border-b border-border">
                 <h2 className="text-xl font-bold text-foreground">{quote.title}</h2>
+                {(() => {
+                  const allItems = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
+                  const scopeMeta = allItems.find((item: any) => item.type === '_meta' && item.key === 'scope_description');
+                  if (!scopeMeta?.value) return null;
+                  return (
+                    <p className="mt-2 text-sm text-muted-foreground whitespace-pre-line">{scopeMeta.value}</p>
+                  );
+                })()}
               </div>
 
               {/* Customer & Date */}
