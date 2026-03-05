@@ -773,10 +773,10 @@ const LocalServicePage = () => {
 
               {/* Fun Facts – inline list */}
               {content.funFacts.length > 0 && (
-                <ul className="text-xs text-muted-foreground space-y-1.5">
+                <ul className="text-sm text-muted-foreground space-y-1.5">
                   {content.funFacts.slice(0, 3).map((fact, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <Lightbulb className="h-3 w-3 text-amber-500 flex-shrink-0 mt-0.5" />
+                      <Lightbulb className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
                       {fact}
                     </li>
                   ))}
