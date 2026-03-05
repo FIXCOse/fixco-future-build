@@ -712,7 +712,7 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
                 Trygg handel
               </div>
               <div class="info-card-content">
-                <p>• Org.nr: 559240-3418</p>
+                <p>• Org.nr: 559224-6671</p>
                 <p>• F-skatt & försäkring</p>
                 <p>• 2 års garanti på arbete</p>
               </div>
@@ -731,7 +731,7 @@ export function generateQuoteHTML(quote: QuoteData, logoBase64?: string): string
         <div class="footer-section">
           <div class="footer-logo">FIXCO AB</div>
           <div class="footer-contact">
-            <p>Org.nr: 559240-3418 | info@fixco.se | Tel: 073-123 45 67</p>
+            <p>Org.nr: 559224-6671 | info@fixco.se | Tel: 073-123 45 67</p>
             <p>Besöksadress: Testgatan 1, 123 45 Stockholm</p>
           </div>
         </div>
@@ -961,7 +961,7 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
                 Trygg handel
               </div>
               <div class="info-card-content">
-                <p>• Org.nr: 559240-3418</p>
+                <p>• Org.nr: 559224-6671</p>
                 <p>• F-skatt & försäkring</p>
                 <p>• 2 års garanti på arbete</p>
               </div>
@@ -973,7 +973,7 @@ export function generateInvoiceHTML(invoice: InvoiceData, logoBase64?: string): 
         <div class="footer-section">
           <div class="footer-logo">FIXCO AB</div>
           <div class="footer-contact">
-            <p>Org.nr: 559240-3418 | info@fixco.se | Tel: 073-123 45 67</p>
+            <p>Org.nr: 559224-6671 | info@fixco.se | Tel: 073-123 45 67</p>
             <p>Besöksadress: Testgatan 1, 123 45 Stockholm</p>
           </div>
         </div>
