@@ -548,6 +548,17 @@ export function RequestQuoteCard({
                         Skapa faktura direkt
                       </Button>
                     </>
+                   )}
+                  {/* Follow-up email button for sent/viewed/change_requested */}
+                  {['sent', 'viewed', 'change_requested'].includes(quote.status) && (
+                    <Button
+                      onClick={() => setFollowUpDialogOpen(true)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Uppföljningsmail
+                    </Button>
                   )}
                 </div>
               </div>
