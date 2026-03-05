@@ -88,10 +88,12 @@ serve(async (req) => {
       </html>
     `;
 
+    console.log(`${isTest ? '🧪 TEST' : '📧'} Sending follow-up to:`, recipientEmail);
+
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
-      to: [customerEmail],
-      subject: subject,
+      to: [recipientEmail],
+      subject: `${isTest ? '[TEST] ' : ''}${subject}`,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });
