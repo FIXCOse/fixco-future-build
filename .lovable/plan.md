@@ -1,30 +1,33 @@
 
 
-## Plan: Visa "Material faktureras separat" på offerten
+## Plan: Generera PDF klient-sida med jsPDF + html2canvas (utan PDFBolt)
 
 ### Problem
-När man skapar offert och väljer "Materialkostnad ingår inte" sparas aldrig den informationen — `materialIncluded` är bara ett lokalt state i formuläret. Det enda som händer är att `subtotal_mat_sek` sätts till 0. Den publika offerten visar då bara ingen materialrad alls, utan att förklara att material tillkommer separat.
+PDFBolt API ger 400-fel. Istället för att felsöka en extern tjänst kan vi generera PDF:en direkt i webbläsaren med **jsPDF** och **html2canvas** som redan är installerade.
 
-### Lösning (2 delar)
-
-**1. Spara flaggan i items-metadata (QuoteFormModal.tsx)**
-Lägg till ett metadata-objekt i items-arrayen vid spara, t.ex.:
-```ts
-items: [
-  ...items,
-  ...(materialIncluded ? [] : [{ type: '_meta', key: 'material_included', value: false }])
-]
-```
-Detta kräver ingen databasändring — items är redan en JSONB-kolumn.
-
-**2. Visa info-ruta i publika vyn (QuotePublic.tsx)**
-Efter kostnadsspecifikationen, om `_meta.material_included === false` finns i items, visa:
-```
-ℹ️ Material ingår ej i denna offert och faktureras separat efter slutfört arbete.
-```
-Stilas som en info-ruta (blå/neutral bakgrund med Package-ikon), placerad i "Betalning"-kortet eller direkt efter prissammanställningen.
+### Lösning
+Skapa en ny funktion som:
+1. Hämtar offertdata från Supabase (samma som edge functionen gör)
+2. Återanvänder HTML-mallen från `_shared/pdf-html-templates.ts` — men som en klient-sida funktion
+3. Renderar HTML → canvas → PDF med html2canvas + jsPDF
+4. Laddar upp PDF:en till Supabase Storage (`quotes`-bucketen)
+5. Uppdaterar `quotes_new.pdf_url`
 
 ### Filer som ändras
-- `src/components/admin/QuoteFormModal.tsx` — spara `material_included` i items-metadata
-- `src/pages/QuotePublic.tsx` — läs metadata och visa info-ruta
+
+**1. Ny fil: `src/lib/generateQuotePdf.ts`**
+- Klient-sida PDF-generator som tar ett `quoteId`
+- Hämtar offertdata + kunddata från Supabase
+- Bygger HTML (portar logiken från `_shared/pdf-html-templates.ts`)
+- Använder html2canvas + jsPDF för att skapa PDF
+- Laddar upp till Supabase Storage och uppdaterar `pdf_url`
+
+**2. Ändra: `src/pages/admin/AdminQuotesUnified.tsx`**
+- `handleViewPdf` anropar den nya klient-sida funktionen istället för edge function `generate-pdf-from-quote`
+
+### Fördelar
+- Ingen extern API-nyckel behövs
+- Ingen edge function-deploy krävs
+- Snabbare (ingen nätverksrunda till PDFBolt)
+- Redan installerade beroenden (jsPDF, html2canvas)
 
