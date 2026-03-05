@@ -1,27 +1,21 @@
 
 
-## Plan: Lägg till "Arbetets omfattning" under Offerttitel
+## Plan: Lägg till test-email override i send-quote-email-new
 
-### Vad
-Ett nytt fritextfält **"Arbetets omfattning"** placeras direkt efter Offerttitel-fältet i admin-formuläret. Kort beskrivning av arbetet som visas för kunden i publika vyn och PDF.
+### Problem
+Edge function `send-quote-email-new` skickar alltid till kundens email från databasen. Det finns inget sätt att testa med en annan mottagare.
 
-### Lagring
-Samma mönster som `customer_notes` — sparas som `{ type: '_meta', key: 'scope_description', value: '...' }` i items-arrayen. Ingen databasändring behövs.
+### Lösning
+Lägg till en valfri `testEmail`-parameter i edge function. Om den skickas med, används den istället för kundens email.
 
-### Filer som ändras
+### Fil som ändras
 
-**1. `src/components/admin/QuoteFormModal.tsx`**
-- Nytt state `scopeDescription`
-- Textarea efter Offerttitel (rad ~522, före "Giltig till") med label "Arbetets omfattning" och placeholder "Kort beskrivning av arbetet..."
-- Spara som `_meta` key `scope_description` i `itemsWithMeta`
-- Vid edit: läs ut metadata och sätt state
-- Vid reset: nollställ
+**`supabase/functions/send-quote-email-new/index.ts`**
+- Acceptera `testEmail` i request body (utöver `quoteId`)
+- Om `testEmail` finns, skicka till den istället för `customerEmail`
+- Skippa statusuppdatering till "sent" om testEmail används (så offerten inte markeras som skickad)
+- Logga tydligt att det är ett testutskick
 
-**2. `src/pages/QuotePublic.tsx`**
-- Läs `scope_description` från items-metadata
-- Visa direkt under offerttiteln, före radposterna
-
-**3. `src/lib/generateQuotePdf.ts`**
-- Läs `scope_description` från items-metadata
-- Visa under titeln i PDF:en
+### Användning från frontend
+Inget UI behöver ändras — du kan testa genom att anropa funktionen manuellt, eller så lägger jag till en "Skicka testmail"-knapp i admin-vyn om du vill.
 
