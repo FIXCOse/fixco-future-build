@@ -36,7 +36,8 @@ serve(async (req) => {
     if (quoteError || !quote) throw new Error("Kunde inte hämta offerten");
 
     const customerEmail = quote.customer?.email;
-    if (!customerEmail) throw new Error("Ingen e-postadress hittades för kunden");
+    if (!customerEmail && !isTest) throw new Error("Ingen e-postadress hittades för kunden");
+    const recipientEmail = isTest ? testEmail : customerEmail;
 
     const customerName = quote.customer?.name || 'Kund';
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
