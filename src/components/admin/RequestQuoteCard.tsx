@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock } from "lucide-react";
+import { ScheduleQuoteSendDialog } from './ScheduleQuoteSendDialog';
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
@@ -50,6 +51,7 @@ export function RequestQuoteCard({
   onRefresh,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
   const { booking, quote, customer, invoice, job, timeLogs, materialLogs, expenseLogs, totalHours: jobTotalHours, totalMaterialCost, totalExpenses } = item;
   const { workers, totalHours: workerTotalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
   
@@ -121,6 +123,7 @@ export function RequestQuoteCard({
   };
   
   return (
+    <>
     <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
       {/* Collapsed Header - Always Visible */}
       <CollapsibleTrigger asChild>
@@ -421,6 +424,14 @@ export function RequestQuoteCard({
                           Testmail
                         </Button>
                       )}
+                      <Button
+                        onClick={() => setScheduleDialogOpen(true)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <CalendarClock className="h-4 w-4 mr-2" />
+                        Schemalägg
+                      </Button>
                     </>
                   )}
                   {quote.status === 'accepted' && 
@@ -756,5 +767,15 @@ export function RequestQuoteCard({
         </div>
       </CollapsibleContent>
     </Collapsible>
+
+    {quote && (
+      <ScheduleQuoteSendDialog
+        quoteId={quote.id}
+        quoteNumber={quote.number}
+        open={scheduleDialogOpen}
+        onOpenChange={setScheduleDialogOpen}
+      />
+    )}
+    </>
   );
 }

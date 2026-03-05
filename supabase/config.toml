@@ -143,18 +143,12 @@ verify_jwt = false
 [functions.execute-scheduled-flag-changes]
 verify_jwt = false
 
-[functions.ai-info]
-verify_jwt = false
-
-[functions.notify-admin-booking]
-verify_jwt = false
-
-[functions.send-customer-confirmation]
-verify_jwt = false
-
-[functions.ai-generate-image]
+[functions.execute-scheduled-quote-sends]
 verify_jwt = false
 
 [edge_runtime.scheduler.execute-scheduled-flag-changes]
+schedule = "* * * * *"
+
+[edge_runtime.scheduler.execute-scheduled-quote-sends]
 schedule = "* * * * *"
 
