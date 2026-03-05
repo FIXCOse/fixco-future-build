@@ -1,43 +1,22 @@
 
 
-## Plan: Aktivera pg_cron för schemalagda utskick
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Edge function `execute-scheduled-quote-sends` anropas aldrig i produktion. `config.toml`-schedulern fungerar bara lokalt. `pg_cron` är inte aktiverat.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
+### Fil som ändras
 
-#### 1. Aktivera pg_cron och pg_net extensions
-SQL-migration:
-```sql
-CREATE EXTENSION IF NOT EXISTS pg_cron WITH SCHEMA pg_catalog;
-CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
-```
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-#### 2. Skapa cron-jobb via SQL (insert, ej migration)
-Kör via `supabase--read-query` (innehåller projekt-specifik URL och anon key):
-```sql
-SELECT cron.schedule(
-  'execute-scheduled-quote-sends',
-  '* * * * *',
-  $$
-  SELECT net.http_post(
-    url := 'https://fnzjgohubvaxwpmnvwdq.supabase.co/functions/v1/execute-scheduled-quote-sends',
-    headers := '{"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}'::jsonb,
-    body := '{}'::jsonb
-  ) AS request_id;
-  $$
-);
-```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-#### 3. Verifiera
-- Kontrollera att cron-jobbet skapades korrekt
-- Kontrollera edge function logs efter 08:00 för att bekräfta att mailet skickades
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-### Filer som ändras
-- **SQL migration** — enable extensions
-- **SQL insert** — cron.schedule (ej migration, innehåller secrets)
-
-### Tidspress
-Utskicket är schemalagt till **08:00 idag**. Om vi inte hinner aktivera cron innan dess kan jag manuellt trigga edge functionen åt dig som backup.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
