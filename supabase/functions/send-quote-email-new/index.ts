@@ -16,10 +16,10 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { quoteId } = await req.json();
+    const { quoteId, testEmail } = await req.json();
 
-    console.log("Sending quote email for quoteId:", quoteId);
-
+    const isTest = !!testEmail;
+    console.log(`${isTest ? '🧪 TEST' : '📧'} Sending quote email for quoteId:`, quoteId, isTest ? `(override to: ${testEmail})` : '');
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -49,8 +49,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Ingen e-postadress hittades för kunden");
     }
 
-    console.log("Customer info:", { customerEmail, customerName });
-
+    const recipientEmail = isTest ? testEmail : customerEmail;
+    console.log("Recipient:", recipientEmail, isTest ? '(TEST override)' : '');
     const displayName = customerName || 'Kund';
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
@@ -112,8 +112,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
-      to: [customerEmail],
-      subject: `Offert ${quote.number} från Fixco`,
+      to: [recipientEmail],
+      subject: `${isTest ? '[TEST] ' : ''}Offert ${quote.number} från Fixco`,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });
@@ -129,17 +129,21 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Uppdatera status
-    const { error: updateError } = await supabase
-      .from('quotes_new')
-      .update({ 
-        status: 'sent', 
-        sent_at: new Date().toISOString() 
-      })
-      .eq('id', quoteId);
+    // Uppdatera status (skippa vid test)
+    if (!isTest) {
+      const { error: updateError } = await supabase
+        .from('quotes_new')
+        .update({ 
+          status: 'sent', 
+          sent_at: new Date().toISOString() 
+        })
+        .eq('id', quoteId);
 
-    if (updateError) {
-      console.error('Error updating quote status:', updateError);
+      if (updateError) {
+        console.error('Error updating quote status:', updateError);
+      }
+    } else {
+      console.log('🧪 TEST mode — skipping status update to "sent"');
     }
 
     console.log("Email sent successfully:", emailResponse);
