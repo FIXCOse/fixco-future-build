@@ -761,10 +761,10 @@ const LocalServicePage = () => {
 
               {/* Quick Facts – inline list */}
               {content.quickFacts.length > 0 && (
-                <ul className="text-xs text-muted-foreground space-y-1.5">
+                <ul className="text-sm text-muted-foreground space-y-1.5">
                   {content.quickFacts.slice(0, 6).map((fact, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <CheckCircle className="h-3 w-3 text-primary/60 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-primary/60 flex-shrink-0" />
                       {fact}
                     </li>
                   ))}
