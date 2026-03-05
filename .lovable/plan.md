@@ -1,22 +1,19 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Diagnos: Admin-notiser skickas inte vid offertöppning/accept
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+Edge functions `get-quote-public` och `accept-quote-public` innehåller korrekt `notifyAdmin()`-logik som anropar Resend API till `imedashviliomar@gmail.com`. Men funktionerna är troligen **inte deployade** med senaste koden — loggarna visar inga anrop alls.
 
-### Fil som ändras
+### Lösning
+Deploya alla relevanta edge functions som hanterar kundinteraktioner med offerter:
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+1. **`get-quote-public`** — skickar 👁️-notis när kund öppnar offert (status ändras från `sent` → `viewed`)
+2. **`accept-quote-public`** — skickar ✅-notis vid accept
+3. **`reject-quote-public`** — skickar notis vid avvisning  
+4. **`ask-question-quote`** — skickar notis vid frågor
+5. **`request-change-quote-public`** — skickar notis vid ändringsbegäran
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
-
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+### Åtgärd
+Deploya dessa 5 edge functions. Ingen kodändring behövs — koden är redan korrekt.
 
