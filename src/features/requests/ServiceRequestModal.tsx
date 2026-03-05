@@ -363,7 +363,7 @@ const skipAddons = () => {
       <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden max-h-[100dvh] md:max-h-[85vh] flex flex-col">
         {/* Progress Indicator */}
         {!done && service && addons.length > 0 && (
-          <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30">
+          <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30 flex-shrink-0">
             <div className={`flex items-center gap-2 ${currentStep === 1 ? 'text-primary' : 'text-muted-foreground'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 text-sm font-bold transition-colors ${
                 currentStep === 1 ? 'border-primary bg-primary text-primary-foreground' : 'border-muted'
