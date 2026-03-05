@@ -1,21 +1,31 @@
 
 
-## Plan: Lägg till test-email override i send-quote-email-new
+## Plan: Dölj Ring oss-knapp och inställningswidget på offert/faktura-sidor
 
 ### Problem
-Edge function `send-quote-email-new` skickar alltid till kundens email från databasen. Det finns inget sätt att testa med en annan mottagare.
+"Ring oss"-knappen och språk/tema-widgeten syns på kundens publika offert- och fakturasida, vilket ser oprofessionellt ut.
 
 ### Lösning
-Lägg till en valfri `testEmail`-parameter i edge function. Om den skickas med, används den istället för kundens email.
+Lägg till CSS-regler i `Navbar2.css` (som redan döljer navbaren med `data-page-type`) för att dölja dessa element på quote/invoice-sidor.
 
 ### Fil som ändras
 
-**`supabase/functions/send-quote-email-new/index.ts`**
-- Acceptera `testEmail` i request body (utöver `quoteId`)
-- Om `testEmail` finns, skicka till den istället för `customerEmail`
-- Skippa statusuppdatering till "sent" om testEmail används (så offerten inte markeras som skickad)
-- Logga tydligt att det är ett testutskick
+**`src/components/Navbar2.css`** — Lägg till regler:
+```css
+body[data-page-type="quote"] .sticky-phone-button,
+body[data-page-type="invoice"] .sticky-phone-button,
+body[data-page-type="quote"] .sticky-phone-button ~ div, /* response time badge parent */
+body[data-page-type="invoice"] .sticky-phone-button ~ div {
+  display: none !important;
+}
+```
 
-### Användning från frontend
-Inget UI behöver ändras — du kan testa genom att anropa funktionen manuellt, eller så lägger jag till en "Skicka testmail"-knapp i admin-vyn om du vill.
+**`src/components/StickyPhoneButton.tsx`** — Alternativt, kolla `data-page-type` i komponenten och returnera `null`.
+
+**`src/components/FloatingSettingsWidget.tsx`** — Samma approach: kolla `data-page-type` och returnera `null`.
+
+### Föredragen approach
+Enklast och renast: Lägg till `useLocation()` check i båda komponenterna och returnera `null` om vi är på `/offert/` eller `/faktura/` routes. Alternativt CSS-baserat via `data-page-type`.
+
+Jag föredrar **JS-check med useLocation** i `StickyPhoneButton.tsx` och `FloatingSettingsWidget.tsx` — kollar om pathname startar med `/offert/` eller `/faktura/` och returnerar null. Rent, inga CSS-hack.
 
