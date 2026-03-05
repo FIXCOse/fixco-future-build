@@ -1,27 +1,22 @@
 
 
-## Plan: Realtids-notifieringar till admin vid kundaktivitet
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
 ### Vad vi gör
-Lägger till ett Resend-mail till `imedashviliomar@gmail.com` i varje edge function som hanterar kundinteraktion med en offert. Mailet skickas direkt (fire-and-forget) efter att kundaktionen registrerats.
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Edge functions som ändras
+### Fil som ändras
 
-| Funktion | Händelse | Ämnesrad |
-|----------|----------|----------|
-| `get-quote-public` | Kund öppnar offert | 👁️ Offert [nummer] öppnad av [kundnamn] |
-| `accept-quote-public` | Kund accepterar | ✅ Offert [nummer] accepterad av [kundnamn] |
-| `reject-quote-public` | Kund avböjer | ❌ Offert [nummer] avböjd av [kundnamn] |
-| `request-change-quote-public` | Kund begär ändring | ✏️ Ändring begärd på offert [nummer] |
-| `ask-question-quote` | Kund ställer fråga | ❓ Ny fråga om offert [nummer] |
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-### Teknisk approach per funktion
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-1. Importera Resend SDK
-2. Hämta offertnummer + kundinfo (via JOIN på `customers`) — de flesta har redan quote-data tillgänglig
-3. Skicka mail via Resend (fire-and-forget, `catch` loggar fel men blockerar inte)
-4. Mailet innehåller: offertnamn, kundnamn, tidpunkt, och en kort beskrivning av vad som hände
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
 ### Inga nya filer, inga databasändringar
-Resend + `RESEND_API_KEY` är redan konfigurerat. Avsändare: `Fixco <info@fixco.se>`.
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

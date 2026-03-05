@@ -5,6 +5,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+async function notifyAdmin(subject: string, html: string) {
+  try {
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY) return;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Fixco <info@fixco.se>',
+        to: ['imedashviliomar@gmail.com'],
+        subject,
+        html,
+      }),
+    });
+  } catch (e) {
+    console.error('Admin notification failed:', e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -14,7 +33,6 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const pathParts = url.pathname.split('/').filter(p => p);
     
-    // Support both formats: /number/token (new) and /token (legacy)
     let quoteNumber: string | null = null;
     let token: string;
     
@@ -45,10 +63,9 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hämta offerten - stödjer både nummer+token och bara token
     let query = supabase
       .from('quotes_new')
-      .select('id, status, deleted_at');
+      .select('id, number, title, status, deleted_at, customer:customers(name, email)');
     
     if (quoteNumber) {
       query = query.eq('number', quoteNumber).eq('public_token', token);
@@ -72,7 +89,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Spara avvisning
     const { error: insertError } = await supabase
       .from('quote_rejections')
       .insert({
@@ -85,7 +101,6 @@ Deno.serve(async (req) => {
 
     if (insertError) throw insertError;
 
-    // Uppdatera offertens status
     const { error: updateError } = await supabase
       .from('quotes_new')
       .update({
@@ -95,6 +110,18 @@ Deno.serve(async (req) => {
       .eq('id', quote.id);
 
     if (updateError) throw updateError;
+
+    const custName = quote.customer?.name || customer_name || 'Okänd kund';
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+    notifyAdmin(
+      `❌ Offert ${quote.number} avböjd av ${custName}`,
+      `<h2>Offert avböjd</h2>
+      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      <p><strong>Kund:</strong> ${custName}</p>
+      <p><strong>Anledning:</strong> ${reason}</p>
+      ${reason_text ? `<p><strong>Kommentar:</strong> ${reason_text}</p>` : ''}
+      <p><strong>Tidpunkt:</strong> ${now}</p>`
+    );
 
     return new Response(
       JSON.stringify({ success: true }),

@@ -5,6 +5,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+async function notifyAdmin(subject: string, html: string) {
+  try {
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY) return;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Fixco <info@fixco.se>',
+        to: ['imedashviliomar@gmail.com'],
+        subject,
+        html,
+      }),
+    });
+  } catch (e) {
+    console.error('Admin notification failed:', e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -27,10 +46,9 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hitta offert via token
     const { data: quote, error: quoteError } = await supabase
       .from('quotes_new')
-      .select('id, deleted_at')
+      .select('id, number, title, deleted_at, customer:customers(name, email)')
       .eq('public_token', token)
       .single();
 
@@ -41,7 +59,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Kontrollera om offerten är raderad
     if ((quote as any).deleted_at) {
       return new Response(
         JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats och kan inte ändras' }),
@@ -49,7 +66,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Ladda upp filer till storage
     const fileUrls: string[] = [];
     for (const file of files) {
       if (file.size > 0) {
@@ -69,7 +85,6 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Skapa meddelande
     const { error: messageError } = await supabase
       .from('quote_messages')
       .insert({
@@ -84,7 +99,6 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte skapa meddelande');
     }
 
-    // Uppdatera offert status
     const { error: updateError } = await supabase
       .from('quotes_new')
       .update({
@@ -96,6 +110,18 @@ Deno.serve(async (req) => {
     if (updateError) {
       console.error('Failed to update quote:', updateError);
     }
+
+    const custName = quote.customer?.name || 'Okänd kund';
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+    notifyAdmin(
+      `✏️ Ändring begärd på offert ${quote.number} av ${custName}`,
+      `<h2>Ändring begärd</h2>
+      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      <p><strong>Kund:</strong> ${custName}</p>
+      <p><strong>Meddelande:</strong> ${message}</p>
+      ${fileUrls.length > 0 ? `<p><strong>Bifogade filer:</strong> ${fileUrls.length} st</p>` : ''}
+      <p><strong>Tidpunkt:</strong> ${now}</p>`
+    );
 
     return new Response(
       JSON.stringify({ ok: true }),

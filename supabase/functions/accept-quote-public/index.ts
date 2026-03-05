@@ -5,6 +5,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+async function notifyAdmin(subject: string, html: string) {
+  try {
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY) return;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Fixco <info@fixco.se>',
+        to: ['imedashviliomar@gmail.com'],
+        subject,
+        html,
+      }),
+    });
+  } catch (e) {
+    console.error('Admin notification failed:', e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -14,7 +33,6 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const token = url.pathname.split('/').pop();
     
-    // Get body for signature
     const body = req.method === 'POST' ? await req.json() : {};
     const { signature_name, terms_accepted } = body;
 
@@ -29,10 +47,9 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Hämta offert med token
     const { data: quote, error: fetchError } = await supabase
       .from('quotes_new')
-      .select('id, status, valid_until, customer_id, title, accepted_at, deleted_at')
+      .select('id, number, title, status, valid_until, customer_id, accepted_at, deleted_at, customer:customers(name, email)')
       .eq('public_token', token)
       .single();
 
@@ -44,7 +61,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Hämta customer för att få user_id
     const { data: customer, error: customerError } = await supabase
       .from('customers')
       .select('id, user_id')
@@ -55,7 +71,6 @@ Deno.serve(async (req) => {
       console.error('Error fetching customer:', customerError);
     }
 
-    // Kontrollera om offerten är raderad
     if ((quote as any).deleted_at) {
       return new Response(
         JSON.stringify({ error: 'deleted', message: 'Denna offert har raderats och kan inte accepteras' }),
@@ -63,7 +78,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Validera giltighet
     if (quote.valid_until && new Date(quote.valid_until) < new Date()) {
       return new Response(
         JSON.stringify({ error: 'expired', message: 'Offerten har gått ut' }),
@@ -71,7 +85,9 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Om redan accepterad (men inte pending_reaccept)
+    const customerName = quote.customer?.name || 'Okänd kund';
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+
     if (quote.status === 'accepted') {
       const { data: existingProject } = await supabase
         .from('projects')
@@ -79,26 +95,21 @@ Deno.serve(async (req) => {
         .eq('quote_id', quote.id)
         .maybeSingle();
 
-      console.log('Quote already accepted, project and job should exist');
-
       return new Response(
         JSON.stringify({ ok: true, already: true, projectId: existingProject?.id }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Om pending_reaccept - uppdatera bara status, skippa projekt-skapande
     if (quote.status === 'pending_reaccept') {
       const updateData: any = {
         status: 'accepted',
         accepted_at: new Date().toISOString()
       };
-
       if (signature_name) {
         updateData.signature_name = signature_name;
         updateData.signature_date = new Date().toISOString();
       }
-      
       if (terms_accepted !== undefined) {
         updateData.terms_accepted = terms_accepted;
       }
@@ -113,14 +124,20 @@ Deno.serve(async (req) => {
         throw new Error('Kunde inte uppdatera offert');
       }
 
-      // Hämta befintligt projekt
       const { data: existingProject } = await supabase
         .from('projects')
         .select('id')
         .eq('quote_id', quote.id)
         .maybeSingle();
 
-      console.log('Quote re-accepted, project already exists');
+      notifyAdmin(
+        `✅ Offert ${quote.number} accepterad igen av ${customerName}`,
+        `<h2>Offert accepterad (re-accept)</h2>
+        <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+        <p><strong>Kund:</strong> ${customerName}</p>
+        <p><strong>Signatur:</strong> ${signature_name || 'Ej angiven'}</p>
+        <p><strong>Tidpunkt:</strong> ${now}</p>`
+      );
 
       return new Response(
         JSON.stringify({ ok: true, reaccepted: true, projectId: existingProject?.id }),
@@ -128,17 +145,14 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Sätt status accepterad med signatur och villkor
     const updateData: any = {
       status: 'accepted',
       accepted_at: new Date().toISOString()
     };
-
     if (signature_name) {
       updateData.signature_name = signature_name;
       updateData.signature_date = new Date().toISOString();
     }
-    
     if (terms_accepted !== undefined) {
       updateData.terms_accepted = terms_accepted;
     }
@@ -153,7 +167,6 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte uppdatera offert');
     }
 
-    // Skapa projekt med korrekt customer_id (user_id från customers table)
     const { data: project, error: projectError } = await supabase
       .from('projects')
       .insert({
@@ -167,7 +180,6 @@ Deno.serve(async (req) => {
 
     if (projectError) {
       console.error('Failed to create project:', projectError);
-      console.error('Project error details:', JSON.stringify(projectError, null, 2));
       return new Response(
         JSON.stringify({ 
           error: 'project_creation_failed',
@@ -178,8 +190,15 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Jobbet skapas automatiskt av trigger när status ändras till 'accepted'
-    console.log('Project created, job will be created automatically by trigger');
+    notifyAdmin(
+      `✅ Offert ${quote.number} accepterad av ${customerName}`,
+      `<h2>Offert accepterad!</h2>
+      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      <p><strong>Kund:</strong> ${customerName}</p>
+      <p><strong>Signatur:</strong> ${signature_name || 'Ej angiven'}</p>
+      <p><strong>Tidpunkt:</strong> ${now}</p>
+      <p>Projekt har skapats automatiskt.</p>`
+    );
 
     return new Response(
       JSON.stringify({ ok: true, projectId: project.id }),
