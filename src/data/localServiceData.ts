@@ -655,7 +655,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Facade Painting ${area} ★ Exterior painting & plaster · ROT 30%`,
     "inomhusmalning": `Interior Painting ${area} ★ Wallpapering & plastering · ROT 30%`,
     "golvlaggning": `Floor Installation ${area} ★ Parquet, vinyl & tiles · ROT 30%`,
-    "elinstallation": `Electrical Installation ${area} ★ Outlets, lighting & EV charger · ROT 30%`
+    "elinstallation": `Electrical Installation ${area} ★ Outlets, lighting & EV charger · ROT 30%`,
+    "rivning": `Demolition ${area} ★ Bathroom, kitchen & walls · ROT 30% · Free quote`
   } : {
     "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 30% · Fri offert`,
     "vvs": `VVS ${area} ★ Byte & reparation · ROT 30% · Svar 24h`,
