@@ -1467,6 +1467,18 @@ export default function QuotePublic() {
           </div>
         </div>
       </div>
+      {/* Confetti canvas — rendered AFTER all Radix portals so it's on top */}
+      <canvas
+        ref={confettiCanvasRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 99999,
+          pointerEvents: 'none',
+        }}
+      />
     </>
   );
 }

@@ -258,7 +258,7 @@ const AdminOngoingProjects = () => {
                       {project.customer && (
                         <div className="flex items-center gap-1">
                           <User className="h-3 w-3" />
-                          {project.customer.full_name || `${project.customer.first_name || ''} ${project.customer.last_name || ''}`.trim() || project.customer.email}
+                          {project.customer.name || project.customer.email}
                         </div>
                       )}
                       {project.start_date && (
