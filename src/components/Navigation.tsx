@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X, User, LogOut, Phone, ChevronDown, Bot } from "lucide-react";
+import { Menu, X, User, LogOut, Calendar, ChevronDown, Bot } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";

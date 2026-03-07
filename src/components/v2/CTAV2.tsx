@@ -63,13 +63,13 @@ export const CTAV2 = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <a
-              href="tel:+46793350228"
+            <button
+              onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Phone className="w-4 h-4" />
-              <span>+46 79 335 02 28</span>
-            </a>
+              <Calendar className="w-4 h-4" />
+              <span>{t('nav.bookHomeVisit')}</span>
+            </button>
             <span className="hidden sm:block text-muted-foreground">•</span>
             <a
               href="mailto:info@fixco.se"

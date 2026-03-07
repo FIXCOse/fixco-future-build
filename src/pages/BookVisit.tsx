@@ -323,12 +323,6 @@ const BookVisit = () => {
                 <h3 className="text-xl font-bold mb-4">Kontakta oss direkt</h3>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-primary" />
-                    <a href="tel:+46793350228" className="hover:text-primary transition-colors">
-                      +46 79 335 02 28
-                    </a>
-                  </div>
-                  <div className="flex items-center space-x-3">
                     <Mail className="h-5 w-5 text-primary" />
                     <a href="mailto:info@fixco.se" className="hover:text-primary transition-colors">
                       info@fixco.se

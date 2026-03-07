@@ -134,10 +134,10 @@ const GlobalStickyCTA = () => {
                     variant="outline"
                     size="sm"
                     className="border-primary/30 hover:bg-primary/10"
-                    onClick={() => window.open('tel:08-123-456-78')}
+                    onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsDismissed(true); }}
                   >
-                    <Phone className="h-4 w-4 mr-2" />
-                    {t('sticky.callNow')}
+                    <Calendar className="h-4 w-4 mr-2" />
+                    {t('nav.bookHomeVisit')}
                   </Button>
 
                   <Button

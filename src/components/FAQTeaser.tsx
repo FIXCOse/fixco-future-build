@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';

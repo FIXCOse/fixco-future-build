@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Phone, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent } from 'lucide-react';
+import { Lock, Calendar, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent } from 'lucide-react';
 import { GradientText } from '@/components/v2/GradientText';
 import { GlassCard } from '@/components/v2/GlassCard';
 import { Button } from '@/components/ui/button';

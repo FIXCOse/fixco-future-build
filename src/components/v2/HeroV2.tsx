@@ -89,12 +89,10 @@ export const HeroV2 = () => {
               variant="outline"
               size="lg"
               className="text-lg px-8 py-6 h-auto border-border hover:bg-muted group"
-              asChild
+              onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
             >
-              <a href="tel:+46793350228">
-                <Phone className="mr-2 w-5 h-5" />
-                {t('v2.hero.call')}
-              </a>
+              <Calendar className="mr-2 w-5 h-5" />
+              {t('nav.bookHomeVisit')}
             </Button>
           </motion.div>
         </motion.div>

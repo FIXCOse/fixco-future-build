@@ -4,7 +4,7 @@ import { Seo } from "@/components/SEO";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
-import { CheckCircle2, Phone, Calendar, MapPin, Zap, FileText } from "lucide-react";
+import { CheckCircle2, Calendar, MapPin, Zap, FileText } from "lucide-react";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { useCopy } from "@/copy/CopyProvider";
 
