@@ -2076,28 +2076,7 @@ export type Database = {
             foreignKeyName: "projects_customer_id_fkey"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "projects_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "worker_detailed_statistics"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "projects_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "worker_performance_stats"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "projects_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "worker_statistics"
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
           {
