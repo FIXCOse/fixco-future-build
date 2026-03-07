@@ -7,26 +7,18 @@ interface SegmentedPriceToggleProps {
   allowedModes?: PriceMode[];
 }
 
-const SegmentedPriceToggle = ({ className = "", size = 'md' }: SegmentedPriceToggleProps) => {
+const SegmentedPriceToggle = ({ className = "", size = 'md', allowedModes }: SegmentedPriceToggleProps) => {
   const { mode, setMode } = usePriceStore();
 
-  const options: { value: PriceMode; label: string; description: string }[] = [
-    {
-      value: 'all',
-      label: 'Alla',
-      description: 'Visa alla tjänster'
-    },
-    {
-      value: 'rot',
-      label: 'ROT',
-      description: 'Endast ROT-berättigade tjänster'
-    },
-    {
-      value: 'rut',
-      label: 'RUT', 
-      description: 'Endast RUT-berättigade tjänster'
-    }
+  const allOptions: { value: PriceMode; label: string; description: string }[] = [
+    { value: 'all', label: 'Alla', description: 'Visa alla tjänster' },
+    { value: 'rot', label: 'ROT', description: 'Endast ROT-berättigade tjänster' },
+    { value: 'rut', label: 'RUT', description: 'Endast RUT-berättigade tjänster' }
   ];
+
+  const options = allowedModes
+    ? allOptions.filter(o => allowedModes.includes(o.value))
+    : allOptions;
 
   const sizeConfig = {
     sm: {

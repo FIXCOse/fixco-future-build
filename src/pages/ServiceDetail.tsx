@@ -318,7 +318,12 @@ const ServiceDetail = () => {
               <span>{t('serviceDetail.availableIn')}</span>
             </div>
             <div className="flex justify-center mt-6">
-              <SegmentedPriceToggle size="md" />
+              <SegmentedPriceToggle size="md" allowedModes={
+                service.eligible?.rot && service.eligible?.rut ? ['all', 'rot', 'rut'] :
+                service.eligible?.rot ? ['all', 'rot'] :
+                service.eligible?.rut ? ['all', 'rut'] :
+                ['all']
+              } />
             </div>
           </div>
           
