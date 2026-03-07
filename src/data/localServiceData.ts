@@ -619,6 +619,7 @@ const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
   "inomhusmalning": "Interior Painting",
   "golvlaggning": "Floor Installation",
   "elinstallation": "Electrical Installation",
+  "rivning": "Demolition",
 };
 
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
