@@ -1,34 +1,19 @@
 
 
-## Plan: Lägg till rivningstjänster i databasen
+## Plan: Lägg till 15 rivningstjänster via Edge Function
 
-Det finns 0 tjänster med category `rivning` i databasen. Jag lägger till **15 relevanta rivningstjänster** via SQL INSERT. Alla med `base_price: 958`, `rot_eligible: true`, `price_unit: 'kr/h'`.
+Databasen har 0 rivningstjänster. Migrationsverktyget kan inte köra INSERT-satser, så jag skapar en temporär edge function som seedar datan.
 
-### Tjänster att lägga till
+### Steg
 
-| ID | Titel (SV) | Titel (EN) | Typ |
-|---|---|---|---|
-| rivning-badrum | Rivning badrum | Bathroom demolition | quote |
-| rivning-kok | Rivning kök | Kitchen demolition | quote |
-| rivning-innervaggar | Rivning innerväggar | Interior wall demolition | hourly |
-| rivning-golv | Rivning golv | Floor demolition | hourly |
-| rivning-kakel-klinker | Rivning kakel & klinker | Tile removal | hourly |
-| rivning-totalrivning | Totalrivning / stomrent | Full strip-out | quote |
-| rivning-haltagning | Håltagning betong/tegel | Concrete/brick core drilling | hourly |
-| rivning-tak-innertak | Rivning innertak | Ceiling demolition | hourly |
-| rivning-fasad | Rivning fasad/utvändigt | Exterior demolition | quote |
-| rivning-garage | Rivning garage/förråd | Garage/shed demolition | quote |
-| rivning-altan-terrass | Rivning altan & terrass | Deck/patio demolition | quote |
-| rivning-bortforsling | Bortforsling & container | Waste disposal & skip | hourly |
-| rivning-asbestsanering | Asbestsanering | Asbestos removal | quote |
-| rivning-vattenskadat | Rivning vattenskadat material | Water damage tearout | hourly |
-| rivning-eldstad | Rivning eldstad/skorsten | Fireplace/chimney demolition | quote |
+1. **Skapa edge function `seed-rivning-services/index.ts`** som insertar alla 15 tjänster med `ON CONFLICT (id) DO NOTHING`
+2. **Deploya och anropa funktionen** via curl för att populera databasen
+3. **Verifiera** att alla 15 rader finns i `services`-tabellen
+4. **Ta bort edge functionen** efter lyckad seed
 
-### Cross-listing
-- `rivning-badrum` → additional_categories: `['badrum']`
-- `rivning-kok` → additional_categories: `['kok']`
-- `rivning-golv` → additional_categories: `['golv']`
+### Data
+Alla 15 tjänster med `category: 'rivning'`, `base_price: 958`, `rot_eligible: true`, `price_unit: 'kr/h'`, svenska + engelska titlar/beskrivningar, och cross-listing via `additional_categories` för badrum/kök/golv-tjänsterna.
 
-### Implementation
-En SQL INSERT med alla 15 rader i `services`-tabellen. Inga kodändringar behövs — befintlig `useServices`-hook hämtar automatiskt tjänster med `category = 'rivning'` och ServiceDetail visar dem.
+### SEO-påverkan
+Inga kodändringar behövs. Befintliga hooks, lokala SEO-sidor (590+), och filtergränssnitt hämtar automatiskt tjänster med `category = 'rivning'` från databasen.
 
