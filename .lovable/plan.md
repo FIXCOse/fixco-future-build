@@ -1,22 +1,35 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Fix rivning translation keys, category mapping, and navbar
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+1. "serviceCategories.rivning.title" shows as raw key — translation missing from copy system
+2. "0 tjänster" — `rivning` missing from `categoryMap` in ServiceDetail.tsx so DB services aren't filtered
+3. Rivning not in navbar services dropdown
 
-### Fil som ändras
+### Changes
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+#### 1. `src/copy/keys.ts` — Add rivning copy keys
+Add `'serviceCategories.rivning'`, `'serviceCategories.rivning.title'`, `'serviceCategories.rivning.description'` to the CopyKey union type.
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+#### 2. `src/copy/sv.ts` — Add Swedish translations
+```
+'serviceCategories.rivning': 'Rivning',
+'serviceCategories.rivning.title': 'Rivning',
+'serviceCategories.rivning.description': 'Badrum, kök, väggar & bortforsling',
+```
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+#### 3. `src/copy/en.ts` — Add English translations
+```
+'serviceCategories.rivning': 'Demolition',
+'serviceCategories.rivning.title': 'Demolition',
+'serviceCategories.rivning.description': 'Bathroom, kitchen, walls & disposal',
+```
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+#### 4. `src/pages/ServiceDetail.tsx` — Add category mapping
+Add `'rivning': 'rivning'` to `categoryMap` so database services with category "rivning" are found.
+
+#### 5. `src/components/Navbar2.tsx` — Add rivning to navbar
+- Add `rivning: '/tjanster/rivning'` (and EN variant) to `paths`
+- Add rivning entry to `services` array with translation keys
 
