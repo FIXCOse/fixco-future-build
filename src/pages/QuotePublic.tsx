@@ -374,6 +374,21 @@ export default function QuotePublic() {
 
       if (error) throw error;
 
+      // Add question to local state immediately so it shows without refresh
+      setQuote(prev => prev ? {
+        ...prev,
+        questions: [...(prev.questions || []), {
+          id: crypto.randomUUID(),
+          question,
+          customer_name: questionName,
+          customer_email: questionEmail || '',
+          asked_at: new Date().toISOString(),
+          answered: false,
+          answer: null,
+          answered_at: null,
+        }]
+      } : prev);
+
       toast({
         title: 'Fråga mottagen!',
         description: 'Vi svarar så snart som möjligt',
