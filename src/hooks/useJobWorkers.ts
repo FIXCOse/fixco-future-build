@@ -44,11 +44,9 @@ export function useJobWorkers(jobId?: string) {
         setEstimatedHours(job?.estimated_hours || 0);
       }
 
-      // Fetch workers with their hours
+      // Fetch workers with their hours via secure RPC
       const { data: workerData, error: workerError } = await supabase
-        .from('job_worker_hours')
-        .select('*')
-        .eq('job_id', jobId);
+        .rpc('get_job_worker_hours', { p_job_id: jobId });
 
       if (workerError) {
         console.error('Error fetching workers:', workerError);

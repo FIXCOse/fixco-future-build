@@ -35,14 +35,14 @@ serve(async (req) => {
       throw new Error('Unauthorized');
     }
 
-    // Check if user is admin/owner
-    const { data: profile } = await supabaseClient
-      .from('profiles')
+    // Check if user is admin/owner via authoritative user_roles table
+    const { data: roles } = await supabaseClient
+      .from('user_roles')
       .select('role')
-      .eq('id', user.id)
-      .single();
+      .eq('user_id', user.id);
 
-    if (!profile || !['admin', 'owner'].includes(profile.role)) {
+    const isAdmin = roles?.some((r: any) => ['admin', 'owner'].includes(r.role));
+    if (!isAdmin) {
       throw new Error('Access denied');
     }
 

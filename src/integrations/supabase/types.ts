@@ -4035,6 +4035,20 @@ export type Database = {
       generate_quote_number: { Args: never; Returns: string }
       generate_quote_number_new: { Args: never; Returns: string }
       get_invoice_statistics: { Args: never; Returns: Json }
+      get_job_worker_hours: {
+        Args: { p_job_id?: string }
+        Returns: {
+          assigned_at: string
+          completed_at: string
+          is_lead: boolean
+          job_id: string
+          started_at: string
+          status: string
+          time_entries: number
+          total_hours: number
+          worker_id: string
+        }[]
+      }
       get_next_staff_id: { Args: never; Returns: number }
       get_workers: {
         Args: never

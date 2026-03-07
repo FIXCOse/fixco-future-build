@@ -110,11 +110,11 @@ serve(async (req) => {
       .or(`scheduled_time_start.lte.${requestData.scheduledTimeEnd},scheduled_time_end.gte.${requestData.scheduledTimeStart}`);
 
     if (conflictingBookings && conflictingBookings.length > 0) {
-      console.log("Scheduling conflict detected:", conflictingBookings);
+      console.log("Scheduling conflict detected for date:", requestData.scheduledDate);
       return new Response(
         JSON.stringify({ 
           error: "Scheduling conflict detected",
-          conflicts: conflictingBookings 
+          message: "The requested time slot is not available. Please choose a different time."
         }),
         { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
