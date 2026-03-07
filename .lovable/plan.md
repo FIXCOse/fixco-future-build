@@ -1,19 +1,22 @@
 
 
-## Plan: Lägg till 15 rivningstjänster via Edge Function
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Databasen har 0 rivningstjänster. Migrationsverktyget kan inte köra INSERT-satser, så jag skapar en temporär edge function som seedar datan.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Steg
+### Fil som ändras
 
-1. **Skapa edge function `seed-rivning-services/index.ts`** som insertar alla 15 tjänster med `ON CONFLICT (id) DO NOTHING`
-2. **Deploya och anropa funktionen** via curl för att populera databasen
-3. **Verifiera** att alla 15 rader finns i `services`-tabellen
-4. **Ta bort edge functionen** efter lyckad seed
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-### Data
-Alla 15 tjänster med `category: 'rivning'`, `base_price: 958`, `rot_eligible: true`, `price_unit: 'kr/h'`, svenska + engelska titlar/beskrivningar, och cross-listing via `additional_categories` för badrum/kök/golv-tjänsterna.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-### SEO-påverkan
-Inga kodändringar behövs. Befintliga hooks, lokala SEO-sidor (590+), och filtergränssnitt hämtar automatiskt tjänster med `category = 'rivning'` från databasen.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
