@@ -539,7 +539,7 @@ export const servicesDataNew = [
         id: "snickeri-2",
         title: "Hyllsystem & förvaring",
         description: "Installation av hyllsystem och förvaringslösningar",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
