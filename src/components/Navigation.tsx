@@ -415,13 +415,13 @@ function Navigation() {
 
               {/* Mobile Actions */}
               <div className="pt-4 space-y-3 border-t border-border">
-                <a 
-                  href="tel:+46793350228" 
+                <button 
+                  onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsOpen(false); }}
                   className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
-                  <Phone className="h-4 w-4" />
-                  <span>+46 79 335 02 28</span>
-                </a>
+                  <Calendar className="h-4 w-4" />
+                  <span>{t('nav.bookHomeVisit')}</span>
+                </button>
 
 
                 {user ? (
