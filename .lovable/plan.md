@@ -1,15 +1,22 @@
 
 
-## Problem
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Tooltip-popupen för offertvisningar har `max-h-40` (160px) som begränsar höjden. Med 12 besök visas bara ~7 synliga rader — resten kräver scrollning inuti en liten tooltip, vilket är svårt att använda (tooltips stängs lätt vid scroll).
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-## Plan
+### Fil som ändras
 
-**Fil:** `src/components/admin/QuoteStatusTimeline.tsx`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-1. Öka `max-h-40` till `max-h-72` (288px) — rymmer ~18 rader utan scroll för de flesta fall.
-2. Behåll `overflow-y-auto` som fallback om det någonsin blir fler än ~18 besök.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-En enkel enrads-ändring på rad 57.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
