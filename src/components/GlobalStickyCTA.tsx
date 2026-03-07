@@ -138,7 +138,7 @@ const GlobalStickyCTA = () => {
                     onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsDismissed(true); }}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
-                    {t('nav.bookHomeVisit')}
+                    {t('footer.bookHomeVisit')}
                   </Button>
 
                   <Button

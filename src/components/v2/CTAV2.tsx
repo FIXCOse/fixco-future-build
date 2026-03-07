@@ -68,7 +68,7 @@ export const CTAV2 = () => {
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              <span>{t('nav.bookHomeVisit')}</span>
+              <span>{t('footer.bookHomeVisit')}</span>
             </button>
             <span className="hidden sm:block text-muted-foreground">•</span>
             <a

@@ -420,7 +420,7 @@ function Navigation() {
                   className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Calendar className="h-4 w-4" />
-                  <span>{t('nav.bookHomeVisit')}</span>
+                  <span>{t('footer.bookHomeVisit')}</span>
                 </button>
 
 

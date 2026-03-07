@@ -92,7 +92,7 @@ export const HeroV2 = () => {
               onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
             >
               <Calendar className="mr-2 w-5 h-5" />
-              {t('nav.bookHomeVisit')}
+              {t('footer.bookHomeVisit')}
             </Button>
           </motion.div>
         </motion.div>

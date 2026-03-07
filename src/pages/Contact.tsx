@@ -298,7 +298,7 @@ const Contact = () => {
                       <Calendar className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">{t('nav.bookHomeVisit')}</div>
+                      <div className="font-semibold">{t('footer.bookHomeVisit')}</div>
                       <div className="text-muted-foreground">{t('pages.contact.freeQuote')}</div>
                     </div>
                   </button>

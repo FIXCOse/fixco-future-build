@@ -108,7 +108,7 @@ const FAQTeaser = () => {
                   className="group"
                   onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  {t('nav.bookHomeVisit')}
+                  {t('footer.bookHomeVisit')}
                 </Button>
                 <Button
                   variant="cta-secondary"
