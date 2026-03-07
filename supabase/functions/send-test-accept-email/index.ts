@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
       </div>
     </div>
     <div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;">
-      <p style="margin:0;">Fixco · info@fixco.se · 079-335 02 28</p>
+      <p style="margin:0;">Fixco · info@fixco.se</p>
       <p style="margin:4px 0 0;">Detta är ett automatiskt meddelande.</p>
     </div>
   </div>

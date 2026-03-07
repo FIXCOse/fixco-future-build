@@ -182,8 +182,6 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 0 0 8px 0;">Har du frågor? Kontakta oss:</p>
             <p style="margin: 0;">
               <a href="mailto:info@fixco.se" style="color: #2563eb; text-decoration: none;">info@fixco.se</a>
-              &nbsp;|&nbsp;
-              <a href="tel:+46812345678" style="color: #2563eb; text-decoration: none;">08-123 456 78</a>
             </p>
             <p style="margin: 16px 0 0 0; color: #a1a1aa; font-size: 12px;">
               © ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.

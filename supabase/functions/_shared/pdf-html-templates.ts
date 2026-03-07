@@ -1263,7 +1263,7 @@ export function generateInvoiceHTMLv2(invoice: InvoiceData, logoBase64?: string)
         <!-- Footer -->
         <div class="footer" style="margin-top: 32px;">
           <p style="margin: 0 0 4px 0;">Har du frågor om denna faktura?</p>
-          <p style="margin: 0;">Kontakta oss på <a href="mailto:info@fixco.se" style="color: #3b82f6; text-decoration: none;">info@fixco.se</a> eller 08-123 45 67</p>
+          <p style="margin: 0;">Kontakta oss på <a href="mailto:info@fixco.se" style="color: #3b82f6; text-decoration: none;">info@fixco.se</a></p>
         </div>
       </div>
     </body>

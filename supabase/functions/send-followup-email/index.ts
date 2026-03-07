@@ -81,7 +81,7 @@ serve(async (req) => {
           
           <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 16px;">
             <p>Fixco | <a href="https://www.fixco.se" style="color: #6b7280;">www.fixco.se</a></p>
-            <p>📧 info@fixco.se | 📞 079-335 02 28</p>
+            <p>📧 info@fixco.se</p>
           </div>
         </div>
       </body>

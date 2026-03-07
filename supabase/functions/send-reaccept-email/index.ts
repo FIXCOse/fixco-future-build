@@ -110,7 +110,7 @@ const handler = async (req: Request): Promise<Response> => {
                 </div>
 
                 <p style="font-size: 13px; color: #64748b; margin: 25px 0 0 0; line-height: 1.5;">
-                  Har du frågor? Kontakta oss på <a href="mailto:info@fixco.se" style="color: #1e3a5f;">info@fixco.se</a> eller ring 079-335 02 28
+                  Har du frågor? Kontakta oss på <a href="mailto:info@fixco.se" style="color: #1e3a5f;">info@fixco.se</a>
                 </p>
               </div>
 
