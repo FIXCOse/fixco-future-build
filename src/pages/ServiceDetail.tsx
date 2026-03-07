@@ -8,6 +8,7 @@ import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useServices } from "@/hooks/useServices";
 import PriceSummary from '@/components/PriceSummary';
 import ServiceCardV3 from '@/components/ServiceCardV3';
+import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from "@/copy/CopyProvider";
 import { Seo } from "@/components/SEO";
