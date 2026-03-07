@@ -86,7 +86,8 @@ const Navbar2 = () => {
     stadning: '/en/services/stadning',
     markarbeten: '/en/services/markarbeten',
     tekniska: '/en/services/tekniska-installationer',
-    dorrlas: '/en/services/door-locks',
+     dorrlas: '/en/services/door-locks',
+     rivning: '/en/services/rivning',
   } : {
     home: '/',
     services: '/tjanster',
