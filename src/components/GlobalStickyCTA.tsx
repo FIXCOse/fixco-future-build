@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Phone, MessageCircle, Calculator, ArrowRight, X } from 'lucide-react';
+import { Calendar, MessageCircle, Calculator, ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import OfferWizardModal from './OfferWizardModal';
