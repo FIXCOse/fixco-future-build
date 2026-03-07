@@ -15,7 +15,6 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import QuoteQuestionsNotification from './admin/QuoteQuestionsNotification';
 import React from 'react';
-import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
