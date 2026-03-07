@@ -180,6 +180,14 @@ export const serviceCategories = [
     description: "Bärhjälp, packning och transport",
     icon: Truck,
     eligible: { rot: false, rut: true }
+  },
+  {
+    id: "rivning",
+    title: "Rivning",
+    slug: "rivning",
+    description: "Badrum, kök, väggar & bortforsling",
+    icon: Pickaxe,
+    eligible: { rot: true, rut: false }
   }
 ];
 
