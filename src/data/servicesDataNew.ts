@@ -1180,7 +1180,7 @@ export const servicesDataNew = [
         id: "markarbeten-5",
         title: "Grus/kantsten",
         description: "Läggning av grus och kantsten. Längd väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
