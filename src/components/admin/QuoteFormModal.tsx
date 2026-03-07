@@ -275,7 +275,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     const subtotal = calculateSubtotal();
     // Om vatIncluded är true är subtotal redan inkl moms
     // Om false, lägg till moms för rabattberäkning
-    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
+    // Items sparas alltid exkl moms — alltid multiplicera med 1.25
+    const subtotalInclVat = subtotal * 1.25;
     
     if (discountType === 'percent') {
       return Math.round(subtotalInclVat * (discountValue / 100));
@@ -288,7 +289,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   // Returnerar subtotal efter rabatt (INKLUSIVE moms om vatIncluded eller efter att moms lagts till)
   const calculateSubtotalAfterDiscount = () => {
     const subtotal = calculateSubtotal();
-    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
+    // Items sparas alltid exkl moms — alltid multiplicera med 1.25
+    const subtotalInclVat = subtotal * 1.25;
     return subtotalInclVat - calculateDiscount();
   };
 

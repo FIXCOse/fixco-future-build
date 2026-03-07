@@ -1,57 +1,22 @@
 
 
-## Analys: Varför "ATT BETALA" blir 70 652 kr istället för 98 913 kr
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Rotorsaken — en inkonsekvent moms-hantering
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Problemet sitter i `calculateSubtotalAfterDiscount()` (rad 289-293 i QuoteFormModal.tsx):
+### Fil som ändras
 
-```text
-subtotal_work_sek (sparas)     = 113 044  (alltid exkl moms)
-QuotePublic visar              = 113 044 × 1.25 = 141 305 kr (korrekt inkl moms)
-ROT-avdrag (ny fix)            = 113 044 × 1.25 × 0.30 = 42 392 kr (korrekt)
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-MEN calculateTotal gör:
-  calculateSubtotalAfterDiscount() = 113 044  ← behandlar som "redan inkl moms" pga vatIncluded=true
-  minus ROT                        = 42 392
-  total_sek                        = 70 652  ← FEL
-```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-Rad 291: `const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;`
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-När `vatIncluded=true` multipliceras INTE med 1.25 — men `subtotal_work_sek` sparas **alltid exkl moms** och QuotePublic multiplicerar **alltid** med 1.25 för visning. Så `calculateTotal()` använder 113 044 som bas medan allt annat (display, ROT) använder 141 305.
-
-### Fix
-
-Ändra `calculateSubtotalAfterDiscount()` och `calculateDiscount()` att **alltid** multiplicera med 1.25, eftersom item-priser i databasen alltid är exkl moms:
-
-**Rad 278** i `calculateDiscount()`:
-```ts
-// Från:
-const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
-// Till:
-const subtotalInclVat = subtotal * 1.25;
-```
-
-**Rad 291** i `calculateSubtotalAfterDiscount()`:
-```ts
-// Från:
-const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
-// Till:
-const subtotalInclVat = subtotal * 1.25;
-```
-
-### Resultat efter fix
-
-```text
-calculateSubtotalAfterDiscount() = 113 044 × 1.25 = 141 305
-calculateRotRutDeduction()       = 113 044 × 1.25 × 0.30 = 42 392
-calculateTotal()                 = 141 305 − 42 392 = 98 913 ✅
-```
-
-### Fil att ändra
-- **`src/components/admin/QuoteFormModal.tsx`** — rad 278 och 291: ta bort `vatIncluded`-villkoret, alltid multiplicera med 1.25
-
-### Befintliga offerter
-Offerter som redan sparats med fel `total_sek` behöver öppnas och sparas om i admin för att uppdateras.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
