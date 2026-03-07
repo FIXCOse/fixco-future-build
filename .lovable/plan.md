@@ -1,22 +1,33 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Problem
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+Tabellen `quote_views` lagrar inte IP-adresser, så det går inte att se om det är samma person som öppnat offerten flera gånger.
 
-### Fil som ändras
+## Plan
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+### 1. Databasmigrering
+Lägg till kolumn `ip_address text` i `quote_views`.
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+```sql
+ALTER TABLE public.quote_views ADD COLUMN ip_address text;
+```
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+### 2. Edge function (`get-quote-public/index.ts`)
+Extrahera IP från request headers (Supabase edge functions kör bakom en proxy som sätter `x-forwarded-for` eller `x-real-ip`). Spara i insert:
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+```ts
+const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+  || req.headers.get('x-real-ip')
+  || 'okänd';
+
+await supabase
+  .from('quote_views')
+  .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip });
+```
+
+### 3. Admin-timeline (`QuoteStatusTimeline.tsx`)
+- Uppdatera queryn att hämta `ip_address` utöver `viewed_at`
+- Visa IP bredvid varje tidsstämpel i tooltip:en, t.ex. `7 mars 2026 kl. 14:33 — 83.12.45.67`
+- Visa antal unika IP:er i rubriken: "Öppnad 16 gånger (3 unika IP:er)"
 
