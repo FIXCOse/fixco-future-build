@@ -552,7 +552,7 @@ export const servicesDataNew = [
         id: "snickeri-3",
         title: "Montera innerdörrar",
         description: "Montering av innerdörrar. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
