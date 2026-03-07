@@ -105,9 +105,9 @@ const FAQTeaser = () => {
                   variant="cta-primary"
                   size="cta"
                   className="group"
-                  onClick={() => window.open('tel:+46793350228')}
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  {t('faq.call_us_with_phone')}
+                  {t('nav.bookHomeVisit')}
                 </Button>
                 <Button
                   variant="cta-secondary"
