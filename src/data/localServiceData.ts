@@ -523,6 +523,11 @@ const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: strin
     { myth: "Man kan byta eluttag och strömbrytare själv", truth: "Alla elarbeten kräver behörighet enligt Elsäkerhetsverket. Felaktigt utförda elarbeten kan leda till brand." },
     { myth: "LED-belysning kräver ingen ny eldragning", truth: "Dimbar LED-belysning kräver ofta kompatibla dimmers och ibland ny kabling för att fungera flimmerfritt." },
     { myth: "Laddbox för elbil kan anslutas till vanligt uttag", truth: "En laddbox kräver dedikerad säkring och professionell installation. Vanliga uttag kan överhettas vid lång laddning." }
+  ],
+  "rivning": [
+    { myth: "Man kan riva bärande väggar själv utan risk", truth: "Rivning av bärande väggar utan konstruktörsgodkännande kan leda till rasrisk. Bygganmälan krävs alltid." },
+    { myth: "Rivning är bara att slå med släggan", truth: "Professionell rivning kräver kontroll av asbest, bly, el och VVS innan arbetet påbörjas. Felaktig rivning kan orsaka skador för hundratusentals kronor." },
+    { myth: "Rivningsavfall kan slängas var som helst", truth: "Rivningsavfall måste sorteras och transporteras till godkänd mottagningsstation. Farligt avfall som asbest har särskilda regler." }
   ]
 };
 
