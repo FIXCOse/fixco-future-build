@@ -590,7 +590,7 @@ export const servicesDataNew = [
         id: "snickeri-6",
         title: "Golvbyte laminat/parkett",
         description: "Byte av golv. Yta och typ väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
