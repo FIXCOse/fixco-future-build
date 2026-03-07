@@ -148,6 +148,13 @@ export const SEARCH_ACTION_PATTERNS: Record<LocalServiceSlug, {
     urgentTerms: ["akut elektriker", "snabb elinstallation"],
     projectTypes: ["eluttag installation", "belysning installation", "laddbox montering", "elcentral byte"],
     synonyms: ["elinstallatör", "elmontör", "elektriker installation"]
+  },
+  "rivning": {
+    actions: ["riva", "demolera", "ta bort", "boka"],
+    objects: ["badrum", "kök", "innervägg", "golv", "kakel", "fasad", "garage", "vind"],
+    urgentTerms: ["akut rivning", "snabb rivning", "rivning idag"],
+    projectTypes: ["badrumsrivning", "köksrivning", "totalrivning", "stomrent", "håltagning", "rivning av väggar"],
+    synonyms: ["rivare", "rivningsfirma", "rivningsföretag", "demolering", "rivningstjänst"]
   }
 };
 
