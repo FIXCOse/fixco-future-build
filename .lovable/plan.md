@@ -1,22 +1,28 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Filtrera ROT/RUT-alternativ i SegmentedPriceToggle baserat på tjänstens berättigande
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Ändring 1: `src/components/SegmentedPriceToggle.tsx`
+Lägg till en optional prop `allowedModes` som filtrerar vilka knappar som visas. "Alla" (baspris) visas alltid.
 
-### Fil som ändras
+```tsx
+interface SegmentedPriceToggleProps {
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  allowedModes?: PriceMode[];  // ny prop
+}
+```
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+Filtrera `options` arrayen: visa alltid `'all'`, och visa `'rot'`/`'rut'` bara om de finns i `allowedModes` (eller om `allowedModes` inte skickats, visa alla).
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+### Ändring 2: `src/pages/ServiceDetail.tsx`
+Skicka `allowedModes` baserat på `service.eligible`:
+- Om `eligible.rot && !eligible.rut` → `['all', 'rot']`
+- Om `eligible.rut && !eligible.rot` → `['all', 'rut']`
+- Om båda → `['all', 'rot', 'rut']`
+- Om ingen → `['all']`
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+```tsx
+<SegmentedPriceToggle size="md" allowedModes={allowedModes} />
+```
 
