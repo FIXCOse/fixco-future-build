@@ -74,7 +74,8 @@ const ServiceDetail = () => {
     'fonster-dorrar': 'fonster-dorrar',
     'golv': 'golv',
     'kok': 'kok',
-    'takarbeten': 'takarbeten'
+     'takarbeten': 'takarbeten',
+     'rivning': 'rivning'
   };
   
   const categoryName = normalizedSlug ? categoryMap[normalizedSlug] : undefined;

@@ -81,6 +81,7 @@ export type CopyKey =
    | 'serviceCategories.markarbeten.title' | 'serviceCategories.markarbeten.description'
    | 'serviceCategories.tekniska-installationer.title' | 'serviceCategories.tekniska-installationer.description'
    | 'serviceCategories.flytt.title' | 'serviceCategories.flytt.description'
+   | 'serviceCategories.rivning' | 'serviceCategories.rivning.title' | 'serviceCategories.rivning.description'
   
   // Filter UI  
   | 'filter.search_placeholder' | 'filter.all_services' | 'filter.all_prices'

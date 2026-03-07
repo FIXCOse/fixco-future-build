@@ -121,7 +121,8 @@ const Navbar2 = () => {
     { href: paths.tradgard, title: t('serviceCategories.tradgard.title'), desc: t('serviceCategories.tradgard.description') },
     { href: paths.stadning, title: t('serviceCategories.stadning.title'), desc: t('serviceCategories.stadning.description') },
     { href: paths.tekniska, title: t('serviceCategories.tekniska-installationer.title'), desc: t('serviceCategories.tekniska-installationer.description') },
-    { href: paths.dorrlas, title: currentLanguage === 'en' ? 'Door Locks' : 'Dörrlås', desc: currentLanguage === 'en' ? 'Smart locks & security' : 'Smarta lås & säkerhet' },
+     { href: paths.rivning, title: t('serviceCategories.rivning.title'), desc: t('serviceCategories.rivning.description') },
+     { href: paths.dorrlas, title: currentLanguage === 'en' ? 'Door Locks' : 'Dörrlås', desc: currentLanguage === 'en' ? 'Smart locks & security' : 'Smarta lås & säkerhet' },
   ];
 
   const moreLinks = [

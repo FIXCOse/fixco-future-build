@@ -184,8 +184,11 @@ export const sv: Record<CopyKey, string> = {
   'serviceCategories.markarbeten.description': 'Grävning och anläggning',
   'serviceCategories.tekniska-installationer.title': 'Tekniska installationer',
   'serviceCategories.tekniska-installationer.description': 'Nätverk, larm och IT-support',
-  'serviceCategories.flytt.title': 'Flytt',
-  'serviceCategories.flytt.description': 'Transport och bärhjälp',
+   'serviceCategories.flytt.title': 'Flytt',
+   'serviceCategories.flytt.description': 'Transport och bärhjälp',
+   'serviceCategories.rivning': 'Rivning',
+   'serviceCategories.rivning.title': 'Rivning',
+   'serviceCategories.rivning.description': 'Badrum, kök, väggar & bortforsling',
   
   // Filter UI
   'filter.search_placeholder': 'Sök efter tjänst, t.ex. "dimmer", "IKEA", "diskmaskin"',
