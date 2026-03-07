@@ -24,6 +24,84 @@ async function notifyAdmin(subject: string, html: string) {
   }
 }
 
+async function sendCustomerConfirmation(customerEmail: string, customerName: string, quoteNumber: string, quoteTitle: string, signatureName?: string) {
+  try {
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY || !customerEmail) return;
+
+    const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:20px;">
+    <div style="background:linear-gradient(135deg,#16a34a,#15803d);color:white;padding:30px;border-radius:12px 12px 0 0;text-align:center;">
+      <div style="font-size:48px;margin-bottom:8px;">🎉</div>
+      <h1 style="margin:0;font-size:24px;font-weight:700;">Tack för ditt förtroende!</h1>
+      <p style="margin:8px 0 0;opacity:0.9;font-size:14px;">Din offert är nu bekräftad</p>
+    </div>
+    <div style="background:white;padding:30px;border:1px solid #e5e7eb;border-top:none;">
+      <p style="font-size:16px;margin:0 0 20px;color:#374151;">Hej ${customerName},</p>
+      <p style="font-size:15px;margin:0 0 20px;color:#6b7280;line-height:1.6;">
+        Vi har mottagit ditt godkännande av offerten och ser fram emot att köra igång med projektet!
+      </p>
+      
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;width:140px;">Offert</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-weight:600;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</td>
+        </tr>
+        ${signatureName ? `
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Signerad av</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${signatureName}</td>
+        </tr>
+        ` : ''}
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Godkänd</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${now}</td>
+        </tr>
+      </table>
+
+      <div style="background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;padding:16px;margin-bottom:20px;">
+        <p style="margin:0 0 8px;font-size:15px;color:#15803d;font-weight:600;">Vad händer nu?</p>
+        <ol style="margin:0;padding-left:18px;color:#166534;font-size:14px;line-height:1.8;">
+          <li>Vi kontaktar dig inom kort för att planera nästa steg</li>
+          <li>Vi bokar in en starttid som passar dig</li>
+          <li>Du får en bekräftelse med alla detaljer</li>
+        </ol>
+      </div>
+
+      <p style="font-size:14px;color:#6b7280;margin:0;">
+        Har du frågor? Kontakta oss på <a href="mailto:info@fixco.se" style="color:#2563eb;text-decoration:none;">info@fixco.se</a>
+      </p>
+    </div>
+    <div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;">
+      <p style="margin:0;">Fixco · info@fixco.se</p>
+      <p style="margin:4px 0 0;">© ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Fixco <info@fixco.se>',
+        to: [customerEmail],
+        subject: `Tack! Din offert ${quoteNumber} från Fixco är bekräftad`,
+        html,
+      }),
+    });
+    console.log('Customer confirmation email sent to:', customerEmail);
+  } catch (e) {
+    console.error('Customer confirmation email failed:', e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
