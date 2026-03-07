@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { GradientText } from "./GradientText";
 import MagneticButton from "@/components/MagneticButton";
 import { Button } from "@/components/ui/button";
