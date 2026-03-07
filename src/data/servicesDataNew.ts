@@ -1128,7 +1128,7 @@ export const servicesDataNew = [
         id: "markarbeten-1",
         title: "Schaktning för altan/grund",
         description: "Schaktning för altan eller grund till byggnader",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
