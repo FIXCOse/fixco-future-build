@@ -1167,7 +1167,7 @@ export const servicesDataNew = [
         id: "markarbeten-4",
         title: "Staketstolpar/gjutning",
         description: "Uppsättning av staketstolpar med gjutning. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
