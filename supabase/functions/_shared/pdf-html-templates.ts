@@ -1186,7 +1186,7 @@ export function generateInvoiceHTMLv2(invoice: InvoiceData, logoBase64?: string)
               <p style="margin: 0 0 4px 0; font-weight: 600;">Fixco AB</p>
               <p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">Org.nr: 556789-0123</p>
               <p style="margin: 0 0 4px 0; color: #64748b; font-size: 14px;">info@fixco.se</p>
-              <p style="margin: 0; color: #64748b; font-size: 14px;">08-123 45 67</p>
+              
             </div>
           </div>
           
