@@ -76,7 +76,7 @@ function generateInvoiceHTML(invoice: any, customer: any, property: any, publicU
           <div class="section-title">Från</div>
           <div class="info-line"><strong>Fixco AB</strong></div>
           <div class="info-line">info@fixco.se</div>
-          <div class="info-line">079-335 02 28</div>
+          
         </div>
         <div style="text-align:right">
           <div class="section-title">Till</div>
