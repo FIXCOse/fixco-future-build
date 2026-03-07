@@ -1,23 +1,24 @@
 
 
-## Problem
+## Plan: Fixa vit text i CTA-knappar i båda mailen
 
-The RLS policy on `quote_views` calls `is_admin_or_owner()` without passing `auth.uid()`. The function requires a UUID argument. This causes the SELECT to silently return no rows, so the timeline never shows view data.
+Bara en ändring: lägg till inline `style="color:#ffffff !important;"` på CTA-länkarna i båda edge functions. E-postklienter ignorerar `<style>`-block och visar länktexten i blå/lila istället.
 
-## Fix
+### Ändringar
 
-**SQL migration** — Drop and recreate the SELECT policy on `quote_views` with the correct function call:
+| Fil | Rad | Ändring |
+|-----|-----|---------|
+| `send-quote-email-new/index.ts` | 97 | Inline style med vit text på CTA `<a>` |
+| `send-followup-email/index.ts` | 78 | Inline style med vit text på CTA `<a>` |
 
-```sql
-DROP POLICY "Admins can read quote_views" ON public.quote_views;
-CREATE POLICY "Admins can read quote_views"
-  ON public.quote_views FOR SELECT TO authenticated
-  USING (public.is_admin_or_owner(auth.uid()));
+Båda ändras från:
+```html
+<a class="cta" href="..." target="_blank">Text</a>
+```
+Till:
+```html
+<a class="cta" href="..." target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">Text</a>
 ```
 
-| File | Change |
-|------|--------|
-| New SQL migration | Fix RLS policy to pass `auth.uid()` to `is_admin_or_owner` |
-
-No frontend changes needed — the timeline component already fetches and displays the data correctly. It just gets empty results due to the broken RLS policy.
+Inga andra ändringar behövs — tidsstämplarna fungerar redan.
 
