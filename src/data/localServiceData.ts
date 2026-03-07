@@ -978,7 +978,8 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "fasadmalning": "Fasadmålare har erfarenhet av alla fasadtyper och använder väderbeständig kvalitetsfärg.",
     "inomhusmalning": "Inomhusmålare är utbildade i tapetsering, spackling och färgmatchning.",
     "golvlaggning": "Golvläggare är utbildade inom parkett, vinyl, laminat och klinker.",
-    "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter."
+    "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
+    "rivning": "Rivare har erfarenhet av säker rivning av badrum, kök, väggar och golv med korrekt avfallshantering."
   };
   return certTexts[serviceSlug];
 }
