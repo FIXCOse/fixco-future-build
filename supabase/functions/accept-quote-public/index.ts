@@ -282,6 +282,10 @@ Deno.serve(async (req) => {
       <p>Projekt har skapats automatiskt.</p>`
     );
 
+    sendCustomerConfirmation(
+      quote.customer?.email, customerName, quote.number, quote.title, signature_name
+    );
+
     return new Response(
       JSON.stringify({ ok: true, projectId: project.id }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
