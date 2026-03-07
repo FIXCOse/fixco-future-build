@@ -147,7 +147,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.send-followup-email]
-verify_jwt = false
+verify_jwt = false  # Auth validated in function code
 
 [functions.generate-followup-text]
 verify_jwt = false

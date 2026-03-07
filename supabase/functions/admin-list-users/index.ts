@@ -18,20 +18,53 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Verify the requesting user is admin/owner
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check if user is admin/owner via user_roles table
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id);
+
+    const isAdmin = roles?.some(r => ['admin', 'owner'].includes(r.role));
+    if (!isAdmin) {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
     // Parse request body with defaults
     const { q = '', role = '', page = 1, pageSize = 50 } = await req.json().catch(() => ({}));
 
     console.log('Listing users with params:', { q, role, page, pageSize });
 
     // 1) Get auth users with pagination
-    const { data: authData, error: authError } = await supabase.auth.admin.listUsers({
+    const { data: authData, error: listError } = await supabase.auth.admin.listUsers({
       page,
       perPage: pageSize
     });
 
-    if (authError) {
-      console.error('Auth error:', authError);
-      return new Response(JSON.stringify({ error: authError.message }), { 
+    if (listError) {
+      console.error('Auth error:', listError);
+      return new Response(JSON.stringify({ error: listError.message }), { 
         status: 400, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
@@ -82,10 +115,10 @@ serve(async (req) => {
     const combinedUsers = users
       .map(user => {
         const profile = profileMap[user.id];
-        const roles = roleMap.get(user.id) || ['customer'];
-        const primaryRole = roles.includes('owner') ? 'owner' :
-                           roles.includes('admin') ? 'admin' :
-                           roles.includes('worker') ? 'worker' : 'customer';
+        const userRolesList = roleMap.get(user.id) || ['customer'];
+        const primaryRole = userRolesList.includes('owner') ? 'owner' :
+                           userRolesList.includes('admin') ? 'admin' :
+                           userRolesList.includes('worker') ? 'worker' : 'customer';
         
         return {
           id: user.id,
@@ -96,7 +129,7 @@ serve(async (req) => {
           first_name: profile?.first_name || '',
           last_name: profile?.last_name || '',
           role: primaryRole,
-          roles: roles,
+          roles: userRolesList,
           user_type: profile?.user_type || 'private',
           company_name: profile?.company_name,
           brf_name: profile?.brf_name,
@@ -137,8 +170,7 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Edge function error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
