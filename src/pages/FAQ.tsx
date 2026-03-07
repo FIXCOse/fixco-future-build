@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Phone } from "lucide-react";
+import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Calendar } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
