@@ -603,7 +603,7 @@ export const servicesDataNew = [
         id: "snickeri-7",
         title: "Väggresning & gips",
         description: "Rivning av väggar och gipsning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
