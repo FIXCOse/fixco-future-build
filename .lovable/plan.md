@@ -1,43 +1,22 @@
 
 
-## Plan: Prioritera populära kategorier i default-sorteringen ("Alla tjänster")
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-När "Alla tjänster" är valt och sorteringen är "relevans" visas tjänsterna i databasordning utan prioritering. Populära kategorier som montering, snickeri och rivning hamnar inte nödvändigtvis på första sidorna.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
-I `FastServiceFilter.tsx`, lägg till en prioriteringslogik i sort-steget för `sortBy === 'relevans'` (default):
+### Fil som ändras
 
-1. **Prioritera kategori**: Ge snickeri, montering och rivning högre prioritet
-2. **Inom varje grupp**: Visa tjänster med synliga priser (hourly/fixed) före offert-tjänster
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-### Fil att ändra
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-| Fil | Ändring |
-|---|---|
-| **`src/components/FastServiceFilter.tsx`** (rad 193-200) | Lägg till sortering för `relevans`-läget som prioriterar snickeri → montering → rivning → övriga, och inom varje grupp: prissatta före offert |
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-### Sorteringslogik
-```ts
-// Default "relevans" sort: prioritize popular categories, then priced services
-const CATEGORY_PRIORITY: Record<string, number> = {
-  'snickeri': 0,
-  'montering': 1,
-  'rivning': 2,
-};
-
-if (sortBy === 'relevans') {
-  filtered.sort((a, b) => {
-    const aPrio = CATEGORY_PRIORITY[a.category] ?? 3;
-    const bPrio = CATEGORY_PRIORITY[b.category] ?? 3;
-    if (aPrio !== bPrio) return aPrio - bPrio;
-    // Within same priority: priced before quote
-    const aHasPrice = a.priceType !== 'quote' ? 0 : 1;
-    const bHasPrice = b.priceType !== 'quote' ? 0 : 1;
-    return aHasPrice - bHasPrice;
-  });
-}
-```
-
-Denna sortering gäller bara i "Alla tjänster" + "relevans"-läge. Vid kategorifiltrering eller annan sort påverkas ingenting.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
