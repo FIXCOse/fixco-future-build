@@ -518,7 +518,7 @@ export const servicesDataNew = [
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
-    basePrice: 859,
+    basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
