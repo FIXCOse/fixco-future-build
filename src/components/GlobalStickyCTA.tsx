@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import OfferWizardModal from './OfferWizardModal';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { useCopy } from '@/copy/CopyProvider';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 const GlobalStickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
