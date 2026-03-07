@@ -48,7 +48,7 @@ const GlobalStickyCTA = () => {
       return { text: t('sticky.bookService'), icon: ArrowRight, variant: "default" as const };
     }
     if (location.pathname === '/kontakt') {
-      return { text: t('sticky.callNow'), icon: Phone, variant: "default" as const };
+      return { text: t('sticky.callNow'), icon: Calendar, variant: "default" as const };
     }
     return { text: t('sticky.requestQuote'), icon: Calculator, variant: "default" as const };
   };
