@@ -1141,7 +1141,7 @@ export const servicesDataNew = [
         id: "markarbeten-2",
         title: "Dränering",
         description: "Installation av dränering. Längd väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
