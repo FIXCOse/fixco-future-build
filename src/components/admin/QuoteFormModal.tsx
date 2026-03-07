@@ -313,9 +313,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     // Beräkna hur stor del av totalen som är arbete
     const workRatio = totalCost > 0 ? workCost / totalCost : 1;
     
-    // Arbetskostnad INKL moms — alltid multiplicera med 1.25
-    // oavsett vatIncluded-flagga, eftersom subtotal_work_sek alltid är exkl moms
-    const workCostInclVat = workCost * 1.25;
+    // Om vatIncluded=true är workCost redan inkl moms
+    const workCostInclVat = vatIncluded ? workCost : workCost * 1.25;
     
     // Proportionell rabatt på arbetsdelen
     const discount = calculateDiscount();
