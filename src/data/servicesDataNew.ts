@@ -564,7 +564,7 @@ export const servicesDataNew = [
         id: "snickeri-4",
         title: "Lister & foder",
         description: "Installation av lister och foder. Rum väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
