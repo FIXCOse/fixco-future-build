@@ -228,14 +228,14 @@ function Navigation() {
           <div className="flex items-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5">
             
             
-            {/* Contact - Desktop Only */}
-            <a 
-              href="tel:+46793350228" 
+            {/* Book Home Visit - Desktop Only */}
+            <button 
+              onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
               className="hidden xl:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
-              <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline font-medium">+46 79 335 02 28</span>
-            </a>
+              <Calendar className="h-4 w-4" />
+              <span className="hidden xl:inline font-medium">{t('nav.bookHomeVisit')}</span>
+            </button>
             
             {/* User Actions - Desktop */}
             {user ? (
