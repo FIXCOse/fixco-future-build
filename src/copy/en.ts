@@ -185,7 +185,10 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.tekniska-installationer.title': 'Technical installations',
   'serviceCategories.tekniska-installationer.description': 'Network, security and IT support',
   'serviceCategories.flytt.title': 'Moving',
-  'serviceCategories.flytt.description': 'Transport and moving assistance',
+   'serviceCategories.flytt.description': 'Transport and moving assistance',
+   'serviceCategories.rivning': 'Demolition',
+   'serviceCategories.rivning.title': 'Demolition',
+   'serviceCategories.rivning.description': 'Bathroom, kitchen, walls & disposal',
   
   // Filter UI
   'filter.search_placeholder': 'Search for service, e.g. "dimmer", "IKEA", "dishwasher"',
