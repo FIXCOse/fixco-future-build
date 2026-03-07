@@ -1,23 +1,22 @@
 
 
-## Plan: Fix konfetti på mobil
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-På mobilen kan flera saker blockera konfettin:
-1. CSS-regeln `body:has([role="dialog"]) { position: fixed !important; }` i `index.css` kan förstöra `position: fixed` på canvasen i vissa mobilwebbläsare (Safari)
-2. Canvas-elementet saknar explicita `width`/`height`-attribut — bara CSS-storlek. På mobil kan detta ge en 0×0 renderingsyta
-3. `startVelocity: 45` skjuter partiklar utanför den lilla mobilskärmen
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Fix i `src/pages/QuotePublic.tsx`
-- Sätt `canvas.width = window.innerWidth` och `canvas.height = window.innerHeight` explicit (pixelstorlek, inte bara CSS)
-- Skala ner `startVelocity` och `particleCount` på mobil (`window.innerWidth < 768`)
-- Lägg till `canvas.setAttribute('aria-hidden', 'true')` för tillgänglighet
+### Fil som ändras
 
-### Fix i `src/index.css`
-- Ändra `body:has([role="dialog"]) { position: fixed !important; }` till att INTE appliceras på quote-sidan, genom att undanta `body[data-page-type="quote"]` — eller ta bort `position: fixed` helt och ersätt med `overflow: hidden` (som redan finns)
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-| Fil | Ändring |
-|-----|---------|
-| `src/pages/QuotePublic.tsx` | Explicit canvas-dimensioner + mobilanpassade partikelparametrar |
-| `src/index.css` | Ta bort `position: fixed` från body-modal-regeln (bryter fixed-positionering på mobil) |
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
