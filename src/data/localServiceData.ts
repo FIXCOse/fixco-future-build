@@ -676,7 +676,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Fasadmålning ${area} ★ Utvändig målning & puts · ROT 30%`,
     "inomhusmalning": `Inomhusmålning ${area} ★ Tapetsering & spackling · ROT 30%`,
     "golvlaggning": `Golvläggning ${area} ★ Parkett, vinyl & klinker · ROT 30%`,
-    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`
+    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`,
+    "rivning": `Rivning ${area} ★ Badrum, kök & innerväggar · ROT 30% · Fri offert`
   };
 
   const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
