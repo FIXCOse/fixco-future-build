@@ -183,13 +183,8 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
                   </button>
                 </li>
                 <li>
-                  <a href="tel:+46793350228" className="text-muted-foreground hover:text-foreground transition-colors">
-                    +46 79 335 02 28
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:support@fixco.se" className="text-muted-foreground hover:text-foreground transition-colors">
-                    support@fixco.se
+                  <a href="mailto:info@fixco.se" className="text-muted-foreground hover:text-foreground transition-colors">
+                    info@fixco.se
                   </a>
                 </li>
               </ul>
