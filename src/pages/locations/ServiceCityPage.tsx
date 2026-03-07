@@ -127,13 +127,13 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
                 <FileText className="w-5 h-5" />
                 Begär offert
               </button>
-              <a 
-                href="tel:08-123 456 78" 
+              <button 
+                onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-colors"
               >
-                <Phone className="w-5 h-5" />
-                Ring 08-123 456 78
-              </a>
+                <Calendar className="w-5 h-5" />
+                Boka hembesök
+              </button>
             </div>
           </div>
 
