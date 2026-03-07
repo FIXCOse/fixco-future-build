@@ -48,6 +48,7 @@ export const LOCAL_SERVICES = [
   { slug: "inomhusmalning", name: "Inomhusmålning", serviceKey: "malning", rotRut: "ROT" },
   { slug: "golvlaggning", name: "Golvläggning", serviceKey: "golv", rotRut: "ROT" },
   { slug: "elinstallation", name: "Elinstallation", serviceKey: "el", rotRut: "ROT" },
+  { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
 ] as const;
 
 export type LocalServiceSlug = typeof LOCAL_SERVICES[number]["slug"];
