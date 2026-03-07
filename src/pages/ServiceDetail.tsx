@@ -44,6 +44,7 @@ const ServiceDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
+  const setMode = usePriceStore((state) => state.setMode);
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
@@ -53,6 +54,16 @@ const ServiceDetail = () => {
   
   // Get static service category info for UI
   const service = servicesDataNew.find(s => s.slug === normalizedSlug);
+
+  // Auto-set price mode based on service eligibility
+  useEffect(() => {
+    if (!service) return;
+    if (service.eligible?.rot) {
+      setMode('rot');
+    } else if (service.eligible?.rut) {
+      setMode('rut');
+    }
+  }, [normalizedSlug]);
   
   // Fetch database services with translations based on locale
   const { data: dbServices, isLoading } = useServices(locale);
