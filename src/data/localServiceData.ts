@@ -957,7 +957,8 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "fasadmalning": "Facade painters are experienced with all facade types and use weather-resistant quality paints.",
     "inomhusmalning": "Interior painters are trained in wallpapering, plastering and color matching.",
     "golvlaggning": "Floor installers are trained in parquet, vinyl, laminate and tile flooring.",
-    "elinstallation": "Electricians are authorized according to the Swedish Electrical Safety Authority."
+    "elinstallation": "Electricians are authorized according to the Swedish Electrical Safety Authority.",
+    "rivning": "Demolition workers are experienced in safe demolition of bathrooms, kitchens, walls and floors with proper waste handling."
   } : {
     "elektriker": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "vvs": "VVS-montörer har Säker Vatteninstallation-certifiering och arbetar enligt branschregler.",
