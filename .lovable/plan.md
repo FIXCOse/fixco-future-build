@@ -1,22 +1,31 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Ta bort telefonnummer och ersätt med "Boka Hembesök"
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+Telefonnumret visas på **14 ställen** i kodbasen. Jag tar bort/ersätter alla publika instanser med "Boka Hembesök"-knappar som öppnar `openServiceRequestModal({ mode: 'home_visit', showCategories: true })`. Admin/worker-sidor och privacy-sidan behålls orörda.
 
-### Fil som ändras
+### Filer att ändra (10 filer)
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+| Fil | Ändring |
+|---|---|
+| **Navigation.tsx** | Desktop: ersätt telefon-länk (rad 231-238) med "Boka Hembesök"-knapp. Mobil: ersätt telefon-länk (rad 417-424) med "Boka Hembesök"-knapp |
+| **GlobalStickyCTA.tsx** | Desktop: ta bort telefonnr-display (rad 114-115) och "Ring nu"-knapp (rad 135-143). Mobil: ersätt telefon-knapp (rad 85-90) med hembesöks-knapp. Ersätt `+46 79 335 02 28` med "Uppsala & Stockholm" |
+| **HeroV2.tsx** | Ersätt "Ring oss"-knapp (rad 87-97) med "Boka Hembesök"-knapp som öppnar modalen |
+| **CTAV2.tsx** | Ersätt telefon-länk med "Boka Hembesök" |
+| **Contact.tsx** | Ersätt telefon-kortet (rad 295-303) med "Boka Hembesök"-kort med Calendar-ikon |
+| **FAQTeaser.tsx** | Ersätt "Ring oss"-knapp (rad 106-110) med "Boka Hembesök" |
+| **BlogPost.tsx** | Ersätt "Ring oss"-knapp (rad 620-624) med "Boka Hembesök" |
+| **DoorLockLandingPage.tsx** | Ersätt båda telefon-knapparna (rad 93-97, 489-493) med hembesöks-knappar |
+| **BookVisit.tsx** | Ta bort telefonnummer-raden (rad 325-329) |
+| **ServiceCityPage.tsx** | Ersätt båda "Ring"-länkarna (rad 132-136, 270-276) med "Begär offert"-knappar |
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+### Ej ändrade (behåller telefonnummer)
+- **CareersContact.tsx** — HR-kontakt, behövs
+- **Privacy.tsx** — Juridisk kontaktinfo
+- **StickyCTA.tsx / StickyCtaBar.tsx / StickyPhoneButton.tsx** — Redan dolda/utkommenterade per memories
+- **Admin/Worker-sidor** — Interna verktyg
+- **ConversationManager.ts** — AI-chat, internt
+- **SEOSchemaEnhanced.tsx** — Schema.org, uppdateras till contactPoint med email istället
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+Alla ersättningar använder det etablerade mönstret: `openServiceRequestModal({ mode: 'home_visit', showCategories: true })`.
 
