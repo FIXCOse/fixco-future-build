@@ -85,9 +85,9 @@ const GlobalStickyCTA = () => {
                 variant="outline"
                 size="sm"
                 className="shrink-0 border-primary/30 hover:bg-primary/10"
-                onClick={() => window.open('tel:+46793350228')}
+                onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsDismissed(true); }}
               >
-                <Phone className="h-4 w-4" />
+                <Calendar className="h-4 w-4" />
               </Button>
 
               <Button
