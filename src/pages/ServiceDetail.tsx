@@ -306,6 +306,9 @@ const ServiceDetail = () => {
               <MapPin className="h-4 w-4 mr-2" />
               <span>{t('serviceDetail.availableIn')}</span>
             </div>
+            <div className="flex justify-center mt-6">
+              <SegmentedPriceToggle size="md" />
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
