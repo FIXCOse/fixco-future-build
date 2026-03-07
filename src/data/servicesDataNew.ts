@@ -11,7 +11,8 @@ import {
   Building,
   Truck,
   Droplets,
-  Paintbrush
+  Paintbrush,
+  Pickaxe
 } from "lucide-react";
 import { ServicePricing } from '@/utils/priceCalculation';
 
