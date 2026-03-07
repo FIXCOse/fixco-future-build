@@ -25,7 +25,8 @@ import {
   CheckCircle2,
   Lightbulb,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Calendar
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
