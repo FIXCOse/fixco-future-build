@@ -37,7 +37,7 @@ const AdminOngoingProjects = () => {
         .select(`
           *,
           quote:quotes_new!projects_quote_id_fkey(number, title),
-          customer:profiles!projects_customer_id_fkey(id, full_name, first_name, last_name, email)
+          customer:customers!projects_customer_id_fkey(id, name, email)
         `)
         .is('deleted_at', null)
         .order('created_at', { ascending: false });
