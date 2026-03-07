@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
@@ -8,6 +8,7 @@ import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useServices } from "@/hooks/useServices";
 import PriceSummary from '@/components/PriceSummary';
 import ServiceCardV3 from '@/components/ServiceCardV3';
+import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from "@/copy/CopyProvider";
 import { Seo } from "@/components/SEO";
@@ -43,6 +44,7 @@ const ServiceDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
+  const setMode = usePriceStore((state) => state.setMode);
 
   // Determine if we're on English site
   const isEnglish = locale === 'en';
@@ -52,6 +54,16 @@ const ServiceDetail = () => {
   
   // Get static service category info for UI
   const service = servicesDataNew.find(s => s.slug === normalizedSlug);
+
+  // Auto-set price mode based on service eligibility
+  useEffect(() => {
+    if (!service) return;
+    if (service.eligible?.rot) {
+      setMode('rot');
+    } else if (service.eligible?.rut) {
+      setMode('rut');
+    }
+  }, [normalizedSlug]);
   
   // Fetch database services with translations based on locale
   const { data: dbServices, isLoading } = useServices(locale);
@@ -304,6 +316,9 @@ const ServiceDetail = () => {
             <div className="flex items-center justify-center mt-4 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mr-2" />
               <span>{t('serviceDetail.availableIn')}</span>
+            </div>
+            <div className="flex justify-center mt-6">
+              <SegmentedPriceToggle size="md" />
             </div>
           </div>
           
