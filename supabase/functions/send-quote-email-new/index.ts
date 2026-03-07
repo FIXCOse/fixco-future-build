@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
             ${quote.valid_until ? `<p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
             
             <div style="text-align: center; margin-top: 24px;">
-              <a class="cta" href="${publicUrl}" target="_blank">Visa och acceptera offert</a>
+              <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">Visa och acceptera offert</a>
             </div>
             
             <p style="margin-top: 24px; font-size: 12px; color: #6b7280;">

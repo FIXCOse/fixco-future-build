@@ -75,7 +75,7 @@ serve(async (req) => {
             ${bodyHtml}
             
             <div style="text-align: center; margin-top: 24px;">
-              <a class="cta" href="${publicUrl}" target="_blank">Se din offert här</a>
+              <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">Se din offert här</a>
             </div>
           </div>
           

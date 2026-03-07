@@ -1,24 +1,22 @@
 
 
-## Plan: Fixa vit text i CTA-knappar i båda mailen
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Bara en ändring: lägg till inline `style="color:#ffffff !important;"` på CTA-länkarna i båda edge functions. E-postklienter ignorerar `<style>`-block och visar länktexten i blå/lila istället.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändringar
+### Fil som ändras
 
-| Fil | Rad | Ändring |
-|-----|-----|---------|
-| `send-quote-email-new/index.ts` | 97 | Inline style med vit text på CTA `<a>` |
-| `send-followup-email/index.ts` | 78 | Inline style med vit text på CTA `<a>` |
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Båda ändras från:
-```html
-<a class="cta" href="..." target="_blank">Text</a>
-```
-Till:
-```html
-<a class="cta" href="..." target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">Text</a>
-```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-Inga andra ändringar behövs — tidsstämplarna fungerar redan.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
