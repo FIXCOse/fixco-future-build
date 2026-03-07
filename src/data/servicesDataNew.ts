@@ -615,7 +615,7 @@ export const servicesDataNew = [
         id: "snickeri-8",
         title: "Trapp-renovering",
         description: "Renovering av trappor",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
