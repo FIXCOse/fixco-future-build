@@ -197,6 +197,20 @@ const FastServiceFilter: React.FC<FastServiceFilterProps> = ({
       filtered.sort((a, b) => b.basePrice - a.basePrice);
     } else if (sortBy === 'namn') {
       filtered.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'relevans') {
+      const CATEGORY_PRIORITY: Record<string, number> = {
+        'snickeri': 0,
+        'montering': 1,
+        'rivning': 2,
+      };
+      filtered.sort((a, b) => {
+        const aPrio = CATEGORY_PRIORITY[a.category] ?? 3;
+        const bPrio = CATEGORY_PRIORITY[b.category] ?? 3;
+        if (aPrio !== bPrio) return aPrio - bPrio;
+        const aHasPrice = a.priceType !== 'quote' ? 0 : 1;
+        const bHasPrice = b.priceType !== 'quote' ? 0 : 1;
+        return aHasPrice - bHasPrice;
+      });
     }
 
     return filtered;
