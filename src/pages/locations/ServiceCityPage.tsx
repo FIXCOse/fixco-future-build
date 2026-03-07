@@ -267,13 +267,13 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
               Kontakta oss idag för en kostnadsfri offert. Vi återkommer inom 24 timmar.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a 
-                href="tel:+46701234567" 
+              <button 
+                onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors"
               >
-                <Phone className="w-5 h-5" />
-                Ring 070-123 45 67
-              </a>
+                <Calendar className="w-5 h-5" />
+                Begär offert
+              </button>
               <Link 
                 to="/boka-hembesok" 
                 className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-lg font-bold text-lg hover:bg-primary/5 transition-colors"
