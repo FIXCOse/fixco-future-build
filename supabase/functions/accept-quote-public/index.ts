@@ -270,12 +270,7 @@ Deno.serve(async (req) => {
 
     notifyAdmin(
       `✅ Offert ${quote.number} accepterad av ${customerName}`,
-      `<h2>Offert accepterad!</h2>
-      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-      <p><strong>Kund:</strong> ${customerName}</p>
-      <p><strong>Signatur:</strong> ${signature_name || 'Ej angiven'}</p>
-      <p><strong>Tidpunkt:</strong> ${now}</p>
-      <p>Projekt har skapats automatiskt.</p>`
+      buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
     );
 
     sendCustomerConfirmation(
