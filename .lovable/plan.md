@@ -1,22 +1,23 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Problem
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+The RLS policy on `quote_views` calls `is_admin_or_owner()` without passing `auth.uid()`. The function requires a UUID argument. This causes the SELECT to silently return no rows, so the timeline never shows view data.
 
-### Fil som ändras
+## Fix
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**SQL migration** — Drop and recreate the SELECT policy on `quote_views` with the correct function call:
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+```sql
+DROP POLICY "Admins can read quote_views" ON public.quote_views;
+CREATE POLICY "Admins can read quote_views"
+  ON public.quote_views FOR SELECT TO authenticated
+  USING (public.is_admin_or_owner(auth.uid()));
+```
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+| File | Change |
+|------|--------|
+| New SQL migration | Fix RLS policy to pass `auth.uid()` to `is_admin_or_owner` |
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+No frontend changes needed — the timeline component already fetches and displays the data correctly. It just gets empty results due to the broken RLS policy.
 
