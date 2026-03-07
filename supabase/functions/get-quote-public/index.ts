@@ -118,7 +118,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Om status är 'sent', uppdatera till 'viewed' och skicka notis
+    // Always log every view in quote_views
+    const userAgent = req.headers.get('user-agent') || null;
+    await supabase
+      .from('quote_views')
+      .insert({ quote_id: quote.id, user_agent: userAgent });
+
+    // Only update status and send admin email on FIRST view (sent → viewed)
     if (quote.status === 'sent') {
       const { error: updateError } = await supabase
         .from('quotes_new')
