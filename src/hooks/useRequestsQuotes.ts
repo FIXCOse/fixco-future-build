@@ -151,10 +151,9 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       if (jobsError) console.error('Error fetching jobs:', jobsError);
 
-      // Fetch job workers
+      // Fetch job workers via secure RPC
       const { data: jobWorkers, error: workersError } = await supabase
-        .from('job_worker_hours')
-        .select('*');
+        .rpc('get_job_worker_hours');
 
       if (workersError) console.error('Error fetching workers:', workersError);
 
