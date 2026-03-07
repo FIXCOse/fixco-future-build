@@ -302,7 +302,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     return Math.round(subtotalAfterDiscount * (vatRate / (100 + vatRate)));
   };
 
-  // ROT/RUT beräknas på ARBETSKOSTNAD efter rabatt INKLUSIVE moms (Skatteverket)
+  // ROT/RUT beräknas på ARBETSKOSTNAD INKLUSIVE moms (Skatteverket)
+  // subtotal_work_sek sparas alltid EXKL moms, så vi multiplicerar alltid med 1.25
   const calculateRotRutDeduction = () => {
     const workCost = calculateSubtotalWork();
     const matCost = calculateSubtotalMaterial();
@@ -311,11 +312,14 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     // Beräkna hur stor del av totalen som är arbete
     const workRatio = totalCost > 0 ? workCost / totalCost : 1;
     
-    // Hämta subtotal efter rabatt (inkl moms)
-    const subtotalAfterDiscount = calculateSubtotalAfterDiscount();
+    // Arbetskostnad INKL moms — alltid multiplicera med 1.25
+    // oavsett vatIncluded-flagga, eftersom subtotal_work_sek alltid är exkl moms
+    const workCostInclVat = workCost * 1.25;
     
-    // Arbetskostnad efter rabatt inkl moms
-    const workCostAfterDiscountInclVat = subtotalAfterDiscount * workRatio;
+    // Proportionell rabatt på arbetsdelen
+    const discount = calculateDiscount();
+    const discountOnWork = discount * workRatio;
+    const workCostAfterDiscountInclVat = workCostInclVat - discountOnWork;
     
     let deduction = 0;
     
