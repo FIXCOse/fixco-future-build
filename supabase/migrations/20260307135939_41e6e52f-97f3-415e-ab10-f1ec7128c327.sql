@@ -1,0 +1,1 @@
+ALTER TABLE public.quote_views ADD COLUMN ip_address text;

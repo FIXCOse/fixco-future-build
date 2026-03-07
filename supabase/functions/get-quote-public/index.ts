@@ -120,9 +120,12 @@ Deno.serve(async (req) => {
 
     // Always log every view in quote_views
     const userAgent = req.headers.get('user-agent') || null;
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || req.headers.get('x-real-ip')
+      || 'okänd';
     await supabase
       .from('quote_views')
-      .insert({ quote_id: quote.id, user_agent: userAgent });
+      .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip });
 
     // Only update status and send admin email on FIRST view (sent → viewed)
     if (quote.status === 'sent') {

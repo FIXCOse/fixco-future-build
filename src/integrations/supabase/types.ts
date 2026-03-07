@@ -2339,18 +2339,21 @@ export type Database = {
       quote_views: {
         Row: {
           id: string
+          ip_address: string | null
           quote_id: string
           user_agent: string | null
           viewed_at: string
         }
         Insert: {
           id?: string
+          ip_address?: string | null
           quote_id: string
           user_agent?: string | null
           viewed_at?: string
         }
         Update: {
           id?: string
+          ip_address?: string | null
           quote_id?: string
           user_agent?: string | null
           viewed_at?: string
