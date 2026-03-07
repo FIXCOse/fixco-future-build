@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 interface SegmentedPriceToggleProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
+  allowedModes?: PriceMode[];
 }
 
 const SegmentedPriceToggle = ({ className = "", size = 'md' }: SegmentedPriceToggleProps) => {
