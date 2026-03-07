@@ -4,6 +4,7 @@ import { GradientText } from "./GradientText";
 import MagneticButton from "@/components/MagneticButton";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/copy/CopyProvider";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 export const HeroV2 = () => {
   const { t, locale } = useCopy();
