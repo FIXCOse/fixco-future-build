@@ -1,22 +1,26 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Visa ROT/RUT-rabatterade priser som default på huvudtjänstesidor
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+På `/tjanster/snickeri`, `/tjanster/el` osv visas priserna utan ROT/RUT-avdrag om det globala läget inte redan är inställt. Tjänstesidan (`/tjanster`) har en synlig toggle men ServiceDetail-sidorna saknar den.
 
-### Fil som ändras
+### Lösning
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**1. Lägg till SegmentedPriceToggle på ServiceDetail.tsx**
+- Placera den ovanför tjänstekort-griden (efter rubriken "Alla våra tjänster...")
+- Centrerad, storlek `md`
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+**2. Auto-sätt rätt prisläge baserat på tjänstekategori**
+- I `ServiceDetail.tsx`, använd `useEffect` som kollar `service.eligible`:
+  - Om `eligible.rot === true` → `setMode('rot')`
+  - Om `eligible.rut === true` → `setMode('rut')`
+  - Om båda → `setMode('rot')` (ROT prioritet)
+- Kör bara vid sidladdning/slug-byte, inte om användaren manuellt bytt
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+### Fil att ändra
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+| Fil | Ändring |
+|---|---|
+| **`src/pages/ServiceDetail.tsx`** | Importera `SegmentedPriceToggle`, lägg till ovanför grid. Lägg till `useEffect` som auto-sätter mode baserat på `service.eligible` |
 
