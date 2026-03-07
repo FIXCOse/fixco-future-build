@@ -577,7 +577,7 @@ export const servicesDataNew = [
         id: "snickeri-5",
         title: "Montera köksstommar",
         description: "Montering av köksstommar. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
