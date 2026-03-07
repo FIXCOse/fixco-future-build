@@ -24,7 +24,51 @@ async function notifyAdmin(subject: string, html: string) {
   }
 }
 
-async function sendCustomerConfirmation(customerEmail: string, customerName: string, quoteNumber: string, quoteTitle: string, signatureName?: string) {
+function buildAdminHtml(quoteNumber: string, quoteTitle: string | null, customerName: string, signatureName: string | undefined, timestamp: string, isReaccept: boolean): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:20px;">
+    <div style="background:linear-gradient(135deg,#16a34a,#15803d);color:white;padding:30px;border-radius:12px 12px 0 0;text-align:center;">
+      <div style="font-size:48px;margin-bottom:8px;">✅</div>
+      <h1 style="margin:0;font-size:24px;font-weight:700;">Offert accepterad${isReaccept ? ' (re-accept)' : ''}!</h1>
+      <p style="margin:8px 0 0;opacity:0.9;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</p>
+    </div>
+    <div style="background:white;padding:30px;border:1px solid #e5e7eb;border-top:none;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;width:140px;">Offert</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-weight:600;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Kund</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${customerName}</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Signerad av</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${signatureName || 'Ej angiven'}</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Tidpunkt</td>
+          <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${timestamp}</td>
+        </tr>
+      </table>
+
+      <div style="background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;padding:16px;margin-bottom:20px;">
+        <p style="margin:0;font-size:14px;color:#15803d;font-weight:600;">${isReaccept ? 'Kunden har accepterat offerten igen.' : 'Projekt har skapats automatiskt.'}</p>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;">
+      <p style="margin:0;">Fixco · info@fixco.se</p>
+      <p style="margin:4px 0 0;">© ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
   try {
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY || !customerEmail) return;
@@ -210,11 +254,7 @@ Deno.serve(async (req) => {
 
       notifyAdmin(
         `✅ Offert ${quote.number} accepterad igen av ${customerName}`,
-        `<h2>Offert accepterad (re-accept)</h2>
-        <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-        <p><strong>Kund:</strong> ${customerName}</p>
-        <p><strong>Signatur:</strong> ${signature_name || 'Ej angiven'}</p>
-        <p><strong>Tidpunkt:</strong> ${now}</p>`
+        buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, true)
       );
 
       sendCustomerConfirmation(
@@ -274,12 +314,7 @@ Deno.serve(async (req) => {
 
     notifyAdmin(
       `✅ Offert ${quote.number} accepterad av ${customerName}`,
-      `<h2>Offert accepterad!</h2>
-      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-      <p><strong>Kund:</strong> ${customerName}</p>
-      <p><strong>Signatur:</strong> ${signature_name || 'Ej angiven'}</p>
-      <p><strong>Tidpunkt:</strong> ${now}</p>
-      <p>Projekt har skapats automatiskt.</p>`
+      buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
     );
 
     sendCustomerConfirmation(
