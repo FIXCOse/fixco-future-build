@@ -111,8 +111,6 @@ const GlobalStickyCTA = () => {
                       <div className="w-10 h-10 flex items-center justify-center mr-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10">
                         <FixcoFIcon className="h-6 w-6" />
                       </div>
-                      <Phone className="h-4 w-4 text-primary" />
-                      <span className="text-muted-foreground">+46 79 335 02 28</span>
                     </div>
                   <div className="text-muted-foreground">
                     Uppsala & Stockholm
