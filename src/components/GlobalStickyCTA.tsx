@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Phone, MessageCircle, Calculator, ArrowRight, X } from 'lucide-react';
+import { Calendar, MessageCircle, Calculator, ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import OfferWizardModal from './OfferWizardModal';
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { useCopy } from '@/copy/CopyProvider';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 const GlobalStickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,7 +48,7 @@ const GlobalStickyCTA = () => {
       return { text: t('sticky.bookService'), icon: ArrowRight, variant: "default" as const };
     }
     if (location.pathname === '/kontakt') {
-      return { text: t('sticky.callNow'), icon: Phone, variant: "default" as const };
+      return { text: t('sticky.callNow'), icon: Calendar, variant: "default" as const };
     }
     return { text: t('sticky.requestQuote'), icon: Calculator, variant: "default" as const };
   };
@@ -85,9 +86,9 @@ const GlobalStickyCTA = () => {
                 variant="outline"
                 size="sm"
                 className="shrink-0 border-primary/30 hover:bg-primary/10"
-                onClick={() => window.open('tel:+46793350228')}
+                onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsDismissed(true); }}
               >
-                <Phone className="h-4 w-4" />
+                <Calendar className="h-4 w-4" />
               </Button>
 
               <Button
@@ -111,8 +112,6 @@ const GlobalStickyCTA = () => {
                       <div className="w-10 h-10 flex items-center justify-center mr-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-10">
                         <FixcoFIcon className="h-6 w-6" />
                       </div>
-                      <Phone className="h-4 w-4 text-primary" />
-                      <span className="text-muted-foreground">+46 79 335 02 28</span>
                     </div>
                   <div className="text-muted-foreground">
                     Uppsala & Stockholm
@@ -136,10 +135,10 @@ const GlobalStickyCTA = () => {
                     variant="outline"
                     size="sm"
                     className="border-primary/30 hover:bg-primary/10"
-                    onClick={() => window.open('tel:08-123-456-78')}
+                    onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsDismissed(true); }}
                   >
-                    <Phone className="h-4 w-4 mr-2" />
-                    {t('sticky.callNow')}
+                    <Calendar className="h-4 w-4 mr-2" />
+                    {t('footer.bookHomeVisit')}
                   </Button>
 
                   <Button

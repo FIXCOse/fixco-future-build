@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X, User, LogOut, Phone, ChevronDown, Bot } from "lucide-react";
+import { Menu, X, User, LogOut, Calendar, ChevronDown, Bot } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,7 +15,6 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLanguagePersistence } from '@/hooks/useLanguagePersistence';
 import QuoteQuestionsNotification from './admin/QuoteQuestionsNotification';
 import React from 'react';
-import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -228,14 +228,14 @@ function Navigation() {
           <div className="flex items-center gap-x-1.5 lg:gap-x-3 xl:gap-x-5">
             
             
-            {/* Contact - Desktop Only */}
-            <a 
-              href="tel:+46793350228" 
+            {/* Book Home Visit - Desktop Only */}
+            <button 
+              onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
               className="hidden xl:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
-              <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline font-medium">+46 79 335 02 28</span>
-            </a>
+              <Calendar className="h-4 w-4" />
+              <span className="hidden xl:inline font-medium">{t('footer.bookHomeVisit')}</span>
+            </button>
             
             {/* User Actions - Desktop */}
             {user ? (
@@ -415,13 +415,13 @@ function Navigation() {
 
               {/* Mobile Actions */}
               <div className="pt-4 space-y-3 border-t border-border">
-                <a 
-                  href="tel:+46793350228" 
+                <button 
+                  onClick={() => { openServiceRequestModal({ mode: 'home_visit', showCategories: true }); setIsMenuOpen(false); }}
                   className="flex items-center gap-x-2 px-4 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
-                  <Phone className="h-4 w-4" />
-                  <span>+46 79 335 02 28</span>
-                </a>
+                  <Calendar className="h-4 w-4" />
+                  <span>{t('footer.bookHomeVisit')}</span>
+                </button>
 
 
                 {user ? (

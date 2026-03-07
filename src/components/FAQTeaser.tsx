@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
@@ -105,9 +106,9 @@ const FAQTeaser = () => {
                   variant="cta-primary"
                   size="cta"
                   className="group"
-                  onClick={() => window.open('tel:+46793350228')}
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  {t('faq.call_us_with_phone')}
+                  {t('footer.bookHomeVisit')}
                 </Button>
                 <Button
                   variant="cta-secondary"

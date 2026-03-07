@@ -13,7 +13,6 @@ export const getOrganizationSchema = () => ({
   "url": baseUrl,
   "logo": `${baseUrl}/assets/fixco-logo-black.png`,
   "image": `${baseUrl}/assets/hero-construction.jpg`,
-  "telephone": "+46-70-123-45-67",
   "email": "info@fixco.se",
   "paymentAccepted": ["Swish", "Bankcard", "Invoice"],
   "currenciesAccepted": "SEK",

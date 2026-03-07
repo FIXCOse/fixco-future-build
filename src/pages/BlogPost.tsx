@@ -617,10 +617,10 @@ const BlogPost = () => {
                   Begär gratis offert
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
-                  <a href="tel:+46793350228">
-                    Ring oss: 079-335 02 28
-                  </a>
+                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10"
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                >
+                  Boka hembesök
                 </Button>
               </div>
             </div>

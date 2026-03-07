@@ -4,7 +4,7 @@ import { Seo } from "@/components/SEO";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
-import { CheckCircle2, Phone, Calendar, MapPin, Zap, FileText } from "lucide-react";
+import { CheckCircle2, Calendar, MapPin, Zap, FileText } from "lucide-react";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { useCopy } from "@/copy/CopyProvider";
 
@@ -127,13 +127,13 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
                 <FileText className="w-5 h-5" />
                 Begär offert
               </button>
-              <a 
-                href="tel:08-123 456 78" 
+              <button 
+                onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-colors"
               >
-                <Phone className="w-5 h-5" />
-                Ring 08-123 456 78
-              </a>
+                <Calendar className="w-5 h-5" />
+                Boka hembesök
+              </button>
             </div>
           </div>
 
@@ -267,13 +267,13 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
               Kontakta oss idag för en kostnadsfri offert. Vi återkommer inom 24 timmar.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a 
-                href="tel:+46701234567" 
+              <button 
+                onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors"
               >
-                <Phone className="w-5 h-5" />
-                Ring 070-123 45 67
-              </a>
+                <Calendar className="w-5 h-5" />
+                Begär offert
+              </button>
               <Link 
                 to="/boka-hembesok" 
                 className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-lg font-bold text-lg hover:bg-primary/5 transition-colors"

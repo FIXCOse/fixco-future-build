@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, Send } from "lucide-react";
+import { Calendar, Mail, MapPin, Clock, CheckCircle, AlertCircle, Send } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -292,16 +293,15 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6">{t('pages.contact.contactInfo')}</h3>
                 
                 <div className="space-y-6">
-                  <a href="tel:+46793350228" className="flex items-center space-x-4 hover:text-primary transition-colors">
+                  <button onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })} className="flex items-center space-x-4 hover:text-primary transition-colors w-full text-left">
                     <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle">
-                      <Phone className="h-6 w-6 text-primary" />
+                      <Calendar className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <div className="font-semibold">{t('pages.contact.telephone')}</div>
-                      <div className="text-muted-foreground">+46 79 335 02 28</div>
-                      <div className="text-sm text-green-400">{t('pages.contact.callNow')}</div>
+                      <div className="font-semibold">{t('footer.bookHomeVisit')}</div>
+                      <div className="text-muted-foreground">{t('pages.contact.freeQuote')}</div>
                     </div>
-                  </a>
+                  </button>
 
                   <a href="mailto:info@fixco.se" className="flex items-center space-x-4 hover:text-primary transition-colors">
                     <div className="p-3 rounded-lg bg-gradient-to-br gradient-primary-subtle">

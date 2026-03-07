@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Phone, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent } from 'lucide-react';
+import { Lock, Calendar, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent } from 'lucide-react';
 import { GradientText } from '@/components/v2/GradientText';
 import { GlassCard } from '@/components/v2/GlassCard';
 import { Button } from '@/components/ui/button';
@@ -90,12 +90,10 @@ const DoorLockLandingPage: React.FC = () => {
                   size="lg"
                   variant="outline"
                   className="text-lg px-8 py-6 border-border hover:bg-muted/50"
-                  asChild
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  <a href="tel:+46793350228">
-                    <Phone className="w-5 h-5 mr-2" />
-                    079-335 02 28
-                  </a>
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Boka hembesök
                 </Button>
               </div>
 
@@ -486,12 +484,10 @@ const DoorLockLandingPage: React.FC = () => {
                   size="lg"
                   variant="outline"
                   className="text-lg px-8 py-6 border-border hover:bg-muted/50"
-                  asChild
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  <a href="tel:+46793350228">
-                    <Phone className="w-5 h-5 mr-2" />
-                    Ring oss
-                  </a>
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Boka hembesök
                 </Button>
               </div>
             </GlassCard>
