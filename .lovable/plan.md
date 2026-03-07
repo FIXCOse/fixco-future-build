@@ -1,22 +1,30 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Fix broken edge function + email issues
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Root Cause
+In `supabase/functions/accept-quote-public/index.ts`, the `sendCustomerConfirmation` function is missing its declaration. Lines 72-147 are a bare `try/catch` block floating at module scope without `async function sendCustomerConfirmation(customerEmail, customerName, quoteNumber, quoteTitle, signatureName)` wrapping them. This is a syntax error that breaks the entire edge function.
 
-### Fil som ändras
+### Fixes
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**`supabase/functions/accept-quote-public/index.ts`** — Single file, three issues:
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+1. **Add missing function declaration** — Wrap lines 72-147 in:
+   ```typescript
+   async function sendCustomerConfirmation(
+     customerEmail: string | undefined, 
+     customerName: string, 
+     quoteNumber: string, 
+     quoteTitle: string | null, 
+     signatureName: string | undefined
+   ) {
+     // existing try/catch body
+   }
+   ```
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+2. **Compact the customer email HTML** — Gmail clips emails over ~102KB. The current template has excessive whitespace. Consolidate the entire email into one clean, unbroken HTML block so Gmail doesn't split it with "...". Remove unnecessary blank lines and reduce inline style verbosity slightly.
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+3. **Verify admin email** — `buildAdminHtml` and `notifyAdmin` are already correct. Once the syntax error is fixed, the styled admin email will work automatically since the edge function will deploy properly.
+
+### No other files change. Just fix the broken function declaration in this one edge function.
 
