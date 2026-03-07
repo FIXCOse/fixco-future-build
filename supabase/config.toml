@@ -152,6 +152,9 @@ verify_jwt = false  # Auth validated in function code
 [functions.generate-followup-text]
 verify_jwt = false
 
+[functions.seed-rivning-services]
+verify_jwt = false
+
 [edge_runtime.scheduler.execute-scheduled-flag-changes]
 schedule = "* * * * *"
 
