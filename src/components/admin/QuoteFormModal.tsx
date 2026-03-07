@@ -273,10 +273,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   // Beräkna rabatt på totalen INKLUSIVE moms (Limont-style)
   const calculateDiscount = () => {
     const subtotal = calculateSubtotal();
-    // Om vatIncluded är true är subtotal redan inkl moms
+    // Om vatIncluded=true är subtotal redan inkl moms, multiplicera inte
     // Om false, lägg till moms för rabattberäkning
-    // Items sparas alltid exkl moms — alltid multiplicera med 1.25
-    const subtotalInclVat = subtotal * 1.25;
+    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
     
     if (discountType === 'percent') {
       return Math.round(subtotalInclVat * (discountValue / 100));
