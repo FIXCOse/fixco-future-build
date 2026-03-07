@@ -68,50 +68,98 @@ Deno.serve(async (req) => {
         const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
         const quoteUrl = `https://fixco.se/q/${question.quote.number}/${question.quote.public_token}`;
 
+        const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    
+    <!-- Header -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 28px 0;">
+      <tr>
+        <td align="center" style="padding: 0;">
+          <img src="https://fixco.se/assets/fixco-logo-black.png" 
+               alt="Fixco" 
+               width="180"
+               style="display: block; border: 0; outline: none; text-decoration: none; height: auto;" />
+          <div style="height: 10px; line-height: 10px;">&nbsp;</div>
+          <div style="font-size: 14px; color: #52525b; margin: 0;">Hantverkare du kan lita på</div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Main Card -->
+    <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+      
+      <!-- Badge -->
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="display: inline-block; background: #dbeafe; color: #1e40af; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500;">
+          💬 Svar på din fråga
+        </div>
+      </div>
+
+      <h2 style="color: #18181b; font-size: 20px; margin: 0 0 16px 0; text-align: center;">
+        Hej ${question.customer_name}!
+      </h2>
+      
+      <p style="color: #52525b; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0; text-align: center;">
+        Vi har svarat på din fråga om offert <strong>${question.quote.number}</strong>${question.quote.title ? ` – ${question.quote.title}` : ''}.
+      </p>
+
+      <!-- Question Box -->
+      <div style="background: #fafafa; border-radius: 12px; padding: 20px; margin-bottom: 16px; border-top: 3px solid #a1a1aa;">
+        <div style="font-size: 13px; color: #71717a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Din fråga</div>
+        <p style="color: #18181b; font-size: 15px; line-height: 1.6; margin: 0;">${question.question}</p>
+      </div>
+
+      <!-- Answer Box -->
+      <div style="background: #eff6ff; border-radius: 12px; padding: 20px; margin-bottom: 24px; border-top: 3px solid #2563eb;">
+        <div style="font-size: 13px; color: #1e40af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Vårt svar</div>
+        <p style="color: #18181b; font-size: 15px; line-height: 1.6; margin: 0;">${answer}</p>
+      </div>
+
+      <!-- CTA Button -->
+      <div style="text-align: center; margin-top: 28px;">
+        <a href="${quoteUrl}" style="display: inline-block; background: #18181b; color: #ffffff !important; padding: 14px 32px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px;">
+          Se offerten
+        </a>
+      </div>
+
+      <!-- What happens next -->
+      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+        <p style="color: #52525b; font-size: 14px; line-height: 1.6; margin: 0; text-align: center;">
+          Har du fler frågor? Besök offerten och ställ nya frågor eller kontakta oss direkt.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 32px; color: #71717a; font-size: 14px;">
+      <p style="margin: 0 0 8px 0;">Har du frågor? Kontakta oss:</p>
+      <p style="margin: 0;">
+        <a href="mailto:info@fixco.se" style="color: #2563eb; text-decoration: none;">info@fixco.se</a>
+      </p>
+      <p style="margin: 16px 0 0 0; color: #a1a1aa; font-size: 12px;">
+        © ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>`;
+
         await resend.emails.send({
           from: 'Fixco <info@fixco.se>',
           to: [emailToSend],
           subject: `Svar på din fråga om offert ${question.quote.number}`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #0066cc;">Vi har svarat på din fråga!</h2>
-              
-              <p>Hej ${question.customer_name},</p>
-              
-              <p>Tack för din fråga om offert <strong>${question.quote.number}</strong> - ${question.quote.title}.</p>
-              
-              <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <p style="margin: 0; color: #666; font-size: 14px;"><strong>Din fråga:</strong></p>
-                <p style="margin: 10px 0 0 0;">${question.question}</p>
-              </div>
-              
-              <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0066cc;">
-                <p style="margin: 0; color: #0066cc; font-size: 14px;"><strong>Vårt svar:</strong></p>
-                <p style="margin: 10px 0 0 0;">${answer}</p>
-              </div>
-              
-              <p style="margin-top: 30px;">
-                <a href="${quoteUrl}" style="background: #0066cc; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
-                  Se offerten
-                </a>
-              </p>
-              
-              <p style="color: #666; font-size: 14px; margin-top: 30px;">
-                Har du fler frågor? Svara på detta mail eller besök offerten för att ställa nya frågor.
-              </p>
-              
-              <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-              
-              <p style="color: #999; font-size: 12px;">
-                Med vänliga hälsningar,<br>
-                Fixco
-              </p>
-            </div>
-          `
+          html
         });
       } catch (emailError) {
         console.error('Failed to send email:', emailError);
-        // Continue even if email fails
       }
     }
 
