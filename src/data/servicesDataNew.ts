@@ -527,7 +527,7 @@ export const servicesDataNew = [
         id: "snickeri-1",
         title: "Platsbyggd garderob",
         description: "Tillverkning av platsbyggd garderob. Storlek väljs vid bokning",
-        basePrice: 859,
+         basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
