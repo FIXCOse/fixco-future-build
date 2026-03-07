@@ -50,8 +50,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
             "@type": "Organization",
             "name": "Fixco AB",
             "url": "https://fixco.se",
-            "telephone": "+46793350228",
-            "email": "support@fixco.se",
+            "email": "info@fixco.se",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "Storgatan 1",
