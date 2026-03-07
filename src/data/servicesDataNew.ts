@@ -1327,6 +1327,89 @@ export const servicesDataNew = [
         laborShare: 1.0
       }
     ]
+  },
+  {
+    title: "Rivning",
+    slug: "rivning",
+    description: "Badrum, kök, väggar & bortforsling",
+    icon: Pickaxe,
+    basePrice: 958,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    subServices: [
+      {
+        id: "rivning-1",
+        title: "Rivning badrum",
+        description: "Rivning av badrum inkl. kakel, klinker och inredning",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Badrum",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-2",
+        title: "Rivning kök",
+        description: "Rivning av kök inkl. skåp, bänk och vitvaror",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Kök",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-3",
+        title: "Rivning innerväggar",
+        description: "Rivning av innerväggar (ej bärande utan konstruktörsgodkännande)",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Väggar",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-4",
+        title: "Rivning golv",
+        description: "Rivning av golv – parkett, klinker, vinyl",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Golv",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-5",
+        title: "Totalrivning / stomrent",
+        description: "Totalrivning till stomrent för renovering",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Totalrivning",
+        location: "båda" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-6",
+        title: "Håltagning betong/tegel",
+        description: "Håltagning i betong eller tegel för dörr, fönster eller rördragning",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Håltagning",
+        location: "båda" as const,
+        laborShare: 1.0
+      }
+    ]
   }
 ];
 
