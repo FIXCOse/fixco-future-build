@@ -699,7 +699,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Facade painting ${area} ★ 5/5 rating ✓ Exterior painting & plaster ✓ 30% ROT deduction ✓ Work guarantee!`,
     "inomhusmalning": `Interior painting ${area} ★ 5/5 rating ✓ Wallpapering & plastering ✓ 30% ROT deduction ✓ Work guarantee!`,
     "golvlaggning": `Floor installation ${area} ★ 5/5 rating ✓ Parquet, vinyl & tiles ✓ 30% ROT deduction. Free quote within 24h!`,
-    "elinstallation": `Electrical installation ${area} ★ 5/5 rating ✓ Outlets, lighting & EV charger ✓ 30% ROT deduction. Book today!`
+    "elinstallation": `Electrical installation ${area} ★ 5/5 rating ✓ Outlets, lighting & EV charger ✓ 30% ROT deduction. Book today!`,
+    "rivning": `Demolition ${area} ★ 5/5 rating ✓ Bathroom, kitchen & wall demolition ✓ 30% ROT deduction. Free quote!`
   } : {
     "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 30% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
     "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
