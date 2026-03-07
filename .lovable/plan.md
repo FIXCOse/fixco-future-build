@@ -1,22 +1,33 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Skapa bekräftelsemail till kund efter accepterad offert
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Nuläge
+När en kund accepterar en offert via den publika länken händer detta:
+1. Offertens status uppdateras till `accepted`
+2. Ett projekt skapas automatiskt
+3. Admin får ett kort notifieringsmail
 
-### Fil som ändras
+**Kunden får inget mail alls.** De ser bara en bekräftelsesida i webbläsaren.
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+### Åtgärd
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+**`supabase/functions/accept-quote-public/index.ts`** — Lägg till en funktion `sendCustomerConfirmation()` som skickas efter lyckad accept:
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+1. Hämta kundens email från `quote.customer.email`
+2. Skicka ett snyggt, branded mail via Resend med:
+   - **Ämne:** `Tack! Din offert från Fixco är bekräftad`
+   - **Innehåll:**
+     - Grön header med checkmark och "Offert accepterad!"
+     - Offertdetaljer: nummer, titel
+     - Bekräftelse att projektet är skapat
+     - Info om nästa steg ("Vi kontaktar dig inom kort för att boka in arbetet")
+     - Kontaktuppgifter: info@fixco.se, 079-335 02 28
+   - **Design:** Samma card-layout som admin-notifieringen (gradient header, tabell, footer med Fixco-branding)
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+3. Anropa funktionen efter lyckad accept (rad ~201, efter `notifyAdmin`) — både för normal accept och re-accept
+4. Logga eventuella fel men låt inte ett misslyckat kundmail stoppa hela flödet
+
+### Vill du att jag också skickar ett testmail till dig?
+Efter implementationen kan vi trigga `send-test-accept-email` med kundversionen så du ser hur den ser ut i din inbox.
 
