@@ -1154,7 +1154,7 @@ export const servicesDataNew = [
         id: "markarbeten-3",
         title: "Plattsättning",
         description: "Läggning av plattor. Yta väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
