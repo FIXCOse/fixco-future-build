@@ -906,6 +906,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
       "inomhusmalning": [`Wall painting in ${area}`, `Ceiling painting in ${area}`, `Wallpapering in ${area}`, `Plastering & sanding in ${area}`, `Kitchen painting in ${area}`, `Bedroom painting in ${area}`, `Living room painting in ${area}`, `Stairwell painting in ${area}`, `Trim & molding painting in ${area}`, `Color consultation in ${area}`],
       "golvlaggning": [`Parquet installation in ${area}`, `Vinyl floor installation in ${area}`, `Laminate flooring in ${area}`, `Tile flooring in ${area}`, `Hardwood floor sanding in ${area}`, `Underfloor heating in ${area}`, `Floor leveling in ${area}`, `Bathroom flooring in ${area}`, `Kitchen flooring in ${area}`, `Carpet installation in ${area}`],
       "elinstallation": [`Electrical outlet installation in ${area}`, `Lighting installation in ${area}`, `EV charger installation in ${area}`, `Dimmer installation in ${area}`, `Panel upgrade in ${area}`, `Outdoor lighting in ${area}`, `Smart home wiring in ${area}`, `Ground fault breaker in ${area}`, `Electrical inspection in ${area}`, `Kitchen electrical in ${area}`],
+      "rivning": [`Bathroom demolition in ${area}`, `Kitchen demolition in ${area}`, `Wall removal in ${area}`, `Floor removal in ${area}`, `Full gutting in ${area}`, `Concrete cutting in ${area}`, `Tile removal in ${area}`, `Debris hauling in ${area}`, `Interior demolition in ${area}`, `Selective demolition in ${area}`],
     };
     return enItems[serviceSlug] || [];
   }
