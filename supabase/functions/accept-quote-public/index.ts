@@ -217,6 +217,10 @@ Deno.serve(async (req) => {
         <p><strong>Tidpunkt:</strong> ${now}</p>`
       );
 
+      sendCustomerConfirmation(
+        quote.customer?.email, customerName, quote.number, quote.title, signature_name
+      );
+
       return new Response(
         JSON.stringify({ ok: true, reaccepted: true, projectId: existingProject?.id }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
