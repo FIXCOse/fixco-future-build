@@ -736,14 +736,9 @@ export default function QuotePublic() {
                 // Beräkna visningsvärden baserat på vat_included
                 const vatIncluded = quote.vat_included ?? false;
                 
-                // Om vat_included: visa priser INKL moms
-                const workCostDisplay = vatIncluded 
-                  ? Math.round(quote.subtotal_work_sek * 1.25)  // 54,360 kr inkl moms
-                  : quote.subtotal_work_sek;                    // 43,488 kr exkl moms
-                
-                const matCostDisplay = vatIncluded 
-                  ? Math.round(quote.subtotal_mat_sek * 1.25)
-                  : quote.subtotal_mat_sek;
+                // Visa lagrade värden direkt (vatIncluded=true → redan inkl moms, false → exkl moms)
+                const workCostDisplay = quote.subtotal_work_sek;
+                const matCostDisplay = quote.subtotal_mat_sek;
                 
                 // Summa efter rabatt (före moms-specifikation)
                 const totalBeforeDiscount = workCostDisplay + matCostDisplay;

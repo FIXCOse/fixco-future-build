@@ -273,10 +273,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   // Beräkna rabatt på totalen INKLUSIVE moms (Limont-style)
   const calculateDiscount = () => {
     const subtotal = calculateSubtotal();
-    // Om vatIncluded är true är subtotal redan inkl moms
+    // Om vatIncluded=true är subtotal redan inkl moms, multiplicera inte
     // Om false, lägg till moms för rabattberäkning
-    // Items sparas alltid exkl moms — alltid multiplicera med 1.25
-    const subtotalInclVat = subtotal * 1.25;
+    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
     
     if (discountType === 'percent') {
       return Math.round(subtotalInclVat * (discountValue / 100));
@@ -289,8 +288,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   // Returnerar subtotal efter rabatt (INKLUSIVE moms om vatIncluded eller efter att moms lagts till)
   const calculateSubtotalAfterDiscount = () => {
     const subtotal = calculateSubtotal();
-    // Items sparas alltid exkl moms — alltid multiplicera med 1.25
-    const subtotalInclVat = subtotal * 1.25;
+    // Om vatIncluded=true är subtotal redan inkl moms
+    const subtotalInclVat = vatIncluded ? subtotal : subtotal * 1.25;
     return subtotalInclVat - calculateDiscount();
   };
 
@@ -314,9 +313,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     // Beräkna hur stor del av totalen som är arbete
     const workRatio = totalCost > 0 ? workCost / totalCost : 1;
     
-    // Arbetskostnad INKL moms — alltid multiplicera med 1.25
-    // oavsett vatIncluded-flagga, eftersom subtotal_work_sek alltid är exkl moms
-    const workCostInclVat = workCost * 1.25;
+    // Om vatIncluded=true är workCost redan inkl moms
+    const workCostInclVat = vatIncluded ? workCost : workCost * 1.25;
     
     // Proportionell rabatt på arbetsdelen
     const discount = calculateDiscount();
