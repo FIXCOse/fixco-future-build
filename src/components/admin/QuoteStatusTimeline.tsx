@@ -54,7 +54,7 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
   const latestView = views && views.length > 0 ? views[views.length - 1].viewed_at : quote.viewed_at;
 
   const viewTooltip = viewCount > 0 ? (
-    <div className="space-y-1 max-h-72 overflow-y-auto">
+    <div className="space-y-1">
       <p className="font-medium text-xs mb-1">Öppnad {viewCount} {viewCount === 1 ? 'gång' : 'gånger'}</p>
       {views?.map((v, i) => (
         <p key={i} className="text-[11px] text-muted-foreground">
