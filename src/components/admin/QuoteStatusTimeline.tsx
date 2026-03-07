@@ -52,13 +52,17 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
 
   const viewCount = views?.length || 0;
   const latestView = views && views.length > 0 ? views[views.length - 1].viewed_at : quote.viewed_at;
+  const uniqueIps = views ? new Set(views.map(v => v.ip_address).filter(Boolean)).size : 0;
 
   const viewTooltip = viewCount > 0 ? (
     <div className="space-y-1">
-      <p className="font-medium text-xs mb-1">Öppnad {viewCount} {viewCount === 1 ? 'gång' : 'gånger'}</p>
+      <p className="font-medium text-xs mb-1">
+        Öppnad {viewCount} {viewCount === 1 ? 'gång' : 'gånger'}
+        {uniqueIps > 0 && ` (${uniqueIps} ${uniqueIps === 1 ? 'unik IP' : 'unika IP:er'})`}
+      </p>
       {views?.map((v, i) => (
         <p key={i} className="text-[11px] text-muted-foreground">
-          {formatTimestamp(v.viewed_at)}
+          {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}
         </p>
       ))}
     </div>
