@@ -828,7 +828,7 @@ export default function QuotePublic() {
                       {quote.rot_deduction_sek > 0 && (
                         <div className="flex justify-between py-2 border-b border-border bg-green-50 dark:bg-green-900/10 -mx-3 px-3 rounded">
                           <span className="font-medium text-green-700 dark:text-green-400">
-                            Skattereduktion (ROT {quote.rot_percentage || 50}%)
+                            Skattereduktion (ROT {quote.rot_percentage || 30}%)
                           </span>
                           <span className="font-semibold text-green-700 dark:text-green-400">
                             −{quote.rot_deduction_sek.toLocaleString('sv-SE')} kr
