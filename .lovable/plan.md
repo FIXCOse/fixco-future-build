@@ -1,22 +1,34 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Lägg till rivningstjänster i databasen
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+Det finns 0 tjänster med category `rivning` i databasen. Jag lägger till **15 relevanta rivningstjänster** via SQL INSERT. Alla med `base_price: 958`, `rot_eligible: true`, `price_unit: 'kr/h'`.
 
-### Fil som ändras
+### Tjänster att lägga till
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+| ID | Titel (SV) | Titel (EN) | Typ |
+|---|---|---|---|
+| rivning-badrum | Rivning badrum | Bathroom demolition | quote |
+| rivning-kok | Rivning kök | Kitchen demolition | quote |
+| rivning-innervaggar | Rivning innerväggar | Interior wall demolition | hourly |
+| rivning-golv | Rivning golv | Floor demolition | hourly |
+| rivning-kakel-klinker | Rivning kakel & klinker | Tile removal | hourly |
+| rivning-totalrivning | Totalrivning / stomrent | Full strip-out | quote |
+| rivning-haltagning | Håltagning betong/tegel | Concrete/brick core drilling | hourly |
+| rivning-tak-innertak | Rivning innertak | Ceiling demolition | hourly |
+| rivning-fasad | Rivning fasad/utvändigt | Exterior demolition | quote |
+| rivning-garage | Rivning garage/förråd | Garage/shed demolition | quote |
+| rivning-altan-terrass | Rivning altan & terrass | Deck/patio demolition | quote |
+| rivning-bortforsling | Bortforsling & container | Waste disposal & skip | hourly |
+| rivning-asbestsanering | Asbestsanering | Asbestos removal | quote |
+| rivning-vattenskadat | Rivning vattenskadat material | Water damage tearout | hourly |
+| rivning-eldstad | Rivning eldstad/skorsten | Fireplace/chimney demolition | quote |
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+### Cross-listing
+- `rivning-badrum` → additional_categories: `['badrum']`
+- `rivning-kok` → additional_categories: `['kok']`
+- `rivning-golv` → additional_categories: `['golv']`
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+### Implementation
+En SQL INSERT med alla 15 rader i `services`-tabellen. Inga kodändringar behövs — befintlig `useServices`-hook hämtar automatiskt tjänster med `category = 'rivning'` och ServiceDetail visar dem.
 
