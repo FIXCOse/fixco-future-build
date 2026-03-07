@@ -234,7 +234,7 @@ function Navigation() {
               className="hidden xl:inline-flex items-center gap-x-2 px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-muted whitespace-nowrap"
             >
               <Calendar className="h-4 w-4" />
-              <span className="hidden xl:inline font-medium">{t('nav.bookHomeVisit')}</span>
+              <span className="hidden xl:inline font-medium">{t('footer.bookHomeVisit')}</span>
             </button>
             
             {/* User Actions - Desktop */}
