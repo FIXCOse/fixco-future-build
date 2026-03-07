@@ -965,33 +965,33 @@ export default function QuotePublic() {
                   <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
                     <DialogContent className="sm:max-w-[500px]">
                       <DialogHeader>
-                        <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                          <CheckCircle2 className="h-10 w-10 text-green-600" />
+                        <div className="mx-auto w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 animate-scale-in">
+                          <CheckCircle2 className="h-12 w-12 text-green-600 animate-fade-in" />
                         </div>
-                        <DialogTitle className="text-center text-2xl">
-                          Offert godkänd!
+                        <DialogTitle className="text-center text-2xl animate-fade-in">
+                          Stort tack för ditt förtroende!
                         </DialogTitle>
-                        <p className="text-center text-muted-foreground pt-2">
-                          Tack för ditt förtroende! Vi har mottagit ditt godkännande.
+                        <p className="text-center text-muted-foreground pt-2 animate-fade-in">
+                          Vi ser fram emot att köra igång med projektet. Vårt team kontaktar dig inom kort för att planera nästa steg.
                         </p>
                       </DialogHeader>
                       <div className="space-y-4 py-4">
-                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 space-y-2">
+                        <div className="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-lg p-4 space-y-3 animate-fade-in">
                           <h4 className="font-semibold text-sm flex items-center gap-2">
                             <CheckCircle2 className="h-4 w-4 text-green-600" />
                             Vad händer nu?
                           </h4>
-                          <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li className="flex items-start gap-2">
-                              <span className="text-primary font-bold">1.</span>
-                              <span>Vi kontaktar dig inom 24 timmar för att bekräfta bokningsdetaljer</span>
+                          <ul className="space-y-3 text-sm text-muted-foreground">
+                            <li className="flex items-start gap-3">
+                              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">1</span>
+                              <span>Vi kontaktar dig inom kort för att bekräfta alla detaljer</span>
                             </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-primary font-bold">2.</span>
+                            <li className="flex items-start gap-3">
+                              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">2</span>
                               <span>Vi bokar in en starttid som passar dig</span>
                             </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-primary font-bold">3.</span>
+                            <li className="flex items-start gap-3">
+                              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">3</span>
                               <span>Du får en bekräftelse via email med alla detaljer</span>
                             </li>
                           </ul>
@@ -1001,21 +1001,13 @@ export default function QuotePublic() {
                           <p className="text-sm text-muted-foreground text-center">
                             Har du frågor redan nu?
                           </p>
-                          <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                          <div className="flex justify-center">
                             <a 
                               href="mailto:info@fixco.se"
                               className="flex items-center justify-center gap-2 text-sm hover:text-primary transition-colors"
                             >
                               <Mail className="h-4 w-4" />
                               info@fixco.se
-                            </a>
-                            <span className="hidden sm:inline text-muted-foreground">•</span>
-                            <a 
-                              href="tel:+46812345678"
-                              className="flex items-center justify-center gap-2 text-sm hover:text-primary transition-colors"
-                            >
-                              <Phone className="h-4 w-4" />
-                              08-123 45 67
                             </a>
                           </div>
                         </div>
