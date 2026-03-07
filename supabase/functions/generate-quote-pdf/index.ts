@@ -109,7 +109,7 @@ serve(async (req) => {
       <body>
         <div class="header">
           <div class="company">FIXCO</div>
-          <p>Uppsala &amp; Stockholm<br>Telefon: 08-123 456 78<br>info@fixco.se</p>
+          <p>Uppsala &amp; Stockholm<br>info@fixco.se</p>
         </div>
         
         <h1>Offert</h1>
@@ -204,7 +204,7 @@ serve(async (req) => {
           <p style="margin-top: 20px;">
             <strong>Fixco AB</strong><br>
             Org.nr: 123456-7890<br>
-            info@fixco.se | 08-123 456 78
+            info@fixco.se
           </p>
         </div>
       </body>

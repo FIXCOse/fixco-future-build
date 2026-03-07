@@ -85,16 +85,12 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             <div class="content">
               <p><strong>${workerName}</strong> är nu på väg till dig för att påbörja arbetet.</p>
-              <p>Om något har hänt eller om du har några frågor, ring gärna vårt kontor:</p>
-              <p style="font-size: 18px; margin: 15px 0;">
-                📞 <strong>079-335 02 28</strong>
-              </p>
+              <p>Om du har några frågor, kontakta oss på <a href="mailto:info@fixco.se">info@fixco.se</a>.</p>
               <p>Vi ser fram emot att hjälpa dig!</p>
             </div>
             <div class="footer">
               <p><strong>Fixco AB</strong></p>
               <p>
-                Telefon: 079-335 02 28<br>
                 E-post: info@fixco.se<br>
                 Webb: www.fixco.se
               </p>
@@ -133,17 +129,12 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="margin: 5px 0 0 0;">Din faktura skickas inom 1-5 arbetsdagar.</p>
               </div>
 
-              <p>Har du några frågor eller synpunkter? Hör gärna av dig till oss!</p>
-              <p style="font-size: 18px; margin: 15px 0;">
-                📞 <strong>079-335 02 28</strong><br>
-                📧 <strong>info@fixco.se</strong>
-              </p>
+              <p>Har du några frågor eller synpunkter? Hör gärna av dig till oss på <a href="mailto:info@fixco.se">info@fixco.se</a>.</p>
               <p>Tack för att du valde Fixco!</p>
             </div>
             <div class="footer">
               <p><strong>Fixco AB</strong></p>
               <p>
-                Telefon: 079-335 02 28<br>
                 E-post: info@fixco.se<br>
                 Webb: www.fixco.se
               </p>
