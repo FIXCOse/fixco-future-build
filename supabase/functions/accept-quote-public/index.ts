@@ -186,6 +186,17 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte uppdatera offert');
     }
 
+    // Send emails immediately after quote accepted — before project creation
+    // so emails are sent even if project creation fails (FK constraint etc.)
+    notifyAdmin(
+      `✅ Offert ${quote.number} accepterad av ${customerName}`,
+      buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
+    );
+
+    sendCustomerConfirmation(
+      quote.customer?.email, customerName, quote.number, quote.title, signature_name
+    );
+
     const { data: project, error: projectError } = await supabase
       .from('projects')
       .insert({
@@ -201,6 +212,7 @@ Deno.serve(async (req) => {
       console.error('Failed to create project:', projectError);
       return new Response(
         JSON.stringify({ 
+          ok: true,
           error: 'project_creation_failed',
           message: 'Offerten accepterades men projektet kunde inte skapas. Vi kontaktar dig inom kort.',
           projectId: null
@@ -208,15 +220,6 @@ Deno.serve(async (req) => {
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-
-    notifyAdmin(
-      `✅ Offert ${quote.number} accepterad av ${customerName}`,
-      buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
-    );
-
-    sendCustomerConfirmation(
-      quote.customer?.email, customerName, quote.number, quote.title, signature_name
-    );
 
     return new Response(
       JSON.stringify({ ok: true, projectId: project.id }),
