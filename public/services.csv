@@ -8,3 +8,4 @@ cleaning,Städning,Cleaning,stadning,"Hemstäd, flyttstäd, byggstäd, fönsterp
 groundwork,Markarbeten,Groundwork,markarbeten,"Dränering, schaktning, plattläggning",595,895,SEK,hour,298,448,ROT,30,
 moving,Flytt,Moving,flytt,"Flytthjälp, packning, transport",395,595,SEK,hour,198,298,RUT,30,
 technical,Tekniska installationer,Technical Installations,tekniska-installationer,"Nätverk, larm, smart home",495,795,SEK,hour,,,Varies,,
+demolition,Rivning,Demolition,rivning,"Rivning badrum, kök, väggar, golv, bortforsling",545,795,SEK,hour,273,398,ROT,30,

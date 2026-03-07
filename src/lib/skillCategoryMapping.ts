@@ -15,6 +15,7 @@ export const SKILL_TO_SERVICE_CATEGORY_MAP: Record<string, string[]> = {
   'technology': ['tekniska-installationer', 'smarta-losningar'],
   'masonry': ['murverk', 'markarbeten'],
   'landscaping': ['markarbeten', 'tradgard'],
+  'demolition': ['rivning', 'snickeri', 'markarbeten'],
   'general': [] // General skills see all jobs (fallback)
 };
 

@@ -26,7 +26,9 @@
   },
   "services": {
     "malning": "Målning",
-    "malning_desc": "Professionell målning inomhus och utomhus"
+    "malning_desc": "Professionell målning inomhus och utomhus",
+    "rivning": "Rivning",
+    "rivning_desc": "Professionell rivning av badrum, kök, väggar och golv"
   },
   "home": {
     "hero": {

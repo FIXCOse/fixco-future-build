@@ -1119,7 +1119,7 @@ export const servicesDataNew = [
     slug: "markarbeten",
     description: "Schakt, dränering och plattläggning",
     icon: Mountain,
-    basePrice: 859,
+    basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
