@@ -720,7 +720,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Fasadmålning ${area} ★ 5/5 betyg ✓ Utvändig målning & puts ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
     "inomhusmalning": `Inomhusmålning ${area} ★ 5/5 betyg ✓ Tapetsering & spackling ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
     "golvlaggning": `Golvläggning ${area} ★ 5/5 betyg ✓ Parkett, vinyl & klinker ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
-    "elinstallation": `Elinstallation ${area} ★ 5/5 betyg ✓ Uttag, belysning & laddbox ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`
+    "elinstallation": `Elinstallation ${area} ★ 5/5 betyg ✓ Uttag, belysning & laddbox ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
+    "rivning": `Rivning ${area} ★ 5/5 betyg ✓ Badrum, kök & väggrivning ✓ 30% ROT-avdrag. Gratis offert!`
   };
   
   return {
