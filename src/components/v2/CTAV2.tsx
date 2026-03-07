@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Phone, Mail } from "lucide-react";
+import { ArrowRight, Calendar, Mail } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { GradientText } from "./GradientText";
 import MagneticButton from "@/components/MagneticButton";
 import { useCopy } from "@/copy/CopyProvider";
