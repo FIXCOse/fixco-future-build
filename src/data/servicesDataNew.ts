@@ -11,7 +11,8 @@ import {
   Building,
   Truck,
   Droplets,
-  Paintbrush
+  Paintbrush,
+  Pickaxe
 } from "lucide-react";
 import { ServicePricing } from '@/utils/priceCalculation';
 
@@ -43,7 +44,15 @@ export const mainServices: ServicePricing[] = [
   {
     id: "snickeri",
     title: "Snickeri", 
-    basePrice: 859,
+    basePrice: 958,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    laborShare: 1.0
+  },
+  {
+    id: "rivning",
+    title: "Rivning",
+    basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     laborShare: 1.0
@@ -171,6 +180,14 @@ export const serviceCategories = [
     description: "Bärhjälp, packning och transport",
     icon: Truck,
     eligible: { rot: false, rut: true }
+  },
+  {
+    id: "rivning",
+    title: "Rivning",
+    slug: "rivning",
+    description: "Badrum, kök, väggar & bortforsling",
+    icon: Pickaxe,
+    eligible: { rot: true, rut: false }
   }
 ];
 
@@ -501,7 +518,7 @@ export const servicesDataNew = [
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
-    basePrice: 859,
+    basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
@@ -510,7 +527,7 @@ export const servicesDataNew = [
         id: "snickeri-1",
         title: "Platsbyggd garderob",
         description: "Tillverkning av platsbyggd garderob. Storlek väljs vid bokning",
-        basePrice: 859,
+         basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -522,7 +539,7 @@ export const servicesDataNew = [
         id: "snickeri-2",
         title: "Hyllsystem & förvaring",
         description: "Installation av hyllsystem och förvaringslösningar",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
@@ -535,7 +552,7 @@ export const servicesDataNew = [
         id: "snickeri-3",
         title: "Montera innerdörrar",
         description: "Montering av innerdörrar. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
@@ -547,7 +564,7 @@ export const servicesDataNew = [
         id: "snickeri-4",
         title: "Lister & foder",
         description: "Installation av lister och foder. Rum väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
@@ -560,7 +577,7 @@ export const servicesDataNew = [
         id: "snickeri-5",
         title: "Montera köksstommar",
         description: "Montering av köksstommar. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
@@ -573,7 +590,7 @@ export const servicesDataNew = [
         id: "snickeri-6",
         title: "Golvbyte laminat/parkett",
         description: "Byte av golv. Yta och typ väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -586,7 +603,7 @@ export const servicesDataNew = [
         id: "snickeri-7",
         title: "Väggresning & gips",
         description: "Rivning av väggar och gipsning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -598,7 +615,7 @@ export const servicesDataNew = [
         id: "snickeri-8",
         title: "Trapp-renovering",
         description: "Renovering av trappor",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -1102,7 +1119,7 @@ export const servicesDataNew = [
     slug: "markarbeten",
     description: "Schakt, dränering och plattläggning",
     icon: Mountain,
-    basePrice: 859,
+    basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
     subServices: [
@@ -1111,7 +1128,7 @@ export const servicesDataNew = [
         id: "markarbeten-1",
         title: "Schaktning för altan/grund",
         description: "Schaktning för altan eller grund till byggnader",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -1124,7 +1141,7 @@ export const servicesDataNew = [
         id: "markarbeten-2",
         title: "Dränering",
         description: "Installation av dränering. Längd väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -1137,7 +1154,7 @@ export const servicesDataNew = [
         id: "markarbeten-3",
         title: "Plattsättning",
         description: "Läggning av plattor. Yta väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -1150,7 +1167,7 @@ export const servicesDataNew = [
         id: "markarbeten-4",
         title: "Staketstolpar/gjutning",
         description: "Uppsättning av staketstolpar med gjutning. Antal väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "hourly",
         eligible: { rot: true, rut: false },
@@ -1163,7 +1180,7 @@ export const servicesDataNew = [
         id: "markarbeten-5",
         title: "Grus/kantsten",
         description: "Läggning av grus och kantsten. Längd väljs vid bokning",
-        basePrice: 859,
+        basePrice: 958,
         priceUnit: "kr/h",
         priceType: "quote",
         eligible: { rot: true, rut: false },
@@ -1307,6 +1324,89 @@ export const servicesDataNew = [
         eligible: { rot: false, rut: true },
         category: "Montering",
         location: "inomhus",
+        laborShare: 1.0
+      }
+    ]
+  },
+  {
+    title: "Rivning",
+    slug: "rivning",
+    description: "Badrum, kök, väggar & bortforsling",
+    icon: Pickaxe,
+    basePrice: 958,
+    priceUnit: "kr/h",
+    eligible: { rot: true, rut: false },
+    subServices: [
+      {
+        id: "rivning-1",
+        title: "Rivning badrum",
+        description: "Rivning av badrum inkl. kakel, klinker och inredning",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Badrum",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-2",
+        title: "Rivning kök",
+        description: "Rivning av kök inkl. skåp, bänk och vitvaror",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Kök",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-3",
+        title: "Rivning innerväggar",
+        description: "Rivning av innerväggar (ej bärande utan konstruktörsgodkännande)",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Väggar",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-4",
+        title: "Rivning golv",
+        description: "Rivning av golv – parkett, klinker, vinyl",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Golv",
+        location: "inomhus" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-5",
+        title: "Totalrivning / stomrent",
+        description: "Totalrivning till stomrent för renovering",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Totalrivning",
+        location: "båda" as const,
+        laborShare: 1.0
+      },
+      {
+        id: "rivning-6",
+        title: "Håltagning betong/tegel",
+        description: "Håltagning i betong eller tegel för dörr, fönster eller rördragning",
+        basePrice: 958,
+        priceUnit: "kr/h",
+        priceType: "quote" as const,
+        eligible: { rot: true, rut: false },
+        category: "Håltagning",
+        location: "båda" as const,
         laborShare: 1.0
       }
     ]

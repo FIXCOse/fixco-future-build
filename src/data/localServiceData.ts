@@ -48,6 +48,7 @@ export const LOCAL_SERVICES = [
   { slug: "inomhusmalning", name: "Inomhusmålning", serviceKey: "malning", rotRut: "ROT" },
   { slug: "golvlaggning", name: "Golvläggning", serviceKey: "golv", rotRut: "ROT" },
   { slug: "elinstallation", name: "Elinstallation", serviceKey: "el", rotRut: "ROT" },
+  { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
 ] as const;
 
 export type LocalServiceSlug = typeof LOCAL_SERVICES[number]["slug"];
@@ -522,6 +523,11 @@ const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: strin
     { myth: "Man kan byta eluttag och strömbrytare själv", truth: "Alla elarbeten kräver behörighet enligt Elsäkerhetsverket. Felaktigt utförda elarbeten kan leda till brand." },
     { myth: "LED-belysning kräver ingen ny eldragning", truth: "Dimbar LED-belysning kräver ofta kompatibla dimmers och ibland ny kabling för att fungera flimmerfritt." },
     { myth: "Laddbox för elbil kan anslutas till vanligt uttag", truth: "En laddbox kräver dedikerad säkring och professionell installation. Vanliga uttag kan överhettas vid lång laddning." }
+  ],
+  "rivning": [
+    { myth: "Man kan riva bärande väggar själv utan risk", truth: "Rivning av bärande väggar utan konstruktörsgodkännande kan leda till rasrisk. Bygganmälan krävs alltid." },
+    { myth: "Rivning är bara att slå med släggan", truth: "Professionell rivning kräver kontroll av asbest, bly, el och VVS innan arbetet påbörjas. Felaktig rivning kan orsaka skador för hundratusentals kronor." },
+    { myth: "Rivningsavfall kan slängas var som helst", truth: "Rivningsavfall måste sorteras och transporteras till godkänd mottagningsstation. Farligt avfall som asbest har särskilda regler." }
   ]
 };
 
@@ -536,26 +542,27 @@ const SERVICE_PRICING: Record<LocalServiceSlug, {
   isQuoteOnly: boolean;
   rotRut: 'ROT' | 'RUT';
 }> = {
-  "snickare":    { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "snickare":    { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elektriker":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "vvs":         { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
-  "malare":      { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "malare":      { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "tradgard":    { base: "659 kr/h",  afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "stad":        { base: "459 kr/h",  afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
-  "markarbeten": { base: "959 kr/h",  afterDeduction: "480 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "montering":   { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "markarbeten": { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "montering":   { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "flytt":       { base: "559 kr/h",  afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "tekniska-installationer": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   // Nischade sub-tjänster
-  "koksmontering":      { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "koksmontering":      { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "mobelmontering":     { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "badrumsrenovering":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "koksrenovering":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
-  "altanbygge":         { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "fasadmalning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "inomhusmalning":     { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "golvlaggning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "altanbygge":         { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "fasadmalning":       { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "inomhusmalning":     { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "golvlaggning":       { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elinstallation":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "rivning":            { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
 };
 
 // Funktion för att hämta rolig fakta
@@ -617,6 +624,7 @@ const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
   "inomhusmalning": "Interior Painting",
   "golvlaggning": "Floor Installation",
   "elinstallation": "Electrical Installation",
+  "rivning": "Demolition",
 };
 
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
@@ -647,7 +655,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Facade Painting ${area} ★ Exterior painting & plaster · ROT 30%`,
     "inomhusmalning": `Interior Painting ${area} ★ Wallpapering & plastering · ROT 30%`,
     "golvlaggning": `Floor Installation ${area} ★ Parquet, vinyl & tiles · ROT 30%`,
-    "elinstallation": `Electrical Installation ${area} ★ Outlets, lighting & EV charger · ROT 30%`
+    "elinstallation": `Electrical Installation ${area} ★ Outlets, lighting & EV charger · ROT 30%`,
+    "rivning": `Demolition ${area} ★ Bathroom, kitchen & walls · ROT 30% · Free quote`
   } : {
     "snickare": `Snickare ${area} ★ Kök, garderob & altan · ROT 30% · Fri offert`,
     "vvs": `VVS ${area} ★ Byte & reparation · ROT 30% · Svar 24h`,
@@ -667,7 +676,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Fasadmålning ${area} ★ Utvändig målning & puts · ROT 30%`,
     "inomhusmalning": `Inomhusmålning ${area} ★ Tapetsering & spackling · ROT 30%`,
     "golvlaggning": `Golvläggning ${area} ★ Parkett, vinyl & klinker · ROT 30%`,
-    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`
+    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`,
+    "rivning": `Rivning ${area} ★ Badrum, kök & innerväggar · ROT 30% · Fri offert`
   };
 
   const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
@@ -689,7 +699,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Facade painting ${area} ★ 5/5 rating ✓ Exterior painting & plaster ✓ 30% ROT deduction ✓ Work guarantee!`,
     "inomhusmalning": `Interior painting ${area} ★ 5/5 rating ✓ Wallpapering & plastering ✓ 30% ROT deduction ✓ Work guarantee!`,
     "golvlaggning": `Floor installation ${area} ★ 5/5 rating ✓ Parquet, vinyl & tiles ✓ 30% ROT deduction. Free quote within 24h!`,
-    "elinstallation": `Electrical installation ${area} ★ 5/5 rating ✓ Outlets, lighting & EV charger ✓ 30% ROT deduction. Book today!`
+    "elinstallation": `Electrical installation ${area} ★ 5/5 rating ✓ Outlets, lighting & EV charger ✓ 30% ROT deduction. Book today!`,
+    "rivning": `Demolition ${area} ★ 5/5 rating ✓ Bathroom, kitchen & wall demolition ✓ 30% ROT deduction. Free quote!`
   } : {
     "snickare": `Snickare i ${area} ★ 5/5 betyg ✓ Köksrenovering, altanbygge & golv ✓ 30% ROT-avdrag ✓ Fast pris. Få offert inom 24h!`,
     "elektriker": `Elektriker ${area} ★ 5/5 betyg ✓ Elinstallation, uttag & belysning ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
@@ -709,7 +720,8 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "fasadmalning": `Fasadmålning ${area} ★ 5/5 betyg ✓ Utvändig målning & puts ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
     "inomhusmalning": `Inomhusmålning ${area} ★ 5/5 betyg ✓ Tapetsering & spackling ✓ 30% ROT-avdrag ✓ Garanti. Boka målare!`,
     "golvlaggning": `Golvläggning ${area} ★ 5/5 betyg ✓ Parkett, vinyl & klinker ✓ 30% ROT-avdrag. Gratis offert inom 24h!`,
-    "elinstallation": `Elinstallation ${area} ★ 5/5 betyg ✓ Uttag, belysning & laddbox ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`
+    "elinstallation": `Elinstallation ${area} ★ 5/5 betyg ✓ Uttag, belysning & laddbox ✓ Auktoriserad ✓ 30% ROT-avdrag. Boka idag!`,
+    "rivning": `Rivning ${area} ★ 5/5 betyg ✓ Badrum, kök & väggrivning ✓ 30% ROT-avdrag. Gratis offert!`
   };
   
   return {
@@ -894,6 +906,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
       "inomhusmalning": [`Wall painting in ${area}`, `Ceiling painting in ${area}`, `Wallpapering in ${area}`, `Plastering & sanding in ${area}`, `Kitchen painting in ${area}`, `Bedroom painting in ${area}`, `Living room painting in ${area}`, `Stairwell painting in ${area}`, `Trim & molding painting in ${area}`, `Color consultation in ${area}`],
       "golvlaggning": [`Parquet installation in ${area}`, `Vinyl floor installation in ${area}`, `Laminate flooring in ${area}`, `Tile flooring in ${area}`, `Hardwood floor sanding in ${area}`, `Underfloor heating in ${area}`, `Floor leveling in ${area}`, `Bathroom flooring in ${area}`, `Kitchen flooring in ${area}`, `Carpet installation in ${area}`],
       "elinstallation": [`Electrical outlet installation in ${area}`, `Lighting installation in ${area}`, `EV charger installation in ${area}`, `Dimmer installation in ${area}`, `Panel upgrade in ${area}`, `Outdoor lighting in ${area}`, `Smart home wiring in ${area}`, `Ground fault breaker in ${area}`, `Electrical inspection in ${area}`, `Kitchen electrical in ${area}`],
+      "rivning": [`Bathroom demolition in ${area}`, `Kitchen demolition in ${area}`, `Wall removal in ${area}`, `Floor removal in ${area}`, `Full gutting in ${area}`, `Concrete cutting in ${area}`, `Tile removal in ${area}`, `Debris hauling in ${area}`, `Interior demolition in ${area}`, `Selective demolition in ${area}`],
     };
     return enItems[serviceSlug] || [];
   }
@@ -917,6 +930,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     "inomhusmalning": [`Väggmålning i ${area}`, `Takmålning i ${area}`, `Tapetsering i ${area}`, `Spackling och slipning i ${area}`, `Köksmålning i ${area}`, `Sovrum målning i ${area}`, `Vardagsrum målning i ${area}`, `Trapphus målning i ${area}`, `Lister och foder målning i ${area}`, `Färgrådgivning i ${area}`],
     "golvlaggning": [`Parkettläggning i ${area}`, `Vinylgolv i ${area}`, `Laminatgolv i ${area}`, `Klinkergolv i ${area}`, `Parkettslipning i ${area}`, `Golvvärme installation i ${area}`, `Avjämning av golv i ${area}`, `Badrumsgolv i ${area}`, `Köksgolv i ${area}`, `Mattläggning i ${area}`],
     "elinstallation": [`Eluttag installation i ${area}`, `Belysning installation i ${area}`, `Laddbox installation i ${area}`, `Dimmer installation i ${area}`, `Byte av elcentral i ${area}`, `Utomhusbelysning i ${area}`, `Smart hem kabeldragning i ${area}`, `Jordfelsbrytare i ${area}`, `Elbesiktning i ${area}`, `Kök elinstallation i ${area}`],
+    "rivning": [`Rivning badrum i ${area}`, `Rivning kök i ${area}`, `Rivning innerväggar i ${area}`, `Rivning golv i ${area}`, `Totalrivning stomrent i ${area}`, `Håltagning betong i ${area}`, `Kakelrivning i ${area}`, `Bortforsling av rivningsavfall i ${area}`, `Selektiv rivning i ${area}`, `Rivning före renovering i ${area}`],
   };
   return serviceItems[serviceSlug] || [];
 }
@@ -943,7 +957,8 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "fasadmalning": "Facade painters are experienced with all facade types and use weather-resistant quality paints.",
     "inomhusmalning": "Interior painters are trained in wallpapering, plastering and color matching.",
     "golvlaggning": "Floor installers are trained in parquet, vinyl, laminate and tile flooring.",
-    "elinstallation": "Electricians are authorized according to the Swedish Electrical Safety Authority."
+    "elinstallation": "Electricians are authorized according to the Swedish Electrical Safety Authority.",
+    "rivning": "Demolition workers are experienced in safe demolition of bathrooms, kitchens, walls and floors with proper waste handling."
   } : {
     "elektriker": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "vvs": "VVS-montörer har Säker Vatteninstallation-certifiering och arbetar enligt branschregler.",
@@ -963,7 +978,8 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "fasadmalning": "Fasadmålare har erfarenhet av alla fasadtyper och använder väderbeständig kvalitetsfärg.",
     "inomhusmalning": "Inomhusmålare är utbildade i tapetsering, spackling och färgmatchning.",
     "golvlaggning": "Golvläggare är utbildade inom parkett, vinyl, laminat och klinker.",
-    "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter."
+    "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
+    "rivning": "Rivare har erfarenhet av säker rivning av badrum, kök, väggar och golv med korrekt avfallshantering."
   };
   return certTexts[serviceSlug];
 }

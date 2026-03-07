@@ -184,6 +184,61 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Typ av larm, antal dörrlås, befintliga system..." },
       { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
     ]
+  },
+  // Rivning
+  {
+    slug: "rivning-badrum",
+    name: "Rivning badrum",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal_rum", label: "Antal badrum", min: 1, required: true },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Kakel, klinker, inredning, vattenlås..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "rivning-kok",
+    name: "Rivning kök",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Skåp, bänk, vitvaror, golv..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "rivning-vaggar",
+    name: "Rivning innerväggar",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "antal_vaggar", label: "Antal väggar", min: 1, required: true },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Bärande/ej bärande, material, längd..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "rivning-golv",
+    name: "Rivning golv",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Golvtyp (parkett, klinker, vinyl), underlag..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
+  },
+  {
+    slug: "totalrivning",
+    name: "Totalrivning / stomrent",
+    pricingMode: "quote",
+    rotEligible: true,
+    fields: [
+      { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
+      { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Vad ska rivas? Badrum, kök, väggar, golv, allt..." },
+      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+    ]
   }
 ];
 

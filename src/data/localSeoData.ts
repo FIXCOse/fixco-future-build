@@ -148,6 +148,13 @@ export const SEARCH_ACTION_PATTERNS: Record<LocalServiceSlug, {
     urgentTerms: ["akut elektriker", "snabb elinstallation"],
     projectTypes: ["eluttag installation", "belysning installation", "laddbox montering", "elcentral byte"],
     synonyms: ["elinstallatör", "elmontör", "elektriker installation"]
+  },
+  "rivning": {
+    actions: ["riva", "demolera", "ta bort", "boka"],
+    objects: ["badrum", "kök", "innervägg", "golv", "kakel", "fasad", "garage", "vind"],
+    urgentTerms: ["akut rivning", "snabb rivning", "rivning idag"],
+    projectTypes: ["badrumsrivning", "köksrivning", "totalrivning", "stomrent", "håltagning", "rivning av väggar"],
+    synonyms: ["rivare", "rivningsfirma", "rivningsföretag", "demolering", "rivningstjänst"]
   }
 };
 
@@ -581,7 +588,8 @@ export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): s
     "fasadmalning": `Fasadmålning ${area} ★ Utvändig målning & puts · ROT 30%`,
     "inomhusmalning": `Inomhusmålning ${area} ★ Tapetsering & spackling · ROT 30%`,
     "golvlaggning": `Golvläggning ${area} ★ Parkett, vinyl & klinker · ROT 30%`,
-    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`
+    "elinstallation": `Elinstallation ${area} ★ Uttag, belysning & laddbox · ROT 30%`,
+    "rivning": `Rivning ${area} ★ Badrum, kök & innerväggar · ROT 30%`
   };
   return titles[serviceSlug] || `${serviceSlug} ${area} | Fixco`;
 };
