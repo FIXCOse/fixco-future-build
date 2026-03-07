@@ -125,16 +125,16 @@ const FAQ = () => {
                     >
                       {t('pages.faq.askQuestion')}
                     </EditableText>
-                    <Phone className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                  <EditableText 
-                    id="faq-call-us"
-                    initialContent={t('pages.faq.callUs')}
-                  >
-                    {t('pages.faq.callUs')}
-                  </EditableText>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {t('footer.bookHomeVisit')}
                 </Button>
               </div>
             </div>
