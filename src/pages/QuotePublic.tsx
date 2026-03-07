@@ -206,10 +206,13 @@ export default function QuotePublic() {
         setAccepted(true);
         setShowSuccessDialog(true);
         
-        // Multi-wave konfetti-effekt
-        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, colors: ['#16a34a', '#22c55e', '#fbbf24', '#f59e0b', '#3b82f6'] });
-        setTimeout(() => confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#16a34a', '#22c55e', '#fbbf24'] }), 300);
-        setTimeout(() => confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#3b82f6', '#8b5cf6', '#f59e0b'] }), 500);
+        // Multi-wave konfetti-effekt med delay så dialog hinner rendera
+        setTimeout(() => {
+          confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, zIndex: 9999, colors: ['#16a34a', '#22c55e', '#fbbf24', '#f59e0b', '#3b82f6'] });
+          setTimeout(() => confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0 }, zIndex: 9999, colors: ['#16a34a', '#22c55e', '#fbbf24'] }), 300);
+          setTimeout(() => confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1 }, zIndex: 9999, colors: ['#3b82f6', '#8b5cf6', '#f59e0b'] }), 500);
+          setTimeout(() => confetti({ particleCount: 80, spread: 120, origin: { y: 0.5 }, zIndex: 9999, colors: ['#16a34a', '#fbbf24', '#8b5cf6'] }), 800);
+        }, 200);
         return;
       }
 
