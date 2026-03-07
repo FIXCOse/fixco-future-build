@@ -930,6 +930,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     "inomhusmalning": [`Väggmålning i ${area}`, `Takmålning i ${area}`, `Tapetsering i ${area}`, `Spackling och slipning i ${area}`, `Köksmålning i ${area}`, `Sovrum målning i ${area}`, `Vardagsrum målning i ${area}`, `Trapphus målning i ${area}`, `Lister och foder målning i ${area}`, `Färgrådgivning i ${area}`],
     "golvlaggning": [`Parkettläggning i ${area}`, `Vinylgolv i ${area}`, `Laminatgolv i ${area}`, `Klinkergolv i ${area}`, `Parkettslipning i ${area}`, `Golvvärme installation i ${area}`, `Avjämning av golv i ${area}`, `Badrumsgolv i ${area}`, `Köksgolv i ${area}`, `Mattläggning i ${area}`],
     "elinstallation": [`Eluttag installation i ${area}`, `Belysning installation i ${area}`, `Laddbox installation i ${area}`, `Dimmer installation i ${area}`, `Byte av elcentral i ${area}`, `Utomhusbelysning i ${area}`, `Smart hem kabeldragning i ${area}`, `Jordfelsbrytare i ${area}`, `Elbesiktning i ${area}`, `Kök elinstallation i ${area}`],
+    "rivning": [`Rivning badrum i ${area}`, `Rivning kök i ${area}`, `Rivning innerväggar i ${area}`, `Rivning golv i ${area}`, `Totalrivning stomrent i ${area}`, `Håltagning betong i ${area}`, `Kakelrivning i ${area}`, `Bortforsling av rivningsavfall i ${area}`, `Selektiv rivning i ${area}`, `Rivning före renovering i ${area}`],
   };
   return serviceItems[serviceSlug] || [];
 }
