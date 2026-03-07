@@ -108,7 +108,8 @@ const Navbar2 = () => {
     stadning: '/tjanster/stadning',
     markarbeten: '/tjanster/markarbeten',
     tekniska: '/tjanster/tekniska-installationer',
-    dorrlas: '/tjanster/dorrlas',
+     dorrlas: '/tjanster/dorrlas',
+     rivning: '/tjanster/rivning',
   };
 
   const services = [
