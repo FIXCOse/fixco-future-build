@@ -537,26 +537,27 @@ const SERVICE_PRICING: Record<LocalServiceSlug, {
   isQuoteOnly: boolean;
   rotRut: 'ROT' | 'RUT';
 }> = {
-  "snickare":    { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "snickare":    { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elektriker":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "vvs":         { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
-  "malare":      { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "malare":      { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "tradgard":    { base: "659 kr/h",  afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "stad":        { base: "459 kr/h",  afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
-  "markarbeten": { base: "959 kr/h",  afterDeduction: "480 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "montering":   { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "markarbeten": { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "montering":   { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "flytt":       { base: "559 kr/h",  afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "tekniska-installationer": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   // Nischade sub-tjänster
-  "koksmontering":      { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "koksmontering":      { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "mobelmontering":     { base: "759 kr/h",  afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "badrumsrenovering":  { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "koksrenovering":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
-  "altanbygge":         { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "fasadmalning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "inomhusmalning":     { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
-  "golvlaggning":       { base: "859 kr/h",  afterDeduction: "430 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "altanbygge":         { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "fasadmalning":       { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "inomhusmalning":     { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "golvlaggning":       { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elinstallation":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "rivning":            { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
 };
 
 // Funktion för att hämta rolig fakta
