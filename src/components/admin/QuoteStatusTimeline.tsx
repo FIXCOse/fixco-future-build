@@ -41,7 +41,7 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('quote_views')
-        .select('viewed_at')
+        .select('viewed_at, ip_address')
         .eq('quote_id', quote.id)
         .order('viewed_at', { ascending: true });
       if (error) throw error;
