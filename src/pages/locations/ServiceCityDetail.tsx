@@ -25,7 +25,8 @@ import {
   CheckCircle2,
   Lightbulb,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Calendar
 } from "lucide-react";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -310,10 +311,10 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
                 <Button 
                   variant="ghost-premium" 
                   size="lg"
-                  onClick={() => window.location.href = 'tel:08-123 456 78'}
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
                 >
-                  <Phone className="h-5 w-5 mr-2" />
-                  {t('serviceDetail.callUs')}
+                  <Calendar className="h-5 w-5 mr-2" />
+                  {t('footer.bookHomeVisit')}
                 </Button>
               </div>
 

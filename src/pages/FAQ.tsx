@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Phone } from "lucide-react";
+import { ChevronDown, ChevronUp, HelpCircle, Clock, DollarSign, Shield, Calendar } from "lucide-react";
+import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
@@ -124,16 +125,16 @@ const FAQ = () => {
                     >
                       {t('pages.faq.askQuestion')}
                     </EditableText>
-                    <Phone className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                  <EditableText 
-                    id="faq-call-us"
-                    initialContent={t('pages.faq.callUs')}
-                  >
-                    {t('pages.faq.callUs')}
-                  </EditableText>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {t('footer.bookHomeVisit')}
                 </Button>
               </div>
             </div>
@@ -231,17 +232,21 @@ const FAQ = () => {
                     </Button>
                   </div>
                 </Link>
-                <a href="tel:08-123456789">
-                  <div className="relative">
+                <div className="relative">
                     {/* F Brand Badge on CTA Buttons */}
                     <div className="absolute -top-2 -right-2 w-9 h-9 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 z-10">
                       <FixcoFIcon className="h-6 w-6" />
                     </div>
-                    <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 font-bold">
-                      {t('pages.faq.callUs')}
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      className="w-full border-primary/30 hover:bg-primary/10 font-bold"
+                      onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                    >
+                      <Calendar className="mr-2 h-5 w-5" />
+                      {t('footer.bookHomeVisit')}
                     </Button>
                   </div>
-                </a>
               </div>
           </div>
         </div>
