@@ -120,10 +120,16 @@ const ServiceCityDetail = ({ service, city }: ServiceCityDetailProps) => {
   // Filter services by category from database (including cross-listed)
   const filteredSubServices = useMemo(() => {
     if (!dbServices || !categoryName) return [];
-    return dbServices.filter(s => 
-      s.category === categoryName || 
-      s.additional_categories?.includes(categoryName)
-    );
+    return dbServices
+      .filter(s => 
+        s.category === categoryName || 
+        s.additional_categories?.includes(categoryName)
+      )
+      .sort((a, b) => {
+        const aHasPrice = a.price_type !== 'quote' ? 0 : 1;
+        const bHasPrice = b.price_type !== 'quote' ? 0 : 1;
+        return aHasPrice - bHasPrice;
+      });
   }, [dbServices, categoryName]);
 
   // Related services (other services from different categories)
