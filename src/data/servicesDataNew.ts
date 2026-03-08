@@ -514,7 +514,7 @@ export const servicesDataNew = [
     ]
   },
   {
-    title: "Snickeri",
+    title: "Snickare",
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
