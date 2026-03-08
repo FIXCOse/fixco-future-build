@@ -153,7 +153,7 @@ export const en: Record<CopyKey, string> = {
   // Service Categories (keep both versions for compatibility)
   'serviceCategories.el': 'Electrician',
   'serviceCategories.vvs': 'Plumbing',
-  'serviceCategories.snickeri': 'Carpentry',
+  'serviceCategories.snickeri': 'Carpenter',
   'serviceCategories.malning': 'Painters',
   'serviceCategories.malare': 'Painters',
   'serviceCategories.malare.title': 'Painters',
