@@ -526,7 +526,7 @@ const skipAddons = () => {
               }`}>
                 2
               </div>
-              <span className="text-sm font-medium hidden md:inline">Dina uppgifter</span>
+              <span className="text-sm font-medium hidden md:inline">{ml.yourDetails}</span>
             </div>
           </div>
         )}
