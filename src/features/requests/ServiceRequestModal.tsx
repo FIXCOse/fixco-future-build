@@ -1301,7 +1301,7 @@ const skipAddons = () => {
                     }}
                     className="flex-1"
                   >
-                    Fortsätt
+                    {ml.continue}
                     {selectedAddons.length > 0 && (
                       <Badge className="ml-2 bg-primary-foreground text-primary">
                         {selectedAddons.length}
