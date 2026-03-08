@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button-premium";
-import { CheckCircle, ArrowRight, Home, Clipboard, CreditCard, X } from "lucide-react";
+import { CheckCircle, ArrowRight, Home, Clipboard, CreditCard, X, Hammer, Droplets, Zap, Paintbrush, TreePine, Wrench, Package, Shovel, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { Helmet } from 'react-helmet-async';
 import ROTCalculator from "@/components/ROTCalculator";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useBookHomeVisitModal } from "@/hooks/useBookHomeVisitModal";
 import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
+import { Badge } from "@/components/ui/badge";
 
 const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   const ref = useRef(null);
@@ -29,6 +30,94 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
   }, [isInView, target]);
 
   return <span ref={ref}>{count}{suffix}</span>;
+};
+
+import { type LucideIcon } from "lucide-react";
+
+const INITIAL_VISIBLE = 4;
+
+const QualifiesCard = ({
+  type,
+  title,
+  items,
+  showAllLabel,
+  showLessLabel,
+}: {
+  type: 'positive' | 'negative';
+  title: string;
+  items: { label: string; icon: LucideIcon }[];
+  showAllLabel: string;
+  showLessLabel: string;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const isPositive = type === 'positive';
+  const visibleItems = expanded ? items : items.slice(0, INITIAL_VISIBLE);
+  const hasMore = items.length > INITIAL_VISIBLE;
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      className={`relative overflow-hidden rounded-2xl border-l-4 ${
+        isPositive
+          ? 'border-l-primary bg-gradient-to-br from-primary/5 to-card'
+          : 'border-l-destructive bg-gradient-to-br from-destructive/5 to-card'
+      } border border-border p-8 shadow-sm`}
+    >
+      <div className="flex items-center gap-3 mb-6">
+        <Badge
+          variant={isPositive ? 'default' : 'destructive'}
+          className={`text-sm px-3 py-1 ${
+            isPositive
+              ? 'bg-primary/15 text-primary border-primary/20 hover:bg-primary/15'
+              : 'bg-destructive/15 text-destructive border-destructive/20 hover:bg-destructive/15'
+          }`}
+        >
+          {isPositive ? '✅' : '❌'} {title}
+        </Badge>
+      </div>
+
+      <div className="space-y-1">
+        <AnimatePresence initial={false}>
+          {visibleItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className={`flex items-center gap-3 text-sm py-2.5 px-3 rounded-lg transition-colors ${
+                  isPositive ? 'hover:bg-primary/5' : 'hover:bg-destructive/5'
+                }`}
+              >
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  isPositive ? 'bg-primary/10' : 'bg-destructive/10'
+                }`}>
+                  <Icon className={`h-4 w-4 ${isPositive ? 'text-primary' : 'text-destructive'}`} />
+                </div>
+                <span className={isPositive ? 'text-foreground' : 'text-muted-foreground'}>
+                  {item.label}
+                </span>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+
+      {hasMore && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className={`mt-4 flex items-center gap-1.5 text-sm font-medium transition-colors ${
+            isPositive ? 'text-primary hover:text-primary/80' : 'text-destructive hover:text-destructive/80'
+          }`}
+        >
+          {expanded ? showLessLabel : showAllLabel}
+          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
+        </button>
+      )}
+    </motion.div>
+  );
 };
 
 const ROTInfo = () => {
@@ -64,26 +153,26 @@ const ROTInfo = () => {
 
   const qualifyingServices = isEnglish
     ? [
-        "Carpentry work (kitchen, bathroom, interior)",
-        "Plumbing installations and repairs",
-        "Electrical installations and lighting",
-        "Painting and wallpapering",
-        "Floor laying and tiling work",
-        "Garden work and landscaping",
-        "Facade work and roofing",
-        "Assembly of furniture and equipment",
-        "Ground work and drainage",
+        { label: "Carpentry work (kitchen, bathroom, interior)", icon: Hammer },
+        { label: "Plumbing installations and repairs", icon: Droplets },
+        { label: "Electrical installations and lighting", icon: Zap },
+        { label: "Painting and wallpapering", icon: Paintbrush },
+        { label: "Floor laying and tiling work", icon: Package },
+        { label: "Garden work and landscaping", icon: TreePine },
+        { label: "Facade work and roofing", icon: Wrench },
+        { label: "Assembly of furniture and equipment", icon: Hammer },
+        { label: "Ground work and drainage", icon: Shovel },
       ]
     : [
-        "Snickeriarbeten (kök, badrum, inredning)",
-        "VVS-installationer och reparationer",
-        "Elinstallationer och belysning",
-        "Målning och tapetsering",
-        "Golvläggning och kakelarbeten",
-        "Trädgårdsarbeten och anläggning",
-        "Fasadarbeten och takarbeten",
-        "Montering av möbler och utrustning",
-        "Markarbeten och dränering",
+        { label: "Snickeriarbeten (kök, badrum, inredning)", icon: Hammer },
+        { label: "VVS-installationer och reparationer", icon: Droplets },
+        { label: "Elinstallationer och belysning", icon: Zap },
+        { label: "Målning och tapetsering", icon: Paintbrush },
+        { label: "Golvläggning och kakelarbeten", icon: Package },
+        { label: "Trädgårdsarbeten och anläggning", icon: TreePine },
+        { label: "Fasadarbeten och takarbeten", icon: Wrench },
+        { label: "Montering av möbler och utrustning", icon: Hammer },
+        { label: "Markarbeten och dränering", icon: Shovel },
       ];
 
   const nonQualifyingServices = isEnglish
@@ -289,8 +378,8 @@ const ROTInfo = () => {
         </div>
       </section>
 
-      {/* Vad berättigar — Premium två-kolumns-layout */}
-      <section className="py-20">
+      {/* Vad berättigar — Redesignad sektion */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
             className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
@@ -305,47 +394,29 @@ const ROTInfo = () => {
           </p>
 
           <motion.div
-            className="grid md:grid-cols-2 gap-6"
+            className="grid md:grid-cols-2 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
           >
-            {/* Berättigar ✅ */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <span className="text-xl">✅</span>
-                {t('pages.rot.qualifies.yes.title')}
-              </h3>
-              <div className="space-y-3">
-                {qualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm">
-                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-3.5 w-3.5 text-primary" />
-                    </div>
-                    <span className="text-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Kvalificerar ✅ */}
+            <QualifiesCard
+              type="positive"
+              title={t('pages.rot.qualifies.yes.title')}
+              items={qualifyingServices}
+              showAllLabel={isEnglish ? 'Show all' : 'Visa alla'}
+              showLessLabel={isEnglish ? 'Show less' : 'Visa färre'}
+            />
 
-            {/* Berättigar inte ❌ */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <span className="text-xl">❌</span>
-                {t('pages.rot.qualifies.no.title')}
-              </h3>
-              <div className="space-y-3">
-                {nonQualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm">
-                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                      <X className="h-3.5 w-3.5 text-muted-foreground" />
-                    </div>
-                    <span className="text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Kvalificerar inte ❌ */}
+            <QualifiesCard
+              type="negative"
+              title={t('pages.rot.qualifies.no.title')}
+              items={nonQualifyingServices.map(label => ({ label, icon: X }))}
+              showAllLabel={isEnglish ? 'Show all' : 'Visa alla'}
+              showLessLabel={isEnglish ? 'Show less' : 'Visa färre'}
+            />
           </motion.div>
         </div>
       </section>
