@@ -1013,7 +1013,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.org_number ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="Organisationsnummer (XXXXXX-XXXX) *"
+                          placeholder={`${ml.orgNumber} (XXXXXX-XXXX)`}
                           value={values.org_number || ""}
                           onChange={e => onChange("org_number", e.target.value)}
                         />
