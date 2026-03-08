@@ -50,7 +50,7 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'badrumsrenovering',
     title: 'Badrumsrenovering',
     titleEn: 'Bathroom Renovation',
-    parentCategory: 'vvs',
+    parentCategory: 'badrum',
     icon: Wrench,
     rotRut: 'ROT',
     description: 'Professionell badrumsrenovering med tätskikt, kakel och VVS. Komplett renovering med ROT-avdrag och garanti.',
