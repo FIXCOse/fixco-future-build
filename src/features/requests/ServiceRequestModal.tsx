@@ -820,7 +820,7 @@ const skipAddons = () => {
               {/* Order Summary */}
               {(selectedAddons.length > 0 || pricePreview) && (
                 <div className="bg-primary/5 p-4 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold mb-3 text-foreground">Din beställning</h4>
+                  <h4 className="font-semibold mb-3 text-foreground">{ml.yourOrder}</h4>
                   <div className="space-y-2 text-sm">
                     {pricePreview && (
                       <div className="flex justify-between">
