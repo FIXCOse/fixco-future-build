@@ -393,6 +393,17 @@ const App = () => {
                             <Route path="tjanster/malare-uppsala" element={<Navigate to="/tjanster/malare/uppsala" replace />} />
                             <Route path="tjanster/malare-stockholm" element={<Navigate to="/tjanster/malare/stockholm" replace />} />
                             
+                            {/* Nisch-tjänster landningssidor */}
+                            <Route path="tjanster/koksrenovering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/badrumsrenovering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/altanbygge" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/golvlaggning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/fasadmalning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/inomhusmalning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/elinstallation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/koksmontering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/mobelmontering" element={lazyElement(NicheServiceLandingPage)} />
+
                             {/* DYNAMISK LOKAL SEO ROUTE - 540+ sidor */}
                             <Route path="tjanster/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             
