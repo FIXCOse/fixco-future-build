@@ -35,10 +35,13 @@ const itemVariants = {
 };
 
 const NicheServiceLandingPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const { locale, t } = useCopy();
   const isEnglish = locale === 'en';
   const servicePrefix = isEnglish ? '/en/services' : '/tjanster';
+
+  // Extract slug from pathname (last segment)
+  const slug = location.pathname.split('/').filter(Boolean).pop();
 
   // Resolve niche service from slug
   const niche = useMemo(() => {
