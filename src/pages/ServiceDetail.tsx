@@ -12,19 +12,11 @@ import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from "@/copy/CopyProvider";
 import { Seo } from "@/components/SEO";
-import { 
-  ArrowRight,
-  CheckCircle,
-  Clock,
-  Shield,
-  Phone,
-  FileText,
-  Calendar,
-  MapPin,
-  Star,
-  Lock
-} from "lucide-react";
-import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { ArrowRight, CheckCircle, Lock, MapPin } from "lucide-react";
+import GradientButton from '@/components/GradientButton';
+import logoFixco from "@/assets/fixco-logo-white.png";
+import { getHeroGradientStyle } from "@/utils/serviceGradients";
+import { motion } from "framer-motion";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 // Slug alias mappning - mappar URL-slugs till data-slugs
