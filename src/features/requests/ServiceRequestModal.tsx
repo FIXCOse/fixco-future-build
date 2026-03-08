@@ -572,8 +572,8 @@ const skipAddons = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
-              <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
+              <h4 className="text-xl font-semibold text-foreground mb-2">{ml.thankYou}</h4>
+              <p className="text-muted-foreground">{ml.weWillReturn}</p>
             </div>
           ) : currentStep === 0 ? (
             // STEG 0: VÄLJ TJÄNST
