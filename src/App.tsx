@@ -104,6 +104,7 @@ const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
+const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -392,6 +393,17 @@ const App = () => {
                             <Route path="tjanster/malare-uppsala" element={<Navigate to="/tjanster/malare/uppsala" replace />} />
                             <Route path="tjanster/malare-stockholm" element={<Navigate to="/tjanster/malare/stockholm" replace />} />
                             
+                            {/* Nisch-tjänster landningssidor */}
+                            <Route path="tjanster/koksrenovering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/badrumsrenovering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/altanbygge" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/golvlaggning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/fasadmalning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/inomhusmalning" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/elinstallation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/koksmontering" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="tjanster/mobelmontering" element={lazyElement(NicheServiceLandingPage)} />
+
                             {/* DYNAMISK LOKAL SEO ROUTE - 540+ sidor */}
                             <Route path="tjanster/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             
@@ -435,6 +447,16 @@ const App = () => {
                             <Route path="home-v2" element={lazyElement(HomeV2)} />
                             <Route path="services" element={lazyElement(Services)} />
                             <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
+                            {/* English niche service landing pages */}
+                            <Route path="services/kitchen-renovation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/bathroom-renovation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/deck-building" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/flooring-installation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/exterior-painting" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/interior-painting" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/electrical-installation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/kitchen-installation" element={lazyElement(NicheServiceLandingPage)} />
+                            <Route path="services/furniture-assembly" element={lazyElement(NicheServiceLandingPage)} />
                             <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
                             <Route path="contact" element={lazyElement(Contact)} />
