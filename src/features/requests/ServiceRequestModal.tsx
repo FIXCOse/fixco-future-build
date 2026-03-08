@@ -1045,7 +1045,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.phone ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Telefon (070-123 45 67) *"
+                      placeholder={`${ml.phone} (070-123 45 67)`}
                       type="tel"
                       value={values.phone || ""}
                       onChange={e => onChange("phone", e.target.value)}
