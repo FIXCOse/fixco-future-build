@@ -1030,7 +1030,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.email ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="E-post *"
+                      placeholder={ml.email}
                       type="email"
                       value={values.email || ""}
                       onChange={e => onChange("email", e.target.value)}
