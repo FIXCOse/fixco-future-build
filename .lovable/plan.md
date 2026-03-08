@@ -1,25 +1,22 @@
 
 
-## Synka modalens språk med URL vid varje öppning
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-`modalLang` sätts bara en gång vid komponentens mount via `useState`-initialiseraren. Om användaren byter språk på sajten (t.ex. navigerar till `/en/...`) och sedan öppnar modalen igen, behåller den det gamla språkvalet.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
-Lägg till en `useEffect` som uppdaterar `modalLang` baserat på `window.location.pathname` varje gång `open` blir `true`.
+### Fil som ändras
 
-### Ändring i `src/features/requests/ServiceRequestModal.tsx`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Lägg till efter rad ~232 (efter `useScrollLock(open)`):
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-```tsx
-useEffect(() => {
-  if (open) {
-    const detectedLang = window.location.pathname.startsWith('/en') ? 'en' : 'sv';
-    setModalLang(detectedLang);
-  }
-}, [open]);
-```
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-Det är allt — en 4-raders ändring.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
