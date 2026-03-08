@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useCopy } from '@/copy/CopyProvider';
 import { motion } from 'framer-motion';
 import { viewportConfig, itemVariants, containerVariants } from '@/utils/scrollAnimations';
+import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 
 const ROTCalculator = () => {
   const { t } = useCopy();
@@ -136,7 +137,7 @@ const ROTCalculator = () => {
                   </div>
                 </div>
 
-                <Button className="w-full mt-2" size="lg">
+                <Button className="w-full mt-2" size="lg" onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}>
                   {t('rot_calc.requestQuoteRot')}
                 </Button>
               </div>
