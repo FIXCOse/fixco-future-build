@@ -29,10 +29,97 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
     requestAnimationFrame(step);
   }, [isInView, target]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
 };
 
-const ROTInfo = () => {
+import { type LucideIcon } from "lucide-react";
+
+const INITIAL_VISIBLE = 4;
+
+const QualifiesCard = ({
+  type,
+  title,
+  items,
+  showAllLabel,
+  showLessLabel,
+}: {
+  type: 'positive' | 'negative';
+  title: string;
+  items: { label: string; icon: LucideIcon }[];
+  showAllLabel: string;
+  showLessLabel: string;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const isPositive = type === 'positive';
+  const visibleItems = expanded ? items : items.slice(0, INITIAL_VISIBLE);
+  const hasMore = items.length > INITIAL_VISIBLE;
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      className={`relative overflow-hidden rounded-2xl border-l-4 ${
+        isPositive
+          ? 'border-l-primary bg-gradient-to-br from-primary/5 to-card'
+          : 'border-l-destructive bg-gradient-to-br from-destructive/5 to-card'
+      } border border-border p-8 shadow-sm`}
+    >
+      <div className="flex items-center gap-3 mb-6">
+        <Badge
+          variant={isPositive ? 'default' : 'destructive'}
+          className={`text-sm px-3 py-1 ${
+            isPositive
+              ? 'bg-primary/15 text-primary border-primary/20 hover:bg-primary/15'
+              : 'bg-destructive/15 text-destructive border-destructive/20 hover:bg-destructive/15'
+          }`}
+        >
+          {isPositive ? '✅' : '❌'} {title}
+        </Badge>
+      </div>
+
+      <div className="space-y-1">
+        <AnimatePresence initial={false}>
+          {visibleItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className={`flex items-center gap-3 text-sm py-2.5 px-3 rounded-lg transition-colors ${
+                  isPositive ? 'hover:bg-primary/5' : 'hover:bg-destructive/5'
+                }`}
+              >
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  isPositive ? 'bg-primary/10' : 'bg-destructive/10'
+                }`}>
+                  <Icon className={`h-4 w-4 ${isPositive ? 'text-primary' : 'text-destructive'}`} />
+                </div>
+                <span className={isPositive ? 'text-foreground' : 'text-muted-foreground'}>
+                  {item.label}
+                </span>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+
+      {hasMore && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className={`mt-4 flex items-center gap-1.5 text-sm font-medium transition-colors ${
+            isPositive ? 'text-primary hover:text-primary/80' : 'text-destructive hover:text-destructive/80'
+          }`}
+        >
+          {expanded ? showLessLabel : showAllLabel}
+          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`} />
+        </button>
+      )}
+    </motion.div>
+  );
+};
+
+
   const { t, locale } = useCopy();
   const isEnglish = locale === 'en';
   const { open: openBooking } = useBookHomeVisitModal();
