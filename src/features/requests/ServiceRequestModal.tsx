@@ -586,10 +586,10 @@ const skipAddons = () => {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <Wrench className="w-5 h-5 text-primary" />
-                  {mode === 'home_visit' ? 'Välj tjänster' : (showCategories ? 'Välj tjänstekategori' : 'Välj den tjänst du behöver')}
+                  {mode === 'home_visit' ? ml.selectServices : (showCategories ? ml.selectCategory : ml.selectServiceNeeded)}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  {mode === 'home_visit' ? 'Välj en eller flera tjänster du behöver' : (showCategories ? 'Berätta vad du behöver hjälp med' : 'Vi hjälper dig med allt från el till målning')}
+                  {mode === 'home_visit' ? ml.selectOneOrMore : (showCategories ? ml.tellUsWhatYouNeed : ml.weHelpWithAll)}
                 </p>
               </div>
 
