@@ -941,7 +941,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.personnummer ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="Personnummer (YYYYMMDD-XXXX)"
+                          placeholder={ml.personnummer}
                           value={values.personnummer || ""}
                           onChange={e => onChange("personnummer", e.target.value)}
                         />
