@@ -151,7 +151,7 @@ export const en: Record<CopyKey, string> = {
   'categories.entertainment_desc': 'Speakers & Home Cinema',
   
   // Service Categories (keep both versions for compatibility)
-  'serviceCategories.el': 'Electrical',
+  'serviceCategories.el': 'Electrician',
   'serviceCategories.vvs': 'Plumbing',
   'serviceCategories.snickeri': 'Carpentry',
   'serviceCategories.malning': 'Painters',
