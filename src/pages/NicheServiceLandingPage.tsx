@@ -138,11 +138,11 @@ const NicheServiceLandingPage = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
               <GradientButton
-                size="lg"
                 onClick={() => openServiceRequestModal({
                   serviceSlug: niche.slug,
                   prefill: { service_name: title }
                 })}
+                className="text-lg px-8 py-4"
               >
                 <FileText className="h-5 w-5 mr-2" />
                 {t('serviceDetail.requestQuote')}
