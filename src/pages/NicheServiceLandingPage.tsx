@@ -139,26 +139,24 @@ const NicheServiceLandingPage = () => {
               {description}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center mb-10 mt-2">
               <GradientButton
                 onClick={() => openServiceRequestModal({
                   serviceSlug: niche.slug,
                   prefill: { service_name: title }
                 })}
-                className="text-lg px-8 py-4"
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
               >
                 <FileText className="h-5 w-5 mr-2" />
                 {t('serviceDetail.requestQuote')}
               </GradientButton>
-              <Button 
-                variant="ghost-premium" 
-                size="lg"
-                className="text-white border-white/20 hover:bg-white/10"
+              <GradientButton
                 onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
               >
                 <Calendar className="h-5 w-5 mr-2" />
                 {t('footer.bookHomeVisit')}
-              </Button>
+              </GradientButton>
             </div>
 
             {/* Trust badges */}
