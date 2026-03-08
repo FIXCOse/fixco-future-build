@@ -1074,7 +1074,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.postal_code ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Postnummer (123 45)"
+                      placeholder={ml.postalCode}
                       value={values.postal_code || ""}
                       onChange={e => onChange("postal_code", e.target.value)}
                     />
