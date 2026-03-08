@@ -743,7 +743,7 @@ const skipAddons = () => {
                 </>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-muted-foreground">Inga tillägg tillgängliga för denna tjänst</p>
+                  <p className="text-muted-foreground">{ml.noAddons}</p>
                 </div>
               )}
             </motion.div>
