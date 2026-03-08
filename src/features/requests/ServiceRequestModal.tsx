@@ -1292,7 +1292,7 @@ const skipAddons = () => {
                     onClick={skipAddons}
                     className="flex-1"
                   >
-                    Hoppa över
+                    {ml.skip}
                   </Button>
                   <Button
                     onClick={() => {
