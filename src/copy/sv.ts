@@ -170,7 +170,7 @@ export const sv: Record<CopyKey, string> = {
   'serviceCategories.el.description': 'Installation, reparation och underhåll av el',
   'serviceCategories.vvs.title': 'VVS', 
   'serviceCategories.vvs.description': 'Rör, vatten och avlopp',
-  'serviceCategories.snickeri.title': 'Snickeri',
+  'serviceCategories.snickeri.title': 'Snickare',
   'serviceCategories.snickeri.description': 'Specialanpassade lösningar i trä',
   'serviceCategories.malning.title': 'Målning',
   'serviceCategories.malning.description': 'Professionell målning inomhus och utomhus',

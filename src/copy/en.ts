@@ -170,7 +170,7 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.el.description': 'Installation, repair and maintenance of electrical systems',
   'serviceCategories.vvs.title': 'Plumbing', 
   'serviceCategories.vvs.description': 'Pipes, water and drainage',
-  'serviceCategories.snickeri.title': 'Carpentry',
+  'serviceCategories.snickeri.title': 'Carpenter',
   'serviceCategories.snickeri.description': 'Custom wood solutions',
   'serviceCategories.malning.title': 'Painting',
   'serviceCategories.malning.description': 'Professional painting indoors and outdoors',
