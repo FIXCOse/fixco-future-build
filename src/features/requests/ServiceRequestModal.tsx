@@ -843,7 +843,7 @@ const skipAddons = () => {
                     })}
                     {pricePreview && selectedAddons.length > 0 && (
                       <div className="flex justify-between font-bold text-base pt-2 border-t border-border/50">
-                        <span>Totalt</span>
+                        <span>{ml.total}</span>
                         <span>
                           {(
                             (isUnit && service?.unitPriceSek && values["antal"] 
