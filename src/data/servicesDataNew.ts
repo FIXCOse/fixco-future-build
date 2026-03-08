@@ -119,7 +119,7 @@ export const serviceCategories = [
   },
   {
     id: "snickeri", 
-    title: "Snickeri",
+    title: "Snickare",
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
