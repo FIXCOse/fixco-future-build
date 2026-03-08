@@ -1225,7 +1225,7 @@ const skipAddons = () => {
                   onClick={() => setOpen(false)}
                   className="flex-1"
                 >
-                  Avbryt
+                  {ml.cancel}
                 </Button>
               )}
 
