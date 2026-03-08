@@ -1,22 +1,26 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+##Fix: 3 problem på /rot-sidan
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem 1: "Begär offert"-knappen gör ingenting
+`ROTCalculator.tsx` rad 139 — `Button` saknar `onClick`. Ska öppna `openServiceRequestModal({ mode: 'home_visit', showCategories: true })` enligt projektets mönster.
 
-### Fil som ändras
+### Problem 2: Prisexempel räknade på 50% istället för 30%
+De hårdkodade värdena i `ROTInfo.tsx` (rad 41-62) visar 50%-besparing. Korrekta värden med 30% ROT:
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+| Tjänst | Normalpris | Med ROT (30%) | Besparing |
+|---|---|---|---|
+| Köksblandare | 1 918 kr | 1 343 kr | 575 kr |
+| Toalettstol | 3 500 kr | 2 450 kr | 1 050 kr |
+| Köksrenovering | 38 360 kr | 26 852 kr | 11 508 kr |
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+### Problem 3: Redesign "Vad kvalificerar för ROT"-sektionen
+Baserat på skärmbilden — ta bort `gradient-primary-subtle` bakgrund (vit bakgrund istället), behåll den tvåkolumniga layouten med kort men ge dem en renare, mer premium känsla. Emojis (✅ / ❌) i rubrikerna som i referensbilden. Ta bort den subtila färgade bakgrunden.
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+### Filer att ändra
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+| Fil | Ändring |
+|---|---|
+| `src/components/ROTCalculator.tsx` | Importera `openServiceRequestModal`, lägg `onClick` på knappen |
+| `src/pages/ROTInfo.tsx` | Fixa prisexempel till 30%, redesigna kvalificerar-sektionen |
 
