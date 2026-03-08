@@ -29,6 +29,7 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
     requestAnimationFrame(step);
   }, [isInView, target]);
 
+  return <span ref={ref}>{count}{suffix}</span>;
 };
 
 import { type LucideIcon } from "lucide-react";
