@@ -119,8 +119,7 @@ const QualifiesCard = ({
   );
 };
 
-
-  const { t, locale } = useCopy();
+const ROTInfo = () => {
   const isEnglish = locale === 'en';
   const { open: openBooking } = useBookHomeVisitModal();
 
