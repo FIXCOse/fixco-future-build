@@ -25,7 +25,7 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'koksrenovering',
     title: 'Köksrenovering',
     titleEn: 'Kitchen Renovation',
-    parentCategory: 'snickeri',
+    parentCategory: 'kok',
     icon: Home,
     rotRut: 'ROT',
     description: 'Komplett köksrenovering med ROT-avdrag. Vi hjälper dig från planering till färdigt kök – snickeri, el, VVS och målning.',
