@@ -1,22 +1,22 @@
 
 
-## Fix: Ändra "Snickeri" → "Snickare" och "El" → "Elektriker" i copy-filer
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Titlarna på `/tjanster`-sidan kommer från copy-systemet (`src/copy/sv.ts` och `src/copy/en.ts`), inte från `servicesDataNew.ts`. Där står fortfarande "El" och "Snickeri".
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändringar
+### Fil som ändras
 
-**1. `src/copy/sv.ts`** — 4 rader:
-- Rad 154: `'serviceCategories.el': 'El'` → `'serviceCategories.el': 'Elektriker'`
-- Rad 156: `'serviceCategories.snickeri': 'Snickeri'` → `'serviceCategories.snickeri': 'Snickare'`
-- Rad 169: `'serviceCategories.el.title': 'El'` → `'serviceCategories.el.title': 'Elektriker'`
-- Rad 173: `'serviceCategories.snickeri.title': 'Snickeri'` → `'serviceCategories.snickeri.title': 'Snickare'`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**2. `src/copy/en.ts`** — 4 rader:
-- Rad 154: `'serviceCategories.el': 'Electrical'` → `'serviceCategories.el': 'Electrician'`
-- Rad 156: `'serviceCategories.snickeri': 'Carpentry'` → `'serviceCategories.snickeri': 'Carpenter'`
-- Rad 169: `'serviceCategories.el.title': 'Electrical'` → `'serviceCategories.el.title': 'Electrician'`
-- Rad 173: `'serviceCategories.snickeri.title': 'Carpentry'` → `'serviceCategories.snickeri.title': 'Carpenter'`
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-Inga andra filer behöver ändras — `servicesDataNew.ts` har redan rätt titlar som fallback.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

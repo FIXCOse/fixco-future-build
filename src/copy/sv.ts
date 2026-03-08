@@ -151,9 +151,9 @@ export const sv: Record<CopyKey, string> = {
   'categories.entertainment_desc': 'Högtalare & Hemmabio',
   
   // Service Categories (keep both versions for compatibility)
-  'serviceCategories.el': 'El',
+  'serviceCategories.el': 'Elektriker',
   'serviceCategories.vvs': 'VVS',
-  'serviceCategories.snickeri': 'Snickeri',
+  'serviceCategories.snickeri': 'Snickare',
   'serviceCategories.malning': 'Målare',
   'serviceCategories.malare': 'Målare',
   'serviceCategories.malare.title': 'Målare',
@@ -166,11 +166,11 @@ export const sv: Record<CopyKey, string> = {
   'serviceCategories.flytt': 'Flytt',
 
   // Service Categories Extended
-  'serviceCategories.el.title': 'El',
+  'serviceCategories.el.title': 'Elektriker',
   'serviceCategories.el.description': 'Installation, reparation och underhåll av el',
   'serviceCategories.vvs.title': 'VVS', 
   'serviceCategories.vvs.description': 'Rör, vatten och avlopp',
-  'serviceCategories.snickeri.title': 'Snickeri',
+  'serviceCategories.snickeri.title': 'Snickare',
   'serviceCategories.snickeri.description': 'Specialanpassade lösningar i trä',
   'serviceCategories.malning.title': 'Målning',
   'serviceCategories.malning.description': 'Professionell målning inomhus och utomhus',
