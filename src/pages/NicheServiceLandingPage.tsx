@@ -122,11 +122,11 @@ const NicheServiceLandingPage = () => {
           animate="visible"
         >
           <motion.div className="text-center max-w-4xl mx-auto" variants={itemVariants}>
-            <img 
-              src={logoFixco} 
-              alt="Fixco" 
-              className="mx-auto mb-6 max-h-16 opacity-80"
-            />
+            <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+              <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+                <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
+              </a>
+            </div>
             <div className="flex items-center justify-center gap-3 mb-4">
               <Badge variant="outline" className="border-white/30 text-white bg-white/10 text-sm">
                 {deductionLabel}-{isEnglish ? 'deduction' : 'avdrag'}
@@ -139,26 +139,24 @@ const NicheServiceLandingPage = () => {
               {description}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center mb-10 mt-2">
               <GradientButton
                 onClick={() => openServiceRequestModal({
                   serviceSlug: niche.slug,
                   prefill: { service_name: title }
                 })}
-                className="text-lg px-8 py-4"
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
               >
                 <FileText className="h-5 w-5 mr-2" />
                 {t('serviceDetail.requestQuote')}
               </GradientButton>
-              <Button 
-                variant="ghost-premium" 
-                size="lg"
-                className="text-white border-white/20 hover:bg-white/10"
+              <GradientButton
                 onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
               >
                 <Calendar className="h-5 w-5 mr-2" />
                 {t('footer.bookHomeVisit')}
-              </Button>
+              </GradientButton>
             </div>
 
             {/* Trust badges */}
