@@ -3,6 +3,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button-premium";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useServices } from "@/hooks/useServices";
@@ -34,6 +35,7 @@ const ServiceDetail = () => {
   const location = useLocation();
   const { t, locale } = useCopy();
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
   const setMode = usePriceStore((state) => state.setMode);
@@ -47,9 +49,11 @@ const ServiceDetail = () => {
   // Get static service category info for UI
   const service = servicesDataNew.find(s => s.slug === normalizedSlug);
 
-  // Auto-set price mode based on service eligibility
+  // Auto-set price mode based on service eligibility & reset filters on slug change
   useEffect(() => {
     if (!service) return;
+    setSelectedSubCategory(null);
+    setCurrentPage(1);
     if (service.eligible?.rot) {
       setMode('rot');
     } else if (service.eligible?.rut) {
@@ -99,6 +103,20 @@ const ServiceDetail = () => {
       });
   }, [dbServices, categoryName]);
 
+  // Extract unique sub-categories for filter chips
+  const subCategories = useMemo(() => {
+    const cats = filteredSubServices
+      .map(s => s.sub_category)
+      .filter((c): c is string => Boolean(c));
+    return [...new Set(cats)].sort();
+  }, [filteredSubServices]);
+
+  // Apply sub-category filter
+  const displayServices = useMemo(() => {
+    if (!selectedSubCategory) return filteredSubServices;
+    return filteredSubServices.filter(s => s.sub_category === selectedSubCategory);
+  }, [filteredSubServices, selectedSubCategory]);
+
   // Related services (other services from different categories)
   const relatedServices = useMemo(() => {
     if (!dbServices || !categoryName) return [];
@@ -136,9 +154,9 @@ const ServiceDetail = () => {
 
 
 
-  const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
+  const totalPages = Math.ceil(displayServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedSubServices = displayServices.slice(startIndex, startIndex + itemsPerPage);
 
   // SEO - dynamisk titel och beskrivning
   const seoTitle = `${t(`serviceCategories.${service.slug}.title` as any) || service.title} | Fixco`;
@@ -310,6 +328,30 @@ const ServiceDetail = () => {
                 ['all']
               } />
             </div>
+            {/* Sub-category filter chips */}
+            {subCategories.length > 1 && (
+              <div className="flex flex-wrap justify-center gap-2 mt-6">
+                <button 
+                  onClick={() => { setSelectedSubCategory(null); setCurrentPage(1); }}
+                  className={cn("px-4 py-1.5 rounded-full border text-sm font-medium transition-all",
+                    !selectedSubCategory ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  )}
+                >
+                  {isEnglish ? 'All' : 'Alla'}
+                </button>
+                {subCategories.map(cat => (
+                  <button 
+                    key={cat} 
+                    onClick={() => { setSelectedSubCategory(cat); setCurrentPage(1); }}
+                    className={cn("px-4 py-1.5 rounded-full border text-sm font-medium transition-all",
+                      selectedSubCategory === cat ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                    )}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -332,7 +374,7 @@ const ServiceDetail = () => {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && filteredSubServices.length > 0 && (
+          {totalPages > 1 && displayServices.length > 0 && (
             <div className="flex justify-center mt-12 space-x-2">
               <Button 
                 variant="outline"

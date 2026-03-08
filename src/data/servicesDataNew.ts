@@ -27,7 +27,7 @@ export interface SubService extends ServicePricing {
 export const mainServices: ServicePricing[] = [
   {
     id: "el",
-    title: "El",
+    title: "Elmontör",
     basePrice: 1059,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
@@ -43,7 +43,7 @@ export const mainServices: ServicePricing[] = [
   },
   {
     id: "snickeri",
-    title: "Snickeri", 
+    title: "Snickare", 
     basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
@@ -103,7 +103,7 @@ export const mainServices: ServicePricing[] = [
 export const serviceCategories = [
   {
     id: "el",
-    title: "El",
+    title: "Elmontör",
     slug: "el", 
     description: "Installation, reparation och underhåll",
     icon: Zap,
@@ -119,7 +119,7 @@ export const serviceCategories = [
   },
   {
     id: "snickeri", 
-    title: "Snickeri",
+    title: "Snickare",
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
@@ -194,7 +194,7 @@ export const serviceCategories = [
 // Detailed service categories with sub-services
 export const servicesDataNew = [
   {
-    title: "El", 
+    title: "Elmontör", 
     slug: "el",
     description: "Installation, reparation och underhåll",
     icon: Zap,
@@ -514,7 +514,7 @@ export const servicesDataNew = [
     ]
   },
   {
-    title: "Snickeri",
+    title: "Snickare",
     slug: "snickeri",
     description: "Kök, garderober och inredning",
     icon: Hammer,
