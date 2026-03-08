@@ -658,12 +658,12 @@ const skipAddons = () => {
                           <h5 className="font-semibold text-foreground mb-1">{svc.name}</h5>
                           <p className="text-xs text-muted-foreground">
                             {svc.pricingMode === 'quote' 
-                              ? 'Offert efter behov' 
+                              ? ml.quoteByNeed 
                               : svc.pricingMode === 'unit' 
                                 ? `${svc.unitPriceSek} kr/${svc.unitLabel}`
                                 : `${svc.fixedPriceSek} kr`
                             }
-                            {svc.rotEligible && ' • ROT-berättigad'}
+                            {svc.rotEligible && ` • ${ml.rotEligible}`}
                           </p>
                         </div>
 
