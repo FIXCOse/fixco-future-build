@@ -122,11 +122,11 @@ const NicheServiceLandingPage = () => {
           animate="visible"
         >
           <motion.div className="text-center max-w-4xl mx-auto" variants={itemVariants}>
-            <img 
-              src={logoFixco} 
-              alt="Fixco" 
-              className="mx-auto mb-6 max-h-16 opacity-80"
-            />
+            <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+              <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+                <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
+              </a>
+            </div>
             <div className="flex items-center justify-center gap-3 mb-4">
               <Badge variant="outline" className="border-white/30 text-white bg-white/10 text-sm">
                 {deductionLabel}-{isEnglish ? 'deduction' : 'avdrag'}
