@@ -290,8 +290,8 @@ const ROTInfo = () => {
         </div>
       </section>
 
-      {/* Vad berättigar — Premium två-kolumns-layout */}
-      <section className="py-20">
+      {/* Vad berättigar — Redesignad sektion */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
             className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
@@ -306,47 +306,29 @@ const ROTInfo = () => {
           </p>
 
           <motion.div
-            className="grid md:grid-cols-2 gap-6"
+            className="grid md:grid-cols-2 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
           >
-            {/* Berättigar ✅ */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <span className="text-xl">✅</span>
-                {t('pages.rot.qualifies.yes.title')}
-              </h3>
-              <div className="space-y-3">
-                {qualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm">
-                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-3.5 w-3.5 text-primary" />
-                    </div>
-                    <span className="text-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Kvalificerar ✅ */}
+            <QualifiesCard
+              type="positive"
+              title={t('pages.rot.qualifies.yes.title')}
+              items={qualifyingServices}
+              showAllLabel={isEnglish ? 'Show all' : 'Visa alla'}
+              showLessLabel={isEnglish ? 'Show less' : 'Visa färre'}
+            />
 
-            {/* Berättigar inte ❌ */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <span className="text-xl">❌</span>
-                {t('pages.rot.qualifies.no.title')}
-              </h3>
-              <div className="space-y-3">
-                {nonQualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm">
-                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                      <X className="h-3.5 w-3.5 text-muted-foreground" />
-                    </div>
-                    <span className="text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Kvalificerar inte ❌ */}
+            <QualifiesCard
+              type="negative"
+              title={t('pages.rot.qualifies.no.title')}
+              items={nonQualifyingServices.map(label => ({ label, icon: X }))}
+              showAllLabel={isEnglish ? 'Show all' : 'Visa alla'}
+              showLessLabel={isEnglish ? 'Show less' : 'Visa färre'}
+            />
           </motion.div>
         </div>
       </section>
