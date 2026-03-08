@@ -134,8 +134,8 @@ const ServiceDetail = () => {
     );
   }
 
-  const IconComponent = service.icon;
-  
+
+
   const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
