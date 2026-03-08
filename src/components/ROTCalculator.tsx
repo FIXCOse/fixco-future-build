@@ -137,7 +137,7 @@ const ROTCalculator = () => {
                   </div>
                 </div>
 
-                <Button className="w-full mt-2" size="lg">
+                <Button className="w-full mt-2" size="lg" onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}>
                   {t('rot_calc.requestQuoteRot')}
                 </Button>
               </div>

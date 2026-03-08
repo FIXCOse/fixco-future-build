@@ -289,51 +289,58 @@ const ROTInfo = () => {
         </div>
       </section>
 
-      {/* Vad berättigar — Kompakt grid med check/X */}
-      <section className="py-20 gradient-primary-subtle">
+      {/* Vad berättigar — Premium två-kolumns-layout */}
+      <section className="py-20">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground"
+            className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             {t('pages.rot.qualifies.title')}
           </motion.h2>
+          <p className="text-center text-muted-foreground mb-12 max-w-lg mx-auto">
+            {isEnglish ? 'Only labor costs qualify — not materials.' : 'Endast arbetskostnaden kvalificerar — inte material.'}
+          </p>
 
           <motion.div
-            className="grid md:grid-cols-2 gap-8"
+            className="grid md:grid-cols-2 gap-6"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={viewportConfig}
           >
-            {/* Berättigar */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4 text-primary flex items-center gap-2">
-                <CheckCircle className="h-5 w-5" />
+            {/* Berättigar ✅ */}
+            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
+                <span className="text-xl">✅</span>
                 {t('pages.rot.qualifies.yes.title')}
               </h3>
-              <div className="grid grid-cols-1 gap-2">
+              <div className="space-y-3">
                 {qualifyingServices.map((item) => (
-                  <div key={item} className="flex items-start gap-2 text-sm">
-                    <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div key={item} className="flex items-center gap-3 text-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                    </div>
                     <span className="text-foreground">{item}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* Berättigar inte */}
-            <motion.div variants={itemVariants} className="bg-card border border-border rounded-xl p-6 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4 text-muted-foreground flex items-center gap-2">
-                <X className="h-5 w-5" />
+            {/* Berättigar inte ❌ */}
+            <motion.div variants={itemVariants} className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+              <h3 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
+                <span className="text-xl">❌</span>
                 {t('pages.rot.qualifies.no.title')}
               </h3>
-              <div className="grid grid-cols-1 gap-2">
+              <div className="space-y-3">
                 {nonQualifyingServices.map((item) => (
-                  <div key={item} className="flex items-start gap-2 text-sm">
-                    <X className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div key={item} className="flex items-center gap-3 text-sm">
+                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                      <X className="h-3.5 w-3.5 text-muted-foreground" />
+                    </div>
                     <span className="text-muted-foreground">{item}</span>
                   </div>
                 ))}
