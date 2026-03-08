@@ -515,7 +515,7 @@ const skipAddons = () => {
               }`}>
                 1
               </div>
-              <span className="text-sm font-medium hidden md:inline">Välj tillägg</span>
+              <span className="text-sm font-medium hidden md:inline">{ml.selectAddons}</span>
             </div>
             
             <div className="w-8 md:w-12 h-0.5 bg-border" />
