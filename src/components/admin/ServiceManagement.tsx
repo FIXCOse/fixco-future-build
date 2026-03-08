@@ -297,109 +297,21 @@ const ServiceManagement = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredServices.map((service, index) => (
-          <Card key={service.id} className={`h-fit ${!service.is_active ? 'opacity-50' : ''}`}>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">{service.category}</Badge>
-                  <Badge variant="secondary" className="text-xs">#{service.sort_order}</Badge>
-                  {!service.is_active && (
-                    <Badge variant="secondary" className="text-xs">
-                      <EyeOff className="h-3 w-3 mr-1" />
-                      Dold
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center gap-1">
-                  {getTranslationStatusBadge(service.translation_status)}
-                  
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={async () => {
-                      console.log('🖱️ Toggle clicked:', { 
-                        serviceId: service.id, 
-                        currentActive: service.is_active,
-                        newActive: !service.is_active 
-                      });
-                      
-                      try {
-                        await toggleServiceActive.mutateAsync({ 
-                          id: service.id, 
-                          is_active: !service.is_active 
-                        });
-                        console.log('✅ Toggle mutation completed');
-                      } catch (err) {
-                        console.error('❌ Toggle mutation failed:', err);
-                      }
-                    }}
-                    disabled={toggleServiceActive.isPending}
-                    className={`h-8 w-8 p-0 ${
-                      !service.is_active 
-                        ? 'bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800' 
-                        : ''
-                    }`}
-                    title={service.is_active ? "Dölj tjänst" : "Aktivera tjänst igen"}
-                  >
-                    {service.is_active ? (
-                      <Eye className="h-3 w-3" />
-                    ) : (
-                      <EyeOff className="h-3 w-3 text-green-600 dark:text-green-400" />
-                    )}
-                  </Button>
-                  
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setServiceToDelete(service.id);
-                      setDeleteDialogOpen(true);
-                    }}
-                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                    title="Ta bort tjänst"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
-                  
-                  <div className="flex flex-col">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => moveService(service.id, 'up')}
-                      disabled={index === 0 || reorderServices.isPending}
-                      className="h-6 w-6 p-0"
-                    >
-                      <ChevronUp className="h-3 w-3" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => moveService(service.id, 'down')}
-                      disabled={index === filteredServices.length - 1 || reorderServices.isPending}
-                      className="h-6 w-6 p-0"
-                    >
-                      <ChevronDown className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={() => handleEdit(service)} className="h-8 w-8 p-0">
-                    <Edit className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedServiceForAddons(service);
-                      setActiveTab('addons');
-                    }}
-                    className="h-8 w-8 p-0"
-                    title="Hantera tilläggstjänster"
-                  >
-                    <Settings className="h-3 w-3" />
-                  </Button>
-                </div>
+          <Card key={service.id} className={`h-fit overflow-hidden ${!service.is_active ? 'opacity-60 border-dashed' : ''}`}>
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                <Badge variant="outline" className="text-xs">{service.category}</Badge>
+                <Badge variant="secondary" className="text-xs">#{service.sort_order}</Badge>
+                {getTranslationStatusBadge(service.translation_status)}
+                {!service.is_active && (
+                  <Badge variant="destructive" className="text-xs">
+                    <EyeOff className="h-3 w-3 mr-1" />
+                    Dold
+                  </Badge>
+                )}
               </div>
-              <CardTitle className="text-sm font-medium leading-tight mb-2">{service.title_sv}</CardTitle>
-              <div className="flex items-center gap-1 mb-2">
+              <CardTitle className="text-sm font-medium leading-tight">{service.title_sv}</CardTitle>
+              <div className="flex items-center gap-1 mt-1">
                 <Badge variant={service.rot_eligible ? "default" : "secondary"} className="text-xs px-1 py-0">
                   ROT
                 </Badge>
@@ -411,7 +323,63 @@ const ServiceManagement = () => {
                 )}
               </div>
             </CardHeader>
-            <CardContent className="pt-0">
+            
+            {/* Action toolbar - inside card */}
+            <div className="px-4 pb-2 flex items-center justify-between border-t border-b border-border/50 py-1.5">
+              <div className="flex items-center gap-0.5">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={async () => {
+                    try {
+                      await toggleServiceActive.mutateAsync({ 
+                        id: service.id, 
+                        is_active: !service.is_active 
+                      });
+                    } catch (err) {
+                      console.error('❌ Toggle mutation failed:', err);
+                    }
+                  }}
+                  disabled={toggleServiceActive.isPending}
+                  className="h-7 w-7 p-0"
+                  title={service.is_active ? "Dölj tjänst" : "Aktivera tjänst igen"}
+                >
+                  {service.is_active ? (
+                    <Eye className="h-3.5 w-3.5" />
+                  ) : (
+                    <EyeOff className="h-3.5 w-3.5" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setServiceToDelete(service.id);
+                    setDeleteDialogOpen(true);
+                  }}
+                  className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                  title="Ta bort tjänst"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+              <div className="flex items-center gap-0.5">
+                <Button variant="ghost" size="sm" onClick={() => moveService(service.id, 'up')} disabled={index === 0 || reorderServices.isPending} className="h-7 w-7 p-0">
+                  <ChevronUp className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => moveService(service.id, 'down')} disabled={index === filteredServices.length - 1 || reorderServices.isPending} className="h-7 w-7 p-0">
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => handleEdit(service)} className="h-7 w-7 p-0" title="Redigera">
+                  <Edit className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => { setSelectedServiceForAddons(service); setActiveTab('addons'); }} className="h-7 w-7 p-0" title="Tilläggstjänster">
+                  <Settings className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+
+            <CardContent className="pt-2">
               <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{service.description_sv}</p>
               <div className="space-y-1 text-xs">
                 <div className="flex justify-between">
@@ -427,7 +395,25 @@ const ServiceManagement = () => {
                   <span>{service.location}</span>
                 </div>
                 {!service.is_active && (
-                  <Badge variant="destructive" className="w-full justify-center text-xs mt-2">Inaktiv</Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full mt-2 border-green-500/50 text-green-600 hover:bg-green-50 hover:text-green-700 dark:text-green-400 dark:hover:bg-green-950 dark:hover:text-green-300"
+                    onClick={async () => {
+                      try {
+                        await toggleServiceActive.mutateAsync({ 
+                          id: service.id, 
+                          is_active: true 
+                        });
+                      } catch (err) {
+                        console.error('❌ Activate failed:', err);
+                      }
+                    }}
+                    disabled={toggleServiceActive.isPending}
+                  >
+                    <Eye className="h-3.5 w-3.5 mr-1.5" />
+                    Aktivera tjänst
+                  </Button>
                 )}
               </div>
             </CardContent>
