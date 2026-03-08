@@ -103,7 +103,7 @@ export const mainServices: ServicePricing[] = [
 export const serviceCategories = [
   {
     id: "el",
-    title: "El",
+    title: "Elmontör",
     slug: "el", 
     description: "Installation, reparation och underhåll",
     icon: Zap,
