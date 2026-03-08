@@ -65,26 +65,26 @@ const ROTInfo = () => {
 
   const qualifyingServices = isEnglish
     ? [
-        "Carpentry work (kitchen, bathroom, interior)",
-        "Plumbing installations and repairs",
-        "Electrical installations and lighting",
-        "Painting and wallpapering",
-        "Floor laying and tiling work",
-        "Garden work and landscaping",
-        "Facade work and roofing",
-        "Assembly of furniture and equipment",
-        "Ground work and drainage",
+        { label: "Carpentry work (kitchen, bathroom, interior)", icon: Hammer },
+        { label: "Plumbing installations and repairs", icon: Droplets },
+        { label: "Electrical installations and lighting", icon: Zap },
+        { label: "Painting and wallpapering", icon: Paintbrush },
+        { label: "Floor laying and tiling work", icon: Package },
+        { label: "Garden work and landscaping", icon: TreePine },
+        { label: "Facade work and roofing", icon: Wrench },
+        { label: "Assembly of furniture and equipment", icon: Hammer },
+        { label: "Ground work and drainage", icon: Shovel },
       ]
     : [
-        "Snickeriarbeten (kök, badrum, inredning)",
-        "VVS-installationer och reparationer",
-        "Elinstallationer och belysning",
-        "Målning och tapetsering",
-        "Golvläggning och kakelarbeten",
-        "Trädgårdsarbeten och anläggning",
-        "Fasadarbeten och takarbeten",
-        "Montering av möbler och utrustning",
-        "Markarbeten och dränering",
+        { label: "Snickeriarbeten (kök, badrum, inredning)", icon: Hammer },
+        { label: "VVS-installationer och reparationer", icon: Droplets },
+        { label: "Elinstallationer och belysning", icon: Zap },
+        { label: "Målning och tapetsering", icon: Paintbrush },
+        { label: "Golvläggning och kakelarbeten", icon: Package },
+        { label: "Trädgårdsarbeten och anläggning", icon: TreePine },
+        { label: "Fasadarbeten och takarbeten", icon: Wrench },
+        { label: "Montering av möbler och utrustning", icon: Hammer },
+        { label: "Markarbeten och dränering", icon: Shovel },
       ];
 
   const nonQualifyingServices = isEnglish
