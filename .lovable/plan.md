@@ -1,48 +1,22 @@
 
 
-## Fix: Översätt sub-category filter-chips till engelska
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Filter-chips (rad 350 i `ServiceDetail.tsx`) renderar `{cat}` direkt från databasens `sub_category`-fält, som alltid är på svenska.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
-Lägg till en `subCategoryTranslations`-map i `ServiceDetail.tsx` och använd den vid rendering när `isEnglish === true`.
+### Fil som ändras
 
-### Ändringar i `src/pages/ServiceDetail.tsx`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**1. Lägg till översättningsmap (~efter rad 31)**
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-```tsx
-const subCategoryTranslations: Record<string, string> = {
-  'Akustik': 'Acoustics', 'Allmänt': 'General', 'Altan': 'Deck',
-  'Anläggning': 'Landscaping', 'AV': 'AV', 'Avlopp': 'Drainage',
-  'Bänkskiva': 'Countertop', 'Beläggning': 'Paving', 'Belysning': 'Lighting',
-  'Blandare': 'Faucets', 'Dörrar': 'Doors', 'Dörrlås': 'Door Locks',
-  'Dränering': 'Drainage', 'Dusch': 'Shower', 'Elektronik': 'Electronics',
-  'Fasad': 'Facade', 'Finish': 'Finish', 'Fönster': 'Windows',
-  'Förvaring': 'Storage', 'Grävning': 'Excavation', 'Hemstäd': 'Home Cleaning',
-  'Innerväggar': 'Interior Walls', 'Inredning': 'Interior', 'Installationer': 'Installations',
-  'Isolering': 'Insulation', 'IT': 'IT', 'Kakel': 'Tiles',
-  'Klinker': 'Clinker', 'Kök': 'Kitchen', 'Laminat/Vinyl': 'Laminate/Vinyl',
-  'Målning': 'Painting', 'Matta': 'Carpet', 'Möbler': 'Furniture',
-  'Montering': 'Assembly', 'Murning': 'Masonry', 'Packning': 'Packing',
-  'Parkett': 'Parquet', 'Renovering': 'Renovation', 'Säkerhet': 'Security',
-  'Sanitetsarbeten': 'Sanitary Work', 'Service': 'Service', 'Skötsel': 'Maintenance',
-  'Specialstäd': 'Special Cleaning', 'Större projekt': 'Larger Projects',
-  'Strömbrytare': 'Switches', 'Tak': 'Roof', 'Takläggning': 'Roofing',
-  'Tapetsering': 'Wallpapering', 'Totalrenovering': 'Full Renovation',
-  'Transport': 'Transport', 'Underhåll': 'Maintenance', 'Utebelysning': 'Outdoor Lighting',
-  'Utomhus': 'Outdoor', 'Uttag': 'Outlets', 'Värme': 'Heating',
-  'Vinterservice': 'Winter Service', 'Vitvaror': 'Appliances',
-};
-```
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-**2. Uppdatera chip-rendering (rad 350)**
-
-Byt `{cat}` till `{isEnglish ? (subCategoryTranslations[cat] || cat) : cat}`.
-
-### Fil att ändra
-| Fil | Åtgärd |
-|---|---|
-| `src/pages/ServiceDetail.tsx` | Lägg till map + uppdatera chip-rendering |
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
