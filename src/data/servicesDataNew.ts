@@ -194,7 +194,7 @@ export const serviceCategories = [
 // Detailed service categories with sub-services
 export const servicesDataNew = [
   {
-    title: "El", 
+    title: "Elmontör", 
     slug: "el",
     description: "Installation, reparation och underhåll",
     icon: Zap,
