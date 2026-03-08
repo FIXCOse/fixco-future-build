@@ -104,6 +104,7 @@ const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
+const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
