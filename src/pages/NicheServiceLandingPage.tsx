@@ -6,6 +6,7 @@ import {
   FileText, Calendar, MapPin, Clock, Star, Shield, 
   CheckCircle, ArrowRight, Phone 
 } from "lucide-react";
+// Note: Some icons kept for other sections below
 import { Button } from "@/components/ui/button-premium";
 import GradientButton from "@/components/GradientButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -107,67 +108,85 @@ const NicheServiceLandingPage = () => {
       </Helmet>
       <Breadcrumbs />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      {/* Hero Section — matches LocalServicePage */}
+      <section className="relative w-full overflow-hidden">
         <div 
-          className="absolute inset-0 opacity-90"
-          style={{ background: heroGradient }}
+          className="absolute inset-0 animate-gradient-shift"
+          style={{ backgroundImage: heroGradient, backgroundSize: '200% 200%' }}
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-1/4 w-72 h-72 opacity-30 blur-3xl rounded-full animate-float-slow" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute bottom-32 right-1/4 w-64 h-64 opacity-20 blur-2xl rounded-full animate-float-fast" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }} />
+        </div>
 
-        <motion.div 
-          className="container mx-auto px-4 py-20 md:py-28 relative z-10"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div className="text-center max-w-4xl mx-auto" variants={itemVariants}>
-            <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
-              <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
-                <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
-              </a>
-            </div>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Badge variant="outline" className="border-white/30 text-white bg-white/10 text-sm">
-                {deductionLabel}-{isEnglish ? 'deduction' : 'avdrag'}
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+        <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-8 pb-20 md:pt-10 md:pb-28">
+          {/* Fixco Logo */}
+          <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+            <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+              <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
+            </a>
+          </div>
+
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="flex flex-col items-center gap-4 md:gap-6 w-full max-w-4xl"
+          >
+            {/* H1 */}
+            <motion.h1 
+              variants={itemVariants}
+              className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight"
+            >
               {title}
-            </h1>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+            </motion.h1>
+            
+            {/* Value prop */}
+            <motion.p 
+              variants={itemVariants}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed"
+            >
               {description}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center mb-10 mt-2">
-              <GradientButton
+            </motion.p>
+            
+            {/* CTA buttons */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center mt-2"
+            >
+              <GradientButton 
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
                 onClick={() => openServiceRequestModal({
                   serviceSlug: niche.slug,
                   prefill: { service_name: title }
                 })}
-                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
               >
-                <FileText className="h-5 w-5 mr-2" />
-                {t('serviceDetail.requestQuote')}
+                {t('local.ctaQuote')}
               </GradientButton>
-              <GradientButton
-                onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
-                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
-              >
-                <Calendar className="h-5 w-5 mr-2" />
-                {t('footer.bookHomeVisit')}
+              <GradientButton className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5" href={servicePrefix}>
+                {t('local.allServices')}
               </GradientButton>
-            </div>
+            </motion.div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap justify-center gap-6 text-white/70 text-sm">
-              <span className="flex items-center gap-1.5"><Shield className="h-4 w-4" /> F-{t('serviceDetail.taxAndInsurance')}</span>
-              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> {t('serviceDetail.startWithinDays')}</span>
-              <span className="flex items-center gap-1.5"><Star className="h-4 w-4" /> 98% {t('serviceDetail.customerSatisfaction')}</span>
-              <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4" /> Uppsala & Stockholm</span>
-            </div>
+            {/* Trust badges — pill style */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-wrap justify-center gap-3 mt-2"
+            >
+              {[
+                deductionLabel,
+                'F-skatt',
+                isEnglish ? 'Insured' : 'Försäkrade',
+                isEnglish ? 'Fixed price' : 'Fast pris',
+              ].map((badge, idx) => (
+                <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm md:text-base text-white/90">
+                  <CheckCircle className="h-3.5 w-3.5 text-white/80" />
+                  <span>{badge}</span>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* USPs */}
