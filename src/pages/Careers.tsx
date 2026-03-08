@@ -6,7 +6,6 @@ import { CareersStats } from "@/components/careers/CareersStats";
 import { CareerQuiz } from "@/components/careers/CareerQuiz";
 import { ApplicationForm } from "@/components/careers/ApplicationForm";
 import { CareersFAQ } from "@/components/careers/CareersFAQ";
-import { CareersContact } from "@/components/careers/CareersContact";
 
 const Careers = () => {
   return (
@@ -24,7 +23,6 @@ const Careers = () => {
         <CareerQuiz />
         <ApplicationForm />
         <CareersFAQ />
-        <CareersContact />
       </main>
     </>
   );

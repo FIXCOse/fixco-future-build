@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Mail, Phone, Clock } from "lucide-react";
 
 const faqs = [
   { question: "Hur lång tid tar rekryteringsprocessen?", answer: "Vanligtvis hör du från oss inom 5-7 arbetsdagar efter att du skickat in din ansökan. Vi granskar alla ansökningar noggrant och kontaktar dig för en intervju om din profil matchar våra behov." },
@@ -29,7 +30,7 @@ export const CareersFAQ = () => {
           Svar på de vanligaste frågorna om att jobba hos Fixco
         </p>
 
-        <Accordion type="single" collapsible className="space-y-3">
+        <Accordion type="single" collapsible className="space-y-3 mb-12">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
@@ -45,6 +46,33 @@ export const CareersFAQ = () => {
             </AccordionItem>
           ))}
         </Accordion>
+
+        {/* Integrated contact banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-card border border-border rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <p className="text-foreground font-medium text-center sm:text-left">
+            Har du fler frågor? Kontakta oss!
+          </p>
+          <div className="flex flex-wrap items-center gap-5">
+            <a href="tel:+46793350228" className="flex items-center gap-2 text-sm text-primary hover:underline">
+              <Phone className="w-4 h-4" />
+              +46 79 335 02 28
+            </a>
+            <a href="mailto:karriar@fixco.se" className="flex items-center gap-2 text-sm text-primary hover:underline">
+              <Mail className="w-4 h-4" />
+              karriar@fixco.se
+            </a>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              Mån-Fre: 08-17
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

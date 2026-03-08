@@ -1,9 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { Users, Briefcase, TrendingUp, Award } from "lucide-react";
-import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
 import { useRef, useEffect, useState } from "react";
 
-const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+const AnimatedCounter = ({ target, suffix = "", decimals = 0 }: { target: number; suffix?: string; decimals?: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -16,66 +14,43 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
       if (!start) start = timestamp;
       const progress = Math.min((timestamp - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
+      setCount(eased * target);
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   }, [isInView, target]);
 
-  return <span ref={ref}>{count.toLocaleString('sv-SE')}{suffix}</span>;
+  return <span ref={ref}>{decimals ? count.toFixed(decimals) : Math.round(count).toLocaleString('sv-SE')}{suffix}</span>;
 };
 
 const stats = [
-  { key: "employees", label: "Anställda hantverkare", value: 20, suffix: "+", icon: Users },
-  { key: "professions", label: "Olika yrken", value: 9, suffix: "", icon: Briefcase },
-  { key: "satisfaction", label: "Nöjda Privatperson-Index", value: 99, suffix: "%", icon: Award },
-  { key: "growth", label: "Tillväxt senaste året", value: 22, suffix: "%", icon: TrendingUp },
+  { label: "Anställda hantverkare", value: 20, suffix: "+" },
+  { label: "Olika yrken", value: 9, suffix: "" },
+  { label: "Nöjda kunder", value: 99, suffix: "%" },
+  { label: "Tillväxt senaste året", value: 22, suffix: "%" },
 ];
 
 export const CareersStats = () => {
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4 max-w-5xl">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Fixco i siffror
-        </motion.h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-lg mx-auto">
-          Vi växer snabbt och söker alltid fler duktiga hantverkare
-        </p>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6"
-        >
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.key}
-                variants={itemVariants}
-                className="bg-card border border-border rounded-xl p-6 text-center shadow-sm"
-              >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <Icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="border-y border-border"
+    >
+      <div className="container mx-auto px-4 py-10">
+        <div className="flex flex-wrap justify-between items-center gap-8 max-w-5xl mx-auto">
+          {stats.map((stat, i) => (
+            <div key={stat.label} className="flex items-baseline gap-2 text-center flex-1 min-w-[140px] justify-center">
+              <span className="text-3xl md:text-4xl font-bold text-primary">
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </span>
+              <span className="text-sm text-muted-foreground whitespace-nowrap">{stat.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
