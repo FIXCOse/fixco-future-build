@@ -153,44 +153,43 @@ const ServiceDetail = () => {
       />
       <Breadcrumbs />
       
-        {/* Hero Section */}
-        <section className="pt-12 pb-16 relative overflow-hidden">
-          <div className="absolute inset-0 hero-background opacity-50" />
-          
-          {/* F Watermark Background Elements - More Visible */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-            <div className="absolute top-20 right-20 w-16 h-16 rotate-12 animate-pulse" style={{ animationDuration: '4s' }}>
-              <FixcoFIcon className="w-full h-full opacity-35" />
-            </div>
-            <div className="absolute bottom-10 left-20 w-12 h-12 -rotate-12 animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-              <FixcoFIcon className="w-full h-full opacity-25" />
-            </div>
+      {/* Hero Section — gradient style matching LocalServicePage */}
+      <section className="relative w-full overflow-hidden">
+        <div 
+          className="absolute inset-0 animate-gradient-shift"
+          style={{ backgroundImage: getHeroGradientStyle(normalizedSlug || ''), backgroundSize: '200% 200%' }}
+        />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-1/4 w-72 h-72 opacity-30 blur-3xl rounded-full animate-float-slow" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute bottom-32 right-1/4 w-64 h-64 opacity-20 blur-2xl rounded-full animate-float-fast" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }} />
+        </div>
+
+        <div className="relative z-10 flex flex-col items-center w-full px-4 md:px-6 pt-8 pb-20 md:pt-10 md:pb-28">
+          {/* Fixco Logo */}
+          <div className="flex items-center justify-center pb-2 md:pb-4 shrink-0">
+            <a href="/" className="inline-block transition-transform duration-300 hover:scale-105 no-underline">
+              <img src={logoFixco} alt="Fixco" className="max-h-20 md:max-h-28 w-auto block" />
+            </a>
           </div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-20 h-20 gradient-primary-subtle rounded-xl flex items-center justify-center mr-6 relative">
-                {/* F Brand Badge */}
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center opacity-70 hover:opacity-90 transition-opacity">
-                  <FixcoFIcon className="h-3 w-3" />
-                </div>
-                <IconComponent className="h-10 w-10 text-primary" />
-              </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-                {t(`serviceCategories.${service.slug}.title` as any) || service.title}
-              </h1>
-            </div>
-            </div>
-            <p className="text-xl text-muted-foreground mb-8">
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center gap-4 md:gap-6 w-full max-w-4xl"
+          >
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight">
+              {t(`serviceCategories.${service.slug}.title` as any) || service.title}
+            </h1>
+            
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 text-center max-w-3xl leading-relaxed">
               {t(`serviceCategories.${service.slug}.description` as any) || service.description}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button 
-                variant="cta" 
-                size="lg"
+            {/* CTA buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center mt-2">
+              <GradientButton 
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
                 onClick={() => {
                   openServiceRequestModal({
                     serviceSlug: service.slug,
@@ -200,63 +199,51 @@ const ServiceDetail = () => {
                   });
                 }}
               >
-                <FileText className="h-5 w-5 mr-2" />
                 {t('serviceDetail.requestQuote')}
-              </Button>
-              <Button 
-                variant="ghost-premium" 
-                size="lg"
+              </GradientButton>
+              <GradientButton 
+                className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
                 onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
               >
-                <Calendar className="h-5 w-5 mr-2" />
                 {t('footer.bookHomeVisit')}
-              </Button>
+              </GradientButton>
             </div>
 
             {/* Service Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mt-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{filteredSubServices.length}</div>
-                <div className="text-sm text-muted-foreground">{t('serviceDetail.differentServices')}</div>
+                <div className="text-2xl font-bold text-white">{filteredSubServices.length}</div>
+                <div className="text-sm text-white/70">{t('serviceDetail.differentServices')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{'< 5 ' + t('serviceDetail.days')}</div>
-                <div className="text-sm text-muted-foreground">{t('serviceDetail.projectStart')}</div>
+                <div className="text-2xl font-bold text-white">{'< 5 ' + t('serviceDetail.days')}</div>
+                <div className="text-sm text-white/70">{t('serviceDetail.projectStart')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">30%</div>
-                <div className="text-sm text-muted-foreground">{mode === 'rut' ? 'RUT-' + t('serviceDetail.discount') : 'ROT-' + t('serviceDetail.discount')}</div>
+                <div className="text-2xl font-bold text-white">30%</div>
+                <div className="text-sm text-white/70">{mode === 'rut' ? 'RUT-' + t('serviceDetail.discount') : 'ROT-' + t('serviceDetail.discount')}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">100%</div>
-                <div className="text-sm text-muted-foreground">{t('serviceDetail.guaranteed')}</div>
+                <div className="text-2xl font-bold text-white">100%</div>
+                <div className="text-sm text-white/70">{t('serviceDetail.guaranteed')}</div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Trust Indicators */}
-      <section className="py-8 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <Shield className="h-4 w-4 text-primary" />
-              <span>F-{t('serviceDetail.taxAndInsurance')}</span>
+            {/* Trust badges — pill style */}
+            <div className="flex flex-wrap justify-center gap-3 mt-2">
+              {[
+                'F-' + t('serviceDetail.taxAndInsurance'),
+                t('serviceDetail.startWithinDays'),
+                'Uppsala & Stockholm',
+                '98% ' + t('serviceDetail.customerSatisfaction'),
+              ].map((badge, idx) => (
+                <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm md:text-base text-white/90">
+                  <CheckCircle className="h-3.5 w-3.5 text-white/80" />
+                  <span>{badge}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4 text-primary" />
-              <span>{t('serviceDetail.startWithinDays')}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-4 w-4 text-primary" />
-              <span>Uppsala & Stockholm</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Star className="h-4 w-4 text-primary" />
-              <span>98% {t('serviceDetail.customerSatisfaction')}</span>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
