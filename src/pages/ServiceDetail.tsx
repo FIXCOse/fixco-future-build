@@ -21,6 +21,29 @@ import { motion } from "framer-motion";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
 
 // Slug alias mappning - mappar URL-slugs till data-slugs
+const subCategoryTranslations: Record<string, string> = {
+  'Akustik': 'Acoustics', 'Allmänt': 'General', 'Altan': 'Deck',
+  'Anläggning': 'Landscaping', 'AV': 'AV', 'Avlopp': 'Drainage',
+  'Bänkskiva': 'Countertop', 'Beläggning': 'Paving', 'Belysning': 'Lighting',
+  'Blandare': 'Faucets', 'Dörrar': 'Doors', 'Dörrlås': 'Door Locks',
+  'Dränering': 'Drainage', 'Dusch': 'Shower', 'Elektronik': 'Electronics',
+  'Fasad': 'Facade', 'Finish': 'Finish', 'Fönster': 'Windows',
+  'Förvaring': 'Storage', 'Grävning': 'Excavation', 'Hemstäd': 'Home Cleaning',
+  'Innerväggar': 'Interior Walls', 'Inredning': 'Interior', 'Installationer': 'Installations',
+  'Isolering': 'Insulation', 'IT': 'IT', 'Kakel': 'Tiles',
+  'Klinker': 'Clinker', 'Kök': 'Kitchen', 'Laminat/Vinyl': 'Laminate/Vinyl',
+  'Målning': 'Painting', 'Matta': 'Carpet', 'Möbler': 'Furniture',
+  'Montering': 'Assembly', 'Murning': 'Masonry', 'Packning': 'Packing',
+  'Parkett': 'Parquet', 'Renovering': 'Renovation', 'Säkerhet': 'Security',
+  'Sanitetsarbeten': 'Sanitary Work', 'Service': 'Service', 'Skötsel': 'Maintenance',
+  'Specialstäd': 'Special Cleaning', 'Större projekt': 'Larger Projects',
+  'Strömbrytare': 'Switches', 'Tak': 'Roof', 'Takläggning': 'Roofing',
+  'Tapetsering': 'Wallpapering', 'Totalrenovering': 'Full Renovation',
+  'Transport': 'Transport', 'Underhåll': 'Maintenance', 'Utebelysning': 'Outdoor Lighting',
+  'Utomhus': 'Outdoor', 'Uttag': 'Outlets', 'Värme': 'Heating',
+  'Vinterservice': 'Winter Service', 'Vitvaror': 'Appliances',
+};
+
 const slugAliases: Record<string, string> = {
   'malning': 'malare',
   'maleri': 'malare',
