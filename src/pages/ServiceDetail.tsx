@@ -103,6 +103,20 @@ const ServiceDetail = () => {
       });
   }, [dbServices, categoryName]);
 
+  // Extract unique sub-categories for filter chips
+  const subCategories = useMemo(() => {
+    const cats = filteredSubServices
+      .map(s => s.sub_category)
+      .filter((c): c is string => Boolean(c));
+    return [...new Set(cats)].sort();
+  }, [filteredSubServices]);
+
+  // Apply sub-category filter
+  const displayServices = useMemo(() => {
+    if (!selectedSubCategory) return filteredSubServices;
+    return filteredSubServices.filter(s => s.sub_category === selectedSubCategory);
+  }, [filteredSubServices, selectedSubCategory]);
+
   // Related services (other services from different categories)
   const relatedServices = useMemo(() => {
     if (!dbServices || !categoryName) return [];
