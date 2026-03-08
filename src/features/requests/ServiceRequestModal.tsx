@@ -758,19 +758,19 @@ const skipAddons = () => {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <CalendarClock className="w-5 h-5 text-primary" />
-                  Hur snart önskar du hjälp?
+                  {ml.howSoon}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Hjälper oss prioritera din förfrågan
+                  {ml.helpsPrioritize}
                 </p>
               </div>
 
               <div className="grid gap-3">
                 {[
-                  { id: 'asap', name: 'Så snart som möjligt', icon: AlertCircle },
-                  { id: '1-2days', name: 'Inom 1-2 dagar', icon: CalendarClock },
-                  { id: 'week', name: 'Inom en vecka', icon: CalendarDays },
-                  { id: 'month', name: 'Nästa månad', icon: CalendarRange }
+                  { id: 'asap', name: ml.asap, icon: AlertCircle },
+                  { id: '1-2days', name: ml.within12days, icon: CalendarClock },
+                  { id: 'week', name: ml.withinWeek, icon: CalendarDays },
+                  { id: 'month', name: ml.nextMonth, icon: CalendarRange }
                 ].map(time => {
                   const IconComponent = time.icon;
                   const isSelected = desiredTime === time.id;
