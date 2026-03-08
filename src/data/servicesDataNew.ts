@@ -43,7 +43,7 @@ export const mainServices: ServicePricing[] = [
   },
   {
     id: "snickeri",
-    title: "Snickeri", 
+    title: "Snickare", 
     basePrice: 958,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
