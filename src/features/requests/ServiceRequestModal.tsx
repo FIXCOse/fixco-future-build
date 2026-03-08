@@ -901,7 +901,7 @@ const skipAddons = () => {
                       className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                     >
                       <Building2 className="w-4 h-4" />
-                      Företag
+                      {ml.company}
                     </ToggleGroupItem>
                     <ToggleGroupItem 
                       value="brf"
