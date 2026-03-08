@@ -1245,7 +1245,7 @@ const skipAddons = () => {
                     const genericService: ServiceConfig = {
                       slug: selectedCategories.join('-'),
                       name: mode === 'home_visit' 
-                        ? `Hembesök: ${categoryNames}`
+                        ? `${ml.homeVisitPrefix} ${categoryNames}`
                         : categoryNames,
                       pricingMode: "quote",
                       rotEligible: true,
