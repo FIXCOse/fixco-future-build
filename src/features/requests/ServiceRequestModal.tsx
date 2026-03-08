@@ -1088,7 +1088,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.city ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Ort"
+                      placeholder={ml.city}
                       value={values.city || ""}
                       onChange={e => onChange("city", e.target.value)}
                     />
