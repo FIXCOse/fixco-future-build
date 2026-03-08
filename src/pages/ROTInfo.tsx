@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button-premium";
-import { CheckCircle, ArrowRight, Home, Clipboard, CreditCard, X } from "lucide-react";
+import { CheckCircle, ArrowRight, Home, Clipboard, CreditCard, X, Hammer, Droplets, Zap, Paintbrush, TreePine, Wrench, Package, Shovel, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
 import { Helmet } from 'react-helmet-async';
 import ROTCalculator from "@/components/ROTCalculator";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useBookHomeVisitModal } from "@/hooks/useBookHomeVisitModal";
 import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
+import { Badge } from "@/components/ui/badge";
 
 const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   const ref = useRef(null);
