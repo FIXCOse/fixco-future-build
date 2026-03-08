@@ -1319,7 +1319,7 @@ const skipAddons = () => {
                   disabled={!desiredTime}
                   className="flex-1"
                 >
-                  Fortsätt
+                  {ml.continue}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               )}
