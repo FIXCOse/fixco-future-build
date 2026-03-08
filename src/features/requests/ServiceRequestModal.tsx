@@ -292,8 +292,8 @@ const skipAddons = () => {
           pricingMode: "quote" as const,
           rotEligible: true,
           fields: [
-            { kind: "textarea" as const, key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Berätta vad du vill ha gjort..." },
-            { kind: "file" as const, key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+            { kind: "textarea" as const, key: "beskrivning", label: ml.describeProject, placeholder: ml.tellUsMore },
+            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*", multiple: true }
           ]
         };
       }
