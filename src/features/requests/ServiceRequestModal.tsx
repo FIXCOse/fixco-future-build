@@ -6,7 +6,147 @@ import { toast } from "sonner";
 import { useEventTracking } from "@/hooks/useEventTracking";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe } from "lucide-react";
+
+// ─── Modal translations ────────────────────────────────────────
+const modalTranslations = {
+  sv: {
+    bookHomeVisit: 'Boka Hembesök',
+    requestQuote: 'Begär offert',
+    thankYou: 'Tack för din förfrågan!',
+    weWillReturn: 'Vi återkommer så snart som möjligt.',
+    selectExtras: 'Välj extra tjänster som passar ditt projekt',
+    fillDetails24h: 'Fyll i dina uppgifter så återkommer vi inom 24h',
+    fillDetailsBooking: 'Fyll i dina uppgifter för att slutföra bokningen',
+    close: 'Stäng',
+    selectServices: 'Välj tjänster',
+    selectCategory: 'Välj tjänstekategori',
+    selectServiceNeeded: 'Välj den tjänst du behöver',
+    selectOneOrMore: 'Välj en eller flera tjänster du behöver',
+    tellUsWhatYouNeed: 'Berätta vad du behöver hjälp med',
+    weHelpWithAll: 'Vi hjälper dig med allt från el till målning',
+    quoteByNeed: 'Offert efter behov',
+    rotEligible: 'ROT-berättigad',
+    addExtras: 'Vill du lägga till något mer?',
+    mostChoose: 'De flesta kunder väljer 1-2 tillägg',
+    noAddons: 'Inga tillägg tillgängliga för denna tjänst',
+    popular: 'Populär',
+    howSoon: 'Hur snart önskar du hjälp?',
+    helpsPrioritize: 'Hjälper oss prioritera din förfrågan',
+    asap: 'Så snart som möjligt',
+    within12days: 'Inom 1-2 dagar',
+    withinWeek: 'Inom en vecka',
+    nextMonth: 'Nästa månad',
+    yourOrder: 'Din beställning',
+    total: 'Totalt',
+    changeAddons: 'Ändra tillägg',
+    contactInfo: 'Kontaktuppgifter',
+    bookingAs: 'Jag bokar som',
+    private: 'Privat',
+    company: 'Företag',
+    brf: 'BRF',
+    yourName: 'Ditt namn *',
+    contactPerson: 'Kontaktperson *',
+    personnummer: 'Personnummer (YYYYMMDD-XXXX)',
+    companyName: 'Företagsnamn *',
+    brfName: 'BRF-namn *',
+    orgNumber: 'Organisationsnummer *',
+    email: 'E-post *',
+    phone: 'Telefon *',
+    address: 'Adress',
+    postalCode: 'Postnummer (123 45)',
+    city: 'Ort',
+    projectDetails: 'Projektdetaljer',
+    describeProject: 'Beskriv ditt projekt',
+    tellUsMore: 'Berätta vad du behöver hjälp med...',
+    imagesOptional: 'Bilder (valfritt)',
+    uploadImages: 'Ladda upp bilder (valfritt)',
+    back: 'Tillbaka',
+    cancel: 'Avbryt',
+    continue: 'Fortsätt',
+    skip: 'Hoppa över',
+    sending: 'Skickar…',
+    bookHomeVisitBtn: 'Boka hembesök',
+    sendQuote: 'Skicka offertförfrågan',
+    sendBooking: 'Skicka bokning',
+    homeVisitPrefix: 'Hembesök:',
+    selectAddons: 'Välj tillägg',
+    yourDetails: 'Dina uppgifter',
+    thanksToast: 'Tack! Vi återkommer så snart som möjligt.',
+    errorToast: 'Kunde inte skicka. Försök igen.',
+    validationError: 'Vänligen kontrollera alla fält',
+    invalidValue: 'Ogiltigt värde',
+  },
+  en: {
+    bookHomeVisit: 'Book Home Visit',
+    requestQuote: 'Request Quote',
+    thankYou: 'Thank you for your request!',
+    weWillReturn: "We'll get back to you as soon as possible.",
+    selectExtras: 'Choose extra services that suit your project',
+    fillDetails24h: 'Fill in your details and we will respond within 24h',
+    fillDetailsBooking: 'Fill in your details to complete your booking',
+    close: 'Close',
+    selectServices: 'Select services',
+    selectCategory: 'Select service category',
+    selectServiceNeeded: 'Select the service you need',
+    selectOneOrMore: 'Select one or more services you need',
+    tellUsWhatYouNeed: 'Tell us what you need help with',
+    weHelpWithAll: 'We help with everything from electrical to painting',
+    quoteByNeed: 'Quote on request',
+    rotEligible: 'ROT eligible',
+    addExtras: 'Want to add something extra?',
+    mostChoose: 'Most customers choose 1-2 extras',
+    noAddons: 'No extras available for this service',
+    popular: 'Popular',
+    howSoon: 'How soon do you need help?',
+    helpsPrioritize: 'Helps us prioritize your request',
+    asap: 'As soon as possible',
+    within12days: 'Within 1-2 days',
+    withinWeek: 'Within a week',
+    nextMonth: 'Next month',
+    yourOrder: 'Your order',
+    total: 'Total',
+    changeAddons: 'Change extras',
+    contactInfo: 'Contact details',
+    bookingAs: "I'm booking as",
+    private: 'Private',
+    company: 'Company',
+    brf: 'HOA',
+    yourName: 'Your name *',
+    contactPerson: 'Contact person *',
+    personnummer: 'Personal ID (YYYYMMDD-XXXX)',
+    companyName: 'Company name *',
+    brfName: 'HOA name *',
+    orgNumber: 'Org. number *',
+    email: 'Email *',
+    phone: 'Phone *',
+    address: 'Address',
+    postalCode: 'Postal code (123 45)',
+    city: 'City',
+    projectDetails: 'Project details',
+    describeProject: 'Describe your project',
+    tellUsMore: 'Tell us what you need help with...',
+    imagesOptional: 'Images (optional)',
+    uploadImages: 'Upload images (optional)',
+    back: 'Back',
+    cancel: 'Cancel',
+    continue: 'Continue',
+    skip: 'Skip',
+    sending: 'Sending…',
+    bookHomeVisitBtn: 'Book home visit',
+    sendQuote: 'Send quote request',
+    sendBooking: 'Send booking',
+    homeVisitPrefix: 'Home visit:',
+    selectAddons: 'Select extras',
+    yourDetails: 'Your details',
+    thanksToast: "Thank you! We'll get back to you shortly.",
+    errorToast: 'Could not send. Please try again.',
+    validationError: 'Please check all fields',
+    invalidValue: 'Invalid value',
+  },
+} as const;
+
+type ModalLang = 'sv' | 'en';
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useServiceAddons, SelectedAddon } from "@/hooks/useServiceAddons";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -57,6 +197,11 @@ export default function ServiceRequestModal() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [desiredTime, setDesiredTime] = useState<string>('');
   const [skipAddonsStep, setSkipAddonsStep] = useState(false);
+  const [modalLang, setModalLang] = useState<ModalLang>(
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/en') ? 'en' : 'sv'
+  );
+
+  const ml = modalTranslations[modalLang];
 
   const { trackFunnelStep, trackConversion, trackClick } = useEventTracking();
 
@@ -186,7 +331,7 @@ const skipAddons = () => {
         const newErrors = { ...prevErrors };
         
         if (!result.success) {
-          newErrors[key] = result.error.issues[0]?.message || 'Ogiltigt värde';
+          newErrors[key] = result.error.issues[0]?.message || ml.invalidValue;
         } else {
           delete newErrors[key];
         }
@@ -265,7 +410,7 @@ const skipAddons = () => {
         fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
-      toast.error('Vänligen kontrollera alla fält');
+      toast.error(ml.validationError);
       return;
     }
 
@@ -335,14 +480,14 @@ const skipAddons = () => {
         addons_count: selectedAddons.length,
       });
 
-      toast.success("Tack! Vi återkommer så snart som möjligt.");
+      toast.success(ml.thanksToast);
       setDone(true);
       setTimeout(() => {
         setOpen(false);
       }, 1500);
     } catch (e) {
       console.error("[ServiceRequestModal] Submit error:", e);
-      toast.error("Kunde inte skicka. Försök igen.");
+      toast.error(ml.errorToast);
     } finally {
       setBusy(false);
     }
@@ -370,7 +515,7 @@ const skipAddons = () => {
               }`}>
                 1
               </div>
-              <span className="text-sm font-medium hidden md:inline">Välj tillägg</span>
+              <span className="text-sm font-medium hidden md:inline">{ml.selectAddons}</span>
             </div>
             
             <div className="w-8 md:w-12 h-0.5 bg-border" />
@@ -381,7 +526,7 @@ const skipAddons = () => {
               }`}>
                 2
               </div>
-              <span className="text-sm font-medium hidden md:inline">Dina uppgifter</span>
+              <span className="text-sm font-medium hidden md:inline">{ml.yourDetails}</span>
             </div>
           </div>
         )}
@@ -391,16 +536,25 @@ const skipAddons = () => {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-1">
-                {service?.name ?? (mode === 'home_visit' ? "Boka Hembesök" : "Begär offert")}
+                {service?.name ?? (mode === 'home_visit' ? ml.bookHomeVisit : ml.requestQuote)}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {done ? "Tack för din förfrågan!" : currentStep === 1 && addons.length > 0 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
+                {done ? ml.thankYou : currentStep === 1 && addons.length > 0 ? ml.selectExtras : (isQuote ? ml.fillDetails24h : ml.fillDetailsBooking)}
               </p>
             </div>
+            {/* Language switcher */}
+            <button
+              onClick={() => setModalLang(l => l === 'sv' ? 'en' : 'sv')}
+              className="flex items-center justify-center gap-1 h-10 px-3 rounded-full hover:bg-muted/80 transition-colors"
+              title={modalLang === 'sv' ? 'Switch to English' : 'Växla till svenska'}
+            >
+              <Globe className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">{modalLang === 'sv' ? 'EN' : 'SV'}</span>
+            </button>
             <button
               onClick={() => setOpen(false)}
               className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors group"
-              aria-label="Stäng"
+              aria-label={ml.close}
             >
               <svg className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -418,8 +572,8 @@ const skipAddons = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h4 className="text-xl font-semibold text-foreground mb-2">Tack för din förfrågan!</h4>
-              <p className="text-muted-foreground">Vi återkommer så snart som möjligt.</p>
+              <h4 className="text-xl font-semibold text-foreground mb-2">{ml.thankYou}</h4>
+              <p className="text-muted-foreground">{ml.weWillReturn}</p>
             </div>
           ) : currentStep === 0 ? (
             // STEG 0: VÄLJ TJÄNST
@@ -432,10 +586,10 @@ const skipAddons = () => {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <Wrench className="w-5 h-5 text-primary" />
-                  {mode === 'home_visit' ? 'Välj tjänster' : (showCategories ? 'Välj tjänstekategori' : 'Välj den tjänst du behöver')}
+                  {mode === 'home_visit' ? ml.selectServices : (showCategories ? ml.selectCategory : ml.selectServiceNeeded)}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  {mode === 'home_visit' ? 'Välj en eller flera tjänster du behöver' : (showCategories ? 'Berätta vad du behöver hjälp med' : 'Vi hjälper dig med allt från el till målning')}
+                  {mode === 'home_visit' ? ml.selectOneOrMore : (showCategories ? ml.tellUsWhatYouNeed : ml.weHelpWithAll)}
                 </p>
               </div>
 
@@ -504,12 +658,12 @@ const skipAddons = () => {
                           <h5 className="font-semibold text-foreground mb-1">{svc.name}</h5>
                           <p className="text-xs text-muted-foreground">
                             {svc.pricingMode === 'quote' 
-                              ? 'Offert efter behov' 
+                              ? ml.quoteByNeed 
                               : svc.pricingMode === 'unit' 
                                 ? `${svc.unitPriceSek} kr/${svc.unitLabel}`
                                 : `${svc.fixedPriceSek} kr`
                             }
-                            {svc.rotEligible && ' • ROT-berättigad'}
+                            {svc.rotEligible && ` • ${ml.rotEligible}`}
                           </p>
                         </div>
 
@@ -533,10 +687,10 @@ const skipAddons = () => {
                   <div className="text-center">
                     <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                       <Sparkles className="w-5 h-5 text-primary" />
-                      Vill du lägga till något mer?
+                      {ml.addExtras}
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      🔥 De flesta kunder väljer 1-2 tillägg
+                      🔥 {ml.mostChoose}
                     </p>
                   </div>
 
@@ -566,7 +720,7 @@ const skipAddons = () => {
                                 <h5 className="font-semibold text-foreground">{addon.title}</h5>
                                 {addon.is_popular && (
                                   <Badge variant="secondary" className="bg-orange-500 text-white text-xs">
-                                    Populär
+                                    {ml.popular}
                                   </Badge>
                                 )}
                               </div>
@@ -589,7 +743,7 @@ const skipAddons = () => {
                 </>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-muted-foreground">Inga tillägg tillgängliga för denna tjänst</p>
+                  <p className="text-muted-foreground">{ml.noAddons}</p>
                 </div>
               )}
             </motion.div>
@@ -604,19 +758,19 @@ const skipAddons = () => {
               <div className="text-center mb-6">
                 <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                   <CalendarClock className="w-5 h-5 text-primary" />
-                  Hur snart önskar du hjälp?
+                  {ml.howSoon}
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Hjälper oss prioritera din förfrågan
+                  {ml.helpsPrioritize}
                 </p>
               </div>
 
               <div className="grid gap-3">
                 {[
-                  { id: 'asap', name: 'Så snart som möjligt', icon: AlertCircle },
-                  { id: '1-2days', name: 'Inom 1-2 dagar', icon: CalendarClock },
-                  { id: 'week', name: 'Inom en vecka', icon: CalendarDays },
-                  { id: 'month', name: 'Nästa månad', icon: CalendarRange }
+                  { id: 'asap', name: ml.asap, icon: AlertCircle },
+                  { id: '1-2days', name: ml.within12days, icon: CalendarClock },
+                  { id: 'week', name: ml.withinWeek, icon: CalendarDays },
+                  { id: 'month', name: ml.nextMonth, icon: CalendarRange }
                 ].map(time => {
                   const IconComponent = time.icon;
                   const isSelected = desiredTime === time.id;
@@ -666,7 +820,7 @@ const skipAddons = () => {
               {/* Order Summary */}
               {(selectedAddons.length > 0 || pricePreview) && (
                 <div className="bg-primary/5 p-4 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold mb-3 text-foreground">Din beställning</h4>
+                  <h4 className="font-semibold mb-3 text-foreground">{ml.yourOrder}</h4>
                   <div className="space-y-2 text-sm">
                     {pricePreview && (
                       <div className="flex justify-between">
@@ -689,7 +843,7 @@ const skipAddons = () => {
                     })}
                     {pricePreview && selectedAddons.length > 0 && (
                       <div className="flex justify-between font-bold text-base pt-2 border-t border-border/50">
-                        <span>Totalt</span>
+                        <span>{ml.total}</span>
                         <span>
                           {(
                             (isUnit && service?.unitPriceSek && values["antal"] 
@@ -711,7 +865,7 @@ const skipAddons = () => {
                       className="p-0 h-auto text-xs mt-3"
                     >
                       <ArrowLeft className="w-3 h-3 mr-1" />
-                      Ändra tillägg
+                      {ml.changeAddons}
                     </Button>
                   )}
                 </div>
@@ -723,12 +877,12 @@ const skipAddons = () => {
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  Kontaktuppgifter
+                  {ml.contactInfo}
                 </h4>
                 
                 {/* Kundtypsväljare */}
                 <div className="mb-4">
-                  <label className="text-xs text-muted-foreground mb-2 block">Jag bokar som</label>
+                  <label className="text-xs text-muted-foreground mb-2 block">{ml.bookingAs}</label>
                   <ToggleGroup 
                     type="single" 
                     value={customerType} 
@@ -740,21 +894,21 @@ const skipAddons = () => {
                       className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                     >
                       <User className="w-4 h-4" />
-                      Privat
+                      {ml.private}
                     </ToggleGroupItem>
                     <ToggleGroupItem 
                       value="company"
                       className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                     >
                       <Building2 className="w-4 h-4" />
-                      Företag
+                      {ml.company}
                     </ToggleGroupItem>
                     <ToggleGroupItem 
                       value="brf"
                       className="flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                     >
                       <Home className="w-4 h-4" />
-                      BRF
+                      {ml.brf}
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
@@ -765,7 +919,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.name ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder={customerType === 'private' ? "Ditt namn *" : "Kontaktperson *"}
+                      placeholder={customerType === 'private' ? ml.yourName : ml.contactPerson}
                       value={values.name || ""}
                       onChange={e => onChange("name", e.target.value)}
                     />
@@ -787,7 +941,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.personnummer ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="Personnummer (YYYYMMDD-XXXX)"
+                          placeholder={ml.personnummer}
                           value={values.personnummer || ""}
                           onChange={e => onChange("personnummer", e.target.value)}
                         />
@@ -811,7 +965,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.company_name ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="Företagsnamn *"
+                          placeholder={ml.companyName}
                           value={values.company_name || ""}
                           onChange={e => onChange("company_name", e.target.value)}
                         />
@@ -835,7 +989,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.brf_name ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="BRF-namn *"
+                          placeholder={ml.brfName}
                           value={values.brf_name || ""}
                           onChange={e => onChange("brf_name", e.target.value)}
                         />
@@ -859,7 +1013,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.org_number ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="Organisationsnummer (XXXXXX-XXXX) *"
+                          placeholder={`${ml.orgNumber} (XXXXXX-XXXX)`}
                           value={values.org_number || ""}
                           onChange={e => onChange("org_number", e.target.value)}
                         />
@@ -876,7 +1030,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.email ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="E-post *"
+                      placeholder={ml.email}
                       type="email"
                       value={values.email || ""}
                       onChange={e => onChange("email", e.target.value)}
@@ -891,7 +1045,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.phone ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Telefon (070-123 45 67) *"
+                      placeholder={`${ml.phone} (070-123 45 67)`}
                       type="tel"
                       value={values.phone || ""}
                       onChange={e => onChange("phone", e.target.value)}
@@ -906,7 +1060,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.address ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Adress"
+                      placeholder={ml.address}
                       value={values.address || ""}
                       onChange={e => onChange("address", e.target.value)}
                     />
@@ -920,7 +1074,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.postal_code ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Postnummer (123 45)"
+                      placeholder={ml.postalCode}
                       value={values.postal_code || ""}
                       onChange={e => onChange("postal_code", e.target.value)}
                     />
@@ -934,7 +1088,7 @@ const skipAddons = () => {
                       className={`px-4 py-3 rounded-xl border ${
                         errors.city ? 'border-red-500' : 'border-border/50'
                       } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                      placeholder="Ort"
+                      placeholder={ml.city}
                       value={values.city || ""}
                       onChange={e => onChange("city", e.target.value)}
                     />
@@ -952,7 +1106,7 @@ const skipAddons = () => {
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Projektdetaljer
+                    {ml.projectDetails}
                   </h4>
                   <div className="space-y-3">
                     {service.fields.map((field) => {
@@ -1060,7 +1214,7 @@ const skipAddons = () => {
                   className="flex items-center gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Tillbaka
+                  {ml.back}
                 </Button>
               )}
 
@@ -1071,7 +1225,7 @@ const skipAddons = () => {
                   onClick={() => setOpen(false)}
                   className="flex-1"
                 >
-                  Avbryt
+                  {ml.cancel}
                 </Button>
               )}
 
@@ -1091,7 +1245,7 @@ const skipAddons = () => {
                     const genericService: ServiceConfig = {
                       slug: selectedCategories.join('-'),
                       name: mode === 'home_visit' 
-                        ? `Hembesök: ${categoryNames}`
+                        ? `${ml.homeVisitPrefix} ${categoryNames}`
                         : categoryNames,
                       pricingMode: "quote",
                       rotEligible: true,
@@ -1120,7 +1274,7 @@ const skipAddons = () => {
                   disabled={selectedCategories.length === 0}
                   className="flex-1"
                 >
-                  Fortsätt
+                  {ml.continue}
                   {selectedCategories.length > 0 && (
                     <Badge className="ml-2 bg-primary-foreground text-primary">
                       {selectedCategories.length}
@@ -1138,7 +1292,7 @@ const skipAddons = () => {
                     onClick={skipAddons}
                     className="flex-1"
                   >
-                    Hoppa över
+                    {ml.skip}
                   </Button>
                   <Button
                     onClick={() => {
@@ -1147,7 +1301,7 @@ const skipAddons = () => {
                     }}
                     className="flex-1"
                   >
-                    Fortsätt
+                    {ml.continue}
                     {selectedAddons.length > 0 && (
                       <Badge className="ml-2 bg-primary-foreground text-primary">
                         {selectedAddons.length}
@@ -1165,7 +1319,7 @@ const skipAddons = () => {
                   disabled={!desiredTime}
                   className="flex-1"
                 >
-                  Fortsätt
+                  {ml.continue}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               )}
@@ -1183,15 +1337,15 @@ const skipAddons = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      Skickar…
+                      {ml.sending}
                     </>
                   ) : (
                     <>
                       {mode === 'home_visit'
-                        ? "Boka hembesök"
+                        ? ml.bookHomeVisitBtn
                         : isQuote
-                          ? "Skicka offertförfrågan"
-                          : "Skicka bokning"
+                          ? ml.sendQuote
+                          : ml.sendBooking
                       }
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
