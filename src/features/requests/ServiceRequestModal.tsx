@@ -480,7 +480,7 @@ const skipAddons = () => {
         addons_count: selectedAddons.length,
       });
 
-      toast.success("Tack! Vi återkommer så snart som möjligt.");
+      toast.success(ml.thanksToast);
       setDone(true);
       setTimeout(() => {
         setOpen(false);
