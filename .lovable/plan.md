@@ -1,22 +1,31 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Redesign: "Vad kvalificerar för ROT"-sektionen
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+Nuvarande design är två enkla vita kort med listor — det ser tråkigt och generiskt ut. Ny design ska vara visuellt distinkt och mer engagerande.
 
-### Fil som ändras
+### Ny design-koncept: Interaktiv accordion med kategorier
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+Istället för två platta listor — en helt ny layout:
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+**Vänster kolumn (Kvalificerar ✅):**
+- Grön/primary-tonad gradient-border på kortet
+- Rubrik med en stor grön badge/pill istället för emoji
+- Varje rad har en subtle hover-effekt och en liten ikon per kategori (Hammer för snickeri, Droplets för VVS, Zap för el, Paintbrush för målning, etc.)
+- Visa bara 4 items initialt, "Visa alla" knapp som expanderar resten med animation
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+**Höger kolumn (Kvalificerar inte ❌):**
+- Röd/destructive-tonad subtle border
+- Samma mönster men med röda accenter och X-ikoner
+- Dimmed/muted styling för att visuellt signalera "nej"
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+**Visuella detaljer:**
+- Kort med `bg-gradient-to-br from-primary/5 to-transparent` (vänster) och `from-destructive/5` (höger)
+- Thicker left border (4px) i primary/destructive färg
+- Kategori-ikoner från lucide per rad
+- Collapsible med framer-motion `AnimatePresence` för smooth expand
+- Sektionsbakgrund: subtle muted/5 för kontrast mot övriga sektioner
+
+### Fil att ändra
+`src/pages/ROTInfo.tsx` rad 292–351 — hela kvalificerar-sektionen ersätts.
 
