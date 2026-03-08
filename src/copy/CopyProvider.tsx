@@ -31,10 +31,15 @@ export const CopyProvider: React.FC<CopyProviderProps> = ({ locale, children }) 
   );
 };
 
-export const useCopy = () => {
+export const useCopy = (): CopyContextType => {
   const context = useContext(CopyContext);
   if (context === undefined) {
-    throw new Error('useCopy must be used within a CopyProvider');
+    // Fallback to Swedish during HMR or transient renders outside provider
+    const dict = dictionaries['sv'];
+    return {
+      t: (key: CopyKey) => dict[key] || key,
+      locale: 'sv',
+    };
   }
   return context;
 };
