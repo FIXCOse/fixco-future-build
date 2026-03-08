@@ -687,10 +687,10 @@ const skipAddons = () => {
                   <div className="text-center">
                     <h4 className="text-lg font-bold flex items-center justify-center gap-2 mb-1">
                       <Sparkles className="w-5 h-5 text-primary" />
-                      Vill du lägga till något mer?
+                      {ml.addExtras}
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      🔥 De flesta kunder väljer 1-2 tillägg
+                      🔥 {ml.mostChoose}
                     </p>
                   </div>
 
