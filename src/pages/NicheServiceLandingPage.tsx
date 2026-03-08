@@ -332,25 +332,22 @@ const NicheServiceLandingPage = () => {
               : 'Få en kostnadsfri offert eller boka ett hembesök. Vi svarar inom 24 timmar.'
             }
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
             <GradientButton
               onClick={() => openServiceRequestModal({
                 serviceSlug: niche.slug,
                 prefill: { service_name: title }
               })}
-              className="text-lg px-8 py-4"
+              className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
             >
-              <FileText className="h-5 w-5 mr-2" />
-              {t('serviceDetail.requestQuote')}
+              {t('local.ctaQuote')}
             </GradientButton>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
+            <GradientButton
+              className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
+              href={servicePrefix}
             >
-              <Calendar className="h-5 w-5 mr-2" />
-              {t('footer.bookHomeVisit')}
-            </Button>
+              {t('local.allServices')}
+            </GradientButton>
           </div>
         </div>
       </section>
