@@ -3,6 +3,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { usePriceStore } from "@/stores/priceStore";
 import { calcDisplayPrice, isEligibleForMode } from "@/utils/priceCalculation";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button-premium";
 import { servicesDataNew, SubService } from "@/data/servicesDataNew";
 import { useServices } from "@/hooks/useServices";
