@@ -487,7 +487,7 @@ const skipAddons = () => {
       }, 1500);
     } catch (e) {
       console.error("[ServiceRequestModal] Submit error:", e);
-      toast.error("Kunde inte skicka. Försök igen.");
+      toast.error(ml.errorToast);
     } finally {
       setBusy(false);
     }
