@@ -1,31 +1,22 @@
 
 
-## Fix: Ta bort ikoner från bottom CTA-knapparna
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Bottom CTA-sektionen (rad 335-354) använder fortfarande `<FileText />` och `<Calendar />` ikoner samt `Button variant="outline"` — ska matcha hero-stilen med två `GradientButton` utan ikoner.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändring i `src/pages/NicheServiceLandingPage.tsx` (rad 335-354)
+### Fil som ändras
 
-Byt ut hela knapp-diven till:
-```tsx
-<div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
-  <GradientButton
-    onClick={() => openServiceRequestModal({
-      serviceSlug: niche.slug,
-      prefill: { service_name: title }
-    })}
-    className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
-  >
-    {t('local.ctaQuote')}
-  </GradientButton>
-  <GradientButton
-    className="text-lg md:text-xl px-8 md:px-10 py-4 md:py-5"
-    href={servicePrefix}
-  >
-    {t('local.allServices')}
-  </GradientButton>
-</div>
-```
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Tar bort ikonerna och gör knapparna identiska med hero-sektionen. Oanvända imports (`FileText`, `Calendar`) kan också tas bort.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
