@@ -197,8 +197,11 @@ export default function ServiceRequestModal() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [desiredTime, setDesiredTime] = useState<string>('');
   const [skipAddonsStep, setSkipAddonsStep] = useState(false);
+  const [modalLang, setModalLang] = useState<ModalLang>(
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/en') ? 'en' : 'sv'
+  );
 
-  const { trackFunnelStep, trackConversion, trackClick } = useEventTracking();
+  const ml = modalTranslations[modalLang];
 
   // Lock scroll when modal is open
   useScrollLock(open);
