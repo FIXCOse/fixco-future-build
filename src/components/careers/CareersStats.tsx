@@ -1,134 +1,81 @@
-import { motion } from "framer-motion";
-import useCountUpOnce from "@/hooks/useCountUpOnce";
-import { GradientText } from "@/components/v2/GradientText";
-import { GlassCard } from "@/components/v2/GlassCard";
+import { motion, useInView } from "framer-motion";
 import { Users, Briefcase, TrendingUp, Award } from "lucide-react";
 import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
+import { useRef, useEffect, useState } from "react";
+
+const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1200;
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, target]);
+
+  return <span ref={ref}>{count.toLocaleString('sv-SE')}{suffix}</span>;
+};
 
 const stats = [
-  { 
-    key: "employees", 
-    label: "Anställda hantverkare", 
-    value: 20, 
-    suffix: "+",
-    icon: Users,
-    color: "hsl(262 83% 58%)"
-  },
-  { 
-    key: "professions", 
-    label: "Olika yrken", 
-    value: 9, 
-    suffix: "",
-    icon: Briefcase,
-    color: "hsl(200 100% 50%)"
-  },
-  { 
-    key: "satisfaction", 
-    label: "Nöjda Privatperson-Index", 
-    value: 99, 
-    suffix: "%",
-    icon: Award,
-    color: "hsl(320 100% 65%)"
-  },
-  { 
-    key: "growth", 
-    label: "Tillväxt senaste året", 
-    value: 22, 
-    suffix: "%",
-    icon: TrendingUp,
-    color: "hsl(280 100% 60%)"
-  }
+  { key: "employees", label: "Anställda hantverkare", value: 20, suffix: "+", icon: Users },
+  { key: "professions", label: "Olika yrken", value: 9, suffix: "", icon: Briefcase },
+  { key: "satisfaction", label: "Nöjda Privatperson-Index", value: 99, suffix: "%", icon: Award },
+  { key: "growth", label: "Tillväxt senaste året", value: 22, suffix: "%", icon: TrendingUp },
 ];
 
 export const CareersStats = () => {
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-      </div>
-
-      <div className="max-w-7xl mx-auto">
-        <motion.div
+    <section className="py-20 bg-muted/30">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <GradientText>Fixco i siffror</GradientText>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Vi växer snabbt och söker alltid fler duktiga hantverkare
-          </p>
-        </motion.div>
+          Fixco i siffror
+        </motion.h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-lg mx-auto">
+          Vi växer snabbt och söker alltid fler duktiga hantverkare
+        </p>
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {stats.map((stat, index) => (
-            <motion.div key={stat.key} variants={itemVariants}>
-              <StatCard stat={stat} index={index} />
-            </motion.div>
-          ))}
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.key}
+                variants={itemVariants}
+                className="bg-card border border-border rounded-xl p-6 text-center shadow-sm"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Icon className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
-  );
-};
-
-interface StatCardProps {
-  stat: typeof stats[0];
-  index: number;
-}
-
-const StatCard = ({ stat, index }: StatCardProps) => {
-  const { value, observe } = useCountUpOnce({
-    key: `career-stat-${stat.key}`,
-    from: 0,
-    to: stat.value,
-    duration: 2000,
-    formatter: (val) => Math.round(val).toLocaleString('sv-SE')
-  });
-
-  const Icon = stat.icon;
-
-  return (
-    <div ref={observe}>
-      <GlassCard 
-        className="p-6 text-center h-full flex flex-col justify-center"
-        hoverEffect={true}
-        glowColor={stat.color}
-        innerGlow={true}
-      >
-        <div className="flex justify-center mb-4">
-          <div 
-            className="w-16 h-16 rounded-full flex items-center justify-center"
-            style={{ 
-              backgroundColor: `${stat.color}15`,
-              boxShadow: `0 0 20px ${stat.color}30`
-            }}
-          >
-            <Icon className="w-8 h-8" style={{ color: stat.color }} />
-          </div>
-        </div>
-        
-        <div className="text-5xl md:text-6xl font-bold mb-2">
-          <GradientText>
-            {value}{stat.suffix}
-          </GradientText>
-        </div>
-        
-        <div className="text-sm md:text-base text-muted-foreground font-medium">
-          {stat.label}
-        </div>
-      </GlassCard>
-    </div>
   );
 };

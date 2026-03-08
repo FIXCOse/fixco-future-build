@@ -1,170 +1,135 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import MagneticButton from "@/components/MagneticButton";
-import { GradientText } from "@/components/v2/GradientText";
-import { GlassCard } from "@/components/v2/GlassCard";
-import ParticleCanvas from "@/components/ParticleCanvas";
-import useCountUpOnce from "@/hooks/useCountUpOnce";
-import { Briefcase, Users, Award, TrendingUp } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Briefcase, Users, Award, TrendingUp } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
+
+const AnimatedCounter = ({ target, suffix = "", decimals = 0 }: { target: number; suffix?: string; decimals?: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1200;
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, target]);
+
+  return <span ref={ref}>{decimals ? count.toFixed(decimals) : Math.round(count).toLocaleString('sv-SE')}{suffix}</span>;
+};
 
 const stats = [
-  { key: "workers", label: "Nöjda hantverkare", value: 20, suffix: "+" },
-  { key: "projects", label: "Genomförda projekt", value: 1000, suffix: "+" },
-  { key: "rating", label: "Kundbetyg", value: 4.9, suffix: "/5", decimals: 1 }
+  { label: "Nöjda hantverkare", value: 20, suffix: "+", icon: Users },
+  { label: "Genomförda projekt", value: 1000, suffix: "+", icon: Briefcase },
+  { label: "Kundbetyg", value: 4.9, suffix: "/5", decimals: 1, icon: Award },
+];
+
+const trustBadges = [
+  { label: "Kollektivavtal", icon: Award },
+  { label: "500+ Medarbetare", icon: Users },
+  { label: "Snabb tillväxt", icon: TrendingUp },
 ];
 
 export const CareersHero = () => {
-  const { scrollYProgress } = useScroll();
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const scaleProgress = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
-
   const scrollToForm = () => {
     const formElement = document.getElementById('application-form');
     formElement?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background with Parallax */}
-      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
-        <ParticleCanvas />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-primary/5 to-secondary/5" />
-      </motion.div>
-
-      <div className="container mx-auto px-4 py-20 relative z-10">
-        <div className="max-w-6xl mx-auto">
+    <section className="relative py-24 md:py-32">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            style={{ scale: scaleProgress }}
-            transition={{ delay: 0.3, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-8"
           >
-            <GlassCard className="p-8 md:p-12 lg:p-16" hoverEffect={false}>
-              <div className="text-center">
-                {/* Floating badge */}
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                  className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6 relative"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Briefcase className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-sm font-medium">Vi söker nya medarbetare NU!</span>
-                  <motion.div
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"
-                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </motion.div>
+            <Briefcase className="w-4 h-4" />
+            <span className="text-sm font-medium">Vi söker nya medarbetare</span>
+            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          </motion.div>
 
-                {/* Main heading */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
-                >
-                  <GradientText gradient="rainbow">
-                    Bli en del av<br />Fixco-familjen
-                  </GradientText>
-                </motion.h1>
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
+          >
+            Bli en del av{' '}
+            <span className="text-primary">Fixco-familjen</span>
+          </motion.h1>
 
-                {/* Subheading */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto"
-                >
-                  Vi söker skickliga hantverkare som delar vår passion för kvalitet, service och professionalism.
-                  Hos Fixco erbjuder vi kollektivavtal, konkurrenskraftig lön och flexibla arbetstider.
-                </motion.p>
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed"
+          >
+            Vi söker skickliga hantverkare som delar vår passion för kvalitet, 
+            service och professionalism. Kollektivavtal, konkurrenskraftig lön 
+            och flexibla arbetstider.
+          </motion.p>
 
-                {/* CTAs */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                  className="flex justify-center mb-12"
-                >
-                  <MagneticButton
-                    size="lg"
-                    onClick={scrollToForm}
-                    className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
-                  >
-                    Ansök nu
-                  </MagneticButton>
-                </motion.div>
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mb-12"
+          >
+            <Button size="lg" onClick={scrollToForm} className="text-base px-8 py-6">
+              Ansök nu <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </motion.div>
 
-                {/* Trust Indicators Bar */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.55, duration: 0.8 }}
-                  className="flex flex-wrap justify-center gap-3 mb-8"
-                >
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
-                    <Award className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">Kollektivavtal</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
-                    <Users className="w-4 h-4 text-secondary" />
-                    <span className="text-sm font-medium">500+ Medarbetare</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm border border-border/50">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">Snabb tillväxt</span>
-                  </div>
-                </motion.div>
+          {/* Trust badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex flex-wrap justify-center gap-3 mb-12"
+          >
+            {trustBadges.map((badge) => {
+              const Icon = badge.icon;
+              return (
+                <div key={badge.label} className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
+                  <Icon className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-foreground">{badge.label}</span>
+                </div>
+              );
+            })}
+          </motion.div>
 
-                {/* Stats */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-border/50"
-                >
-                  {stats.map((stat, index) => (
-                    <StatCounter key={stat.key} stat={stat} index={index} />
-                  ))}
-                </motion.div>
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-border max-w-2xl mx-auto"
+          >
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
+                </div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
-            </GlassCard>
+            ))}
           </motion.div>
         </div>
       </div>
     </section>
-  );
-};
-
-interface StatCounterProps {
-  stat: typeof stats[0];
-  index: number;
-}
-
-const StatCounter = ({ stat }: StatCounterProps) => {
-  const { value, observe } = useCountUpOnce({
-    key: `hero-stat-${stat.key}`,
-    from: 0,
-    to: stat.value,
-    duration: 2000,
-    formatter: (val) => stat.decimals ? val.toFixed(1) : Math.round(val).toLocaleString('sv-SE')
-  });
-
-  return (
-    <div ref={observe} className="text-center">
-      <div className="text-3xl md:text-4xl font-bold mb-1">
-        <GradientText>
-          {value}{stat.suffix}
-        </GradientText>
-      </div>
-      <div className="text-sm text-muted-foreground">
-        {stat.label}
-      </div>
-    </div>
   );
 };
