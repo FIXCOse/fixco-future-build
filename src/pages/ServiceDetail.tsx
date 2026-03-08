@@ -154,9 +154,9 @@ const ServiceDetail = () => {
 
 
 
-  const totalPages = Math.ceil(filteredSubServices.length / itemsPerPage);
+  const totalPages = Math.ceil(displayServices.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSubServices = filteredSubServices.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedSubServices = displayServices.slice(startIndex, startIndex + itemsPerPage);
 
   // SEO - dynamisk titel och beskrivning
   const seoTitle = `${t(`serviceCategories.${service.slug}.title` as any) || service.title} | Fixco`;
