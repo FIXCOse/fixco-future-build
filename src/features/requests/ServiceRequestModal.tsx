@@ -720,7 +720,7 @@ const skipAddons = () => {
                                 <h5 className="font-semibold text-foreground">{addon.title}</h5>
                                 {addon.is_popular && (
                                   <Badge variant="secondary" className="bg-orange-500 text-white text-xs">
-                                    Populär
+                                    {ml.popular}
                                   </Badge>
                                 )}
                               </div>
