@@ -9,10 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, User, Briefcase, FileText, Check } from "lucide-react";
 import { viewportConfig } from "@/utils/scrollAnimations";
 
 const professions = ["Snickare", "Elektriker", "VVS", "Målare", "Trädgård", "Städ", "Montering", "Markarbeten", "Flytt"];
@@ -45,6 +45,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+const stepLabels = [
+  { label: "Personuppgifter", icon: User },
+  { label: "Yrkesuppgifter", icon: Briefcase },
+  { label: "Motivation", icon: FileText },
+];
+
 export const ApplicationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
@@ -68,7 +74,6 @@ export const ApplicationForm = () => {
     try {
       let cvFilePath = null;
 
-      // Upload CV if provided
       if (cvFile) {
         const fileExt = cvFile.name.split('.').pop();
         const fileName = `${Date.now()}-${data.email}.${fileExt}`;
@@ -80,7 +85,6 @@ export const ApplicationForm = () => {
         cvFilePath = uploadData.path;
       }
 
-      // Insert application
       const { error: insertError } = await supabase
         .from('job_applications')
         .insert({
@@ -93,7 +97,6 @@ export const ApplicationForm = () => {
 
       if (insertError) throw insertError;
 
-      // Send confirmation email
       await supabase.functions.invoke('send-application-email', {
         body: {
           to: data.email,
@@ -140,12 +143,46 @@ export const ApplicationForm = () => {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto"
         >
+          {/* Visual Stepper */}
+          <div className="flex items-center justify-center mb-10">
+            {stepLabels.map((s, i) => {
+              const StepIcon = s.icon;
+              const stepNum = i + 1;
+              const isActive = step === stepNum;
+              const isCompleted = step > stepNum;
+              return (
+                <div key={i} className="flex items-center">
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors ${
+                        isCompleted
+                          ? 'bg-primary border-primary text-primary-foreground'
+                          : isActive
+                          ? 'border-primary text-primary bg-primary/10'
+                          : 'border-border text-muted-foreground'
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <Check className="w-5 h-5" />
+                      ) : (
+                        <StepIcon className="w-4 h-4" />
+                      )}
+                    </div>
+                    <span className={`text-xs mt-1.5 font-medium ${isActive || isCompleted ? 'text-primary' : 'text-muted-foreground'}`}>
+                      {s.label}
+                    </span>
+                  </div>
+                  {i < stepLabels.length - 1 && (
+                    <div className={`w-16 md:w-24 h-0.5 mx-2 mb-5 ${isCompleted ? 'bg-primary' : 'bg-border'}`} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
           <Card>
             <CardHeader>
               <CardTitle className="text-3xl">Ansök till Fixco</CardTitle>
-              <CardDescription>
-                Steg {step} av 3 - {step === 1 ? "Personuppgifter" : step === 2 ? "Yrkesuppgifter" : "Motivation & Samtycke"}
-              </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>

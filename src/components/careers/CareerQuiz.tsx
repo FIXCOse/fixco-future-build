@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -116,7 +115,7 @@ export const CareerQuiz = () => {
   };
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-primary/5">
       <div className="container mx-auto px-4 max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -145,13 +144,36 @@ export const CareerQuiz = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {/* Progress */}
-              <div className="mb-6">
+              {/* Progress bar */}
+              <div className="mb-2">
                 <div className="flex justify-between text-sm text-muted-foreground mb-2">
                   <span>Fråga {currentQuestion + 1} av {questions.length}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
-                <Progress value={progress} className="h-2" />
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-primary rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.4 }}
+                  />
+                </div>
+              </div>
+
+              {/* Step dots */}
+              <div className="flex justify-center gap-2 mb-6">
+                {questions.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                      i < currentQuestion
+                        ? 'bg-primary'
+                        : i === currentQuestion
+                        ? 'bg-primary ring-2 ring-primary/30'
+                        : 'bg-border'
+                    }`}
+                  />
+                ))}
               </div>
 
               {/* Question card */}
