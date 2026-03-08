@@ -3,8 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { 
-  FileText, Calendar, MapPin, Clock, Star, Shield, 
-  CheckCircle, ArrowRight, Phone 
+  MapPin, CheckCircle
 } from "lucide-react";
 // Note: Some icons kept for other sections below
 import { Button } from "@/components/ui/button-premium";
