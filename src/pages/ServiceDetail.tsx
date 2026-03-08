@@ -370,7 +370,7 @@ const ServiceDetail = () => {
                       selectedSubCategory === cat ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
                     )}
                   >
-                    {cat}
+                    {isEnglish ? (subCategoryTranslations[cat] || cat) : cat}
                   </button>
                 ))}
               </div>
