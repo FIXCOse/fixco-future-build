@@ -1,22 +1,28 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Fix: Matcha NicheServiceLandingPage hero med LocalServicePage
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+Nisch-sidans hero skiljer sig från de lokala sidorna på flera punkter. Fixar så de ser identiska ut.
 
-### Fil som ändras
+### Skillnader att åtgärda i `src/pages/NicheServiceLandingPage.tsx`
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**1. CTA-knappar — ta bort ikoner, matcha text**
+- Local: `"Begär gratis offert"` + `"Alla tjänster"` (inga ikoner i knapparna)
+- Niche: `<FileText />` + `"Begär offert"` och `<Calendar />` + `"Boka hembesök"`
+- Fix: Ta bort ikonerna från GradientButton. Ändra texten till `t('local.ctaQuote')` och `t('local.allServices')` med href till tjänstesidan
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+**2. Trust badges — pill-form istället för inline**
+- Local: Runda pills med `bg-white/10 backdrop-blur-sm border border-white/20` och `CheckCircle`-ikon
+- Niche: Inline text med individuella ikoner (Shield, Clock, Star, MapPin)
+- Fix: Byt till samma pill-badge-mönster som LocalServicePage med `CheckCircle`
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+**3. Hero padding**
+- Local: `pt-8 pb-20 md:pt-10 md:pb-28`
+- Niche: `py-20 md:py-28`
+- Fix: Matcha local-sidans padding
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+### Fil att ändra
+| Fil | Åtgärd |
+|---|---|
+| `src/pages/NicheServiceLandingPage.tsx` | Uppdatera hero-sektionens knappar och trust badges |
 
