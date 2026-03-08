@@ -166,7 +166,7 @@ export const en: Record<CopyKey, string> = {
   'serviceCategories.flytt': 'Moving',
 
   // Service Categories Extended
-  'serviceCategories.el.title': 'Electrical',
+  'serviceCategories.el.title': 'Electrician',
   'serviceCategories.el.description': 'Installation, repair and maintenance of electrical systems',
   'serviceCategories.vvs.title': 'Plumbing', 
   'serviceCategories.vvs.description': 'Pipes, water and drainage',
