@@ -231,6 +231,14 @@ export default function ServiceRequestModal() {
   // Lock scroll when modal is open
   useScrollLock(open);
 
+  // Sync language with URL every time modal opens
+  useEffect(() => {
+    if (open) {
+      const detectedLang = window.location.pathname.startsWith('/en') ? 'en' : 'sv';
+      setModalLang(detectedLang);
+    }
+  }, [open]);
+
   // Navigation functions with tracking
   const goToStep0 = () => { setCurrentStep(0); trackFunnelStep('step_0', { service: service?.slug }); };
   const goToStep1 = () => { setCurrentStep(1); trackFunnelStep('step_1_addons', { service: service?.slug }); };
