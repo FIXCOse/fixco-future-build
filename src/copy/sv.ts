@@ -151,7 +151,7 @@ export const sv: Record<CopyKey, string> = {
   'categories.entertainment_desc': 'Högtalare & Hemmabio',
   
   // Service Categories (keep both versions for compatibility)
-  'serviceCategories.el': 'El',
+  'serviceCategories.el': 'Elektriker',
   'serviceCategories.vvs': 'VVS',
   'serviceCategories.snickeri': 'Snickeri',
   'serviceCategories.malning': 'Målare',
