@@ -328,7 +328,30 @@ const ServiceDetail = () => {
                 ['all']
               } />
             </div>
-          </div>
+            {/* Sub-category filter chips */}
+            {subCategories.length > 1 && (
+              <div className="flex flex-wrap justify-center gap-2 mt-6">
+                <button 
+                  onClick={() => { setSelectedSubCategory(null); setCurrentPage(1); }}
+                  className={cn("px-4 py-1.5 rounded-full border text-sm font-medium transition-all",
+                    !selectedSubCategory ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  )}
+                >
+                  {isEnglish ? 'All' : 'Alla'}
+                </button>
+                {subCategories.map(cat => (
+                  <button 
+                    key={cat} 
+                    onClick={() => { setSelectedSubCategory(cat); setCurrentPage(1); }}
+                    className={cn("px-4 py-1.5 rounded-full border text-sm font-medium transition-all",
+                      selectedSubCategory === cat ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                    )}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginatedSubServices.map((dbService) => {
