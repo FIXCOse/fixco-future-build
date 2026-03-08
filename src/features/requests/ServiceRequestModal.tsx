@@ -203,6 +203,8 @@ export default function ServiceRequestModal() {
 
   const ml = modalTranslations[modalLang];
 
+  const { trackFunnelStep, trackConversion, trackClick } = useEventTracking();
+
   // Lock scroll when modal is open
   useScrollLock(open);
 
