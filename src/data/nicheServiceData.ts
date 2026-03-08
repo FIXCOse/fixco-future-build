@@ -200,7 +200,7 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'koksmontering',
     title: 'Köksmontering',
     titleEn: 'Kitchen Installation',
-    parentCategory: 'montering',
+    parentCategory: 'kok',
     icon: Package,
     rotRut: 'ROT',
     description: 'Professionell köksmontering – IKEA, Marbodal, HTH och alla andra märken. Vi monterar ditt nya kök snabbt och korrekt.',
