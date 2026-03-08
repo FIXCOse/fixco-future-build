@@ -536,16 +536,25 @@ const skipAddons = () => {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-1">
-                {service?.name ?? (mode === 'home_visit' ? "Boka Hembesök" : "Begär offert")}
+                {service?.name ?? (mode === 'home_visit' ? ml.bookHomeVisit : ml.requestQuote)}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {done ? "Tack för din förfrågan!" : currentStep === 1 && addons.length > 0 ? "Välj extra tjänster som passar ditt projekt" : (isQuote ? "Fyll i dina uppgifter så återkommer vi inom 24h" : "Fyll i dina uppgifter för att slutföra bokningen")}
+                {done ? ml.thankYou : currentStep === 1 && addons.length > 0 ? ml.selectExtras : (isQuote ? ml.fillDetails24h : ml.fillDetailsBooking)}
               </p>
             </div>
+            {/* Language switcher */}
+            <button
+              onClick={() => setModalLang(l => l === 'sv' ? 'en' : 'sv')}
+              className="flex items-center justify-center gap-1 h-10 px-3 rounded-full hover:bg-muted/80 transition-colors"
+              title={modalLang === 'sv' ? 'Switch to English' : 'Växla till svenska'}
+            >
+              <Globe className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">{modalLang === 'sv' ? 'EN' : 'SV'}</span>
+            </button>
             <button
               onClick={() => setOpen(false)}
               className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors group"
-              aria-label="Stäng"
+              aria-label={ml.close}
             >
               <svg className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
