@@ -882,7 +882,7 @@ const skipAddons = () => {
                 
                 {/* Kundtypsväljare */}
                 <div className="mb-4">
-                  <label className="text-xs text-muted-foreground mb-2 block">Jag bokar som</label>
+                  <label className="text-xs text-muted-foreground mb-2 block">{ml.bookingAs}</label>
                   <ToggleGroup 
                     type="single" 
                     value={customerType} 
