@@ -373,7 +373,7 @@ const ServiceDetail = () => {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && filteredSubServices.length > 0 && (
+          {totalPages > 1 && displayServices.length > 0 && (
             <div className="flex justify-center mt-12 space-x-2">
               <Button 
                 variant="outline"
