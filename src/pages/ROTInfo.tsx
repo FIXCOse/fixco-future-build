@@ -1,84 +1,131 @@
 import { Button } from "@/components/ui/button-premium";
-import { CheckCircle, Calculator, DollarSign, FileText, ArrowRight, Percent, Home, Clipboard, CreditCard, Phone } from "lucide-react";
+import { CheckCircle, ArrowRight, Home, Clipboard, CreditCard, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCopy } from '@/copy/CopyProvider';
-import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import ROTCalculator from "@/components/ROTCalculator";
+import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { useBookHomeVisitModal } from "@/hooks/useBookHomeVisitModal";
+import { containerVariants, itemVariants, viewportConfig } from "@/utils/scrollAnimations";
+
+const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1200;
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+};
 
 const ROTInfo = () => {
   const { t, locale } = useCopy();
   const isEnglish = locale === 'en';
-  
+  const { open: openBooking } = useBookHomeVisitModal();
+
   const bookingPath = isEnglish ? '/en/book-visit' : '/boka-hembesok';
-  const contactPath = isEnglish ? '/en/contact' : '/kontakt';
 
   const examples = [
     {
       service: t('pages.rot.examples.service1'),
       work: t('pages.rot.examples.work1'),
-      normalPrice: "1 918 kr",
-      rotPrice: "960 kr",
-      savings: "958 kr"
+      normalPrice: 1918,
+      rotPrice: 960,
+      savings: 958,
     },
     {
-      service: t('pages.rot.examples.service2'), 
+      service: t('pages.rot.examples.service2'),
       work: t('pages.rot.examples.work2'),
-      normalPrice: "3 500 kr",
-      rotPrice: "1 750 kr", 
-      savings: "1 750 kr"
+      normalPrice: 3500,
+      rotPrice: 1750,
+      savings: 1750,
     },
     {
       service: t('pages.rot.examples.service3'),
       work: t('pages.rot.examples.work3'),
-      normalPrice: "38 360 kr",
-      rotPrice: "19 200 kr",
-      savings: "19 160 kr"
-    }
+      normalPrice: 38360,
+      rotPrice: 19200,
+      savings: 19160,
+    },
   ];
 
-  const qualifyingServices = isEnglish ? [
-    "Carpentry work (kitchen, bathroom, interior)",
-    "Plumbing installations and repairs", 
-    "Electrical installations and lighting",
-    "Painting and wallpapering",
-    "Floor laying and tiling work",
-    "Garden work and landscaping",
-    "Facade work and roofing",
-    "Assembly of furniture and equipment",
-    "Ground work and drainage"
-  ] : [
-    "Snickeriarbeten (kök, badrum, inredning)",
-    "VVS-installationer och reparationer", 
-    "Elinstallationer och belysning",
-    "Målning och tapetsering",
-    "Golvläggning och kakelarbeten",
-    "Trädgårdsarbeten och anläggning",
-    "Fasadarbeten och takarbeten",
-    "Montering av möbler och utrustning",
-    "Markarbeten och dränering"
-  ];
+  const qualifyingServices = isEnglish
+    ? [
+        "Carpentry work (kitchen, bathroom, interior)",
+        "Plumbing installations and repairs",
+        "Electrical installations and lighting",
+        "Painting and wallpapering",
+        "Floor laying and tiling work",
+        "Garden work and landscaping",
+        "Facade work and roofing",
+        "Assembly of furniture and equipment",
+        "Ground work and drainage",
+      ]
+    : [
+        "Snickeriarbeten (kök, badrum, inredning)",
+        "VVS-installationer och reparationer",
+        "Elinstallationer och belysning",
+        "Målning och tapetsering",
+        "Golvläggning och kakelarbeten",
+        "Trädgårdsarbeten och anläggning",
+        "Fasadarbeten och takarbeten",
+        "Montering av möbler och utrustning",
+        "Markarbeten och dränering",
+      ];
 
-  const nonQualifyingServices = isEnglish ? [
-    "Cleaning only (without construction work)",
-    "New construction of entire houses",
-    "Work on holiday homes that are not permanent residences", 
-    "Outdoor work not related to the residence",
-    "Pure consulting services without physical work",
-    "Materials (only labor costs qualify)",
-    "Moving costs",
-    "Insurance matters",
-    "Work on commercial properties"
-  ] : [
-    "Enbart städning (utan byggarbete)",
-    "Nybyggnation av hela hus",
-    "Arbete på fritidshus som inte är permanentbostad", 
-    "Arbete utomhus som inte hör till bostaden",
-    "Rena konsulttjänster utan fysiskt arbete",
-    "Material (endast arbetskostnaden berättigar)",
-    "Flyttkostnader",
-    "Försäkringsärenden",
-    "Arbete på kommersiella fastigheter"
+  const nonQualifyingServices = isEnglish
+    ? [
+        "Cleaning only (without construction work)",
+        "New construction of entire houses",
+        "Work on holiday homes (not permanent)",
+        "Outdoor work unrelated to residence",
+        "Pure consulting without physical work",
+        "Materials (only labor qualifies)",
+        "Moving costs",
+        "Insurance matters",
+        "Commercial properties",
+      ]
+    : [
+        "Enbart städning (utan byggarbete)",
+        "Nybyggnation av hela hus",
+        "Fritidshus som inte är permanentbostad",
+        "Arbete utomhus ej kopplat till bostaden",
+        "Rena konsulttjänster utan fysiskt arbete",
+        "Material (endast arbetskostnaden berättigar)",
+        "Flyttkostnader",
+        "Försäkringsärenden",
+        "Kommersiella fastigheter",
+      ];
+
+  const steps = [
+    {
+      title: t('pages.rot.process.step1.title'),
+      description: t('pages.rot.process.step1.description'),
+      icon: Home,
+    },
+    {
+      title: t('pages.rot.process.step2.title'),
+      description: t('pages.rot.process.step2.description'),
+      icon: Clipboard,
+    },
+    {
+      title: t('pages.rot.process.step3.title'),
+      description: t('pages.rot.process.step3.description'),
+      icon: CreditCard,
+    },
   ];
 
   return (
@@ -86,253 +133,239 @@ const ROTInfo = () => {
       <Helmet>
         <title>{isEnglish ? 'ROT Tax Deduction - Save 30% on Home Improvements | Fixco' : 'ROT-avdrag - Spara 30% på hemförbättringar | Fixco'}</title>
         <meta name="description" content={isEnglish ? 'Save 30% on labor costs with ROT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 30% på arbetskostnaden med ROT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
-        <meta name="keywords" content={isEnglish ? 'ROT tax deduction, home renovation, Sweden tax benefits, labor cost savings' : 'ROT-avdrag, hemrenovering, skatteavdrag, arbetskostnad, besparingar'} />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-background">
+      {/* Hero — Minimalistisk med animerad siffra */}
+      <section className="pt-32 pb-24 hero-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              <span className="gradient-text">{t('pages.rot.hero.title')}</span>
+          <motion.div
+            className="max-w-3xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <div className="inline-flex items-baseline gap-3 mb-6">
+              <span className="text-7xl md:text-9xl font-black tracking-tight text-primary">
+                <AnimatedCounter target={30} suffix="%" />
+              </span>
+              <span className="text-2xl md:text-3xl font-semibold text-muted-foreground">
+                {isEnglish ? 'tax deduction' : 'skattereduktion'}
+              </span>
+            </div>
+
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4 text-foreground">
+              {t('pages.rot.hero.title')}
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
               {t('pages.rot.hero.subtitle')}
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to={bookingPath}>
-                <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
-                  {t('pages.rot.hero.bookVisit')}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Button variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10">
-                <Phone className="mr-2 h-5 w-5" />
-                {t('pages.rot.hero.phone')}
+
+            <Link to={bookingPath}>
+              <Button size="lg" className="gradient-primary text-primary-foreground font-bold">
+                {t('pages.rot.hero.bookVisit')}
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </div>
-          </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* What is ROT */}
+      {/* Så fungerar det — 3-stegs timeline */}
       <section className="py-20">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl font-bold mb-6">
-                <span className="gradient-text">{t('pages.rot.what.title')}</span>
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                {t('pages.rot.what.description1')}
-              </p>
-              <p className="text-lg text-muted-foreground mb-8">
-                {t('pages.rot.what.description2')}
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>{t('pages.rot.what.benefit1')}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>{t('pages.rot.what.benefit2')}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>{t('pages.rot.what.benefit3')}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span>{t('pages.rot.what.benefit4')}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="card-premium p-8">
-              <Percent className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-center mb-4 gradient-text">{t('pages.rot.what.discount')}</h3>
-              <p className="text-center text-muted-foreground mb-6">
-                {t('pages.rot.what.discountDescription')}
-              </p>
-              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6">
-                <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-2">{isEnglish ? 'Example: Price' : 'Exempel: Pris'}</div>
-                  <div className="text-2xl font-bold line-through text-muted-foreground mb-2">959 kr/h</div>
-                  <div className="text-sm text-primary mb-2">{isEnglish ? 'With ROT deduction' : 'Med ROT-avdrag'}</div>
-                  <div className="text-3xl font-bold gradient-text">480 kr/h</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <div className="container mx-auto px-4 max-w-4xl">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16 text-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            {t('pages.rot.process.title')}
+          </motion.h2>
 
-      {/* Examples */}
-      <section className="py-20 gradient-primary-subtle">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            <span className="gradient-text">{t('pages.rot.examples.title')}</span>
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {examples.map((example, index) => (
-              <div key={example.service} className="card-premium p-6 animate-fade-in-up"
-                   style={{ animationDelay: `${index * 0.2}s` }}>
-                <h3 className="text-xl font-bold mb-4">{example.service}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{example.work}</p>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">{t('pages.rot.examples.price')}</span>
-                    <span className="font-semibold line-through text-muted-foreground">{example.normalPrice}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-primary">{t('pages.rot.examples.withRot')}</span>
-                    <span className="font-bold text-primary">{example.rotPrice}</span>
-                  </div>
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold">{t('pages.rot.examples.savings')}</span>
-                      <span className="text-xl font-bold gradient-text">{example.savings}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Modern Process Visualization */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            <span className="gradient-text">{t('pages.rot.process.title')}</span>
-          </h2>
-          
-          {/* Modern Process Steps */}
           <div className="relative">
-            {/* Connection Lines */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full max-w-4xl h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20"></div>
-            </div>
-            
-            <div className="relative grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  step: "1",
-                  title: t('pages.rot.process.step1.title'),
-                  description: t('pages.rot.process.step1.description'),
-                  icon: Home,
-                  color: "from-blue-500 to-blue-600"
-                },
-                {
-                  step: "2", 
-                  title: t('pages.rot.process.step2.title'),
-                  description: t('pages.rot.process.step2.description'),
-                  icon: Clipboard,
-                  color: "from-green-500 to-green-600"
-                },
-                {
-                  step: "3",
-                  title: t('pages.rot.process.step3.title'),
-                  description: t('pages.rot.process.step3.description'),
-                  icon: CreditCard,
-                  color: "from-purple-500 to-purple-600"
-                }
-              ].map((step, index) => {
-                const IconComponent = step.icon;
+            {/* Connecting line */}
+            <div className="hidden md:block absolute top-12 left-[16.67%] right-[16.67%] h-px bg-border" />
+
+            <motion.div
+              className="grid md:grid-cols-3 gap-12 md:gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportConfig}
+            >
+              {steps.map((step, i) => {
+                const Icon = step.icon;
                 return (
-                  <div key={step.step} className="relative animate-fade-in-up"
-                       style={{ animationDelay: `${index * 0.3}s` }}>
-                    {/* Step Circle with modern gradient */}
-                    <div className="relative z-10 mx-auto w-24 h-24 mb-6">
-                      <div className={`w-full h-full bg-gradient-to-br ${step.color} rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300`}>
-                        <span className="text-white font-bold text-xl">{step.step}</span>
+                  <motion.div key={i} variants={itemVariants} className="text-center">
+                    <div className="relative mx-auto w-24 h-24 mb-6">
+                      <div className="w-full h-full rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center">
+                        <Icon className="h-8 w-8 text-primary" />
                       </div>
-                      
-                      {/* Icon overlay */}
-                      <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-primary/20">
-                        <IconComponent className="h-5 w-5 text-primary" />
+                      <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                        {i + 1}
                       </div>
                     </div>
-                    
-                    {/* Content Card */}
-                    <div className="card-premium p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                      <h3 className="text-xl font-bold mb-3 gradient-text">{step.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{step.description}</p>
-                    </div>
-                  </div>
+                    <h3 className="text-lg font-semibold mb-2 text-foreground">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                  </motion.div>
                 );
               })}
-            </div>
-          </div>
-
-          {/* Process Benefits */}
-          <div className="mt-16 grid md:grid-cols-2 gap-8">
-            <div className="card-premium p-6">
-              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '🚀 Fast & Easy' : '🚀 Snabbt & Enkelt'}</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'No waiting for approval' : 'Ingen väntan på godkännande'}</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Direct discount at payment' : 'Direkt rabatt vid betalning'}</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'We handle all paperwork' : 'Vi sköter allt pappersarbete'}</li>
-              </ul>
-            </div>
-            <div className="card-premium p-6">
-              <h4 className="text-lg font-bold mb-4 text-primary">{isEnglish ? '💰 Guaranteed Savings' : '💰 Garanterad Besparing'}</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? '30% on all qualified work' : '30% på alla kvalificerade arbeten'}</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Maximize your annual deduction' : 'Maximera ditt årliga avdrag'}</li>
-                <li className="flex items-center"><CheckCircle className="h-4 w-4 text-primary mr-2" />{isEnglish ? 'Professional advice' : 'Professionell rådgivning'}</li>
-              </ul>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* What qualifies */}
-      <section className="py-20 gradient-primary-subtle">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            <span className="gradient-text">{t('pages.rot.qualifies.title')}</span>
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="card-premium p-8">
-              <h3 className="text-2xl font-bold mb-6 text-primary">{t('pages.rot.qualifies.yes.title')}</h3>
-              <div className="space-y-3">
-                {qualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="card-premium p-8">
-              <h3 className="text-2xl font-bold mb-6 text-muted-foreground">{t('pages.rot.qualifies.no.title')}</h3>
-              <div className="space-y-3">
-                {nonQualifyingServices.map((item) => (
-                  <div key={item} className="flex items-center space-x-3">
-                    <div className="w-5 h-5 rounded-full bg-muted-foreground flex items-center justify-center flex-shrink-0">
-                      <span className="text-background text-xs">✕</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ROT Calculator */}
+      {/* Kalkylator — sidans hjärta */}
       <ROTCalculator />
 
+      {/* Prisexempel — visuella jämförelsekort */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {t('pages.rot.examples.title')}
+          </motion.h2>
+          <p className="text-center text-muted-foreground mb-12 max-w-lg mx-auto">
+            {isEnglish ? 'See how much you save on common home projects.' : 'Se hur mycket du sparar på vanliga hemprojekt.'}
+          </p>
+
+          <motion.div
+            className="grid md:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportConfig}
+          >
+            {examples.map((ex) => {
+              const savingsPercent = Math.round((ex.savings / ex.normalPrice) * 100);
+              return (
+                <motion.div
+                  key={ex.service}
+                  variants={itemVariants}
+                  className="bg-card border border-border rounded-xl p-6 shadow-sm"
+                >
+                  <h3 className="font-semibold text-lg mb-1 text-foreground">{ex.service}</h3>
+                  <p className="text-xs text-muted-foreground mb-5">{ex.work}</p>
+
+                  {/* Before/after bar */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">{t('pages.rot.examples.price')}</span>
+                      <span className="line-through text-muted-foreground">{ex.normalPrice.toLocaleString('sv-SE')} kr</span>
+                    </div>
+                    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary/30 rounded-full"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-primary font-medium">{t('pages.rot.examples.withRot')}</span>
+                      <span className="font-bold text-primary">{ex.rotPrice.toLocaleString('sv-SE')} kr</span>
+                    </div>
+                    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full transition-all duration-700"
+                        style={{ width: `${100 - savingsPercent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border pt-3 flex items-center justify-between">
+                    <span className="text-sm font-medium text-foreground">{t('pages.rot.examples.savings')}</span>
+                    <span className="text-lg font-bold text-primary">
+                      <AnimatedCounter target={ex.savings} /> kr
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Vad berättigar — Kompakt grid med check/X */}
+      <section className="py-20 gradient-primary-subtle">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {t('pages.rot.qualifies.title')}
+          </motion.h2>
+
+          <motion.div
+            className="grid md:grid-cols-2 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportConfig}
+          >
+            {/* Berättigar */}
+            <motion.div variants={itemVariants} className="bg-card border border-border rounded-xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4 text-primary flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                {t('pages.rot.qualifies.yes.title')}
+              </h3>
+              <div className="grid grid-cols-1 gap-2">
+                {qualifyingServices.map((item) => (
+                  <div key={item} className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span className="text-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Berättigar inte */}
+            <motion.div variants={itemVariants} className="bg-card border border-border rounded-xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4 text-muted-foreground flex items-center gap-2">
+                <X className="h-5 w-5" />
+                {t('pages.rot.qualifies.no.title')}
+              </h3>
+              <div className="grid grid-cols-1 gap-2">
+                {nonQualifyingServices.map((item) => (
+                  <div key={item} className="flex items-start gap-2 text-sm">
+                    <X className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <span className="text-muted-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Avslutande CTA */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 max-w-3xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+              {isEnglish ? 'Ready to save 30%?' : 'Redo att spara 30%?'}
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+              {isEnglish
+                ? 'Book a free home visit. We handle all ROT paperwork for you.'
+                : 'Boka ett kostnadsfritt hembesök. Vi sköter allt ROT-pappersarbete åt dig.'}
+            </p>
+            <Button size="lg" className="gradient-primary text-primary-foreground font-bold" onClick={openBooking}>
+              {t('pages.rot.hero.bookVisit')}
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };
