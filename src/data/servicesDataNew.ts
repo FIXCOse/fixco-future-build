@@ -27,7 +27,7 @@ export interface SubService extends ServicePricing {
 export const mainServices: ServicePricing[] = [
   {
     id: "el",
-    title: "El",
+    title: "Elmontör",
     basePrice: 1059,
     priceUnit: "kr/h",
     eligible: { rot: true, rut: false },
