@@ -143,6 +143,29 @@ const modalTranslations = {
     errorToast: 'Could not send. Please try again.',
     validationError: 'Please check all fields',
     invalidValue: 'Invalid value',
+    // Category translations
+    cat_el_title: 'Electrician',
+    cat_el_desc: 'Installation, repair and maintenance',
+    cat_vvs_title: 'Plumbing',
+    cat_vvs_desc: 'Pipes, faucets, toilets and shower screens',
+    cat_snickeri_title: 'Carpenter',
+    cat_snickeri_desc: 'Kitchens, wardrobes and interiors',
+    cat_malare_title: 'Painter',
+    cat_malare_desc: 'Professional painting indoors and outdoors',
+    cat_montering_title: 'Assembly',
+    cat_montering_desc: 'Furniture, shelves and appliances',
+    cat_tradgard_title: 'Garden',
+    cat_tradgard_desc: 'Grass, hedges and tree care',
+    cat_stadning_title: 'Cleaning',
+    cat_stadning_desc: 'Home, moving and construction cleaning',
+    cat_markarbeten_title: 'Groundwork',
+    cat_markarbeten_desc: 'Excavation, drainage and paving',
+    'cat_tekniska-installationer_title': 'Technical installations',
+    'cat_tekniska-installationer_desc': 'Networks, alarms and IT support',
+    cat_flytt_title: 'Moving',
+    cat_flytt_desc: 'Carrying, packing and transport',
+    cat_rivning_title: 'Demolition',
+    cat_rivning_desc: 'Bathrooms, kitchens, walls & removal',
   },
 } as const;
 
@@ -269,8 +292,8 @@ const skipAddons = () => {
           pricingMode: "quote" as const,
           rotEligible: true,
           fields: [
-            { kind: "textarea" as const, key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Berätta vad du vill ha gjort..." },
-            { kind: "file" as const, key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+            { kind: "textarea" as const, key: "beskrivning", label: ml.describeProject, placeholder: ml.tellUsMore },
+            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*", multiple: true }
           ]
         };
       }
@@ -623,13 +646,13 @@ const skipAddons = () => {
                           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <IconComponent className="w-6 h-6 text-primary" />
                           </div>
-                          
-                          <div className="flex-1">
-                            <h5 className="font-semibold text-foreground mb-1">{category.title}</h5>
-                            <p className="text-xs text-muted-foreground">
-                              {category.description}
-                            </p>
-                          </div>
+                           
+                           <div className="flex-1">
+                             <h5 className="font-semibold text-foreground mb-1">{(ml as any)[`cat_${category.id}_title`] || category.title}</h5>
+                             <p className="text-xs text-muted-foreground">
+                               {(ml as any)[`cat_${category.id}_desc`] || category.description}
+                             </p>
+                           </div>
 
                           <Checkbox checked={isSelected} />
                         </div>
@@ -1253,14 +1276,14 @@ const skipAddons = () => {
                         { 
                           kind: "textarea", 
                           key: "beskrivning", 
-                          label: "Beskriv ditt projekt", 
-                          placeholder: `Berätta vad du behöver hjälp med...`,
+                          label: ml.describeProject, 
+                          placeholder: ml.tellUsMore,
                           required: true 
                         },
                         { 
                           kind: "file", 
                           key: "bilder", 
-                          label: "Bilder (valfritt)", 
+                          label: ml.imagesOptional, 
                           accept: "image/*", 
                           multiple: true 
                         }
