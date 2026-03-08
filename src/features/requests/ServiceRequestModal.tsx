@@ -865,7 +865,7 @@ const skipAddons = () => {
                       className="p-0 h-auto text-xs mt-3"
                     >
                       <ArrowLeft className="w-3 h-3 mr-1" />
-                      Ändra tillägg
+                      {ml.changeAddons}
                     </Button>
                   )}
                 </div>
