@@ -43,22 +43,22 @@ const ROTInfo = () => {
       service: t('pages.rot.examples.service1'),
       work: t('pages.rot.examples.work1'),
       normalPrice: 1918,
-      rotPrice: 960,
-      savings: 958,
+      rotPrice: 1343,
+      savings: 575,
     },
     {
       service: t('pages.rot.examples.service2'),
       work: t('pages.rot.examples.work2'),
       normalPrice: 3500,
-      rotPrice: 1750,
-      savings: 1750,
+      rotPrice: 2450,
+      savings: 1050,
     },
     {
       service: t('pages.rot.examples.service3'),
       work: t('pages.rot.examples.work3'),
       normalPrice: 38360,
-      rotPrice: 19200,
-      savings: 19160,
+      rotPrice: 26852,
+      savings: 11508,
     },
   ];
 
