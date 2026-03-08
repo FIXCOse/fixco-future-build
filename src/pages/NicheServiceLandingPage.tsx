@@ -6,6 +6,7 @@ import {
   FileText, Calendar, MapPin, Clock, Star, Shield, 
   CheckCircle, ArrowRight, Phone 
 } from "lucide-react";
+// Note: Some icons kept for other sections below
 import { Button } from "@/components/ui/button-premium";
 import GradientButton from "@/components/GradientButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
