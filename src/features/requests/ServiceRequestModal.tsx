@@ -410,7 +410,7 @@ const skipAddons = () => {
         fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
-      toast.error('Vänligen kontrollera alla fält');
+      toast.error(ml.validationError);
       return;
     }
 
