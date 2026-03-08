@@ -331,7 +331,7 @@ const skipAddons = () => {
         const newErrors = { ...prevErrors };
         
         if (!result.success) {
-          newErrors[key] = result.error.issues[0]?.message || 'Ogiltigt värde';
+          newErrors[key] = result.error.issues[0]?.message || ml.invalidValue;
         } else {
           delete newErrors[key];
         }
