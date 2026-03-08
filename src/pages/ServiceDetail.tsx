@@ -49,9 +49,11 @@ const ServiceDetail = () => {
   // Get static service category info for UI
   const service = servicesDataNew.find(s => s.slug === normalizedSlug);
 
-  // Auto-set price mode based on service eligibility
+  // Auto-set price mode based on service eligibility & reset filters on slug change
   useEffect(() => {
     if (!service) return;
+    setSelectedSubCategory(null);
+    setCurrentPage(1);
     if (service.eligible?.rot) {
       setMode('rot');
     } else if (service.eligible?.rut) {
