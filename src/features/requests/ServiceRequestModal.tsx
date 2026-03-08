@@ -646,13 +646,13 @@ const skipAddons = () => {
                           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <IconComponent className="w-6 h-6 text-primary" />
                           </div>
-                          
-                          <div className="flex-1">
-                            <h5 className="font-semibold text-foreground mb-1">{category.title}</h5>
-                            <p className="text-xs text-muted-foreground">
-                              {category.description}
-                            </p>
-                          </div>
+                           
+                           <div className="flex-1">
+                             <h5 className="font-semibold text-foreground mb-1">{(ml as any)[`cat_${category.id}_title`] || category.title}</h5>
+                             <p className="text-xs text-muted-foreground">
+                               {(ml as any)[`cat_${category.id}_desc`] || category.description}
+                             </p>
+                           </div>
 
                           <Checkbox checked={isSelected} />
                         </div>
