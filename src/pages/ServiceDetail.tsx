@@ -35,6 +35,7 @@ const ServiceDetail = () => {
   const location = useLocation();
   const { t, locale } = useCopy();
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const itemsPerPage = 9;
   const mode = usePriceStore((state) => state.mode);
   const setMode = usePriceStore((state) => state.setMode);
