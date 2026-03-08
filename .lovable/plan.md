@@ -1,22 +1,29 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Fix: Rätt tjänstekoppling för nisch-sidor
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+`parentCategory` i `nicheServiceData.ts` pekar på breda kategorier (`snickeri`, `vvs`, `montering`) istället för de specifika databaskategorierna. T.ex. köksrenovering mappar till `snickeri` och visar snickeri-tjänster istället för kökstjänster.
 
-### Fil som ändras
+### Mappning som behöver ändras
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+| Nisch | Nuvarande `parentCategory` | Korrekt värde |
+|---|---|---|
+| koksrenovering | `snickeri` | `kok` |
+| badrumsrenovering | `vvs` | `badrum` |
+| altanbygge | `snickeri` | `snickeri` (korrekt) |
+| golvlaggning | `golv` | `golv` (korrekt) |
+| fasadmalning | `malning` | `malning` (korrekt) |
+| inomhusmalning | `malning` | `malning` (korrekt) |
+| elinstallation | `el` | `el` (korrekt) |
+| koksmontering | `montering` | `kok` |
+| mobelmontering | `montering` | `montering` (korrekt) |
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+### Ändring
+En rad per nisch i `src/data/nicheServiceData.ts`:
+- **koksrenovering**: `parentCategory: 'snickeri'` → `'kok'`
+- **badrumsrenovering**: `parentCategory: 'vvs'` → `'badrum'`
+- **koksmontering**: `parentCategory: 'montering'` → `'kok'`
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+3 rader ändras i en fil.
 
