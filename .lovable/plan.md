@@ -1,10 +1,22 @@
 
 
-## Ta bort "Slutförda projekt"-statistiken
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-Ta bort det första stat-kortet (rad 172–179) som visar `{projects.length}+` och ändra gridet från `md:grid-cols-4` till `md:grid-cols-3`.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändring i `src/pages/Referenser.tsx`
-- **Rad 171**: Byt `grid md:grid-cols-4` → `grid md:grid-cols-3`
-- **Rad 172–179**: Ta bort hela `<div>` med `{projects.length}+` och `stat-projects-label`
+### Fil som ändras
+
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
