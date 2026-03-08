@@ -1276,14 +1276,14 @@ const skipAddons = () => {
                         { 
                           kind: "textarea", 
                           key: "beskrivning", 
-                          label: "Beskriv ditt projekt", 
-                          placeholder: `Berätta vad du behöver hjälp med...`,
+                          label: ml.describeProject, 
+                          placeholder: ml.tellUsMore,
                           required: true 
                         },
                         { 
                           kind: "file", 
                           key: "bilder", 
-                          label: "Bilder (valfritt)", 
+                          label: ml.imagesOptional, 
                           accept: "image/*", 
                           multiple: true 
                         }
