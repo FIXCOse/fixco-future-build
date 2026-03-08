@@ -989,7 +989,7 @@ const skipAddons = () => {
                           className={`px-4 py-3 rounded-xl border ${
                             errors.brf_name ? 'border-red-500' : 'border-border/50'
                           } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full`}
-                          placeholder="BRF-namn *"
+                          placeholder={ml.brfName}
                           value={values.brf_name || ""}
                           onChange={e => onChange("brf_name", e.target.value)}
                         />
