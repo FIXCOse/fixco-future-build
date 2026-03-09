@@ -8,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
 import { FixcoFIcon } from '@/components/icons/FixcoFIcon';
+import { Helmet } from 'react-helmet-async';
+import { getFAQSchema, getBreadcrumbSchema } from '@/components/SEOSchemaEnhanced';
 
 const FAQ = () => {
   const { t, locale } = useCopy();
