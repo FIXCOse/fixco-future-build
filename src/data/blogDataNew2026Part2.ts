@@ -1590,7 +1590,7 @@ Alla nya eldstäder och kaminer måste uppfylla **Ekodesign-kraven** (EU) och be
 - **Energibesparing** – minskar elberoende
 - **Fastighetsvärde** – höjer värdet på bostaden
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['kamin', 'eldstad', 'braskamin', 'skorsten', 'rot-avdrag', 'ekodesign'],
     publishedAt: '2026-01-05',
