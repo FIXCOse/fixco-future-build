@@ -177,6 +177,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         setEnableRot(true);
         setRotRate(30); // 30% enligt Skatteverket (från 2026)
       }
+      
+      // Ladda locale från bokning
+      setLocale(payload.locale === 'en' ? 'en' : 'sv');
     } else if (prefilledCustomerId || prefilledData) {
       // Load prefilled data from AI lead
       if (prefilledCustomerId) {
