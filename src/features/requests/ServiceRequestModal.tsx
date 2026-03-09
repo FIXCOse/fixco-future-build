@@ -1205,7 +1205,7 @@ const skipAddons = () => {
 
         {/* Fixed Footer with Navigation Buttons */}
         {!done && (
-          <div className="px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-border/20 bg-background/50 backdrop-blur-sm flex-shrink-0">
+          <div className="px-4 py-3 md:px-6 md:py-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-border/20 bg-background/50 backdrop-blur-sm flex-shrink-0">
             <div className="flex gap-3">
               {/* Back Button */}
               {currentStep > 0 && (
