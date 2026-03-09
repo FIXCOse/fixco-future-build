@@ -144,6 +144,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         setDiscountType(quote.discount_type as any);
         setDiscountValue(quote.discount_value || 0);
       }
+      
+      // Load locale
+      setLocale((quote as any).locale === 'en' ? 'en' : 'sv');
     } else if (bookingData?.payload) {
       // Prefill from booking payload
       const payload = bookingData.payload;
