@@ -644,7 +644,7 @@ const skipAddons = () => {
                               : [...prev, category.slug]
                           );
                         }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                        className={`p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           isSelected && mode === 'home_visit'
                             ? 'border-primary bg-primary/10 shadow-lg'
                             : 'border-border hover:border-primary/50'
