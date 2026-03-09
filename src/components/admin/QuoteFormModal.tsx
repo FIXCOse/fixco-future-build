@@ -444,10 +444,24 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto overscroll-contain touch-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl flex items-center gap-2">
-            <Calculator className="h-6 w-6" />
-            {quote ? 'Redigera offert' : 'Ny offert'}
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <Calculator className="h-6 w-6" />
+              {quote ? 'Redigera offert' : 'Ny offert'}
+            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-muted-foreground" />
+              <Select value={locale} onValueChange={(v) => setLocale(v as 'sv' | 'en')}>
+                <SelectTrigger className="w-[130px] h-8 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sv">🇸🇪 Svenska</SelectItem>
+                  <SelectItem value="en">🇬🇧 English</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="space-y-6 py-4">

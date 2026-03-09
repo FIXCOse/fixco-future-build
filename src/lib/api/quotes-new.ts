@@ -116,6 +116,7 @@ export async function createQuoteNew(quoteData: {
   pdf_url?: string;
   valid_until?: string;
   request_id?: string;
+  locale?: string;
 }) {
   // Call DB functions to generate number and token
   const { data: numberData, error: numberError } = await supabase
