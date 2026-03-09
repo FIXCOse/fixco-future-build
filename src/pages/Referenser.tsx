@@ -1,4 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { Helmet } from 'react-helmet-async';
+import { getBreadcrumbSchema } from '@/components/SEOSchemaEnhanced';
 import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
 import { Card, CardContent } from "@/components/ui/card";
@@ -105,6 +107,35 @@ const Referenser = () => {
   
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{locale === 'en' ? 'Our Projects & References | Fixco' : 'Våra projekt & referenser | Fixco'}</title>
+        <meta name="description" content={locale === 'en' 
+          ? 'See completed renovation projects by Fixco in Uppsala & Stockholm. Kitchen, bathroom, electrical and more with ROT deduction.'
+          : 'Se genomförda renoveringsprojekt av Fixco i Uppsala & Stockholm. Kök, badrum, el och mer med ROT-avdrag. ★ 5/5 betyg.'} />
+        <link rel="canonical" href={`https://fixco.se${locale === 'en' ? '/en/references' : '/referenser'}`} />
+        <meta property="og:title" content={locale === 'en' ? 'Our Projects & References | Fixco' : 'Våra projekt & referenser | Fixco'} />
+        <meta property="og:description" content={locale === 'en' ? 'See completed projects by Fixco.' : 'Se genomförda projekt av Fixco i Uppsala & Stockholm.'} />
+        <meta property="og:url" content={`https://fixco.se${locale === 'en' ? '/en/references' : '/referenser'}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'sv_SE'} />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={locale === 'en' ? 'Our Projects & References | Fixco' : 'Våra projekt & referenser | Fixco'} />
+        <meta name="twitter:description" content={locale === 'en' ? 'See completed projects by Fixco.' : 'Se genomförda projekt av Fixco.'} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Fixco Referenser",
+          "description": "Genomförda renoveringsprojekt av Fixco",
+          "url": "https://fixco.se/referenser",
+          "provider": { "@type": "Organization", "name": "Fixco", "@id": "https://fixco.se#organization" }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify(getBreadcrumbSchema([
+          { name: 'Hem', url: '/' },
+          { name: 'Referenser', url: '/referenser' }
+        ]))}</script>
+      </Helmet>
       <Breadcrumbs />
 
       {/* Hero Section */}

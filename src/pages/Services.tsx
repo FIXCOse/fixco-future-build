@@ -12,6 +12,8 @@ import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
 import { GradientText } from "@/components/v2/GradientText";
+import { Helmet } from 'react-helmet-async';
+import { getServiceListSchema, getBreadcrumbSchema, getOfferCatalogSchema } from '@/components/SEOSchemaEnhanced';
 
 import { Link } from "react-router-dom";
 import { useCopy } from "@/copy/CopyProvider";
@@ -20,8 +22,60 @@ const Services = () => {
   const { t, locale } = useCopy();
   const { isEditMode } = useEditMode();
   
+  const isEnglish = locale === 'en';
+  const pageTitle = isEnglish ? 'All Services - Electrician, Plumber, Carpenter & More | Fixco' : 'Alla tjänster - Elektriker, VVS, Snickare & mer | Fixco';
+  const pageDesc = isEnglish
+    ? 'Browse all Fixco services: electrician, plumber, carpenter, assembly, cleaning and more in Uppsala & Stockholm. 30% ROT/RUT deduction included.'
+    : 'Se alla Fixco-tjänster: elektriker, VVS, snickare, montering, städ och mer i Uppsala & Stockholm. 30% ROT/RUT-avdrag. ★ 5/5 betyg.';
+
+  const servicesList = [
+    { name: 'Elektriker', url: '/tjanster/elektriker', description: 'Elinstallation, felsökning, laddboxar' },
+    { name: 'VVS', url: '/tjanster/vvs', description: 'Rörmokare, badrum, akuta läckor' },
+    { name: 'Snickare', url: '/tjanster/snickare', description: 'Kök, garderober, inredning' },
+    { name: 'Montering', url: '/tjanster/montering', description: 'IKEA-möbler, TV-fästen, vitvaror' },
+    { name: 'Trädgård', url: '/tjanster/tradgard', description: 'Gräsklippning, häckar, plantering' },
+    { name: 'Städning', url: '/tjanster/stad', description: 'Hemstäd, flyttstäd, byggstäd' },
+    { name: 'Markarbeten', url: '/tjanster/markarbeten', description: 'Dränering, schaktning, plattläggning' },
+    { name: 'Tekniska installationer', url: '/tjanster/tekniska-installationer', description: 'Nätverk, larm, IT-support' },
+    { name: 'Flytt', url: '/tjanster/flytt', description: 'Flytthjälp, packning, transport' },
+  ];
+
+  const serviceListSchema = getServiceListSchema(servicesList.map(s => ({
+    ...s,
+    url: `https://fixco.se${s.url}`
+  })));
+
+  const offerCatalogSchema = getOfferCatalogSchema(servicesList.map(s => ({
+    name: s.name,
+    price: 959,
+    description: s.description
+  })));
+
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Hem', url: '/' },
+    { name: 'Tjänster', url: '/tjanster' }
+  ]);
+
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href={`https://fixco.se${isEnglish ? '/en/services' : '/tjanster'}`} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content={`https://fixco.se${isEnglish ? '/en/services' : '/tjanster'}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={isEnglish ? 'en_US' : 'sv_SE'} />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+        <script type="application/ld+json">{JSON.stringify(serviceListSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(offerCatalogSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
       <Breadcrumbs />
       
       {/* Hero Section */}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -126,6 +127,21 @@ export const SmartHome = () => {
 
   return (
     <main className="pt-16">
+      <Helmet>
+        <title>Smart Hem - Automatisera ditt hem | Fixco</title>
+        <meta name="description" content="Professionell installation av smarta hem-produkter i Uppsala & Stockholm. Belysning, säkerhet, klimat och mer. 30% ROT-avdrag. ★ 5/5 betyg." />
+        <link rel="canonical" href="https://fixco.se/smart-hem" />
+        <meta property="og:title" content="Smart Hem - Automatisera ditt hem | Fixco" />
+        <meta property="og:description" content="Professionell installation av smarta hem-produkter i Uppsala & Stockholm." />
+        <meta property="og:url" content="https://fixco.se/smart-hem" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="sv_SE" />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Smart Hem - Automatisera ditt hem | Fixco" />
+        <meta name="twitter:description" content="Professionell installation av smarta hem-produkter." />
+      </Helmet>
       {/* Hero Section */}
       <EditableSection id="smart-home-hero" title="Smart Hem Hero">
         <section className="relative py-24 px-4 overflow-hidden">

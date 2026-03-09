@@ -216,8 +216,44 @@ const RUT = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>{isEnglish ? 'RUT Tax Deduction - Save 30% on Home Services | Fixco' : 'RUT-avdrag - Spara 30% på hemservice | Fixco'}</title>
-        <meta name="description" content={isEnglish ? 'Save 30% on home service costs with RUT tax deduction in Sweden. We handle all paperwork and applications for you. Book a free consultation today.' : 'Spara 30% på hemservice med RUT-avdrag. Vi sköter alla ansökningar och pappersarbete åt dig. Boka gratis konsultation idag.'} />
+        <title>{isEnglish ? 'RUT Tax Deduction - Save 50% on Home Services | Fixco' : 'RUT-avdrag - Spara 50% på hemservice | Fixco'}</title>
+        <meta name="description" content={isEnglish ? 'Save 50% on home service costs with RUT tax deduction in Sweden. Cleaning, laundry, maintenance. We handle all paperwork.' : 'Spara 50% på hemservice med RUT-avdrag. Städ, tvätt, underhåll. Vi sköter allt pappersarbete åt dig. ★ 5/5 betyg.'} />
+        <link rel="canonical" href={`https://fixco.se${isEnglish ? '/en/rut' : '/rut'}`} />
+        <meta property="og:title" content={isEnglish ? 'RUT Tax Deduction - Save 50% | Fixco' : 'RUT-avdrag - Spara 50% | Fixco'} />
+        <meta property="og:description" content={isEnglish ? 'Save 50% on home services with RUT deduction.' : 'Spara 50% på hemservice med RUT-avdrag.'} />
+        <meta property="og:url" content={`https://fixco.se${isEnglish ? '/en/rut' : '/rut'}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={isEnglish ? 'en_US' : 'sv_SE'} />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={isEnglish ? 'RUT Tax Deduction - Save 50% | Fixco' : 'RUT-avdrag - Spara 50% | Fixco'} />
+        <meta name="twitter:description" content={isEnglish ? 'Save 50% on home services with RUT.' : 'Spara 50% på hemservice med RUT-avdrag.'} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": isEnglish ? "What is RUT deduction?" : "Vad är RUT-avdrag?", "acceptedAnswer": { "@type": "Answer", "text": isEnglish ? "RUT deduction gives you 50% off labor costs for home services like cleaning. Max 75,000 SEK/year." : "RUT-avdrag ger dig 50% rabatt på arbetskostnaden för hemservice som städning. Max 75 000 kr/person/år." } },
+            { "@type": "Question", "name": isEnglish ? "What qualifies for RUT?" : "Vad berättigar till RUT-avdrag?", "acceptedAnswer": { "@type": "Answer", "text": isEnglish ? "Home cleaning, window cleaning, laundry, move-out cleaning, and small maintenance." : "Hemstädning, fönsterputs, tvätt, flyttstäd och mindre underhållsarbeten." } },
+            { "@type": "Question", "name": isEnglish ? "How do I apply?" : "Hur ansöker jag?", "acceptedAnswer": { "@type": "Answer", "text": isEnglish ? "We handle everything. You pay 50% and we handle the application to Skatteverket." : "Vi sköter allt. Du betalar 50% och vi hanterar ansökan till Skatteverket." } }
+          ]
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": isEnglish ? "How to get RUT deduction with Fixco" : "Så får du RUT-avdrag med Fixco",
+          "description": isEnglish ? "Step by step guide to getting RUT tax deduction" : "Steg-för-steg guide för att få RUT-avdrag",
+          "totalTime": "PT10M",
+          "step": steps.map((s, i) => ({ "@type": "HowToStep", "position": i + 1, "name": s.title, "text": s.description }))
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Hem", "item": "https://fixco.se/" },
+            { "@type": "ListItem", "position": 2, "name": "RUT-avdrag", "item": "https://fixco.se/rut" }
+          ]
+        })}</script>
       </Helmet>
 
       {/* Hero — Animerad counter */}
