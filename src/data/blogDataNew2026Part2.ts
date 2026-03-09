@@ -1252,7 +1252,7 @@ Naturliga, varma toner. Populärt i kök och matrum.
 - Material (kakel, fog, fix) ingår ej
 - Max 50 000 kr per person och år
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['kakelsättning', 'kakel', 'klinker', 'badrum', 'trender', 'rot-avdrag'],
     publishedAt: '2026-01-15',
