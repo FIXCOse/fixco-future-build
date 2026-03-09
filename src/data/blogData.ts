@@ -36,7 +36,7 @@ export interface BlogPost {
   category: 'rot-rut' | 'rut' | 'renovering' | 'tips' | 'nyheter' | 'guider' | 'energi' | 'brf' | 'lagstiftning' | 'marknad';
   tags: string[];
   readingTime: number;
-  image: string;
+  image?: string;
   featured: boolean;
   
   // AI-OPTIMERADE FÄLT FÖR CHATGPT, PERPLEXITY, GOOGLE AI, BING COPILOT
