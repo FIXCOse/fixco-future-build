@@ -82,7 +82,7 @@ Modernt och underhållsfritt. Lätt material som passar de flesta takstolar. Liv
 6. **Plåtarbeten** – Hängrännor, stuprör och beslag
 7. **Slutbesiktning** – Kontroll av utfört arbete
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['takrenovering', 'tak', 'rot-avdrag', 'betongpannor', 'tegelpannor', 'plåttak'],
     publishedAt: '2026-02-20',
