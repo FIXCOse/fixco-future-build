@@ -536,7 +536,7 @@ const skipAddons = () => {
       />
       
       {/* Modal */}
-      <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden max-h-[100dvh] md:max-h-[85vh] flex flex-col">
+      <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden max-h-[calc(100dvh-5rem)] md:max-h-[85vh] mb-20 md:mb-0 flex flex-col">
         {/* Progress Indicator */}
         {!done && service && addons.length > 0 && (
           <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30 flex-shrink-0">
