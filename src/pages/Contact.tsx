@@ -9,6 +9,8 @@ import { useCopy } from '@/copy/CopyProvider';
 import { useLocation } from 'react-router-dom';
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
+import { Helmet } from 'react-helmet-async';
+import { getBreadcrumbSchema } from '@/components/SEOSchemaEnhanced';
 
 const Contact = () => {
   const { t, locale } = useCopy();
