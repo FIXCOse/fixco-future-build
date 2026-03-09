@@ -681,7 +681,7 @@ const skipAddons = () => {
                       className="p-3 md:p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <Wrench className="w-6 h-6 text-primary" />
                         </div>
                         
