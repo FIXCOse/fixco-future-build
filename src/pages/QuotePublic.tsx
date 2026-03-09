@@ -404,7 +404,7 @@ export default function QuotePublic() {
 
   // Derive locale-aware copy
   const locale = (quote?.locale === 'en' ? 'en' : 'sv') as 'sv' | 'en';
-  const t: QuoteCopy = quoteCopy[locale];
+  const t = quoteCopy[locale];
   const dateLocale = locale === 'en' ? 'en-GB' : 'sv-SE';
 
   // Confetti
