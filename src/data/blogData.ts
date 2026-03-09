@@ -6870,9 +6870,7 @@ Boverket | Säker Vatten | VVS Företagen | Fuktcentrum
   },
 ];
 
-// Import and merge new 2026 blog posts
-import { newBlogPosts2026 } from './blogDataNew2026';
-import { newBlogPosts2026Part2 } from './blogDataNew2026Part2';
+// Merge new 2026 blog posts
 blogPosts.push(...newBlogPosts2026);
 blogPosts.push(...newBlogPosts2026Part2);
 
