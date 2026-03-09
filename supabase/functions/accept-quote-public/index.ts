@@ -28,14 +28,51 @@ function buildAdminHtml(quoteNumber: string, quoteTitle: string | null, customer
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;"><div style="max-width:600px;margin:0 auto;padding:20px;"><div style="background:linear-gradient(135deg,#16a34a,#15803d);color:white;padding:30px;border-radius:12px 12px 0 0;text-align:center;"><div style="font-size:48px;margin-bottom:8px;">✅</div><h1 style="margin:0;font-size:24px;font-weight:700;">Offert accepterad${isReaccept ? ' (re-accept)' : ''}!</h1><p style="margin:8px 0 0;opacity:0.9;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</p></div><div style="background:white;padding:30px;border:1px solid #e5e7eb;border-top:none;"><table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;width:140px;">Offert</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-weight:600;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</td></tr><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Kund</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${customerName}</td></tr><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Signerad av</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${signatureName || 'Ej angiven'}</td></tr><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Tidpunkt</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${timestamp}</td></tr></table><table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:20px;"><tr><td style="background:#f0fdf4;padding:16px;border-top:4px solid #16a34a;border-radius:8px;"><p style="margin:0;font-size:14px;color:#15803d;font-weight:600;">${isReaccept ? 'Kunden har accepterat offerten igen.' : 'Projekt har skapats automatiskt.'}</p></td></tr></table></div><div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;"><p style="margin:0;">Fixco · info@fixco.se</p><p style="margin:4px 0 0;">© ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.</p></div></div></body></html>`;
 }
 
-async function sendCustomerConfirmation(customerEmail: string | undefined, customerName: string, quoteNumber: string, quoteTitle: string | null, signatureName: string | undefined) {
+// ─── Bilingual customer confirmation copy ────────────────────
+const confirmCopy = {
+  sv: {
+    subject: (num: string) => `Tack! Din offert ${num} från Fixco är bekräftad`,
+    heroTitle: 'Tack för ditt förtroende!',
+    heroSub: 'Din offert är nu bekräftad',
+    greeting: (name: string) => `Hej ${name},`,
+    intro: 'Vi har mottagit ditt godkännande av offerten och ser fram emot att köra igång med projektet!',
+    quoteLabel: 'Offert',
+    signedByLabel: 'Signerad av',
+    approvedLabel: 'Godkänd',
+    nextTitle: 'Vad händer nu?',
+    step1: 'Vi kontaktar dig inom kort för att planera nästa steg',
+    step2: 'Vi bokar in en starttid som passar dig',
+    step3: 'Du får en bekräftelse med alla detaljer',
+    questionsContact: 'Har du frågor? Kontakta oss på',
+    allRights: 'Alla rättigheter förbehållna.',
+  },
+  en: {
+    subject: (num: string) => `Thank you! Your quote ${num} from Fixco is confirmed`,
+    heroTitle: 'Thank you for your trust!',
+    heroSub: 'Your quote is now confirmed',
+    greeting: (name: string) => `Hi ${name},`,
+    intro: 'We have received your approval of the quote and look forward to getting started on your project!',
+    quoteLabel: 'Quote',
+    signedByLabel: 'Signed by',
+    approvedLabel: 'Approved',
+    nextTitle: 'What happens next?',
+    step1: 'We will contact you shortly to plan the next steps',
+    step2: 'We schedule a start date that works for you',
+    step3: 'You will receive a confirmation with all the details',
+    questionsContact: 'Have questions? Contact us at',
+    allRights: 'All rights reserved.',
+  },
+};
+
+async function sendCustomerConfirmation(customerEmail: string | undefined, customerName: string, quoteNumber: string, quoteTitle: string | null, signatureName: string | undefined, locale: 'sv' | 'en' = 'sv') {
   try {
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY || !customerEmail) return;
 
+    const t = confirmCopy[locale] || confirmCopy.sv;
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
 
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;"><div style="max-width:600px;margin:0 auto;padding:20px;"><div style="background:linear-gradient(135deg,#16a34a,#15803d);color:white;padding:30px;border-radius:12px 12px 0 0;text-align:center;"><div style="font-size:48px;margin-bottom:8px;">🎉</div><h1 style="margin:0;font-size:24px;font-weight:700;">Tack för ditt förtroende!</h1><p style="margin:8px 0 0;opacity:0.9;font-size:14px;">Din offert är nu bekräftad</p></div><div style="background:white;padding:30px;border:1px solid #e5e7eb;border-top:none;"><p style="font-size:16px;margin:0 0 20px;color:#374151;">Hej ${customerName},</p><p style="font-size:15px;margin:0 0 20px;color:#6b7280;line-height:1.6;">Vi har mottagit ditt godkännande av offerten och ser fram emot att köra igång med projektet!</p><table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;width:140px;">Offert</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-weight:600;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</td></tr>${signatureName ? `<tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Signerad av</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${signatureName}</td></tr>` : ''}<tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">Godkänd</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${now}</td></tr></table><table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:20px;"><tr><td style="background:#f0fdf4;padding:16px;border-top:4px solid #16a34a;border-radius:8px;"><p style="margin:0 0 8px;font-size:15px;color:#15803d;font-weight:600;">Vad händer nu?</p><ol style="margin:0;padding-left:18px;color:#166534;font-size:14px;line-height:1.8;"><li>Vi kontaktar dig inom kort för att planera nästa steg</li><li>Vi bokar in en starttid som passar dig</li><li>Du får en bekräftelse med alla detaljer</li></ol></td></tr></table><p style="font-size:14px;color:#6b7280;margin:0;">Har du frågor? Kontakta oss på <a href="mailto:info@fixco.se" style="color:#2563eb;text-decoration:none;">info@fixco.se</a></p></div><div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;"><p style="margin:0;">Fixco · info@fixco.se</p><p style="margin:4px 0 0;">© ${new Date().getFullYear()} Fixco. Alla rättigheter förbehållna.</p></div></div></body></html>`;
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;"><div style="max-width:600px;margin:0 auto;padding:20px;"><div style="background:linear-gradient(135deg,#16a34a,#15803d);color:white;padding:30px;border-radius:12px 12px 0 0;text-align:center;"><div style="font-size:48px;margin-bottom:8px;">🎉</div><h1 style="margin:0;font-size:24px;font-weight:700;">${t.heroTitle}</h1><p style="margin:8px 0 0;opacity:0.9;font-size:14px;">${t.heroSub}</p></div><div style="background:white;padding:30px;border:1px solid #e5e7eb;border-top:none;"><p style="font-size:16px;margin:0 0 20px;color:#374151;">${t.greeting(customerName)}</p><p style="font-size:15px;margin:0 0 20px;color:#6b7280;line-height:1.6;">${t.intro}</p><table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;width:140px;">${t.quoteLabel}</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-weight:600;font-size:14px;">${quoteNumber} – ${quoteTitle || ''}</td></tr>${signatureName ? `<tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">${t.signedByLabel}</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${signatureName}</td></tr>` : ''}<tr><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;color:#6b7280;font-size:14px;">${t.approvedLabel}</td><td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;">${now}</td></tr></table><table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:20px;"><tr><td style="background:#f0fdf4;padding:16px;border-top:4px solid #16a34a;border-radius:8px;"><p style="margin:0 0 8px;font-size:15px;color:#15803d;font-weight:600;">${t.nextTitle}</p><ol style="margin:0;padding-left:18px;color:#166534;font-size:14px;line-height:1.8;"><li>${t.step1}</li><li>${t.step2}</li><li>${t.step3}</li></ol></td></tr></table><p style="font-size:14px;color:#6b7280;margin:0;">${t.questionsContact} <a href="mailto:info@fixco.se" style="color:#2563eb;text-decoration:none;">info@fixco.se</a></p></div><div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px;"><p style="margin:0;">Fixco · info@fixco.se</p><p style="margin:4px 0 0;">© ${new Date().getFullYear()} Fixco. ${t.allRights}</p></div></div></body></html>`;
 
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -43,11 +80,11 @@ async function sendCustomerConfirmation(customerEmail: string | undefined, custo
       body: JSON.stringify({
         from: 'Fixco <info@fixco.se>',
         to: [customerEmail],
-        subject: `Tack! Din offert ${quoteNumber} från Fixco är bekräftad`,
+        subject: t.subject(quoteNumber),
         html,
       }),
     });
-    console.log('Customer confirmation email sent to:', customerEmail);
+    console.log('Customer confirmation email sent to:', customerEmail, 'locale:', locale);
   } catch (e) {
     console.error('Customer confirmation email failed:', e);
   }
@@ -78,7 +115,7 @@ Deno.serve(async (req) => {
 
     const { data: quote, error: fetchError } = await supabase
       .from('quotes_new')
-      .select('id, number, title, status, valid_until, customer_id, accepted_at, deleted_at, customer:customers(name, email)')
+      .select('id, number, title, status, valid_until, customer_id, accepted_at, deleted_at, locale, customer:customers(name, email, preferred_locale)')
       .eq('public_token', token)
       .single();
 
@@ -89,6 +126,9 @@ Deno.serve(async (req) => {
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Determine locale: quote.locale > customer.preferred_locale > 'sv'
+    const locale = (quote.locale || quote.customer?.preferred_locale || 'sv') as 'sv' | 'en';
 
     if ((quote as any).deleted_at) {
       return new Response(
@@ -104,7 +144,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    const customerName = quote.customer?.name || 'Okänd kund';
+    const customerName = quote.customer?.name || (locale === 'en' ? 'Unknown customer' : 'Okänd kund');
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
 
     if (quote.status === 'accepted') {
@@ -155,7 +195,7 @@ Deno.serve(async (req) => {
       );
 
       sendCustomerConfirmation(
-        quote.customer?.email, customerName, quote.number, quote.title, signature_name
+        quote.customer?.email, customerName, quote.number, quote.title, signature_name, locale
       );
 
       return new Response(
@@ -186,15 +226,13 @@ Deno.serve(async (req) => {
       throw new Error('Kunde inte uppdatera offert');
     }
 
-    // Send emails immediately after quote accepted — before project creation
-    // so emails are sent even if project creation fails (FK constraint etc.)
     notifyAdmin(
       `✅ Offert ${quote.number} accepterad av ${customerName}`,
       buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
     );
 
     sendCustomerConfirmation(
-      quote.customer?.email, customerName, quote.number, quote.title, signature_name
+      quote.customer?.email, customerName, quote.number, quote.title, signature_name, locale
     );
 
     const { data: project, error: projectError } = await supabase
