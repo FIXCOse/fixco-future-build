@@ -1,25 +1,22 @@
 
 
-## Plan: Språkväxlare i offertmodulen (QuoteFormModal)
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Vad
-Lägga till en språkväxlare (SV/EN) i offertformuläret så att admin manuellt kan sätta eller ändra språk på en offert. Språket sparas i `quotes_new.locale` och styr vilken version kunden ser.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändringar
+### Fil som ändras
 
-**Fil: `src/components/admin/QuoteFormModal.tsx`**
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-1. Lägg till state: `const [locale, setLocale] = useState<'sv' | 'en'>('sv');`
-2. Ladda befintligt locale vid redigering: i `useEffect` som läser `quote`, sätt `setLocale(quote.locale || 'sv')`
-3. Ladda locale från booking vid ny offert: `setLocale(bookingData?.payload?.locale || 'sv')`
-4. Lägg till en enkel Select-komponent i formuläret (t.ex. bredvid titelfältet eller i headern):
-   - Svenska / Engelska toggle
-   - Med en flaggikon eller Globe-ikon
-5. Inkludera `locale` i `quoteData`-objektet som skickas till `createQuoteNew` / `updateQuoteNew`
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**Fil: `src/lib/api/quotes-new.ts`**
-- Lägg till `locale` i `createQuoteNew` input-typen så det skickas med vid skapande
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-### Resultat
-Admin kan manuellt byta språk på vilken offert som helst, oavsett hur bokningen skapades. Ändringen propageras automatiskt till den publika offerten och offertmailet.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

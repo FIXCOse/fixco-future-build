@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
@@ -86,6 +86,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [customVatRate, setCustomVatRate] = useState(25);
   const [vatIncluded, setVatIncluded] = useState(false);
   
+  const [locale, setLocale] = useState<'sv' | 'en'>('sv');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -143,6 +144,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         setDiscountType(quote.discount_type as any);
         setDiscountValue(quote.discount_value || 0);
       }
+      
+      // Load locale
+      setLocale((quote as any).locale === 'en' ? 'en' : 'sv');
     } else if (bookingData?.payload) {
       // Prefill from booking payload
       const payload = bookingData.payload;
@@ -173,6 +177,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         setEnableRot(true);
         setRotRate(30); // 30% enligt Skatteverket (från 2026)
       }
+      
+      // Ladda locale från bokning
+      setLocale(payload.locale === 'en' ? 'en' : 'sv');
     } else if (prefilledCustomerId || prefilledData) {
       // Load prefilled data from AI lead
       if (prefilledCustomerId) {
@@ -221,6 +228,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setMaterialIncluded(true);
     setCustomVat(false);
     setCustomVatRate(25);
+    setLocale('sv');
     setShowNewCustomer(false);
     setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
   };
@@ -409,6 +417,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         vat_included: vatIncluded,
         pdf_url: pdfUrl.trim() || undefined,
         valid_until: validUntil || undefined,
+        locale,
       };
 
       let result;
@@ -435,10 +444,24 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto overscroll-contain touch-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl flex items-center gap-2">
-            <Calculator className="h-6 w-6" />
-            {quote ? 'Redigera offert' : 'Ny offert'}
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <Calculator className="h-6 w-6" />
+              {quote ? 'Redigera offert' : 'Ny offert'}
+            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-muted-foreground" />
+              <Select value={locale} onValueChange={(v) => setLocale(v as 'sv' | 'en')}>
+                <SelectTrigger className="w-[130px] h-8 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sv">🇸🇪 Svenska</SelectItem>
+                  <SelectItem value="en">🇬🇧 English</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
