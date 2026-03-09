@@ -12,6 +12,8 @@ import { EcoScoreDisplay } from "@/components/EcoScoreDisplay";
 import { EditableSection } from "@/components/EditableSection";
 import { EditableText } from "@/components/EditableText";
 import { GradientText } from "@/components/v2/GradientText";
+import { Helmet } from 'react-helmet-async';
+import { getServiceListSchema, getBreadcrumbSchema, getOfferCatalogSchema } from '@/components/SEOSchemaEnhanced';
 
 import { Link } from "react-router-dom";
 import { useCopy } from "@/copy/CopyProvider";
