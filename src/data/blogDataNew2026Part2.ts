@@ -418,7 +418,7 @@ Murararbete berättigar till ROT-avdrag:
 - Max 50 000 kr per person och år
 - Gäller fasadputs, murning, fogning och skorstensarbete
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['murning', 'putsning', 'fasad', 'skorsten', 'rot-avdrag'],
     publishedAt: '2026-02-10',
