@@ -1087,7 +1087,7 @@ FTX = Fläktstyrd Till- och Frånluft med Värmeåtervinning. Systemet tar tillv
 - Installation av FTX berättigar till ROT
 - Filterbyte och service: RUT-avdrag möjligt
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'energi',
     tags: ['ftx', 'ventilation', 'värmeåtervinning', 'energibesparing', 'inomhusklimat'],
     publishedAt: '2026-01-20',
