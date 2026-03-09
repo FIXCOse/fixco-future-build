@@ -750,7 +750,7 @@ Inglasning av balkong kräver **bygglov** i de flesta kommuner. I BRF krävs äv
 - **Bullerdämpning** – reducerar trafikbuller med 10-15 dB
 - **Värdehöjning** – ökar lägenhetens marknadsvärde
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'guider',
     tags: ['inglasning', 'balkong', 'bygglov', 'brf', 'energibesparing'],
     publishedAt: '2026-01-30',
