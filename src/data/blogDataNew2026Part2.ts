@@ -178,7 +178,7 @@ Installationskostnaden för golvvärme berättigar till ROT-avdrag:
 | Golvhöjd | +50-70 mm | +10-20 mm |
 | Bäst för | Nybygge, totalreno | Badrum, tilläggskomfort |
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'guider',
     tags: ['golvvärme', 'vattenburet', 'elgolvvärme', 'uppvärmning', 'rot-avdrag', 'installation'],
     publishedAt: '2026-02-18',
