@@ -488,6 +488,7 @@ const skipAddons = () => {
         },
         fileUrls,
         selected_addons: selectedAddons.length > 0 ? JSON.stringify(selectedAddons) : undefined,
+        locale: modalLang,
       };
 
       console.log('[ServiceRequestModal] Sending JSON:', jsonPayload);
