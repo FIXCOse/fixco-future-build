@@ -1,28 +1,22 @@
 
 
-## Fix: ServiceRequestModal inte klickbar på mobil
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Modalen tar upp hela skärmen (`max-h-[100dvh]`) men mobilens bottom-navigation (~80px) täcker footern med "Fortsätt"-knappen. Användaren kan inte klicka vidare.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning i `src/features/requests/ServiceRequestModal.tsx`
+### Fil som ändras
 
-**1. Minska modal-höjd på mobil** (rad 539):
-- Ändra `max-h-[100dvh]` till `max-h-[calc(100dvh-5rem)]` på mobil för att ge plats åt bottom nav
-- Lägg till `mb-20 md:mb-0` så modalen sitter ovanför navigationen
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**2. Kompaktera kort på mobil** (rad 815, 647, 737):
-- Minska padding på tidsvalskortet från `p-4` till `p-3` på mobil
-- Minska ikonstorleken från `w-12 h-12` till `w-10 h-10` på mobil
-- Samma för kategori- och addon-korten
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**3. Minska header/content padding** (rad 566, 598):
-- Header: `p-6 pb-5` → `p-4 pb-3 md:p-6 md:pb-5`
-- Content: `p-6` → `p-4 md:p-6`
-- Footer: `px-6 py-4` → `px-4 py-3 md:px-6 md:py-4`
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-**4. Säkerställ footer synlighet**:
-- Öka footer `pb` till `pb-[max(1.5rem,env(safe-area-inset-bottom))]` + extra margin för app-nav
-
-Totalt: 1 fil ändras (`ServiceRequestModal.tsx`), ~15 rader justerade.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

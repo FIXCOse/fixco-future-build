@@ -536,7 +536,7 @@ const skipAddons = () => {
       />
       
       {/* Modal */}
-      <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden max-h-[100dvh] md:max-h-[85vh] flex flex-col">
+      <div className="relative w-full md:w-[800px] lg:w-[900px] bg-gradient-to-b from-card to-card/95 rounded-t-3xl md:rounded-3xl shadow-2xl border border-border/50 animate-scale-in overflow-hidden max-h-[calc(100dvh-5rem)] md:max-h-[85vh] mb-20 md:mb-0 flex flex-col">
         {/* Progress Indicator */}
         {!done && service && addons.length > 0 && (
           <div className="flex items-center justify-center gap-2 p-4 border-b border-border/50 bg-muted/30 flex-shrink-0">
@@ -563,7 +563,7 @@ const skipAddons = () => {
         )}
         
         {/* Header */}
-        <div className="relative border-b border-border/50 p-6 pb-5 flex-shrink-0">
+        <div className="relative border-b border-border/50 p-4 pb-3 md:p-6 md:pb-5 flex-shrink-0">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-1">
@@ -595,7 +595,7 @@ const skipAddons = () => {
         </div>
 
         {/* Content */}
-        <div className="p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="p-4 md:p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {done ? (
             <div className="text-center py-8 animate-scale-in">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -644,14 +644,14 @@ const skipAddons = () => {
                               : [...prev, category.slug]
                           );
                         }}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                        className={`p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           isSelected && mode === 'home_visit'
                             ? 'border-primary bg-primary/10 shadow-lg'
                             : 'border-border hover:border-primary/50'
                         }`}
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <IconComponent className="w-6 h-6 text-primary" />
                           </div>
                            
@@ -678,10 +678,10 @@ const skipAddons = () => {
                         setService(svc);
                         setCurrentStep(1);
                       }}
-                      className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                      className="p-3 md:p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <Wrench className="w-6 h-6 text-primary" />
                         </div>
                         
@@ -1205,7 +1205,7 @@ const skipAddons = () => {
 
         {/* Fixed Footer with Navigation Buttons */}
         {!done && (
-          <div className="px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-border/20 bg-background/50 backdrop-blur-sm flex-shrink-0">
+          <div className="px-4 py-3 md:px-6 md:py-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-border/20 bg-background/50 backdrop-blur-sm flex-shrink-0">
             <div className="flex gap-3">
               {/* Back Button */}
               {currentStep > 0 && (
