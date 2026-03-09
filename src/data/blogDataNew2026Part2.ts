@@ -346,7 +346,7 @@ Rätt solskydd kan sänka kylbehovet med upp till 25% och minska inomhustemperat
 - Elinstallation vid motorisering
 - Garanti och driftsättning
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'tips',
     tags: ['markis', 'solskydd', 'terrass', 'pergola', 'energibesparing'],
     publishedAt: '2026-02-12',
