@@ -589,7 +589,7 @@ Böter-1 år | Straff för olagligt elarbete
 - **Besiktningskrav** vid husförsäljning kan avslöja felaktigt arbete
 - **Brandrisken** ökar drastiskt
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'lagstiftning',
     tags: ['elektriker', 'behörighet', 'elsäkerhet', 'elsäkerhetsverket', 'lag', 'elinstallation'],
     publishedAt: '2026-02-05',
