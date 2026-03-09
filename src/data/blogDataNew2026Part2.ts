@@ -672,7 +672,7 @@ Att konvertera från direktel till vattenburet system lönar sig när:
 - Gäller installation av vattenburet system
 - Gäller ej själva värmepumpen (separat avdrag via Grönt skatteavdrag)
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'energi',
     tags: ['vattenburet', 'direktel', 'uppvärmning', 'värmepump', 'energibesparing'],
     publishedAt: '2026-02-02',
