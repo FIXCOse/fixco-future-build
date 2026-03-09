@@ -417,6 +417,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         vat_included: vatIncluded,
         pdf_url: pdfUrl.trim() || undefined,
         valid_until: validUntil || undefined,
+        locale,
       };
 
       let result;
