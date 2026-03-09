@@ -1169,7 +1169,7 @@ FTX = Fläktstyrd Till- och Frånluft med Värmeåtervinning. Systemet tar tillv
 - **Samla jobb** – fler rum = bättre pris per kvm
 - **Välj rätt färg** – bra färg kräver färre strykningar
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'tips',
     tags: ['målare', 'pris', 'målning', 'tapetsering', 'fasadmålning', 'rot-avdrag'],
     publishedAt: '2026-01-18',
