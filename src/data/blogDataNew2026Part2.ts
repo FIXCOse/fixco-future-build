@@ -1012,7 +1012,7 @@ Från 2026 gäller: Friggebod max **15 kvm** utan bygglov. Attefallshus max **30
 - **Förråd** – Förvaring (friggebod)
 - **Hobbyrum** – Verkstad, ateljé
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'lagstiftning',
     tags: ['friggebod', 'attefallshus', 'bygglov', 'regler', 'komplementbostad'],
     publishedAt: '2026-01-22',
