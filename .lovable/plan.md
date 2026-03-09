@@ -1,27 +1,22 @@
 
 
-## Fix: Nya bloggartiklar syns inte — imports placerade fel
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-I `src/data/blogData.ts` ligger `import`-satserna för de nya bloggposterna (rad 6871–6872) **efter** arrayen, mitt i filen. JavaScript kräver att alla `import` ligger högst upp i filen. Resultatet: de 40 nya artiklarna (ID 41–80) laddas aldrig in.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Lösning
+### Fil som ändras
 
-**Fil: `src/data/blogData.ts`**
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-1. **Flytta imports till toppen** (rad 1–5): Lägg till:
-   ```typescript
-   import { newBlogPosts2026 } from './blogDataNew2026';
-   import { newBlogPosts2026Part2 } from './blogDataNew2026Part2';
-   ```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-2. **Ta bort felplacerade rader** (rad 6870–6874): Ta bort import + push-raderna som ligger efter arrayen.
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-3. **Pusha nya poster efter array-deklarationen** (rad 6868, efter `];`):
-   ```typescript
-   blogPosts.push(...newBlogPosts2026);
-   blogPosts.push(...newBlogPosts2026Part2);
-   ```
-
-Totalt: 1 fil, ~5 rader ändrade. Alla 80 artiklar kommer synas direkt.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
