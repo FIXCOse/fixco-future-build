@@ -1,34 +1,22 @@
 
 
-## Fix: Offerten visas på svenska trots att kunden bokade på engelska
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem (3 delar)
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-1. **DB-funktionen `create_draft_quote_for_booking`** kopierar inte bokningens `locale` till `quotes_new.locale` — alla offerter får default `'sv'`.
-2. **Edge function `get-quote-public`** returnerar inte `locale` till frontend.
-3. **`QuotePublic.tsx`** har ~100+ hårdkodade svenska strängar: "Mottagare", "Giltig till", "Vad ingår i offerten", "Arbete", "Material", "ATT BETALA", "Acceptera offert", "Neka offert", etc.
+### Fil som ändras
 
-### Lösning
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**1. DB-migration: Uppdatera `create_draft_quote_for_booking`**
-- Lägg till `SELECT locale INTO v_locale FROM bookings WHERE id = booking_id`
-- Sätt `locale = v_locale` i INSERT till `quotes_new`
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**2. Edge function `get-quote-public/index.ts`**
-- Lägg till `locale` i SELECT-query
-- Inkludera `locale` i `publicData`-objektet som returneras
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-**3. Frontend `QuotePublic.tsx` — tvåspråkig offertvy**
-- Lägg till `locale` i `PublicQuote` type
-- Skapa ett `quoteCopy`-objekt med sv/en översättningar för alla UI-strängar (~40 nycklar)
-- Ersätt alla hårdkodade svenska strängar med `t.key`-lookups
-- Påverkar: rubriker, labels, knappar, info-kort, dialoger, footer
-
-### Filer som ändras
-
-| Fil | Ändring |
-|-----|---------|
-| SQL-migration | Uppdaterad `create_draft_quote_for_booking` — kopiera `locale` från booking |
-| `supabase/functions/get-quote-public/index.ts` | Returnera `locale` i API-response |
-| `src/pages/QuotePublic.tsx` | Tvåspråkigt copy-objekt + ersätt alla hårdkodade strängar |
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

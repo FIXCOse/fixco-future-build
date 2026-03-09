@@ -86,6 +86,7 @@ Deno.serve(async (req) => {
         signature_name,
         signature_date,
         deleted_at,
+        locale,
         customer:customers(name, email)
       `);
     
@@ -175,6 +176,7 @@ Deno.serve(async (req) => {
       signature_date: quote.signature_date,
       customer_name: quote.customer?.name || 'Okänd kund',
       customer_email: quote.customer?.email || '',
+      locale: quote.locale || 'sv',
       questions: questions || []
     };
 
