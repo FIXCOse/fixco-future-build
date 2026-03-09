@@ -228,6 +228,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setMaterialIncluded(true);
     setCustomVat(false);
     setCustomVatRate(25);
+    setLocale('sv');
     setShowNewCustomer(false);
     setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
   };
