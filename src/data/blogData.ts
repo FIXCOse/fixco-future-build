@@ -36,7 +36,7 @@ export interface BlogPost {
   category: 'rot-rut' | 'rut' | 'renovering' | 'tips' | 'nyheter' | 'guider' | 'energi' | 'brf' | 'lagstiftning' | 'marknad';
   tags: string[];
   readingTime: number;
-  image: string;
+  image?: string;
   featured: boolean;
   
   // AI-OPTIMERADE FÄLT FÖR CHATGPT, PERPLEXITY, GOOGLE AI, BING COPILOT
@@ -6869,7 +6869,9 @@ Boverket | Säker Vatten | VVS Företagen | Fuktcentrum
 
 // Import and merge new 2026 blog posts
 import { newBlogPosts2026 } from './blogDataNew2026';
+import { newBlogPosts2026Part2 } from './blogDataNew2026Part2';
 blogPosts.push(...newBlogPosts2026);
+blogPosts.push(...newBlogPosts2026Part2);
 
 // Hitta bloggpost baserat på slug
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined => {
