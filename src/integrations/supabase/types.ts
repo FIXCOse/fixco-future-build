@@ -206,6 +206,7 @@ export type Database = {
           deleted_at: string | null
           file_urls: string[] | null
           id: string
+          locale: string | null
           mode: string | null
           payload: Json | null
           seen_at: string | null
@@ -219,6 +220,7 @@ export type Database = {
           deleted_at?: string | null
           file_urls?: string[] | null
           id?: string
+          locale?: string | null
           mode?: string | null
           payload?: Json | null
           seen_at?: string | null
@@ -232,6 +234,7 @@ export type Database = {
           deleted_at?: string | null
           file_urls?: string[] | null
           id?: string
+          locale?: string | null
           mode?: string | null
           payload?: Json | null
           seen_at?: string | null
@@ -405,6 +408,7 @@ export type Database = {
           personnummer: string | null
           phone: string | null
           postal_code: string | null
+          preferred_locale: string | null
           total_spent: number | null
         }
         Insert: {
@@ -424,6 +428,7 @@ export type Database = {
           personnummer?: string | null
           phone?: string | null
           postal_code?: string | null
+          preferred_locale?: string | null
           total_spent?: number | null
         }
         Update: {
@@ -443,6 +448,7 @@ export type Database = {
           personnummer?: string | null
           phone?: string | null
           postal_code?: string | null
+          preferred_locale?: string | null
           total_spent?: number | null
         }
         Relationships: []
@@ -2544,6 +2550,7 @@ export type Database = {
           discount_value: number | null
           id: string
           items: Json | null
+          locale: string | null
           number: string
           pdf_url: string | null
           public_token: string
@@ -2579,6 +2586,7 @@ export type Database = {
           discount_value?: number | null
           id?: string
           items?: Json | null
+          locale?: string | null
           number: string
           pdf_url?: string | null
           public_token: string
@@ -2614,6 +2622,7 @@ export type Database = {
           discount_value?: number | null
           id?: string
           items?: Json | null
+          locale?: string | null
           number?: string
           pdf_url?: string | null
           public_token?: string
