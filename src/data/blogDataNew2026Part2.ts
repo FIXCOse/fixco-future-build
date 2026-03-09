@@ -915,7 +915,7 @@ Sverige drabbas av ca **100 000 vattenskador per år**. Genomsnittlig skadekostn
 - Byt diskmaskinslang vart 10:e år
 - Säkerställ att tätskikt i badrum är intakt
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'guider',
     tags: ['vattenskada', 'försäkring', 'renovering', 'torkning', 'förebyggande'],
     publishedAt: '2026-01-25',
