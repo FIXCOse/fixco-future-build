@@ -825,7 +825,7 @@ Mest att göra mars-oktober. Boka utomhusjobb (altan, fasad) under vintern för 
 - Gäller snickeriarbete i bostad äldre än 5 år
 - Be om uppdelad faktura (arbete/material)
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'tips',
     tags: ['snickare', 'pris', 'timpris', 'altan', 'rot-avdrag', 'köksmontering'],
     publishedAt: '2026-01-28',
