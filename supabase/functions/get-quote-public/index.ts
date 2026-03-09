@@ -86,6 +86,7 @@ Deno.serve(async (req) => {
         signature_name,
         signature_date,
         deleted_at,
+        locale,
         customer:customers(name, email)
       `);
     
