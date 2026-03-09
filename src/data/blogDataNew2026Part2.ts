@@ -1676,7 +1676,7 @@ Akuttjänster (vattenläcka, stopp) kostar ofta dubbelt:
 - **ROT-avdrag** – spara 30% på arbetet
 - **Köp material själv** – kan vara billigare
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'tips',
     tags: ['vvs', 'rörmokare', 'pris', 'badrum', 'kök', 'rot-avdrag', 'akutjour'],
     publishedAt: '2026-01-02',
