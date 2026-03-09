@@ -1408,7 +1408,7 @@ Boverket har tidigare haft bidrag för radonsanering. Kontrollera aktuella bidra
 
 Vid husförsäljning ska radonmätning redovisas. Höga halter kan påverka försäljningspriset negativt.
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'tips',
     tags: ['radon', 'radonmätning', 'radonsanering', 'inomhusklimat', 'hälsa'],
     publishedAt: '2026-01-10',
