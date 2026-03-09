@@ -266,7 +266,7 @@ Dräneringens uppgift är att leda bort vatten från husgrunden. Utan fungerande
 6. **Återfyllning** – Makadam och dräneringsgrus fyller schaktet
 7. **Ytskikt** – Marken återställs med gräs eller plattor
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['dränering', 'husgrund', 'fukt', 'rot-avdrag', 'grundarbete'],
     publishedAt: '2026-02-15',
