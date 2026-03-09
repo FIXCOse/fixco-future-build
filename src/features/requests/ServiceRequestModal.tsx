@@ -678,7 +678,7 @@ const skipAddons = () => {
                         setService(svc);
                         setCurrentStep(1);
                       }}
-                      className="p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
+                      className="p-3 md:p-4 rounded-xl border-2 border-border hover:border-primary/50 cursor-pointer transition-all"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
