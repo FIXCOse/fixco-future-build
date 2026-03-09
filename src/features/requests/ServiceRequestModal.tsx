@@ -594,8 +594,8 @@ const skipAddons = () => {
           </div>
         </div>
 
-        {/4 md:p-* Content */}
-        <div className="p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+        {/* Content */}
+        <div className="p-4 md:p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {done ? (
             <div className="text-center py-8 animate-scale-in">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
