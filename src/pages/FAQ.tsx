@@ -87,8 +87,38 @@ const FAQ = () => {
     }
   ];
 
+  // Flatten all FAQ questions for schema
+  const allFaqs = faqCategories.flatMap(cat => cat.questions);
+  const faqSchema = getFAQSchema(allFaqs);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Hem', url: '/' },
+    { name: 'Vanliga frågor', url: '/faq' }
+  ]);
+
+  const pageTitle = isEnglish ? 'FAQ - Common Questions About Our Services | Fixco' : 'Vanliga frågor om ROT-avdrag, priser & bokning | Fixco';
+  const pageDesc = isEnglish 
+    ? 'Find answers to common questions about ROT deductions, pricing, booking, and our professional home services in Uppsala and Stockholm.'
+    : 'Svar på vanliga frågor om ROT-avdrag, priser, bokning och våra professionella hantverkstjänster i Uppsala och Stockholm. ★ 5/5 betyg.';
+
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href={`https://fixco.se${isEnglish ? '/en/faq' : '/faq'}`} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content={`https://fixco.se${isEnglish ? '/en/faq' : '/faq'}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={isEnglish ? 'en_US' : 'sv_SE'} />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
         {/* Hero Section */}
         <EditableSection id="faq-hero" title="FAQ Hero">
           <section className="pt-32 pb-20 hero-background relative">

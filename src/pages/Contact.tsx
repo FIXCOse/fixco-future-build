@@ -91,8 +91,62 @@ const Contact = () => {
     isEnglish ? "Other" : "Övrigt"
   ];
 
+  const pageTitle = isEnglish ? 'Contact Us - Free Quote Within 24h | Fixco' : 'Kontakta oss - Gratis offert inom 24h | Fixco';
+  const pageDesc = isEnglish
+    ? 'Contact Fixco for a free quote on home renovation, plumbing, electrical and more in Uppsala & Stockholm. Response within 24 hours.'
+    : 'Kontakta Fixco för gratis offert på renovering, VVS, el och mer i Uppsala & Stockholm. Svar inom 24 timmar. ★ 5/5 betyg.';
+
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://fixco.se#organization",
+    "name": "Fixco",
+    "url": "https://fixco.se",
+    "email": "info@fixco.se",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Kungsgatan 1",
+      "addressLocality": "Uppsala",
+      "postalCode": "753 18",
+      "addressCountry": "SE"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "07:00", "closes": "18:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "16:00" }
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "info@fixco.se",
+      "availableLanguage": ["Swedish", "English"],
+      "areaServed": ["Uppsala", "Stockholm"]
+    }
+  };
+
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Hem', url: '/' },
+    { name: 'Kontakt', url: '/kontakt' }
+  ]);
+
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href={`https://fixco.se${isEnglish ? '/en/contact' : '/kontakt'}`} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content={`https://fixco.se${isEnglish ? '/en/contact' : '/kontakt'}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={isEnglish ? 'en_US' : 'sv_SE'} />
+        <meta property="og:site_name" content="Fixco" />
+        <meta property="og:image" content="https://fixco.se/assets/fixco-logo-black.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+        <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
       {/* Hero Section */}
       <EditableSection id="contact-hero" title="Kontakt Hero">
         <section className="pt-32 pb-20 hero-background">
