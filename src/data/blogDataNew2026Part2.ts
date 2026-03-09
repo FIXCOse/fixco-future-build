@@ -1501,7 +1501,7 @@ Omprojekterade fraktcontainers. Trendig och relativt prisvärd.
 | Service/underhåll | 1 000-3 000 kr |
 | **Totalt** | **5 000-15 000 kr** |
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'guider',
     tags: ['pool', 'poolinstallation', 'barnsäkerhet', 'nedgrävd pool', 'swim spa'],
     publishedAt: '2026-01-08',
