@@ -497,7 +497,7 @@ Tvättstugan producerar mycket fukt. Säkerställ god ventilation:
 - 30% på arbetskostnad vid renovering av egen tvättstuga
 - BRF kan ej nyttja ROT men kan söka bidrag via Boverket
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'renovering',
     tags: ['tvättstuga', 'renovering', 'brf', 'villa', 'rot-avdrag'],
     publishedAt: '2026-02-08',
