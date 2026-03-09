@@ -1329,7 +1329,7 @@ Kantstöd håller materialet på plats och ger ett proffsigt resultat.
 
 Markarbete på tomt berättigar **inte** till ROT-avdrag. ROT gäller renovering av bostad, ej utomhusytor.
 `,
-    author: { name: 'Fixco Redaktion', avatar: '' },
+    author: { name: 'Fixco Redaktion', role: 'Redaktör', avatar: '' },
     category: 'guider',
     tags: ['uppfart', 'asfaltering', 'plattsättning', 'markarbete', 'grus', 'natursten'],
     publishedAt: '2026-01-12',
