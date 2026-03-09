@@ -58,6 +58,7 @@ const requestSchema = z.object({
   city: z.string().optional(),
   fields: z.record(z.any()).optional(),
   fileUrls: z.array(z.string().url()).optional(),
+  locale: z.enum(['sv', 'en']).default('sv'),
 }).refine(
   (data) => {
     if (data.customer_type === 'company') {
@@ -133,6 +134,7 @@ serve(async (req) => {
       mode,
       fields = {},
       fileUrls = [],
+      locale = 'sv',
     } = validation.data;
 
     console.log("[create-booking-with-quote] Validerad data:", { 
@@ -141,7 +143,8 @@ serve(async (req) => {
       email, 
       phone, 
       service_slug, 
-      mode 
+      mode,
+      locale 
     });
 
     // --- 1) Upsert kund ---
@@ -153,6 +156,7 @@ serve(async (req) => {
       postal_code: postal_code || null,
       city: city || null,
       customer_type,
+      preferred_locale: locale,
     };
 
     // Lägg till personnummer för privat
@@ -199,15 +203,15 @@ serve(async (req) => {
       }
     }
 
-    // --- 3) Insert i bookings (customer_id ska vara user ID från auth, inte customers.id) ---
+    // --- 3) Insert i bookings ---
     const bookingRow = {
-      customer_id: userId, // User ID from auth.users (can be null for guests)
+      customer_id: userId,
       service_slug,
       mode,
       status: "new",
+      locale,
       payload: {
         ...fields,
-        // Store customer details in payload for reference
         email,
         name,
         phone,
@@ -227,8 +231,7 @@ serve(async (req) => {
       return json({ error: `bookings.insert: ${bookErr.message}` }, 400);
     }
 
-    console.log("[create-booking-with-quote] Bokning skapad:", booking.id);
-    console.log("[create-booking-with-quote] Mode:", mode);
+    console.log("[create-booking-with-quote] Bokning skapad:", booking.id, "locale:", locale);
 
     // --- 4) Skicka admin-notifiering och kundbekräftelse via edge functions ---
     // Admin notification (fire-and-forget)
@@ -278,6 +281,7 @@ serve(async (req) => {
         city,
         postalCode: postal_code,
         desiredTime: fields?.desired_time || null,
+        locale,
       }),
     }).then(res => {
       if (!res.ok) {
@@ -287,14 +291,27 @@ serve(async (req) => {
       }
     }).catch(err => console.error("[customer-confirmation] Error:", err));
 
+    const successMessages = {
+      sv: {
+        home_visit: 'Hembesök bokat. Vi kontaktar dig inom 24 timmar för att bekräfta tid.',
+        quote: 'Förfrågan mottagen. Vi återkommer med offert inom kort.',
+        default: 'Bokning mottagen. Vi kontaktar dig för bekräftelse.',
+      },
+      en: {
+        home_visit: 'Home visit booked. We will contact you within 24 hours to confirm the time.',
+        quote: 'Request received. We will get back to you with a quote shortly.',
+        default: 'Booking received. We will contact you for confirmation.',
+      },
+    };
+
+    const msgs = successMessages[locale] || successMessages.sv;
+
     return json({ 
       ok: true, 
       bookingId: booking.id,
-      message: mode === 'home_visit'
-        ? 'Hembesök bokat. Vi kontaktar dig inom 24 timmar för att bekräfta tid.'
-        : mode === 'quote' 
-        ? 'Förfrågan mottagen. Vi återkommer med offert inom kort.'
-        : 'Bokning mottagen. Vi kontaktar dig för bekräftelse.'
+      message: mode === 'home_visit' ? msgs.home_visit
+        : mode === 'quote' ? msgs.quote
+        : msgs.default
     });
   } catch (e: any) {
     console.error("FUNCTION ERROR", e);

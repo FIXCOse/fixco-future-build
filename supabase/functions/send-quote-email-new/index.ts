@@ -10,6 +10,46 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// ─── Bilingual copy for quote emails ────────────────────────
+const quoteCopy = {
+  sv: {
+    subject: (num: string) => `Offert ${num} från Fixco`,
+    testSubject: (num: string) => `[TEST] Offert ${num} från Fixco`,
+    title: 'Offert från Fixco',
+    quoteNumber: 'Offertnummer',
+    greeting: (name: string) => `Hej ${name}!`,
+    intro: 'Tack för ditt intresse. Din offert är nu klar att granska.',
+    work: 'Arbete:',
+    material: 'Material:',
+    discount: 'Rabatt:',
+    vat: 'Moms (25%):',
+    rotDeduction: (pct: number) => `ROT-avdrag (${pct}%):`,
+    totalToPay: 'Totalt att betala:',
+    validUntil: 'Giltig till:',
+    cta: 'Visa och acceptera offert',
+    footer: 'Du kan även begära ändringar direkt via länken ovan.',
+    regards: 'Med vänliga hälsningar,',
+  },
+  en: {
+    subject: (num: string) => `Quote ${num} from Fixco`,
+    testSubject: (num: string) => `[TEST] Quote ${num} from Fixco`,
+    title: 'Quote from Fixco',
+    quoteNumber: 'Quote number',
+    greeting: (name: string) => `Hi ${name}!`,
+    intro: 'Thank you for your interest. Your quote is now ready for review.',
+    work: 'Labour:',
+    material: 'Material:',
+    discount: 'Discount:',
+    vat: 'VAT (25%):',
+    rotDeduction: (pct: number) => `ROT deduction (${pct}%):`,
+    totalToPay: 'Total to pay:',
+    validUntil: 'Valid until:',
+    cta: 'View and accept quote',
+    footer: 'You can also request changes directly via the link above.',
+    regards: 'Kind regards,',
+  },
+};
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -40,7 +80,10 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Kunde inte hämta offerten");
     }
 
-    // Hämta kundinfo från JOIN-resultatet
+    // Determine locale from quote, fallback to customer preference, then 'sv'
+    const locale = (quote.locale || quote.customer?.preferred_locale || 'sv') as 'sv' | 'en';
+    const t = quoteCopy[locale] || quoteCopy.sv;
+
     const customerEmail = quote.customer?.email;
     const customerName = quote.customer?.name;
 
@@ -50,8 +93,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const recipientEmail = isTest ? testEmail : customerEmail;
-    console.log("Recipient:", recipientEmail, isTest ? '(TEST override)' : '');
-    const displayName = customerName || 'Kund';
+    console.log("Recipient:", recipientEmail, isTest ? '(TEST override)' : '', "locale:", locale);
+    const displayName = customerName || (locale === 'en' ? 'Customer' : 'Kund');
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
 
@@ -72,38 +115,38 @@ const handler = async (req: Request): Promise<Response> => {
       <body>
         <div class="container">
           <div class="header">
-            <div class="title">Offert från Fixco</div>
-            <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">Offertnummer: ${quote.number}</div>
+            <div class="title">${t.title}</div>
+            <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">${t.quoteNumber}: ${quote.number}</div>
           </div>
           
           <div class="card">
-            <h2>Hej ${displayName}!</h2>
-            <p>Tack för ditt intresse. Din offert är nu klar att granska.</p>
+            <h2>${t.greeting(displayName)}</h2>
+            <p>${t.intro}</p>
             
             <p><strong>${quote.title}</strong></p>
             
             <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin: 16px 0;">
-              <p style="margin: 4px 0;"><strong>Arbete:</strong> ${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</p>
-              <p style="margin: 4px 0;"><strong>Material:</strong> ${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</p>
-              ${quote.discount_amount_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>Rabatt:</strong> -${quote.discount_amount_sek.toLocaleString('sv-SE')} kr</p>` : ''}
-              <p style="margin: 4px 0;"><strong>Moms (25%):</strong> ${quote.vat_sek.toLocaleString('sv-SE')} kr</p>
-              ${quote.rot_deduction_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>ROT-avdrag (${quote.rot_percentage}%):</strong> -${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</p>` : ''}
-              <p style="margin: 12px 0 4px; font-size: 18px; font-weight: 700;"><strong>Totalt att betala:</strong> ${quote.total_sek.toLocaleString('sv-SE')} kr</p>
+              <p style="margin: 4px 0;"><strong>${t.work}</strong> ${quote.subtotal_work_sek.toLocaleString('sv-SE')} kr</p>
+              <p style="margin: 4px 0;"><strong>${t.material}</strong> ${quote.subtotal_mat_sek.toLocaleString('sv-SE')} kr</p>
+              ${quote.discount_amount_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>${t.discount}</strong> -${quote.discount_amount_sek.toLocaleString('sv-SE')} kr</p>` : ''}
+              <p style="margin: 4px 0;"><strong>${t.vat}</strong> ${quote.vat_sek.toLocaleString('sv-SE')} kr</p>
+              ${quote.rot_deduction_sek > 0 ? `<p style="margin: 4px 0; color: #059669;"><strong>${t.rotDeduction(quote.rot_percentage)}:</strong> -${quote.rot_deduction_sek.toLocaleString('sv-SE')} kr</p>` : ''}
+              <p style="margin: 12px 0 4px; font-size: 18px; font-weight: 700;"><strong>${t.totalToPay}</strong> ${quote.total_sek.toLocaleString('sv-SE')} kr</p>
             </div>
             
-            ${quote.valid_until ? `<p><strong>Giltig till:</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
+            ${quote.valid_until ? `<p><strong>${t.validUntil}</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
             
             <div style="text-align: center; margin-top: 24px;">
-              <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">Visa och acceptera offert</a>
+              <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">${t.cta}</a>
             </div>
             
             <p style="margin-top: 24px; font-size: 12px; color: #6b7280;">
-              Du kan även begära ändringar direkt via länken ovan.
+              ${t.footer}
             </p>
           </div>
           
           <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 16px;">
-            <p>Med vänliga hälsningar,<br><strong>Fixco Team</strong></p>
+            <p>${t.regards}<br><strong>Fixco Team</strong></p>
           </div>
         </div>
       </body>
@@ -113,7 +156,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
       to: [recipientEmail],
-      subject: `${isTest ? '[TEST] ' : ''}Offert ${quote.number} från Fixco`,
+      subject: isTest ? t.testSubject(quote.number) : t.subject(quote.number),
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });
