@@ -563,7 +563,7 @@ const skipAddons = () => {
         )}
         
         {/* Header */}
-        <di4 pb-3 md:p-6 md:className="relative bor4 pb-3 md:p-6 md:r-b border-border/50 p-6 pb-5 flex-shrink-0">
+        <div className="relative border-b border-border/50 p-4 pb-3 md:p-6 md:pb-5 flex-shrink-0">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-1">
