@@ -86,6 +86,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [customVatRate, setCustomVatRate] = useState(25);
   const [vatIncluded, setVatIncluded] = useState(false);
   
+  const [locale, setLocale] = useState<'sv' | 'en'>('sv');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
