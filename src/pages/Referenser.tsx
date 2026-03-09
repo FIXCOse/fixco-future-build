@@ -1,4 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { Helmet } from 'react-helmet-async';
+import { getBreadcrumbSchema } from '@/components/SEOSchemaEnhanced';
 import TrustChips from "@/components/TrustChips";
 import { Button } from "@/components/ui/button-premium";
 import { Card, CardContent } from "@/components/ui/card";
