@@ -351,6 +351,7 @@ type QuoteQuestion = {
   answered: boolean;
   answer?: string;
   answered_at?: string;
+  asked_by?: string;
 };
 
 type PublicQuote = {
