@@ -726,6 +726,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                           <SelectContent>
                             <SelectItem value="work">Arbete</SelectItem>
                             <SelectItem value="material">Material</SelectItem>
+                            <SelectItem value="fee">Avgift/Rabatt</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
