@@ -94,6 +94,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [adminQuestions, setAdminQuestions] = useState<any[]>([]);
   const [newAdminQuestion, setNewAdminQuestion] = useState('');
   const [sendingQuestion, setSendingQuestion] = useState(false);
+  const [pendingQuestions, setPendingQuestions] = useState<string[]>([]);
 
   const loadAdminQuestions = useCallback(async (quoteId: string) => {
     const { data } = await supabase
