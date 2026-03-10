@@ -209,8 +209,20 @@ export default function AdminQuotesUnified() {
       return;
     }
 
-    // If an active quote already exists, we'll supersede it after the new one is created
-    const existingQuote = bookingItem.quote;
+    // If an active quote already exists, show confirmation dialog
+    if (bookingItem.quote && bookingItem.quote.status !== 'superseded') {
+      setPendingCreateBookingId(bookingId);
+      setQuoteToSupersede(bookingItem.quote.id);
+      setShowReplaceConfirm(true);
+      return;
+    }
+
+    await proceedCreateQuote(bookingId, null);
+  };
+
+  const proceedCreateQuote = async (bookingId: string, supersedeQuoteId: string | null) => {
+    const bookingItem = allData.find(d => d.booking.id === bookingId);
+    if (!bookingItem) return;
 
     const payload = bookingItem.booking.payload || {};
     const customerEmail = payload.email || payload.contact_email;
@@ -252,6 +264,10 @@ export default function AdminQuotesUnified() {
           customerId = createdCustomer.id;
           toast.success('Kund skapad automatiskt');
         }
+      }
+
+      if (supersedeQuoteId) {
+        setQuoteToSupersede(supersedeQuoteId);
       }
 
       setBookingDataForQuote({
