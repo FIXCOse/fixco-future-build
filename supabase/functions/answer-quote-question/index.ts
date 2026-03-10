@@ -61,15 +61,42 @@ Deno.serve(async (req) => {
 
     if (updateError) throw updateError;
 
-    // Skicka email till kund om email finns
-    const emailToSend = customer_email || question.quote.customer?.email || question.customer_email;
+    const isAdminQuestion = question.asked_by === 'admin';
     
-    if (emailToSend) {
+    if (isAdminQuestion) {
+      // Customer answered an admin question → notify admin
       try {
-        const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
-        const quoteUrl = `https://fixco.se/q/${question.quote.number}/${question.quote.public_token}`;
+        const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+        if (RESEND_API_KEY) {
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: 'Fixco <info@fixco.se>',
+              to: ['imedashviliomar@gmail.com'],
+              subject: `💬 Kund svarade på fråga – offert ${question.quote.number}`,
+              html: `<h2>Kundsvar mottaget</h2>
+              <p><strong>Offert:</strong> ${question.quote.number} – ${question.quote.title || ''}</p>
+              <p><strong>Kund:</strong> ${question.quote.customer?.name || 'Okänd'}</p>
+              <p><strong>Din fråga:</strong> ${question.question}</p>
+              <p><strong>Kundens svar:</strong> ${answer}</p>
+              <p><strong>Tidpunkt:</strong> ${new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' })}</p>`,
+            }),
+          });
+        }
+      } catch (emailError) {
+        console.error('Failed to notify admin:', emailError);
+      }
+    } else {
+      // Admin answered a customer question → notify customer
+      const emailToSend = customer_email || question.quote.customer?.email || question.customer_email;
+      
+      if (emailToSend) {
+        try {
+          const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
+          const quoteUrl = `https://fixco.se/q/${question.quote.number}/${question.quote.public_token}`;
 
-        const html = `<!DOCTYPE html>
+          const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -153,14 +180,15 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-        await resend.emails.send({
-          from: 'Fixco <info@fixco.se>',
-          to: [emailToSend],
-          subject: `Svar på din fråga om offert ${question.quote.number}`,
-          html
-        });
-      } catch (emailError) {
-        console.error('Failed to send email:', emailError);
+          await resend.emails.send({
+            from: 'Fixco <info@fixco.se>',
+            to: [emailToSend],
+            subject: `Svar på din fråga om offert ${question.quote.number}`,
+            html
+          });
+        } catch (emailError) {
+          console.error('Failed to send email:', emailError);
+        }
       }
     }
 

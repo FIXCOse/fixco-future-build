@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
 
     const { data: questions } = await supabase
       .from('quote_questions')
-      .select('*')
+      .select('*, asked_by')
       .eq('quote_id', quote.id)
       .order('asked_at', { ascending: true });
 
