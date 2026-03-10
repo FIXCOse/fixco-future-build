@@ -905,14 +905,21 @@ export default function QuotePublic() {
                           <span>{t.work}</span>
                         </div>
                         {workItems.map((item: any, idx: number) => (
-                          <div key={`work-${idx}`} className="ml-6 text-sm">
+                          <div key={`work-${idx}`} className={`ml-6 text-sm ${item.strikethrough ? 'opacity-60' : ''}`}>
                             <div className="flex justify-between items-start gap-2">
-                              <span className="text-foreground">
+                              <span className={`text-foreground ${item.strikethrough ? 'line-through' : ''}`}>
                                 {item.description} ({item.quantity} {item.unit || 'st'} × {item.price.toLocaleString(dateLocale)} kr)
                               </span>
-                              <span className="font-semibold text-foreground whitespace-nowrap">
-                                {(item.quantity * item.price).toLocaleString(dateLocale)} kr
-                              </span>
+                              <div className="flex items-center gap-2">
+                                {item.strikethrough && (
+                                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0">
+                                    {t.savedAmount}
+                                  </Badge>
+                                )}
+                                <span className={`font-semibold text-foreground whitespace-nowrap ${item.strikethrough ? 'line-through' : ''}`}>
+                                  {(item.quantity * item.price).toLocaleString(dateLocale)} kr
+                                </span>
+                              </div>
                             </div>
                             {(item.productUrl || item.imageUrl || item.supplierName) && (
                               <div className="mt-1 flex flex-wrap items-center gap-2">
