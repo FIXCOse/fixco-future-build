@@ -82,6 +82,7 @@ export function RequestQuoteCard({
       sent: { variant: "default", label: "Skickad" },
       accepted: { variant: "default", label: "Accepterad" },
       rejected: { variant: "destructive", label: "Avböjd" },
+      superseded: { variant: "outline", label: "Ersatt" },
     };
     return variants[status] || { variant: "default", label: status };
   };
