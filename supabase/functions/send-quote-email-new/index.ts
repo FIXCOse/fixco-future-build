@@ -78,7 +78,8 @@ const handler = async (req: Request): Promise<Response> => {
       .from('quotes_new')
       .select(`
         *,
-        customer:customers!customer_id(id, name, email, phone)
+        customer:customers!customer_id(id, name, email, phone),
+        replaces:replaces_quote_id(number)
       `)
       .eq('id', quoteId)
       .single();
