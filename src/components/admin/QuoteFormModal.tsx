@@ -94,6 +94,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [adminQuestions, setAdminQuestions] = useState<any[]>([]);
   const [newAdminQuestion, setNewAdminQuestion] = useState('');
   const [sendingQuestion, setSendingQuestion] = useState(false);
+  const [pendingQuestions, setPendingQuestions] = useState<string[]>([]);
 
   const loadAdminQuestions = useCallback(async (quoteId: string) => {
     const { data } = await supabase
@@ -114,7 +115,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   }, [quote?.id, loadAdminQuestions]);
 
   const handleSendAdminQuestion = async () => {
-    if (!quote?.id || !newAdminQuestion.trim()) return;
+    if (!newAdminQuestion.trim()) return;
+    
+    // If no quote yet (creating), queue locally
+    if (!quote?.id) {
+      setPendingQuestions(prev => [...prev, newAdminQuestion.trim()]);
+      setNewAdminQuestion('');
+      toast.success('Fråga köad – skickas när offerten sparas');
+      return;
+    }
+    
     setSendingQuestion(true);
     try {
       const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
@@ -129,6 +139,10 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     } finally {
       setSendingQuestion(false);
     }
+  };
+
+  const removePendingQuestion = (index: number) => {
+    setPendingQuestions(prev => prev.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
@@ -273,6 +287,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setLocale('sv');
     setShowNewCustomer(false);
     setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
+    setPendingQuestions([]);
+    setNewAdminQuestion('');
   };
 
   const addItem = () => {
@@ -468,7 +484,23 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         toast.success('Offert uppdaterad');
       } else {
         result = await createQuoteNew(quoteData);
-        toast.success('Offert skapad');
+        
+        // Send any pending questions after quote is created
+        if (result?.id && pendingQuestions.length > 0) {
+          for (const question of pendingQuestions) {
+            try {
+              await supabase.functions.invoke('send-admin-question-to-customer', {
+                body: { quote_id: result.id, question },
+              });
+            } catch (err) {
+              console.error('Failed to send pending question:', err);
+            }
+          }
+          toast.success(`Offert skapad och ${pendingQuestions.length} fråga/or skickade`);
+          setPendingQuestions([]);
+        } else {
+          toast.success('Offert skapad');
+        }
       }
 
       onSuccess(result);
@@ -1123,60 +1155,79 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
           </Card>
 
           {/* Admin Questions to Customer */}
-          {quote && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  Frågor till kund
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {adminQuestions.length > 0 && (
-                  <div className="space-y-3">
-                    {adminQuestions.map((q) => (
-                      <div key={q.id} className="p-3 border rounded-lg bg-muted/30 space-y-1">
-                        <p className="text-sm font-medium">{q.question}</p>
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          {q.answered ? (
-                            <>
-                              <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
-                              <span className="text-green-600 dark:text-green-400 font-medium">Besvarad:</span>
-                              <span>{q.answer}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Clock className="h-3.5 w-3.5" />
-                              <span>Väntar på svar</span>
-                            </>
-                          )}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Frågor till kund
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Pending questions (queued for new quote) */}
+              {pendingQuestions.length > 0 && (
+                <div className="space-y-3">
+                  {pendingQuestions.map((q, i) => (
+                    <div key={`pending-${i}`} className="p-3 border rounded-lg bg-amber-500/10 border-amber-500/30 space-y-1">
+                      <p className="text-sm font-medium">{q}</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                          <Clock className="h-3.5 w-3.5" />
+                          <span>Skickas vid sparande</span>
                         </div>
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive" onClick={() => removePendingQuestion(i)}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
                       </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="space-y-2">
-                  <Label>Ny fråga till kund</Label>
-                  <Textarea
-                    value={newAdminQuestion}
-                    onChange={(e) => setNewAdminQuestion(e.target.value)}
-                    placeholder="Skriv en fråga till kunden, t.ex. vilken modell önskas..."
-                    rows={2}
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSendAdminQuestion}
-                    disabled={sendingQuestion || !newAdminQuestion.trim()}
-                  >
-                    {sendingQuestion ? 'Skickar...' : 'Skicka fråga'}
-                    <Send className="h-4 w-4" />
-                  </Button>
+                    </div>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              )}
+
+              {/* Existing questions (for saved quotes) */}
+              {adminQuestions.length > 0 && (
+                <div className="space-y-3">
+                  {adminQuestions.map((q) => (
+                    <div key={q.id} className="p-3 border rounded-lg bg-muted/30 space-y-1">
+                      <p className="text-sm font-medium">{q.question}</p>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        {q.answered ? (
+                          <>
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                            <span className="text-green-600 dark:text-green-400 font-medium">Besvarad:</span>
+                            <span>{q.answer}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Clock className="h-3.5 w-3.5" />
+                            <span>Väntar på svar</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label>Ny fråga till kund</Label>
+                <Textarea
+                  value={newAdminQuestion}
+                  onChange={(e) => setNewAdminQuestion(e.target.value)}
+                  placeholder="Skriv en fråga till kunden, t.ex. vilken modell önskas..."
+                  rows={2}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSendAdminQuestion}
+                  disabled={sendingQuestion || !newAdminQuestion.trim()}
+                >
+                  {sendingQuestion ? 'Skickar...' : quote ? 'Skicka fråga' : 'Lägg till fråga'}
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Additional Info */}
           <Card>
