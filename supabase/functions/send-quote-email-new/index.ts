@@ -53,6 +53,8 @@ const quoteCopy = {
     regards: 'Kind regards,',
     questionsNote: 'We have also included questions in the quote that we would like you to answer.',
     questionsLabel: 'Our questions for you:',
+    imagesRequestedLabel: '📸 We would like photos from you',
+    imagesRequestedNote: 'Please upload relevant images via the quote page so we can provide you with the best possible service.',
   },
 };
 
