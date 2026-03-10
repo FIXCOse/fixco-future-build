@@ -16,6 +16,7 @@ import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
 import { AdvancedInvoiceEditor } from "@/components/admin/AdvancedInvoiceEditor";
 import { PdfPreviewDialog } from "@/components/admin/PdfPreviewDialog";
 import { createCustomer } from "@/lib/api/customers";
+import { supersedeQuote } from "@/lib/api/quotes-new";
 import {
   AlertDialog,
   AlertDialogAction,
