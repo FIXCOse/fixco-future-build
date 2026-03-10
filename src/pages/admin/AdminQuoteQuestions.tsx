@@ -41,6 +41,7 @@ type QuoteOption = {
   id: string;
   number: string;
   title: string;
+  status: string;
   customer: { name: string; email: string } | null;
 };
 
@@ -70,7 +71,7 @@ export default function AdminQuoteQuestions() {
   const fetchQuotes = async () => {
     const { data } = await supabase
       .from('quotes_new')
-      .select('id, number, title, customer:customers(name, email)')
+      .select('id, number, title, status, customer:customers(name, email)')
       .is('deleted_at', null)
       .in('status', ['draft', 'sent', 'viewed'])
       .order('created_at', { ascending: false })
@@ -172,16 +173,35 @@ export default function AdminQuoteQuestions() {
 
     setAskSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
-        body: {
-          quote_id: askQuoteId,
-          question: askQuestion.trim(),
-        }
-      });
+      // Check the quote status to decide whether to send email
+      const selectedQuote = quotes.find(q => q.id === askQuoteId);
+      const quoteStatus = selectedQuote ? (selectedQuote as any).status : null;
 
-      if (error) throw error;
+      if (quoteStatus === 'sent' || quoteStatus === 'viewed') {
+        // Quote already sent - use edge function to also email the customer
+        const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
+          body: {
+            quote_id: askQuoteId,
+            question: askQuestion.trim(),
+          }
+        });
+        if (error) throw error;
+        toast.success('Fråga skickad till kund via email!');
+      } else {
+        // Quote is draft - just save to DB, email sent when quote is sent
+        const { error } = await supabase
+          .from('quote_questions')
+          .insert({
+            quote_id: askQuoteId,
+            question: askQuestion.trim(),
+            asked_by: 'admin',
+            customer_name: 'Fixco',
+            answered: false,
+          });
+        if (error) throw error;
+        toast.success('Fråga sparad – skickas till kund när offerten skickas');
+      }
 
-      toast.success('Fråga skickad till kund!');
       setAskModalOpen(false);
       setAskQuestion('');
       setAskQuoteId('');

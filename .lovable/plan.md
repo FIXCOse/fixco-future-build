@@ -1,39 +1,22 @@
 
 
-## Plan: Frågor till kund skickas först vid offertutskick, inte vid sparande
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problemet
-`send-admin-question-to-customer` edge function gör två saker samtidigt:
-1. Insertar frågan i `quote_questions`
-2. Skickar email till kunden
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Detta anropas vid sparande av offert (rad 488-498 i QuoteFormModal.tsx), vilket innebär att kunden får email om frågor redan när offerten sparas som utkast.
+### Fil som ändras
 
-### Lösning
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**1. QuoteFormModal.tsx — Spara frågor direkt i databasen, utan email**
-- Ersätt anropet till edge function med en enkel `supabase.from('quote_questions').insert()` 
-- Spara `asked_by: 'admin'`, `customer_name: 'Fixco'`, `answered: false`
-- Inget email skickas vid detta tillfälle
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**2. Samma ändring i AdminQuoteQuestions.tsx (knappen "Ställ fråga")**
-- Om offerten inte är skickad ännu (`status !== 'sent'`): spara bara i databasen
-- Om offerten redan är skickad: behåll anropet till edge function (då vill man meddela kunden direkt)
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-**3. send-quote-email-new — Redan klart**
-- Denna edge function hämtar redan obesvarade admin-frågor och inkluderar dem i offertmailet (implementerades i förra steget)
-
-**4. send-admin-question-to-customer — Ingen ändring**
-- Behålls som den är, men anropas bara när offerten redan är skickad och admin ställer en ny fråga i efterhand
-
-### Sammanfattning av ändringar
-
-| Fil | Ändring |
-|-----|---------|
-| `src/components/admin/QuoteFormModal.tsx` | Pending questions: insert direkt i DB istället för edge function. Befintlig offert: insert i DB om status ≠ sent, annars edge function |
-| `src/pages/admin/AdminQuoteQuestions.tsx` | Samma logik: kontrollera offertstatus innan email skickas |
-
-### Resultat
-- Frågor sparas alltid i databasen direkt
-- Email till kund skickas **bara** när offerten skickas ut (via `send-quote-email-new` som redan inkluderar frågorna) eller om admin ställer en fråga efter att offerten redan skickats
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
