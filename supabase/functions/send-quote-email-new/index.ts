@@ -135,6 +135,18 @@ const handler = async (req: Request): Promise<Response> => {
       console.error('Error parsing items for images_requested:', e);
     }
 
+    // Check if this is a replacement quote
+    const isReplacement = !!quote.replaces;
+    const oldQuoteNumber = quote.replaces?.number || '';
+    const emailTitle = isReplacement ? t.updatedTitle : t.title;
+    const emailIntro = isReplacement ? t.updatedIntro : t.intro;
+
+    const updatedBannerHtml = isReplacement ? `
+            <div style="background: #dbeafe; padding: 16px; border-radius: 8px; margin: 0 0 16px 0; border-left: 4px solid #3b82f6;">
+              <p style="margin: 0; font-weight: 700; color: #1e40af;">${t.updatedBanner(oldQuoteNumber)}</p>
+            </div>
+    ` : '';
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -152,13 +164,14 @@ const handler = async (req: Request): Promise<Response> => {
       <body>
         <div class="container">
           <div class="header">
-            <div class="title">${t.title}</div>
+            <div class="title">${emailTitle}</div>
             <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">${t.quoteNumber}: ${quote.number}</div>
           </div>
           
           <div class="card">
+            ${updatedBannerHtml}
             <h2>${t.greeting(displayName)}</h2>
-            <p>${t.intro}</p>
+            <p>${emailIntro}</p>
             
             <p><strong>${quote.title}</strong></p>
             
@@ -205,10 +218,14 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
+    const emailSubject = isTest 
+      ? t.testSubject(quote.number) 
+      : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
+
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
       to: [recipientEmail],
-      subject: isTest ? t.testSubject(quote.number) : t.subject(quote.number),
+      subject: emailSubject,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });
