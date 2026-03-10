@@ -35,6 +35,7 @@ Deno.serve(async (req) => {
           number,
           title,
           public_token,
+          locale,
           customer:customers(name, email)
         )
       `)
