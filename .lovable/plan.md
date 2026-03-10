@@ -1,43 +1,22 @@
 
 
-## Analys: Matten stämmer inte — Timprisrabatt räknas inte med
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Vad som händer
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Från skärmdumpen syns:
-- **Arbetskostnad: 766 kr**
-- **Överstruket (visas som rabatt): 516 kr** (= startavgift 500 + timprisrabatt 16)
-- **Delsumma: 766 kr** (timprisrabatten påverkar inte)
+### Fil som ändras
 
-Problemet: Både startavgiften (500 kr) och timprisrabatten (16 kr) är markerade som **strikethrough**, vilket betyder att de **helt exkluderas från beräkningen**. Strikethrough-funktionen är designad för att visa "bortskänkta" poster — de syns men räknas inte.
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Timprisrabatten borde istället vara en **negativ avgift (-16 kr)** som faktiskt dras av från totalen, utan strikethrough.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-### Lösning
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-Problemet är delvis UX — det är för lätt att förväxla "strikethrough" (visuell gåva, exkluderas) med "rabatt" (ska minska priset). Jag föreslår:
-
-**1. Ändra snabbknappen "Timprisrabatt"** — säkerställ att den alltid skapar en rad med **negativt pris** och tydlig beskrivning:
-- `{ type: 'fee', description: 'Timprisrabatt', quantity: 1, unit: 'kr', price: -100 }` (redan korrekt)
-
-**2. Lägg till validering/varning** — om en `fee`-rad med negativt pris markeras som strikethrough, visa en varning: "Obs: Denna rabatt kommer inte att dras av från totalen om den är överstruken"
-
-**3. Förbättra sammanfattningen** — separera negativa fees (rabatter) och positiva fees (avgifter) visuellt:
-- Avgifter: visas som vanligt
-- Rabatter (negativt belopp): visas i grönt med minus-tecken
-- Genomstrukna poster: visas som idag (line-through)
-
-### Filer som ändras
-
-| Fil | Ändring |
-|-----|---------|
-| `src/components/admin/QuoteFormModal.tsx` | Varning vid strikethrough på negativ fee, förbättrad sammanfattning med separat rabatt-rad |
-
-### Vad du behöver göra nu
-
-Dina befintliga poster på den offerten behöver korrigeras manuellt:
-- **Startavgift 500 kr**: behåll strikethrough (korrekt — visas som bortskänkt)
-- **Timprisrabatt**: ta bort strikethrough, ändra priset till **-16** (negativt) — då dras 16 kr av från delsumman
-
-Resultatet blir: Delsumma = 766 - 16 = 750, Moms = 187.5, Totalt = 937.5 kr
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
