@@ -19,7 +19,7 @@ export type QuoteNewRow = {
   total_sek: number;
   vat_included?: boolean;
   pdf_url?: string | null;
-  status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired' | 'pending_reaccept';
+  status: 'draft' | 'sent' | 'viewed' | 'change_requested' | 'accepted' | 'declined' | 'expired' | 'pending_reaccept' | 'superseded';
   valid_until?: string | null;
   public_token: string;
   sent_at?: string | null;
@@ -160,6 +160,18 @@ export async function updateQuoteNew(id: string, quoteData: Partial<QuoteNewRow>
 
   if (error) throw error;
   return data as QuoteNewRow;
+}
+
+export async function supersedeQuote(oldQuoteId: string, newQuoteId: string) {
+  const { error } = await supabase
+    .from('quotes_new')
+    .update({ 
+      status: 'superseded', 
+      replaced_by_id: newQuoteId 
+    })
+    .eq('id', oldQuoteId);
+
+  if (error) throw error;
 }
 
 export async function deleteQuoteNew(id: string) {

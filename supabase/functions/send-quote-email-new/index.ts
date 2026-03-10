@@ -14,11 +14,15 @@ const corsHeaders = {
 const quoteCopy = {
   sv: {
     subject: (num: string) => `Offert ${num} från Fixco`,
+    updatedSubject: (num: string) => `Uppdaterad offert ${num} från Fixco`,
     testSubject: (num: string) => `[TEST] Offert ${num} från Fixco`,
     title: 'Offert från Fixco',
+    updatedTitle: 'Uppdaterad offert från Fixco',
     quoteNumber: 'Offertnummer',
     greeting: (name: string) => `Hej ${name}!`,
     intro: 'Tack för ditt intresse. Din offert är nu klar att granska.',
+    updatedIntro: 'Vi har uppdaterat din offert. Vänligen granska den nya versionen nedan.',
+    updatedBanner: (oldNum: string) => `📋 Detta är en uppdaterad offert som ersätter din tidigare offert ${oldNum}`,
     work: 'Arbete:',
     material: 'Material:',
     discount: 'Rabatt:',
@@ -36,11 +40,15 @@ const quoteCopy = {
   },
   en: {
     subject: (num: string) => `Quote ${num} from Fixco`,
+    updatedSubject: (num: string) => `Updated quote ${num} from Fixco`,
     testSubject: (num: string) => `[TEST] Quote ${num} from Fixco`,
     title: 'Quote from Fixco',
+    updatedTitle: 'Updated quote from Fixco',
     quoteNumber: 'Quote number',
     greeting: (name: string) => `Hi ${name}!`,
     intro: 'Thank you for your interest. Your quote is now ready for review.',
+    updatedIntro: 'We have updated your quote. Please review the new version below.',
+    updatedBanner: (oldNum: string) => `📋 This is an updated quote replacing your previous quote ${oldNum}`,
     work: 'Labour:',
     material: 'Material:',
     discount: 'Discount:',
@@ -78,7 +86,8 @@ const handler = async (req: Request): Promise<Response> => {
       .from('quotes_new')
       .select(`
         *,
-        customer:customers!customer_id(id, name, email, phone)
+        customer:customers!customer_id(id, name, email, phone),
+        replaces:replaces_quote_id(number)
       `)
       .eq('id', quoteId)
       .single();
@@ -126,6 +135,18 @@ const handler = async (req: Request): Promise<Response> => {
       console.error('Error parsing items for images_requested:', e);
     }
 
+    // Check if this is a replacement quote
+    const isReplacement = !!quote.replaces;
+    const oldQuoteNumber = quote.replaces?.number || '';
+    const emailTitle = isReplacement ? t.updatedTitle : t.title;
+    const emailIntro = isReplacement ? t.updatedIntro : t.intro;
+
+    const updatedBannerHtml = isReplacement ? `
+            <div style="background: #dbeafe; padding: 16px; border-radius: 8px; margin: 0 0 16px 0; border-left: 4px solid #3b82f6;">
+              <p style="margin: 0; font-weight: 700; color: #1e40af;">${t.updatedBanner(oldQuoteNumber)}</p>
+            </div>
+    ` : '';
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -143,13 +164,14 @@ const handler = async (req: Request): Promise<Response> => {
       <body>
         <div class="container">
           <div class="header">
-            <div class="title">${t.title}</div>
+            <div class="title">${emailTitle}</div>
             <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">${t.quoteNumber}: ${quote.number}</div>
           </div>
           
           <div class="card">
+            ${updatedBannerHtml}
             <h2>${t.greeting(displayName)}</h2>
-            <p>${t.intro}</p>
+            <p>${emailIntro}</p>
             
             <p><strong>${quote.title}</strong></p>
             
@@ -196,10 +218,14 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
+    const emailSubject = isTest 
+      ? t.testSubject(quote.number) 
+      : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
+
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
       to: [recipientEmail],
-      subject: isTest ? t.testSubject(quote.number) : t.subject(quote.number),
+      subject: emailSubject,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
     });

@@ -82,6 +82,7 @@ export function RequestQuoteCard({
       sent: { variant: "default", label: "Skickad" },
       accepted: { variant: "default", label: "Accepterad" },
       rejected: { variant: "destructive", label: "Avböjd" },
+      superseded: { variant: "outline", label: "Ersatt" },
     };
     return variants[status] || { variant: "default", label: status };
   };
@@ -362,6 +363,20 @@ export function RequestQuoteCard({
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Skapa offert
+              </Button>
+            </div>
+          )}
+
+          {/* Action: Replace Quote (when quote exists) */}
+          {quote && quote.status !== 'draft' && (
+            <div className="flex gap-2 pt-1">
+              <Button
+                onClick={() => onCreateQuote(booking.id)}
+                variant="outline"
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Ersätt med ny offert
               </Button>
             </div>
           )}

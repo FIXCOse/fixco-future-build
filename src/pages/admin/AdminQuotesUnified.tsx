@@ -16,6 +16,7 @@ import { JobCreationDialog } from "@/components/admin/JobCreationDialog";
 import { AdvancedInvoiceEditor } from "@/components/admin/AdvancedInvoiceEditor";
 import { PdfPreviewDialog } from "@/components/admin/PdfPreviewDialog";
 import { createCustomer } from "@/lib/api/customers";
+import { supersedeQuote } from "@/lib/api/quotes-new";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,6 +47,9 @@ export default function AdminQuotesUnified() {
   const [advancedInvoiceJobData, setAdvancedInvoiceJobData] = useState<any>(null);
   const [showPdfDialog, setShowPdfDialog] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [quoteToSupersede, setQuoteToSupersede] = useState<string | null>(null);
+  const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
+  const [pendingCreateBookingId, setPendingCreateBookingId] = useState<string | null>(null);
 
   // Fetch all data without filtering - we'll do client-side filtering
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
@@ -205,10 +209,20 @@ export default function AdminQuotesUnified() {
       return;
     }
 
-    if (bookingItem.quote) {
-      toast.error('En offert finns redan för denna förfrågan');
+    // If an active quote already exists, show confirmation dialog
+    if (bookingItem.quote && bookingItem.quote.status !== 'superseded') {
+      setPendingCreateBookingId(bookingId);
+      setQuoteToSupersede(bookingItem.quote.id);
+      setShowReplaceConfirm(true);
       return;
     }
+
+    await proceedCreateQuote(bookingId, null);
+  };
+
+  const proceedCreateQuote = async (bookingId: string, supersedeQuoteId: string | null) => {
+    const bookingItem = allData.find(d => d.booking.id === bookingId);
+    if (!bookingItem) return;
 
     const payload = bookingItem.booking.payload || {};
     const customerEmail = payload.email || payload.contact_email;
@@ -250,6 +264,10 @@ export default function AdminQuotesUnified() {
           customerId = createdCustomer.id;
           toast.success('Kund skapad automatiskt');
         }
+      }
+
+      if (supersedeQuoteId) {
+        setQuoteToSupersede(supersedeQuoteId);
       }
 
       setBookingDataForQuote({
@@ -817,10 +835,26 @@ export default function AdminQuotesUnified() {
         }}
         quote={editQuoteId ? allData.find(d => d.quote?.id === editQuoteId)?.quote as any : null}
         bookingData={bookingDataForQuote}
-        onSuccess={() => {
+        onSuccess={async (createdQuote) => {
+          // If we're replacing an old quote, supersede it
+          if (quoteToSupersede && createdQuote?.id) {
+            try {
+              await supersedeQuote(quoteToSupersede, createdQuote.id);
+              // Also set replaces_quote_id on the new quote
+              await supabase
+                .from('quotes_new')
+                .update({ replaces_quote_id: quoteToSupersede })
+                .eq('id', createdQuote.id);
+              toast.success('Tidigare offert har ersatts');
+            } catch (err) {
+              console.error('Error superseding quote:', err);
+              toast.error('Kunde inte ersätta tidigare offert');
+            }
+          }
           setQuoteModalOpen(false);
           setBookingDataForQuote(null);
           setEditQuoteId(null);
+          setQuoteToSupersede(null);
           refresh();
         }}
       />
@@ -855,6 +889,33 @@ export default function AdminQuotesUnified() {
         pdfUrl={pdfPreviewUrl}
         title="Offert Preview"
       />
+
+      {/* Replace quote confirmation dialog */}
+      <AlertDialog open={showReplaceConfirm} onOpenChange={setShowReplaceConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Ersätt befintlig offert?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Det finns redan en offert kopplad till denna bokning. Om du skapar en ny offert kommer den tidigare att markeras som ersatt. Kunden som öppnar den gamla länken omdirigeras automatiskt till den nya offerten.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setPendingCreateBookingId(null);
+              setQuoteToSupersede(null);
+            }}>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              setShowReplaceConfirm(false);
+              if (pendingCreateBookingId && quoteToSupersede) {
+                proceedCreateQuote(pendingCreateBookingId, quoteToSupersede);
+              }
+              setPendingCreateBookingId(null);
+            }}>
+              Ersätt och skapa ny
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

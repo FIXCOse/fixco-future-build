@@ -2593,6 +2593,8 @@ export type Database = {
           pdf_url: string | null
           public_token: string
           reaccept_requested_at: string | null
+          replaced_by_id: string | null
+          replaces_quote_id: string | null
           request_id: string | null
           rot_deduction_sek: number | null
           rot_percentage: number | null
@@ -2629,6 +2631,8 @@ export type Database = {
           pdf_url?: string | null
           public_token: string
           reaccept_requested_at?: string | null
+          replaced_by_id?: string | null
+          replaces_quote_id?: string | null
           request_id?: string | null
           rot_deduction_sek?: number | null
           rot_percentage?: number | null
@@ -2665,6 +2669,8 @@ export type Database = {
           pdf_url?: string | null
           public_token?: string
           reaccept_requested_at?: string | null
+          replaced_by_id?: string | null
+          replaces_quote_id?: string | null
           request_id?: string | null
           rot_deduction_sek?: number | null
           rot_percentage?: number | null
@@ -2690,6 +2696,20 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_new_replaced_by_id_fkey"
+            columns: ["replaced_by_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_new_replaces_quote_id_fkey"
+            columns: ["replaces_quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
             referencedColumns: ["id"]
           },
         ]
