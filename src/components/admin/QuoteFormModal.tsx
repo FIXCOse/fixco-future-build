@@ -338,19 +338,31 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
 
   const calculateSubtotalWork = () => {
     return items
-      .filter(item => item.type === 'work')
+      .filter(item => item.type === 'work' && !item.strikethrough)
       .reduce((sum, item) => sum + (item.quantity * item.price), 0);
   };
 
   const calculateSubtotalMaterial = () => {
     if (!materialIncluded) return 0;
     return items
-      .filter(item => item.type === 'material')
+      .filter(item => item.type === 'material' && !item.strikethrough)
+      .reduce((sum, item) => sum + (item.quantity * item.price), 0);
+  };
+
+  const calculateFees = () => {
+    return items
+      .filter(item => item.type === 'fee' && !item.strikethrough)
+      .reduce((sum, item) => sum + (item.quantity * item.price), 0);
+  };
+
+  const calculateStrikethroughTotal = () => {
+    return items
+      .filter(item => item.strikethrough)
       .reduce((sum, item) => sum + (item.quantity * item.price), 0);
   };
 
   const calculateSubtotal = () => {
-    return calculateSubtotalWork() + calculateSubtotalMaterial();
+    return calculateSubtotalWork() + calculateSubtotalMaterial() + calculateFees();
   };
 
   // Beräkna rabatt på totalen INKLUSIVE moms (Limont-style)
