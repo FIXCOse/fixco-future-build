@@ -43,6 +43,8 @@ const quoteCopy = {
     material: 'Material',
     seeProduct: 'Se produkt',
     viewImage: 'Visa bild',
+    fee: 'Avgifter',
+    savedAmount: 'RABATT',
     materialNotIncluded: 'Material ingår ej i denna offert och faktureras separat efter slutfört arbete.',
     costBreakdown: 'Kostnadsspecifikation',
     laborCost: 'Arbetskostnad',
