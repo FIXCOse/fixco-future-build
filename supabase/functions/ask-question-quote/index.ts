@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-async function notifyAdmin(subject: string, html: string) {
+async function notifyAdmin(subject: string, body: string) {
   try {
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY) return;
@@ -13,10 +13,10 @@ async function notifyAdmin(subject: string, html: string) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: 'Fixco <info@fixco.se>',
+        from: 'Fixco System <info@fixco.se>',
         to: ['imedashviliomar@gmail.com'],
         subject,
-        html,
+        html: `<div style="font-family:sans-serif;font-size:14px;color:#333;">${body}</div>`,
       }),
     });
   } catch (e) {
@@ -161,11 +161,10 @@ Deno.serve(async (req) => {
 
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
     notifyAdmin(
-      `❓ Ny fråga om offert ${quote.number} från ${customer_name}`,
-      `<h2>Ny fråga från kund</h2>
-      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-      <p><strong>Från:</strong> ${customer_name}${customer_email ? ` (${customer_email})` : ''}</p>
-      <p><strong>Fråga:</strong> ${question}</p>
+      `Ny fraga om offert ${quote.number} fran ${customer_name}`,
+      `<p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      <p><strong>Fran:</strong> ${customer_name}${customer_email ? ` (${customer_email})` : ''}</p>
+      <p><strong>Fraga:</strong> ${question}</p>
       <p><strong>Tidpunkt:</strong> ${now}</p>`
     );
 

@@ -479,7 +479,10 @@ export default function QuotePublic() {
 
     const fetchQuote = async () => {
       try {
-        const path = number ? `get-quote-public/${number}/${token}` : `get-quote-public/${token}`;
+        const searchParams = new URLSearchParams(window.location.search);
+        const source = searchParams.get('source');
+        const basePath = number ? `get-quote-public/${number}/${token}` : `get-quote-public/${token}`;
+        const path = source === 'admin' ? `${basePath}?source=admin` : basePath;
         const { data, error } = await supabase.functions.invoke(path);
 
         if (error) {
