@@ -161,11 +161,10 @@ Deno.serve(async (req) => {
 
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
     notifyAdmin(
-      `❓ Ny fråga om offert ${quote.number} från ${customer_name}`,
-      `<h2>Ny fråga från kund</h2>
-      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-      <p><strong>Från:</strong> ${customer_name}${customer_email ? ` (${customer_email})` : ''}</p>
-      <p><strong>Fråga:</strong> ${question}</p>
+      `Ny fraga om offert ${quote.number} fran ${customer_name}`,
+      `<p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      <p><strong>Fran:</strong> ${customer_name}${customer_email ? ` (${customer_email})` : ''}</p>
+      <p><strong>Fraga:</strong> ${question}</p>
       <p><strong>Tidpunkt:</strong> ${now}</p>`
     );
 

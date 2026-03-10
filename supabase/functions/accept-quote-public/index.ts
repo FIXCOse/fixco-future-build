@@ -227,7 +227,7 @@ Deno.serve(async (req) => {
     }
 
     notifyAdmin(
-      `✅ Offert ${quote.number} accepterad av ${customerName}`,
+      `Offert ${quote.number} accepterad av ${customerName}`,
       buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, false)
     );
 

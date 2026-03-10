@@ -114,9 +114,8 @@ Deno.serve(async (req) => {
     const custName = quote.customer?.name || 'Okänd kund';
     const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
     notifyAdmin(
-      `✏️ Ändring begärd på offert ${quote.number} av ${custName}`,
-      `<h2>Ändring begärd</h2>
-      <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+      `Andring begard pa offert ${quote.number} av ${custName}`,
+      `<p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
       <p><strong>Kund:</strong> ${custName}</p>
       <p><strong>Meddelande:</strong> ${message}</p>
       ${fileUrls.length > 0 ? `<p><strong>Bifogade filer:</strong> ${fileUrls.length} st</p>` : ''}

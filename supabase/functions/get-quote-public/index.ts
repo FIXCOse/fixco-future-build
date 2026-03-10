@@ -144,39 +144,43 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Always log every view in quote_views
-    const userAgent = req.headers.get('user-agent') || null;
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-      || req.headers.get('x-real-ip')
-      || 'okänd';
-    await supabase
-      .from('quote_views')
-      .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip });
+    // Check if this is an admin preview (skip tracking)
+    const isAdminView = url.searchParams.get('source') === 'admin';
 
-    // Only update status and send admin email on FIRST view (sent → viewed)
-    if (quote.status === 'sent') {
-      const { error: updateError } = await supabase
-        .from('quotes_new')
-        .update({
-          status: 'viewed',
-          viewed_at: new Date().toISOString()
-        })
-        .eq('id', quote.id);
+    if (!isAdminView) {
+      // Log every customer view in quote_views
+      const userAgent = req.headers.get('user-agent') || null;
+      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+        || req.headers.get('x-real-ip')
+        || 'okänd';
+      await supabase
+        .from('quote_views')
+        .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip });
 
-      if (updateError) {
-        console.error('Failed to update status:', updateError);
+      // Only update status and send admin email on FIRST view (sent → viewed)
+      if (quote.status === 'sent') {
+        const { error: updateError } = await supabase
+          .from('quotes_new')
+          .update({
+            status: 'viewed',
+            viewed_at: new Date().toISOString()
+          })
+          .eq('id', quote.id);
+
+        if (updateError) {
+          console.error('Failed to update status:', updateError);
+        }
+
+        const customerName = quote.customer?.name || 'Okänd kund';
+        const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
+        notifyAdmin(
+          `Offert ${quote.number} oppnad av ${customerName}`,
+          `<p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
+          <p><strong>Kund:</strong> ${customerName}</p>
+          <p><strong>Tidpunkt:</strong> ${now}</p>
+          <p>Kunden har oppnat offertlanken.</p>`
+        );
       }
-
-      const customerName = quote.customer?.name || 'Okänd kund';
-      const now = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' });
-      notifyAdmin(
-        `👁️ Offert ${quote.number} öppnad av ${customerName}`,
-        `<h2>Offert öppnad</h2>
-        <p><strong>Offert:</strong> ${quote.number} – ${quote.title || ''}</p>
-        <p><strong>Kund:</strong> ${customerName}</p>
-        <p><strong>Tidpunkt:</strong> ${now}</p>
-        <p>Kunden har öppnat offertlänken och tittar på offerten.</p>`
-      );
     }
 
     const publicData = {
