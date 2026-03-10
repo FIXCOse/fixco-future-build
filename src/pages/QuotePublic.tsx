@@ -204,6 +204,8 @@ const quoteCopy = {
     material: 'Material',
     seeProduct: 'See product',
     viewImage: 'View image',
+    fee: 'Fees',
+    savedAmount: 'DISCOUNT',
     materialNotIncluded: 'Material is not included in this quote and will be invoiced separately after completed work.',
     costBreakdown: 'Cost breakdown',
     laborCost: 'Labour cost',
