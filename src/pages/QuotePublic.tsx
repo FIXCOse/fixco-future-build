@@ -678,6 +678,46 @@ export default function QuotePublic() {
   };
 
 
+  const handleAnswerAdminQuestion = async () => {
+    if (!answerQuestionId || !answerText.trim() || !answerName.trim()) {
+      toast({ title: t.toastQuestionTitle, description: t.toastQuestionDesc, variant: 'destructive' });
+      return;
+    }
+
+    setAnswerSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke('answer-quote-question', {
+        body: {
+          question_id: answerQuestionId,
+          answer: answerText.trim(),
+          customer_email: quote?.customer_email || null,
+        }
+      });
+
+      if (error) throw error;
+
+      setQuote(prev => prev ? {
+        ...prev,
+        questions: prev.questions.map(q =>
+          q.id === answerQuestionId
+            ? { ...q, answered: true, answer: answerText.trim(), answered_at: new Date().toISOString() }
+            : q
+        )
+      } : prev);
+
+      toast({ title: t.toastAnswerSuccess, description: t.toastAnswerSuccessDesc });
+      setAnswerModalOpen(false);
+      setAnswerQuestionId(null);
+      setAnswerText('');
+      setAnswerName('');
+    } catch (err: any) {
+      console.error('Error answering question:', err);
+      toast({ title: t.toastAnswerFail, description: err.message, variant: 'destructive' });
+    } finally {
+      setAnswerSubmitting(false);
+    }
+  };
+
   const isExpired = quote?.valid_until && new Date(quote.valid_until) < new Date();
   const daysLeft = quote?.valid_until 
     ? Math.ceil((new Date(quote.valid_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
