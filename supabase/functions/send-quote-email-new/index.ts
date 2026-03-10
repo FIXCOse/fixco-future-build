@@ -31,6 +31,8 @@ const quoteCopy = {
     regards: 'Med vänliga hälsningar,',
     questionsNote: 'Vi har även ställt frågor i offerten som vi önskar att du besvarar.',
     questionsLabel: 'Våra frågor till dig:',
+    imagesRequestedLabel: '📸 Vi önskar bilder från dig',
+    imagesRequestedNote: 'Vänligen ladda upp relevanta bilder via offertsidan så kan vi ge dig bästa möjliga service.',
   },
   en: {
     subject: (num: string) => `Quote ${num} from Fixco`,
@@ -51,6 +53,8 @@ const quoteCopy = {
     regards: 'Kind regards,',
     questionsNote: 'We have also included questions in the quote that we would like you to answer.',
     questionsLabel: 'Our questions for you:',
+    imagesRequestedLabel: '📸 We would like photos from you',
+    imagesRequestedNote: 'Please upload relevant images via the quote page so we can provide you with the best possible service.',
   },
 };
 
@@ -112,6 +116,16 @@ const handler = async (req: Request): Promise<Response> => {
 
     const hasAdminQuestions = adminQuestions && adminQuestions.length > 0;
 
+    // Check for images_requested meta flag in items
+    let hasImagesRequested = false;
+    try {
+      const items = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
+      const imagesMeta = items.find((item: any) => item.type === '_meta' && item.key === 'images_requested');
+      hasImagesRequested = !!imagesMeta?.value;
+    } catch (e) {
+      console.error('Error parsing items for images_requested:', e);
+    }
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -155,6 +169,13 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="margin: 0 0 8px 0; font-weight: 700; color: #1e40af;">💬 ${t.questionsLabel}</p>
               <p style="margin: 0 0 12px 0; font-size: 14px; color: #374151;">${t.questionsNote}</p>
               ${adminQuestions!.map(q => `<p style="margin: 4px 0; font-size: 14px; color: #1e3a5f;">• ${q.question}</p>`).join('')}
+            </div>
+            ` : ''}
+            
+            ${hasImagesRequested ? `
+            <div style="background: #fef3c7; padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #f59e0b;">
+              <p style="margin: 0 0 8px 0; font-weight: 700; color: #92400e;">${t.imagesRequestedLabel}</p>
+              <p style="margin: 0; font-size: 14px; color: #78350f;">${t.imagesRequestedNote}</p>
             </div>
             ` : ''}
             

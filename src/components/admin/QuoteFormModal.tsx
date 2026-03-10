@@ -82,6 +82,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   
   // Material options
   const [materialIncluded, setMaterialIncluded] = useState(true);
+  const [imagesRequested, setImagesRequested] = useState(false);
   
   // VAT settings
   const [customVat, setCustomVat] = useState(false);
@@ -187,6 +188,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         if (internalNotesMeta) setNotes(internalNotesMeta.value || '');
         const scopeMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'scope_description');
         if (scopeMeta) setScopeDescription(scopeMeta.value || '');
+        const imagesReqMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'images_requested');
+        if (imagesReqMeta) setImagesRequested(!!imagesReqMeta.value);
         // Filter out meta items for display
         const displayItems = parsedItems.filter((item: any) => item.type !== '_meta');
         if (displayItems.length > 0) {
@@ -299,6 +302,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setDiscountType('none');
     setDiscountValue(0);
     setMaterialIncluded(true);
+    setImagesRequested(false);
     setCustomVat(false);
     setCustomVatRate(25);
     setLocale('sv');
@@ -484,6 +488,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         ...(customerNotes.trim() ? [{ type: '_meta' as const, key: 'customer_notes', value: customerNotes.trim() }] : []),
         ...(notes.trim() ? [{ type: '_meta' as const, key: 'internal_notes', value: notes.trim() }] : []),
         ...(scopeDescription.trim() ? [{ type: '_meta' as const, key: 'scope_description', value: scopeDescription.trim() }] : []),
+        ...(imagesRequested ? [{ type: '_meta' as const, key: 'images_requested', value: true }] : []),
       ];
 
       const quoteData = {
@@ -1078,6 +1083,20 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                 <Switch
                   checked={materialIncluded}
                   onCheckedChange={setMaterialIncluded}
+                />
+              </div>
+
+              {/* Request images from customer */}
+              <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+                <div className="space-y-1">
+                  <Label className="text-base font-semibold">📸 Begär bilder från kund</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {imagesRequested ? 'Kunden uppmanas ladda upp bilder' : 'Ingen bildförfrågan skickas'}
+                  </p>
+                </div>
+                <Switch
+                  checked={imagesRequested}
+                  onCheckedChange={setImagesRequested}
                 />
               </div>
 

@@ -2184,6 +2184,41 @@ export type Database = {
           },
         ]
       }
+      quote_images: {
+        Row: {
+          created_at: string | null
+          file_name: string | null
+          file_path: string
+          id: string
+          quote_id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          file_name?: string | null
+          file_path: string
+          id?: string
+          quote_id: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string | null
+          file_path?: string
+          id?: string
+          quote_id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_images_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_new"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quote_messages: {
         Row: {
           author: string

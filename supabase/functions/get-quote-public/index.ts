@@ -155,6 +155,7 @@ Deno.serve(async (req) => {
     }
 
     const publicData = {
+      id: quote.id,
       number: quote.number,
       title: quote.title,
       items: quote.items,
