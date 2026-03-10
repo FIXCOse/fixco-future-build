@@ -162,6 +162,18 @@ export async function updateQuoteNew(id: string, quoteData: Partial<QuoteNewRow>
   return data as QuoteNewRow;
 }
 
+export async function supersedeQuote(oldQuoteId: string, newQuoteId: string) {
+  const { error } = await supabase
+    .from('quotes_new')
+    .update({ 
+      status: 'superseded', 
+      replaced_by_id: newQuoteId 
+    })
+    .eq('id', oldQuoteId);
+
+  if (error) throw error;
+}
+
 export async function deleteQuoteNew(id: string) {
   // Soft delete - set deleted_at
   const { error } = await supabase

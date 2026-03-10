@@ -87,6 +87,7 @@ Deno.serve(async (req) => {
         signature_date,
         deleted_at,
         locale,
+        replaced_by_id,
         customer:customers(name, email)
       `);
     
@@ -104,6 +105,30 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: 'Offert hittades inte' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+
+    // If quote has been superseded, return redirect info to the new quote
+    if (quote.status === 'superseded' && quote.replaced_by_id) {
+      const { data: newQuote } = await supabase
+        .from('quotes_new')
+        .select('number, public_token, locale')
+        .eq('id', quote.replaced_by_id)
+        .single();
+
+      if (newQuote) {
+        const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
+        const newUrl = `${frontendUrl}/q/${newQuote.number}/${newQuote.public_token}`;
+        const locale = newQuote.locale || quote.locale || 'sv';
+        return new Response(
+          JSON.stringify({ 
+            superseded: true, 
+            new_quote_url: newUrl,
+            new_quote_number: newQuote.number,
+            locale 
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     const { data: questions } = await supabase

@@ -205,10 +205,8 @@ export default function AdminQuotesUnified() {
       return;
     }
 
-    if (bookingItem.quote) {
-      toast.error('En offert finns redan för denna förfrågan');
-      return;
-    }
+    // If an active quote already exists, we'll supersede it after the new one is created
+    const existingQuote = bookingItem.quote;
 
     const payload = bookingItem.booking.payload || {};
     const customerEmail = payload.email || payload.contact_email;

@@ -196,7 +196,7 @@ export function useRequestsQuotes(statusFilter: string[] = []) {
 
       // Combine data
       const combined: RequestWithQuote[] = (bookings || []).map((booking: any) => {
-        const quote = quotes?.find((q: any) => q.request_id === booking.id) as QuoteType | undefined;
+        const quote = quotes?.find((q: any) => q.request_id === booking.id && q.status !== 'superseded') as QuoteType | undefined;
         const customer = customers?.find((c: any) => c.id === booking.customer_id);
         // Find invoice via quote_id OR booking_id
         const invoice = invoices?.find((inv: any) => 
