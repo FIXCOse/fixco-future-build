@@ -360,6 +360,7 @@ type QuoteQuestion = {
 };
 
 type PublicQuote = {
+  id: string;
   number: string;
   title: string;
   status: string;
