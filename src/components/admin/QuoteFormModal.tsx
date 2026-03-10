@@ -488,6 +488,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         ...(customerNotes.trim() ? [{ type: '_meta' as const, key: 'customer_notes', value: customerNotes.trim() }] : []),
         ...(notes.trim() ? [{ type: '_meta' as const, key: 'internal_notes', value: notes.trim() }] : []),
         ...(scopeDescription.trim() ? [{ type: '_meta' as const, key: 'scope_description', value: scopeDescription.trim() }] : []),
+        ...(imagesRequested ? [{ type: '_meta' as const, key: 'images_requested', value: true }] : []),
       ];
 
       const quoteData = {
