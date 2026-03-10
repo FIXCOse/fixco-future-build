@@ -693,12 +693,27 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <Button type="button" size="sm" variant="outline" onClick={() => {
+                  setItems([...items, { type: 'fee', description: 'Startavgift', quantity: 1, unit: 'st', price: 500 }]);
+                }}>
+                  <Receipt className="h-4 w-4 mr-1" />
+                  + Startavgift 500 kr
+                </Button>
+                <Button type="button" size="sm" variant="outline" onClick={() => {
+                  setItems([...items, { type: 'fee', description: 'Timprisrabatt', quantity: 1, unit: 'st', price: -100 }]);
+                }}>
+                  <Tag className="h-4 w-4 mr-1" />
+                  + Timprisrabatt
+                </Button>
+              </div>
+
               {items.map((item, index) => {
                 const isExpanded = expandedItems.has(index);
                 const hasProductInfo = item.productUrl || item.imageUrl || item.supplierName;
                 
                 return (
-                  <div key={index} className="border rounded-lg bg-muted/20">
+                  <div key={index} className={`border rounded-lg ${item.strikethrough ? 'bg-muted/40 opacity-60' : 'bg-muted/20'}`}>
                     <div className="grid grid-cols-12 gap-2 p-3">
                       <div className="col-span-2">
                         <Select
