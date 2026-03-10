@@ -71,7 +71,7 @@ export default function AdminQuoteQuestions() {
   const fetchQuotes = async () => {
     const { data } = await supabase
       .from('quotes_new')
-      .select('id, number, title, customer:customers(name, email)')
+      .select('id, number, title, status, customer:customers(name, email)')
       .is('deleted_at', null)
       .in('status', ['draft', 'sent', 'viewed'])
       .order('created_at', { ascending: false })
