@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe, MessageSquare, Send, CheckCircle2, Clock } from 'lucide-react';
+import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe, MessageSquare, Send, CheckCircle2, Clock, Strikethrough, Receipt, Tag } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
@@ -17,7 +17,7 @@ import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
 import { supabase } from '@/integrations/supabase/client';
 
 type LineItem = {
-  type: 'work' | 'material';
+  type: 'work' | 'material' | 'fee';
   description: string;
   quantity: number;
   unit?: string;
@@ -25,6 +25,7 @@ type LineItem = {
   productUrl?: string;
   imageUrl?: string;
   supplierName?: string;
+  strikethrough?: boolean;
 };
 
 type QuoteFormModalProps = {
@@ -337,19 +338,31 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
 
   const calculateSubtotalWork = () => {
     return items
-      .filter(item => item.type === 'work')
+      .filter(item => item.type === 'work' && !item.strikethrough)
       .reduce((sum, item) => sum + (item.quantity * item.price), 0);
   };
 
   const calculateSubtotalMaterial = () => {
     if (!materialIncluded) return 0;
     return items
-      .filter(item => item.type === 'material')
+      .filter(item => item.type === 'material' && !item.strikethrough)
+      .reduce((sum, item) => sum + (item.quantity * item.price), 0);
+  };
+
+  const calculateFees = () => {
+    return items
+      .filter(item => item.type === 'fee' && !item.strikethrough)
+      .reduce((sum, item) => sum + (item.quantity * item.price), 0);
+  };
+
+  const calculateStrikethroughTotal = () => {
+    return items
+      .filter(item => item.strikethrough)
       .reduce((sum, item) => sum + (item.quantity * item.price), 0);
   };
 
   const calculateSubtotal = () => {
-    return calculateSubtotalWork() + calculateSubtotalMaterial();
+    return calculateSubtotalWork() + calculateSubtotalMaterial() + calculateFees();
   };
 
   // Beräkna rabatt på totalen INKLUSIVE moms (Limont-style)
@@ -680,12 +693,27 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <Button type="button" size="sm" variant="outline" onClick={() => {
+                  setItems([...items, { type: 'fee', description: 'Startavgift', quantity: 1, unit: 'st', price: 500 }]);
+                }}>
+                  <Receipt className="h-4 w-4 mr-1" />
+                  + Startavgift 500 kr
+                </Button>
+                <Button type="button" size="sm" variant="outline" onClick={() => {
+                  setItems([...items, { type: 'fee', description: 'Timprisrabatt', quantity: 1, unit: 'st', price: -100 }]);
+                }}>
+                  <Tag className="h-4 w-4 mr-1" />
+                  + Timprisrabatt
+                </Button>
+              </div>
+
               {items.map((item, index) => {
                 const isExpanded = expandedItems.has(index);
                 const hasProductInfo = item.productUrl || item.imageUrl || item.supplierName;
                 
                 return (
-                  <div key={index} className="border rounded-lg bg-muted/20">
+                  <div key={index} className={`border rounded-lg ${item.strikethrough ? 'bg-muted/40 opacity-60' : 'bg-muted/20'}`}>
                     <div className="grid grid-cols-12 gap-2 p-3">
                       <div className="col-span-2">
                         <Select
@@ -698,6 +726,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                           <SelectContent>
                             <SelectItem value="work">Arbete</SelectItem>
                             <SelectItem value="material">Material</SelectItem>
+                            <SelectItem value="fee">Avgift/Rabatt</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -734,19 +763,31 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                           onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
                         />
                       </div>
-                      <div className="col-span-1 flex items-center justify-between gap-2">
-                        <span className="font-semibold text-sm whitespace-nowrap">
+                      <div className="col-span-1 flex items-center justify-between gap-1">
+                        <span className={`font-semibold text-sm whitespace-nowrap ${item.strikethrough ? 'line-through text-muted-foreground' : ''}`}>
                           {Math.round(item.quantity * item.price).toLocaleString()} kr
                         </span>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => removeItem(index)}
-                          className="h-8 w-8 p-0"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center gap-0.5">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => updateItem(index, 'strikethrough', !item.strikethrough)}
+                            className={`h-8 w-8 p-0 ${item.strikethrough ? 'text-primary' : 'text-muted-foreground'}`}
+                            title={item.strikethrough ? 'Ta bort överstrykning' : 'Stryk över (visa som rabatt)'}
+                          >
+                            <Strikethrough className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => removeItem(index)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                     
@@ -1129,6 +1170,18 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                     {materialIncluded ? calculateSubtotalMaterial().toLocaleString() : '—'} kr
                   </span>
                 </div>
+                {calculateFees() !== 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Avgifter/Rabatter:</span>
+                    <span className="font-medium">{calculateFees().toLocaleString()} kr</span>
+                  </div>
+                )}
+                {calculateStrikethroughTotal() !== 0 && (
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span className="line-through">Överstruket (visas som rabatt):</span>
+                    <span className="line-through">{Math.round(calculateStrikethroughTotal()).toLocaleString()} kr</span>
+                  </div>
+                )}
                 <Separator />
                 <div className="flex justify-between">
                   <span className="font-medium">Delsumma:</span>
