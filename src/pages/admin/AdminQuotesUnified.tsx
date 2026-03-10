@@ -47,6 +47,9 @@ export default function AdminQuotesUnified() {
   const [advancedInvoiceJobData, setAdvancedInvoiceJobData] = useState<any>(null);
   const [showPdfDialog, setShowPdfDialog] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [quoteToSupersede, setQuoteToSupersede] = useState<string | null>(null);
+  const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
+  const [pendingCreateBookingId, setPendingCreateBookingId] = useState<string | null>(null);
 
   // Fetch all data without filtering - we'll do client-side filtering
   const { data: allData, loading, refresh } = useRequestsQuotes([]);
