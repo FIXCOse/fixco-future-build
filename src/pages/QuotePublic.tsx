@@ -492,6 +492,13 @@ export default function QuotePublic() {
         }
         if (!data) throw new Error(quoteCopy.sv.quoteFetchError);
 
+        // Check if the quote has been superseded
+        if (data.superseded) {
+          setSupersededData(data as SupersededData);
+          setLoading(false);
+          return;
+        }
+
         setQuote(data);
         if (data.status === 'accepted') {
           setAccepted(true);
