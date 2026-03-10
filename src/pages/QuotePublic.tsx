@@ -1670,7 +1670,22 @@ export default function QuotePublic() {
             </Card>
           )}
 
-          {/* Answer Admin Question Dialog */}
+          {/* Image Upload Section */}
+          {!isDeleted && quote && (
+            <QuoteImageUpload
+              quoteId={quote.id}
+              imagesRequested={(() => {
+                try {
+                  const allItems = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
+                  const meta = allItems.find((item: any) => item.type === '_meta' && item.key === 'images_requested');
+                  return !!meta?.value;
+                } catch { return false; }
+              })()}
+              locale={locale}
+            />
+          )}
+
+
           <Dialog open={answerModalOpen} onOpenChange={(open) => {
             if (!open) {
               setAnswerModalOpen(false);
