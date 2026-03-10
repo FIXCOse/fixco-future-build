@@ -889,6 +889,33 @@ export default function AdminQuotesUnified() {
         pdfUrl={pdfPreviewUrl}
         title="Offert Preview"
       />
+
+      {/* Replace quote confirmation dialog */}
+      <AlertDialog open={showReplaceConfirm} onOpenChange={setShowReplaceConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Ersätt befintlig offert?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Det finns redan en offert kopplad till denna bokning. Om du skapar en ny offert kommer den tidigare att markeras som ersatt. Kunden som öppnar den gamla länken omdirigeras automatiskt till den nya offerten.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setPendingCreateBookingId(null);
+              setQuoteToSupersede(null);
+            }}>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              setShowReplaceConfirm(false);
+              if (pendingCreateBookingId && quoteToSupersede) {
+                proceedCreateQuote(pendingCreateBookingId, quoteToSupersede);
+              }
+              setPendingCreateBookingId(null);
+            }}>
+              Ersätt och skapa ny
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
