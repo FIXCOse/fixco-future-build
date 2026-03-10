@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { 
   FileText, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Download,
   XCircle, MessageCircle, Bell, CreditCard, List, Shield, Copy, Mail, Phone,
-  Wrench, Package, Link as LinkIcon, Image as ImageIcon, Store
+  Wrench, Package, Link as LinkIcon, Image as ImageIcon, Store, Send
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
