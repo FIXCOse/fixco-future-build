@@ -386,6 +386,13 @@ type PublicQuote = {
   locale?: string;
 };
 
+type SupersededData = {
+  superseded: true;
+  new_quote_url: string;
+  new_quote_number: string;
+  locale: string;
+};
+
 export default function QuotePublic() {
   const { token, number } = useParams<{ token: string; number?: string }>();
   const { toast } = useToast();
@@ -397,6 +404,7 @@ export default function QuotePublic() {
   const [declined, setDeclined] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [supersededData, setSupersededData] = useState<SupersededData | null>(null);
 
   // Accept/Reject states
   const [termsAccepted, setTermsAccepted] = useState(false);
