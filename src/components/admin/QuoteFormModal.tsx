@@ -482,7 +482,23 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         toast.success('Offert uppdaterad');
       } else {
         result = await createQuoteNew(quoteData);
-        toast.success('Offert skapad');
+        
+        // Send any pending questions after quote is created
+        if (result?.id && pendingQuestions.length > 0) {
+          for (const question of pendingQuestions) {
+            try {
+              await supabase.functions.invoke('send-admin-question-to-customer', {
+                body: { quote_id: result.id, question },
+              });
+            } catch (err) {
+              console.error('Failed to send pending question:', err);
+            }
+          }
+          toast.success(`Offert skapad och ${pendingQuestions.length} fråga/or skickade`);
+          setPendingQuestions([]);
+        } else {
+          toast.success('Offert skapad');
+        }
       }
 
       onSuccess(result);
