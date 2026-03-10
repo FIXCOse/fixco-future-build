@@ -115,7 +115,16 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   }, [quote?.id, loadAdminQuestions]);
 
   const handleSendAdminQuestion = async () => {
-    if (!quote?.id || !newAdminQuestion.trim()) return;
+    if (!newAdminQuestion.trim()) return;
+    
+    // If no quote yet (creating), queue locally
+    if (!quote?.id) {
+      setPendingQuestions(prev => [...prev, newAdminQuestion.trim()]);
+      setNewAdminQuestion('');
+      toast.success('Fråga köad – skickas när offerten sparas');
+      return;
+    }
+    
     setSendingQuestion(true);
     try {
       const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
@@ -130,6 +139,10 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     } finally {
       setSendingQuestion(false);
     }
+  };
+
+  const removePendingQuestion = (index: number) => {
+    setPendingQuestions(prev => prev.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
