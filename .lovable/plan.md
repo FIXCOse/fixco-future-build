@@ -1,22 +1,23 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Frågor till kund vid skapande av ny offert
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+"Frågor till kund"-sektionen visas bara vid redigering (`{quote && (...)}`) eftersom frågor kräver ett `quote.id` för att sparas i databasen. Vid ny offert finns inget id ännu.
 
-### Fil som ändras
+### Lösning
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**Fil: `src/components/admin/QuoteFormModal.tsx`**
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+1. **Visa sektionen alltid** — ta bort `{quote && (` wrappern runt "Frågor till kund"-kortet
+2. **Köa frågor lokalt vid ny offert** — lägg till state `pendingQuestions: string[]` som samlar frågor innan offerten sparats
+3. **Vid skapande**: efter `createQuoteNew` returnerar resultatet med `result.id`, loopa igenom `pendingQuestions` och anropa `send-admin-question-to-customer` för varje fråga
+4. **Vid redigering**: behåll befintligt beteende (skicka direkt via edge function)
+5. **UI**: när `quote` inte finns, lägg till frågor i `pendingQuestions` istället. Visa dem i listan med "Skickas vid sparande"-badge
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+### Ändrad fil
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+| Fil | Ändring |
+|-----|---------|
+| `src/components/admin/QuoteFormModal.tsx` | Ta bort `{quote &&` guard, lägg till `pendingQuestions` state, skicka köade frågor efter skapande |
 
