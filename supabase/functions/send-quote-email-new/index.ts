@@ -116,6 +116,16 @@ const handler = async (req: Request): Promise<Response> => {
 
     const hasAdminQuestions = adminQuestions && adminQuestions.length > 0;
 
+    // Check for images_requested meta flag in items
+    let hasImagesRequested = false;
+    try {
+      const items = Array.isArray(quote.items) ? quote.items : JSON.parse(quote.items || '[]');
+      const imagesMeta = items.find((item: any) => item.type === '_meta' && item.key === 'images_requested');
+      hasImagesRequested = !!imagesMeta?.value;
+    } catch (e) {
+      console.error('Error parsing items for images_requested:', e);
+    }
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
