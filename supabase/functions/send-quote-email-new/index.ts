@@ -172,6 +172,13 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             ` : ''}
             
+            ${hasImagesRequested ? `
+            <div style="background: #fef3c7; padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #f59e0b;">
+              <p style="margin: 0 0 8px 0; font-weight: 700; color: #92400e;">${t.imagesRequestedLabel}</p>
+              <p style="margin: 0; font-size: 14px; color: #78350f;">${t.imagesRequestedNote}</p>
+            </div>
+            ` : ''}
+            
             <div style="text-align: center; margin-top: 24px;">
               <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">${t.cta}</a>
             </div>
