@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe, MessageSquare, Send, CheckCircle2, Clock } from 'lucide-react';
+import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe, MessageSquare, Send, CheckCircle2, Clock, Strikethrough, Receipt, Tag } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
