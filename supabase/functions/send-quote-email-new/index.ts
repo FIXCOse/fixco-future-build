@@ -150,6 +150,14 @@ const handler = async (req: Request): Promise<Response> => {
             
             ${quote.valid_until ? `<p><strong>${t.validUntil}</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
             
+            ${hasAdminQuestions ? `
+            <div style="background: #eff6ff; padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #2563eb;">
+              <p style="margin: 0 0 8px 0; font-weight: 700; color: #1e40af;">💬 ${t.questionsLabel}</p>
+              <p style="margin: 0 0 12px 0; font-size: 14px; color: #374151;">${t.questionsNote}</p>
+              ${adminQuestions!.map(q => `<p style="margin: 4px 0; font-size: 14px; color: #1e3a5f;">• ${q.question}</p>`).join('')}
+            </div>
+            ` : ''}
+            
             <div style="text-align: center; margin-top: 24px;">
               <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">${t.cta}</a>
             </div>
