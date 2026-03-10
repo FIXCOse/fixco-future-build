@@ -17,7 +17,7 @@ import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
 import { supabase } from '@/integrations/supabase/client';
 
 type LineItem = {
-  type: 'work' | 'material';
+  type: 'work' | 'material' | 'fee';
   description: string;
   quantity: number;
   unit?: string;
@@ -25,6 +25,7 @@ type LineItem = {
   productUrl?: string;
   imageUrl?: string;
   supplierName?: string;
+  strikethrough?: boolean;
 };
 
 type QuoteFormModalProps = {
