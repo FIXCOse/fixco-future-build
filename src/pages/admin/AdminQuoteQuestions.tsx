@@ -41,6 +41,7 @@ type QuoteOption = {
   id: string;
   number: string;
   title: string;
+  status: string;
   customer: { name: string; email: string } | null;
 };
 
