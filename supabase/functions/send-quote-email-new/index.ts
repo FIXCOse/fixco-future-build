@@ -102,6 +102,16 @@ const handler = async (req: Request): Promise<Response> => {
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
 
+    // Check for pending admin questions
+    const { data: adminQuestions } = await supabase
+      .from('quote_questions')
+      .select('question')
+      .eq('quote_id', quoteId)
+      .eq('asked_by', 'admin')
+      .eq('answered', false);
+
+    const hasAdminQuestions = adminQuestions && adminQuestions.length > 0;
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
