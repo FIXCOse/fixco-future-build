@@ -763,16 +763,28 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                           onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
                         />
                       </div>
-                      <div className="col-span-1 flex items-center justify-between gap-2">
-                        <span className="font-semibold text-sm whitespace-nowrap">
+                      <div className="col-span-1 flex items-center justify-between gap-1">
+                        <span className={`font-semibold text-sm whitespace-nowrap ${item.strikethrough ? 'line-through text-muted-foreground' : ''}`}>
                           {Math.round(item.quantity * item.price).toLocaleString()} kr
                         </span>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => removeItem(index)}
-                          className="h-8 w-8 p-0"
+                        <div className="flex items-center gap-0.5">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => updateItem(index, 'strikethrough', !item.strikethrough)}
+                            className={`h-8 w-8 p-0 ${item.strikethrough ? 'text-primary' : 'text-muted-foreground'}`}
+                            title={item.strikethrough ? 'Ta bort överstrykning' : 'Stryk över (visa som rabatt)'}
+                          >
+                            <Strikethrough className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => removeItem(index)}
+                            className="h-8 w-8 p-0"
+                          >
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
