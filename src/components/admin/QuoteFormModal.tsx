@@ -302,6 +302,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setDiscountType('none');
     setDiscountValue(0);
     setMaterialIncluded(true);
+    setImagesRequested(false);
     setCustomVat(false);
     setCustomVatRate(25);
     setLocale('sv');
