@@ -1170,6 +1170,18 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                     {materialIncluded ? calculateSubtotalMaterial().toLocaleString() : '—'} kr
                   </span>
                 </div>
+                {calculateFees() !== 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Avgifter/Rabatter:</span>
+                    <span className="font-medium">{calculateFees().toLocaleString()} kr</span>
+                  </div>
+                )}
+                {calculateStrikethroughTotal() !== 0 && (
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span className="line-through">Överstruket (visas som rabatt):</span>
+                    <span className="line-through">{Math.round(calculateStrikethroughTotal()).toLocaleString()} kr</span>
+                  </div>
+                )}
                 <Separator />
                 <div className="flex justify-between">
                   <span className="font-medium">Delsumma:</span>
