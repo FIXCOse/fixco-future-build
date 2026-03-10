@@ -1,22 +1,34 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Lägg till "Ställ fråga till kund" direkt i QuoteFormModal
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Problem
+Admin kan bara ställa frågor till kunder via den separata AdminQuoteQuestions-sidan. Det finns ingen möjlighet att ställa frågor direkt från offertformuläret (QuoteFormModal) — varken innan eller efter att offerten skickats.
 
-### Fil som ändras
+### Lösning
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+**Fil: `src/components/admin/QuoteFormModal.tsx`**
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+Lägg till en sektion i QuoteFormModal (under befintliga fält, t.ex. efter "Kundnotering") där admin kan:
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+1. Se befintliga frågor kopplade till denna offert (om `quote` finns)
+2. Skriva och skicka nya frågor till kunden direkt från formuläret
+3. Frågorna sparas via `send-admin-question-to-customer` edge function (redan implementerad)
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+Konkret:
+- Lägg till state för `adminQuestions` (lista), `newAdminQuestion` (textarea), `sendingQuestion` (loading)
+- Vid öppning av en befintlig offert: hämta frågor från `quote_questions` där `quote_id` matchar och `asked_by = 'admin'`
+- Visa en "Frågor till kund"-sektion med:
+  - Lista på redan ställda frågor med status (besvarad/ej besvarad)
+  - Textarea + "Skicka fråga"-knapp för att ställa ny fråga
+- Anropet går till `send-admin-question-to-customer` edge function som redan hanterar insert + mail
+
+### Filer som ändras
+
+| Fil | Ändring |
+|-----|---------|
+| `src/components/admin/QuoteFormModal.tsx` | Ny sektion "Frågor till kund" med lista + textarea + skicka-knapp |
+
+### Ingen ny edge function behövs
+Återanvänder befintlig `send-admin-question-to-customer`.
 
