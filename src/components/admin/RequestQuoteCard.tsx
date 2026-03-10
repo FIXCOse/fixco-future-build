@@ -367,6 +367,20 @@ export function RequestQuoteCard({
             </div>
           )}
 
+          {/* Action: Replace Quote (when quote exists) */}
+          {quote && quote.status !== 'draft' && (
+            <div className="flex gap-2 pt-1">
+              <Button
+                onClick={() => onCreateQuote(booking.id)}
+                variant="outline"
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Ersätt med ny offert
+              </Button>
+            </div>
+          )}
+
           {/* Quote Section */}
           {quote && (
             <>
