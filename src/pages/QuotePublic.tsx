@@ -885,6 +885,7 @@ export default function QuotePublic() {
                 
                 const workItems = parsedItems.filter((item: any) => item.type === 'work');
                 const materialItems = parsedItems.filter((item: any) => item.type === 'material');
+                const feeItems = parsedItems.filter((item: any) => item.type === 'fee');
                 const materialMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'material_included');
                 const materialNotIncluded = materialMeta && materialMeta.value === false;
                 
