@@ -1,0 +1,1 @@
+ALTER TABLE public.quote_questions ADD COLUMN asked_by text NOT NULL DEFAULT 'customer' CHECK (asked_by IN ('customer', 'admin'));

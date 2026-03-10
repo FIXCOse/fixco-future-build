@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { 
   FileText, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Download,
   XCircle, MessageCircle, Bell, CreditCard, List, Shield, Copy, Mail, Phone,
-  Wrench, Package, Link as LinkIcon, Image as ImageIcon, Store
+  Wrench, Package, Link as LinkIcon, Image as ImageIcon, Store, Send
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -134,6 +134,14 @@ const quoteCopy = {
     answerFromFixco: 'Svar från Fixco',
     awaitingAnswer: 'Väntar på svar',
     questionsLabel: 'Frågor?',
+    fixcoQuestion: 'Fråga från Fixco',
+    yourAnswer: 'Ditt svar *',
+    answerPlaceholder: 'Skriv ditt svar här...',
+    sendAnswer: 'Skicka svar',
+    answerName: 'Ditt namn *',
+    toastAnswerSuccess: 'Svar skickat!',
+    toastAnswerSuccessDesc: 'Tack för ditt svar',
+    toastAnswerFail: 'Kunde inte skicka svar',
     // Toast messages
     toastTermsTitle: 'Villkor måste accepteras',
     toastTermsDesc: 'Du måste godkänna våra villkor för att acceptera offerten',
@@ -285,6 +293,14 @@ const quoteCopy = {
     answerFromFixco: 'Answer from Fixco',
     awaitingAnswer: 'Awaiting answer',
     questionsLabel: 'Questions?',
+    fixcoQuestion: 'Question from Fixco',
+    yourAnswer: 'Your answer *',
+    answerPlaceholder: 'Write your answer here...',
+    sendAnswer: 'Send answer',
+    answerName: 'Your name *',
+    toastAnswerSuccess: 'Answer sent!',
+    toastAnswerSuccessDesc: 'Thank you for your answer',
+    toastAnswerFail: 'Could not send answer',
     toastTermsTitle: 'Terms must be accepted',
     toastTermsDesc: 'You must accept our terms to accept the quote',
     toastSigTitle: 'Signature missing',
@@ -335,6 +351,7 @@ type QuoteQuestion = {
   answered: boolean;
   answer?: string;
   answered_at?: string;
+  asked_by?: string;
 };
 
 type PublicQuote = {
@@ -401,6 +418,13 @@ export default function QuotePublic() {
   const [reminderEmail, setReminderEmail] = useState('');
   const [reminderDays, setReminderDays] = useState('3');
   const [reminderSubmitting, setReminderSubmitting] = useState(false);
+
+  // Answer admin question states
+  const [answerModalOpen, setAnswerModalOpen] = useState(false);
+  const [answerQuestionId, setAnswerQuestionId] = useState<string | null>(null);
+  const [answerText, setAnswerText] = useState('');
+  const [answerName, setAnswerName] = useState('');
+  const [answerSubmitting, setAnswerSubmitting] = useState(false);
 
   // Derive locale-aware copy
   const locale = (quote?.locale === 'en' ? 'en' : 'sv') as 'sv' | 'en';
@@ -653,6 +677,46 @@ export default function QuotePublic() {
     }
   };
 
+
+  const handleAnswerAdminQuestion = async () => {
+    if (!answerQuestionId || !answerText.trim() || !answerName.trim()) {
+      toast({ title: t.toastQuestionTitle, description: t.toastQuestionDesc, variant: 'destructive' });
+      return;
+    }
+
+    setAnswerSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke('answer-quote-question', {
+        body: {
+          question_id: answerQuestionId,
+          answer: answerText.trim(),
+          customer_email: quote?.customer_email || null,
+        }
+      });
+
+      if (error) throw error;
+
+      setQuote(prev => prev ? {
+        ...prev,
+        questions: prev.questions.map(q =>
+          q.id === answerQuestionId
+            ? { ...q, answered: true, answer: answerText.trim(), answered_at: new Date().toISOString() }
+            : q
+        )
+      } : prev);
+
+      toast({ title: t.toastAnswerSuccess, description: t.toastAnswerSuccessDesc });
+      setAnswerModalOpen(false);
+      setAnswerQuestionId(null);
+      setAnswerText('');
+      setAnswerName('');
+    } catch (err: any) {
+      console.error('Error answering question:', err);
+      toast({ title: t.toastAnswerFail, description: err.message, variant: 'destructive' });
+    } finally {
+      setAnswerSubmitting(false);
+    }
+  };
 
   const isExpired = quote?.valid_until && new Date(quote.valid_until) < new Date();
   const daysLeft = quote?.valid_until 
@@ -1481,52 +1545,132 @@ export default function QuotePublic() {
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
-                {quote.questions.map((q) => (
-                  <div key={q.id} className="border border-border rounded-lg p-4 space-y-3">
-                    <div className="space-y-1">
-                      <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <MessageCircle className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-sm text-muted-foreground">{q.customer_name}</p>
-                          <p className="text-sm text-foreground mt-1">{q.question}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {new Date(q.asked_at).toLocaleDateString(dateLocale, {
-                              year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {q.answered && q.answer ? (
-                      <div className="ml-10 pl-4 border-l-2 border-primary/30 space-y-1">
+                {quote.questions.map((q) => {
+                  const isAdminQ = q.asked_by === 'admin';
+                  return (
+                    <div key={q.id} className={`border rounded-lg p-4 space-y-3 ${isAdminQ ? 'border-blue-200 bg-blue-50/50' : 'border-border'}`}>
+                      <div className="space-y-1">
                         <div className="flex items-start gap-2">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${isAdminQ ? 'bg-blue-100' : 'bg-primary/10'}`}>
+                            {isAdminQ ? (
+                              <Store className="h-4 w-4 text-blue-600" />
+                            ) : (
+                              <MessageCircle className="h-4 w-4 text-primary" />
+                            )}
+                          </div>
                           <div className="flex-1">
-                            <p className="font-medium text-sm text-primary">{t.answerFromFixco}</p>
-                            <p className="text-sm text-foreground mt-1">{q.answer}</p>
+                            <p className={`font-medium text-sm ${isAdminQ ? 'text-blue-700' : 'text-muted-foreground'}`}>
+                              {isAdminQ ? t.fixcoQuestion : q.customer_name}
+                            </p>
+                            <p className="text-sm text-foreground mt-1">{q.question}</p>
                             <p className="text-xs text-muted-foreground mt-1">
-                              {new Date(q.answered_at!).toLocaleDateString(dateLocale, {
+                              {new Date(q.asked_at).toLocaleDateString(dateLocale, {
                                 year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
                               })}
                             </p>
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      <div className="ml-10 pl-4 border-l-2 border-border">
-                        <Badge variant="secondary" className="text-xs">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {t.awaitingAnswer}
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      
+                      {q.answered && q.answer ? (
+                        <div className="ml-10 pl-4 border-l-2 border-primary/30 space-y-1">
+                          <div className="flex items-start gap-2">
+                            <div className="flex-1">
+                              <p className="font-medium text-sm text-primary">
+                                {isAdminQ ? q.customer_name || quote.customer_name : t.answerFromFixco}
+                              </p>
+                              <p className="text-sm text-foreground mt-1">{q.answer}</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {new Date(q.answered_at!).toLocaleDateString(dateLocale, {
+                                  year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ) : isAdminQ ? (
+                        <div className="ml-10">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-2"
+                            onClick={() => {
+                              setAnswerQuestionId(q.id);
+                              setAnswerText('');
+                              setAnswerName(quote.customer_name || '');
+                              setAnswerModalOpen(true);
+                            }}
+                          >
+                            <Send className="h-3 w-3" />
+                            {t.sendAnswer}
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="ml-10 pl-4 border-l-2 border-border">
+                          <Badge variant="secondary" className="text-xs">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {t.awaitingAnswer}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </CardContent>
             </Card>
           )}
+
+          {/* Answer Admin Question Dialog */}
+          <Dialog open={answerModalOpen} onOpenChange={(open) => {
+            if (!open) {
+              setAnswerModalOpen(false);
+              setAnswerQuestionId(null);
+              setAnswerText('');
+              setAnswerName('');
+            }
+          }}>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle>{t.fixcoQuestion}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {answerQuestionId && quote?.questions && (
+                  <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-400">
+                    <p className="text-sm">{quote.questions.find(q => q.id === answerQuestionId)?.question}</p>
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <Label>{t.answerName}</Label>
+                  <Input
+                    value={answerName}
+                    onChange={(e) => setAnswerName(e.target.value)}
+                    placeholder={t.namePlaceholder}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t.yourAnswer}</Label>
+                  <Textarea
+                    value={answerText}
+                    onChange={(e) => setAnswerText(e.target.value)}
+                    placeholder={t.answerPlaceholder}
+                    rows={4}
+                    className="resize-none"
+                  />
+                </div>
+                <div className="flex justify-end gap-3">
+                  <Button variant="outline" onClick={() => setAnswerModalOpen(false)}>{t.cancel}</Button>
+                  <Button
+                    onClick={handleAnswerAdminQuestion}
+                    disabled={answerSubmitting || !answerText.trim() || !answerName.trim()}
+                    className="gap-2"
+                  >
+                    <Send className="h-4 w-4" />
+                    {answerSubmitting ? t.sending : t.sendAnswer}
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {/* Footer */}
           <div className="text-center text-xs text-muted-foreground space-y-1">

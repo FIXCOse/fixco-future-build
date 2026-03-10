@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { MessageCircle, Send, CheckCircle, Clock, Mail, Trash2 } from 'lucide-react';
+import { MessageCircle, Send, CheckCircle, Clock, Mail, Trash2, PlusCircle, ArrowRight } from 'lucide-react';
 import AdminBack from '@/components/admin/AdminBack';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -25,6 +26,7 @@ type QuoteQuestion = {
   answer: string | null;
   answered_at: string | null;
   seen_at: string | null;
+  asked_by: string;
   quote: {
     number: string;
     title: string;
@@ -33,6 +35,13 @@ type QuoteQuestion = {
       email: string;
     } | null;
   } | null;
+};
+
+type QuoteOption = {
+  id: string;
+  number: string;
+  title: string;
+  customer: { name: string; email: string } | null;
 };
 
 export default function AdminQuoteQuestions() {
@@ -45,10 +54,29 @@ export default function AdminQuoteQuestions() {
   const [submitting, setSubmitting] = useState(false);
   const [filter, setFilter] = useState<'all' | 'unanswered' | 'answered'>('unanswered');
 
+  // Ask question to customer state
+  const [askModalOpen, setAskModalOpen] = useState(false);
+  const [askQuestion, setAskQuestion] = useState('');
+  const [askQuoteId, setAskQuoteId] = useState('');
+  const [askSubmitting, setAskSubmitting] = useState(false);
+  const [quotes, setQuotes] = useState<QuoteOption[]>([]);
+
   useEffect(() => {
     fetchQuestions();
     markQuestionsAsSeen();
+    fetchQuotes();
   }, []);
+
+  const fetchQuotes = async () => {
+    const { data } = await supabase
+      .from('quotes_new')
+      .select('id, number, title, customer:customers(name, email)')
+      .is('deleted_at', null)
+      .in('status', ['draft', 'sent', 'viewed'])
+      .order('created_at', { ascending: false })
+      .limit(50);
+    setQuotes((data as any) || []);
+  };
 
   const fetchQuestions = async () => {
     try {
@@ -82,7 +110,6 @@ export default function AdminQuoteQuestions() {
       .is('seen_at', null);
 
     if (!error) {
-      // Invalidera notis-cachen så den uppdateras
       queryClient.invalidateQueries({ queryKey: ['unanswered-questions-count'] });
       queryClient.invalidateQueries({ queryKey: ['recent-unanswered-questions'] });
     }
@@ -125,7 +152,7 @@ export default function AdminQuoteQuestions() {
 
       if (error) throw error;
 
-      toast.success('Svar skickat till kund!');
+      toast.success('Svar skickat!');
       setSelectedQuestion(null);
       setAnswer('');
       fetchQuestions();
@@ -134,6 +161,36 @@ export default function AdminQuoteQuestions() {
       toast.error('Kunde inte skicka svar');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleAskCustomerQuestion = async () => {
+    if (!askQuoteId || !askQuestion.trim()) {
+      toast.error('Välj offert och ange en fråga');
+      return;
+    }
+
+    setAskSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
+        body: {
+          quote_id: askQuoteId,
+          question: askQuestion.trim(),
+        }
+      });
+
+      if (error) throw error;
+
+      toast.success('Fråga skickad till kund!');
+      setAskModalOpen(false);
+      setAskQuestion('');
+      setAskQuoteId('');
+      fetchQuestions();
+    } catch (err: any) {
+      console.error('Failed to ask question:', err);
+      toast.error('Kunde inte skicka fråga');
+    } finally {
+      setAskSubmitting(false);
     }
   };
 
@@ -174,13 +231,17 @@ export default function AdminQuoteQuestions() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <MessageCircle className="h-6 w-6 text-primary" />
-              <CardTitle>Kundfrågor om offerter</CardTitle>
+              <CardTitle>Offertfrågor</CardTitle>
               {unansweredCount > 0 && (
                 <Badge variant="destructive" className="ml-2">
                   {unansweredCount} obesvarade
                 </Badge>
               )}
             </div>
+            <Button onClick={() => setAskModalOpen(true)} className="gap-2">
+              <PlusCircle className="h-4 w-4" />
+              Ställ fråga till kund
+            </Button>
           </div>
           <div className="flex gap-2 mt-4">
             <Button
@@ -232,6 +293,12 @@ export default function AdminQuoteQuestions() {
                             >
                               {question.quote?.number || 'Okänd offert'}
                             </Button>
+                            {question.asked_by === 'admin' && (
+                              <Badge variant="outline" className="text-xs border-blue-300 text-blue-700 bg-blue-50">
+                                <ArrowRight className="h-3 w-3 mr-1" />
+                                Fråga till kund
+                              </Badge>
+                            )}
                             {!question.answered && (
                               <Badge variant="destructive" className="text-xs">
                                 <Clock className="h-3 w-3 mr-1" />
@@ -266,10 +333,10 @@ export default function AdminQuoteQuestions() {
                       </div>
 
                       {/* Customer & Question */}
-                      <div className="space-y-2 border-l-2 border-muted pl-4">
+                      <div className={`space-y-2 border-l-2 pl-4 ${question.asked_by === 'admin' ? 'border-blue-400' : 'border-muted'}`}>
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="font-medium">{question.customer_name}</span>
-                          {question.customer_email && (
+                          <span className="font-medium">{question.asked_by === 'admin' ? 'Fixco (du)' : question.customer_name}</span>
+                          {question.customer_email && question.asked_by !== 'admin' && (
                             <>
                               <span className="text-muted-foreground">•</span>
                               <span className="text-muted-foreground flex items-center gap-1">
@@ -286,7 +353,9 @@ export default function AdminQuoteQuestions() {
                       {question.answered && question.answer && (
                         <div className="space-y-2 bg-muted/50 rounded-lg p-3 border-l-2 border-primary">
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-primary">Ditt svar:</span>
+                            <span className="text-xs font-semibold text-primary">
+                              {question.asked_by === 'admin' ? 'Kundens svar:' : 'Ditt svar:'}
+                            </span>
                             {question.answered_at && (
                               <span className="text-xs text-muted-foreground">
                                 {format(new Date(question.answered_at), 'PPP HH:mm', { locale: sv })}
@@ -298,7 +367,7 @@ export default function AdminQuoteQuestions() {
                       )}
 
                       {/* Actions */}
-                      {!question.answered && (
+                      {!question.answered && question.asked_by !== 'admin' && (
                         <div className="flex justify-end pt-2">
                           <Button
                             size="sm"
@@ -338,7 +407,6 @@ export default function AdminQuoteQuestions() {
           </DialogHeader>
           {selectedQuestion && (
             <div className="space-y-4">
-              {/* Quote Info */}
               <div className="bg-muted p-3 rounded-lg space-y-1">
                 <p className="text-sm font-medium">
                   {selectedQuestion.quote?.number} - {selectedQuestion.quote?.title}
@@ -349,7 +417,6 @@ export default function AdminQuoteQuestions() {
                 </p>
               </div>
 
-              {/* Customer Question */}
               <div className="space-y-2">
                 <p className="text-sm font-medium">Kundens fråga:</p>
                 <p className="text-sm bg-muted p-3 rounded-lg border-l-2 border-primary">
@@ -357,7 +424,6 @@ export default function AdminQuoteQuestions() {
                 </p>
               </div>
 
-              {/* Answer Input */}
               <div className="space-y-2">
                 <label className="text-sm font-medium">Ditt svar:</label>
                 <Textarea
@@ -372,7 +438,6 @@ export default function AdminQuoteQuestions() {
                 </p>
               </div>
 
-              {/* Actions */}
               <div className="flex justify-end gap-3">
                 <Button
                   variant="outline"
@@ -394,6 +459,60 @@ export default function AdminQuoteQuestions() {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Ask Customer Question Dialog */}
+      <Dialog open={askModalOpen} onOpenChange={setAskModalOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Ställ fråga till kund</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Välj offert</label>
+              <Select value={askQuoteId} onValueChange={setAskQuoteId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Välj en offert..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {quotes.map(q => (
+                    <SelectItem key={q.id} value={q.id}>
+                      {q.number} – {q.title || 'Utan titel'} ({q.customer?.name || 'Okänd kund'})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Din fråga till kunden</label>
+              <Textarea
+                value={askQuestion}
+                onChange={(e) => setAskQuestion(e.target.value)}
+                placeholder="T.ex. 'Vilken modell önskar ni?' eller 'Vilken färg föredrar ni?'"
+                rows={4}
+                className="resize-none"
+              />
+              <p className="text-xs text-muted-foreground">
+                Frågan visas i den publika offerten och kunden notifieras via email
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" onClick={() => setAskModalOpen(false)}>
+                Avbryt
+              </Button>
+              <Button
+                onClick={handleAskCustomerQuestion}
+                disabled={askSubmitting || !askQuestion.trim() || !askQuoteId}
+                className="gap-2"
+              >
+                <Send className="h-4 w-4" />
+                {askSubmitting ? 'Skickar...' : 'Skicka fråga'}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

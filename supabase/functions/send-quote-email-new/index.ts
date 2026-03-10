@@ -29,6 +29,8 @@ const quoteCopy = {
     cta: 'Visa och acceptera offert',
     footer: 'Du kan även begära ändringar direkt via länken ovan.',
     regards: 'Med vänliga hälsningar,',
+    questionsNote: 'Vi har även ställt frågor i offerten som vi önskar att du besvarar.',
+    questionsLabel: 'Våra frågor till dig:',
   },
   en: {
     subject: (num: string) => `Quote ${num} from Fixco`,
@@ -47,6 +49,8 @@ const quoteCopy = {
     cta: 'View and accept quote',
     footer: 'You can also request changes directly via the link above.',
     regards: 'Kind regards,',
+    questionsNote: 'We have also included questions in the quote that we would like you to answer.',
+    questionsLabel: 'Our questions for you:',
   },
 };
 
@@ -98,6 +102,16 @@ const handler = async (req: Request): Promise<Response> => {
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
 
+    // Check for pending admin questions
+    const { data: adminQuestions } = await supabase
+      .from('quote_questions')
+      .select('question')
+      .eq('quote_id', quoteId)
+      .eq('asked_by', 'admin')
+      .eq('answered', false);
+
+    const hasAdminQuestions = adminQuestions && adminQuestions.length > 0;
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -135,6 +149,14 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             
             ${quote.valid_until ? `<p><strong>${t.validUntil}</strong> ${new Date(quote.valid_until).toLocaleDateString('sv-SE')}</p>` : ''}
+            
+            ${hasAdminQuestions ? `
+            <div style="background: #eff6ff; padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #2563eb;">
+              <p style="margin: 0 0 8px 0; font-weight: 700; color: #1e40af;">💬 ${t.questionsLabel}</p>
+              <p style="margin: 0 0 12px 0; font-size: 14px; color: #374151;">${t.questionsNote}</p>
+              ${adminQuestions!.map(q => `<p style="margin: 4px 0; font-size: 14px; color: #1e3a5f;">• ${q.question}</p>`).join('')}
+            </div>
+            ` : ''}
             
             <div style="text-align: center; margin-top: 24px;">
               <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">${t.cta}</a>
