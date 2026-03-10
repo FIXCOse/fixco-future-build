@@ -29,6 +29,8 @@ const quoteCopy = {
     cta: 'Visa och acceptera offert',
     footer: 'Du kan även begära ändringar direkt via länken ovan.',
     regards: 'Med vänliga hälsningar,',
+    questionsNote: 'Vi har även ställt frågor i offerten som vi önskar att du besvarar.',
+    questionsLabel: 'Våra frågor till dig:',
   },
   en: {
     subject: (num: string) => `Quote ${num} from Fixco`,
@@ -47,6 +49,8 @@ const quoteCopy = {
     cta: 'View and accept quote',
     footer: 'You can also request changes directly via the link above.',
     regards: 'Kind regards,',
+    questionsNote: 'We have also included questions in the quote that we would like you to answer.',
+    questionsLabel: 'Our questions for you:',
   },
 };
 
