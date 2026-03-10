@@ -287,6 +287,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     setLocale('sv');
     setShowNewCustomer(false);
     setNewCustomer({ name: '', email: '', phone: '', address: '', personnummer: '', postalCode: '', city: '' });
+    setPendingQuestions([]);
+    setNewAdminQuestion('');
   };
 
   const addItem = () => {
