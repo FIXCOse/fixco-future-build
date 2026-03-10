@@ -772,7 +772,13 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                             type="button"
                             size="sm"
                             variant="ghost"
-                            onClick={() => updateItem(index, 'strikethrough', !item.strikethrough)}
+                            onClick={() => {
+                              const newVal = !item.strikethrough;
+                              if (newVal && item.price < 0) {
+                                toast.warning('Obs: Denna rabatt kommer inte att dras av från totalen om den är överstruken. Överstrukna rader visas bara visuellt men påverkar inte slutpriset.');
+                              }
+                              updateItem(index, 'strikethrough', newVal);
+                            }}
                             className={`h-8 w-8 p-0 ${item.strikethrough ? 'text-primary' : 'text-muted-foreground'}`}
                             title={item.strikethrough ? 'Ta bort överstrykning' : 'Stryk över (visa som rabatt)'}
                           >
