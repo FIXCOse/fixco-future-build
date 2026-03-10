@@ -785,9 +785,9 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                             onClick={() => removeItem(index)}
                             className="h-8 w-8 p-0"
                           >
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                     
