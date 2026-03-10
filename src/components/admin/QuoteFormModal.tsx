@@ -1176,18 +1176,33 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                     {materialIncluded ? calculateSubtotalMaterial().toLocaleString() : '—'} kr
                   </span>
                 </div>
-                {calculateFees() !== 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Avgifter/Rabatter:</span>
-                    <span className="font-medium">{calculateFees().toLocaleString()} kr</span>
-                  </div>
-                )}
-                {calculateStrikethroughTotal() !== 0 && (
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span className="line-through">Överstruket (visas som rabatt):</span>
-                    <span className="line-through">{Math.round(calculateStrikethroughTotal()).toLocaleString()} kr</span>
-                  </div>
-                )}
+                {(() => {
+                  const positiveFees = items.filter(i => i.type === 'fee' && !i.strikethrough && i.price >= 0).reduce((s, i) => s + i.quantity * i.price, 0);
+                  const negativeFees = items.filter(i => i.type === 'fee' && !i.strikethrough && i.price < 0).reduce((s, i) => s + i.quantity * i.price, 0);
+                  const strikethroughTotal = calculateStrikethroughTotal();
+                  return (
+                    <>
+                      {positiveFees > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Avgifter:</span>
+                          <span className="font-medium">+{positiveFees.toLocaleString()} kr</span>
+                        </div>
+                      )}
+                      {negativeFees < 0 && (
+                        <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                          <span>Rabatter (fee):</span>
+                          <span className="font-medium">{negativeFees.toLocaleString()} kr</span>
+                        </div>
+                      )}
+                      {strikethroughTotal !== 0 && (
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span className="line-through">Överstruket (visas som rabatt):</span>
+                          <span className="line-through">{Math.round(strikethroughTotal).toLocaleString()} kr</span>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
                 <Separator />
                 <div className="flex justify-between">
                   <span className="font-medium">Delsumma:</span>
