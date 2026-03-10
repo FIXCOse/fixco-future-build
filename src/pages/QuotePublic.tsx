@@ -419,6 +419,13 @@ export default function QuotePublic() {
   const [reminderDays, setReminderDays] = useState('3');
   const [reminderSubmitting, setReminderSubmitting] = useState(false);
 
+  // Answer admin question states
+  const [answerModalOpen, setAnswerModalOpen] = useState(false);
+  const [answerQuestionId, setAnswerQuestionId] = useState<string | null>(null);
+  const [answerText, setAnswerText] = useState('');
+  const [answerName, setAnswerName] = useState('');
+  const [answerSubmitting, setAnswerSubmitting] = useState(false);
+
   // Derive locale-aware copy
   const locale = (quote?.locale === 'en' ? 'en' : 'sv') as 'sv' | 'en';
   const t = quoteCopy[locale];
