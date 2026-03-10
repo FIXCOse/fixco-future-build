@@ -1086,6 +1086,20 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
                 />
               </div>
 
+              {/* Request images from customer */}
+              <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+                <div className="space-y-1">
+                  <Label className="text-base font-semibold">📸 Begär bilder från kund</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {imagesRequested ? 'Kunden uppmanas ladda upp bilder' : 'Ingen bildförfrågan skickas'}
+                  </p>
+                </div>
+                <Switch
+                  checked={imagesRequested}
+                  onCheckedChange={setImagesRequested}
+                />
+              </div>
+
               {/* Discount */}
               <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
                 <Label className="text-base font-semibold">Rabatt</Label>
