@@ -127,15 +127,31 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
     
     setSendingQuestion(true);
     try {
-      const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
-        body: { quote_id: quote.id, question: newAdminQuestion.trim() },
-      });
-      if (error) throw error;
-      toast.success('Fråga skickad till kund');
+      // If quote is already sent, use edge function to also email the customer
+      if (quote.status === 'sent' || quote.status === 'viewed') {
+        const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
+          body: { quote_id: quote.id, question: newAdminQuestion.trim() },
+        });
+        if (error) throw error;
+        toast.success('Fråga skickad till kund via email');
+      } else {
+        // Quote is draft/other - just save to DB, email will be sent when quote is sent
+        const { error } = await supabase
+          .from('quote_questions')
+          .insert({
+            quote_id: quote.id,
+            question: newAdminQuestion.trim(),
+            asked_by: 'admin',
+            customer_name: 'Fixco',
+            answered: false,
+          });
+        if (error) throw error;
+        toast.success('Fråga sparad – skickas till kund när offerten skickas');
+      }
       setNewAdminQuestion('');
       loadAdminQuestions(quote.id);
     } catch (err: any) {
-      toast.error(err.message || 'Kunde inte skicka fråga');
+      toast.error(err.message || 'Kunde inte spara fråga');
     } finally {
       setSendingQuestion(false);
     }
