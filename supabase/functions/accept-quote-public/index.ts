@@ -190,7 +190,7 @@ Deno.serve(async (req) => {
         .maybeSingle();
 
       notifyAdmin(
-        `✅ Offert ${quote.number} accepterad igen av ${customerName}`,
+        `Offert ${quote.number} accepterad igen av ${customerName}`,
         buildAdminHtml(quote.number, quote.title, customerName, signature_name, now, true)
       );
 
