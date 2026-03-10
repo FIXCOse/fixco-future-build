@@ -188,6 +188,8 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
         if (internalNotesMeta) setNotes(internalNotesMeta.value || '');
         const scopeMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'scope_description');
         if (scopeMeta) setScopeDescription(scopeMeta.value || '');
+        const imagesReqMeta = parsedItems.find((item: any) => item.type === '_meta' && item.key === 'images_requested');
+        if (imagesReqMeta) setImagesRequested(!!imagesReqMeta.value);
         // Filter out meta items for display
         const displayItems = parsedItems.filter((item: any) => item.type !== '_meta');
         if (displayItems.length > 0) {
