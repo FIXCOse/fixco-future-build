@@ -501,18 +501,22 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       } else {
         result = await createQuoteNew(quoteData);
         
-        // Send any pending questions after quote is created
+        // Save pending questions directly to DB (no email yet - sent when quote is sent)
         if (result?.id && pendingQuestions.length > 0) {
-          for (const question of pendingQuestions) {
-            try {
-              await supabase.functions.invoke('send-admin-question-to-customer', {
-                body: { quote_id: result.id, question },
-              });
-            } catch (err) {
-              console.error('Failed to send pending question:', err);
-            }
+          const questionsToInsert = pendingQuestions.map(q => ({
+            quote_id: result.id,
+            question: q,
+            asked_by: 'admin',
+            customer_name: 'Fixco',
+            answered: false,
+          }));
+          const { error: qError } = await supabase
+            .from('quote_questions')
+            .insert(questionsToInsert);
+          if (qError) {
+            console.error('Failed to save pending questions:', qError);
           }
-          toast.success(`Offert skapad och ${pendingQuestions.length} fråga/or skickade`);
+          toast.success(`Offert skapad med ${pendingQuestions.length} fråga/or (skickas till kund vid utskick)`);
           setPendingQuestions([]);
         } else {
           toast.success('Offert skapad');
