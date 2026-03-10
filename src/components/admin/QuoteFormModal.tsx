@@ -14,6 +14,7 @@ import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/custome
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
+import { supabase } from '@/integrations/supabase/client';
 
 type LineItem = {
   type: 'work' | 'material';
