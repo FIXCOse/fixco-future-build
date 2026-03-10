@@ -90,6 +90,47 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   const [locale, setLocale] = useState<'sv' | 'en'>('sv');
   const [loading, setLoading] = useState(false);
 
+  // Admin questions state
+  const [adminQuestions, setAdminQuestions] = useState<any[]>([]);
+  const [newAdminQuestion, setNewAdminQuestion] = useState('');
+  const [sendingQuestion, setSendingQuestion] = useState(false);
+
+  const loadAdminQuestions = useCallback(async (quoteId: string) => {
+    const { data } = await supabase
+      .from('quote_questions')
+      .select('*')
+      .eq('quote_id', quoteId)
+      .eq('asked_by', 'admin')
+      .order('created_at', { ascending: true });
+    if (data) setAdminQuestions(data);
+  }, []);
+
+  useEffect(() => {
+    if (quote?.id) {
+      loadAdminQuestions(quote.id);
+    } else {
+      setAdminQuestions([]);
+    }
+  }, [quote?.id, loadAdminQuestions]);
+
+  const handleSendAdminQuestion = async () => {
+    if (!quote?.id || !newAdminQuestion.trim()) return;
+    setSendingQuestion(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
+        body: { quote_id: quote.id, question: newAdminQuestion.trim() },
+      });
+      if (error) throw error;
+      toast.success('Fråga skickad till kund');
+      setNewAdminQuestion('');
+      loadAdminQuestions(quote.id);
+    } catch (err: any) {
+      toast.error(err.message || 'Kunde inte skicka fråga');
+    } finally {
+      setSendingQuestion(false);
+    }
+  };
+
   useEffect(() => {
     loadCustomers();
   }, []);
