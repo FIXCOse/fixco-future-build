@@ -31,6 +31,8 @@ const quoteCopy = {
     regards: 'Med vänliga hälsningar,',
     questionsNote: 'Vi har även ställt frågor i offerten som vi önskar att du besvarar.',
     questionsLabel: 'Våra frågor till dig:',
+    imagesRequestedLabel: '📸 Vi önskar bilder från dig',
+    imagesRequestedNote: 'Vänligen ladda upp relevanta bilder via offertsidan så kan vi ge dig bästa möjliga service.',
   },
   en: {
     subject: (num: string) => `Quote ${num} from Fixco`,
