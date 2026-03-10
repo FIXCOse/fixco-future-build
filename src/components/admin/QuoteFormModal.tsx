@@ -82,6 +82,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   
   // Material options
   const [materialIncluded, setMaterialIncluded] = useState(true);
+  const [imagesRequested, setImagesRequested] = useState(false);
   
   // VAT settings
   const [customVat, setCustomVat] = useState(false);
