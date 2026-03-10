@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,12 +8,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe } from 'lucide-react';
+import { Plus, Trash2, Info, Calculator, Link, Image, Store, ChevronDown, ChevronUp, Globe, MessageSquare, Send, CheckCircle2, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchCustomers, createCustomer, type Customer } from '@/lib/api/customers';
 import { createQuoteNew, updateQuoteNew, type QuoteNewRow } from '@/lib/api/quotes-new';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
+import { supabase } from '@/integrations/supabase/client';
 
 type LineItem = {
   type: 'work' | 'material';
@@ -88,6 +89,47 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
   
   const [locale, setLocale] = useState<'sv' | 'en'>('sv');
   const [loading, setLoading] = useState(false);
+
+  // Admin questions state
+  const [adminQuestions, setAdminQuestions] = useState<any[]>([]);
+  const [newAdminQuestion, setNewAdminQuestion] = useState('');
+  const [sendingQuestion, setSendingQuestion] = useState(false);
+
+  const loadAdminQuestions = useCallback(async (quoteId: string) => {
+    const { data } = await supabase
+      .from('quote_questions')
+      .select('*')
+      .eq('quote_id', quoteId)
+      .eq('asked_by', 'admin')
+      .order('created_at', { ascending: true });
+    if (data) setAdminQuestions(data);
+  }, []);
+
+  useEffect(() => {
+    if (quote?.id) {
+      loadAdminQuestions(quote.id);
+    } else {
+      setAdminQuestions([]);
+    }
+  }, [quote?.id, loadAdminQuestions]);
+
+  const handleSendAdminQuestion = async () => {
+    if (!quote?.id || !newAdminQuestion.trim()) return;
+    setSendingQuestion(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-admin-question-to-customer', {
+        body: { quote_id: quote.id, question: newAdminQuestion.trim() },
+      });
+      if (error) throw error;
+      toast.success('Fråga skickad till kund');
+      setNewAdminQuestion('');
+      loadAdminQuestions(quote.id);
+    } catch (err: any) {
+      toast.error(err.message || 'Kunde inte skicka fråga');
+    } finally {
+      setSendingQuestion(false);
+    }
+  };
 
   useEffect(() => {
     loadCustomers();
@@ -1079,6 +1121,62 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
               </div>
             </CardContent>
           </Card>
+
+          {/* Admin Questions to Customer */}
+          {quote && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5" />
+                  Frågor till kund
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {adminQuestions.length > 0 && (
+                  <div className="space-y-3">
+                    {adminQuestions.map((q) => (
+                      <div key={q.id} className="p-3 border rounded-lg bg-muted/30 space-y-1">
+                        <p className="text-sm font-medium">{q.question}</p>
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          {q.answered ? (
+                            <>
+                              <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                              <span className="text-green-600 dark:text-green-400 font-medium">Besvarad:</span>
+                              <span>{q.answer}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Clock className="h-3.5 w-3.5" />
+                              <span>Väntar på svar</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label>Ny fråga till kund</Label>
+                  <Textarea
+                    value={newAdminQuestion}
+                    onChange={(e) => setNewAdminQuestion(e.target.value)}
+                    placeholder="Skriv en fråga till kunden, t.ex. vilken modell önskas..."
+                    rows={2}
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSendAdminQuestion}
+                    disabled={sendingQuestion || !newAdminQuestion.trim()}
+                  >
+                    {sendingQuestion ? 'Skickar...' : 'Skicka fråga'}
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Additional Info */}
           <Card>
