@@ -755,6 +755,57 @@ export default function QuotePublic() {
     );
   }
 
+  // Superseded view — redirect to new quote
+  if (supersededData) {
+    const sLocale = (supersededData.locale === 'en' ? 'en' : 'sv') as 'sv' | 'en';
+    const supersededCopy = {
+      sv: {
+        title: 'Offerten har uppdaterats',
+        desc: 'Denna offert har ersatts av en ny, uppdaterad version. Klicka nedan för att se den senaste offerten.',
+        cta: 'Visa uppdaterad offert',
+        newNumber: 'Ny offert:',
+      },
+      en: {
+        title: 'Quote has been updated',
+        desc: 'This quote has been replaced by a new, updated version. Click below to view the latest quote.',
+        cta: 'View updated quote',
+        newNumber: 'New quote:',
+      },
+    };
+    const sc = supersededCopy[sLocale];
+    return (
+      <>
+        <Helmet>
+          <title>{sc.title} - Fixco</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+          <Card className="max-w-md w-full shadow-xl border-blue-200 dark:border-blue-800">
+            <CardContent className="pt-8 pb-8 text-center space-y-6">
+              <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <FileText className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold mb-2">{sc.title}</h1>
+                <p className="text-muted-foreground">{sc.desc}</p>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {sc.newNumber} <span className="font-semibold">{supersededData.new_quote_number}</span>
+              </div>
+              <a
+                href={supersededData.new_quote_url}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg"
+              >
+                <ExternalLink className="h-4 w-4" />
+                {sc.cta}
+              </a>
+            </CardContent>
+          </Card>
+        </div>
+      </>
+    );
+  }
+
   if (error || !quote) {
     return (
       <>
