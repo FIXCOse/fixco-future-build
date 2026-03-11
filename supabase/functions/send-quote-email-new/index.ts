@@ -16,6 +16,7 @@ const quoteCopy = {
     subject: (num: string) => `Offert ${num} från Fixco`,
     updatedSubject: (num: string) => `Uppdaterad offert ${num} från Fixco`,
     testSubject: (num: string) => `[TEST] Offert ${num} från Fixco`,
+    testUpdatedSubject: (num: string) => `[TEST] Uppdaterad offert ${num} från Fixco`,
     title: 'Offert från Fixco',
     updatedTitle: 'Uppdaterad offert från Fixco',
     quoteNumber: 'Offertnummer',
@@ -42,6 +43,7 @@ const quoteCopy = {
     subject: (num: string) => `Quote ${num} from Fixco`,
     updatedSubject: (num: string) => `Updated quote ${num} from Fixco`,
     testSubject: (num: string) => `[TEST] Quote ${num} from Fixco`,
+    testUpdatedSubject: (num: string) => `[TEST] Updated quote ${num} from Fixco`,
     title: 'Quote from Fixco',
     updatedTitle: 'Updated quote from Fixco',
     quoteNumber: 'Quote number',
@@ -219,7 +221,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailSubject = isTest 
-      ? t.testSubject(quote.number) 
+      ? (isReplacement ? t.testUpdatedSubject(quote.number) : t.testSubject(quote.number))
       : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
 
     const emailResponse = await resend.emails.send({

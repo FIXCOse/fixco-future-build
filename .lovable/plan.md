@@ -1,35 +1,22 @@
 
 
-## Plan: Testmail ska spegla exakt kundversionen
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Testmailets ämnesrad använder alltid `[TEST] Offert ...` oavsett om offerten är en ersättning. Den borde visa `[TEST] Uppdaterad offert ...` om det är en replacement-offert. Resten av mailet (brödtext, banner, locale) hanteras redan korrekt.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändring
+### Fil som ändras
 
-**`supabase/functions/send-quote-email-new/index.ts`** — En ändring på rad 221-223:
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Nuvarande:
-```ts
-const emailSubject = isTest 
-  ? t.testSubject(quote.number) 
-  : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
-```
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-Ny logik + uppdaterade testSubject-strängar:
-```ts
-// Add testUpdatedSubject to quoteCopy for both sv and en
-// sv: `[TEST] Uppdaterad offert ${num} från Fixco`
-// en: `[TEST] Updated quote ${num} from Fixco`
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-const emailSubject = isTest 
-  ? (isReplacement ? t.testUpdatedSubject(quote.number) : t.testSubject(quote.number))
-  : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
-```
-
-Lägg till `testUpdatedSubject` i `quoteCopy`:
-- **sv**: `testUpdatedSubject: (num: string) => \`[TEST] Uppdaterad offert ${num} från Fixco\``
-- **en**: `testUpdatedSubject: (num: string) => \`[TEST] Updated quote ${num} from Fixco\``
-
-Det är den enda ändringen som behövs — locale, ersättningsbanner, frågor, bilder etc. hanteras redan identiskt för test och riktiga mail.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
