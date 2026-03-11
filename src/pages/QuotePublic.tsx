@@ -715,6 +715,7 @@ export default function QuotePublic() {
           question_id: answerQuestionId,
           answer: answerText.trim(),
           customer_email: quote?.customer_email || null,
+          answer_name: answerName.trim(),
         }
       });
 

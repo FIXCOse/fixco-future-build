@@ -55,7 +55,8 @@ Deno.serve(async (req) => {
       .update({
         answered: true,
         answer: answer,
-        answered_at: new Date().toISOString()
+        answered_at: new Date().toISOString(),
+        ...(answer_name ? { answered_by_name: answer_name } : {}),
       })
       .eq('id', question_id);
 
