@@ -2259,6 +2259,7 @@ export type Database = {
           answer: string | null
           answered: boolean | null
           answered_at: string | null
+          answered_by_name: string | null
           asked_at: string
           asked_by: string
           customer_email: string | null
@@ -2272,6 +2273,7 @@ export type Database = {
           answer?: string | null
           answered?: boolean | null
           answered_at?: string | null
+          answered_by_name?: string | null
           asked_at?: string
           asked_by?: string
           customer_email?: string | null
@@ -2285,6 +2287,7 @@ export type Database = {
           answer?: string | null
           answered?: boolean | null
           answered_at?: string | null
+          answered_by_name?: string | null
           asked_at?: string
           asked_by?: string
           customer_email?: string | null
