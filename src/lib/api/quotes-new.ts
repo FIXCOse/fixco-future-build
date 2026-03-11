@@ -29,6 +29,7 @@ export type QuoteNewRow = {
   declined_at?: string | null;
   updated_at?: string | null;
   reaccept_requested_at?: string | null;
+  locale?: string | null;
   created_at: string;
   customer?: {
     id: string;
