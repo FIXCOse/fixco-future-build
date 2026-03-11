@@ -15,7 +15,6 @@ import { createQuoteNew, updateQuoteNew, supersedeQuote, type QuoteNewRow } from
 import { supabase } from '@/integrations/supabase/client';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { CustomerCombobox } from '@/components/admin/CustomerCombobox';
-import { supabase } from '@/integrations/supabase/client';
 
 type LineItem = {
   type: 'work' | 'material' | 'fee';
