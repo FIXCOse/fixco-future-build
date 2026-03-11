@@ -45,9 +45,10 @@ type QuoteFormModalProps = {
     payload?: any;
     customer_id?: string;
   } | null;
+  supersedeQuoteId?: string | null;
 };
 
-export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilledCustomerId, prefilledData, bookingData }: QuoteFormModalProps) {
+export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilledCustomerId, prefilledData, bookingData, supersedeQuoteId }: QuoteFormModalProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>('');
   const [showNewCustomer, setShowNewCustomer] = useState(false);
