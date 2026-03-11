@@ -16,6 +16,7 @@ const quoteCopy = {
     subject: (num: string) => `Offert ${num} från Fixco`,
     updatedSubject: (num: string) => `Uppdaterad offert ${num} från Fixco`,
     testSubject: (num: string) => `[TEST] Offert ${num} från Fixco`,
+    testUpdatedSubject: (num: string) => `[TEST] Uppdaterad offert ${num} från Fixco`,
     title: 'Offert från Fixco',
     updatedTitle: 'Uppdaterad offert från Fixco',
     quoteNumber: 'Offertnummer',
