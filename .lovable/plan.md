@@ -1,37 +1,22 @@
 
 
-## Plan: Fix — Kundens namn visas som "Fixco" på svar
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-När admin skapar en fråga sätts `customer_name = 'Fixco'` på `quote_questions`-raden. På den publika sidan (rad 1699) visas svaret med `q.customer_name` — som alltså är `'Fixco'` istället för kundens namn.
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändring 1 — Frontend-display (`QuotePublic.tsx`)
-Rad 1699: Byt `q.customer_name` till `quote.customer_name` (alltid kundens riktiga namn):
-```tsx
-// Nuvarande (fel):
-{isAdminQ ? q.customer_name || quote.customer_name : t.answerFromFixco}
-// Ny (rätt):
-{isAdminQ ? quote.customer_name : t.answerFromFixco}
-```
+### Fil som ändras
 
-### Ändring 2 — Spara svarandens namn (`QuotePublic.tsx` + `answer-quote-question`)
-Skicka med `answerName` till edge-funktionen och spara det som `answered_by_name` i databasen, så att vi har en riktig referens.
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-- `QuotePublic.tsx` rad 713-718: Lägg till `answer_name: answerName.trim()` i body
-- `answer-quote-question/index.ts` rad 53-59: Spara `answer_name` i update
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-### Ändring 3 — Fixa befintliga svar i databasen
-Kör en SQL-migration som uppdaterar alla befintliga besvarade admin-frågor (där `asked_by = 'admin'` och `answered = true`) med kundens namn från offertens koppling:
-```sql
-UPDATE quote_questions qq
-SET customer_name = c.name
-FROM quotes_new q
-JOIN customers c ON c.id = q.customer_id
-WHERE qq.quote_id = q.id
-  AND qq.asked_by = 'admin'
-  AND qq.answered = true
-  AND qq.customer_name = 'Fixco';
-```
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-Notera: `customer_name` på admin-frågor bör förbli `'Fixco'` (asker), men displaylogiken ska använda `quote.customer_name` för svaret.
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

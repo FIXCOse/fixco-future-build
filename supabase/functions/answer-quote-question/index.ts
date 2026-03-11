@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { question_id, answer, customer_email } = await req.json();
+    const { question_id, answer, customer_email, answer_name } = await req.json();
 
     if (!question_id || !answer) {
       return new Response(
@@ -55,7 +55,8 @@ Deno.serve(async (req) => {
       .update({
         answered: true,
         answer: answer,
-        answered_at: new Date().toISOString()
+        answered_at: new Date().toISOString(),
+        ...(answer_name ? { answered_by_name: answer_name } : {}),
       })
       .eq('id', question_id);
 
