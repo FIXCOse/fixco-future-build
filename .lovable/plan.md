@@ -1,37 +1,22 @@
 
 
-## Plan: Språkanpassad AI-generering + admin-instruktionsfält
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-1. AI-prompten är alltid på svenska, oavsett offertens `locale`
-2. Admin har ingen möjlighet att ge instruktioner till AI:n
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-### Ändringar
+### Fil som ändras
 
-**1. `FollowUpEmailDialog.tsx`** — Lägg till:
-- Prop `locale` (string) från parent
-- State `adminInstructions` (string)
-- Ett litet `Input`-fält med placeholder "Instruktioner till AI (valfritt)..." ovanför genereringsknapparna
-- Skicka `locale` och `adminInstructions` till edge-funktionen
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-**2. `generate-followup-text/index.ts`** — Uppdatera:
-- Ta emot `locale` och `adminInstructions` från request body
-- Läs `quote.locale` som fallback om inget skickas
-- Om locale är `'en'`: använd engelska systemprompts (samma regler men på engelska, "Hi {name}!", "Best regards,\nThe Fixco Team")
-- Om locale är `'sv'`: befintliga svenska prompts
-- Om `adminInstructions` finns: lägg till dem som ett extra stycke i systempromten: `"\n\nADMIN INSTRUCTIONS (follow these closely):\n${adminInstructions}"`
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-**3. Parent-komponent** — Skicka `locale` som prop till `FollowUpEmailDialog` (behöver identifiera var dialogen öppnas)
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-### Teknisk detalj — Engelska prompts
-
-Subject (en):
-```
-You are a copywriter for Fixco, a Swedish construction & handyman company. Write a short, friendly subject line (max 50 chars) for a follow-up email about a quote. Natural and personal — not salesy. Reply ONLY with the subject line.
-```
-
-Body (en): Samma struktur som svenska men på engelska — urgency om scheduling, inga priser, inga offertnamn, inga e-postadresser i texten, börja med "Hi {name}!", avsluta med "Best regards,\nThe Fixco Team".
-
-### Admin-instruktionsfältet
-Litet input-fält (inte textarea) med collapsible/accordion-stil eller bara en enkel Input med label "AI-instruktioner" placerad direkt ovanför ämnesrad-sektionen. Instruktionerna skickas med varje AI-anrop (både subject och body).
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

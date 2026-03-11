@@ -13,12 +13,14 @@ interface FollowUpEmailDialogProps {
   onOpenChange: (open: boolean) => void;
   quoteId: string;
   customerName: string;
+  locale?: string;
   onSuccess?: () => void;
 }
 
-export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName, onSuccess }: FollowUpEmailDialogProps) {
+export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName, locale, onSuccess }: FollowUpEmailDialogProps) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [adminInstructions, setAdminInstructions] = useState("");
   const [generatingSubject, setGeneratingSubject] = useState(false);
   const [generatingBody, setGeneratingBody] = useState(false);
   const [sending, setSending] = useState(false);
@@ -29,7 +31,7 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
 
     try {
       const { data, error } = await supabase.functions.invoke('generate-followup-text', {
-        body: { quoteId, type }
+        body: { quoteId, type, locale, adminInstructions: adminInstructions.trim() || undefined }
       });
 
       if (error) throw error;
@@ -89,6 +91,17 @@ export function FollowUpEmailDialog({ open, onOpenChange, quoteId, customerName,
         </DialogHeader>
 
         <div className="space-y-4">
+          {/* Admin AI instructions */}
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Instruktioner till AI (valfritt)</Label>
+            <Input
+              value={adminInstructions}
+              onChange={(e) => setAdminInstructions(e.target.value)}
+              placeholder="T.ex. 'Håll det kort och inte för säljigt' eller 'Mention the spring campaign'"
+              className="text-sm"
+            />
+          </div>
+
           {/* Subject */}
           <div className="space-y-2">
             <Label>Ämnesrad</Label>

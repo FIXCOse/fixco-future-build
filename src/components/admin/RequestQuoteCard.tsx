@@ -815,6 +815,7 @@ export function RequestQuoteCard({
         onOpenChange={setFollowUpDialogOpen}
         quoteId={quote.id}
         customerName={customerName}
+        locale={quote.locale}
         onSuccess={handleRefresh}
       />
     )}
