@@ -1,59 +1,22 @@
 
 
-## Plan: Fix offert-ersättning som inte körs korrekt
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Problem
-Databasen visar att Q-2026-009 (ny offert) och Q-2026-005 (gammal offert) delar samma bokning, men:
-- Q-2026-005 har fortfarande `status = 'viewed'` (borde vara `superseded`)
-- Q-2026-009 har `replaces_quote_id = null` (borde peka på Q-2026-005)
-- Q-2026-005 har `replaced_by_id = null` (borde peka på Q-2026-009)
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Det betyder att ersättningsflödet aldrig kördes, trots att koden finns. Trolig orsak: `quoteToSupersede` hann nollställas eller satts aldrig korrekt.
+### Fil som ändras
 
-### Grundorsak — Race condition i state-hantering
-I `AlertDialogAction` (rad 907-913):
-```ts
-onClick={() => {
-  setShowReplaceConfirm(false);
-  if (pendingCreateBookingId && quoteToSupersede) {
-    proceedCreateQuote(pendingCreateBookingId, quoteToSupersede);
-  }
-  setPendingCreateBookingId(null);  // ← nollställs här
-}}
-```
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-`proceedCreateQuote` är async men kallas utan `await`. Den sätter `quoteToSupersede` igen (rad 269-271), men `setPendingCreateBookingId(null)` körs direkt efter. React kan batcha state-uppdateringar och `quoteToSupersede` kan vara instabilt när `onSuccess` slutligen körs efter att QuoteFormModal stängs.
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-### Åtgärder
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-| Fil | Ändring |
-|-----|---------|
-| `AdminQuotesUnified.tsx` | Skicka `supersedeQuoteId` direkt till `QuoteFormModal` som en prop istället för att förlita sig på React state som kan ändras mellan renders |
-| `QuoteFormModal.tsx` | Ta emot `supersedeQuoteId` prop. Kör `supersedeQuote()` + sätt `replaces_quote_id` direkt i `handleSubmit` INNAN `onSuccess` anropas — inte i en callback |
-| `send-quote-email-new` | Ingen kodändring behövs — logiken för `isReplacement` fungerar korrekt, den hittade bara ingen data pga bugg ovan |
-| `get-quote-public` | Ingen ändring — superseded-redirect fungerar korrekt |
-| `QuotePublic.tsx` | Ingen ändring — superseded-vyn fungerar korrekt |
-
-### Teknisk detalj
-
-Flytta supersede-logiken från `onSuccess`-callbacken till inne i `QuoteFormModal.handleSubmit`:
-
-```ts
-// I QuoteFormModal.handleSubmit, efter createQuoteNew():
-if (supersedeQuoteId && result?.id) {
-  await supersedeQuote(supersedeQuoteId, result.id);
-  await supabase.from('quotes_new')
-    .update({ replaces_quote_id: supersedeQuoteId })
-    .eq('id', result.id);
-}
-onSuccess(result);
-```
-
-### Manuell datafix
-Utöver kodfixen behöver vi köra en engångs-SQL för att fixa de två existerande offerterna:
-
-```sql
-UPDATE quotes_new SET status = 'superseded', replaced_by_id = '7b450a9b-...' WHERE id = '544a2db6-...';
-UPDATE quotes_new SET replaces_quote_id = '544a2db6-...' WHERE id = '7b450a9b-...';
-```
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 

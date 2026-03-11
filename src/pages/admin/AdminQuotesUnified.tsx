@@ -831,26 +831,13 @@ export default function AdminQuotesUnified() {
           if (!open) {
             setBookingDataForQuote(null);
             setEditQuoteId(null);
+            setQuoteToSupersede(null);
           }
         }}
         quote={editQuoteId ? allData.find(d => d.quote?.id === editQuoteId)?.quote as any : null}
         bookingData={bookingDataForQuote}
-        onSuccess={async (createdQuote) => {
-          // If we're replacing an old quote, supersede it
-          if (quoteToSupersede && createdQuote?.id) {
-            try {
-              await supersedeQuote(quoteToSupersede, createdQuote.id);
-              // Also set replaces_quote_id on the new quote
-              await supabase
-                .from('quotes_new')
-                .update({ replaces_quote_id: quoteToSupersede })
-                .eq('id', createdQuote.id);
-              toast.success('Tidigare offert har ersatts');
-            } catch (err) {
-              console.error('Error superseding quote:', err);
-              toast.error('Kunde inte ersätta tidigare offert');
-            }
-          }
+        supersedeQuoteId={quoteToSupersede}
+        onSuccess={() => {
           setQuoteModalOpen(false);
           setBookingDataForQuote(null);
           setEditQuoteId(null);
