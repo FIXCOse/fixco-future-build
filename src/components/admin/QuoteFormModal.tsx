@@ -521,6 +521,21 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
       } else {
         result = await createQuoteNew(quoteData);
         
+        // If replacing an old quote, supersede it immediately after creation
+        if (supersedeQuoteId && result?.id) {
+          try {
+            await supersedeQuote(supersedeQuoteId, result.id);
+            await supabase
+              .from('quotes_new')
+              .update({ replaces_quote_id: supersedeQuoteId } as any)
+              .eq('id', result.id);
+            toast.success('Tidigare offert har ersatts');
+          } catch (err) {
+            console.error('Error superseding quote:', err);
+            toast.error('Kunde inte ersätta tidigare offert');
+          }
+        }
+
         // Save pending questions directly to DB (no email yet - sent when quote is sent)
         if (result?.id && pendingQuestions.length > 0) {
           const questionsToInsert = pendingQuestions.map(q => ({
@@ -538,7 +553,7 @@ export function QuoteFormModal({ open, onOpenChange, quote, onSuccess, prefilled
           }
           toast.success(`Offert skapad med ${pendingQuestions.length} fråga/or (skickas till kund vid utskick)`);
           setPendingQuestions([]);
-        } else {
+        } else if (!supersedeQuoteId) {
           toast.success('Offert skapad');
         }
       }
