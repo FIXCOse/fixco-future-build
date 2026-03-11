@@ -1696,7 +1696,7 @@ export default function QuotePublic() {
                           <div className="flex items-start gap-2">
                             <div className="flex-1">
                               <p className="font-medium text-sm text-primary">
-                                {isAdminQ ? q.customer_name || quote.customer_name : t.answerFromFixco}
+                                {isAdminQ ? quote.customer_name : t.answerFromFixco}
                               </p>
                               <p className="text-sm text-foreground mt-1">{q.answer}</p>
                               <p className="text-xs text-muted-foreground mt-1">
