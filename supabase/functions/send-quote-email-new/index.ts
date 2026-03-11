@@ -221,7 +221,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailSubject = isTest 
-      ? t.testSubject(quote.number) 
+      ? (isReplacement ? t.testUpdatedSubject(quote.number) : t.testSubject(quote.number))
       : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
 
     const emailResponse = await resend.emails.send({
