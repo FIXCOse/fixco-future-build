@@ -153,9 +153,10 @@ Deno.serve(async (req) => {
       const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
         || req.headers.get('x-real-ip')
         || 'okänd';
+      const viewSource = url.searchParams.get('source') || 'direct';
       await supabase
         .from('quote_views')
-        .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip });
+        .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip, source: viewSource });
 
       // Only update status and send admin email on FIRST view (sent → viewed)
       if (quote.status === 'sent') {
