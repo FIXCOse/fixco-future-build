@@ -19,6 +19,7 @@ type Props = {
   onEditQuote: (quoteId: string) => void;
   onSendQuote: (quoteId: string) => void;
   onSendTestEmail?: (quoteId: string) => void;
+  onSendCopy?: (quoteId: string) => void;
   onViewPdf: (quoteId: string) => void;
   onDeleteBooking: (bookingId: string) => void;
   onCopyLink: (quoteId: string) => void;
