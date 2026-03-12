@@ -40,6 +40,7 @@ export function RequestQuoteCard({
   onEditQuote,
   onSendQuote,
   onSendTestEmail,
+  onSendCopy,
   onViewPdf,
   onDeleteBooking,
   onCopyLink,
