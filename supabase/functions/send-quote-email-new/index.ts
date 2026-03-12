@@ -221,9 +221,10 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
-    const emailSubject = isTest 
+    const baseSubject = isTest 
       ? (isReplacement ? t.testUpdatedSubject(quote.number) : t.testSubject(quote.number))
       : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
+    const emailSubject = isCopyMode ? `[Kopia] ${baseSubject}` : baseSubject;
 
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
