@@ -165,9 +165,9 @@ export default function Terms() {
             <div className="bg-muted/20 p-6 rounded-lg">
               <p className="font-semibold mb-2">Fixco AB</p>
               <p className="text-muted-foreground">{isEnglish ? "Org.nr:" : "Organisationsnummer:"} 559123-4567</p>
-              <p className="text-muted-foreground">{isEnglish ? "Address:" : "Adress:"} Storgatan 1, 111 22 Stockholm</p>
-              <p className="text-muted-foreground">{isEnglish ? "Phone:" : "Telefon:"} 08-123 456 78</p>
-              <p className="text-muted-foreground">E-post: support@fixco.se</p>
+              <p className="text-muted-foreground">{isEnglish ? "Address:" : "Adress:"} Hyvelgatan 37, 741 71 Knivsta</p>
+              <p className="text-muted-foreground">{isEnglish ? "Phone:" : "Telefon:"} +46 79 335 02 28</p>
+              <p className="text-muted-foreground">{isEnglish ? "Email:" : "E-post:"} info@fixco.se</p>
             </div>
           </section>
 

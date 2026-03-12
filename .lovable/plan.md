@@ -1,16 +1,22 @@
 
 
-## Uppdatera kontaktinformation på villkorssidan
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Ändringar i `src/pages/Terms.tsx`
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Uppdatera sektion 10 "Kontaktinformation" med korrekt information:
+### Fil som ändras
 
-| Fält | Nuvarande | Nytt |
-|------|-----------|------|
-| Adress | Storgatan 1, 111 22 Stockholm | Hyvelgatan 37, 741 71 Knivsta |
-| Telefon | 08-123 456 78 | +46 79 335 02 28 |
-| E-post | support@fixco.se | info@fixco.se |
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Både svensk och engelsk version ska uppdateras med samma information (översatt för engelska).
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
