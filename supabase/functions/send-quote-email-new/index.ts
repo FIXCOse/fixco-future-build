@@ -74,10 +74,11 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { quoteId, testEmail } = await req.json();
+    const { quoteId, testEmail, copyEmails, isCopy } = await req.json();
 
     const isTest = !!testEmail;
-    console.log(`${isTest ? '🧪 TEST' : '📧'} Sending quote email for quoteId:`, quoteId, isTest ? `(override to: ${testEmail})` : '');
+    const isCopyMode = !!isCopy && Array.isArray(copyEmails) && copyEmails.length > 0;
+    console.log(`${isTest ? '🧪 TEST' : isCopyMode ? '📋 COPY' : '📧'} Sending quote email for quoteId:`, quoteId, isTest ? `(override to: ${testEmail})` : isCopyMode ? `(copy to: ${copyEmails.join(', ')})` : '');
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -111,8 +112,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Ingen e-postadress hittades för kunden");
     }
 
-    const recipientEmail = isTest ? testEmail : customerEmail;
-    console.log("Recipient:", recipientEmail, isTest ? '(TEST override)' : '', "locale:", locale);
+    const recipientEmails = isCopyMode ? copyEmails : [isTest ? testEmail : customerEmail];
+    console.log("Recipients:", recipientEmails, isTest ? '(TEST override)' : isCopyMode ? '(COPY mode)' : '', "locale:", locale);
     const displayName = customerName || (locale === 'en' ? 'Customer' : 'Kund');
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
@@ -220,13 +221,14 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
-    const emailSubject = isTest 
+    const baseSubject = isTest 
       ? (isReplacement ? t.testUpdatedSubject(quote.number) : t.testSubject(quote.number))
       : (isReplacement ? t.updatedSubject(quote.number) : t.subject(quote.number));
+    const emailSubject = isCopyMode ? `[Kopia] ${baseSubject}` : baseSubject;
 
     const emailResponse = await resend.emails.send({
       from: "Fixco <info@fixco.se>",
-      to: [recipientEmail],
+      to: recipientEmails,
       subject: emailSubject,
       html: emailHtml,
       replyTo: ["info@fixco.se"],
@@ -243,8 +245,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Uppdatera status (skippa vid test)
-    if (!isTest) {
+    // Uppdatera status (skippa vid test och kopia)
+    if (!isTest && !isCopyMode) {
       const { error: updateError } = await supabase
         .from('quotes_new')
         .update({ 
@@ -257,7 +259,21 @@ const handler = async (req: Request): Promise<Response> => {
         console.error('Error updating quote status:', updateError);
       }
     } else {
-      console.log('🧪 TEST mode — skipping status update to "sent"');
+      console.log(`${isTest ? '🧪 TEST' : '📋 COPY'} mode — skipping status update to "sent"`);
+    }
+
+    // Log copy recipients for tracking
+    if (isCopyMode) {
+      for (const email of copyEmails) {
+        await supabase
+          .from('quote_views')
+          .insert({
+            quote_id: quoteId,
+            viewer_email: email,
+            source: 'copy_sent',
+          });
+      }
+      console.log('📋 Copy send logged for recipients:', copyEmails);
     }
 
     console.log("Email sent successfully:", emailResponse);

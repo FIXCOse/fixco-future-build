@@ -330,6 +330,30 @@ export default function AdminQuotesUnified() {
     }
   };
 
+  const handleSendCopy = async (quoteId: string) => {
+    const input = window.prompt('Ange e-postadress(er) att skicka kopia till (kommaseparera vid flera):');
+    if (!input) return;
+
+    const copyEmails = input.split(',').map(e => e.trim()).filter(e => e.includes('@'));
+    if (copyEmails.length === 0) {
+      toast.error('Ingen giltig e-postadress angiven');
+      return;
+    }
+
+    try {
+      const { error } = await supabase.functions.invoke('send-quote-email-new', {
+        body: { quoteId, copyEmails, isCopy: true }
+      });
+
+      if (error) throw error;
+
+      toast.success(`Kopia skickad till ${copyEmails.join(', ')}`);
+    } catch (error: any) {
+      console.error('Error sending copy:', error);
+      toast.error('Kunde inte skicka kopia');
+    }
+  };
+
   const handleViewPdf = async (quoteId: string) => {
     try {
       toast.loading('Genererar PDF...');
@@ -792,8 +816,9 @@ export default function AdminQuotesUnified() {
                   onCreateQuote={handleCreateQuote}
                   onEditQuote={handleEditQuote}
                   onSendQuote={handleSendQuote}
-                  onSendTestEmail={handleSendTestEmail}
-                  onViewPdf={handleViewPdf}
+                   onSendTestEmail={handleSendTestEmail}
+                   onSendCopy={handleSendCopy}
+                   onViewPdf={handleViewPdf}
                   onDeleteBooking={(id) => setDeleteId(id)}
                   onCopyLink={handleCopyLink}
                   onCreateInvoice={handleCreateInvoice}

@@ -19,6 +19,7 @@ type Props = {
   onEditQuote: (quoteId: string) => void;
   onSendQuote: (quoteId: string) => void;
   onSendTestEmail?: (quoteId: string) => void;
+  onSendCopy?: (quoteId: string) => void;
   onViewPdf: (quoteId: string) => void;
   onDeleteBooking: (bookingId: string) => void;
   onCopyLink: (quoteId: string) => void;
@@ -39,6 +40,7 @@ export function RequestQuoteCard({
   onEditQuote,
   onSendQuote,
   onSendTestEmail,
+  onSendCopy,
   onViewPdf,
   onDeleteBooking,
   onCopyLink,
@@ -505,6 +507,16 @@ export function RequestQuoteCard({
                     >
                       <AlertTriangle className="h-4 w-4 mr-2" />
                       Begär ny acceptans
+                    </Button>
+                  )}
+                   {quote.status !== 'superseded' && onSendCopy && (
+                    <Button
+                      onClick={() => onSendCopy(quote.id)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Skicka kopia
                     </Button>
                   )}
                   <Button

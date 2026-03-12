@@ -2388,22 +2388,28 @@ export type Database = {
           id: string
           ip_address: string | null
           quote_id: string
+          source: string | null
           user_agent: string | null
           viewed_at: string
+          viewer_email: string | null
         }
         Insert: {
           id?: string
           ip_address?: string | null
           quote_id: string
+          source?: string | null
           user_agent?: string | null
           viewed_at?: string
+          viewer_email?: string | null
         }
         Update: {
           id?: string
           ip_address?: string | null
           quote_id?: string
+          source?: string | null
           user_agent?: string | null
           viewed_at?: string
+          viewer_email?: string | null
         }
         Relationships: [
           {

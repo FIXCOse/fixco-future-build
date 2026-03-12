@@ -1,30 +1,22 @@
-## Plan: Skicka offert-kopia till valfria e-postadresser
 
-### Problem
 
-Admin kan bara skicka offerten till kundens registrerade e-post. Behöver kunna skicka kopior till ytterligare mottagare när som helst.
+## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
 
-### Ändring 1 — Ny knapp "Skicka kopia" i `RequestQuoteCard.tsx`
+### Vad vi gör
+Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
 
-Lägg till en knapp (synlig för alla statusar utom `superseded`) som öppnar en dialog/prompt där admin anger en eller flera e-postadresser (kommaseparerade). Knappen anropar en ny callback `onSendCopy`.
+### Fil som ändras
 
-### Ändring 2 — `AdminQuotesUnified.tsx`
+**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
 
-Ny funktion `handleSendCopy(quoteId)`:
+Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
 
-- Öppnar `window.prompt` med text "Ange e-postadress(er) att skicka kopia till (kommaseparera vid flera):"
-- Anropar `send-quote-email-new` med `{ quoteId, copyEmails: [...], isCopy: true }`
+1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
+2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
+3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
+   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
+   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
 
-### Ändring 3 — Edge function `send-quote-email-new/index.ts`
+### Inga nya filer, inga databasändringar
+Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
 
-- Acceptera ny parameter `copyEmails` (string[]) och `isCopy` (boolean)
-- Om `copyEmails` finns: skicka till dessa adresser istället för kunden
-- Om `isCopy` är true: hoppa över statusuppdatering (precis som testEmail), lägg till "[Kopia]" i ämnesraden
-- Behåll befintlig logik för vanlig skickning oförändrad
-
-### Flöde
-
-1. Admin klickar "Skicka kopia" → prompt med e-postfält
-2. Edge function skickar exakt samma offertmail till angivna adresser
-3. Offertens status ändras INTE (det är bara en kopia)  
-Om `isCopy` är true: logga ip adressen med att mailadressen med kopian har öppnat den, så jag kan skilja på om bokaren eller kopi mottaagren har öppnat
