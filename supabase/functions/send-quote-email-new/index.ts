@@ -74,10 +74,11 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { quoteId, testEmail } = await req.json();
+    const { quoteId, testEmail, copyEmails, isCopy } = await req.json();
 
     const isTest = !!testEmail;
-    console.log(`${isTest ? '🧪 TEST' : '📧'} Sending quote email for quoteId:`, quoteId, isTest ? `(override to: ${testEmail})` : '');
+    const isCopyMode = !!isCopy && Array.isArray(copyEmails) && copyEmails.length > 0;
+    console.log(`${isTest ? '🧪 TEST' : isCopyMode ? '📋 COPY' : '📧'} Sending quote email for quoteId:`, quoteId, isTest ? `(override to: ${testEmail})` : isCopyMode ? `(copy to: ${copyEmails.join(', ')})` : '');
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
