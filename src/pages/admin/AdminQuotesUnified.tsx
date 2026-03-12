@@ -816,8 +816,9 @@ export default function AdminQuotesUnified() {
                   onCreateQuote={handleCreateQuote}
                   onEditQuote={handleEditQuote}
                   onSendQuote={handleSendQuote}
-                  onSendTestEmail={handleSendTestEmail}
-                  onViewPdf={handleViewPdf}
+                   onSendTestEmail={handleSendTestEmail}
+                   onSendCopy={handleSendCopy}
+                   onViewPdf={handleViewPdf}
                   onDeleteBooking={(id) => setDeleteId(id)}
                   onCopyLink={handleCopyLink}
                   onCreateInvoice={handleCreateInvoice}

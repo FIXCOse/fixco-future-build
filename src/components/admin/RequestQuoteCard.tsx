@@ -509,6 +509,16 @@ export function RequestQuoteCard({
                       Begär ny acceptans
                     </Button>
                   )}
+                   {quote.status !== 'superseded' && onSendCopy && (
+                    <Button
+                      onClick={() => onSendCopy(quote.id)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Skicka kopia
+                    </Button>
+                  )}
                   <Button
                     onClick={() => onCopyLink(quote.id)}
                     variant="outline"

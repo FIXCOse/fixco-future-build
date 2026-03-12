@@ -245,8 +245,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Uppdatera status (skippa vid test)
-    if (!isTest) {
+    // Uppdatera status (skippa vid test och kopia)
+    if (!isTest && !isCopyMode) {
       const { error: updateError } = await supabase
         .from('quotes_new')
         .update({ 
@@ -259,7 +259,21 @@ const handler = async (req: Request): Promise<Response> => {
         console.error('Error updating quote status:', updateError);
       }
     } else {
-      console.log('🧪 TEST mode — skipping status update to "sent"');
+      console.log(`${isTest ? '🧪 TEST' : '📋 COPY'} mode — skipping status update to "sent"`);
+    }
+
+    // Log copy recipients for tracking
+    if (isCopyMode) {
+      for (const email of copyEmails) {
+        await supabase
+          .from('quote_views')
+          .insert({
+            quote_id: quoteId,
+            viewer_email: email,
+            source: 'copy_sent',
+          });
+      }
+      console.log('📋 Copy send logged for recipients:', copyEmails);
     }
 
     console.log("Email sent successfully:", emailResponse);
