@@ -112,8 +112,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Ingen e-postadress hittades för kunden");
     }
 
-    const recipientEmail = isTest ? testEmail : customerEmail;
-    console.log("Recipient:", recipientEmail, isTest ? '(TEST override)' : '', "locale:", locale);
+    const recipientEmails = isCopyMode ? copyEmails : [isTest ? testEmail : customerEmail];
+    console.log("Recipients:", recipientEmails, isTest ? '(TEST override)' : isCopyMode ? '(COPY mode)' : '', "locale:", locale);
     const displayName = customerName || (locale === 'en' ? 'Customer' : 'Kund');
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
