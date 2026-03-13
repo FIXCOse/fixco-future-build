@@ -234,16 +234,19 @@ const LocalServicePage = () => {
     };
   }, [content]);
 
-  const breadcrumbSchema = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Hem", "item": "https://fixco.se" },
-      { "@type": "ListItem", "position": 2, "name": "Tjänster", "item": "https://fixco.se/tjanster" },
-      { "@type": "ListItem", "position": 3, "name": service?.name, "item": `https://fixco.se/tjanster/${service?.serviceKey}` },
-      { "@type": "ListItem", "position": 4, "name": `${service?.name} ${area}`, "item": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}` }
-    ]
-  }), [service, area, serviceSlug, areaSlug]);
+  const breadcrumbSchema = useMemo(() => {
+    const isEn = locale === 'en';
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": isEn ? "Home" : "Hem", "item": isEn ? `${baseUrl}/en` : baseUrl },
+        { "@type": "ListItem", "position": 2, "name": isEn ? "Services" : "Tjänster", "item": isEn ? `${baseUrl}/en/services` : `${baseUrl}/tjanster` },
+        { "@type": "ListItem", "position": 3, "name": service?.name, "item": isEn ? `${baseUrl}/en/services/${service?.serviceKey}` : `${baseUrl}/tjanster/${service?.serviceKey}` },
+        { "@type": "ListItem", "position": 4, "name": `${service?.name} ${area}`, "item": canonicalUrl }
+      ]
+    };
+  }, [service, area, serviceSlug, areaSlug, locale, canonicalUrl]);
 
   // AI-optimized schemas for maximum visibility
   const authorSchema = useMemo(() => getAuthorSchema(), []);
