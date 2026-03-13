@@ -206,8 +206,12 @@ const LocalServicePage = () => {
   const howToSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": `Så bokar du ${service?.name?.toLowerCase()} i ${area}`,
-    "description": `Steg-för-steg guide för att boka ${service?.name?.toLowerCase()} via Fixco i ${area}`,
+    "name": locale === 'en'
+      ? `How to book ${service?.name?.toLowerCase()} in ${area}`
+      : `Så bokar du ${service?.name?.toLowerCase()} i ${area}`,
+    "description": locale === 'en'
+      ? `Step-by-step guide to booking ${service?.name?.toLowerCase()} via Fixco in ${area}`
+      : `Steg-för-steg guide för att boka ${service?.name?.toLowerCase()} via Fixco i ${area}`,
     "totalTime": "PT5M",
     "step": howToSteps.map((step, idx) => ({
       "@type": "HowToStep",
