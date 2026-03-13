@@ -1,23 +1,37 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Diagnos: Nisch-tjänstesidor vita / laddar inte
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+Sidorna har innehåll (hero, USPs, områdeslänkar, FAQ, CTA) men kraschar troligen vid rendering utan att visa något. Två orsaker identifierade:
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+1. **Ingen ErrorBoundary** runt `SmartServiceRouter` — om komponenten kraschar (t.ex. chunk-laddningsfel, nätverksfel) visas en helt vit sida utan felmeddelande.
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+2. **Lazy chunk-laddning kan misslyckas** — `NicheServiceLandingPage` laddas via `lazy()` och om JS-filen inte hämtas korrekt (timeout, cache-problem) kraschar Suspense utan fallback.
+
+## Plan
+
+### 1. Lägg till ErrorBoundary runt SmartServiceRouter (App.tsx)
+Wrappa `<SmartServiceRouter />` i en `ErrorBoundary` med retry-logik så att misslyckade chunk-laddningar visar ett användbart felmeddelande istället för vit sida.
+
+### 2. Lägg till retry-logik för lazy imports (App.tsx)
+Ändra `lazy(() => import('./pages/NicheServiceLandingPage'))` till en version som automatiskt försöker ladda om chunken vid nätverksfel:
+
+```typescript
+const NicheServiceLandingPage = lazy(() => 
+  import("./pages/NicheServiceLandingPage").catch(() => {
+    window.location.reload();
+    return import("./pages/NicheServiceLandingPage");
+  })
+);
+```
+
+### 3. Förbättra SmartServiceRouter med felhantering (App.tsx)
+Lägg till try/catch i den dynamiska importen av `nicheServiceData` och säkerställ att fallback till `ServiceDetail` fungerar korrekt om importen misslyckas.
+
+### 4. Verifiera att alla expanded slugs matchas korrekt
+Dubbelkolla att `getNicheService()` hittar alla slugs som visas i griden (totalrenovering, renovering, hantverkare, byggfirma, etc.) — detta ser korrekt ut i koden men bör verifieras.
+
+## Sammanfattning
+Huvudfixen är att wrappa routern i en ErrorBoundary och lägga till retry-logik för lazy-laddade chunks. Sidorna HAR redan innehåll (hero, USPs, 54 områdeslänkar, FAQ, CTA) — problemet är att de kraschar innan de hinner renderas.
+
