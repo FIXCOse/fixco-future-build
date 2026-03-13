@@ -122,7 +122,7 @@ function generateSitemapIndex(): string {
   let xml = xmlHeader();
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const loc of sitemaps) {
-    xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>\n`;
   return xml;
