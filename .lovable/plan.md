@@ -1,19 +1,23 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-# Kontaktformulär → Bokningsförfrågan via edge function
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Nuläge
-Kontaktformuläret sparar till `leads`-tabellen. Du vill att det istället ska gå via samma flöde som offert/hembesök — dvs via `create-booking-with-quote` edge-funktionen — så allt hamnar i `bookings`-tabellen och syns på samma ställe i admin.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-## Ändring
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-### `src/pages/Contact.tsx`
-Ersätt `supabase.from('leads').insert(...)` (rad 47-58) med ett `fetch`-anrop till edge-funktionen `create-booking-with-quote`:
-
-- `mode: 'quote'`
-- `service_slug: formData.service || 'kontakt'`
-- `fields: { description: formData.message, service_name: formData.service || 'Kontaktformulär' }`
-- Skicka `name`, `email`, `phone`, `address` som vanligt
-
-Detta gör att kontaktförfrågningar hamnar i `bookings`-tabellen med `service_slug: 'kontakt'` och `mode: 'quote'`, och syns direkt bland alla andra bokningsförfrågningar i admin-panelen.
-
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet

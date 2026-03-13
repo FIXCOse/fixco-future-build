@@ -44,20 +44,33 @@ const Contact = () => {
     }
 
     try {
-      const { error } = await supabase
-        .from('leads')
-        .insert({
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/create-booking-with-quote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseAnonKey}`,
+        },
+        body: JSON.stringify({
+          mode: 'quote',
+          service_slug: formData.service || 'kontakt',
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          address: formData.address || null,
-          service_interest: formData.service || null,
-          message: formData.message,
-          source: 'contact_form',
-          status: 'new',
-        });
+          address: formData.address || '',
+          fields: {
+            description: formData.message,
+            service_name: formData.service || 'Kontaktformulär',
+          },
+        }),
+      });
 
-      if (error) throw error;
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'Något gick fel');
+      }
       
       toast({
         title: t('pages.contact.thankYou'),
