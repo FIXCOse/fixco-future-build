@@ -513,13 +513,13 @@ export const generateUniqueLocalContent = (
   serviceSlug: LocalServiceSlug, 
   area: AreaKey
 ): UniqueLocalContent => {
+  const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug);
+  const serviceName = service?.name.toLowerCase() || serviceSlug;
   const rawPatterns = SEARCH_ACTION_PATTERNS[serviceSlug]
     || (service?.serviceKey ? SEARCH_ACTION_PATTERNS[service.serviceKey as LocalServiceSlug] : undefined);
   const nearbyAreas = NEARBY_AREAS_MAP[area] || [];
   const areaContent = AREA_UNIQUE_CONTENT[area];
   const metadata = getAreaMetadata(area);
-  const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug);
-  const serviceName = service?.name.toLowerCase() || serviceSlug;
 
   const patterns = rawPatterns || {
     actions: ["boka", "hitta", "beställa"],
