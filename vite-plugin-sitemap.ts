@@ -146,12 +146,25 @@ function generateHubsSitemap(): string {
 
 function generateLocalSitemap(areaSlugs: string[]): string {
   let xml = xmlHeader();
-  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const slug of ALL_SERVICE_SLUGS) {
     for (const area of areaSlugs) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
-      xml += `  <url><loc>${BASE_URL}/tjanster/${slug}/${area}</loc><priority>${priority}</priority></url>\n`;
+      const svLoc = `${BASE_URL}/tjanster/${slug}/${area}`;
+      const enLoc = `${BASE_URL}/en/services/${slug}/${area}`;
+      // Swedish version
+      xml += `  <url>\n    <loc>${svLoc}</loc>\n    <priority>${priority}</priority>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+      xml += `  </url>\n`;
+      // English version
+      xml += `  <url>\n    <loc>${enLoc}</loc>\n    <priority>${Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2)}</priority>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+      xml += `  </url>\n`;
     }
   }
   

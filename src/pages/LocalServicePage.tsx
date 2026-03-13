@@ -298,14 +298,15 @@ const LocalServicePage = () => {
       <Helmet>
         <title>{content.title}</title>
         <meta name="description" content={content.description} />
-        <link rel="canonical" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={content.title} />
         <meta property="og:description" content={content.description} />
-        <meta property="og:url" content={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'sv_SE'} />
         {/* hreflang for multilingual SEO */}
-        <link rel="alternate" hrefLang="sv" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
-        <link rel="alternate" hrefLang="en" href={`https://fixco.se/en/services/${serviceSlug}/${areaSlug}`} />
-        <link rel="alternate" hrefLang="x-default" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <link rel="alternate" hrefLang="sv" href={svUrl} />
+        <link rel="alternate" hrefLang="en" href={enUrl} />
+        <link rel="alternate" hrefLang="x-default" href={svUrl} />
         {/* Geo meta tags for local ranking */}
         {metadata?.region && <meta name="geo.region" content={`SE-${metadata.region === 'Uppsala' ? 'C' : 'AB'}`} />}
         <meta name="geo.placename" content={area} />
