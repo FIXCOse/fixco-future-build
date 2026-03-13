@@ -1,0 +1,1 @@
+ALTER TABLE public.quote_views ADD COLUMN IF NOT EXISTS country text, ADD COLUMN IF NOT EXISTS city text;

@@ -41,9 +41,9 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('quote_views')
-        .select('viewed_at, ip_address')
+        .select('viewed_at, ip_address, city, country')
         .eq('quote_id', quote.id)
-        .order('viewed_at', { ascending: true }) as unknown as { data: { viewed_at: string; ip_address: string | null }[] | null; error: any };
+        .order('viewed_at', { ascending: true }) as unknown as { data: { viewed_at: string; ip_address: string | null; city: string | null; country: string | null }[] | null; error: any };
       if (error) throw error;
       return data || [];
     },
@@ -60,11 +60,14 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
         Öppnad {viewCount} {viewCount === 1 ? 'gång' : 'gånger'}
         {uniqueIps > 0 && ` (${uniqueIps} ${uniqueIps === 1 ? 'unik IP' : 'unika IP:er'})`}
       </p>
-      {views?.map((v, i) => (
-        <p key={i} className="text-[11px] text-muted-foreground">
-          {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}
-        </p>
-      ))}
+      {views?.map((v, i) => {
+        const geoLabel = [v.city, v.country].filter(Boolean).join(', ');
+        return (
+          <p key={i} className="text-[11px] text-muted-foreground">
+            {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}{geoLabel ? ` (${geoLabel})` : ''}
+          </p>
+        );
+      })}
     </div>
   ) : undefined;
 
