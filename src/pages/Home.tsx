@@ -114,6 +114,20 @@ const Home = () => {
   // Navigation schema for Sitelinks
   const navigationSchema = getSiteNavigationSchema();
 
+  // Homepage BreadcrumbList
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Hem",
+        "item": "https://fixco.se/"
+      }
+    ]
+  };
+
   // Combined schema
   const combinedSchema = {
     "@context": "https://schema.org",
@@ -122,7 +136,8 @@ const Home = () => {
       websiteSchema,
       faqSchema,
       offerCatalogSchema,
-      navigationSchema
+      breadcrumbSchema,
+      ...navigationSchema
     ]
   };
 
