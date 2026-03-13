@@ -74,6 +74,24 @@ const AdminDashboardContent = () => {
 
   const adminSections: AdminSection[] = [
     {
+      title: 'Bokningsförfrågningar',
+      description: 'Nya offert- och hembesöksförfrågningar',
+      icon: ClipboardList,
+      href: '/admin/quotes?tab=requests',
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100',
+      badge: newBookingsCount > 0 ? newBookingsCount : undefined
+    },
+    {
+      title: 'Leads & Kontakt',
+      description: 'Inkomna kontaktförfrågningar och leads',
+      icon: Megaphone,
+      href: '/admin/leads',
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-100',
+      badge: newLeadsCount > 0 ? newLeadsCount : undefined
+    },
+    {
       title: 'Användarhantering',
       description: 'Hantera användare, roller och behörigheter',
       icon: Users,
