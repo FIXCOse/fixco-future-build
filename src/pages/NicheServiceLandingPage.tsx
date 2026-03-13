@@ -217,12 +217,12 @@ const NicheServiceLandingPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 gradient-text">
-                {isEnglish ? `Our ${title} Services` : `Våra ${title.toLowerCase()}tjänster`}
+                {isEnglish ? `Our ${categoryName} Services` : `Våra ${categoryName.toLowerCase()}tjänster`}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 {isEnglish 
-                  ? `Browse our related services in the ${title.toLowerCase()} category`
-                  : `Se våra relaterade tjänster inom ${title.toLowerCase()}`
+                  ? `Browse our related services in the ${categoryName.toLowerCase()} category`
+                  : `Se våra relaterade tjänster inom ${categoryName.toLowerCase()}`
                 }
               </p>
             </div>
