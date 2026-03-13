@@ -962,7 +962,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
 // Hjälpfunktion för certifieringstext
 function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en' = 'sv'): string {
   const isEn = locale === 'en';
-  const certTexts: Record<LocalServiceSlug, string> = isEn ? {
+  const certTexts: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "elektriker": "Electricians are authorized according to the Swedish Electrical Safety Authority and work according to current regulations.",
     "vvs": "Plumbers have Safe Water Installation certification and work according to industry standards.",
     "snickare": "Carpenters have professional certificates and extensive experience in all types of carpentry.",
