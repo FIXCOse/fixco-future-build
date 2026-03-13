@@ -431,8 +431,17 @@ const skipAddons = () => {
       return;
     }
 
-    // Validera formulärdata
-    const validation = serviceRequestSchema.safeParse(values);
+    // Validera formulärdata — inkludera beskrivning från service fields
+    const dataToValidate = { ...values };
+    if (!dataToValidate.beskrivning) {
+      // Sök i service fields efter textarea-värde
+      const textareaField = service.fields.find(f => f.kind === 'textarea');
+      if (textareaField && values[textareaField.key]) {
+        dataToValidate.beskrivning = values[textareaField.key];
+      }
+    }
+    
+    const validation = serviceRequestSchema.safeParse(dataToValidate);
     
     if (!validation.success) {
       const fieldErrors: Record<string, string> = {};
@@ -440,6 +449,13 @@ const skipAddons = () => {
         const field = issue.path[0] as string;
         fieldErrors[field] = issue.message;
       });
+      // Mappa beskrivning-fel tillbaka till rätt textarea-fält
+      if (fieldErrors.beskrivning) {
+        const textareaField = service.fields.find(f => f.kind === 'textarea');
+        if (textareaField && textareaField.key !== 'beskrivning') {
+          fieldErrors[textareaField.key] = fieldErrors.beskrivning;
+        }
+      }
       setErrors(fieldErrors);
       toast.error(ml.validationError);
       return;
