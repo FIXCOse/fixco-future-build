@@ -1,28 +1,23 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-# Implement Sitelinks Recovery
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Changes
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-### 1. `src/components/SEOSchemaEnhanced.tsx` — Fix navigation schema
-Replace `getSiteNavigationSchema` (lines 358-407). The current `hasPart` + `WebPageElement` structure is non-standard. Replace with an **array of individual `SiteNavigationElement` objects** in the user's priority order:
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-1. Hem → `https://fixco.se/`
-2. Tjänster → `https://fixco.se/tjanster`
-3. Boka Hembesök → `https://fixco.se/boka-hembesok`
-4. Referenser → `https://fixco.se/referenser`
-5. Kontakta Oss → `https://fixco.se/kontakt`
-
-Also add `mainEntityOfPage` to `getWebsiteSchema` (line 278-297).
-
-### 2. `src/pages/Home.tsx` — Add BreadcrumbList to @graph
-Add a homepage `BreadcrumbList` schema to the combined `@graph` array. This is a strong Google signal for sitelinks generation.
-
-### Summary
-| File | What |
-|------|------|
-| `SEOSchemaEnhanced.tsx` | Replace nav schema with standard format in priority order + add mainEntityOfPage |
-| `Home.tsx` | Add BreadcrumbList to @graph |
-
-Sitelinks typically reappear within 1-2 weeks after Google recrawls.
-
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
