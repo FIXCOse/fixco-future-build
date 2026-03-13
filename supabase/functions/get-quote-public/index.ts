@@ -154,9 +154,23 @@ Deno.serve(async (req) => {
         || req.headers.get('x-real-ip')
         || 'okänd';
       const viewSource = url.searchParams.get('source') || 'direct';
+
+      // Geo lookup
+      let city: string | null = null, country: string | null = null;
+      try {
+        const geo = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`);
+        if (geo.ok) {
+          const geoData = await geo.json();
+          city = geoData.city || null;
+          country = geoData.country || null;
+        }
+      } catch (e) {
+        console.error('Geo lookup failed:', e);
+      }
+
       await supabase
         .from('quote_views')
-        .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip, source: viewSource });
+        .insert({ quote_id: quote.id, user_agent: userAgent, ip_address: ip, source: viewSource, city, country });
 
       // Only update status and send admin email on FIRST view (sent → viewed)
       if (quote.status === 'sent') {
