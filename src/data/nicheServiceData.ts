@@ -8,7 +8,11 @@ export interface NicheServiceMeta {
   slug: string;
   title: string;
   titleEn: string;
-  parentCategory: string; // maps to serviceKey in LOCAL_SERVICES
+  heroTitle: string;        // Action-oriented H1, e.g. "Renovera Ditt Kök"
+  heroTitleEn: string;
+  metaDescription: string;  // Sales-focused meta desc for Google
+  metaDescriptionEn: string;
+  parentCategory: string;   // maps to serviceKey in LOCAL_SERVICES
   icon: LucideIcon;
   rotRut: 'ROT' | 'RUT';
   description: string;
