@@ -43,9 +43,21 @@ const Contact = () => {
       return;
     }
 
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const { error } = await supabase
+        .from('leads')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address || null,
+          service_interest: formData.service || null,
+          message: formData.message,
+          source: 'contact_form',
+          status: 'new',
+        });
+
+      if (error) throw error;
       
       toast({
         title: t('pages.contact.thankYou'),

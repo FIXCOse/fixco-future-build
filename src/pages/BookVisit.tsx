@@ -43,7 +43,19 @@ const BookVisit = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
+    // Validate phone number format
+    const phoneRegex = /^(\+46|0)[-\s]?7[0-9][-\s]?[0-9]{3}[-\s]?[0-9]{2}[-\s]?[0-9]{2}$/;
+    const cleanPhone = formData.phone.replace(/[-\s]/g, '');
+    if (!phoneRegex.test(formData.phone) && !/^(\+46|0)7\d{8}$/.test(cleanPhone)) {
+      toast({
+        title: "Ogiltigt telefonnummer",
+        description: "Ange ett svenskt mobilnummer, t.ex. 070-123 45 67 eller +46701234567",
+        variant: "destructive"
+      });
+      setIsSubmitting(false);
+      return;
+    }
     try {
       const { data, error } = await supabase.functions.invoke('create-booking-with-quote', {
         body: {
