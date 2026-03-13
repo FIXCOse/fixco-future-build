@@ -1,22 +1,18 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ Steg 1 klart
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Kvar att göra
+1. **`nicheServiceData.ts`** — Lägg till NicheServiceMeta för nya slugs (hub-sidor på `/tjanster/{slug}`)
+2. **`slugMapping.ts`** — Lägg till sv→en mappningar
+3. **`App.tsx`** — Registrera nisch-landningssidor som routes
 
-### Fil som ändras
-
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
-
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
-
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
-
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
-
+### Teknisk arkitektur
+- `seoSlugsExpansion.ts` — Ny fil med alla 120+ expanded slugs och deras metadata
+- `localServiceData.ts` — Mergar base + expanded, använder dynamic fallback lookup
+- `localSeoData.ts` — Uppdaterad med Partial<Record> för kompatibilitet
