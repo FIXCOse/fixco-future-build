@@ -32,6 +32,34 @@ const AdminDashboardContent = () => {
     },
   });
 
+  // Hämta antal nya bokningar
+  const { data: newBookingsCount = 0 } = useQuery({
+    queryKey: ['new-bookings-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'new');
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
+  // Hämta antal nya leads
+  const { data: newLeadsCount = 0 } = useQuery({
+    queryKey: ['new-leads-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('leads')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'new');
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
   type AdminSection = {
     title: string;
     description: string;
