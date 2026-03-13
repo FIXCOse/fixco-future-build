@@ -86,6 +86,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Do you coordinate all tradespeople?', a: 'Yes, we coordinate everything – plumbing, electrical, tiling, carpentry and painting – so you don\'t need to book multiple companies.' },
     ],
     enSlug: 'bathroom-renovation',
+    introText: 'Är ditt badrum slitet och i behov av en uppfräschning? Fixcos certifierade våtrumstekniker ger dig ett fräscht, modernt badrum med tätskikt som håller i decennier. Vi sköter allt – kakel, VVS, el och målning – så du kan fokusera på att välja din drömdesign. Med 30% ROT-avdrag och 10 års garanti kan du känna dig helt trygg.',
+    introTextEn: 'Is your bathroom worn out and in need of a refresh? Fixco\'s certified wet room technicians give you a fresh, modern bathroom with waterproofing that lasts for decades. We handle everything – tiling, plumbing, electrical and painting – so you can focus on choosing your dream design. With 30% ROT deduction and 10-year warranty, you can feel completely confident.',
   },
   {
     slug: 'altanbygge',
