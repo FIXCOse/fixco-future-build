@@ -148,6 +148,15 @@ const LocalServicePage = () => {
 
   
 
+  // Locale-aware URLs
+  const baseUrl = 'https://fixco.se';
+  const canonicalPath = locale === 'en'
+    ? `/en/services/${serviceSlug}/${areaSlug}`
+    : `/tjanster/${serviceSlug}/${areaSlug}`;
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
+  const svUrl = `${baseUrl}/tjanster/${serviceSlug}/${areaSlug}`;
+  const enUrl = `${baseUrl}/en/services/${serviceSlug}/${areaSlug}`;
+
   // Schema.org markup
   const localBusinessSchema = useMemo(() => {
     if (!content || !metadata) return null;
@@ -156,7 +165,7 @@ const LocalServicePage = () => {
       "@type": "ProfessionalService",
       "name": `Fixco ${content.h1}`,
       "description": content.description,
-      "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      "url": canonicalUrl,
       "telephone": "+46-79-335-02-28",
       "priceRange": "$$",
       "areaServed": { "@type": "City", "name": area },
@@ -181,7 +190,7 @@ const LocalServicePage = () => {
       "hasMap": `https://www.google.com/maps?q=Fixco+${encodeURIComponent(service?.name || '')}+${encodeURIComponent(area)}`,
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": `${service?.name} i ${area}`,
+        "name": locale === 'en' ? `${service?.name} in ${area}` : `${service?.name} i ${area}`,
         "itemListElement": content.servicesSection.items.map((item: string) => ({
           "@type": "Offer",
           "itemOffered": {
@@ -197,8 +206,12 @@ const LocalServicePage = () => {
   const howToSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": `Så bokar du ${service?.name?.toLowerCase()} i ${area}`,
-    "description": `Steg-för-steg guide för att boka ${service?.name?.toLowerCase()} via Fixco i ${area}`,
+    "name": locale === 'en'
+      ? `How to book ${service?.name?.toLowerCase()} in ${area}`
+      : `Så bokar du ${service?.name?.toLowerCase()} i ${area}`,
+    "description": locale === 'en'
+      ? `Step-by-step guide to booking ${service?.name?.toLowerCase()} via Fixco in ${area}`
+      : `Steg-för-steg guide för att boka ${service?.name?.toLowerCase()} via Fixco i ${area}`,
     "totalTime": "PT5M",
     "step": howToSteps.map((step, idx) => ({
       "@type": "HowToStep",
@@ -221,16 +234,19 @@ const LocalServicePage = () => {
     };
   }, [content]);
 
-  const breadcrumbSchema = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Hem", "item": "https://fixco.se" },
-      { "@type": "ListItem", "position": 2, "name": "Tjänster", "item": "https://fixco.se/tjanster" },
-      { "@type": "ListItem", "position": 3, "name": service?.name, "item": `https://fixco.se/tjanster/${service?.serviceKey}` },
-      { "@type": "ListItem", "position": 4, "name": `${service?.name} ${area}`, "item": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}` }
-    ]
-  }), [service, area, serviceSlug, areaSlug]);
+  const breadcrumbSchema = useMemo(() => {
+    const isEn = locale === 'en';
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": isEn ? "Home" : "Hem", "item": isEn ? `${baseUrl}/en` : baseUrl },
+        { "@type": "ListItem", "position": 2, "name": isEn ? "Services" : "Tjänster", "item": isEn ? `${baseUrl}/en/services` : `${baseUrl}/tjanster` },
+        { "@type": "ListItem", "position": 3, "name": service?.name, "item": isEn ? `${baseUrl}/en/services/${service?.serviceKey}` : `${baseUrl}/tjanster/${service?.serviceKey}` },
+        { "@type": "ListItem", "position": 4, "name": `${service?.name} ${area}`, "item": canonicalUrl }
+      ]
+    };
+  }, [service, area, serviceSlug, areaSlug, locale, canonicalUrl]);
 
   // AI-optimized schemas for maximum visibility
   const authorSchema = useMemo(() => getAuthorSchema(), []);
@@ -240,10 +256,10 @@ const LocalServicePage = () => {
     return getSpeakableSchema({
       headline: content.h1,
       description: content.description,
-      url: `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      url: canonicalUrl,
       speakableSelectors: ["h1", ".hero-description", ".service-intro"]
     });
-  }, [content, serviceSlug, areaSlug]);
+  }, [content, canonicalUrl]);
 
   // Individual Review schemas to validate AggregateRating
   const reviewSchemas = useMemo(() => {
@@ -282,14 +298,15 @@ const LocalServicePage = () => {
       <Helmet>
         <title>{content.title}</title>
         <meta name="description" content={content.description} />
-        <link rel="canonical" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={content.title} />
         <meta property="og:description" content={content.description} />
-        <meta property="og:url" content={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'sv_SE'} />
         {/* hreflang for multilingual SEO */}
-        <link rel="alternate" hrefLang="sv" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
-        <link rel="alternate" hrefLang="en" href={`https://fixco.se/en/services/${serviceSlug}/${areaSlug}`} />
-        <link rel="alternate" hrefLang="x-default" href={`https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`} />
+        <link rel="alternate" hrefLang="sv" href={svUrl} />
+        <link rel="alternate" hrefLang="en" href={enUrl} />
+        <link rel="alternate" hrefLang="x-default" href={svUrl} />
         {/* Geo meta tags for local ranking */}
         {metadata?.region && <meta name="geo.region" content={`SE-${metadata.region === 'Uppsala' ? 'C' : 'AB'}`} />}
         <meta name="geo.placename" content={area} />
