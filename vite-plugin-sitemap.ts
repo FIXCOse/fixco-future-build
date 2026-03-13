@@ -146,7 +146,7 @@ function generateMainSitemap(): string {
     // English version
     xml += `  <url>\n`;
     xml += `    <loc>${BASE_URL}${page.en}</loc>\n`;
-    xml += `    <lastmod>${LASTMOD}</lastmod>\n`;
+    xml += `    <lastmod>${TODAY}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}${page.en}"/>\n`;
