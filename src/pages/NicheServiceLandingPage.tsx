@@ -83,6 +83,7 @@ const NicheServiceLandingPage = () => {
   const usps = isEnglish ? niche.uspsEn : niche.usps;
   const faqs = isEnglish ? niche.faqsEn : niche.faqs;
   const IconComponent = niche.icon;
+  const introText = isEnglish ? niche.introTextEn : niche.introText;
   const heroGradient = getHeroGradientStyle(niche.slug);
   const deductionLabel = niche.rotRut === 'ROT' ? '30% ROT' : '50% RUT';
 
