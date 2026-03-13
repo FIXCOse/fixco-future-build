@@ -638,6 +638,19 @@ const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
   "rivning": "Demolition",
 };
 
+// Unified lookup functions for both base and expanded slugs
+const getServiceNameEn = (slug: LocalServiceSlug): string => {
+  if (slug in SERVICE_NAME_EN_BASE) return SERVICE_NAME_EN_BASE[slug as BaseServiceSlug];
+  if (slug in EXPANDED_SERVICE_NAME_EN) return EXPANDED_SERVICE_NAME_EN[slug as ExpandedSlug];
+  return slug;
+};
+
+const getServicePricing = (slug: LocalServiceSlug) => {
+  if (slug in SERVICE_PRICING_BASE) return SERVICE_PRICING_BASE[slug as BaseServiceSlug];
+  if (slug in EXPANDED_SERVICE_PRICING) return EXPANDED_SERVICE_PRICING[slug as ExpandedSlug];
+  return { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" as const };
+};
+
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
   const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug)!;
   const isEn = locale === 'en';
