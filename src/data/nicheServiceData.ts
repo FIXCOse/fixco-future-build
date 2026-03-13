@@ -241,6 +241,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Is inspection included?', a: 'Yes, we always issue an inspection protocol after completed work showing the installation is safe.' },
     ],
     enSlug: 'electrical-installation',
+    introText: 'Behöver du en pålitlig elektriker som gör jobbet rätt från början? Fixcos auktoriserade elektriker utför allt från byte av elcentral till installation av laddbox och belysning. Varje jobb avslutas med besiktningsprotokoll, och med 30% ROT-avdrag blir det både tryggt och prisvärt.',
+    introTextEn: 'Need a reliable electrician who gets it right from the start? Fixco\'s authorized electricians handle everything from fuse box replacement to EV charger and lighting installation. Every job ends with an inspection protocol, and with 30% ROT deduction it\'s both safe and affordable.',
   },
   {
     slug: 'koksmontering',
