@@ -612,9 +612,18 @@ export const getImprovedDescription = (
 ): string => {
   const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug);
   const serviceName = service?.name.toLowerCase() || serviceSlug;
-  const patterns = SEARCH_ACTION_PATTERNS[serviceSlug];
+  const rawPatterns = SEARCH_ACTION_PATTERNS[serviceSlug]
+    || (service?.serviceKey ? SEARCH_ACTION_PATTERNS[service.serviceKey as LocalServiceSlug] : undefined);
   const nearbyAreas = NEARBY_AREAS_MAP[area]?.slice(0, 2) || [];
   const areaContent = AREA_UNIQUE_CONTENT[area];
+
+  const patterns = rawPatterns || {
+    actions: ["boka", "hitta", "beställa"],
+    objects: [serviceName],
+    urgentTerms: [],
+    projectTypes: [serviceName],
+    synonyms: []
+  };
   
   const nearbyText = nearbyAreas.length > 0 
     ? ` Vi täcker även ${nearbyAreas.join(' och ')}.` 
