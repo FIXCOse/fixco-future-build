@@ -168,7 +168,21 @@ const EXPANDED_SERVICES = [
   { slug: 'bortforsling', name: 'Bortforsling', rotRut: 'ROT' },
 ];
 
-const ALL_SERVICES = [...BASE_SERVICES];
+// Top 40 most-searched expanded slugs for prerendering
+const TOP_EXPANDED_SERVICES = EXPANDED_SERVICES.filter(s => [
+  'totalrenovering','renovering','hantverkare','byggfirma','byggtjanster',
+  'husrenovering','villarenovering','lagenhetsrenovering','ombyggnad',
+  'kok','koksbyte','nytt-kok','badrum','plattsattning','tatskikt',
+  'elarbeten','laddbox','laddboxinstallation','belysning',
+  'vvs-arbeten','rorjour','varmepump','golvvarme',
+  'malning','tapetsering','golvslipning','parkettlaggning',
+  'hemstad','flyttstad','byggstad','storstadning',
+  'flytthjalp','ikeamontering','garderobsmontering',
+  'taklaggning','takbyte','dranering','plattlaggning',
+  'solceller','smarthome','larm',
+].includes(s.slug));
+
+const ALL_SERVICES = [...BASE_SERVICES, ...TOP_EXPANDED_SERVICES];
 
 // ─── Areas ───
 const STOCKHOLM_AREAS: Array<[string, string]> = [

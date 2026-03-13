@@ -144,7 +144,8 @@ const HeroV3 = () => {
           <a href="/" className="inline-block max-w-full transition-transform duration-300 hover:scale-105 no-underline">
             <img 
               src={logoFixco} 
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
               alt="Fixco" 
               className="max-h-16 md:max-h-24 w-auto block"
             />

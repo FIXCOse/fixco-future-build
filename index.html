@@ -26,7 +26,17 @@
       !function(){"use strict";var e=function(e,t,n){var r,o=window.document,i=o.createElement("link");if(t)r=t;else{var a=(o.body||o.getElementsByTagName("head")[0]).childNodes;r=a[a.length-1]}var d=o.styleSheets;if(e.setAttribute("rel","stylesheet"),e.setAttribute("type","text/css"),e.setAttribute("media","only x"),r.parentNode.insertBefore(e,t?r:r.nextSibling),e.onloadcssdefined=function(e){for(var t,n=0;n<d.length;n++)d[n].href&&d[n].href.indexOf(e.href)>-1&&(t=!0);t?e.media=n||"all":setTimeout(function(){e.onloadcssdefined(e)})},e.onloadcssdefined(e),e.onload=function(){e.media!==n&&(e.media=n)},void 0===e.addEventListener||e.addEventListener("load",e.onload)};e.loadCSS=function(e,t,n){var r=window.document.createElement("link"),o=t||window.document.getElementsByTagName("script")[0];return r.rel="stylesheet",r.href=e,r.media="only x",o.parentNode.insertBefore(r,o),setTimeout(function(){r.media=n||"all"}),r}}();
     </script>
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RY10121655"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RY10121655');
+    </script>
+    
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
     <!-- Primary Meta Tags -->
     <title>Fixco | Privat • BRF • Företag</title>

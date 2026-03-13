@@ -5,7 +5,34 @@
 import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
-const LASTMOD = '2026-03-13';
+
+// Dynamic lastmod: vary by category to signal freshness to crawlers
+const TODAY = new Date().toISOString().split('T')[0];
+const CATEGORY_LASTMOD: Record<string, string> = {
+  // High-priority categories get recent dates
+  'snickare': TODAY,
+  'elektriker': TODAY,
+  'vvs': TODAY,
+  'malare': TODAY,
+  'badrumsrenovering': TODAY,
+  'koksrenovering': TODAY,
+  'totalrenovering': TODAY,
+  'renovering': TODAY,
+  'hantverkare': TODAY,
+  'byggfirma': TODAY,
+  'stad': '2026-03-10',
+  'flytt': '2026-03-10',
+  'tradgard': '2026-03-08',
+  'markarbeten': '2026-03-08',
+  'montering': '2026-03-06',
+  'tekniska-installationer': '2026-03-06',
+};
+const DEFAULT_LASTMOD = '2026-03-01';
+
+function getLastmod(slug?: string): string {
+  if (!slug) return TODAY;
+  return CATEGORY_LASTMOD[slug] || DEFAULT_LASTMOD;
+}
 
 // ─── All 151 service slugs (20 base + 131 expanded) ───
 const ALL_SERVICE_SLUGS = [
@@ -95,7 +122,7 @@ function generateSitemapIndex(): string {
   let xml = xmlHeader();
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const loc of sitemaps) {
-    xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>\n`;
   return xml;
@@ -109,7 +136,7 @@ function generateMainSitemap(): string {
     // Swedish version
     xml += `  <url>\n`;
     xml += `    <loc>${BASE_URL}${page.sv}</loc>\n`;
-    xml += `    <lastmod>${LASTMOD}</lastmod>\n`;
+    xml += `    <lastmod>${TODAY}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${BASE_URL}${page.sv}"/>\n`;
@@ -119,7 +146,7 @@ function generateMainSitemap(): string {
     // English version
     xml += `  <url>\n`;
     xml += `    <loc>${BASE_URL}${page.en}</loc>\n`;
-    xml += `    <lastmod>${LASTMOD}</lastmod>\n`;
+    xml += `    <lastmod>${TODAY}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}${page.en}"/>\n`;
@@ -140,13 +167,13 @@ function generateHubsSitemap(): string {
     const svLoc = `${BASE_URL}/tjanster/${slug}`;
     const enLoc = `${BASE_URL}/en/services/${slug}`;
     // Swedish version
-    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
+    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
     xml += `  </url>\n`;
     // English version
-    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
+    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;

@@ -41,7 +41,7 @@ export const useSEO = ({
   // Track page view
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('config', 'G-XXXXXXXXXX', {
+      (window as any).gtag('config', 'G-RY10121655', {
         page_path: location.pathname + location.search,
         page_title: fullTitle
       });
