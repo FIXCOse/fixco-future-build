@@ -434,7 +434,7 @@ export function prerenderLocalPlugin(): Plugin {
     name: 'vite-plugin-prerender-local',
     enforce: 'post',
 
-    generateBundle(_options, bundle: OutputBundle) {
+    generateBundle(_options: unknown, bundle: Record<string, unknown>) {
       // Find CSS and JS entry files from the bundle
       const cssFiles: string[] = [];
       const jsEntries: string[] = [];
@@ -443,10 +443,10 @@ export function prerenderLocalPlugin(): Plugin {
         if (fileName.endsWith('.css')) {
           cssFiles.push(fileName);
         }
-        if (
-          (chunk as OutputChunk).type === 'chunk' &&
-          (chunk as OutputChunk).isEntry
-        ) {
+        const c = chunk as Record<string, unknown>;
+        if (c.type === 'chunk' && c.isEntry) {
+          jsEntries.push(fileName);
+        }
           jsEntries.push(fileName);
         }
       }
