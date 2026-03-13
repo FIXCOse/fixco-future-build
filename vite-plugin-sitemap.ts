@@ -5,7 +5,34 @@
 import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
-const LASTMOD = '2026-03-13';
+
+// Dynamic lastmod: vary by category to signal freshness to crawlers
+const TODAY = new Date().toISOString().split('T')[0];
+const CATEGORY_LASTMOD: Record<string, string> = {
+  // High-priority categories get recent dates
+  'snickare': TODAY,
+  'elektriker': TODAY,
+  'vvs': TODAY,
+  'malare': TODAY,
+  'badrumsrenovering': TODAY,
+  'koksrenovering': TODAY,
+  'totalrenovering': TODAY,
+  'renovering': TODAY,
+  'hantverkare': TODAY,
+  'byggfirma': TODAY,
+  'stad': '2026-03-10',
+  'flytt': '2026-03-10',
+  'tradgard': '2026-03-08',
+  'markarbeten': '2026-03-08',
+  'montering': '2026-03-06',
+  'tekniska-installationer': '2026-03-06',
+};
+const DEFAULT_LASTMOD = '2026-03-01';
+
+function getLastmod(slug?: string): string {
+  if (!slug) return TODAY;
+  return CATEGORY_LASTMOD[slug] || DEFAULT_LASTMOD;
+}
 
 // ─── All 151 service slugs (20 base + 131 expanded) ───
 const ALL_SERVICE_SLUGS = [
