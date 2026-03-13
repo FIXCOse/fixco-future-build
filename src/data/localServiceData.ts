@@ -27,7 +27,9 @@ export const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS] as const;
 export type AreaKey = typeof ALL_AREAS[number];
 
 // Alla tjänster som ska ha lokala sidor
-export const LOCAL_SERVICES = [
+import { EXPANDED_SERVICES, EXPANDED_SERVICE_NAME_EN, EXPANDED_SERVICE_PRICING, EXPANDED_SERVICE_MYTHS, EXPANDED_CERT_TEXT_SV, EXPANDED_CERT_TEXT_EN, getExpandedTitleSv, getExpandedTitleEn, getExpandedDescriptionSv, getExpandedDescriptionEn, getExpandedServiceItems, type ExpandedSlug } from './seoSlugsExpansion';
+
+const BASE_SERVICES = [
   { slug: "snickare", name: "Snickare", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "elektriker", name: "Elektriker", serviceKey: "el", rotRut: "ROT" },
   { slug: "vvs", name: "VVS", serviceKey: "vvs", rotRut: "ROT" },
@@ -51,7 +53,14 @@ export const LOCAL_SERVICES = [
   { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
 ] as const;
 
-export type LocalServiceSlug = typeof LOCAL_SERVICES[number]["slug"];
+// Merge base + expanded services into a single array
+export const LOCAL_SERVICES: ReadonlyArray<{ slug: string; name: string; serviceKey: string; rotRut: string }> = [
+  ...BASE_SERVICES,
+  ...EXPANDED_SERVICES,
+];
+
+export type BaseServiceSlug = typeof BASE_SERVICES[number]["slug"];
+export type LocalServiceSlug = BaseServiceSlug | ExpandedSlug;
 
 // Genererar slug för URL
 export const generateAreaSlug = (area: string): string => {
@@ -347,7 +356,7 @@ const getDefaultFunFacts = (area: string, region: string): string[] => [
 // ============================================================
 // MYTER OCH SANNINGAR PER TJÄNST
 // ============================================================
-const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: string }>> = {
+const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: string }>> = {
   "elektriker": [
     { 
       myth: "Man kan byta uttag och strömbrytare själv utan elektriker", 
@@ -536,7 +545,7 @@ const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: strin
 // ============================================================
 
 // PRISMAPPNING - Korrekta priser från servicesData
-const SERVICE_PRICING: Record<LocalServiceSlug, { 
+const SERVICE_PRICING_BASE: Record<BaseServiceSlug, { 
   base: string; 
   afterDeduction: string; 
   isQuoteOnly: boolean;
@@ -573,7 +582,9 @@ export const getAreaFunFacts = (area: AreaKey): string[] => {
 
 // Funktion för att hämta myter
 export const getServiceMyths = (serviceSlug: LocalServiceSlug): Array<{ myth: string; truth: string }> => {
-  return SERVICE_MYTHS[serviceSlug] || [];
+  if (serviceSlug in SERVICE_MYTHS_BASE) return SERVICE_MYTHS_BASE[serviceSlug as BaseServiceSlug];
+  if (serviceSlug in EXPANDED_SERVICE_MYTHS) return EXPANDED_SERVICE_MYTHS[serviceSlug as ExpandedSlug];
+  return [];
 };
 
 export interface LocalServiceContent {
@@ -604,7 +615,7 @@ export interface LocalServiceContent {
 }
 
 // English service name mapping
-const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
+const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
   "snickare": "Carpenter",
   "elektriker": "Electrician",
   "vvs": "Plumbing",
@@ -627,16 +638,29 @@ const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
   "rivning": "Demolition",
 };
 
+// Unified lookup functions for both base and expanded slugs
+const getServiceNameEn = (slug: LocalServiceSlug): string => {
+  if (slug in SERVICE_NAME_EN_BASE) return SERVICE_NAME_EN_BASE[slug as BaseServiceSlug];
+  if (slug in EXPANDED_SERVICE_NAME_EN) return EXPANDED_SERVICE_NAME_EN[slug as ExpandedSlug];
+  return slug;
+};
+
+const getServicePricing = (slug: LocalServiceSlug) => {
+  if (slug in SERVICE_PRICING_BASE) return SERVICE_PRICING_BASE[slug as BaseServiceSlug];
+  if (slug in EXPANDED_SERVICE_PRICING) return EXPANDED_SERVICE_PRICING[slug as ExpandedSlug];
+  return { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" as const };
+};
+
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
   const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug)!;
   const isEn = locale === 'en';
-  const serviceName = isEn ? SERVICE_NAME_EN[serviceSlug].toLowerCase() : service.name.toLowerCase();
-  const serviceNameCapital = isEn ? SERVICE_NAME_EN[serviceSlug] : service.name;
+  const serviceName = isEn ? getServiceNameEn(serviceSlug).toLowerCase() : service.name.toLowerCase();
+  const serviceNameCapital = isEn ? getServiceNameEn(serviceSlug) : service.name;
   const rotRut = service.rotRut;
   const metadata = getAreaMetadata(area);
   
   // Import improved titles from localSeoData
-  const titleTemplates: Record<LocalServiceSlug, string> = isEn ? {
+  const titleTemplatesBase: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "snickare": `Carpenter ${area} ★ Kitchen, wardrobe & deck · ROT 30% · Free quote`,
     "vvs": `Plumbing ${area} ★ Repair & installation · ROT 30% · Response 24h`,
     "elektriker": `Electrician ${area} ★ Certified · EV charger & electrical · ROT 30%`,
@@ -680,7 +704,7 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "rivning": `Rivning ${area} ★ Badrum, kök & innerväggar · ROT 30% · Fri offert`
   };
 
-  const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
+  const descriptionTemplatesBase: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "snickare": `Carpenter in ${area} ★ 5/5 rating ✓ Kitchen renovation, deck & flooring ✓ 30% ROT deduction ✓ Fixed price. Get quote within 24h!`,
     "elektriker": `Electrician ${area} ★ 5/5 rating ✓ Electrical installation & lighting ✓ Certified ✓ 30% ROT deduction. Book today!`,
     "vvs": `Plumber ${area} ★ 5/5 rating ✓ Bathroom, kitchen & heating ✓ Certified ✓ 30% ROT deduction. Get quote within 24h!`,
@@ -727,9 +751,9 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   return {
     h1: `${serviceNameCapital} ${area}`,
     
-    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – ${isEn ? 'Professional contractors' : 'Professionella hantverkare'} | ${rotRut} 30%`,
+    title: titleTemplatesBase[serviceSlug] || (isEn ? getExpandedTitleEn(serviceSlug as ExpandedSlug, area) : getExpandedTitleSv(serviceSlug as ExpandedSlug, area)) || `${serviceNameCapital} ${area} – ${isEn ? 'Professional contractors' : 'Professionella hantverkare'} | ${rotRut} 30%`,
     
-    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} ${isEn ? 'in' : 'i'} ${area} ★ 5/5 ${isEn ? 'rating' : 'betyg'} ✓ 30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'} ✓ ${isEn ? 'Fixed price' : 'Fast pris'} ✓ ${isEn ? 'Quality guarantee' : 'Kvalitetsgaranti'}. ${isEn ? 'Get quote within 24h!' : 'Få offert inom 24h!'}`,
+    description: descriptionTemplatesBase[serviceSlug] || (isEn ? getExpandedDescriptionEn(serviceSlug as ExpandedSlug, area) : getExpandedDescriptionSv(serviceSlug as ExpandedSlug, area)) || `${serviceNameCapital} ${isEn ? 'in' : 'i'} ${area} ★ 5/5 ${isEn ? 'rating' : 'betyg'} ✓ 30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'} ✓ ${isEn ? 'Fixed price' : 'Fast pris'} ✓ ${isEn ? 'Quality guarantee' : 'Kvalitetsgaranti'}. ${isEn ? 'Get quote within 24h!' : 'Få offert inom 24h!'}`,
     
     intro: isEn
       ? `**Need ${serviceName} in ${area}?** You've come to the right place!
@@ -834,7 +858,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
     },
 
     faqs: (() => {
-      const pricing = SERVICE_PRICING[serviceSlug];
+      const pricing = getServicePricing(serviceSlug);
       const priceAnswer = isEn
         ? (pricing.isQuoteOnly 
           ? `The price for ${serviceName} in ${area} varies depending on the scope and complexity of the project. Contact us for a free quote on your project in ${area}. All prices include ${rotRut} deduction (30%) when you hire ${serviceName} through Fixco.`
@@ -886,7 +910,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
 function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 'sv' | 'en' = 'sv'): string[] {
   const isEn = locale === 'en';
   if (isEn) {
-    const enItems: Record<LocalServiceSlug, string[]> = {
+    const enItems: Partial<Record<LocalServiceSlug, string[]>> = {
       "snickare": [`Kitchen renovation in ${area}`, `Build deck in ${area}`, `Interior carpentry in ${area}`, `Window & door replacement in ${area}`, `Flooring in ${area}`, `Bathroom renovation in ${area}`, `Attic/basement conversion in ${area}`, `Facade renovation in ${area}`, `Kitchen & wardrobe assembly in ${area}`, `Extensions in ${area}`],
       "elektriker": [`Electrical installation in ${area}`, `Electrical troubleshooting in ${area}`, `Panel upgrade in ${area}`, `Lighting installation in ${area}`, `Ground fault breaker in ${area}`, `EV charger in ${area}`, `Smart home installation in ${area}`, `Electrical inspection in ${area}`, `Outlet & switch replacement in ${area}`, `Outdoor lighting in ${area}`],
       "vvs": [`Plumbing installation in ${area}`, `Faucet replacement in ${area}`, `Heat pump installation in ${area}`, `Drain cleaning in ${area}`, `Bathroom plumbing in ${area}`, `Underfloor heating in ${area}`, `Emergency water leak in ${area}`, `Toilet replacement in ${area}`, `Radiator installation in ${area}`, `Water heater in ${area}`],
@@ -908,9 +932,9 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
       "elinstallation": [`Electrical outlet installation in ${area}`, `Lighting installation in ${area}`, `EV charger installation in ${area}`, `Dimmer installation in ${area}`, `Panel upgrade in ${area}`, `Outdoor lighting in ${area}`, `Smart home wiring in ${area}`, `Ground fault breaker in ${area}`, `Electrical inspection in ${area}`, `Kitchen electrical in ${area}`],
       "rivning": [`Bathroom demolition in ${area}`, `Kitchen demolition in ${area}`, `Wall removal in ${area}`, `Floor removal in ${area}`, `Full gutting in ${area}`, `Concrete cutting in ${area}`, `Tile removal in ${area}`, `Debris hauling in ${area}`, `Interior demolition in ${area}`, `Selective demolition in ${area}`],
     };
-    return enItems[serviceSlug] || [];
+    return enItems[serviceSlug] || getExpandedServiceItems(serviceSlug as ExpandedSlug, area, 'en');
   }
-  const serviceItems: Record<LocalServiceSlug, string[]> = {
+  const serviceItems: Partial<Record<LocalServiceSlug, string[]>> = {
     "snickare": [`Köksrenovering i ${area}`, `Bygga altan och trädäck i ${area}`, `Inredningssnickeri i ${area}`, `Fönster- och dörrbyte i ${area}`, `Golvläggning i ${area}`, `Badrumsrenovering i ${area}`, `Bygga om vind/källare i ${area}`, `Fasadrenovering i ${area}`, `Montering av kök och garderober i ${area}`, `Tillbyggnader och utbyggnader i ${area}`],
     "elektriker": [`Elinstallation i ${area}`, `Felsökning av el i ${area}`, `Byte av elcentral i ${area}`, `Installation av belysning i ${area}`, `Jordfelsbrytare installation i ${area}`, `Laddbox för elbil i ${area}`, `Smart hem installation i ${area}`, `Elbesiktning i ${area}`, `Byte av uttag och strömbrytare i ${area}`, `Utomhusbelysning i ${area}`],
     "vvs": [`VVS-installation i ${area}`, `Byte av blandare i ${area}`, `Värmepump installation i ${area}`, `Avloppsrensning i ${area}`, `Badrumsrenovering VVS i ${area}`, `Golvvärme installation i ${area}`, `Vattenläcka akut i ${area}`, `Byte av toalettstol i ${area}`, `Radiatorinstallation i ${area}`, `Varmvattenberedare i ${area}`],
@@ -932,13 +956,13 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     "elinstallation": [`Eluttag installation i ${area}`, `Belysning installation i ${area}`, `Laddbox installation i ${area}`, `Dimmer installation i ${area}`, `Byte av elcentral i ${area}`, `Utomhusbelysning i ${area}`, `Smart hem kabeldragning i ${area}`, `Jordfelsbrytare i ${area}`, `Elbesiktning i ${area}`, `Kök elinstallation i ${area}`],
     "rivning": [`Rivning badrum i ${area}`, `Rivning kök i ${area}`, `Rivning innerväggar i ${area}`, `Rivning golv i ${area}`, `Totalrivning stomrent i ${area}`, `Håltagning betong i ${area}`, `Kakelrivning i ${area}`, `Bortforsling av rivningsavfall i ${area}`, `Selektiv rivning i ${area}`, `Rivning före renovering i ${area}`],
   };
-  return serviceItems[serviceSlug] || [];
+  return serviceItems[serviceSlug] || getExpandedServiceItems(serviceSlug as ExpandedSlug, area, 'sv');
 }
 
 // Hjälpfunktion för certifieringstext
 function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en' = 'sv'): string {
   const isEn = locale === 'en';
-  const certTexts: Record<LocalServiceSlug, string> = isEn ? {
+  const certTexts: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "elektriker": "Electricians are authorized according to the Swedish Electrical Safety Authority and work according to current regulations.",
     "vvs": "Plumbers have Safe Water Installation certification and work according to industry standards.",
     "snickare": "Carpenters have professional certificates and extensive experience in all types of carpentry.",
@@ -981,7 +1005,11 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "rivning": "Rivare har erfarenhet av säker rivning av badrum, kök, väggar och golv med korrekt avfallshantering."
   };
-  return certTexts[serviceSlug];
+  if (certTexts[serviceSlug]) return certTexts[serviceSlug]!;
+  // Fallback to expanded cert texts
+  if (isEn && (serviceSlug as ExpandedSlug) in EXPANDED_CERT_TEXT_EN) return EXPANDED_CERT_TEXT_EN[serviceSlug as ExpandedSlug];
+  if (!isEn && (serviceSlug as ExpandedSlug) in EXPANDED_CERT_TEXT_SV) return EXPANDED_CERT_TEXT_SV[serviceSlug as ExpandedSlug];
+  return isEn ? "All our professionals are certified and experienced." : "Alla våra hantverkare är certifierade och erfarna.";
 }
 
 // ============================================================

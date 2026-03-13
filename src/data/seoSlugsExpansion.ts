@@ -1,0 +1,911 @@
+// ============================================================
+// SEO EXPANSION: 120+ nya sökvarianter för maximal SEO-täckning
+// Importeras och mergas i localServiceData.ts
+// ============================================================
+
+export const EXPANDED_SERVICES = [
+  // === SNICKERI & BYGG (~25 nya) ===
+  { slug: "totalrenovering", name: "Totalrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "renovering", name: "Renovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "hantverkare", name: "Hantverkare", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "byggfirma", name: "Byggfirma", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "byggtjanster", name: "Byggtjänster", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "husrenovering", name: "Husrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "villarenovering", name: "Villarenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "lagenhetsrenovering", name: "Lägenhetsrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "ombyggnad", name: "Ombyggnad", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "utbyggnad", name: "Utbyggnad", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "tillbyggnad", name: "Tillbyggnad", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "fonsterbyte", name: "Fönsterbyte", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "dorrbyte", name: "Dörrbyte", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "fasadrenovering", name: "Fasadrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "trapprenovering", name: "Trapprenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "taklaggning", name: "Takläggning", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "takbyte", name: "Takbyte", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "takrenovering", name: "Takrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "verandarenovering", name: "Verandarenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "entrerenoverning", name: "Entrérenoverning", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "vardagsrumsrenovering", name: "Vardagsrumsrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "sovrumsrenovering", name: "Sovrumsrenovering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "kontorsbygge", name: "Kontorsbygge", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bostadsanpassning", name: "Bostadsanpassning", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "platsbyggt", name: "Platsbyggt", serviceKey: "snickeri", rotRut: "ROT" },
+  
+  // === KÖK (~15 nya) ===
+  { slug: "kok", name: "Kök", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "koksbyte", name: "Köksbyte", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "ikea-koksmontage", name: "IKEA-köksmontage", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "koksinstallation", name: "Köksinstallation", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "koksdesign", name: "Köksdesign", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "nytt-kok", name: "Nytt kök", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "koksluckor", name: "Köksluckor", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bankskiva", name: "Bänkskiva", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "platsbyggt-kok", name: "Platsbyggt kök", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "koksplanering", name: "Köksplanering", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "vitvaruinstallation-kok", name: "Vitvaruinstallation kök", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "diskbanksbyte", name: "Diskbänksbyte", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "koksbelysning", name: "Köksbelysning", serviceKey: "el", rotRut: "ROT" },
+  { slug: "koksflakt", name: "Köksfläkt", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "stankskydd", name: "Stänkskydd", serviceKey: "snickeri", rotRut: "ROT" },
+  
+  // === BADRUM (~10 nya) ===
+  { slug: "badrum", name: "Badrum", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "badrumskakel", name: "Badrumskakel", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "plattsattning", name: "Plattsättning", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "tatskikt", name: "Tätskikt", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "wc-renovering", name: "WC-renovering", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "duschrum", name: "Duschrum", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "duschvagg", name: "Duschvägg", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "badrumsinredning", name: "Badrumsinredning", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "tvattrum", name: "Tvättrum", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "badrumsgolv", name: "Badrumsgolv", serviceKey: "vvs", rotRut: "ROT" },
+  
+  // === EL (~12 nya) ===
+  { slug: "elarbeten", name: "Elarbeten", serviceKey: "el", rotRut: "ROT" },
+  { slug: "elreparation", name: "Elreparation", serviceKey: "el", rotRut: "ROT" },
+  { slug: "laddbox", name: "Laddbox", serviceKey: "el", rotRut: "ROT" },
+  { slug: "laddboxinstallation", name: "Laddboxinstallation", serviceKey: "el", rotRut: "ROT" },
+  { slug: "sakringsbyte", name: "Säkringsbyte", serviceKey: "el", rotRut: "ROT" },
+  { slug: "belysning", name: "Belysning", serviceKey: "el", rotRut: "ROT" },
+  { slug: "elcentral", name: "Elcentral", serviceKey: "el", rotRut: "ROT" },
+  { slug: "eljour", name: "Eljour", serviceKey: "el", rotRut: "ROT" },
+  { slug: "lampmontering", name: "Lampmontering", serviceKey: "el", rotRut: "ROT" },
+  { slug: "spotlights", name: "Spotlights", serviceKey: "el", rotRut: "ROT" },
+  { slug: "elbesiktning", name: "Elbesiktning", serviceKey: "el", rotRut: "ROT" },
+  { slug: "jordfelsbrytare", name: "Jordfelsbrytare", serviceKey: "el", rotRut: "ROT" },
+  
+  // === VVS (~10 nya) ===
+  { slug: "vvs-arbeten", name: "VVS-arbeten", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "rorjour", name: "Rörjour", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "rorarbeten", name: "Rörarbeten", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "varmepump", name: "Värmepump", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "vattenlas", name: "Vattenläcka", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "avlopp", name: "Avlopp", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "golvvarme", name: "Golvvärme", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "vattenbatteri", name: "Vattenbatteri", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "blandarbyte", name: "Blandarbyte", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "radiatorbyte", name: "Radiatorbyte", serviceKey: "vvs", rotRut: "ROT" },
+  
+  // === MÅLNING (~8 nya) ===
+  { slug: "malning", name: "Målning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "tapetsering", name: "Tapetsering", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "spackling", name: "Spackling", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "lackering", name: "Lackering", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "fonstermalning", name: "Fönstermålning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "takmalning", name: "Takmålning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "trappmalning", name: "Trappmålning", serviceKey: "malning", rotRut: "ROT" },
+  { slug: "snickerimlaning", name: "Snickerimålning", serviceKey: "malning", rotRut: "ROT" },
+  
+  // === GOLV (~7 nya) ===
+  { slug: "golvslipning", name: "Golvslipning", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "parkettlaggning", name: "Parkettläggning", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "laminatgolv", name: "Laminatgolv", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "vinylgolv", name: "Vinylgolv", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "klinkergolv", name: "Klinkergolv", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "epoxigolv", name: "Epoxigolv", serviceKey: "golv", rotRut: "ROT" },
+  { slug: "golvbyte", name: "Golvbyte", serviceKey: "golv", rotRut: "ROT" },
+  
+  // === TRÄDGÅRD (~8 nya) ===
+  { slug: "tradgardsanlaggning", name: "Trädgårdsanläggning", serviceKey: "tradgard", rotRut: "ROT" },
+  { slug: "tradgardsskotsel", name: "Trädgårdsskötsel", serviceKey: "tradgard", rotRut: "RUT" },
+  { slug: "grasklippning", name: "Gräsklippning", serviceKey: "tradgard", rotRut: "RUT" },
+  { slug: "hackklippning", name: "Häckklippning", serviceKey: "tradgard", rotRut: "RUT" },
+  { slug: "tradbeskaring", name: "Trädbeskärning", serviceKey: "tradgard", rotRut: "RUT" },
+  { slug: "tradgardsdesign", name: "Trädgårdsdesign", serviceKey: "tradgard", rotRut: "ROT" },
+  { slug: "stenlaggning-tradgard", name: "Stenläggning trädgård", serviceKey: "tradgard", rotRut: "ROT" },
+  { slug: "buskrojning", name: "Buskröjning", serviceKey: "tradgard", rotRut: "RUT" },
+  
+  // === MARKARBETEN (~8 nya) ===
+  { slug: "dranering", name: "Dränering", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "schaktning", name: "Schaktning", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "plattlaggning", name: "Plattläggning", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "stenlaggning", name: "Stenläggning", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "asfaltering", name: "Asfaltering", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "murverk", name: "Murverk", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "uppfart", name: "Uppfart", serviceKey: "markarbeten", rotRut: "ROT" },
+  { slug: "garageuppfart", name: "Garageuppfart", serviceKey: "markarbeten", rotRut: "ROT" },
+  
+  // === STÄD (~8 nya) ===
+  { slug: "hemstad", name: "Hemstäd", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "flyttstad", name: "Flyttstäd", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "byggstad", name: "Byggstäd", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "fonsterputs", name: "Fönsterputs", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "storstadning", name: "Storstädning", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "kontorsstad", name: "Kontorsstäd", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "dodsbo", name: "Dödsbo", serviceKey: "stadning", rotRut: "RUT" },
+  { slug: "trappstad", name: "Trappstäd", serviceKey: "stadning", rotRut: "RUT" },
+  
+  // === MONTERING (~6 nya) ===
+  { slug: "garderobsmontering", name: "Garderobsmontering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "tv-montering", name: "TV-montering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "persiennmontering", name: "Persiennmontering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "hyllmontering", name: "Hyllmontering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "ikeamontering", name: "IKEA-montering", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "dorrmontering", name: "Dörrmontering", serviceKey: "montering", rotRut: "ROT" },
+  
+  // === FLYTT (~5 nya) ===
+  { slug: "flytthjalp", name: "Flytthjälp", serviceKey: "flytt", rotRut: "RUT" },
+  { slug: "packhjalp", name: "Packhjälp", serviceKey: "flytt", rotRut: "RUT" },
+  { slug: "kontorsflytt", name: "Kontorsflytt", serviceKey: "flytt", rotRut: "RUT" },
+  { slug: "magasinering", name: "Magasinering", serviceKey: "flytt", rotRut: "RUT" },
+  { slug: "pianoflytt", name: "Pianoflytt", serviceKey: "flytt", rotRut: "RUT" },
+  
+  // === TEKNIK (~6 nya) ===
+  { slug: "larm", name: "Larm", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  { slug: "smarthome", name: "Smart Home", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  { slug: "natverksinstallation", name: "Nätverksinstallation", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  { slug: "kameraovervakning", name: "Kameraövervakning", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  { slug: "solceller", name: "Solceller", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  { slug: "porttelefon", name: "Porttelefon", serviceKey: "tekniska-installationer", rotRut: "ROT" },
+  
+  // === RIVNING (~3 nya) ===
+  { slug: "rivning-badrum", name: "Rivning badrum", serviceKey: "rivning", rotRut: "ROT" },
+  { slug: "rivning-kok", name: "Rivning kök", serviceKey: "rivning", rotRut: "ROT" },
+  { slug: "bortforsling", name: "Bortforsling", serviceKey: "rivning", rotRut: "ROT" },
+] as const;
+
+export type ExpandedSlug = typeof EXPANDED_SERVICES[number]["slug"];
+
+// English names for expanded slugs
+export const EXPANDED_SERVICE_NAME_EN: Record<ExpandedSlug, string> = {
+  // Snickeri & Bygg
+  "totalrenovering": "Total Renovation",
+  "renovering": "Renovation",
+  "hantverkare": "Contractor",
+  "byggfirma": "Construction Company",
+  "byggtjanster": "Construction Services",
+  "husrenovering": "House Renovation",
+  "villarenovering": "Villa Renovation",
+  "lagenhetsrenovering": "Apartment Renovation",
+  "ombyggnad": "Remodeling",
+  "utbyggnad": "Extension",
+  "tillbyggnad": "Addition",
+  "fonsterbyte": "Window Replacement",
+  "dorrbyte": "Door Replacement",
+  "fasadrenovering": "Facade Renovation",
+  "trapprenovering": "Stair Renovation",
+  "taklaggning": "Roofing",
+  "takbyte": "Roof Replacement",
+  "takrenovering": "Roof Renovation",
+  "verandarenovering": "Veranda Renovation",
+  "entrerenoverning": "Entrance Renovation",
+  "vardagsrumsrenovering": "Living Room Renovation",
+  "sovrumsrenovering": "Bedroom Renovation",
+  "kontorsbygge": "Office Construction",
+  "bostadsanpassning": "Home Adaptation",
+  "platsbyggt": "Custom Built",
+  // Kök
+  "kok": "Kitchen",
+  "koksbyte": "Kitchen Replacement",
+  "ikea-koksmontage": "IKEA Kitchen Assembly",
+  "koksinstallation": "Kitchen Installation",
+  "koksdesign": "Kitchen Design",
+  "nytt-kok": "New Kitchen",
+  "koksluckor": "Kitchen Cabinet Doors",
+  "bankskiva": "Countertop",
+  "platsbyggt-kok": "Custom Kitchen",
+  "koksplanering": "Kitchen Planning",
+  "vitvaruinstallation-kok": "Kitchen Appliance Installation",
+  "diskbanksbyte": "Sink Replacement",
+  "koksbelysning": "Kitchen Lighting",
+  "koksflakt": "Kitchen Hood",
+  "stankskydd": "Backsplash",
+  // Badrum
+  "badrum": "Bathroom",
+  "badrumskakel": "Bathroom Tiles",
+  "plattsattning": "Tiling",
+  "tatskikt": "Waterproofing",
+  "wc-renovering": "WC Renovation",
+  "duschrum": "Shower Room",
+  "duschvagg": "Shower Screen",
+  "badrumsinredning": "Bathroom Fixtures",
+  "tvattrum": "Laundry Room",
+  "badrumsgolv": "Bathroom Floor",
+  // El
+  "elarbeten": "Electrical Work",
+  "elreparation": "Electrical Repair",
+  "laddbox": "EV Charger",
+  "laddboxinstallation": "EV Charger Installation",
+  "sakringsbyte": "Fuse Replacement",
+  "belysning": "Lighting",
+  "elcentral": "Electrical Panel",
+  "eljour": "Emergency Electrician",
+  "lampmontering": "Light Fixture Mounting",
+  "spotlights": "Spotlights",
+  "elbesiktning": "Electrical Inspection",
+  "jordfelsbrytare": "Ground Fault Breaker",
+  // VVS
+  "vvs-arbeten": "Plumbing Work",
+  "rorjour": "Emergency Plumber",
+  "rorarbeten": "Pipe Work",
+  "varmepump": "Heat Pump",
+  "vattenlas": "Water Leak",
+  "avlopp": "Drainage",
+  "golvvarme": "Underfloor Heating",
+  "vattenbatteri": "Faucet",
+  "blandarbyte": "Mixer Tap Replacement",
+  "radiatorbyte": "Radiator Replacement",
+  // Målning
+  "malning": "Painting",
+  "tapetsering": "Wallpapering",
+  "spackling": "Plastering",
+  "lackering": "Lacquering",
+  "fonstermalning": "Window Painting",
+  "takmalning": "Ceiling Painting",
+  "trappmalning": "Stair Painting",
+  "snickerimlaning": "Woodwork Painting",
+  // Golv
+  "golvslipning": "Floor Sanding",
+  "parkettlaggning": "Parquet Installation",
+  "laminatgolv": "Laminate Flooring",
+  "vinylgolv": "Vinyl Flooring",
+  "klinkergolv": "Tile Flooring",
+  "epoxigolv": "Epoxy Flooring",
+  "golvbyte": "Floor Replacement",
+  // Trädgård
+  "tradgardsanlaggning": "Garden Landscaping",
+  "tradgardsskotsel": "Garden Maintenance",
+  "grasklippning": "Lawn Mowing",
+  "hackklippning": "Hedge Trimming",
+  "tradbeskaring": "Tree Pruning",
+  "tradgardsdesign": "Garden Design",
+  "stenlaggning-tradgard": "Garden Paving",
+  "buskrojning": "Bush Clearing",
+  // Markarbeten
+  "dranering": "Drainage",
+  "schaktning": "Excavation",
+  "plattlaggning": "Paving",
+  "stenlaggning": "Stone Paving",
+  "asfaltering": "Asphalt Paving",
+  "murverk": "Masonry",
+  "uppfart": "Driveway",
+  "garageuppfart": "Garage Driveway",
+  // Städ
+  "hemstad": "Home Cleaning",
+  "flyttstad": "Move-out Cleaning",
+  "byggstad": "Construction Cleaning",
+  "fonsterputs": "Window Cleaning",
+  "storstadning": "Deep Cleaning",
+  "kontorsstad": "Office Cleaning",
+  "dodsbo": "Estate Clearing",
+  "trappstad": "Stairwell Cleaning",
+  // Montering
+  "garderobsmontering": "Wardrobe Assembly",
+  "tv-montering": "TV Mounting",
+  "persiennmontering": "Blind Installation",
+  "hyllmontering": "Shelf Assembly",
+  "ikeamontering": "IKEA Assembly",
+  "dorrmontering": "Door Installation",
+  // Flytt
+  "flytthjalp": "Moving Help",
+  "packhjalp": "Packing Help",
+  "kontorsflytt": "Office Moving",
+  "magasinering": "Storage",
+  "pianoflytt": "Piano Moving",
+  // Teknik
+  "larm": "Alarm System",
+  "smarthome": "Smart Home",
+  "natverksinstallation": "Network Installation",
+  "kameraovervakning": "Security Cameras",
+  "solceller": "Solar Panels",
+  "porttelefon": "Intercom",
+  // Rivning
+  "rivning-badrum": "Bathroom Demolition",
+  "rivning-kok": "Kitchen Demolition",
+  "bortforsling": "Debris Removal",
+};
+
+// Pricing for expanded slugs (inherits from parent serviceKey)
+export const EXPANDED_SERVICE_PRICING: Record<ExpandedSlug, { base: string; afterDeduction: string; isQuoteOnly: boolean; rotRut: 'ROT' | 'RUT' }> = {
+  // Snickeri & Bygg → snickare pricing
+  "totalrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "renovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "hantverkare": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "byggfirma": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "byggtjanster": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "husrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "villarenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "lagenhetsrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "ombyggnad": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "utbyggnad": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "tillbyggnad": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "fonsterbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "dorrbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "fasadrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "trapprenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "taklaggning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "takbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "takrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "verandarenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "entrerenoverning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "vardagsrumsrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "sovrumsrenovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "kontorsbygge": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bostadsanpassning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "platsbyggt": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  // Kök
+  "kok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "ikea-koksmontage": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "koksinstallation": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "koksdesign": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "nytt-kok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksluckor": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bankskiva": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "platsbyggt-kok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksplanering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "vitvaruinstallation-kok": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "diskbanksbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksbelysning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "koksflakt": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "stankskydd": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Badrum
+  "badrum": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "badrumskakel": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "plattsattning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "tatskikt": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "wc-renovering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "duschrum": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "duschvagg": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "badrumsinredning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "tvattrum": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "badrumsgolv": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // El
+  "elarbeten": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "elreparation": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "laddbox": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "laddboxinstallation": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "sakringsbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "belysning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "elcentral": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "eljour": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "lampmontering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "spotlights": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "elbesiktning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "jordfelsbrytare": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // VVS
+  "vvs-arbeten": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "rorjour": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "rorarbeten": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "varmepump": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "vattenlas": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "avlopp": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "golvvarme": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "vattenbatteri": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "blandarbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "radiatorbyte": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Målning
+  "malning": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "tapetsering": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "spackling": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "lackering": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "fonstermalning": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "takmalning": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "trappmalning": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "snickerimlaning": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  // Golv
+  "golvslipning": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "parkettlaggning": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "laminatgolv": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "vinylgolv": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "klinkergolv": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "epoxigolv": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "golvbyte": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  // Trädgård
+  "tradgardsanlaggning": { base: "659 kr/h", afterDeduction: "461 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "tradgardsskotsel": { base: "659 kr/h", afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "grasklippning": { base: "659 kr/h", afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "hackklippning": { base: "659 kr/h", afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "tradbeskaring": { base: "659 kr/h", afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "tradgardsdesign": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "stenlaggning-tradgard": { base: "659 kr/h", afterDeduction: "461 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "buskrojning": { base: "659 kr/h", afterDeduction: "330 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  // Markarbeten
+  "dranering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "schaktning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "plattlaggning": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "stenlaggning": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "asfaltering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "murverk": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "uppfart": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "garageuppfart": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Städ
+  "hemstad": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "flyttstad": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "byggstad": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "fonsterputs": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "storstadning": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "kontorsstad": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "dodsbo": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "RUT" },
+  "trappstad": { base: "459 kr/h", afterDeduction: "230 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  // Montering
+  "garderobsmontering": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "tv-montering": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "persiennmontering": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "hyllmontering": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "ikeamontering": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "dorrmontering": { base: "958 kr/h", afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  // Flytt
+  "flytthjalp": { base: "559 kr/h", afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "packhjalp": { base: "559 kr/h", afterDeduction: "280 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "kontorsflytt": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "RUT" },
+  "magasinering": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "RUT" },
+  "pianoflytt": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "RUT" },
+  // Teknik
+  "larm": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "smarthome": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "natverksinstallation": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "kameraovervakning": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "solceller": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "porttelefon": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Rivning
+  "rivning-badrum": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "rivning-kok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bortforsling": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+};
+
+// Myths for expanded slugs - grouped by parent category
+const RENOVATION_MYTHS = [
+  { myth: "Man kan renovera utan bygglov", truth: "Många renoveringar kräver bygganmälan eller bygglov, särskilt om bärande väggar, VVS eller el berörs. Kontrollera alltid med kommunen." },
+  { myth: "Det billigaste alternativet är alltid bäst", truth: "Billiga material och hantverkare leder ofta till kostsamma omgörningar. Kvalitet lönar sig på lång sikt." },
+  { myth: "Renoveringar tar alltid längre tid än planerat", truth: "Med rätt planering och en erfaren projektledare håller de flesta renoveringar tidsplanen. Nyckel: bra förarbete och tydlig kommunikation." },
+];
+const KITCHEN_MYTHS = [
+  { myth: "Köksrenovering tar bara en vecka", truth: "En fullständig köksrenovering tar vanligtvis 3-6 veckor beroende på el, VVS och eventuella väggjobb." },
+  { myth: "IKEA-kök är lika bra som platsbyggda kök", truth: "Platsbyggda kök anpassas exakt efter ditt rum, har högre materialkvalitet och håller ofta 2-3 gånger längre." },
+  { myth: "Man kan behålla gamla rör vid köksrenovering", truth: "Gamla koppar- eller blyrör bör bytas vid renovering. Moderna plaströr är säkrare och enklare att underhålla." },
+];
+const BATHROOM_MYTHS = [
+  { myth: "Man kan renovera badrummet själv", truth: "Badrumsrenovering kräver certifierad våtrumsarbetare enligt GVK. Felaktig tätning kan leda till fuktskador för hundratusentals kronor." },
+  { myth: "Billigt kakel fungerar lika bra som dyrt", truth: "Kvalitetskakel har bättre frostresistens, slitstyrka och jämnare mått. Skillnaden märks efter några år." },
+  { myth: "Golvvärme i badrum är en lyxprodukt", truth: "Golvvärme förhindrar fukt och mögel, torkar golvet snabbare och minskar energikostnaden." },
+];
+const EL_MYTHS = [
+  { myth: "Man kan byta uttag och strömbrytare själv", truth: "Alla elarbeten kräver behörighet enligt Elsäkerhetsverket. Felaktiga elarbeten kan leda till brand eller elchock." },
+  { myth: "Gamla säkringar fungerar lika bra som moderna", truth: "Jordfelsbrytare räddar liv genom att bryta strömmen på 30 millisekunder. Gamla proppsäkringar ger inte samma skydd." },
+  { myth: "Elbesiktning behövs bara vid försäljning", truth: "Regelbunden elbesiktning rekommenderas vart 10-20 år för att säkerställa säkra installationer." },
+];
+const VVS_MYTHS = [
+  { myth: "En droppande kran är inget att oroa sig för", truth: "En droppande kran kan slösa upp till 20 000 liter vatten per år och leder ofta till större problem." },
+  { myth: "Värmepumpar fungerar inte i kallt klimat", truth: "Moderna luft-vattenvärmepumpar fungerar effektivt ner till -25°C och kan halvera uppvärmningskostnaderna." },
+  { myth: "VVS-arbete kan man göra själv", truth: "Felaktig VVS-installation kan leda till vattenskador för hundratusentals kronor. Certifiering krävs." },
+];
+const PAINTING_MYTHS = [
+  { myth: "En yta räcker alltid", truth: "De flesta väggar behöver 2-3 strykningar för jämnt resultat, särskilt vid färgbyte." },
+  { myth: "Man behöver inte grunda innan målning", truth: "Grundning är avgörande för att färgen ska fästa ordentligt och undvika genomslag." },
+  { myth: "Billig färg är lika bra som dyr", truth: "Kvalitetsfärg har högre pigmentkoncentration, täcker bättre och håller 2-3 gånger längre." },
+];
+const FLOOR_MYTHS = [
+  { myth: "Laminat och parkett är samma sak", truth: "Parkett har äkta trälager som kan slipas om 3-5 gånger. Laminat har en tryckt yta som inte kan renoveras." },
+  { myth: "Click-golv kan läggas utan underlag", truth: "Underlagsmatta är avgörande för ljuddämpning, utjämning och fuktskydd underifrån." },
+  { myth: "Golvläggning kan göras direkt på gammalt golv", truth: "Underlaget måste vara torrt, plant och stabilt. Ojämnt underlag ger knakande golv." },
+];
+const GARDEN_MYTHS = [
+  { myth: "Gräsklipparen kan ställas på lägsta höjd", truth: "För kort gräs stressar gräsmattan och gör den mottaglig för ogräs. 5-7 cm är optimalt." },
+  { myth: "Alla träd kan beskäras när som helst", truth: "Fruktträd beskärs på vintern, björk och lönn på högsommaren för att undvika 'blödning'." },
+  { myth: "Mer gödsel ger alltid bättre resultat", truth: "Övergödsling kan bränna växter och förorena grundvatten. Följ rekommenderade doser." },
+];
+const GROUND_MYTHS = [
+  { myth: "Man kan schakta utan att kontrollera ledningar", truth: "Ring alltid Ledningskollen innan grävning – att gräva av en elkabel kan vara livsfarligt." },
+  { myth: "Dränering behövs bara vid synliga fuktproblem", truth: "Förebyggande dränering är mycket billigare än att åtgärda fuktskador. Kontrollera vart 30:e år." },
+  { myth: "Plattsättning på gräsmatta fungerar", truth: "Utan ordentlig bädd av makadam och sand sjunker plattor och blir sneda inom några år." },
+];
+const CLEANING_MYTHS = [
+  { myth: "Blekning är det bästa sättet att rengöra", truth: "Blekmedel dödar bakterier men rengör inte smuts. Det kan skada ytor och är dåligt för miljön." },
+  { myth: "Dammsugning räcker för mattor", truth: "Mattor bör djuprengöras 1-2 gånger per år för att ta bort kvalster och allergener." },
+  { myth: "Fönsterputs med tidningspapper ger bäst resultat", truth: "Modern tryckfärg ger inte samma effekt. Mikrofiberduk och rätt teknik ger strekfria fönster." },
+];
+const ASSEMBLY_MYTHS = [
+  { myth: "IKEA-möbler är enkla att montera själv", truth: "Felmontering är vanligt och kan göra möbler instabila. Kök och garderober kräver precision på millimetern." },
+  { myth: "Alla väggar tål tunga saker", truth: "Gipsväggar kräver speciella plugg och rätt teknik. Tunga föremål måste fästas i reglar." },
+  { myth: "Man behöver inga specialverktyg", truth: "Professionella montörer har borrmall, vattenpass och momentnyckel som ger bättre resultat." },
+];
+const MOVING_MYTHS = [
+  { myth: "Fler lådor gör flytten enklare", truth: "Rätt packade, färre lådor gör flytten snabbare. Tunga saker i små lådor, lätta i stora." },
+  { myth: "Man kan flytta tunga möbler själv", truth: "Ryggskador är vanliga vid flytt. Professionella flyttare har rätt teknik och utrustning." },
+  { myth: "Flyttstädning kan göras snabbt sista dagen", truth: "Noggrann flyttstädning tar 4-8 timmar. Planera tid eller anlita proffshjälp." },
+];
+const TECH_MYTHS = [
+  { myth: "Smart hem-system är för komplicerade", truth: "Moderna system är designade för enkelhet. Efter installation styrs allt via mobilapp eller röstkommandon." },
+  { myth: "Solceller lönar sig bara i södra Sverige", truth: "Även i Mellansverige producerar solceller tillräckligt för att betala sig inom 8-12 år." },
+  { myth: "Övervakningskameror är bara för företag", truth: "Moderna hemsystem kostar från några tusen och ger trygghet dygnet runt med mobilnotiser." },
+];
+const DEMOLITION_MYTHS = [
+  { myth: "Man kan riva bärande väggar själv", truth: "Rivning av bärande väggar utan konstruktörsgodkännande kan leda till rasrisk. Bygganmälan krävs." },
+  { myth: "Rivning är bara att slå med släggan", truth: "Professionell rivning kräver kontroll av asbest, bly, el och VVS innan arbetet påbörjas." },
+  { myth: "Rivningsavfall kan slängas var som helst", truth: "Rivningsavfall måste sorteras och transporteras till godkänd mottagningsstation." },
+];
+
+// Map each expanded slug to its myths
+export const EXPANDED_SERVICE_MYTHS: Record<ExpandedSlug, Array<{ myth: string; truth: string }>> = {
+  // Snickeri & Bygg
+  "totalrenovering": RENOVATION_MYTHS,
+  "renovering": RENOVATION_MYTHS,
+  "hantverkare": RENOVATION_MYTHS,
+  "byggfirma": RENOVATION_MYTHS,
+  "byggtjanster": RENOVATION_MYTHS,
+  "husrenovering": RENOVATION_MYTHS,
+  "villarenovering": RENOVATION_MYTHS,
+  "lagenhetsrenovering": RENOVATION_MYTHS,
+  "ombyggnad": RENOVATION_MYTHS,
+  "utbyggnad": RENOVATION_MYTHS,
+  "tillbyggnad": RENOVATION_MYTHS,
+  "fonsterbyte": RENOVATION_MYTHS,
+  "dorrbyte": RENOVATION_MYTHS,
+  "fasadrenovering": RENOVATION_MYTHS,
+  "trapprenovering": RENOVATION_MYTHS,
+  "taklaggning": RENOVATION_MYTHS,
+  "takbyte": RENOVATION_MYTHS,
+  "takrenovering": RENOVATION_MYTHS,
+  "verandarenovering": RENOVATION_MYTHS,
+  "entrerenoverning": RENOVATION_MYTHS,
+  "vardagsrumsrenovering": RENOVATION_MYTHS,
+  "sovrumsrenovering": RENOVATION_MYTHS,
+  "kontorsbygge": RENOVATION_MYTHS,
+  "bostadsanpassning": RENOVATION_MYTHS,
+  "platsbyggt": RENOVATION_MYTHS,
+  // Kök
+  "kok": KITCHEN_MYTHS,
+  "koksbyte": KITCHEN_MYTHS,
+  "ikea-koksmontage": KITCHEN_MYTHS,
+  "koksinstallation": KITCHEN_MYTHS,
+  "koksdesign": KITCHEN_MYTHS,
+  "nytt-kok": KITCHEN_MYTHS,
+  "koksluckor": KITCHEN_MYTHS,
+  "bankskiva": KITCHEN_MYTHS,
+  "platsbyggt-kok": KITCHEN_MYTHS,
+  "koksplanering": KITCHEN_MYTHS,
+  "vitvaruinstallation-kok": KITCHEN_MYTHS,
+  "diskbanksbyte": KITCHEN_MYTHS,
+  "koksbelysning": KITCHEN_MYTHS,
+  "koksflakt": KITCHEN_MYTHS,
+  "stankskydd": KITCHEN_MYTHS,
+  // Badrum
+  "badrum": BATHROOM_MYTHS,
+  "badrumskakel": BATHROOM_MYTHS,
+  "plattsattning": BATHROOM_MYTHS,
+  "tatskikt": BATHROOM_MYTHS,
+  "wc-renovering": BATHROOM_MYTHS,
+  "duschrum": BATHROOM_MYTHS,
+  "duschvagg": BATHROOM_MYTHS,
+  "badrumsinredning": BATHROOM_MYTHS,
+  "tvattrum": BATHROOM_MYTHS,
+  "badrumsgolv": BATHROOM_MYTHS,
+  // El
+  "elarbeten": EL_MYTHS,
+  "elreparation": EL_MYTHS,
+  "laddbox": EL_MYTHS,
+  "laddboxinstallation": EL_MYTHS,
+  "sakringsbyte": EL_MYTHS,
+  "belysning": EL_MYTHS,
+  "elcentral": EL_MYTHS,
+  "eljour": EL_MYTHS,
+  "lampmontering": EL_MYTHS,
+  "spotlights": EL_MYTHS,
+  "elbesiktning": EL_MYTHS,
+  "jordfelsbrytare": EL_MYTHS,
+  // VVS
+  "vvs-arbeten": VVS_MYTHS,
+  "rorjour": VVS_MYTHS,
+  "rorarbeten": VVS_MYTHS,
+  "varmepump": VVS_MYTHS,
+  "vattenlas": VVS_MYTHS,
+  "avlopp": VVS_MYTHS,
+  "golvvarme": VVS_MYTHS,
+  "vattenbatteri": VVS_MYTHS,
+  "blandarbyte": VVS_MYTHS,
+  "radiatorbyte": VVS_MYTHS,
+  // Målning
+  "malning": PAINTING_MYTHS,
+  "tapetsering": PAINTING_MYTHS,
+  "spackling": PAINTING_MYTHS,
+  "lackering": PAINTING_MYTHS,
+  "fonstermalning": PAINTING_MYTHS,
+  "takmalning": PAINTING_MYTHS,
+  "trappmalning": PAINTING_MYTHS,
+  "snickerimlaning": PAINTING_MYTHS,
+  // Golv
+  "golvslipning": FLOOR_MYTHS,
+  "parkettlaggning": FLOOR_MYTHS,
+  "laminatgolv": FLOOR_MYTHS,
+  "vinylgolv": FLOOR_MYTHS,
+  "klinkergolv": FLOOR_MYTHS,
+  "epoxigolv": FLOOR_MYTHS,
+  "golvbyte": FLOOR_MYTHS,
+  // Trädgård
+  "tradgardsanlaggning": GARDEN_MYTHS,
+  "tradgardsskotsel": GARDEN_MYTHS,
+  "grasklippning": GARDEN_MYTHS,
+  "hackklippning": GARDEN_MYTHS,
+  "tradbeskaring": GARDEN_MYTHS,
+  "tradgardsdesign": GARDEN_MYTHS,
+  "stenlaggning-tradgard": GARDEN_MYTHS,
+  "buskrojning": GARDEN_MYTHS,
+  // Markarbeten
+  "dranering": GROUND_MYTHS,
+  "schaktning": GROUND_MYTHS,
+  "plattlaggning": GROUND_MYTHS,
+  "stenlaggning": GROUND_MYTHS,
+  "asfaltering": GROUND_MYTHS,
+  "murverk": GROUND_MYTHS,
+  "uppfart": GROUND_MYTHS,
+  "garageuppfart": GROUND_MYTHS,
+  // Städ
+  "hemstad": CLEANING_MYTHS,
+  "flyttstad": CLEANING_MYTHS,
+  "byggstad": CLEANING_MYTHS,
+  "fonsterputs": CLEANING_MYTHS,
+  "storstadning": CLEANING_MYTHS,
+  "kontorsstad": CLEANING_MYTHS,
+  "dodsbo": CLEANING_MYTHS,
+  "trappstad": CLEANING_MYTHS,
+  // Montering
+  "garderobsmontering": ASSEMBLY_MYTHS,
+  "tv-montering": ASSEMBLY_MYTHS,
+  "persiennmontering": ASSEMBLY_MYTHS,
+  "hyllmontering": ASSEMBLY_MYTHS,
+  "ikeamontering": ASSEMBLY_MYTHS,
+  "dorrmontering": ASSEMBLY_MYTHS,
+  // Flytt
+  "flytthjalp": MOVING_MYTHS,
+  "packhjalp": MOVING_MYTHS,
+  "kontorsflytt": MOVING_MYTHS,
+  "magasinering": MOVING_MYTHS,
+  "pianoflytt": MOVING_MYTHS,
+  // Teknik
+  "larm": TECH_MYTHS,
+  "smarthome": TECH_MYTHS,
+  "natverksinstallation": TECH_MYTHS,
+  "kameraovervakning": TECH_MYTHS,
+  "solceller": TECH_MYTHS,
+  "porttelefon": TECH_MYTHS,
+  // Rivning
+  "rivning-badrum": DEMOLITION_MYTHS,
+  "rivning-kok": DEMOLITION_MYTHS,
+  "bortforsling": DEMOLITION_MYTHS,
+};
+
+// Certification text for expanded slugs
+export const EXPANDED_CERT_TEXT_SV: Record<ExpandedSlug, string> = {
+  // Snickeri
+  "totalrenovering": "Hantverkare har yrkesbevis och lång erfarenhet av totalrenoveringar.",
+  "renovering": "Hantverkare har yrkesbevis och lång erfarenhet av renoveringar.",
+  "hantverkare": "Alla hantverkare har yrkesbevis och relevant utbildning.",
+  "byggfirma": "Våra byggare har yrkesbevis och erfarenhet av alla typer av byggprojekt.",
+  "byggtjanster": "Alla bygghantverkare har yrkesbevis och relevant certifiering.",
+  "husrenovering": "Hantverkare har erfarenhet av kompletta husrenoveringar med alla discipliner.",
+  "villarenovering": "Hantverkare specialiserade på villarenoveringar med ROT-avdrag.",
+  "lagenhetsrenovering": "Hantverkare med erfarenhet av lägenhetsrenoveringar i BRF och hyresrätt.",
+  "ombyggnad": "Hantverkare med erfarenhet av ombyggnationer och konstruktionsändringar.",
+  "utbyggnad": "Hantverkare med erfarenhet av utbyggnader och tillbyggnader.",
+  "tillbyggnad": "Hantverkare med erfarenhet av tillbyggnader och konstruktionsritningar.",
+  "fonsterbyte": "Hantverkare certifierade för fönsterbyte enligt gällande energikrav.",
+  "dorrbyte": "Hantverkare med erfarenhet av dörrbyte – ytterdörrar, innerdörrar och säkerhetsdörrar.",
+  "fasadrenovering": "Hantverkare med erfarenhet av fasadrenoveringar och putarbeten.",
+  "trapprenovering": "Snickare med erfarenhet av trapprenoveringar och trappbygge.",
+  "taklaggning": "Takläggare med erfarenhet av alla taktyper och takmaterial.",
+  "takbyte": "Certifierade takläggare med erfarenhet av takbyten.",
+  "takrenovering": "Takläggare med erfarenhet av takrenoveringar och reparationer.",
+  "verandarenovering": "Snickare med erfarenhet av veranda- och altanrenoveringar.",
+  "entrerenoverning": "Hantverkare med erfarenhet av entrérenoveringar och hallmöblering.",
+  "vardagsrumsrenovering": "Hantverkare med erfarenhet av vardagsrumsrenoveringar.",
+  "sovrumsrenovering": "Hantverkare med erfarenhet av sovrumsrenoveringar.",
+  "kontorsbygge": "Hantverkare med erfarenhet av kontorsinredning och kontorsbygge.",
+  "bostadsanpassning": "Hantverkare med erfarenhet av bostadsanpassning för ökad tillgänglighet.",
+  "platsbyggt": "Snickare specialiserade på platsbyggda lösningar – garderober, hyllor och inredning.",
+  // Kök
+  "kok": "Kökshantverkare med erfarenhet av alla köksvarumärken och platsbyggda kök.",
+  "koksbyte": "Köksmontörer med erfarenhet av köksbyte och rivning av gammalt kök.",
+  "ikea-koksmontage": "Köksmontörer specialiserade på IKEA-köksmontage med hög precision.",
+  "koksinstallation": "Köksmontörer med erfarenhet av alla köksvarumärken.",
+  "koksdesign": "Köksdesigners med erfarenhet av funktionella och estetiska kökslösningar.",
+  "nytt-kok": "Kökshantverkare som samordnar snickeri, el och VVS för ditt nya kök.",
+  "koksluckor": "Snickare med erfarenhet av byte och tillverkning av köksluckor.",
+  "bankskiva": "Hantverkare med erfarenhet av bänkskivor i sten, laminat och massivt trä.",
+  "platsbyggt-kok": "Snickare specialiserade på platsbyggda kök med hög materialkvalitet.",
+  "koksplanering": "Köksplanerare som hjälper dig välja rätt layout och material.",
+  "vitvaruinstallation-kok": "Montörer med erfarenhet av installation av alla typer av vitvaror.",
+  "diskbanksbyte": "VVS-montörer med erfarenhet av diskbänksbyte och vattenanslutning.",
+  "koksbelysning": "Elektriker med erfarenhet av köksbelysning och spotlights.",
+  "koksflakt": "Montörer med erfarenhet av fläktinstallation och ventilation.",
+  "stankskydd": "Hantverkare med erfarenhet av stänkskydd i glas, kakel och laminat.",
+  // Badrum
+  "badrum": "Badrumsrenoverare GVK-certifierade för våtrumsarbete.",
+  "badrumskakel": "Plattsättare med erfarenhet av badrumskakel och mosaik.",
+  "plattsattning": "Plattsättare certifierade för våtrumsarbete och tätskikt.",
+  "tatskikt": "GVK-certifierade våtrumsarbetare för tätskiktsarbete.",
+  "wc-renovering": "Badrumsrenoverare med erfarenhet av WC-renoveringar.",
+  "duschrum": "Våtrumsarbetare certifierade för duschrumsinstallation.",
+  "duschvagg": "Hantverkare med erfarenhet av duschväggsmontering.",
+  "badrumsinredning": "Hantverkare med erfarenhet av badrumsinredning och montering.",
+  "tvattrum": "Hantverkare med erfarenhet av tvättrumsinredning och VVS.",
+  "badrumsgolv": "Plattsättare med erfarenhet av badrumsgolv med golvvärme.",
+  // El
+  "elarbeten": "Auktoriserade elektriker enligt Elsäkerhetsverket.",
+  "elreparation": "Auktoriserade elektriker för felsökning och reparation.",
+  "laddbox": "Elektriker certifierade för laddboxinstallation.",
+  "laddboxinstallation": "Elektriker certifierade för laddboxinstallation enligt gällande regler.",
+  "sakringsbyte": "Auktoriserade elektriker för säkringsbyte och elcentraler.",
+  "belysning": "Elektriker med erfarenhet av all typ av belysningsinstallation.",
+  "elcentral": "Auktoriserade elektriker för byte och uppgradering av elcentraler.",
+  "eljour": "Jour-elektriker tillgängliga dygnet runt för akuta elärenden.",
+  "lampmontering": "Elektriker med erfarenhet av lampmontering och dimmerinstallation.",
+  "spotlights": "Elektriker specialiserade på spotlightinstallation och belysningsdesign.",
+  "elbesiktning": "Auktoriserade elektriker för elbesiktning och statusrapport.",
+  "jordfelsbrytare": "Auktoriserade elektriker för installation av jordfelsbrytare.",
+  // VVS
+  "vvs-arbeten": "VVS-montörer med Säker Vatteninstallation-certifiering.",
+  "rorjour": "Jour-rörmokare tillgängliga dygnet runt för akuta VVS-ärenden.",
+  "rorarbeten": "Certifierade rörmokare för alla typer av rörarbeten.",
+  "varmepump": "Certifierade installatörer för värmepumpar av alla typer.",
+  "vattenlas": "Jour-rörmokare för akut vattenläcka och vattenskador.",
+  "avlopp": "VVS-montörer med erfarenhet av avloppsarbeten och rensning.",
+  "golvvarme": "VVS-montörer certifierade för golvvärmeinstallation.",
+  "vattenbatteri": "VVS-montörer med erfarenhet av byte av blandare och kranar.",
+  "blandarbyte": "VVS-montörer med erfarenhet av blandarbyte i kök och badrum.",
+  "radiatorbyte": "VVS-montörer med erfarenhet av radiatorbyte och värmesystem.",
+  // Målning
+  "malning": "Utbildade yrkesmålare med erfarenhet av invändig och utvändig målning.",
+  "tapetsering": "Utbildade tapetserare med erfarenhet av alla tapettyper.",
+  "spackling": "Yrkesmålare med erfarenhet av spackling, slipning och ytbehandling.",
+  "lackering": "Yrkesmålare med erfarenhet av lackering av snickerier och möbler.",
+  "fonstermalning": "Yrkesmålare med erfarenhet av fönstermålning och fönsterrenovering.",
+  "takmalning": "Yrkesmålare med erfarenhet av takmålning i alla typer av rum.",
+  "trappmalning": "Yrkesmålare med erfarenhet av trappmålning och trapprenoveringar.",
+  "snickerimlaning": "Yrkesmålare med erfarenhet av snickerimålning – lister, foder och dörrar.",
+  // Golv
+  "golvslipning": "Golvslipare med erfarenhet av parkett-, trä- och stengolv.",
+  "parkettlaggning": "Golvläggare certifierade för parkettläggning.",
+  "laminatgolv": "Golvläggare med erfarenhet av laminatgolv och click-system.",
+  "vinylgolv": "Golvläggare med erfarenhet av vinyl- och LVT-golv.",
+  "klinkergolv": "Plattsättare med erfarenhet av klinkergolv och klinkerplattor.",
+  "epoxigolv": "Golvläggare specialiserade på epoxigolv och industrigolv.",
+  "golvbyte": "Golvläggare med erfarenhet av rivning och byte av alla golvtyper.",
+  // Trädgård
+  "tradgardsanlaggning": "Trädgårdsanläggare med erfarenhet av trädgårdsanläggning och design.",
+  "tradgardsskotsel": "Trädgårdsmästare med erfarenhet av trädgårdsskötsel och underhåll.",
+  "grasklippning": "Trädgårdsarbetare med erfarenhet av gräsklippning och gräsmattevård.",
+  "hackklippning": "Trädgårdsarbetare med erfarenhet av häckklippning och formklippning.",
+  "tradbeskaring": "Arborister och trädgårdsmästare med erfarenhet av trädbeskärning.",
+  "tradgardsdesign": "Trädgårdsdesigners med erfarenhet av funktionell och estetisk trädgårdsplanering.",
+  "stenlaggning-tradgard": "Trädgårdsanläggare med erfarenhet av stenläggning och plattsättning.",
+  "buskrojning": "Trädgårdsarbetare med erfarenhet av buskröjning och markberedning.",
+  // Markarbeten
+  "dranering": "Markentreprenörer med erfarenhet av dränering och grundarbeten.",
+  "schaktning": "Markentreprenörer med behörighet för grävmaskin och schaktarbeten.",
+  "plattlaggning": "Markentreprenörer med erfarenhet av plattläggning och stenläggning.",
+  "stenlaggning": "Markentreprenörer med erfarenhet av stenläggning och marksten.",
+  "asfaltering": "Asfaltentreprenörer med erfarenhet av asfaltering och beläggningar.",
+  "murverk": "Murare med erfarenhet av murverk, tegelarbeten och stödmurar.",
+  "uppfart": "Markentreprenörer med erfarenhet av uppfartsanläggning.",
+  "garageuppfart": "Markentreprenörer med erfarenhet av garageuppfarter och betongarbeten.",
+  // Städ
+  "hemstad": "Utbildad städpersonal med erfarenhet av professionell hemstäd.",
+  "flyttstad": "Utbildad städpersonal specialiserad på godkänd flyttstäd.",
+  "byggstad": "Utbildad städpersonal med erfarenhet av byggstäd efter renovering.",
+  "fonsterputs": "Utbildade fönsterputsare med professionell utrustning.",
+  "storstadning": "Utbildad städpersonal med erfarenhet av djupgående storstädning.",
+  "kontorsstad": "Utbildad städpersonal med erfarenhet av kontorsstäd och lokaler.",
+  "dodsbo": "Personal med erfarenhet av dödsbo-tömning och värdering.",
+  "trappstad": "Utbildad städpersonal med erfarenhet av trapphusstäd för BRF.",
+  // Montering
+  "garderobsmontering": "Möbelmontörer med erfarenhet av garderobsmontering – PAX, ELFA och platsbyggt.",
+  "tv-montering": "Montörer med erfarenhet av TV-montering och kabeldragning.",
+  "persiennmontering": "Montörer med erfarenhet av persiennmontering och solskydd.",
+  "hyllmontering": "Montörer med erfarenhet av hyllmontering och väggfästen.",
+  "ikeamontering": "Montörer specialiserade på IKEA-montering av alla produktlinjer.",
+  "dorrmontering": "Snickare med erfarenhet av dörrmontering – inner-, ytter- och skjutdörrar.",
+  // Flytt
+  "flytthjalp": "Utbildade flyttare med rätt teknik och utrustning för säker flytt.",
+  "packhjalp": "Erfarna packare med professionellt emballage för säker transport.",
+  "kontorsflytt": "Flyttfirmor med erfarenhet av kontorsflytt och IT-utrustning.",
+  "magasinering": "Magasinering i klimatkontrollerade lokaler med försäkring.",
+  "pianoflytt": "Specialiserade pianoflyttare med rätt utrustning för tunga instrument.",
+  // Teknik
+  "larm": "Certifierade larmtekniker för installation av alla larmsystem.",
+  "smarthome": "Certifierade tekniker för smart home-installation och integration.",
+  "natverksinstallation": "Nätverkstekniker med erfarenhet av kabeldragning och Wi-Fi.",
+  "kameraovervakning": "Certifierade tekniker för kameraövervakning och säkerhetssystem.",
+  "solceller": "Certifierade solcellsinstallatörer med erfarenhet av alla paneltyper.",
+  "porttelefon": "Tekniker med erfarenhet av porttelefon- och passagesystem.",
+  // Rivning
+  "rivning-badrum": "Rivare med erfarenhet av badrums-rivning och asbesthantering.",
+  "rivning-kok": "Rivare med erfarenhet av köksrivning och VA-arbeten.",
+  "bortforsling": "Personal med erfarenhet av bortforsling och avfallshantering.",
+};
+
+// English certification texts
+export const EXPANDED_CERT_TEXT_EN: Record<ExpandedSlug, string> = Object.fromEntries(
+  Object.entries(EXPANDED_CERT_TEXT_SV).map(([key, _]) => {
+    const enMap: Record<string, string> = {
+      "totalrenovering": "Contractors have professional certificates and extensive renovation experience.",
+      "renovering": "Contractors have professional certificates and extensive renovation experience.",
+      "hantverkare": "All contractors have professional certificates and relevant training.",
+      "byggfirma": "Our builders have professional certificates and experience with all types of construction.",
+      "byggtjanster": "All construction workers have professional certificates and relevant certification.",
+      "husrenovering": "Contractors experienced in complete house renovations across all disciplines.",
+      "villarenovering": "Contractors specialized in villa renovations with ROT deduction.",
+      "lagenhetsrenovering": "Contractors experienced in apartment renovations.",
+      "ombyggnad": "Contractors experienced in remodeling and structural changes.",
+      "utbyggnad": "Contractors experienced in extensions and additions.",
+      "tillbyggnad": "Contractors experienced in additions and construction drawings.",
+      "fonsterbyte": "Contractors certified for window replacement per energy requirements.",
+      "dorrbyte": "Contractors experienced in door replacement – exterior, interior and security doors.",
+      "fasadrenovering": "Contractors experienced in facade renovation and plaster work.",
+      "trapprenovering": "Carpenters experienced in stair renovation and stair construction.",
+      "taklaggning": "Roofers experienced with all roof types and materials.",
+      "takbyte": "Certified roofers experienced in roof replacement.",
+      "takrenovering": "Roofers experienced in roof renovation and repairs.",
+      "verandarenovering": "Carpenters experienced in veranda and deck renovations.",
+      "entrerenoverning": "Contractors experienced in entrance renovations.",
+      "vardagsrumsrenovering": "Contractors experienced in living room renovations.",
+      "sovrumsrenovering": "Contractors experienced in bedroom renovations.",
+      "kontorsbygge": "Contractors experienced in office construction and interior design.",
+      "bostadsanpassning": "Contractors experienced in home adaptation for accessibility.",
+      "platsbyggt": "Carpenters specialized in custom-built solutions – wardrobes, shelving and interiors.",
+    };
+    return [key, enMap[key] || "All our professionals are certified and experienced."];
+  })
+) as Record<ExpandedSlug, string>;
+
+// Title templates for expanded slugs (Swedish)
+export const getExpandedTitleSv = (slug: ExpandedSlug, area: string): string => {
+  const service = EXPANDED_SERVICES.find(s => s.slug === slug)!;
+  return `${service.name} ${area} ★ Professionella hantverkare · ${service.rotRut} 30% · Fri offert`;
+};
+
+export const getExpandedTitleEn = (slug: ExpandedSlug, area: string): string => {
+  const enName = EXPANDED_SERVICE_NAME_EN[slug];
+  const service = EXPANDED_SERVICES.find(s => s.slug === slug)!;
+  return `${enName} ${area} ★ Professional contractors · ${service.rotRut} 30% · Free quote`;
+};
+
+export const getExpandedDescriptionSv = (slug: ExpandedSlug, area: string): string => {
+  const service = EXPANDED_SERVICES.find(s => s.slug === slug)!;
+  return `${service.name} i ${area} ★ 5/5 betyg ✓ Professionella hantverkare ✓ 30% ${service.rotRut}-avdrag ✓ Fast pris ✓ Kvalitetsgaranti. Få offert inom 24h!`;
+};
+
+export const getExpandedDescriptionEn = (slug: ExpandedSlug, area: string): string => {
+  const enName = EXPANDED_SERVICE_NAME_EN[slug];
+  const service = EXPANDED_SERVICES.find(s => s.slug === slug)!;
+  return `${enName} in ${area} ★ 5/5 rating ✓ Professional contractors ✓ 30% ${service.rotRut} deduction ✓ Fixed price ✓ Quality guarantee. Get quote within 24h!`;
+};
+
+// Service items inherit from parent category  
+export const getExpandedServiceItems = (slug: ExpandedSlug, area: string, locale: 'sv' | 'en' = 'sv'): string[] => {
+  const service = EXPANDED_SERVICES.find(s => s.slug === slug)!;
+  const name = locale === 'en' ? EXPANDED_SERVICE_NAME_EN[slug].toLowerCase() : service.name.toLowerCase();
+  const inWord = locale === 'en' ? 'in' : 'i';
+  
+  // Generate contextual items based on slug name
+  return [
+    `${service.name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Free quote for' : 'Gratis offert för'} ${name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Professional' : 'Professionell'} ${name} ${inWord} ${area}`,
+    `${service.rotRut}-${locale === 'en' ? 'deduction on' : 'avdrag på'} ${name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Experienced contractors for' : 'Erfarna hantverkare för'} ${name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Fixed price' : 'Fast pris'} ${name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Quality guarantee' : 'Kvalitetsgaranti'} ${name} ${inWord} ${area}`,
+    `${locale === 'en' ? 'Book' : 'Boka'} ${name} ${inWord} ${area}`,
+  ];
+};

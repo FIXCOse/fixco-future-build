@@ -9,13 +9,13 @@ import { getAreaMetadata, LOCAL_SERVICES } from './localServiceData';
 // ============================================================
 // SEARCH ACTION PATTERNS - Baserat på faktisk GSC-data
 // ============================================================
-export const SEARCH_ACTION_PATTERNS: Record<LocalServiceSlug, {
+export const SEARCH_ACTION_PATTERNS: Partial<Record<LocalServiceSlug, {
   actions: string[];
   objects: string[];
   urgentTerms: string[];
   projectTypes: string[];
   synonyms: string[];
-}> = {
+}>> = {
   "snickare": {
     actions: ["bygga", "renovera", "montera", "boka", "hitta"],
     objects: ["kök", "altan", "garderob", "dörrar", "fönster", "trappa", "badrum", "vind", "fasad"],
@@ -569,7 +569,7 @@ export const generateUniqueLocalContent = (
 // IMPROVED TITLE TEMPLATES - Baserat på GSC-analys
 // ============================================================
 export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): string => {
-  const titles: Record<LocalServiceSlug, string> = {
+  const titles: Partial<Record<LocalServiceSlug, string>> = {
     "snickare": `Snickare ${area} ★ Renovering, kök, garderob & mer · ROT 30%`,
     "vvs": `VVS ${area} ★ Installation, reparation & mer · ROT 30%`,
     "elektriker": `Elektriker ${area} ★ Laddbox, elinstallation & mer · ROT 30%`,
