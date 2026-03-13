@@ -932,7 +932,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
       "elinstallation": [`Electrical outlet installation in ${area}`, `Lighting installation in ${area}`, `EV charger installation in ${area}`, `Dimmer installation in ${area}`, `Panel upgrade in ${area}`, `Outdoor lighting in ${area}`, `Smart home wiring in ${area}`, `Ground fault breaker in ${area}`, `Electrical inspection in ${area}`, `Kitchen electrical in ${area}`],
       "rivning": [`Bathroom demolition in ${area}`, `Kitchen demolition in ${area}`, `Wall removal in ${area}`, `Floor removal in ${area}`, `Full gutting in ${area}`, `Concrete cutting in ${area}`, `Tile removal in ${area}`, `Debris hauling in ${area}`, `Interior demolition in ${area}`, `Selective demolition in ${area}`],
     };
-    return enItems[serviceSlug] || [];
+    return enItems[serviceSlug] || getExpandedServiceItems(serviceSlug as ExpandedSlug, area, 'en');
   }
   const serviceItems: Record<LocalServiceSlug, string[]> = {
     "snickare": [`Köksrenovering i ${area}`, `Bygga altan och trädäck i ${area}`, `Inredningssnickeri i ${area}`, `Fönster- och dörrbyte i ${area}`, `Golvläggning i ${area}`, `Badrumsrenovering i ${area}`, `Bygga om vind/källare i ${area}`, `Fasadrenovering i ${area}`, `Montering av kök och garderober i ${area}`, `Tillbyggnader och utbyggnader i ${area}`],
