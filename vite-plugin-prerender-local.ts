@@ -5,7 +5,7 @@
  * 
  * ~16,000 files: 151 services × 53 areas × 2 languages
  */
-import type { Plugin, OutputBundle, OutputChunk, OutputAsset } from 'vite';
+import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
 
