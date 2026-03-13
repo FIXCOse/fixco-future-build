@@ -934,7 +934,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     };
     return enItems[serviceSlug] || getExpandedServiceItems(serviceSlug as ExpandedSlug, area, 'en');
   }
-  const serviceItems: Record<LocalServiceSlug, string[]> = {
+  const serviceItems: Partial<Record<LocalServiceSlug, string[]>> = {
     "snickare": [`Köksrenovering i ${area}`, `Bygga altan och trädäck i ${area}`, `Inredningssnickeri i ${area}`, `Fönster- och dörrbyte i ${area}`, `Golvläggning i ${area}`, `Badrumsrenovering i ${area}`, `Bygga om vind/källare i ${area}`, `Fasadrenovering i ${area}`, `Montering av kök och garderober i ${area}`, `Tillbyggnader och utbyggnader i ${area}`],
     "elektriker": [`Elinstallation i ${area}`, `Felsökning av el i ${area}`, `Byte av elcentral i ${area}`, `Installation av belysning i ${area}`, `Jordfelsbrytare installation i ${area}`, `Laddbox för elbil i ${area}`, `Smart hem installation i ${area}`, `Elbesiktning i ${area}`, `Byte av uttag och strömbrytare i ${area}`, `Utomhusbelysning i ${area}`],
     "vvs": [`VVS-installation i ${area}`, `Byte av blandare i ${area}`, `Värmepump installation i ${area}`, `Avloppsrensning i ${area}`, `Badrumsrenovering VVS i ${area}`, `Golvvärme installation i ${area}`, `Vattenläcka akut i ${area}`, `Byte av toalettstol i ${area}`, `Radiatorinstallation i ${area}`, `Varmvattenberedare i ${area}`],
