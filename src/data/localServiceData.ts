@@ -27,7 +27,9 @@ export const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS] as const;
 export type AreaKey = typeof ALL_AREAS[number];
 
 // Alla tjänster som ska ha lokala sidor
-export const LOCAL_SERVICES = [
+import { EXPANDED_SERVICES, EXPANDED_SERVICE_NAME_EN, EXPANDED_SERVICE_PRICING, EXPANDED_SERVICE_MYTHS, EXPANDED_CERT_TEXT_SV, EXPANDED_CERT_TEXT_EN, getExpandedTitleSv, getExpandedTitleEn, getExpandedDescriptionSv, getExpandedDescriptionEn, getExpandedServiceItems, type ExpandedSlug } from './seoSlugsExpansion';
+
+const BASE_SERVICES = [
   { slug: "snickare", name: "Snickare", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "elektriker", name: "Elektriker", serviceKey: "el", rotRut: "ROT" },
   { slug: "vvs", name: "VVS", serviceKey: "vvs", rotRut: "ROT" },
@@ -51,7 +53,14 @@ export const LOCAL_SERVICES = [
   { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
 ] as const;
 
-export type LocalServiceSlug = typeof LOCAL_SERVICES[number]["slug"];
+// Merge base + expanded services into a single array
+export const LOCAL_SERVICES: ReadonlyArray<{ slug: string; name: string; serviceKey: string; rotRut: string }> = [
+  ...BASE_SERVICES,
+  ...EXPANDED_SERVICES,
+];
+
+export type BaseServiceSlug = typeof BASE_SERVICES[number]["slug"];
+export type LocalServiceSlug = BaseServiceSlug | ExpandedSlug;
 
 // Genererar slug för URL
 export const generateAreaSlug = (area: string): string => {
