@@ -340,11 +340,19 @@ export const EXPANDED_NICHE_SERVICES: NicheServiceMeta[] = EXPANDED_SERVICES.map
 
   const descSv = (CATEGORY_DESC_SV[serviceKey] || CATEGORY_DESC_SV.snickeri)(svc.name);
   const descEn = (CATEGORY_DESC_EN[serviceKey] || CATEGORY_DESC_EN.snickeri)(nameEn);
+  const heroTitleSv = (HERO_TITLE_SV[serviceKey] || HERO_TITLE_SV.snickeri)(svc.name);
+  const heroTitleEn = (HERO_TITLE_EN[serviceKey] || HERO_TITLE_EN.snickeri)(nameEn);
+  const metaDescSv = (META_DESC_SV[serviceKey] || META_DESC_SV.snickeri)(svc.name, rotRut);
+  const metaDescEn = (META_DESC_EN[serviceKey] || META_DESC_EN.snickeri)(nameEn, rotRut);
 
   return {
     slug: svc.slug,
     title: svc.name,
     titleEn: nameEn,
+    heroTitle: heroTitleSv,
+    heroTitleEn: heroTitleEn,
+    metaDescription: metaDescSv,
+    metaDescriptionEn: metaDescEn,
     parentCategory: category,
     icon,
     rotRut,
