@@ -447,8 +447,6 @@ export function prerenderLocalPlugin(): Plugin {
         if (c.type === 'chunk' && c.isEntry) {
           jsEntries.push(fileName);
         }
-          jsEntries.push(fileName);
-        }
       }
 
       let count = 0;
