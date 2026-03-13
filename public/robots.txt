@@ -201,7 +201,6 @@ Disallow: /offert/
 # ===========================================
 
 Sitemap: https://fixco.se/sitemap.xml
-Sitemap: https://fixco.se/ai-sitemap.xml
 
 # ===========================================
 # AI INFORMATION FILES
