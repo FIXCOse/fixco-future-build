@@ -151,8 +151,8 @@ const AdminDashboardContent = () => {
   ];
 
   const quickStats = [
-    { label: 'Totala användare', value: '24', icon: Users },
-    { label: 'Aktiva sessioner', value: '8', icon: Activity },
+    { label: 'Nya bokningar', value: String(newBookingsCount), icon: ClipboardList },
+    { label: 'Nya leads', value: String(newLeadsCount), icon: Megaphone },
     { label: 'Systemstatus', value: 'Online', icon: Shield, isStatus: true }
   ];
 
