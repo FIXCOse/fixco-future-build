@@ -179,6 +179,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'What time of year is best for exterior painting?', a: 'May to September is best – temperature should be at least +10°C and conditions should be dry.' },
     ],
     enSlug: 'exterior-painting',
+    introText: 'Har fasaden sett bättre dagar? En professionell fasadmålning skyddar ditt hus och ger det ett helt nytt utseende. Fixcos målare förbehandlar, grundar och målar med kvalitetsfärg som håller 10+ år. Ställning ingår alltid, och med 30% ROT-avdrag får du ett fantastiskt resultat till ett smart pris.',
+    introTextEn: 'Has your facade seen better days? A professional exterior paint job protects your house and gives it a completely new look. Fixco\'s painters pre-treat, prime and paint with quality paint lasting 10+ years. Scaffolding is always included, and with 30% ROT deduction you get an amazing result at a smart price.',
   },
   {
     slug: 'inomhusmalning',
