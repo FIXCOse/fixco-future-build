@@ -311,8 +311,8 @@ const skipAddons = () => {
         svc.fields.push({
           kind: "file" as const,
           key: "bilder",
-          label: "Ladda upp bilder (valfritt)",
-          accept: "image/*",
+          label: ml.uploadImages,
+          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt",
           multiple: true
         });
       }
