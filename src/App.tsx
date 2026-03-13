@@ -435,9 +435,11 @@ const App = () => {
                             
                             {/* Dynamisk route - resolves niche landing OR service detail */}
                             <Route path="tjanster/:slug" element={
-                              <Suspense fallback={<SuspenseFallback />}>
-                                <SmartServiceRouter />
-                              </Suspense>
+                              <ErrorBoundary fallback={<SuspenseFallback />}>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartServiceRouter />
+                                </Suspense>
+                              </ErrorBoundary>
                             } />
                             
                             <Route path="kontakt" element={lazyElement(Contact)} />
