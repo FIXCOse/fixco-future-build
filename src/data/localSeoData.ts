@@ -691,11 +691,11 @@ export const generateLocalIntroText = (
   area: string,
   locale: string
 ): string | null => {
-  const service = LOCAL_SERVICES[serviceSlug as LocalServiceSlug];
+  const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug);
   if (!service) return null;
   
   const serviceKey = service.serviceKey;
-  const serviceName = locale === 'en' ? (service.nameEn || service.name) : service.name;
+  const serviceName = locale === 'en' ? getServiceNameEn(serviceSlug as LocalServiceSlug) : service.name;
   const rotRut = service.rotRut || 'ROT';
   
   if (locale === 'en') {
