@@ -190,7 +190,7 @@ const LocalServicePage = () => {
       "hasMap": `https://www.google.com/maps?q=Fixco+${encodeURIComponent(service?.name || '')}+${encodeURIComponent(area)}`,
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": `${service?.name} i ${area}`,
+        "name": locale === 'en' ? `${service?.name} in ${area}` : `${service?.name} i ${area}`,
         "itemListElement": content.servicesSection.items.map((item: string) => ({
           "@type": "Offer",
           "itemOffered": {
