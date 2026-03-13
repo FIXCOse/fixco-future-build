@@ -228,7 +228,38 @@ const CATEGORY_USPS_EN: Record<string, string[]> = {
   rivning: ["Controlled demolition", "30% ROT deduction", "Debris removal included", "Protects adjacent surfaces"],
 };
 
-// Description templates per category
+// Hero title templates per category (action-oriented H1s)
+const HERO_TITLE_SV: Record<string, (name: string) => string> = {
+  snickeri: (n) => `Boka ${n}`,
+  vvs: (n) => `Boka ${n}`,
+  el: (n) => `Boka ${n}`,
+  malning: (n) => `Boka ${n}`,
+  golv: (n) => `Boka ${n}`,
+  montering: (n) => `Boka ${n}`,
+  tradgard: (n) => `Boka ${n}`,
+  markarbeten: (n) => `Boka ${n}`,
+  stadning: (n) => `Boka ${n}`,
+  flytt: (n) => `Boka ${n}`,
+  "tekniska-installationer": (n) => `Boka ${n}`,
+  rivning: (n) => `Boka ${n}`,
+};
+
+const HERO_TITLE_EN: Record<string, (name: string) => string> = {
+  snickeri: (n) => `Book ${n}`,
+  vvs: (n) => `Book ${n}`,
+  el: (n) => `Book ${n}`,
+  malning: (n) => `Book ${n}`,
+  golv: (n) => `Book ${n}`,
+  montering: (n) => `Book ${n}`,
+  tradgard: (n) => `Book ${n}`,
+  markarbeten: (n) => `Book ${n}`,
+  stadning: (n) => `Book ${n}`,
+  flytt: (n) => `Book ${n}`,
+  "tekniska-installationer": (n) => `Book ${n}`,
+  rivning: (n) => `Book ${n}`,
+};
+
+// Description templates per category (used as hero subtitle)
 const CATEGORY_DESC_SV: Record<string, (name: string) => string> = {
   snickeri: (n) => `Professionell ${n.toLowerCase()} med ROT-avdrag. Erfarna hantverkare, fast pris och garanti. ★ 5/5 betyg.`,
   vvs: (n) => `${n} utförd av certifierade VVS-tekniker med ROT-avdrag. Snabb service och garanti på allt arbete.`,
@@ -257,6 +288,37 @@ const CATEGORY_DESC_EN: Record<string, (nameEn: string) => string> = {
   flytt: (n) => `${n} with RUT deduction. Insured moving with experienced movers. Packing and transport.`,
   "tekniska-installationer": (n) => `${n} with ROT deduction. Certified technicians for smart and secure installation.`,
   rivning: (n) => `${n} with ROT deduction. Controlled demolition with debris removal and surface protection.`,
+};
+
+// Meta description templates per category (sales-focused for Google)
+const META_DESC_SV: Record<string, (name: string, rotRut: string) => string> = {
+  snickeri: (n, rr) => `Fixcos erfarna hantverkare hjälper dig med ${n.toLowerCase()}. Fast pris, 30% ${rr}-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!`,
+  vvs: (n, rr) => `Behöver du ${n.toLowerCase()}? Fixcos certifierade VVS-tekniker hjälper dig. 30% ${rr}-avdrag, fast pris och garanti. ★ 5/5 betyg. Begär offert!`,
+  el: (n, rr) => `Boka ${n.toLowerCase()} med auktoriserade elektriker. 30% ${rr}-avdrag, besiktningsprotokoll och garanti. ★ 5/5 betyg. Begär gratis offert!`,
+  malning: (n, rr) => `Fixcos professionella målare hjälper dig med ${n.toLowerCase()}. Spackling ingår, 30% ${rr}-avdrag och garanti. ★ 5/5 betyg. Begär offert!`,
+  golv: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Parkett, laminat, vinyl och klinker. 30% ${rr}-avdrag, fast pris. ★ 5/5 betyg. Begär gratis offert!`,
+  montering: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Alla varumärken, snabb leverans och 50% ${rr}-avdrag. ★ 5/5 betyg. Begär gratis offert!`,
+  tradgard: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Professionella trädgårdsmästare, 50% ${rr}-avdrag. ★ 5/5 betyg. Begär gratis offert!`,
+  markarbeten: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Fast pris, erfarna maskinförare och 30% ${rr}-avdrag. ★ 5/5 betyg. Begär offert!`,
+  stadning: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Eget material, nöjdhetsgaranti och 50% ${rr}-avdrag. ★ 5/5 betyg. Begär gratis offert!`,
+  flytt: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Försäkrad flytt, erfarna flyttare och 50% ${rr}-avdrag. ★ 5/5 betyg. Begär offert!`,
+  "tekniska-installationer": (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Certifierade tekniker, 30% ${rr}-avdrag och garanti. ★ 5/5 betyg. Begär offert!`,
+  rivning: (n, rr) => `Boka ${n.toLowerCase()} med Fixco. Kontrollerad rivning, borttransport ingår och 30% ${rr}-avdrag. ★ 5/5 betyg. Begär offert!`,
+};
+
+const META_DESC_EN: Record<string, (name: string, rotRut: string) => string> = {
+  snickeri: (n, rr) => `Fixco's experienced craftsmen help you with ${n.toLowerCase()}. Fixed price, 30% ${rr} deduction and warranty. ★ 5/5 rating. Get a free quote!`,
+  vvs: (n, rr) => `Need ${n.toLowerCase()}? Fixco's certified plumbers help you. 30% ${rr} deduction, fixed price and warranty. ★ 5/5 rating. Get a quote!`,
+  el: (n, rr) => `Book ${n.toLowerCase()} with authorized electricians. 30% ${rr} deduction, inspection protocol and warranty. ★ 5/5 rating. Get a free quote!`,
+  malning: (n, rr) => `Fixco's professional painters help you with ${n.toLowerCase()}. Prep included, 30% ${rr} deduction and warranty. ★ 5/5 rating. Get a quote!`,
+  golv: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Parquet, laminate, vinyl and tile. 30% ${rr} deduction, fixed price. ★ 5/5 rating. Get a free quote!`,
+  montering: (n, rr) => `Book ${n.toLowerCase()} with Fixco. All brands, fast delivery and 50% ${rr} deduction. ★ 5/5 rating. Get a free quote!`,
+  tradgard: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Professional gardeners, 50% ${rr} deduction. ★ 5/5 rating. Get a free quote!`,
+  markarbeten: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Fixed price, experienced operators and 30% ${rr} deduction. ★ 5/5 rating. Get a quote!`,
+  stadning: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Own supplies, satisfaction guarantee and 50% ${rr} deduction. ★ 5/5 rating. Get a free quote!`,
+  flytt: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Insured moving, experienced movers and 50% ${rr} deduction. ★ 5/5 rating. Get a quote!`,
+  "tekniska-installationer": (n, rr) => `Book ${n.toLowerCase()} with Fixco. Certified technicians, 30% ${rr} deduction and warranty. ★ 5/5 rating. Get a quote!`,
+  rivning: (n, rr) => `Book ${n.toLowerCase()} with Fixco. Controlled demolition, debris removal and 30% ${rr} deduction. ★ 5/5 rating. Get a quote!`,
 };
 
 // Generate enSlug from the EXPANDED_SERVICE_NAME_EN
