@@ -303,6 +303,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How quickly can you come?', a: 'We often offer assembly within 2–5 working days. During high demand it may take a bit longer.' },
     ],
     enSlug: 'furniture-assembly',
+    introText: 'Står plattpaket och väntar på att bli till riktiga möbler? Fixcos monteringsproffs sätter ihop allt från IKEA PAX-garderober till kontorsmöbler – snabbt och korrekt. Med 50% RUT-avdrag betalar du bara hälften, och du slipper frustrationen med krångliga instruktioner.',
+    introTextEn: 'Got flat-packs waiting to become real furniture? Fixco\'s assembly pros put together everything from IKEA PAX wardrobes to office furniture – quickly and correctly. With 50% RUT deduction you only pay half, and you skip the frustration of confusing instructions.',
   },
 ];
 
