@@ -134,10 +134,23 @@ function generateMainSitemap(): string {
 
 function generateHubsSitemap(): string {
   let xml = xmlHeader();
-  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const slug of ALL_SERVICE_SLUGS) {
-    xml += `  <url>\n    <loc>${BASE_URL}/tjanster/${slug}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n  </url>\n`;
+    const svLoc = `${BASE_URL}/tjanster/${slug}`;
+    const enLoc = `${BASE_URL}/en/services/${slug}`;
+    // Swedish version
+    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+    xml += `  </url>\n`;
+    // English version
+    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+    xml += `  </url>\n`;
   }
   
   xml += `</urlset>\n`;

@@ -1,15 +1,19 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Plan: Uppdatera sitemap-hubs.xml med hreflang
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-### Problem
-`generateHubsSitemap()` listar bara svenska `/tjanster/{slug}` — inga engelska `/en/services/{slug}` och inga hreflang-attribut. Samma gap som fixades för lokala sidor.
-
-### Ändring
-
-**`vite-plugin-sitemap.ts`** — `generateHubsSitemap()` (rad 135-144):
-- Lägg till `xmlns:xhtml` namespace
-- För varje slug, generera **två** `<url>`-entries (SV + EN) med bidirektionella `xhtml:link` hreflang-attribut (`sv`, `en`, `x-default`)
-- Svenska: `/tjanster/{slug}` priority 0.80
-- Engelska: `/en/services/{slug}` priority 0.75
-
+### Teknisk arkitektur
+- `seoSlugsExpansion.ts` — 120+ expanded slugs + metadata (pricing, EN names, myths)
+- `nicheServiceDataExpanded.ts` — Auto-genererad NicheServiceMeta per slug via kategori-templates
+- `localServiceData.ts` — Mergar base + expanded, dynamisk fallback lookup
+- `localSeoData.ts` — Partial<Record> för kompatibilitet
+- `slugMapping.ts` — Komplett sv→en URL-mappning
+- `App.tsx` — SmartServiceRouter resolvar nisch vs. ServiceDetail dynamiskt
