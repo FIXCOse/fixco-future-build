@@ -4,7 +4,7 @@
 // Innehåller sökmönster, grannorter och unikt innehåll per ort
 
 import type { LocalServiceSlug, AreaKey } from './localServiceData';
-import { getAreaMetadata, LOCAL_SERVICES } from './localServiceData';
+import { getAreaMetadata, LOCAL_SERVICES, getServiceNameEn } from './localServiceData';
 
 // ============================================================
 // SEARCH ACTION PATTERNS - Baserat på faktisk GSC-data
