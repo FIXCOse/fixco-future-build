@@ -858,7 +858,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
     },
 
     faqs: (() => {
-      const pricing = SERVICE_PRICING[serviceSlug];
+      const pricing = getServicePricing(serviceSlug);
       const priceAnswer = isEn
         ? (pricing.isQuoteOnly 
           ? `The price for ${serviceName} in ${area} varies depending on the scope and complexity of the project. Contact us for a free quote on your project in ${area}. All prices include ${rotRut} deduction (30%) when you hire ${serviceName} through Fixco.`
