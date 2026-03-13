@@ -639,7 +639,7 @@ const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
 };
 
 // Unified lookup functions for both base and expanded slugs
-const getServiceNameEn = (slug: LocalServiceSlug): string => {
+export const getServiceNameEn = (slug: LocalServiceSlug): string => {
   if (slug in SERVICE_NAME_EN_BASE) return SERVICE_NAME_EN_BASE[slug as BaseServiceSlug];
   if (slug in EXPANDED_SERVICE_NAME_EN) return EXPANDED_SERVICE_NAME_EN[slug as ExpandedSlug];
   return slug;
