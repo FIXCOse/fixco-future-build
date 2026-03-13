@@ -1,22 +1,45 @@
 
 
-## Plan: Skicka bekräftelsemail till admin efter schemalagt utskick
+## Plan: Automatisk geolocation-taggning vid offertvisning
 
-### Vad vi gör
-Efter att ett schemalagt offertmail har skickats till kunden, skickar vi ett bekräftelsemail till `imedashviliomar@gmail.com` med info om vilken offert som skickades och till vem.
+### Översikt
+Vid varje offertvisning i `get-quote-public` edge function, slå upp IP-adressen mot ett gratis geolocation-API och spara land/stad i `quote_views`-tabellen. Visa info i admin-tidslinjens tooltip.
 
-### Fil som ändras
+### Ändring 1 — Migration: Nya kolumner på `quote_views`
+Lägg till `country` (text) och `city` (text) på `quote_views`.
 
-**`supabase/functions/execute-scheduled-quote-sends/index.ts`**
+### Ändring 2 — Edge function `get-quote-public/index.ts`
+Efter att IP-adressen hämtats (rad 152-155), anropa `http://ip-api.com/json/{ip}?fields=country,city` (gratis, ingen API-nyckel krävs, max 45 req/min). Spara `country` och `city` i insert-raden till `quote_views`. Wrappa i try/catch så att ett misslyckat lookup inte blockerar offertvisningen.
 
-Efter raden där vi loggar `✅ Sent scheduled quote` (rad 69), lägger vi till:
+```typescript
+let city = null, country = null;
+try {
+  const geo = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`);
+  if (geo.ok) {
+    const geoData = await geo.json();
+    city = geoData.city || null;
+    country = geoData.country || null;
+  }
+} catch (e) {
+  console.error('Geo lookup failed:', e);
+}
 
-1. Importera Resend (redan tillgänglig via `RESEND_API_KEY`)
-2. Hämta offert + kundinfo från `quotes_new` (med JOIN på `customers`)
-3. Skicka ett kort bekräftelsemail via Resend till `imedashviliomar@gmail.com`:
-   - Ämne: `✅ Offert [nummer] skickad till [kundnamn]`
-   - Innehåll: offertnamn, kundnamn, kundens email, tidpunkt
+await supabase.from('quote_views').insert({
+  quote_id: quote.id, user_agent: userAgent, ip_address: ip,
+  source: viewSource, city, country
+});
+```
 
-### Inga nya filer, inga databasändringar
-Bara en uppdatering av edge functionen med Resend-anrop efter lyckad leverans.
+### Ändring 3 — TypeScript-typer (`types.ts`)
+Lägg till `city` och `country` i `quote_views` Row/Insert/Update.
+
+### Ändring 4 — UI: `QuoteStatusTimeline.tsx`
+Uppdatera query att även hämta `city, country`. Visa i tooltip bredvid IP, t.ex.:
+`12 mar 2026 kl. 15:07 — 213.35.171.205 (Tallinn, Estonia)`
+
+### Filer som ändras
+- `supabase/migrations/` — ny migration
+- `supabase/functions/get-quote-public/index.ts`
+- `src/integrations/supabase/types.ts`
+- `src/components/admin/QuoteStatusTimeline.tsx`
 
