@@ -582,7 +582,9 @@ export const getAreaFunFacts = (area: AreaKey): string[] => {
 
 // Funktion för att hämta myter
 export const getServiceMyths = (serviceSlug: LocalServiceSlug): Array<{ myth: string; truth: string }> => {
-  return SERVICE_MYTHS[serviceSlug] || [];
+  if (serviceSlug in SERVICE_MYTHS_BASE) return SERVICE_MYTHS_BASE[serviceSlug as BaseServiceSlug];
+  if (serviceSlug in EXPANDED_SERVICE_MYTHS) return EXPANDED_SERVICE_MYTHS[serviceSlug as ExpandedSlug];
+  return [];
 };
 
 export interface LocalServiceContent {
