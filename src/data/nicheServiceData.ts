@@ -94,7 +94,7 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     parentCategory: 'snickeri',
     icon: Fence,
     rotRut: 'ROT',
-    description: 'Bygg din drömalttan med professionella snickare. Trä- eller komposittrall med ROT-avdrag. Komplett altan från grund till räcke.',
+    description: 'Bygg din drömaltan med professionella snickare. Trä- eller komposittrall med ROT-avdrag. Komplett altan från grund till räcke.',
     descriptionEn: 'Build your dream deck with professional carpenters. Wood or composite decking with ROT deduction. Complete deck from foundation to railing.',
     usps: ['Trä eller komposit – du väljer', 'Bygglov och konstruktion', '30% ROT-avdrag', 'Hållbart och underhållsfritt'],
     uspsEn: ['Wood or composite – your choice', 'Building permits and construction', '30% ROT deduction', 'Durable and low maintenance'],
