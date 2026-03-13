@@ -11,7 +11,9 @@ import {
   UserCog,
   Activity,
   ArrowRight,
-  MessageCircle
+  MessageCircle,
+  ClipboardList,
+  Megaphone
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -32,6 +34,34 @@ const AdminDashboardContent = () => {
     },
   });
 
+  // Hämta antal nya bokningar
+  const { data: newBookingsCount = 0 } = useQuery({
+    queryKey: ['new-bookings-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'new');
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
+  // Hämta antal nya leads
+  const { data: newLeadsCount = 0 } = useQuery({
+    queryKey: ['new-leads-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('leads')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'new');
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
   type AdminSection = {
     title: string;
     description: string;
@@ -43,6 +73,24 @@ const AdminDashboardContent = () => {
   };
 
   const adminSections: AdminSection[] = [
+    {
+      title: 'Bokningsförfrågningar',
+      description: 'Nya offert- och hembesöksförfrågningar',
+      icon: ClipboardList,
+      href: '/admin/quotes?tab=requests',
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100',
+      badge: newBookingsCount > 0 ? newBookingsCount : undefined
+    },
+    {
+      title: 'Leads & Kontakt',
+      description: 'Inkomna kontaktförfrågningar och leads',
+      icon: Megaphone,
+      href: '/admin/leads',
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-100',
+      badge: newLeadsCount > 0 ? newLeadsCount : undefined
+    },
     {
       title: 'Användarhantering',
       description: 'Hantera användare, roller och behörigheter',
@@ -103,8 +151,8 @@ const AdminDashboardContent = () => {
   ];
 
   const quickStats = [
-    { label: 'Totala användare', value: '24', icon: Users },
-    { label: 'Aktiva sessioner', value: '8', icon: Activity },
+    { label: 'Nya bokningar', value: String(newBookingsCount), icon: ClipboardList },
+    { label: 'Nya leads', value: String(newLeadsCount), icon: Megaphone },
     { label: 'Systemstatus', value: 'Online', icon: Shield, isStatus: true }
   ];
 
