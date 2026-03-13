@@ -654,8 +654,8 @@ const getServicePricing = (slug: LocalServiceSlug) => {
 export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKey, locale: 'sv' | 'en' = 'sv'): LocalServiceContent => {
   const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug)!;
   const isEn = locale === 'en';
-  const serviceName = isEn ? SERVICE_NAME_EN[serviceSlug].toLowerCase() : service.name.toLowerCase();
-  const serviceNameCapital = isEn ? SERVICE_NAME_EN[serviceSlug] : service.name;
+  const serviceName = isEn ? getServiceNameEn(serviceSlug).toLowerCase() : service.name.toLowerCase();
+  const serviceNameCapital = isEn ? getServiceNameEn(serviceSlug) : service.name;
   const rotRut = service.rotRut;
   const metadata = getAreaMetadata(area);
   
