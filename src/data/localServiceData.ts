@@ -910,7 +910,7 @@ Maxtaket för ${rotRut}-avdrag är ${rotRut === 'ROT' ? '50 000 kr' : '75 000 kr
 function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 'sv' | 'en' = 'sv'): string[] {
   const isEn = locale === 'en';
   if (isEn) {
-    const enItems: Record<LocalServiceSlug, string[]> = {
+    const enItems: Partial<Record<LocalServiceSlug, string[]>> = {
       "snickare": [`Kitchen renovation in ${area}`, `Build deck in ${area}`, `Interior carpentry in ${area}`, `Window & door replacement in ${area}`, `Flooring in ${area}`, `Bathroom renovation in ${area}`, `Attic/basement conversion in ${area}`, `Facade renovation in ${area}`, `Kitchen & wardrobe assembly in ${area}`, `Extensions in ${area}`],
       "elektriker": [`Electrical installation in ${area}`, `Electrical troubleshooting in ${area}`, `Panel upgrade in ${area}`, `Lighting installation in ${area}`, `Ground fault breaker in ${area}`, `EV charger in ${area}`, `Smart home installation in ${area}`, `Electrical inspection in ${area}`, `Outlet & switch replacement in ${area}`, `Outdoor lighting in ${area}`],
       "vvs": [`Plumbing installation in ${area}`, `Faucet replacement in ${area}`, `Heat pump installation in ${area}`, `Drain cleaning in ${area}`, `Bathroom plumbing in ${area}`, `Underfloor heating in ${area}`, `Emergency water leak in ${area}`, `Toilet replacement in ${area}`, `Radiator installation in ${area}`, `Water heater in ${area}`],
