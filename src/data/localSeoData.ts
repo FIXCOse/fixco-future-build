@@ -9,7 +9,7 @@ import { getAreaMetadata, LOCAL_SERVICES } from './localServiceData';
 // ============================================================
 // SEARCH ACTION PATTERNS - Baserat på faktisk GSC-data
 // ============================================================
-export const SEARCH_ACTION_PATTERNS: Record<LocalServiceSlug, {
+export const SEARCH_ACTION_PATTERNS: Partial<Record<LocalServiceSlug, {
   actions: string[];
   objects: string[];
   urgentTerms: string[];
