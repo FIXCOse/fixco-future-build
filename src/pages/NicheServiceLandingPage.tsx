@@ -77,15 +77,37 @@ const NicheServiceLandingPage = () => {
   }
 
   const title = isEnglish ? niche.titleEn : niche.title;
+  const heroTitle = isEnglish ? niche.heroTitleEn : niche.heroTitle;
   const description = isEnglish ? niche.descriptionEn : niche.description;
+  const metaDesc = isEnglish ? niche.metaDescriptionEn : niche.metaDescription;
   const usps = isEnglish ? niche.uspsEn : niche.usps;
   const faqs = isEnglish ? niche.faqsEn : niche.faqs;
   const IconComponent = niche.icon;
   const heroGradient = getHeroGradientStyle(niche.slug);
   const deductionLabel = niche.rotRut === 'ROT' ? '30% ROT' : '50% RUT';
 
-  const seoTitle = `${title} – ${isEnglish ? 'Professional Service' : 'Professionell tjänst'} | Fixco`;
-  const seoDescription = description;
+  // Category display names for related services heading
+  const CATEGORY_DISPLAY: Record<string, { sv: string; en: string }> = {
+    kok: { sv: 'Kök', en: 'Kitchen' },
+    badrum: { sv: 'Badrum', en: 'Bathroom' },
+    snickeri: { sv: 'Snickeri', en: 'Carpentry' },
+    malning: { sv: 'Målning', en: 'Painting' },
+    el: { sv: 'El', en: 'Electrical' },
+    golv: { sv: 'Golv', en: 'Flooring' },
+    montering: { sv: 'Montering', en: 'Assembly' },
+    vvs: { sv: 'VVS', en: 'Plumbing' },
+    tradgard: { sv: 'Trädgård', en: 'Garden' },
+    markarbeten: { sv: 'Markarbeten', en: 'Groundwork' },
+    stadning: { sv: 'Städning', en: 'Cleaning' },
+    flytt: { sv: 'Flytt', en: 'Moving' },
+    'tekniska-installationer': { sv: 'Tekniska installationer', en: 'Technical Installations' },
+    rivning: { sv: 'Rivning', en: 'Demolition' },
+  };
+  const categoryDisplay = CATEGORY_DISPLAY[niche.parentCategory];
+  const categoryName = categoryDisplay ? (isEnglish ? categoryDisplay.en : categoryDisplay.sv) : title;
+
+  const seoTitle = `${heroTitle} – Fixco | ${niche.rotRut}-avdrag & Garanti`;
+  const seoDescription = metaDesc;
   const canonicalPath = isEnglish ? `/en/services/${niche.enSlug}` : `/tjanster/${niche.slug}`;
 
   // FAQ Schema
