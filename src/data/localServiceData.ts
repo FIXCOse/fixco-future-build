@@ -704,7 +704,7 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
     "rivning": `Rivning ${area} ★ Badrum, kök & innerväggar · ROT 30% · Fri offert`
   };
 
-  const descriptionTemplates: Record<LocalServiceSlug, string> = isEn ? {
+  const descriptionTemplatesBase: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "snickare": `Carpenter in ${area} ★ 5/5 rating ✓ Kitchen renovation, deck & flooring ✓ 30% ROT deduction ✓ Fixed price. Get quote within 24h!`,
     "elektriker": `Electrician ${area} ★ 5/5 rating ✓ Electrical installation & lighting ✓ Certified ✓ 30% ROT deduction. Book today!`,
     "vvs": `Plumber ${area} ★ 5/5 rating ✓ Bathroom, kitchen & heating ✓ Certified ✓ 30% ROT deduction. Get quote within 24h!`,
