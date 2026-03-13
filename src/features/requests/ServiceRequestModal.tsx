@@ -1195,7 +1195,10 @@ const skipAddons = () => {
                               value={values[field.key] ?? ""}
                               onChange={e => onChange(field.key, e.target.value)}
                             />
-                          </div>
+                            {errors[field.key] && (
+                              <p className="text-xs text-red-500 mt-1">{errors[field.key]}</p>
+                            )}
+                           </div>
                         );
                       } else if (field.kind === "file") {
                         return (
