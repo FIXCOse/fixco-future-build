@@ -29,7 +29,7 @@ export type AreaKey = typeof ALL_AREAS[number];
 // Alla tjänster som ska ha lokala sidor
 import { EXPANDED_SERVICES, EXPANDED_SERVICE_NAME_EN, EXPANDED_SERVICE_PRICING, EXPANDED_SERVICE_MYTHS, EXPANDED_CERT_TEXT_SV, EXPANDED_CERT_TEXT_EN, getExpandedTitleSv, getExpandedTitleEn, getExpandedDescriptionSv, getExpandedDescriptionEn, getExpandedServiceItems, type ExpandedSlug } from './seoSlugsExpansion';
 
-const BASE_SERVICES = [
+export const BASE_SERVICES = [
   { slug: "snickare", name: "Snickare", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "elektriker", name: "Elektriker", serviceKey: "el", rotRut: "ROT" },
   { slug: "vvs", name: "VVS", serviceKey: "vvs", rotRut: "ROT" },

@@ -658,8 +658,8 @@ const LocalServicePage = () => {
               </motion.div>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" key={`services-grid-${serviceSlug}`}>
-                {LOCAL_SERVICES.filter(s => s.slug !== serviceSlug).map((otherService) => {
-                  const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon || Zap;
+                {BASE_SERVICES.filter(s => s.slug !== serviceSlug && s.serviceKey !== currentService?.serviceKey).slice(0, 10).map((otherService) => {
+                  const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey || s.slug === otherService.slug)?.icon || Zap;
                   return (
                     <motion.div 
                       key={otherService.slug} 
@@ -671,7 +671,7 @@ const LocalServicePage = () => {
                         to={`${servicePrefix}/${otherService.slug}/${areaSlug}`}
                         className="flex flex-col items-center gap-3 p-4 rounded-xl bg-card border border-border hover:bg-primary/5 hover:border-primary/30 transition-all group text-center"
                       >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${getGradientForService(otherService.slug)}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform ${getGradientForService(otherService.serviceKey)}`}>
                           <OtherIcon className="h-5 w-5 text-white" />
                         </div>
                         <span className="text-sm font-medium">{otherService.name}</span>
