@@ -569,7 +569,7 @@ export const generateUniqueLocalContent = (
 // IMPROVED TITLE TEMPLATES - Baserat på GSC-analys
 // ============================================================
 export const getImprovedTitle = (serviceSlug: LocalServiceSlug, area: string): string => {
-  const titles: Record<LocalServiceSlug, string> = {
+  const titles: Partial<Record<LocalServiceSlug, string>> = {
     "snickare": `Snickare ${area} ★ Renovering, kök, garderob & mer · ROT 30%`,
     "vvs": `VVS ${area} ★ Installation, reparation & mer · ROT 30%`,
     "elektriker": `Elektriker ${area} ★ Laddbox, elinstallation & mer · ROT 30%`,
