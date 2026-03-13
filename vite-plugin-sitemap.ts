@@ -173,7 +173,7 @@ function generateHubsSitemap(): string {
     xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
     xml += `  </url>\n`;
     // English version
-    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
+    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
