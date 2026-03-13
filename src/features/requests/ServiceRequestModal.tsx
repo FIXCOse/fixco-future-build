@@ -1188,7 +1188,9 @@ const skipAddons = () => {
                         return (
                           <div key={field.key}>
                             <textarea
-                              className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full min-h-[100px] resize-y"
+                             className={`px-4 py-3 rounded-xl border ${
+                                errors[field.key] ? 'border-red-500' : 'border-border/50'
+                              } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full min-h-[100px] resize-y`}
                               placeholder={field.placeholder ?? field.label}
                               value={values[field.key] ?? ""}
                               onChange={e => onChange(field.key, e.target.value)}
