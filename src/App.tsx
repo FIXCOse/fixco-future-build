@@ -440,18 +440,12 @@ const App = () => {
                             <Route path="home-v2" element={lazyElement(HomeV2)} />
                             <Route path="services" element={lazyElement(Services)} />
                             <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
-                            {/* English niche service landing pages */}
-                            <Route path="services/kitchen-renovation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/bathroom-renovation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/deck-building" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/flooring-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/exterior-painting" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/interior-painting" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/electrical-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/kitchen-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/furniture-assembly" element={lazyElement(NicheServiceLandingPage)} />
                             <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
-                            <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
+                            <Route path="services/:slug" element={
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <SmartServiceRouter />
+                              </Suspense>
+                            } />
                             <Route path="contact" element={lazyElement(Contact)} />
                             <Route path="blog" element={lazyElement(Blog)} />
                             <Route path="blog/:slug" element={lazyElement(BlogPost)} />

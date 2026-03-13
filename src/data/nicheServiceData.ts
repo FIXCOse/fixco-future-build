@@ -248,12 +248,17 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
   },
 ];
 
-export const NICHE_SLUGS = NICHE_SERVICES.map(s => s.slug);
+// Merge with expanded niche services
+import { EXPANDED_NICHE_SERVICES } from "./nicheServiceDataExpanded";
+
+export const ALL_NICHE_SERVICES: NicheServiceMeta[] = [...NICHE_SERVICES, ...EXPANDED_NICHE_SERVICES];
+
+export const NICHE_SLUGS = ALL_NICHE_SERVICES.map(s => s.slug);
 
 export const getNicheService = (slug: string): NicheServiceMeta | undefined => {
-  return NICHE_SERVICES.find(s => s.slug === slug);
+  return ALL_NICHE_SERVICES.find(s => s.slug === slug);
 };
 
 export const getNicheServiceByEnSlug = (enSlug: string): NicheServiceMeta | undefined => {
-  return NICHE_SERVICES.find(s => s.enSlug === enSlug);
+  return ALL_NICHE_SERVICES.find(s => s.enSlug === enSlug);
 };
