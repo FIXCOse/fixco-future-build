@@ -210,6 +210,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Is patching included?', a: 'Yes, we patch holes and cracks and sand the surface as part of the prep work.' },
     ],
     enSlug: 'interior-painting',
+    introText: 'Dags att fräscha upp hemmet med nya färger? Fixcos professionella målare förvandlar dina rum med spackling, grundning och ommålning i valfri kulör. Vi skyddar möbler och golv noggrant så du inte behöver lyfta ett finger. Med 30% ROT-avdrag och miljövänlig färg blir hemmet som nytt.',
+    introTextEn: 'Time to freshen up your home with new colors? Fixco\'s professional painters transform your rooms with patching, priming and repainting in any color. We carefully protect furniture and floors so you don\'t need to lift a finger. With 30% ROT deduction and eco-friendly paint, your home feels brand new.',
   },
   {
     slug: 'elinstallation',
