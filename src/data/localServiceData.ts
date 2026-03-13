@@ -660,7 +660,7 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   const metadata = getAreaMetadata(area);
   
   // Import improved titles from localSeoData
-  const titleTemplates: Record<LocalServiceSlug, string> = isEn ? {
+  const titleTemplatesBase: Partial<Record<LocalServiceSlug, string>> = isEn ? {
     "snickare": `Carpenter ${area} ★ Kitchen, wardrobe & deck · ROT 30% · Free quote`,
     "vvs": `Plumbing ${area} ★ Repair & installation · ROT 30% · Response 24h`,
     "elektriker": `Electrician ${area} ★ Certified · EV charger & electrical · ROT 30%`,
