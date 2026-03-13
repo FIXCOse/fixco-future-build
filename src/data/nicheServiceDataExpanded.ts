@@ -376,6 +376,9 @@ export const EXPANDED_NICHE_SERVICES: NicheServiceMeta[] = EXPANDED_SERVICES.map
   const metaDescSv = (META_DESC_SV[serviceKey] || META_DESC_SV.snickeri)(svc.name, rotRut);
   const metaDescEn = (META_DESC_EN[serviceKey] || META_DESC_EN.snickeri)(nameEn, rotRut);
 
+  const introSv = (INTRO_TEXT_SV[serviceKey] || INTRO_TEXT_SV.snickeri)(svc.name);
+  const introEn = (INTRO_TEXT_EN[serviceKey] || INTRO_TEXT_EN.snickeri)(nameEn);
+
   return {
     slug: svc.slug,
     title: svc.name,
@@ -394,5 +397,7 @@ export const EXPANDED_NICHE_SERVICES: NicheServiceMeta[] = EXPANDED_SERVICES.map
     faqs: CATEGORY_FAQS[serviceKey] || CATEGORY_FAQS.snickeri,
     faqsEn: CATEGORY_FAQS_EN[serviceKey] || CATEGORY_FAQS_EN.snickeri,
     enSlug: generateEnSlug(nameEn),
+    introText: introSv,
+    introTextEn: introEn,
   };
 });

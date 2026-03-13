@@ -212,6 +212,17 @@ const NicheServiceLandingPage = () => {
       </section>
 
 
+      {/* Intro text section */}
+      {introText && (
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4 max-w-3xl text-center">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+              {introText}
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Related services from database */}
       {relatedServices.length > 0 && (
         <section className="py-20">
