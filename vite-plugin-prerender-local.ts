@@ -168,13 +168,11 @@ const EXPANDED_SERVICES = [
   { slug: 'bortforsling', name: 'Bortforsling', rotRut: 'ROT' },
 ];
 
-// Top 15 most-searched expanded slugs for prerendering (reduced for build performance)
-// Remaining slugs still work via SPA routing + sitemap indexing
+// Top 8 highest-traffic expanded slugs for prerendering (reduced for build performance)
+// Remaining 120+ slugs still work via SPA routing + sitemap indexing
 const TOP_EXPANDED_SERVICES = EXPANDED_SERVICES.filter(s => [
   'totalrenovering','renovering','hantverkare','byggfirma',
-  'laddbox','hemstad','flyttstad','badrum',
-  'kok','malning','golvslipning','varmepump',
-  'taklaggning','solceller','flytthjalp',
+  'badrum','kok','hemstad','flytthjalp',
 ].includes(s.slug));
 
 const ALL_SERVICES = [...BASE_SERVICES, ...TOP_EXPANDED_SERVICES];
