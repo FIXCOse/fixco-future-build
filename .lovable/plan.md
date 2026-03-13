@@ -1,23 +1,25 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Fix: Intro text not showing on local service pages
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+`generateLocalIntroText` in `localSeoData.ts` (line 694) accesses `LOCAL_SERVICES` as if it were a key-value object (`LOCAL_SERVICES[serviceSlug]`), but `LOCAL_SERVICES` is actually an **array**. This always returns `undefined`, so the function returns `null` and no intro text is rendered.
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+## Fix
+Change line 694 from:
+```ts
+const service = LOCAL_SERVICES[serviceSlug as LocalServiceSlug];
+```
+to:
+```ts
+const service = LOCAL_SERVICES.find(s => s.slug === serviceSlug);
+```
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+Also fix line 698 — `service.nameEn` doesn't exist on the array item type. The service name for English should use `getServiceNameEn(serviceSlug)` (already used elsewhere in the file).
+
+### File: `src/data/localSeoData.ts`
+- Line 694: Use `.find()` instead of bracket access
+- Line 698: Use `getServiceNameEn` helper for English name
+
+One-line fix, affects all 16,400+ local pages.
+
