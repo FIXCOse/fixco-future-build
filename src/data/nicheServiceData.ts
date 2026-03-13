@@ -87,7 +87,7 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'altanbygge',
     title: 'Altanbygge',
     titleEn: 'Deck Building',
-    heroTitle: 'Bygg Din Drömalttan',
+    heroTitle: 'Bygg Din Drömaltan',
     heroTitleEn: 'Build Your Dream Deck',
     metaDescription: 'Bygg altan med professionella snickare. Trä eller komposit, 30% ROT-avdrag och garanti. Fast pris från grund till räcke. ★ 5/5 betyg. Begär gratis offert!',
     metaDescriptionEn: 'Build a deck with professional carpenters. Wood or composite, 30% ROT deduction and warranty. Fixed price from foundation to railing. ★ 5/5 rating. Get a free quote!',
