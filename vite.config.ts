@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' &&
     componentTagger(),
     sitemapPlugin(),
+    prerenderLocalPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
