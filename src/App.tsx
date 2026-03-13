@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams as ReactRouterUseParams, useLocation as ReactRouterUseLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load ALL pages for optimal performance
