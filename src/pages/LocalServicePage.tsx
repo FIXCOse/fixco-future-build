@@ -148,6 +148,15 @@ const LocalServicePage = () => {
 
   
 
+  // Locale-aware URLs
+  const baseUrl = 'https://fixco.se';
+  const canonicalPath = locale === 'en'
+    ? `/en/services/${serviceSlug}/${areaSlug}`
+    : `/tjanster/${serviceSlug}/${areaSlug}`;
+  const canonicalUrl = `${baseUrl}${canonicalPath}`;
+  const svUrl = `${baseUrl}/tjanster/${serviceSlug}/${areaSlug}`;
+  const enUrl = `${baseUrl}/en/services/${serviceSlug}/${areaSlug}`;
+
   // Schema.org markup
   const localBusinessSchema = useMemo(() => {
     if (!content || !metadata) return null;
@@ -156,7 +165,7 @@ const LocalServicePage = () => {
       "@type": "ProfessionalService",
       "name": `Fixco ${content.h1}`,
       "description": content.description,
-      "url": `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      "url": canonicalUrl,
       "telephone": "+46-79-335-02-28",
       "priceRange": "$$",
       "areaServed": { "@type": "City", "name": area },
