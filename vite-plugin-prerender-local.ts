@@ -168,7 +168,7 @@ const EXPANDED_SERVICES = [
   { slug: 'bortforsling', name: 'Bortforsling', rotRut: 'ROT' },
 ];
 
-const ALL_SERVICES = [...BASE_SERVICES, ...EXPANDED_SERVICES];
+const ALL_SERVICES = [...BASE_SERVICES];
 
 // ─── Areas ───
 const STOCKHOLM_AREAS: Array<[string, string]> = [
