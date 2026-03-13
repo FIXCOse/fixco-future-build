@@ -104,7 +104,15 @@ const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
-const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
+// Lazy import with retry logic for chunk loading failures
+const lazyWithRetry = (importFn: () => Promise<any>) => {
+  return lazy(() => importFn().catch(() => {
+    // Retry once after a short delay
+    return new Promise(resolve => setTimeout(resolve, 1500)).then(() => importFn());
+  }));
+};
+
+const NicheServiceLandingPage = lazyWithRetry(() => import("./pages/NicheServiceLandingPage"));
 
 // Smart router: renders NicheServiceLandingPage if slug matches a niche service, otherwise ServiceDetail
 const SmartServiceRouter = () => {
@@ -112,14 +120,20 @@ const SmartServiceRouter = () => {
   const location = ReactRouterUseLocation();
   const isEnglish = location.pathname.startsWith('/en');
   
-  // Lazy import to avoid circular deps
   const [isNiche, setIsNiche] = React.useState<boolean | null>(null);
   
   React.useEffect(() => {
-    import('./data/nicheServiceData').then(({ getNicheService, getNicheServiceByEnSlug }) => {
-      const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
-      setIsNiche(!!found);
-    });
+    console.log('[SmartServiceRouter] Loading niche data for slug:', slug, 'isEnglish:', isEnglish);
+    import('./data/nicheServiceData')
+      .then(({ getNicheService, getNicheServiceByEnSlug }) => {
+        const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+        console.log('[SmartServiceRouter] Niche match result:', !!found, 'slug:', slug);
+        setIsNiche(!!found);
+      })
+      .catch((err) => {
+        console.error('[SmartServiceRouter] Failed to load nicheServiceData:', err);
+        setIsNiche(false);
+      });
   }, [slug, isEnglish]);
   
   if (isNiche === null) return <SuspenseFallback />;
@@ -423,9 +437,11 @@ const App = () => {
                             
                             {/* Dynamisk route - resolves niche landing OR service detail */}
                             <Route path="tjanster/:slug" element={
-                              <Suspense fallback={<SuspenseFallback />}>
-                                <SmartServiceRouter />
-                              </Suspense>
+                              <ErrorBoundary fallback={<SuspenseFallback />}>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartServiceRouter />
+                                </Suspense>
+                              </ErrorBoundary>
                             } />
                             
                             <Route path="kontakt" element={lazyElement(Contact)} />
@@ -467,9 +483,11 @@ const App = () => {
                             <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
                             <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             <Route path="services/:slug" element={
-                              <Suspense fallback={<SuspenseFallback />}>
-                                <SmartServiceRouter />
-                              </Suspense>
+                              <ErrorBoundary fallback={<SuspenseFallback />}>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartServiceRouter />
+                                </Suspense>
+                              </ErrorBoundary>
                             } />
                             <Route path="contact" element={lazyElement(Contact)} />
                             <Route path="blog" element={lazyElement(Blog)} />
