@@ -293,7 +293,11 @@ export const getWebsiteSchema = () => ({
     },
     "query-input": "required name=search_term_string"
   },
-  "inLanguage": ["sv-SE", "en-US"]
+  "inLanguage": ["sv-SE", "en-US"],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `${baseUrl}/`
+  }
 });
 
 // Offer Catalog for services overview
