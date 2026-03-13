@@ -615,7 +615,7 @@ export interface LocalServiceContent {
 }
 
 // English service name mapping
-const SERVICE_NAME_EN: Record<LocalServiceSlug, string> = {
+const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
   "snickare": "Carpenter",
   "elektriker": "Electrician",
   "vvs": "Plumbing",
