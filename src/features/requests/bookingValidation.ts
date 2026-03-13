@@ -79,26 +79,26 @@ export const beskrivningSchema = z
   .trim()
   .min(10, 'Beskriv ditt projekt (minst 10 tecken)');
 
+const pre = (schema: z.ZodTypeAny) => z.preprocess((val) => val ?? '', schema);
+
 export const serviceRequestSchema = z.object({
   customer_type: z.enum(['private', 'company', 'brf']).default('private'),
-  name: nameSchema,
-  email: emailSchema,
-  phone: phoneSchema,
+  name: pre(nameSchema),
+  email: pre(emailSchema),
+  phone: pre(phoneSchema),
   personnummer: personnummerSchema,
   company_name: companyNameSchema.optional().or(z.literal('')),
   brf_name: brfNameSchema.optional().or(z.literal('')),
   org_number: orgNumberSchema.optional().or(z.literal('')),
-  address: addressSchema,
-  postal_code: postalCodeSchema,
-  city: citySchema,
+  address: pre(addressSchema),
+  postal_code: pre(postalCodeSchema),
+  city: pre(citySchema),
   beskrivning: beskrivningSchema.optional().or(z.literal('')),
 }).refine(
   (data) => {
-    // Om company: company_name och org_number krävs
     if (data.customer_type === 'company') {
       return !!(data.company_name && data.org_number);
     }
-    // Om brf: brf_name och org_number krävs
     if (data.customer_type === 'brf') {
       return !!(data.brf_name && data.org_number);
     }
