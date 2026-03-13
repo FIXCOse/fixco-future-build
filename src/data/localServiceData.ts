@@ -545,7 +545,7 @@ const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: s
 // ============================================================
 
 // PRISMAPPNING - Korrekta priser från servicesData
-const SERVICE_PRICING: Record<LocalServiceSlug, { 
+const SERVICE_PRICING_BASE: Record<BaseServiceSlug, { 
   base: string; 
   afterDeduction: string; 
   isQuoteOnly: boolean;
