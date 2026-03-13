@@ -956,7 +956,7 @@ function getServiceItems(serviceSlug: LocalServiceSlug, area: string, locale: 's
     "elinstallation": [`Eluttag installation i ${area}`, `Belysning installation i ${area}`, `Laddbox installation i ${area}`, `Dimmer installation i ${area}`, `Byte av elcentral i ${area}`, `Utomhusbelysning i ${area}`, `Smart hem kabeldragning i ${area}`, `Jordfelsbrytare i ${area}`, `Elbesiktning i ${area}`, `Kök elinstallation i ${area}`],
     "rivning": [`Rivning badrum i ${area}`, `Rivning kök i ${area}`, `Rivning innerväggar i ${area}`, `Rivning golv i ${area}`, `Totalrivning stomrent i ${area}`, `Håltagning betong i ${area}`, `Kakelrivning i ${area}`, `Bortforsling av rivningsavfall i ${area}`, `Selektiv rivning i ${area}`, `Rivning före renovering i ${area}`],
   };
-  return serviceItems[serviceSlug] || [];
+  return serviceItems[serviceSlug] || getExpandedServiceItems(serviceSlug as ExpandedSlug, area, 'sv');
 }
 
 // Hjälpfunktion för certifieringstext
