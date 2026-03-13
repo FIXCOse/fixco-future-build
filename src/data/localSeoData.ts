@@ -15,7 +15,7 @@ export const SEARCH_ACTION_PATTERNS: Partial<Record<LocalServiceSlug, {
   urgentTerms: string[];
   projectTypes: string[];
   synonyms: string[];
-}> = {
+}>> = {
   "snickare": {
     actions: ["bygga", "renovera", "montera", "boka", "hitta"],
     objects: ["kök", "altan", "garderob", "dörrar", "fönster", "trappa", "badrum", "vind", "fasad"],
