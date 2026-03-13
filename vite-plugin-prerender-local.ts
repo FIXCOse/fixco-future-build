@@ -168,9 +168,7 @@ const EXPANDED_SERVICES = [
   { slug: 'bortforsling', name: 'Bortforsling', rotRut: 'ROT' },
 ];
 
-// Only prerender base 20 services to keep dist size manageable (~2,120 files instead of ~16,000)
-// Expanded services still work via SPA routing + sitemap for Google discovery
-const ALL_SERVICES = [...BASE_SERVICES];
+const ALL_SERVICES = [...BASE_SERVICES, ...EXPANDED_SERVICES];
 
 // ─── Areas ───
 const STOCKHOLM_AREAS: Array<[string, string]> = [
