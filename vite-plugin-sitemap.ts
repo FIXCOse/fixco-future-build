@@ -167,7 +167,7 @@ function generateHubsSitemap(): string {
     const svLoc = `${BASE_URL}/tjanster/${slug}`;
     const enLoc = `${BASE_URL}/en/services/${slug}`;
     // Swedish version
-    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
+    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
