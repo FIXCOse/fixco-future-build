@@ -481,9 +481,11 @@ const App = () => {
                             <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
                             <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             <Route path="services/:slug" element={
-                              <Suspense fallback={<SuspenseFallback />}>
-                                <SmartServiceRouter />
-                              </Suspense>
+                              <ErrorBoundary fallback={<SuspenseFallback />}>
+                                <Suspense fallback={<SuspenseFallback />}>
+                                  <SmartServiceRouter />
+                                </Suspense>
+                              </ErrorBoundary>
                             } />
                             <Route path="contact" element={lazyElement(Contact)} />
                             <Route path="blog" element={lazyElement(Blog)} />
