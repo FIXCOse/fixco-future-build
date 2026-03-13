@@ -272,6 +272,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How long does kitchen installation take?', a: 'A standard kitchen is typically installed in 1–3 working days. Larger or more complex kitchens may take longer.' },
     ],
     enSlug: 'kitchen-installation',
+    introText: 'Har du fått hem ditt nya kök och vill att det monteras perfekt? Fixcos köksmontörer installerar kök från IKEA, Marbodal, HTH och alla andra märken – snabbt, noggrant och med 30% ROT-avdrag. Vi tar hand om allt från skåp och bänkskiva till vitvaror så du snabbt kan börja laga mat i ditt drömkök.',
+    introTextEn: 'Got your new kitchen delivered and want it installed perfectly? Fixco\'s kitchen installers handle kitchens from IKEA, Marbodal, HTH and all other brands – quickly, carefully and with 30% ROT deduction. We take care of everything from cabinets and countertops to appliances so you can start cooking in your dream kitchen.',
   },
   {
     slug: 'mobelmontering',
