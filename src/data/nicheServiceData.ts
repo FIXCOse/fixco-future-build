@@ -148,6 +148,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Which flooring type do you recommend?', a: 'It depends on the room – we recommend tile for bathrooms, parquet for living rooms, and laminate as a budget alternative.' },
     ],
     enSlug: 'flooring-installation',
+    introText: 'Tröttnat på det slitna golvet och vill ge hemmet en helt ny känsla? Fixcos professionella golvläggare installerar parkett, laminat, vinyl och klinker med precision och omsorg. Vi tar hand om allt från rivning av det gamla golvet till ett perfekt slutresultat. Självklart med 30% ROT-avdrag och garanti.',
+    introTextEn: 'Tired of that worn-out floor and want to give your home a completely new feel? Fixco\'s professional flooring installers lay parquet, laminate, vinyl and tile with precision and care. We handle everything from removing the old floor to a perfect finish. Of course with 30% ROT deduction and warranty.',
   },
   {
     slug: 'fasadmalning',
