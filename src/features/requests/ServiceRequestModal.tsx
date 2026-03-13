@@ -53,14 +53,14 @@ const modalTranslations = {
     orgNumber: 'Organisationsnummer *',
     email: 'E-post *',
     phone: 'Telefon *',
-    address: 'Adress',
-    postalCode: 'Postnummer (123 45)',
-    city: 'Ort',
+    address: 'Adress *',
+    postalCode: 'Postnummer (123 45) *',
+    city: 'Ort *',
     projectDetails: 'Projektdetaljer',
-    describeProject: 'Beskriv ditt projekt',
-    tellUsMore: 'Berätta vad du behöver hjälp med...',
-    imagesOptional: 'Bilder (valfritt)',
-    uploadImages: 'Ladda upp bilder (valfritt)',
+    describeProject: 'Beskriv ditt projekt *',
+    tellUsMore: 'Berätta vad du behöver hjälp med (minst 10 tecken)...',
+    imagesOptional: 'Filer (valfritt)',
+    uploadImages: 'Ladda upp filer (valfritt)',
     back: 'Tillbaka',
     cancel: 'Avbryt',
     continue: 'Fortsätt',
@@ -120,14 +120,14 @@ const modalTranslations = {
     orgNumber: 'Org. number *',
     email: 'Email *',
     phone: 'Phone *',
-    address: 'Address',
-    postalCode: 'Postal code (123 45)',
-    city: 'City',
+    address: 'Address *',
+    postalCode: 'Postal code (123 45) *',
+    city: 'City *',
     projectDetails: 'Project details',
-    describeProject: 'Describe your project',
-    tellUsMore: 'Tell us what you need help with...',
-    imagesOptional: 'Images (optional)',
-    uploadImages: 'Upload images (optional)',
+    describeProject: 'Describe your project *',
+    tellUsMore: 'Tell us what you need help with (min 10 characters)...',
+    imagesOptional: 'Files (optional)',
+    uploadImages: 'Upload files (optional)',
     back: 'Back',
     cancel: 'Cancel',
     continue: 'Continue',
@@ -301,7 +301,7 @@ const skipAddons = () => {
           rotEligible: true,
           fields: [
             { kind: "textarea" as const, key: "beskrivning", label: ml.describeProject, placeholder: ml.tellUsMore },
-            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*", multiple: true }
+            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", multiple: true }
           ]
         };
       }
@@ -311,8 +311,8 @@ const skipAddons = () => {
         svc.fields.push({
           kind: "file" as const,
           key: "bilder",
-          label: "Ladda upp bilder (valfritt)",
-          accept: "image/*",
+          label: ml.uploadImages,
+          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt",
           multiple: true
         });
       }
@@ -431,8 +431,17 @@ const skipAddons = () => {
       return;
     }
 
-    // Validera formulärdata
-    const validation = serviceRequestSchema.safeParse(values);
+    // Validera formulärdata — inkludera beskrivning från service fields
+    const dataToValidate = { ...values };
+    if (!dataToValidate.beskrivning) {
+      // Sök i service fields efter textarea-värde
+      const textareaField = service.fields.find(f => f.kind === 'textarea');
+      if (textareaField && values[textareaField.key]) {
+        dataToValidate.beskrivning = values[textareaField.key];
+      }
+    }
+    
+    const validation = serviceRequestSchema.safeParse(dataToValidate);
     
     if (!validation.success) {
       const fieldErrors: Record<string, string> = {};
@@ -440,6 +449,13 @@ const skipAddons = () => {
         const field = issue.path[0] as string;
         fieldErrors[field] = issue.message;
       });
+      // Mappa beskrivning-fel tillbaka till rätt textarea-fält
+      if (fieldErrors.beskrivning) {
+        const textareaField = service.fields.find(f => f.kind === 'textarea');
+        if (textareaField && textareaField.key !== 'beskrivning') {
+          fieldErrors[textareaField.key] = fieldErrors.beskrivning;
+        }
+      }
       setErrors(fieldErrors);
       toast.error(ml.validationError);
       return;
@@ -1172,12 +1188,17 @@ const skipAddons = () => {
                         return (
                           <div key={field.key}>
                             <textarea
-                              className="px-4 py-3 rounded-xl border border-border/50 bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full min-h-[100px] resize-y"
+                             className={`px-4 py-3 rounded-xl border ${
+                                errors[field.key] ? 'border-red-500' : 'border-border/50'
+                              } bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-full min-h-[100px] resize-y`}
                               placeholder={field.placeholder ?? field.label}
                               value={values[field.key] ?? ""}
                               onChange={e => onChange(field.key, e.target.value)}
                             />
-                          </div>
+                            {errors[field.key] && (
+                              <p className="text-xs text-red-500 mt-1">{errors[field.key]}</p>
+                            )}
+                           </div>
                         );
                       } else if (field.kind === "file") {
                         return (
@@ -1292,8 +1313,8 @@ const skipAddons = () => {
                         { 
                           kind: "file", 
                           key: "bilder", 
-                          label: ml.imagesOptional, 
-                          accept: "image/*", 
+                           label: ml.imagesOptional, 
+                           accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", 
                           multiple: true 
                         }
                       ]

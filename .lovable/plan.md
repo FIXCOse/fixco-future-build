@@ -1,37 +1,23 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-# Krav på fält + utökad filuppladdning i ServiceRequestModal
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Ändringar
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-### 1. `src/features/requests/bookingValidation.ts` — Gör adress, postnummer, ort och projektdetaljer obligatoriska
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-Nuläge: `address`, `postal_code`, `city` är alla `.optional().or(z.literal(''))` i schemat — inga krav.
-
-Ändring:
-- `address` → obligatoriskt (ta bort `.optional().or(z.literal(''))`)
-- `postal_code` → obligatoriskt (ta bort `.optional().or(z.literal(''))`)
-- `city` → obligatoriskt (ta bort `.optional().or(z.literal(''))`)
-- Lägg till `beskrivning` i schemat som obligatoriskt fält (min 10 tecken, "Beskriv vad du behöver hjälp med")
-
-### 2. `src/features/requests/ServiceRequestModal.tsx` — Utökad filuppladdning + validering
-
-**Filuppladdning**: Ändra `accept: "image/*"` till `accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"` på alla ställen där file-fält skapas (rad 304, 315, 1296). Uppdatera label från "Bilder (valfritt)" till "Filer (valfritt)" i translations.
-
-**Validering av beskrivning**: I `onSubmit()` (rad 428), lägg till validering av `values.beskrivning` — om tomt, sätt error och returnera.
-
-**Obligatoriska fält-markeringar**: Lägg till `*` i placeholder för adress, postnummer och ort (rad 1090, 1109, 1122).
-
-### 3. Translations-uppdatering
-- `imagesOptional` → `'Filer (valfritt)'` / `'Files (optional)'`
-- `uploadImages` → `'Ladda upp filer (valfritt)'` / `'Upload files (optional)'`
-- `address` → `'Adress *'` / `'Address *'`
-- `postalCode` → `'Postnummer (123 45) *'` / `'Postal code (123 45) *'`
-- `city` → `'Ort *'` / `'City *'`
-- `describeProject` → `'Beskriv ditt projekt *'`
-
-| Fil | Ändring |
-|-----|---------|
-| `bookingValidation.ts` | Gör address/postal_code/city obligatoriska, lägg till beskrivning-schema |
-| `ServiceRequestModal.tsx` | Bredare accept för filer, uppdaterade labels med *, validera beskrivning vid submit |
-
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet

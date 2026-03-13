@@ -74,6 +74,11 @@ export const addressSchema = z
   .min(5, 'Adress måste vara minst 5 tecken');
 
 // Huvudschema för bokningsformuläret
+export const beskrivningSchema = z
+  .string()
+  .trim()
+  .min(10, 'Beskriv ditt projekt (minst 10 tecken)');
+
 export const serviceRequestSchema = z.object({
   customer_type: z.enum(['private', 'company', 'brf']).default('private'),
   name: nameSchema,
@@ -83,9 +88,10 @@ export const serviceRequestSchema = z.object({
   company_name: companyNameSchema.optional().or(z.literal('')),
   brf_name: brfNameSchema.optional().or(z.literal('')),
   org_number: orgNumberSchema.optional().or(z.literal('')),
-  address: addressSchema.optional().or(z.literal('')),
-  postal_code: postalCodeSchema.optional().or(z.literal('')),
-  city: citySchema.optional().or(z.literal('')),
+  address: addressSchema,
+  postal_code: postalCodeSchema,
+  city: citySchema,
+  beskrivning: beskrivningSchema.optional().or(z.literal('')),
 }).refine(
   (data) => {
     // Om company: company_name och org_number krävs
