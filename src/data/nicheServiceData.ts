@@ -55,6 +55,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'What is included in a kitchen renovation from Fixco?', a: 'We offer everything from demolition and electrical work to installation of new cabinets, countertops, backsplashes and appliances. Everything is coordinated by a project manager.' },
     ],
     enSlug: 'kitchen-renovation',
+    introText: 'Drömmer du om ett nytt kök där morgonkaffet smakar lite extra? Fixco tar hand om hela din köksrenovering – från rivning av det gamla till ett komplett, nyinstallerat kök. Våra erfarna hantverkare samordnar snickeri, el och VVS så att du slipper stressen. Med fast pris och 30% ROT-avdrag vet du exakt vad det kostar.',
+    introTextEn: 'Dreaming of a new kitchen where your morning coffee tastes just a little better? Fixco handles your entire kitchen renovation – from demolition to a fully installed kitchen. Our experienced craftsmen coordinate carpentry, electrical and plumbing so you can skip the stress. With fixed pricing and 30% ROT deduction, you know exactly what it costs.',
   },
   {
     slug: 'badrumsrenovering',
