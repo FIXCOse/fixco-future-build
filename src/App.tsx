@@ -123,14 +123,16 @@ const SmartServiceRouter = () => {
   const [isNiche, setIsNiche] = React.useState<boolean | null>(null);
   
   React.useEffect(() => {
+    console.log('[SmartServiceRouter] Loading niche data for slug:', slug, 'isEnglish:', isEnglish);
     import('./data/nicheServiceData')
       .then(({ getNicheService, getNicheServiceByEnSlug }) => {
         const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+        console.log('[SmartServiceRouter] Niche match result:', !!found, 'slug:', slug);
         setIsNiche(!!found);
       })
       .catch((err) => {
         console.error('[SmartServiceRouter] Failed to load nicheServiceData:', err);
-        setIsNiche(false); // Fallback to ServiceDetail
+        setIsNiche(false);
       });
   }, [slug, isEnglish]);
   
