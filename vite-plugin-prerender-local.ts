@@ -168,13 +168,17 @@ const EXPANDED_SERVICES = [
   { slug: 'bortforsling', name: 'Bortforsling', rotRut: 'ROT' },
 ];
 
-// Top 4 highest-traffic expanded slugs only (minimal set for build speed)
-// Remaining 125+ slugs work via SPA routing + sitemap indexing
-const TOP_EXPANDED_SERVICES = EXPANDED_SERVICES.filter(s => [
-  'totalrenovering','renovering','hantverkare','badrum',
+// Expanded slugs disabled in prerender to maximize build speed.
+// All expanded slugs still resolve via SPA routing + sitemap indexing.
+const TOP_EXPANDED_SERVICES: typeof EXPANDED_SERVICES = [];
+
+// Keep only core, highest-converting base services in prerender.
+const CORE_BASE_SERVICES = BASE_SERVICES.filter(s => [
+  'snickare','elektriker','vvs','malare','stad',
+  'flytt','koksrenovering','badrumsrenovering','altanbygge','golvlaggning',
 ].includes(s.slug));
 
-const ALL_SERVICES = [...BASE_SERVICES, ...TOP_EXPANDED_SERVICES];
+const ALL_SERVICES = [...CORE_BASE_SERVICES, ...TOP_EXPANDED_SERVICES];
 
 // ─── Areas ───
 const STOCKHOLM_AREAS: Array<[string, string]> = [
