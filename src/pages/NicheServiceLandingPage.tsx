@@ -77,15 +77,37 @@ const NicheServiceLandingPage = () => {
   }
 
   const title = isEnglish ? niche.titleEn : niche.title;
+  const heroTitle = isEnglish ? niche.heroTitleEn : niche.heroTitle;
   const description = isEnglish ? niche.descriptionEn : niche.description;
+  const metaDesc = isEnglish ? niche.metaDescriptionEn : niche.metaDescription;
   const usps = isEnglish ? niche.uspsEn : niche.usps;
   const faqs = isEnglish ? niche.faqsEn : niche.faqs;
   const IconComponent = niche.icon;
   const heroGradient = getHeroGradientStyle(niche.slug);
   const deductionLabel = niche.rotRut === 'ROT' ? '30% ROT' : '50% RUT';
 
-  const seoTitle = `${title} – ${isEnglish ? 'Professional Service' : 'Professionell tjänst'} | Fixco`;
-  const seoDescription = description;
+  // Category display names for related services heading
+  const CATEGORY_DISPLAY: Record<string, { sv: string; en: string }> = {
+    kok: { sv: 'Kök', en: 'Kitchen' },
+    badrum: { sv: 'Badrum', en: 'Bathroom' },
+    snickeri: { sv: 'Snickeri', en: 'Carpentry' },
+    malning: { sv: 'Målning', en: 'Painting' },
+    el: { sv: 'El', en: 'Electrical' },
+    golv: { sv: 'Golv', en: 'Flooring' },
+    montering: { sv: 'Montering', en: 'Assembly' },
+    vvs: { sv: 'VVS', en: 'Plumbing' },
+    tradgard: { sv: 'Trädgård', en: 'Garden' },
+    markarbeten: { sv: 'Markarbeten', en: 'Groundwork' },
+    stadning: { sv: 'Städning', en: 'Cleaning' },
+    flytt: { sv: 'Flytt', en: 'Moving' },
+    'tekniska-installationer': { sv: 'Tekniska installationer', en: 'Technical Installations' },
+    rivning: { sv: 'Rivning', en: 'Demolition' },
+  };
+  const categoryDisplay = CATEGORY_DISPLAY[niche.parentCategory];
+  const categoryName = categoryDisplay ? (isEnglish ? categoryDisplay.en : categoryDisplay.sv) : title;
+
+  const seoTitle = `${heroTitle} – Fixco | ${niche.rotRut}-avdrag & Garanti`;
+  const seoDescription = metaDesc;
   const canonicalPath = isEnglish ? `/en/services/${niche.enSlug}` : `/tjanster/${niche.slug}`;
 
   // FAQ Schema
@@ -137,7 +159,7 @@ const NicheServiceLandingPage = () => {
               variants={itemVariants}
               className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight"
             >
-              {title}
+              {heroTitle}
             </motion.h1>
             
             {/* Value prop */}
@@ -188,26 +210,6 @@ const NicheServiceLandingPage = () => {
         </div>
       </section>
 
-      {/* USPs */}
-      <section className="py-16 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {usps.map((usp, i) => (
-              <motion.div 
-                key={i} 
-                className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-sm font-medium text-foreground">{usp}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Related services from database */}
       {relatedServices.length > 0 && (
@@ -215,12 +217,12 @@ const NicheServiceLandingPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 gradient-text">
-                {isEnglish ? `Our ${title} Services` : `Våra ${title.toLowerCase()}tjänster`}
+                {isEnglish ? `Our ${categoryName} Services` : `Våra ${categoryName.toLowerCase()}tjänster`}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 {isEnglish 
-                  ? `Browse our related services in the ${title.toLowerCase()} category`
-                  : `Se våra relaterade tjänster inom ${title.toLowerCase()}`
+                  ? `Browse our related services in the ${categoryName.toLowerCase()} category`
+                  : `Se våra relaterade tjänster inom ${categoryName.toLowerCase()}`
                 }
               </p>
             </div>

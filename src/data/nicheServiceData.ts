@@ -8,7 +8,11 @@ export interface NicheServiceMeta {
   slug: string;
   title: string;
   titleEn: string;
-  parentCategory: string; // maps to serviceKey in LOCAL_SERVICES
+  heroTitle: string;        // Action-oriented H1, e.g. "Renovera Ditt Kök"
+  heroTitleEn: string;
+  metaDescription: string;  // Sales-focused meta desc for Google
+  metaDescriptionEn: string;
+  parentCategory: string;   // maps to serviceKey in LOCAL_SERVICES
   icon: LucideIcon;
   rotRut: 'ROT' | 'RUT';
   description: string;
@@ -25,6 +29,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'koksrenovering',
     title: 'Köksrenovering',
     titleEn: 'Kitchen Renovation',
+    heroTitle: 'Renovera Ditt Kök',
+    heroTitleEn: 'Renovate Your Kitchen',
+    metaDescription: 'Dags att renovera köket? Fixcos erfarna hantverkare hjälper dig med komplett köksrenovering. Fast pris, 30% ROT-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Time to renovate your kitchen? Fixco\'s experienced craftsmen handle your complete kitchen renovation. Fixed price, 30% ROT deduction and warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'kok',
     icon: Home,
     rotRut: 'ROT',
@@ -50,6 +58,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'badrumsrenovering',
     title: 'Badrumsrenovering',
     titleEn: 'Bathroom Renovation',
+    heroTitle: 'Renovera Ditt Badrum',
+    heroTitleEn: 'Renovate Your Bathroom',
+    metaDescription: 'Professionell badrumsrenovering med certifierade våtrumstekniker. Tätskikt, kakel, VVS – allt ingår. 30% ROT-avdrag och 10 års garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional bathroom renovation with certified wet room technicians. Waterproofing, tiling, plumbing – all included. 30% ROT deduction and 10 year warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'badrum',
     icon: Wrench,
     rotRut: 'ROT',
@@ -75,6 +87,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'altanbygge',
     title: 'Altanbygge',
     titleEn: 'Deck Building',
+    heroTitle: 'Bygg Din Drömalttan',
+    heroTitleEn: 'Build Your Dream Deck',
+    metaDescription: 'Bygg altan med professionella snickare. Trä eller komposit, 30% ROT-avdrag och garanti. Fast pris från grund till räcke. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Build a deck with professional carpenters. Wood or composite, 30% ROT deduction and warranty. Fixed price from foundation to railing. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'snickeri',
     icon: Fence,
     rotRut: 'ROT',
@@ -100,6 +116,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'golvlaggning',
     title: 'Golvläggning',
     titleEn: 'Flooring Installation',
+    heroTitle: 'Lägg Nytt Golv',
+    heroTitleEn: 'Install New Flooring',
+    metaDescription: 'Professionell golvläggning – parkett, laminat, vinyl och klinker. 30% ROT-avdrag, fast pris och garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional flooring installation – parquet, laminate, vinyl and tile. 30% ROT deduction, fixed price and warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'golv',
     icon: Building,
     rotRut: 'ROT',
@@ -125,6 +145,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'fasadmalning',
     title: 'Fasadmålning',
     titleEn: 'Exterior Painting',
+    heroTitle: 'Måla Om Din Fasad',
+    heroTitleEn: 'Repaint Your Exterior',
+    metaDescription: 'Professionell fasadmålning med kvalitetsfärg som håller 10+ år. Ställning ingår, 30% ROT-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional exterior painting with quality paint lasting 10+ years. Scaffolding included, 30% ROT deduction and warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'malning',
     icon: PaintBucket,
     rotRut: 'ROT',
@@ -150,6 +174,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'inomhusmalning',
     title: 'Inomhusmålning',
     titleEn: 'Interior Painting',
+    heroTitle: 'Måla Om Hemma',
+    heroTitleEn: 'Repaint Your Home',
+    metaDescription: 'Professionell inomhusmålning – väggar, tak och snickerier. Spackling ingår, 30% ROT-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional interior painting – walls, ceilings and woodwork. Patching included, 30% ROT deduction and warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'malning',
     icon: Paintbrush,
     rotRut: 'ROT',
@@ -175,6 +203,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'elinstallation',
     title: 'Elinstallation',
     titleEn: 'Electrical Installation',
+    heroTitle: 'Boka Elinstallation',
+    heroTitleEn: 'Book Electrical Installation',
+    metaDescription: 'Auktoriserade elektriker för alla typer av elarbeten. Besiktningsprotokoll ingår, 30% ROT-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Authorized electricians for all types of electrical work. Inspection protocol included, 30% ROT deduction and warranty. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'el',
     icon: Zap,
     rotRut: 'ROT',
@@ -200,6 +232,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'koksmontering',
     title: 'Köksmontering',
     titleEn: 'Kitchen Installation',
+    heroTitle: 'Montera Nytt Kök',
+    heroTitleEn: 'Install Your New Kitchen',
+    metaDescription: 'Professionell köksmontering – IKEA, Marbodal, HTH och alla märken. Monterat på 1–3 dagar, 30% ROT-avdrag. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional kitchen installation – IKEA, Marbodal, HTH and all brands. Installed in 1–3 days, 30% ROT deduction. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'kok',
     icon: Package,
     rotRut: 'ROT',
@@ -225,6 +261,10 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
     slug: 'mobelmontering',
     title: 'Möbelmontering',
     titleEn: 'Furniture Assembly',
+    heroTitle: 'Boka Möbelmontering',
+    heroTitleEn: 'Book Furniture Assembly',
+    metaDescription: 'Professionell möbelmontering – IKEA och alla varumärken. Snabbt, pålitligt och 50% RUT-avdrag. ★ 5/5 betyg. Begär gratis offert!',
+    metaDescriptionEn: 'Professional furniture assembly – IKEA and all brands. Fast, reliable and 50% RUT deduction. ★ 5/5 rating. Get a free quote!',
     parentCategory: 'montering',
     icon: Package,
     rotRut: 'RUT',
