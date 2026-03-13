@@ -256,10 +256,10 @@ const LocalServicePage = () => {
     return getSpeakableSchema({
       headline: content.h1,
       description: content.description,
-      url: `https://fixco.se/tjanster/${serviceSlug}/${areaSlug}`,
+      url: canonicalUrl,
       speakableSelectors: ["h1", ".hero-description", ".service-intro"]
     });
-  }, [content, serviceSlug, areaSlug]);
+  }, [content, canonicalUrl]);
 
   // Individual Review schemas to validate AggregateRating
   const reviewSchemas = useMemo(() => {
