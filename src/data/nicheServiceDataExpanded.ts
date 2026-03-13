@@ -290,6 +290,37 @@ const CATEGORY_DESC_EN: Record<string, (nameEn: string) => string> = {
   rivning: (n) => `${n} with ROT deduction. Controlled demolition with debris removal and surface protection.`,
 };
 
+// Intro text templates per category (conversational sales pitch, sv)
+const INTRO_TEXT_SV: Record<string, (name: string) => string> = {
+  snickeri: (n) => `Funderar du på ${n.toLowerCase()}? Fixcos erfarna snickare tar hand om hela projektet – från planering till färdigt resultat. Med fast pris och 30% ROT-avdrag kan du känna dig trygg hela vägen.`,
+  vvs: (n) => `Behöver du hjälp med ${n.toLowerCase()}? Våra certifierade VVS-tekniker löser det snabbt och professionellt. Du får alltid fast pris, garanti och 30% ROT-avdrag – utan krångel.`,
+  el: (n) => `Dags för ${n.toLowerCase()}? Våra auktoriserade elektriker utför arbetet säkert och korrekt med besiktningsprotokoll. Alltid med 30% ROT-avdrag och garanti på allt arbete.`,
+  malning: (n) => `Vill du fräscha upp hemmet med ${n.toLowerCase()}? Vi på Fixco har professionella målare som levererar ett hållbart och snyggt resultat. Fast pris, ROT-avdrag och spackling ingår alltid.`,
+  golv: (n) => `Längtar du efter nytt golv? Fixcos golvläggare hjälper dig med ${n.toLowerCase()} – oavsett om du väljer parkett, laminat eller vinyl. Med 30% ROT-avdrag och garanti blir det enkelt och prisvärt.`,
+  montering: (n) => `Har du möbler eller inredning som behöver monteras? Fixco fixar ${n.toLowerCase()} snabbt och pålitligt. Med 50% RUT-avdrag betalar du bara hälften – och slipper krånglet.`,
+  tradgard: (n) => `Drömmer du om en vackrare trädgård? Fixcos professionella trädgårdsmästare hjälper dig med ${n.toLowerCase()} – från beskärning till helt ny anläggning. Med 50% RUT-avdrag blir trädgårdsdrömmen verklighet.`,
+  markarbeten: (n) => `Planerar du ${n.toLowerCase()}? Fixcos erfarna markentreprenörer utför allt från schaktning till stenläggning med fast pris och 30% ROT-avdrag. Vi ser till att grunden blir rätt från start.`,
+  stadning: (n) => `Behöver du hjälp med ${n.toLowerCase()}? Fixcos professionella städare gör jobbet grundligt med eget material och utrustning. Med 50% RUT-avdrag och nöjdhetsgaranti kan du luta dig tillbaka.`,
+  flytt: (n) => `Ska du flytta och behöver hjälp? Fixco erbjuder ${n.toLowerCase()} med försäkring och erfarna flyttare som tar hand om dina ägodelar. Med 50% RUT-avdrag blir flytten smidig och prisvärd.`,
+  "tekniska-installationer": (n) => `Behöver du ${n.toLowerCase()}? Fixcos certifierade tekniker installerar smart och tryggt – med garanti och 30% ROT-avdrag. Vi ser till att tekniken fungerar perfekt från dag ett.`,
+  rivning: (n) => `Dags för ${n.toLowerCase()} inför en renovering? Fixco utför kontrollerad rivning med professionell borttransport och skydd av intilliggande ytor. Med 30% ROT-avdrag och fast pris vet du exakt vad det kostar.`,
+};
+
+const INTRO_TEXT_EN: Record<string, (name: string) => string> = {
+  snickeri: (n) => `Considering ${n.toLowerCase()}? Fixco's experienced carpenters handle the entire project – from planning to finished result. With fixed pricing and 30% ROT deduction, you can feel confident every step of the way.`,
+  vvs: (n) => `Need help with ${n.toLowerCase()}? Our certified plumbing technicians solve it quickly and professionally. You always get fixed pricing, warranty and 30% ROT deduction – hassle-free.`,
+  el: (n) => `Time for ${n.toLowerCase()}? Our authorized electricians perform the work safely and correctly with inspection protocol. Always with 30% ROT deduction and warranty on all work.`,
+  malning: (n) => `Want to freshen up your home with ${n.toLowerCase()}? Fixco's professional painters deliver a durable and beautiful result. Fixed price, ROT deduction and prep work always included.`,
+  golv: (n) => `Longing for a new floor? Fixco's flooring installers help you with ${n.toLowerCase()} – whether you choose parquet, laminate or vinyl. With 30% ROT deduction and warranty, it's easy and affordable.`,
+  montering: (n) => `Got furniture or fittings that need assembling? Fixco handles ${n.toLowerCase()} quickly and reliably. With 50% RUT deduction you only pay half – and skip the hassle.`,
+  tradgard: (n) => `Dreaming of a more beautiful garden? Fixco's professional gardeners help you with ${n.toLowerCase()} – from pruning to completely new landscaping. With 50% RUT deduction, your garden dream becomes reality.`,
+  markarbeten: (n) => `Planning ${n.toLowerCase()}? Fixco's experienced groundwork contractors handle everything from excavation to paving with fixed pricing and 30% ROT deduction. We make sure the foundation is right from the start.`,
+  stadning: (n) => `Need help with ${n.toLowerCase()}? Fixco's professional cleaners do a thorough job with their own supplies and equipment. With 50% RUT deduction and satisfaction guarantee, you can sit back and relax.`,
+  flytt: (n) => `Moving and need help? Fixco offers ${n.toLowerCase()} with insurance and experienced movers who take care of your belongings. With 50% RUT deduction, your move becomes smooth and affordable.`,
+  "tekniska-installationer": (n) => `Need ${n.toLowerCase()}? Fixco's certified technicians install smartly and safely – with warranty and 30% ROT deduction. We make sure the technology works perfectly from day one.`,
+  rivning: (n) => `Time for ${n.toLowerCase()} before a renovation? Fixco performs controlled demolition with professional debris removal and protection of adjacent surfaces. With 30% ROT deduction and fixed pricing, you know exactly what it costs.`,
+};
+
 // Meta description templates per category (sales-focused for Google)
 const META_DESC_SV: Record<string, (name: string, rotRut: string) => string> = {
   snickeri: (n, rr) => `Fixcos erfarna hantverkare hjälper dig med ${n.toLowerCase()}. Fast pris, 30% ${rr}-avdrag och garanti. ★ 5/5 betyg. Begär gratis offert!`,
