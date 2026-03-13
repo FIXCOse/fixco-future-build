@@ -355,56 +355,44 @@ export const getHomeServicesSchema = () => ({
   }
 });
 
-// Site Navigation Schema for Sitelinks
-export const getSiteNavigationSchema = () => ({
-  "@context": "https://schema.org",
-  "@type": "SiteNavigationElement",
-  "name": "Huvudnavigation",
-  "hasPart": [
-    {
-      "@type": "WebPageElement",
-      "name": "Boka Hembesök",
-      "url": `${baseUrl}/boka-hembesok`,
-      "description": "Boka gratis hembesök direkt"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "Våra Tjänster",
-      "url": `${baseUrl}/tjanster`,
-      "description": "Alla våra tjänster med ROT & RUT-avdrag"
-    },
-    {
-      "@type": "WebPageElement", 
-      "name": "Kontakta Oss",
-      "url": `${baseUrl}/kontakt`,
-      "description": "Ta kontakt för offert eller frågor"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "Referenser",
-      "url": `${baseUrl}/referenser`,
-      "description": "Se våra tidigare projekt"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "ROT-avdrag",
-      "url": `${baseUrl}/rot-info`,
-      "description": "Allt om ROT-avdrag 30% rabatt"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "Vanliga Frågor",
-      "url": `${baseUrl}/faq`,
-      "description": "Svar på vanliga frågor"
-    },
-    {
-      "@type": "WebPageElement",
-      "name": "Om Oss",
-      "url": `${baseUrl}/om-oss`,
-      "description": "Läs mer om Fixco"
-    }
-  ]
-});
+// Site Navigation Schema for Sitelinks — standard individual SiteNavigationElement array
+export const getSiteNavigationSchema = () => [
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "position": 1,
+    "name": "Hem",
+    "url": `${baseUrl}/`
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "position": 2,
+    "name": "Tjänster",
+    "url": `${baseUrl}/tjanster`
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "position": 3,
+    "name": "Boka Hembesök",
+    "url": `${baseUrl}/boka-hembesok`
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "position": 4,
+    "name": "Referenser",
+    "url": `${baseUrl}/referenser`
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "position": 5,
+    "name": "Kontakta Oss",
+    "url": `${baseUrl}/kontakt`
+  }
+];
 
 // Service List Schema for service pages
 export const getServiceListSchema = (services: Array<{name: string; url: string; description: string}>) => ({
