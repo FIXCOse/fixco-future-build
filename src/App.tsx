@@ -106,6 +106,31 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
 const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
 
+// Smart router: renders NicheServiceLandingPage if slug matches a niche service, otherwise ServiceDetail
+const SmartServiceRouter = () => {
+  const { slug } = ReactRouterUseParams();
+  const location = ReactRouterUseLocation();
+  const isEnglish = location.pathname.startsWith('/en');
+  
+  // Lazy import to avoid circular deps
+  const [isNiche, setIsNiche] = React.useState<boolean | null>(null);
+  
+  React.useEffect(() => {
+    import('./data/nicheServiceData').then(({ getNicheService, getNicheServiceByEnSlug }) => {
+      const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+      setIsNiche(!!found);
+    });
+  }, [slug, isEnglish]);
+  
+  if (isNiche === null) return <SuspenseFallback />;
+  
+  return (
+    <Suspense fallback={<SuspenseFallback />}>
+      {isNiche ? <NicheServiceLandingPage /> : <ServiceDetail />}
+    </Suspense>
+  );
+};
+
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
 const WorkerLayout = lazy(() => import('./components/worker/WorkerLayout'));
