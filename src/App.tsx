@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams as ReactRouterUseParams, useLocation as ReactRouterUseLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load ALL pages for optimal performance
@@ -105,6 +105,31 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
 const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
+
+// Smart router: renders NicheServiceLandingPage if slug matches a niche service, otherwise ServiceDetail
+const SmartServiceRouter = () => {
+  const { slug } = ReactRouterUseParams();
+  const location = ReactRouterUseLocation();
+  const isEnglish = location.pathname.startsWith('/en');
+  
+  // Lazy import to avoid circular deps
+  const [isNiche, setIsNiche] = React.useState<boolean | null>(null);
+  
+  React.useEffect(() => {
+    import('./data/nicheServiceData').then(({ getNicheService, getNicheServiceByEnSlug }) => {
+      const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+      setIsNiche(!!found);
+    });
+  }, [slug, isEnglish]);
+  
+  if (isNiche === null) return <SuspenseFallback />;
+  
+  return (
+    <Suspense fallback={<SuspenseFallback />}>
+      {isNiche ? <NicheServiceLandingPage /> : <ServiceDetail />}
+    </Suspense>
+  );
+};
 
 // Lazy load components for better performance with Suspense fallbacks
 const MyFixcoLayout = lazy(() => import('./components/MyFixcoLayout'));
@@ -393,22 +418,15 @@ const App = () => {
                             <Route path="tjanster/malare-uppsala" element={<Navigate to="/tjanster/malare/uppsala" replace />} />
                             <Route path="tjanster/malare-stockholm" element={<Navigate to="/tjanster/malare/stockholm" replace />} />
                             
-                            {/* Nisch-tjänster landningssidor */}
-                            <Route path="tjanster/koksrenovering" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/badrumsrenovering" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/altanbygge" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/golvlaggning" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/fasadmalning" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/inomhusmalning" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/elinstallation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/koksmontering" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="tjanster/mobelmontering" element={lazyElement(NicheServiceLandingPage)} />
-
-                            {/* DYNAMISK LOKAL SEO ROUTE - 540+ sidor */}
+                            {/* DYNAMISK LOKAL SEO ROUTE - 7500+ sidor */}
                             <Route path="tjanster/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
                             
-                            {/* Dynamisk route SIST - fångar alla andra tjänster */}
-                            <Route path="tjanster/:slug" element={lazyElement(ServiceDetail)} />
+                            {/* Dynamisk route - resolves niche landing OR service detail */}
+                            <Route path="tjanster/:slug" element={
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <SmartServiceRouter />
+                              </Suspense>
+                            } />
                             
                             <Route path="kontakt" element={lazyElement(Contact)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
@@ -447,18 +465,12 @@ const App = () => {
                             <Route path="home-v2" element={lazyElement(HomeV2)} />
                             <Route path="services" element={lazyElement(Services)} />
                             <Route path="services/door-locks" element={lazyElement(DoorLockLandingPage)} />
-                            {/* English niche service landing pages */}
-                            <Route path="services/kitchen-renovation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/bathroom-renovation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/deck-building" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/flooring-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/exterior-painting" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/interior-painting" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/electrical-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/kitchen-installation" element={lazyElement(NicheServiceLandingPage)} />
-                            <Route path="services/furniture-assembly" element={lazyElement(NicheServiceLandingPage)} />
                             <Route path="services/:serviceSlug/:areaSlug" element={lazyElement(LocalServicePage)} />
-                            <Route path="services/:slug" element={lazyElement(ServiceDetail)} />
+                            <Route path="services/:slug" element={
+                              <Suspense fallback={<SuspenseFallback />}>
+                                <SmartServiceRouter />
+                              </Suspense>
+                            } />
                             <Route path="contact" element={lazyElement(Contact)} />
                             <Route path="blog" element={lazyElement(Blog)} />
                             <Route path="blog/:slug" element={lazyElement(BlogPost)} />
