@@ -104,7 +104,15 @@ const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const DoorLockLandingPage = lazy(() => import("./pages/DoorLockLandingPage"));
-const NicheServiceLandingPage = lazy(() => import("./pages/NicheServiceLandingPage"));
+// Lazy import with retry logic for chunk loading failures
+const lazyWithRetry = (importFn: () => Promise<any>) => {
+  return lazy(() => importFn().catch(() => {
+    // Retry once after a short delay
+    return new Promise(resolve => setTimeout(resolve, 1500)).then(() => importFn());
+  }));
+};
+
+const NicheServiceLandingPage = lazyWithRetry(() => import("./pages/NicheServiceLandingPage"));
 
 // Smart router: renders NicheServiceLandingPage if slug matches a niche service, otherwise ServiceDetail
 const SmartServiceRouter = () => {
@@ -112,14 +120,18 @@ const SmartServiceRouter = () => {
   const location = ReactRouterUseLocation();
   const isEnglish = location.pathname.startsWith('/en');
   
-  // Lazy import to avoid circular deps
   const [isNiche, setIsNiche] = React.useState<boolean | null>(null);
   
   React.useEffect(() => {
-    import('./data/nicheServiceData').then(({ getNicheService, getNicheServiceByEnSlug }) => {
-      const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
-      setIsNiche(!!found);
-    });
+    import('./data/nicheServiceData')
+      .then(({ getNicheService, getNicheServiceByEnSlug }) => {
+        const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+        setIsNiche(!!found);
+      })
+      .catch((err) => {
+        console.error('[SmartServiceRouter] Failed to load nicheServiceData:', err);
+        setIsNiche(false); // Fallback to ServiceDetail
+      });
   }, [slug, isEnglish]);
   
   if (isNiche === null) return <SuspenseFallback />;
