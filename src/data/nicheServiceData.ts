@@ -22,6 +22,8 @@ export interface NicheServiceMeta {
   faqs: { q: string; a: string }[];
   faqsEn: { q: string; a: string }[];
   enSlug: string; // English URL slug
+  introText?: string;    // Sales-oriented intro paragraph (sv)
+  introTextEn?: string;  // Sales-oriented intro paragraph (en)
 }
 
 export const NICHE_SERVICES: NicheServiceMeta[] = [
