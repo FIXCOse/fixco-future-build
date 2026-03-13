@@ -22,6 +22,8 @@ export interface NicheServiceMeta {
   faqs: { q: string; a: string }[];
   faqsEn: { q: string; a: string }[];
   enSlug: string; // English URL slug
+  introText?: string;    // Sales-oriented intro paragraph (sv)
+  introTextEn?: string;  // Sales-oriented intro paragraph (en)
 }
 
 export const NICHE_SERVICES: NicheServiceMeta[] = [
@@ -53,6 +55,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'What is included in a kitchen renovation from Fixco?', a: 'We offer everything from demolition and electrical work to installation of new cabinets, countertops, backsplashes and appliances. Everything is coordinated by a project manager.' },
     ],
     enSlug: 'kitchen-renovation',
+    introText: 'Drömmer du om ett nytt kök där morgonkaffet smakar lite extra? Fixco tar hand om hela din köksrenovering – från rivning av det gamla till ett komplett, nyinstallerat kök. Våra erfarna hantverkare samordnar snickeri, el och VVS så att du slipper stressen. Med fast pris och 30% ROT-avdrag vet du exakt vad det kostar.',
+    introTextEn: 'Dreaming of a new kitchen where your morning coffee tastes just a little better? Fixco handles your entire kitchen renovation – from demolition to a fully installed kitchen. Our experienced craftsmen coordinate carpentry, electrical and plumbing so you can skip the stress. With fixed pricing and 30% ROT deduction, you know exactly what it costs.',
   },
   {
     slug: 'badrumsrenovering',
@@ -82,6 +86,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Do you coordinate all tradespeople?', a: 'Yes, we coordinate everything – plumbing, electrical, tiling, carpentry and painting – so you don\'t need to book multiple companies.' },
     ],
     enSlug: 'bathroom-renovation',
+    introText: 'Är ditt badrum slitet och i behov av en uppfräschning? Fixcos certifierade våtrumstekniker ger dig ett fräscht, modernt badrum med tätskikt som håller i decennier. Vi sköter allt – kakel, VVS, el och målning – så du kan fokusera på att välja din drömdesign. Med 30% ROT-avdrag och 10 års garanti kan du känna dig helt trygg.',
+    introTextEn: 'Is your bathroom worn out and in need of a refresh? Fixco\'s certified wet room technicians give you a fresh, modern bathroom with waterproofing that lasts for decades. We handle everything – tiling, plumbing, electrical and painting – so you can focus on choosing your dream design. With 30% ROT deduction and 10-year warranty, you can feel completely confident.',
   },
   {
     slug: 'altanbygge',
@@ -111,6 +117,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How long does it take to build a deck?', a: 'A standard deck typically takes 3–7 working days depending on size and complexity.' },
     ],
     enSlug: 'deck-building',
+    introText: 'Går du i tankarna kring att bygga din drömaltan som du kan förgylla sommarkvällarna på? Då är Fixco det rätta valet. Våra erfarna snickare hjälper dig hela vägen – från konstruktion och bygglov till färdig altan med räcke och trappa. Med 30% ROT-avdrag och fast pris blir drömmen verklighet utan överraskningar.',
+    introTextEn: 'Thinking about building your dream deck where you can enjoy those summer evenings? Then Fixco is the right choice. Our experienced carpenters help you every step of the way – from construction and permits to a finished deck with railing and stairs. With 30% ROT deduction and fixed pricing, your dream becomes reality without surprises.',
   },
   {
     slug: 'golvlaggning',
@@ -140,6 +148,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Which flooring type do you recommend?', a: 'It depends on the room – we recommend tile for bathrooms, parquet for living rooms, and laminate as a budget alternative.' },
     ],
     enSlug: 'flooring-installation',
+    introText: 'Tröttnat på det slitna golvet och vill ge hemmet en helt ny känsla? Fixcos professionella golvläggare installerar parkett, laminat, vinyl och klinker med precision och omsorg. Vi tar hand om allt från rivning av det gamla golvet till ett perfekt slutresultat. Självklart med 30% ROT-avdrag och garanti.',
+    introTextEn: 'Tired of that worn-out floor and want to give your home a completely new feel? Fixco\'s professional flooring installers lay parquet, laminate, vinyl and tile with precision and care. We handle everything from removing the old floor to a perfect finish. Of course with 30% ROT deduction and warranty.',
   },
   {
     slug: 'fasadmalning',
@@ -169,6 +179,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'What time of year is best for exterior painting?', a: 'May to September is best – temperature should be at least +10°C and conditions should be dry.' },
     ],
     enSlug: 'exterior-painting',
+    introText: 'Har fasaden sett bättre dagar? En professionell fasadmålning skyddar ditt hus och ger det ett helt nytt utseende. Fixcos målare förbehandlar, grundar och målar med kvalitetsfärg som håller 10+ år. Ställning ingår alltid, och med 30% ROT-avdrag får du ett fantastiskt resultat till ett smart pris.',
+    introTextEn: 'Has your facade seen better days? A professional exterior paint job protects your house and gives it a completely new look. Fixco\'s painters pre-treat, prime and paint with quality paint lasting 10+ years. Scaffolding is always included, and with 30% ROT deduction you get an amazing result at a smart price.',
   },
   {
     slug: 'inomhusmalning',
@@ -198,6 +210,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Is patching included?', a: 'Yes, we patch holes and cracks and sand the surface as part of the prep work.' },
     ],
     enSlug: 'interior-painting',
+    introText: 'Dags att fräscha upp hemmet med nya färger? Fixcos professionella målare förvandlar dina rum med spackling, grundning och ommålning i valfri kulör. Vi skyddar möbler och golv noggrant så du inte behöver lyfta ett finger. Med 30% ROT-avdrag och miljövänlig färg blir hemmet som nytt.',
+    introTextEn: 'Time to freshen up your home with new colors? Fixco\'s professional painters transform your rooms with patching, priming and repainting in any color. We carefully protect furniture and floors so you don\'t need to lift a finger. With 30% ROT deduction and eco-friendly paint, your home feels brand new.',
   },
   {
     slug: 'elinstallation',
@@ -227,6 +241,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'Is inspection included?', a: 'Yes, we always issue an inspection protocol after completed work showing the installation is safe.' },
     ],
     enSlug: 'electrical-installation',
+    introText: 'Behöver du en pålitlig elektriker som gör jobbet rätt från början? Fixcos auktoriserade elektriker utför allt från byte av elcentral till installation av laddbox och belysning. Varje jobb avslutas med besiktningsprotokoll, och med 30% ROT-avdrag blir det både tryggt och prisvärt.',
+    introTextEn: 'Need a reliable electrician who gets it right from the start? Fixco\'s authorized electricians handle everything from fuse box replacement to EV charger and lighting installation. Every job ends with an inspection protocol, and with 30% ROT deduction it\'s both safe and affordable.',
   },
   {
     slug: 'koksmontering',
@@ -256,6 +272,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How long does kitchen installation take?', a: 'A standard kitchen is typically installed in 1–3 working days. Larger or more complex kitchens may take longer.' },
     ],
     enSlug: 'kitchen-installation',
+    introText: 'Har du fått hem ditt nya kök och vill att det monteras perfekt? Fixcos köksmontörer installerar kök från IKEA, Marbodal, HTH och alla andra märken – snabbt, noggrant och med 30% ROT-avdrag. Vi tar hand om allt från skåp och bänkskiva till vitvaror så du snabbt kan börja laga mat i ditt drömkök.',
+    introTextEn: 'Got your new kitchen delivered and want it installed perfectly? Fixco\'s kitchen installers handle kitchens from IKEA, Marbodal, HTH and all other brands – quickly, carefully and with 30% ROT deduction. We take care of everything from cabinets and countertops to appliances so you can start cooking in your dream kitchen.',
   },
   {
     slug: 'mobelmontering',
@@ -285,6 +303,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How quickly can you come?', a: 'We often offer assembly within 2–5 working days. During high demand it may take a bit longer.' },
     ],
     enSlug: 'furniture-assembly',
+    introText: 'Står plattpaket och väntar på att bli till riktiga möbler? Fixcos monteringsproffs sätter ihop allt från IKEA PAX-garderober till kontorsmöbler – snabbt och korrekt. Med 50% RUT-avdrag betalar du bara hälften, och du slipper frustrationen med krångliga instruktioner.',
+    introTextEn: 'Got flat-packs waiting to become real furniture? Fixco\'s assembly pros put together everything from IKEA PAX wardrobes to office furniture – quickly and correctly. With 50% RUT deduction you only pay half, and you skip the frustration of confusing instructions.',
   },
 ];
 

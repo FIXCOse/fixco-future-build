@@ -36,7 +36,7 @@ import {
   type LocalServiceSlug,
   type AreaKey
 } from "@/data/localServiceData";
-import { generateUniqueLocalContent } from "@/data/localSeoData";
+import { generateUniqueLocalContent, generateLocalIntroText } from "@/data/localSeoData";
 import { Badge } from "@/components/ui/badge";
 import { 
   Accordion,
@@ -140,6 +140,7 @@ const LocalServicePage = () => {
   const content = isValid ? generateLocalContent(serviceSlug as LocalServiceSlug, area, locale) : null;
   const metadata = isValid ? getAreaMetadata(area) : null;
   const uniqueContent = isValid ? generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area) : null;
+  const localIntroText = isValid ? generateLocalIntroText(serviceSlug!, area, locale) : null;
   
   const serviceData = isValid ? servicesDataNew.find(s => s.slug === service?.serviceKey) : null;
   const IconComponent = serviceData?.icon || Zap;
@@ -435,6 +436,17 @@ const LocalServicePage = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* Intro text section */}
+        {localIntroText && (
+          <section className="py-12 md:py-16">
+            <div className="container mx-auto px-4 max-w-3xl text-center">
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                {localIntroText}
+              </p>
+            </div>
+          </section>
+        )}
 
         {/* ============================================
             2. SOCIAL PROOF — Testimonials direkt efter hero
