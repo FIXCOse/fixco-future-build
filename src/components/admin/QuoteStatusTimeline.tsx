@@ -68,8 +68,6 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
           </p>
         );
       })}
-        </p>
-      ))}
     </div>
   ) : undefined;
 
