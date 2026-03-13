@@ -356,7 +356,7 @@ const getDefaultFunFacts = (area: string, region: string): string[] => [
 // ============================================================
 // MYTER OCH SANNINGAR PER TJÄNST
 // ============================================================
-const SERVICE_MYTHS: Record<LocalServiceSlug, Array<{ myth: string; truth: string }>> = {
+const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: string }>> = {
   "elektriker": [
     { 
       myth: "Man kan byta uttag och strömbrytare själv utan elektriker", 
