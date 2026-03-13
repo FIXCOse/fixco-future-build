@@ -659,7 +659,7 @@ const LocalServicePage = () => {
               </motion.div>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" key={`services-grid-${serviceSlug}`}>
-                {BASE_SERVICES.filter(s => s.slug !== serviceSlug && s.serviceKey !== currentService?.serviceKey).slice(0, 10).map((otherService) => {
+                {BASE_SERVICES.filter(s => s.slug !== serviceSlug && s.serviceKey !== service?.serviceKey).slice(0, 10).map((otherService) => {
                   const OtherIcon = servicesDataNew.find(s => s.slug === otherService.serviceKey || s.slug === otherService.slug)?.icon || Zap;
                   return (
                     <motion.div 
