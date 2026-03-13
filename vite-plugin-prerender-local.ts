@@ -206,7 +206,15 @@ const UPPSALA_AREAS: Array<[string, string]> = [
   ['Ultuna', 'ultuna'],
 ];
 
-const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS];
+const PRIORITY_AREA_SLUGS = [
+  'stockholm','bromma','kungsholmen','sodermalm','ostermalm',
+  'solna','sundbyberg','nacka','huddinge','taby','danderyd',
+  'uppsala','knivsta','alsike','enkoping','tierp',
+] as const;
+
+const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS].filter(([, slug]) =>
+  PRIORITY_AREA_SLUGS.includes(slug as typeof PRIORITY_AREA_SLUGS[number])
+);
 
 // ─── Title templates (base 20 services get specific titles) ───
 const SV_TITLES: Record<string, string> = {
