@@ -210,26 +210,6 @@ const NicheServiceLandingPage = () => {
         </div>
       </section>
 
-      {/* USPs */}
-      <section className="py-16 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {usps.map((usp, i) => (
-              <motion.div 
-                key={i} 
-                className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-sm font-medium text-foreground">{usp}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Related services from database */}
       {relatedServices.length > 0 && (
