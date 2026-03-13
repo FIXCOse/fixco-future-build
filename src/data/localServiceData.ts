@@ -751,9 +751,9 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   return {
     h1: `${serviceNameCapital} ${area}`,
     
-    title: titleTemplates[serviceSlug] || `${serviceNameCapital} ${area} – ${isEn ? 'Professional contractors' : 'Professionella hantverkare'} | ${rotRut} 30%`,
+    title: titleTemplatesBase[serviceSlug] || (isEn ? getExpandedTitleEn(serviceSlug as ExpandedSlug, area) : getExpandedTitleSv(serviceSlug as ExpandedSlug, area)) || `${serviceNameCapital} ${area} – ${isEn ? 'Professional contractors' : 'Professionella hantverkare'} | ${rotRut} 30%`,
     
-    description: descriptionTemplates[serviceSlug] || `${serviceNameCapital} ${isEn ? 'in' : 'i'} ${area} ★ 5/5 ${isEn ? 'rating' : 'betyg'} ✓ 30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'} ✓ ${isEn ? 'Fixed price' : 'Fast pris'} ✓ ${isEn ? 'Quality guarantee' : 'Kvalitetsgaranti'}. ${isEn ? 'Get quote within 24h!' : 'Få offert inom 24h!'}`,
+    description: descriptionTemplatesBase[serviceSlug] || (isEn ? getExpandedDescriptionEn(serviceSlug as ExpandedSlug, area) : getExpandedDescriptionSv(serviceSlug as ExpandedSlug, area)) || `${serviceNameCapital} ${isEn ? 'in' : 'i'} ${area} ★ 5/5 ${isEn ? 'rating' : 'betyg'} ✓ 30% ${rotRut}-${isEn ? 'deduction' : 'avdrag'} ✓ ${isEn ? 'Fixed price' : 'Fast pris'} ✓ ${isEn ? 'Quality guarantee' : 'Kvalitetsgaranti'}. ${isEn ? 'Get quote within 24h!' : 'Få offert inom 24h!'}`,
     
     intro: isEn
       ? `**Need ${serviceName} in ${area}?** You've come to the right place!
