@@ -60,9 +60,14 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
         Öppnad {viewCount} {viewCount === 1 ? 'gång' : 'gånger'}
         {uniqueIps > 0 && ` (${uniqueIps} ${uniqueIps === 1 ? 'unik IP' : 'unika IP:er'})`}
       </p>
-      {views?.map((v, i) => (
-        <p key={i} className="text-[11px] text-muted-foreground">
-          {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}
+      {views?.map((v, i) => {
+        const geoLabel = [v.city, v.country].filter(Boolean).join(', ');
+        return (
+          <p key={i} className="text-[11px] text-muted-foreground">
+            {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}{geoLabel ? ` (${geoLabel})` : ''}
+          </p>
+        );
+      })}
         </p>
       ))}
     </div>
