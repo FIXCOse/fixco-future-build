@@ -301,7 +301,7 @@ const skipAddons = () => {
           rotEligible: true,
           fields: [
             { kind: "textarea" as const, key: "beskrivning", label: ml.describeProject, placeholder: ml.tellUsMore },
-            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*", multiple: true }
+            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", multiple: true }
           ]
         };
       }
