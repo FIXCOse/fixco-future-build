@@ -10,10 +10,14 @@
 - **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
 - **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-### Teknisk arkitektur
-- `seoSlugsExpansion.ts` — 120+ expanded slugs + metadata (pricing, EN names, myths)
-- `nicheServiceDataExpanded.ts` — Auto-genererad NicheServiceMeta per slug via kategori-templates
-- `localServiceData.ts` — Mergar base + expanded, dynamisk fallback lookup
-- `localSeoData.ts` — Partial<Record> för kompatibilitet
-- `slugMapping.ts` — Komplett sv→en URL-mappning
-- `App.tsx` — SmartServiceRouter resolvar nisch vs. ServiceDetail dynamiskt
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
