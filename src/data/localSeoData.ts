@@ -652,3 +652,57 @@ export const getAreaSearchInsights = (area: AreaKey) => {
     nearbyAreas: NEARBY_AREAS_MAP[area] || []
   };
 };
+
+// ============================================================
+// LOCAL INTRO TEXT GENERATOR
+// ============================================================
+const LOCAL_INTRO_SV: Record<string, (serviceName: string, area: string, rotRut: string) => string> = {
+  snickeri: (s, a, rr) => `Funderar du på ${s.toLowerCase()} i ${a}? Fixcos erfarna hantverkare i ${a} hjälper dig hela vägen – från planering till färdigt resultat. Med fast pris och 30% ${rr}-avdrag kan du känna dig trygg.`,
+  vvs: (s, a, rr) => `Behöver du ${s.toLowerCase()} i ${a}? Våra certifierade VVS-tekniker i ${a} löser det snabbt och professionellt – med garanti och 30% ${rr}-avdrag.`,
+  el: (s, a, rr) => `Letar du efter en pålitlig elektriker i ${a} för ${s.toLowerCase()}? Fixcos auktoriserade elektriker utför arbetet säkert med besiktningsprotokoll och 30% ${rr}-avdrag.`,
+  malning: (s, a, rr) => `Dags att fräscha upp hemmet i ${a} med ${s.toLowerCase()}? Fixcos professionella målare i ${a} levererar ett hållbart resultat – fast pris, spackling och 30% ${rr}-avdrag ingår.`,
+  golv: (s, a, rr) => `Vill du lägga nytt golv i ${a}? Fixcos golvläggare hjälper dig med ${s.toLowerCase()} – parkett, laminat eller vinyl. Med 30% ${rr}-avdrag och garanti blir det enkelt.`,
+  montering: (s, a, rr) => `Behöver du hjälp med ${s.toLowerCase()} i ${a}? Fixco fixar det snabbt och pålitligt. Med 50% ${rr}-avdrag betalar du bara hälften.`,
+  tradgard: (s, a, rr) => `Drömmer du om en finare trädgård i ${a}? Fixcos trädgårdsmästare hjälper dig med ${s.toLowerCase()} – från beskärning till ny anläggning. 50% ${rr}-avdrag.`,
+  markarbeten: (s, a, rr) => `Planerar du ${s.toLowerCase()} i ${a}? Fixcos erfarna markentreprenörer i ${a} utför allt med fast pris och 30% ${rr}-avdrag.`,
+  stadning: (s, a, rr) => `Behöver du ${s.toLowerCase()} i ${a}? Fixcos professionella städare i ${a} gör jobbet grundligt med eget material. 50% ${rr}-avdrag och nöjdhetsgaranti.`,
+  flytt: (s, a, rr) => `Ska du flytta i ${a} och behöver hjälp? Fixco erbjuder ${s.toLowerCase()} med försäkring och erfarna flyttare. Med 50% ${rr}-avdrag blir flytten smidig.`,
+  "tekniska-installationer": (s, a, rr) => `Behöver du ${s.toLowerCase()} i ${a}? Fixcos certifierade tekniker i ${a} installerar smart och tryggt – med garanti och 30% ${rr}-avdrag.`,
+  rivning: (s, a, rr) => `Dags för ${s.toLowerCase()} i ${a}? Fixco utför kontrollerad rivning med borttransport. Fast pris och 30% ${rr}-avdrag.`,
+};
+
+const LOCAL_INTRO_EN: Record<string, (serviceName: string, area: string, rotRut: string) => string> = {
+  snickeri: (s, a, rr) => `Considering ${s.toLowerCase()} in ${a}? Fixco's experienced craftsmen in ${a} help you every step of the way – from planning to finished result. With fixed pricing and 30% ${rr} deduction.`,
+  vvs: (s, a, rr) => `Need ${s.toLowerCase()} in ${a}? Our certified plumbing technicians in ${a} solve it quickly and professionally – with warranty and 30% ${rr} deduction.`,
+  el: (s, a, rr) => `Looking for a reliable electrician in ${a} for ${s.toLowerCase()}? Fixco's authorized electricians perform the work safely with inspection protocol and 30% ${rr} deduction.`,
+  malning: (s, a, rr) => `Time to freshen up your home in ${a} with ${s.toLowerCase()}? Fixco's professional painters in ${a} deliver a durable result – fixed price, prep work and 30% ${rr} deduction included.`,
+  golv: (s, a, rr) => `Want new flooring in ${a}? Fixco's installers help you with ${s.toLowerCase()} – parquet, laminate or vinyl. With 30% ${rr} deduction and warranty, it's easy.`,
+  montering: (s, a, rr) => `Need help with ${s.toLowerCase()} in ${a}? Fixco handles it quickly and reliably. With 50% ${rr} deduction you only pay half.`,
+  tradgard: (s, a, rr) => `Dreaming of a more beautiful garden in ${a}? Fixco's gardeners help you with ${s.toLowerCase()} – from pruning to new landscaping. 50% ${rr} deduction.`,
+  markarbeten: (s, a, rr) => `Planning ${s.toLowerCase()} in ${a}? Fixco's experienced groundwork contractors in ${a} handle everything with fixed pricing and 30% ${rr} deduction.`,
+  stadning: (s, a, rr) => `Need ${s.toLowerCase()} in ${a}? Fixco's professional cleaners in ${a} do a thorough job with own supplies. 50% ${rr} deduction and satisfaction guarantee.`,
+  flytt: (s, a, rr) => `Moving in ${a} and need help? Fixco offers ${s.toLowerCase()} with insurance and experienced movers. With 50% ${rr} deduction, your move is smooth.`,
+  "tekniska-installationer": (s, a, rr) => `Need ${s.toLowerCase()} in ${a}? Fixco's certified technicians in ${a} install smartly and safely – with warranty and 30% ${rr} deduction.`,
+  rivning: (s, a, rr) => `Time for ${s.toLowerCase()} in ${a}? Fixco performs controlled demolition with debris removal. Fixed pricing and 30% ${rr} deduction.`,
+};
+
+export const generateLocalIntroText = (
+  serviceSlug: string,
+  area: string,
+  locale: string
+): string | null => {
+  const service = LOCAL_SERVICES[serviceSlug as LocalServiceSlug];
+  if (!service) return null;
+  
+  const serviceKey = service.serviceKey;
+  const serviceName = locale === 'en' ? (service.nameEn || service.name) : service.name;
+  const rotRut = service.rotRut || 'ROT';
+  
+  if (locale === 'en') {
+    const template = LOCAL_INTRO_EN[serviceKey] || LOCAL_INTRO_EN.snickeri;
+    return template(serviceName, area, rotRut);
+  }
+  
+  const template = LOCAL_INTRO_SV[serviceKey] || LOCAL_INTRO_SV.snickeri;
+  return template(serviceName, area, rotRut);
+};
