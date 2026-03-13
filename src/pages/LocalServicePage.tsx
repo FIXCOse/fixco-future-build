@@ -29,6 +29,7 @@ import {
   isValidLocalServicePage,
   generateAreaSlug,
   LOCAL_SERVICES,
+  BASE_SERVICES,
   STOCKHOLM_AREAS,
   UPPSALA_AREAS,
   getAreaMetadata,
