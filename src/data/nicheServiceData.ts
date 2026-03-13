@@ -117,6 +117,8 @@ export const NICHE_SERVICES: NicheServiceMeta[] = [
       { q: 'How long does it take to build a deck?', a: 'A standard deck typically takes 3–7 working days depending on size and complexity.' },
     ],
     enSlug: 'deck-building',
+    introText: 'Går du i tankarna kring att bygga din drömaltan som du kan förgylla sommarkvällarna på? Då är Fixco det rätta valet. Våra erfarna snickare hjälper dig hela vägen – från konstruktion och bygglov till färdig altan med räcke och trappa. Med 30% ROT-avdrag och fast pris blir drömmen verklighet utan överraskningar.',
+    introTextEn: 'Thinking about building your dream deck where you can enjoy those summer evenings? Then Fixco is the right choice. Our experienced carpenters help you every step of the way – from construction and permits to a finished deck with railing and stairs. With 30% ROT deduction and fixed pricing, your dream becomes reality without surprises.',
   },
   {
     slug: 'golvlaggning',
