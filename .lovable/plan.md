@@ -1,28 +1,23 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-# Fix: "Andra tjänster" grid on LocalServicePage looks terrible
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Problem
-The "Andra tjänster" section on LocalServicePage (line 640-685) renders ALL 150+ `LOCAL_SERVICES` (base + expanded) as a flat grid. Most expanded services (totalrenovering, renovering, kök, etc.) get a generic grey Hammer icon because the icon lookup only checks `servicesDataNew` which has ~10 base categories. Result: an overwhelming, repetitive grid with 150+ near-identical grey hammer cards.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-## Solution
-Two changes to make this section useful and visually appealing:
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-### 1. Show only the ~10 base service categories (not all 150+ expanded slugs)
-Filter the grid to show only the original base services (snickare, elektriker, vvs, målare, etc.) — not the 120+ expanded SEO variants. The expanded variants exist for SEO routing, not for cross-selling navigation.
-
-**`src/pages/LocalServicePage.tsx`** — line 661:
-Change from `LOCAL_SERVICES.filter(...)` to only show `BASE_SERVICES` or the first ~10 unique `serviceKey` entries, excluding the current service.
-
-### 2. Fix icon resolution for correct gradient colors
-Currently: `servicesDataNew.find(s => s.slug === otherService.serviceKey)?.icon` — this maps `serviceKey` (e.g. "snickeri") to `servicesDataNew` slug, but some keys don't match (e.g. "snickeri" vs "snickare"). The gradient is already resolved via `getGradientForService(otherService.slug)` but falls back to default for expanded slugs.
-
-Fix the icon lookup to use the service's `serviceKey` AND resolve it through `getGradientForService(otherService.serviceKey)` for consistent colors.
-
-### Implementation
-- Import `BASE_SERVICES` from `localServiceData.ts` (currently not exported, need to export it) OR define a small inline list of the ~10 core services to show
-- Filter the grid to these ~10 items instead of all 150+
-- Each card gets its proper gradient icon from `servicesDataNew`
-
-This reduces the grid from 150+ grey hammer cards to ~9 colorful, properly-styled service cards — matching the `CityServicesGrid` design pattern already used elsewhere.
-
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
