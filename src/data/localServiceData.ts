@@ -1005,7 +1005,11 @@ function getCertificationText(serviceSlug: LocalServiceSlug, locale: 'sv' | 'en'
     "elinstallation": "Elektriker har behörighet enligt Elsäkerhetsverket och arbetar enligt gällande föreskrifter.",
     "rivning": "Rivare har erfarenhet av säker rivning av badrum, kök, väggar och golv med korrekt avfallshantering."
   };
-  return certTexts[serviceSlug];
+  if (certTexts[serviceSlug]) return certTexts[serviceSlug]!;
+  // Fallback to expanded cert texts
+  if (isEn && (serviceSlug as ExpandedSlug) in EXPANDED_CERT_TEXT_EN) return EXPANDED_CERT_TEXT_EN[serviceSlug as ExpandedSlug];
+  if (!isEn && (serviceSlug as ExpandedSlug) in EXPANDED_CERT_TEXT_SV) return EXPANDED_CERT_TEXT_SV[serviceSlug as ExpandedSlug];
+  return isEn ? "All our professionals are certified and experienced." : "Alla våra hantverkare är certifierade och erfarna.";
 }
 
 // ============================================================
