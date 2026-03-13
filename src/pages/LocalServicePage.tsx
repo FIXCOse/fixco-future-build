@@ -140,6 +140,7 @@ const LocalServicePage = () => {
   const content = isValid ? generateLocalContent(serviceSlug as LocalServiceSlug, area, locale) : null;
   const metadata = isValid ? getAreaMetadata(area) : null;
   const uniqueContent = isValid ? generateUniqueLocalContent(serviceSlug as LocalServiceSlug, area) : null;
+  const localIntroText = isValid ? generateLocalIntroText(serviceSlug!, area, locale) : null;
   
   const serviceData = isValid ? servicesDataNew.find(s => s.slug === service?.serviceKey) : null;
   const IconComponent = serviceData?.icon || Zap;
