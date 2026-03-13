@@ -159,7 +159,7 @@ const NicheServiceLandingPage = () => {
               variants={itemVariants}
               className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-center leading-tight"
             >
-              {title}
+              {heroTitle}
             </motion.h1>
             
             {/* Value prop */}
