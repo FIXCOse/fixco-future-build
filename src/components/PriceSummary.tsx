@@ -77,7 +77,7 @@ const PriceSummary = ({
 
   const unit = pricingType === 'hourly' ? ' kr/h' : ' kr';
   const primaryDisplay = `${formatMoney(primaryPrice)}${unit} inkl. moms`;
-  const secondaryDisplay = `${formatMoney(priceExcl)}${unit} exkl. moms`;
+  const secondaryDisplay = `${formatMoney(primaryPrice / (1 + VAT_RATE))}${unit} exkl. moms`;
 
   return (
     <div className={cn("space-y-1", className)}>
