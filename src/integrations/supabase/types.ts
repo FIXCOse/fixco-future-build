@@ -2385,6 +2385,8 @@ export type Database = {
       }
       quote_views: {
         Row: {
+          city: string | null
+          country: string | null
           id: string
           ip_address: string | null
           quote_id: string
@@ -2394,6 +2396,8 @@ export type Database = {
           viewer_email: string | null
         }
         Insert: {
+          city?: string | null
+          country?: string | null
           id?: string
           ip_address?: string | null
           quote_id: string
@@ -2403,6 +2407,8 @@ export type Database = {
           viewer_email?: string | null
         }
         Update: {
+          city?: string | null
+          country?: string | null
           id?: string
           ip_address?: string | null
           quote_id?: string
