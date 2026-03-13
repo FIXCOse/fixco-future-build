@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar, Mail, MapPin, Clock, CheckCircle, AlertCircle, Send } from "lucide-react";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
