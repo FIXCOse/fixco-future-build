@@ -490,7 +490,54 @@ export function prerenderLocalPlugin(): Plugin {
         }
       }
 
-      console.log(`[prerender-local] Generated ${count} static HTML files`);
+      // ─── Blog prerendering ───
+      for (const post of ALL_BLOG_SLUGS) {
+        const blogTitle = escapeHtml(post.title + ' | Fixco');
+        const blogCssLinks = cssFiles.map(f => `    <link rel="stylesheet" href="/${f}" />`).join('\n');
+        const blogJsTags = jsEntries.map(f => `    <script type="module" crossorigin src="/${f}"></script>`).join('\n');
+        
+        for (const locale of ['sv', 'en'] as const) {
+          const path = locale === 'sv' ? `blogg/${post.slug}` : `en/blog/${post.slug}`;
+          const canonical = `${BASE_URL}/${path}`;
+          const svUrl = `${BASE_URL}/blogg/${post.slug}`;
+          const enUrl = `${BASE_URL}/en/blog/${post.slug}`;
+          
+          const html = `<!DOCTYPE html>
+<html lang="${locale === 'sv' ? 'sv' : 'en'}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="hsl(240, 8%, 7%)" />
+    <link rel="icon" type="image/png" href="/assets/fixco-f-icon-large.png" />
+    <title>${blogTitle}</title>
+    <meta name="description" content="${escapeHtml(post.title)}" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="${canonical}" />
+    <link rel="alternate" hreflang="sv" href="${svUrl}" />
+    <link rel="alternate" hreflang="en" href="${enUrl}" />
+    <link rel="alternate" hreflang="x-default" href="${svUrl}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="${canonical}" />
+    <meta property="og:title" content="${blogTitle}" />
+    <meta property="og:site_name" content="Fixco" />
+${blogCssLinks}
+${blogJsTags}
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>`;
+          
+          this.emitFile({
+            type: 'asset',
+            fileName: `${path}/index.html`,
+            source: html,
+          });
+          count++;
+        }
+      }
+
+      console.log(`[prerender-local] Generated ${count} static HTML files (incl. ${ALL_BLOG_SLUGS.length * 2} blog)`);
     },
   };
 }

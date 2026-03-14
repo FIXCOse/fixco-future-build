@@ -503,6 +503,7 @@ const App = () => {
                             } />
                             <Route path="insurance" element={lazyElement(ROTInfo)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="faq/:category" element={lazyElement(FAQCategory)} />
                             <Route path="about" element={lazyElement(AboutUs)} />
                             <Route path="references" element={lazyElement(Referenser)} />
                             <Route path="terms" element={lazyElement(Terms)} />
