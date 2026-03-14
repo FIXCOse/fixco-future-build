@@ -107,7 +107,11 @@ const FAQCategory = () => {
       seen.add(f.q);
       return true;
     });
-  }, [config.categories]);
+  }, [config]);
+
+  if (!config) {
+    return <Navigate to={isEnglish ? '/en/faq' : '/faq'} replace />;
+  }
 
   const title = isEnglish ? config.titleEn : config.titleSv;
   const description = isEnglish ? config.descEn : config.descSv;
