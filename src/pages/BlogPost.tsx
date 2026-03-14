@@ -628,6 +628,13 @@ const BlogPost = () => {
           </div>
         </section>
 
+        {/* Service Links (SEO internal linking) */}
+        <section className="py-0 bg-background">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <BlogServiceLinks category={post.category} />
+          </div>
+        </section>
+
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-muted/20">

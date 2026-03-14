@@ -55,6 +55,8 @@ import { GradientText } from "@/components/v2/GradientText";
 import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
+import { RelatedServicesSection } from "@/components/local-service/RelatedServicesSection";
+import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 

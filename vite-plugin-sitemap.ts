@@ -216,6 +216,31 @@ function generateLocalSitemap(areaSlugs: string[]): string {
   return xml;
 }
 
+function generateBlogSitemap(): string {
+  let xml = xmlHeader();
+  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
+  
+  for (const post of ALL_BLOG_SLUGS) {
+    const svLoc = `${BASE_URL}/blogg/${post.slug}`;
+    const enLoc = `${BASE_URL}/en/blog/${post.slug}`;
+    // Swedish
+    xml += `  <url>\n    <loc>${svLoc}</loc>\n    <lastmod>${post.updatedAt}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.65</priority>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+    xml += `  </url>\n`;
+    // English
+    xml += `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${post.updatedAt}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.60</priority>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLoc}"/>\n`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${svLoc}"/>\n`;
+    xml += `  </url>\n`;
+  }
+  
+  xml += `</urlset>\n`;
+  return xml;
+}
+
 export function sitemapPlugin(): Plugin {
   const sitemapFiles: Record<string, string> = {};
 
@@ -223,6 +248,7 @@ export function sitemapPlugin(): Plugin {
     sitemapFiles['/sitemap.xml'] = generateSitemapIndex();
     sitemapFiles['/sitemap-main.xml'] = generateMainSitemap();
     sitemapFiles['/sitemap-hubs.xml'] = generateHubsSitemap();
+    sitemapFiles['/sitemap-blog.xml'] = generateBlogSitemap();
     sitemapFiles['/sitemap-local-stockholm.xml'] = generateLocalSitemap(STOCKHOLM_AREA_SLUGS);
     sitemapFiles['/sitemap-local-uppsala.xml'] = generateLocalSitemap(UPPSALA_AREA_SLUGS);
   }
