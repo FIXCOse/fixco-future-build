@@ -505,6 +505,27 @@ export const EXPANDED_SERVICE_PRICING: Record<ExpandedSlug, { base: string; afte
   "rivning-badrum": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "rivning-kok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "bortforsling": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  // Specifika bokningsbara tjänster
+  "montera-tv-pa-vagg": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "installera-akustikpanel": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "platsbyggd-garderob": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "platsbyggd-bokhylla": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "montera-spotlights": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "installera-laddbox-hemma": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-altan": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "montera-koksflakt": { base: "759 kr/h", afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
+  "installera-golvvarme": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-bastu": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "montera-markis": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "installera-varmepump": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "renovera-trapp": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-carport": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "montera-takfonster": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-utekök": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-friggebod": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "montera-persienner": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
+  "installera-solceller-hem": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-plank": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
 };
 
 // Myths for expanded slugs - grouped by parent category
