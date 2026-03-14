@@ -917,6 +917,27 @@ export const EXPANDED_CERT_TEXT_SV: Record<ExpandedSlug, string> = {
   "rivning-badrum": "Rivare med erfarenhet av badrums-rivning och asbesthantering.",
   "rivning-kok": "Rivare med erfarenhet av köksrivning och VA-arbeten.",
   "bortforsling": "Personal med erfarenhet av bortforsling och avfallshantering.",
+  // Specifika bokningsbara tjänster
+  "montera-tv-pa-vagg": "Montörer med erfarenhet av TV-montering, kabeldragning och dolt kablage.",
+  "installera-akustikpanel": "Montörer med erfarenhet av akustikpaneler och ljuddämpning.",
+  "platsbyggd-garderob": "Snickare specialiserade på platsbyggda garderober med skjutdörrar och inredning.",
+  "platsbyggd-bokhylla": "Snickare specialiserade på platsbyggda bokhyllor och väggfasta hyllsystem.",
+  "montera-spotlights": "Auktoriserade elektriker för installation av infällda spotlights och LED-belysning.",
+  "installera-laddbox-hemma": "Certifierade elektriker för installation av laddbox för elbil i villa och BRF.",
+  "bygga-altan": "Snickare med erfarenhet av altanbygge i tryckimpregnerat, ceder och komposit.",
+  "montera-koksflakt": "Montörer med erfarenhet av köksfläktar, spiskåpor och ventilation.",
+  "installera-golvvarme": "VVS-montörer certifierade för vatten- och elgolvvärme.",
+  "bygga-bastu": "Snickare med erfarenhet av bastubygge – elementbastu och platsbyggd.",
+  "montera-markis": "Montörer med erfarenhet av markiser, pergolor och solskydd.",
+  "installera-varmepump": "Certifierade installatörer för luft-luft, luft-vatten och bergvärme.",
+  "renovera-trapp": "Snickare med erfarenhet av trapprenovering – steg, räcke och beklädnad.",
+  "bygga-carport": "Snickare med erfarenhet av carportbygge i trä och stål.",
+  "montera-takfonster": "Hantverkare med erfarenhet av takfönster – Velux, Fakro och alla märken.",
+  "bygga-utekök": "Snickare med erfarenhet av utekök med gas, el och vattenanslutning.",
+  "bygga-friggebod": "Snickare med erfarenhet av friggebod och Attefallshus.",
+  "montera-persienner": "Montörer med erfarenhet av persienner, plisségardiner och rullgardiner.",
+  "installera-solceller-hem": "Certifierade solcellsinstallatörer för villa och radhus.",
+  "bygga-plank": "Snickare med erfarenhet av plank, staket och inhägnader.",
 };
 
 // English certification texts
