@@ -126,8 +126,8 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return result;
 }
 
-const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 50);
-const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 75);
+const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 20);
+const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 35);
 
 function generateSitemapIndex(): string {
   const sitemaps = [
