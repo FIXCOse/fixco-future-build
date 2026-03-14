@@ -14,6 +14,7 @@ const Services = lazy(() => import("./pages/Services"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const Contact = lazy(() => import("./pages/Contact"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const FAQCategory = lazy(() => import("./pages/FAQCategory"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const BookVisit = lazy(() => import("./pages/BookVisit"));
 const ROTInfo = lazy(() => import("./pages/ROTInfo"));
