@@ -90,11 +90,8 @@ const FAQCategory = () => {
 
   const config = category ? FAQ_CATEGORY_MAP[category] : undefined;
 
-  if (!config) {
-    return <Navigate to={isEnglish ? '/en/faq' : '/faq'} replace />;
-  }
-
   const faqs = useMemo(() => {
+    if (!config) return [];
     // Collect all FAQs from blog posts matching this category
     const matchingPosts = blogPosts.filter(p => config.categories.includes(p.category));
     const allFaqs: Array<{ q: string; a: string }> = [];
