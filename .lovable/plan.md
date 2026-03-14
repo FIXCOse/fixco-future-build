@@ -1,23 +1,38 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Fix: Tillbaka-knappen i ServiceRequestModal kraschar/fryser modalen
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+Två buggar i back-navigeringen:
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+1. **Steg 2 (tidsval) i quote-mode saknar back-hantering helt.** Koden hanterar bara `currentStep === 2` för `mode === 'home_visit'`. I quote-mode gör "Tillbaka" ingenting.
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+2. **Steg 3 → Steg 1 utan addons renderar tom modal.** När man går tillbaka från steg 3 sätts `skipAddonsStep = true` och `currentStep = 1`. Men steg 1:s innehåll kräver `addons.length > 0` (rad 725), så inget renderas — modalen ser "kraschad" ut.
+
+## Lösning
+
+### `src/features/requests/ServiceRequestModal.tsx` — Back-knappens onClick (rad ~1236-1265)
+
+Fixa navigeringslogiken:
+
+**Steg 2 (quote-mode):** Lägg till back-hantering — gå till steg 1 om addons finns, annars till steg 0 (eller stäng om ingen kategori-vy).
+
+**Steg 3 (quote-mode):** Gå till steg 2 istället för steg 1, eftersom steg 2 (tidsval) nu alltid visas.
+
+Uppdaterad logik:
+```
+currentStep === 3:
+  → goToStep2()  (alltid, oavsett mode)
+
+currentStep === 2:
+  → om addons.length > 0: setSkipAddonsStep(true), goToStep1()
+  → om showCategories: goToStep0()
+  → annars: setOpen(false)
+
+currentStep === 1:
+  → om showCategories: goToStep0()
+  → annars: setOpen(false)
+```
+
+Detta säkerställer att man alltid kan navigera bakåt utan att hamna i ett tomt steg.
+
