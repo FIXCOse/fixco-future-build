@@ -21,3 +21,12 @@ Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexera
 - Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
 - Netlify serverar statiska filer automatiskt före SPA-fallback
 - React hydraterar som vanligt för interaktivitet
+
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
+
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
