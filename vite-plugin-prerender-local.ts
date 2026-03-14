@@ -1,11 +1,10 @@
 /**
- * Vite Plugin: Pre-render static HTML for all local service pages
+ * Vite Plugin: Pre-render static HTML for all local service pages + blog posts
  * Generates unique <head> tags (title, description, canonical, hreflang, JSON-LD)
  * so Googlebot sees unique SEO content without running JavaScript.
- * 
- * ~16,000 files: 151 services × 53 areas × 2 languages
  */
 import type { Plugin } from 'vite';
+import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
 
 const BASE_URL = 'https://fixco.se';
 
