@@ -1,32 +1,31 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Plan: Rensa hero-titlar på nischsidor
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+Hero-titlarna (H1) på nischsidorna ser röriga ut:
+- **"Boka Renovera trapp"** — onödigt "Boka"-prefix
+- **"Platsbyggd Garderob — Skräddarsydd Efter Ditt Hem"** — tagline hör hemma i meta, inte i H1
+- Alla auto-genererade titlar via templates har `Boka ${name}` som mönster
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+## Åtgärd
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+### 1. `src/data/nicheServiceDataExpanded.ts`
+Ändra alla `HERO_TITLE_SV`-templates från `Boka ${n}` till bara `${n}` (tjänstens namn rakt av). Samma för engelska (`Book ${n}` → `${n}`).
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+### 2. `src/data/nicheServiceData.ts`
+Rensa de handskrivna heroTitles:
+- `"Boka Elinstallation"` → `"Elinstallation"`
+- `"Boka Möbelmontering"` → `"Möbelmontering"`
+- `"Montera TV på Vägg — Snyggt, Säkert & Dolt Kablage"` → `"Montera TV på Vägg"`
+- `"Installera Akustikpanel — Bättre Ljud & Snygg Design"` → `"Installera Akustikpanel"`
+- `"Platsbyggd Garderob — Skräddarsydd Efter Ditt Hem"` → `"Platsbyggd Garderob"`
+- `"Bygga Altan — Din Drömaltan Med ROT-avdrag"` → `"Bygga Altan"`
+- `"Installera Laddbox Hemma — Ladda Elbilen Smidigt"` → `"Installera Laddbox Hemma"`
+- Behåll säljande varianter som `"Bygg Din Drömaltan"`, `"Renovera Ditt Kök"` etc. — de har inget "Boka" och ingen "—"-tagline
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+### 3. Meta-titlar behålls säljande
+`seoTitle` i `NicheServiceLandingPage.tsx` använder redan formatet `${heroTitle} – Fixco | ROT-avdrag & Garanti` — det behålls och kan förbättras med taglines i meta title/description istället.
+
+**Resultat:** Rena, korta H1-titlar som "Platsbyggd Garderob", "Montera TV på Vägg", "Elinstallation". Säljargumenten lever kvar i meta description och undertexten.
+
