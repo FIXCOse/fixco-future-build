@@ -1235,32 +1235,22 @@ const skipAddons = () => {
                   variant="outline"
                   onClick={() => {
                     if (currentStep === 3) {
-                      if (showCategories && addons.length === 0) {
-                        // Om vi kom från kategori-val och det finns inga addons,
-                        // gå direkt tillbaka till kategori-valet
-                        goToStep0();
-                      } else if (mode === 'home_visit') {
-                        goToStep2();
-                      } else {
-                        // Sätt skipAddonsStep INNAN vi går till steg 1
-                        // för att förhindra useEffect från att hoppa tillbaka
+                      // Alltid gå till steg 2 (tidsval) oavsett mode
+                      goToStep2();
+                    } else if (currentStep === 2) {
+                      if (addons.length > 0) {
                         setSkipAddonsStep(true);
                         goToStep1();
-                      }
-                    } else if (currentStep === 2) {
-                      if (mode === 'home_visit') {
-                        if (addons.length === 0 && showCategories) {
-                          goToStep0();
-                        } else {
-                          setSkipAddonsStep(true);
-                          goToStep1();
-                        }
+                      } else if (showCategories) {
+                        goToStep0();
+                      } else {
+                        setOpen(false);
                       }
                     } else if (currentStep === 1) {
                       if (showCategories) {
                         goToStep0();
                       } else {
-                        setOpen(false); // Stäng modalen om man inte kom från kategori-val
+                        setOpen(false);
                       }
                     }
                   }}
