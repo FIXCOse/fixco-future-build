@@ -310,40 +310,6 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            prompt: 'consent'
-          }
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "Google-inloggning misslyckades",
-          description: error.message,
-          variant: "destructive"
-        });
-        setIsLoading(false);
-      }
-      // Note: Don't set loading to false here since user will be redirected
-    } catch (error) {
-      console.error('Google auth error:', error);
-      toast({
-        title: "Ett oväntat fel uppstod",
-        description: "Försök igen senare eller kontakta support",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-    }
-  };
-
   return (
     <>
       <AuthModal open={isOpen} onClose={handleClose}>
@@ -409,25 +375,6 @@ export default function AuthModalContainer({ isOpen, onClose }: AuthModalContain
                   Logga in
                 </Button>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-border" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">Eller</span>
-                  </div>
-                </div>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleGoogleSignIn}
-                  disabled={isLoading}
-                >
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Fortsätt med Google
-                </Button>
               </form>
             </TabsContent>
 

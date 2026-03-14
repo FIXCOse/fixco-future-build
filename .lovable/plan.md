@@ -1,25 +1,23 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-# Ta bort Google-inloggning
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Problem
-Användaren vill ta bort möjligheten att skapa konto/logga in med Google.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-## Ändringar
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-### 1. `src/pages/Auth.tsx`
-Ta bort:
-- `handleGoogleSignIn` funktion (rader ~220-255)
-- "Fortsätt med Google"-knappen i login-fliken (rader ~410-418)
-- "Eller"-separatorn före Google-knappen (rader ~401-408)
-- "Fortsätt med Google"-knappen i signup-fliken (rader ~596-604)
-- "Eller"-separatorn före signup Google-knappen (rader ~587-594)
-
-### 2. `src/components/auth/AuthModalContainer.tsx`
-Ta bort:
-- `handleGoogleSignIn` funktion (rader ~313-345)
-- "Fortsätt med Google"-knappen (rader ~410-418)
-- "Eller"-separatorn före knappen
-
-Efter ändringarna kommer endast email/password inloggning finnas kvar.
-
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
