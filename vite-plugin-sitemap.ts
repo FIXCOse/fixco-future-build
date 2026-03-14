@@ -112,10 +112,14 @@ function xmlHeader(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n`;
 }
 
+// ─── Blog slugs (imported at build-time) ───
+import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
+
 function generateSitemapIndex(): string {
   const sitemaps = [
     `${BASE_URL}/sitemap-main.xml`,
     `${BASE_URL}/sitemap-hubs.xml`,
+    `${BASE_URL}/sitemap-blog.xml`,
     `${BASE_URL}/sitemap-local-stockholm.xml`,
     `${BASE_URL}/sitemap-local-uppsala.xml`,
   ];
