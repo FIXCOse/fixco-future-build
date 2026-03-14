@@ -162,6 +162,28 @@ export const EXPANDED_SERVICES = [
   { slug: "rivning-badrum", name: "Rivning badrum", serviceKey: "rivning", rotRut: "ROT" },
   { slug: "rivning-kok", name: "Rivning kök", serviceKey: "rivning", rotRut: "ROT" },
   { slug: "bortforsling", name: "Bortforsling", serviceKey: "rivning", rotRut: "ROT" },
+  
+  // === SPECIFIKA BOKNINGSBARA TJÄNSTER (~20 nya) ===
+  { slug: "montera-tv-pa-vagg", name: "Montera TV på vägg", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "installera-akustikpanel", name: "Installera akustikpanel", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "platsbyggd-garderob", name: "Platsbyggd garderob", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "platsbyggd-bokhylla", name: "Platsbyggd bokhylla", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "montera-spotlights", name: "Montera spotlights", serviceKey: "el", rotRut: "ROT" },
+  { slug: "installera-laddbox-hemma", name: "Installera laddbox hemma", serviceKey: "el", rotRut: "ROT" },
+  { slug: "bygga-altan", name: "Bygga altan", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "montera-koksflakt", name: "Montera köksfläkt", serviceKey: "montering", rotRut: "ROT" },
+  { slug: "installera-golvvarme", name: "Installera golvvärme", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "bygga-bastu", name: "Bygga bastu", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "montera-markis", name: "Montera markis", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "installera-varmepump", name: "Installera värmepump", serviceKey: "vvs", rotRut: "ROT" },
+  { slug: "renovera-trapp", name: "Renovera trapp", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bygga-carport", name: "Bygga carport", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "montera-takfonster", name: "Montera takfönster", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bygga-utekök", name: "Bygga utekök", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bygga-friggebod", name: "Bygga friggebod", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "montera-persienner", name: "Montera persienner", serviceKey: "montering", rotRut: "RUT" },
+  { slug: "installera-solceller-hem", name: "Installera solceller hemma", serviceKey: "el", rotRut: "ROT" },
+  { slug: "bygga-plank", name: "Bygga plank", serviceKey: "snickeri", rotRut: "ROT" },
 ] as const;
 
 export type ExpandedSlug = typeof EXPANDED_SERVICES[number]["slug"];
