@@ -117,13 +117,25 @@ function xmlHeader(): string {
 // ─── Blog slugs (imported at build-time) ───
 import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
 
+// Helper: chunk an array into batches
+function chunk<T>(arr: T[], size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
+const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 50);
+const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 75);
+
 function generateSitemapIndex(): string {
   const sitemaps = [
     `${BASE_URL}/sitemap-main.xml`,
     `${BASE_URL}/sitemap-hubs.xml`,
     `${BASE_URL}/sitemap-blog.xml`,
-    `${BASE_URL}/sitemap-local-stockholm.xml`,
-    `${BASE_URL}/sitemap-local-uppsala.xml`,
+    ...STHLM_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-sthlm-${i + 1}.xml`),
+    ...UPPSALA_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-uppsala-${i + 1}.xml`),
   ];
   let xml = xmlHeader();
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -190,11 +202,11 @@ function generateHubsSitemap(): string {
   return xml;
 }
 
-function generateLocalSitemap(areaSlugs: string[]): string {
+function generateLocalSitemap(areaSlugs: string[], serviceSlugs: string[] = ALL_SERVICE_SLUGS): string {
   let xml = xmlHeader();
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
-  for (const slug of ALL_SERVICE_SLUGS) {
+  for (const slug of serviceSlugs) {
     for (const area of areaSlugs) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
       const svLoc = `${BASE_URL}/tjanster/${slug}/${area}`;
@@ -251,8 +263,12 @@ export function sitemapPlugin(): Plugin {
     sitemapFiles['/sitemap-main.xml'] = generateMainSitemap();
     sitemapFiles['/sitemap-hubs.xml'] = generateHubsSitemap();
     sitemapFiles['/sitemap-blog.xml'] = generateBlogSitemap();
-    sitemapFiles['/sitemap-local-stockholm.xml'] = generateLocalSitemap(STOCKHOLM_AREA_SLUGS);
-    sitemapFiles['/sitemap-local-uppsala.xml'] = generateLocalSitemap(UPPSALA_AREA_SLUGS);
+    STHLM_BATCHES.forEach((batch, i) => {
+      sitemapFiles[`/sitemap-local-sthlm-${i + 1}.xml`] = generateLocalSitemap(STOCKHOLM_AREA_SLUGS, batch);
+    });
+    UPPSALA_BATCHES.forEach((batch, i) => {
+      sitemapFiles[`/sitemap-local-uppsala-${i + 1}.xml`] = generateLocalSitemap(UPPSALA_AREA_SLUGS, batch);
+    });
   }
 
   return {
