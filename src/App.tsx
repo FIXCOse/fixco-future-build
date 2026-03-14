@@ -14,6 +14,7 @@ const Services = lazy(() => import("./pages/Services"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const Contact = lazy(() => import("./pages/Contact"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const FAQCategory = lazy(() => import("./pages/FAQCategory"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const BookVisit = lazy(() => import("./pages/BookVisit"));
 const ROTInfo = lazy(() => import("./pages/ROTInfo"));
@@ -446,6 +447,7 @@ const App = () => {
                             
                             <Route path="kontakt" element={lazyElement(Contact)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="faq/:category" element={lazyElement(FAQCategory)} />
                             <Route path="om-oss" element={lazyElement(AboutUs)} />
                             <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
                             <Route path="rot-info" element={lazyElement(ROTInfo)} />
@@ -501,6 +503,7 @@ const App = () => {
                             } />
                             <Route path="insurance" element={lazyElement(ROTInfo)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="faq/:category" element={lazyElement(FAQCategory)} />
                             <Route path="about" element={lazyElement(AboutUs)} />
                             <Route path="references" element={lazyElement(Referenser)} />
                             <Route path="terms" element={lazyElement(Terms)} />

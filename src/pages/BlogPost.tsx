@@ -10,6 +10,7 @@ import { getBlogPostBySlug, getRelatedPosts, blogCategories } from '@/data/blogD
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import BlogThumbnail from '@/components/blog/BlogThumbnail';
+import { BlogServiceLinks } from '@/components/blog/BlogServiceLinks';
 
 // Extend window for global modal function
 declare global {
@@ -624,6 +625,13 @@ const BlogPost = () => {
                 </Button>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Service Links (SEO internal linking) */}
+        <section className="py-0 bg-background">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <BlogServiceLinks category={post.category} />
           </div>
         </section>
 

@@ -55,6 +55,8 @@ import { GradientText } from "@/components/v2/GradientText";
 import { TestimonialCarouselLocal } from "@/components/local-service/TestimonialCarouselLocal";
 import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSection";
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
+import { RelatedServicesSection } from "@/components/local-service/RelatedServicesSection";
+import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
@@ -859,6 +861,18 @@ const LocalServicePage = () => {
             </div>
           </div>
         </section>
+
+        {/* Related Services in same area (SEO internal linking) */}
+        <div className="container mx-auto px-4 max-w-5xl">
+          <RelatedServicesSection
+            serviceSlug={serviceSlug || ''}
+            areaSlug={areaSlug || ''}
+            areaName={area}
+            locale={locale}
+          />
+          {/* Related Blog Posts (SEO internal linking) */}
+          <RelatedBlogPosts serviceSlug={serviceSlug || ''} locale={locale} />
+        </div>
 
         {/* Area Links (SEO) */}
         <ExpandableAreaLinks
