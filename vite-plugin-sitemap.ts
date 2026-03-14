@@ -67,6 +67,8 @@ const ALL_SERVICE_SLUGS = [
   'larm','smarthome','natverksinstallation','kameraovervakning','solceller','porttelefon',
   // Expanded: Rivning (3)
   'rivning-badrum','rivning-kok','bortforsling',
+  // Specifika bokningsbara tjänster (20)
+  'montera-tv-pa-vagg','installera-akustikpanel','platsbyggd-garderob','platsbyggd-bokhylla','montera-spotlights','installera-laddbox-hemma','bygga-altan','montera-koksflakt','installera-golvvarme','bygga-bastu','montera-markis','installera-varmepump','renovera-trapp','bygga-carport','montera-takfonster','bygga-utekök','bygga-friggebod','montera-persienner','installera-solceller-hem','bygga-plank',
 ];
 
 // ─── All 53 area slugs (34 Stockholm + 19 Uppsala) ───
