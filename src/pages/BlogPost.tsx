@@ -10,6 +10,7 @@ import { getBlogPostBySlug, getRelatedPosts, blogCategories } from '@/data/blogD
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import BlogThumbnail from '@/components/blog/BlogThumbnail';
+import { BlogServiceLinks } from '@/components/blog/BlogServiceLinks';
 
 // Extend window for global modal function
 declare global {
