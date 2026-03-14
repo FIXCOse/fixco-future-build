@@ -447,6 +447,7 @@ const App = () => {
                             
                             <Route path="kontakt" element={lazyElement(Contact)} />
                             <Route path="faq" element={lazyElement(FAQ)} />
+                            <Route path="faq/:category" element={lazyElement(FAQCategory)} />
                             <Route path="om-oss" element={lazyElement(AboutUs)} />
                             <Route path="boka-hembesok" element={lazyElement(BookVisit)} />
                             <Route path="rot-info" element={lazyElement(ROTInfo)} />
