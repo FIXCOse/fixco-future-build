@@ -335,6 +335,27 @@ export const EXPANDED_SERVICE_NAME_EN: Record<ExpandedSlug, string> = {
   "rivning-badrum": "Bathroom Demolition",
   "rivning-kok": "Kitchen Demolition",
   "bortforsling": "Debris Removal",
+  // Specifika bokningsbara tjänster
+  "montera-tv-pa-vagg": "Wall Mount TV Installation",
+  "installera-akustikpanel": "Acoustic Panel Installation",
+  "platsbyggd-garderob": "Custom Built Wardrobe",
+  "platsbyggd-bokhylla": "Custom Built Bookshelf",
+  "montera-spotlights": "Spotlight Installation",
+  "installera-laddbox-hemma": "Home EV Charger Installation",
+  "bygga-altan": "Build a Deck",
+  "montera-koksflakt": "Kitchen Hood Installation",
+  "installera-golvvarme": "Underfloor Heating Installation",
+  "bygga-bastu": "Build a Sauna",
+  "montera-markis": "Awning Installation",
+  "installera-varmepump": "Heat Pump Installation",
+  "renovera-trapp": "Stair Renovation",
+  "bygga-carport": "Build a Carport",
+  "montera-takfonster": "Roof Window Installation",
+  "bygga-utekök": "Build an Outdoor Kitchen",
+  "bygga-friggebod": "Build a Garden Shed",
+  "montera-persienner": "Blind Installation",
+  "installera-solceller-hem": "Home Solar Panel Installation",
+  "bygga-plank": "Build a Fence",
 };
 
 // Pricing for expanded slugs (inherits from parent serviceKey)
