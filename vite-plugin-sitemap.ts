@@ -117,13 +117,25 @@ function xmlHeader(): string {
 // ─── Blog slugs (imported at build-time) ───
 import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
 
+// Helper: chunk an array into batches
+function chunk<T>(arr: T[], size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
+const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 50);
+const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 75);
+
 function generateSitemapIndex(): string {
   const sitemaps = [
     `${BASE_URL}/sitemap-main.xml`,
     `${BASE_URL}/sitemap-hubs.xml`,
     `${BASE_URL}/sitemap-blog.xml`,
-    `${BASE_URL}/sitemap-local-stockholm.xml`,
-    `${BASE_URL}/sitemap-local-uppsala.xml`,
+    ...STHLM_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-sthlm-${i + 1}.xml`),
+    ...UPPSALA_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-uppsala-${i + 1}.xml`),
   ];
   let xml = xmlHeader();
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
