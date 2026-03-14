@@ -747,6 +747,27 @@ export const EXPANDED_SERVICE_MYTHS: Record<ExpandedSlug, Array<{ myth: string; 
   "rivning-badrum": DEMOLITION_MYTHS,
   "rivning-kok": DEMOLITION_MYTHS,
   "bortforsling": DEMOLITION_MYTHS,
+  // Specifika bokningsbara tjänster
+  "montera-tv-pa-vagg": ASSEMBLY_MYTHS,
+  "installera-akustikpanel": ASSEMBLY_MYTHS,
+  "platsbyggd-garderob": RENOVATION_MYTHS,
+  "platsbyggd-bokhylla": RENOVATION_MYTHS,
+  "montera-spotlights": EL_MYTHS,
+  "installera-laddbox-hemma": EL_MYTHS,
+  "bygga-altan": RENOVATION_MYTHS,
+  "montera-koksflakt": KITCHEN_MYTHS,
+  "installera-golvvarme": VVS_MYTHS,
+  "bygga-bastu": RENOVATION_MYTHS,
+  "montera-markis": ASSEMBLY_MYTHS,
+  "installera-varmepump": VVS_MYTHS,
+  "renovera-trapp": RENOVATION_MYTHS,
+  "bygga-carport": RENOVATION_MYTHS,
+  "montera-takfonster": RENOVATION_MYTHS,
+  "bygga-utekök": RENOVATION_MYTHS,
+  "bygga-friggebod": RENOVATION_MYTHS,
+  "montera-persienner": ASSEMBLY_MYTHS,
+  "installera-solceller-hem": TECH_MYTHS,
+  "bygga-plank": RENOVATION_MYTHS,
 };
 
 // Certification text for expanded slugs
