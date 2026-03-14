@@ -217,40 +217,6 @@ const Auth = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            prompt: 'consent'
-          }
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "Google-inloggning misslyckades",
-          description: error.message,
-          variant: "destructive"
-        });
-        setIsLoading(false);
-      }
-      // Note: Don't set loading to false here since user will be redirected
-    } catch (error) {
-      console.error('Google auth error:', error);
-      toast({
-        title: "Ett oväntat fel uppstod",
-        description: "Försök igen senare eller kontakta support",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-    }
-  };
-
   const handleClose = () => {
     navigate(-1); // Go back to previous page, or home if no history
   };
