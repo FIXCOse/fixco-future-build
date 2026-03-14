@@ -53,6 +53,31 @@ export const Seo: React.FC<SeoProps> = ({
     }
     link.href = canonicalHref;
 
+    // Hreflang tags (sv, en, x-default)
+    const setHreflang = (hreflang: string, href: string) => {
+      let el = document.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`) as HTMLLinkElement | null;
+      if (!el) {
+        el = document.createElement("link");
+        el.setAttribute("rel", "alternate");
+        el.setAttribute("hreflang", hreflang);
+        document.head.appendChild(el);
+      }
+      el.href = href;
+    };
+
+    // Compute sv and en URLs from canonical
+    const isEnglish = canonicalHref.includes('/en/');
+    const svUrl = isEnglish
+      ? canonicalHref.replace(`${baseUrl}/en/services/`, `${baseUrl}/tjanster/`).replace(`${baseUrl}/en/`, `${baseUrl}/`)
+      : canonicalHref;
+    const enUrl = isEnglish
+      ? canonicalHref
+      : canonicalHref.replace(`${baseUrl}/tjanster/`, `${baseUrl}/en/services/`).replace(baseUrl, `${baseUrl}/en`).replace(/\/en\/en\//, '/en/');
+
+    setHreflang("sv", svUrl);
+    setHreflang("en", enUrl);
+    setHreflang("x-default", svUrl);
+
     // Helper function to set meta tags
     const setMeta = (property: string, content: string, useProperty = true) => {
       const attr = useProperty ? "property" : "name";

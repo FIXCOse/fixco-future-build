@@ -202,11 +202,11 @@ function generateHubsSitemap(): string {
   return xml;
 }
 
-function generateLocalSitemap(areaSlugs: string[]): string {
+function generateLocalSitemap(areaSlugs: string[], serviceSlugs: string[] = ALL_SERVICE_SLUGS): string {
   let xml = xmlHeader();
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
-  for (const slug of ALL_SERVICE_SLUGS) {
+  for (const slug of serviceSlugs) {
     for (const area of areaSlugs) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
       const svLoc = `${BASE_URL}/tjanster/${slug}/${area}`;

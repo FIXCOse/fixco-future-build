@@ -84,7 +84,7 @@ export const useSEO = ({
       {alternateLanguages.map(({ locale, url }) => (
         <link key={locale} rel="alternate" hrefLang={locale} href={url} />
       ))}
-      <link rel="alternate" hrefLang="x-default" href={`${baseUrl}/`} />
+      <link rel="alternate" hrefLang="x-default" href={currentUrl.startsWith(`${baseUrl}/en`) ? currentUrl.replace(/\/en\//, '/').replace(/\/en$/, '/') : currentUrl} />
 
       {/* Structured Data */}
       {schema && (
