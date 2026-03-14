@@ -860,6 +860,18 @@ const LocalServicePage = () => {
           </div>
         </section>
 
+        {/* Related Services in same area (SEO internal linking) */}
+        <div className="container mx-auto px-4 max-w-5xl">
+          <RelatedServicesSection
+            serviceSlug={serviceSlug || ''}
+            areaSlug={areaSlug || ''}
+            areaName={area}
+            locale={locale}
+          />
+          {/* Related Blog Posts (SEO internal linking) */}
+          <RelatedBlogPosts serviceSlug={serviceSlug || ''} locale={locale} />
+        </div>
+
         {/* Area Links (SEO) */}
         <ExpandableAreaLinks
           currentArea={area}
