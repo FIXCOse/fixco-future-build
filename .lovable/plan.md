@@ -1,32 +1,39 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Fix: Sitemap-filer som Google inte kan hämta
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Analys
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+Från skärmdumpen:
+- **Lyckas**: sthlm-1 (3 400 URLs), sthlm-4 (1 428 URLs), blog (160), hubs (342), main (28)
+- **Misslyckas**: sthlm-2, sthlm-3 (3 400 URLs vardera), alla 3 Uppsala-filer (2 850 / 2 850 / 798)
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+Nuvarande batch-storlekar: Stockholm = 50 slugs/batch, Uppsala = 75 slugs/batch. Varje URL genererar ~6 rader XML (med hreflang), så filerna blir stora. Google har en timeout och/eller storleksgräns (~50 MB okomprimerat) som slår till inkonsekvent.
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+## Lösning
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+Minska batch-storlekarna drastiskt så att varje fil innehåller max ~1 500 URLs:
+
+| Region | Nuvarande | Nytt | Antal filer | URLs/fil (ca) |
+|--------|-----------|------|-------------|---------------|
+| Stockholm (34 områden) | 50 slugs/batch | **20** | ~9 | ~1 360 |
+| Uppsala (19 områden) | 75 slugs/batch | **35** | ~5 | ~1 330 |
+
+## Fil att ändra
+
+**`vite-plugin-sitemap.ts`** — rad 129-130:
+
+```typescript
+// Nuvarande
+const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 50);
+const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 75);
+
+// Nytt
+const STHLM_BATCHES = chunk(ALL_SERVICE_SLUGS, 20);
+const UPPSALA_BATCHES = chunk(ALL_SERVICE_SLUGS, 35);
+```
+
+Inget annat behöver ändras — sitemap-index, buildSitemaps() och dev-servern använder redan `STHLM_BATCHES` och `UPPSALA_BATCHES` dynamiskt.
+
+Efter deploy: skicka om alla sitemaps i Google Search Console.
+
