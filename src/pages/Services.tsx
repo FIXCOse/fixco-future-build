@@ -148,6 +148,58 @@ const Services = () => {
         </section>
       </EditableSection>
 
+      {/* Populära specifika tjänster */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              <GradientText gradient="rainbow">
+                {isEnglish ? 'Popular Services' : 'Populära tjänster'}
+              </GradientText>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              {isEnglish
+                ? 'Our most requested services — book directly or get a free quote.'
+                : 'Våra mest efterfrågade tjänster — boka direkt eller begär gratis offert.'}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            {[
+              { slug: 'montera-tv-pa-vagg', sv: 'Montera TV på vägg', en: 'Wall Mount TV' },
+              { slug: 'installera-akustikpanel', sv: 'Installera akustikpanel', en: 'Acoustic Panels' },
+              { slug: 'platsbyggd-garderob', sv: 'Platsbyggd garderob', en: 'Custom Wardrobe' },
+              { slug: 'platsbyggd-bokhylla', sv: 'Platsbyggd bokhylla', en: 'Custom Bookshelf' },
+              { slug: 'bygga-altan', sv: 'Bygga altan', en: 'Build a Deck' },
+              { slug: 'installera-laddbox-hemma', sv: 'Installera laddbox', en: 'EV Charger' },
+              { slug: 'montera-spotlights', sv: 'Montera spotlights', en: 'Spotlight Installation' },
+              { slug: 'installera-golvvarme', sv: 'Installera golvvärme', en: 'Underfloor Heating' },
+              { slug: 'bygga-bastu', sv: 'Bygga bastu', en: 'Build a Sauna' },
+              { slug: 'montera-koksflakt', sv: 'Montera köksfläkt', en: 'Kitchen Hood' },
+              { slug: 'installera-varmepump', sv: 'Installera värmepump', en: 'Heat Pump' },
+              { slug: 'renovera-trapp', sv: 'Renovera trapp', en: 'Stair Renovation' },
+              { slug: 'bygga-carport', sv: 'Bygga carport', en: 'Build a Carport' },
+              { slug: 'montera-takfonster', sv: 'Montera takfönster', en: 'Roof Window' },
+              { slug: 'bygga-utekök', sv: 'Bygga utekök', en: 'Outdoor Kitchen' },
+              { slug: 'bygga-friggebod', sv: 'Bygga friggebod', en: 'Garden Shed' },
+              { slug: 'installera-solceller-hem', sv: 'Installera solceller', en: 'Solar Panels' },
+              { slug: 'bygga-plank', sv: 'Bygga plank', en: 'Build a Fence' },
+              { slug: 'montera-markis', sv: 'Montera markis', en: 'Awning' },
+              { slug: 'montera-persienner', sv: 'Montera persienner', en: 'Blinds' },
+            ].map(service => (
+              <Link
+                key={service.slug}
+                to={`${locale === 'en' ? '/en/services' : '/tjanster'}/${service.slug}`}
+                className="group flex items-center gap-3 p-4 rounded-xl border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
+              >
+                <span className="text-primary text-lg">→</span>
+                <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                  {isEnglish ? service.en : service.sv}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
 
       {/* Geographic Links */}
