@@ -1,32 +1,39 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Aggressiv fix: Konsolidera child-sitemaps
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+Google Search Console misslyckas hämta **8 av 14** lokala sitemap-filer (sthlm-6/7/8, alla 5 uppsala). Filerna är tillgängliga live och innehåller giltig XML. Problemet är sannolikt att Google timeout:ar vid parallell hämtning av många child-sitemaps.
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+## Lösning
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+Slå ihop alla 14 lokala sitemaps till **2 filer**:
+- `sitemap-local-sthlm.xml` (alla 171 tjänster × 34 områden × 2 språk = ~11 628 URLs)
+- `sitemap-local-uppsala.xml` (alla 171 tjänster × 19 områden × 2 språk = ~6 498 URLs)
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+Båda ligger långt under Googles gräns på 50 000 URLs och 50MB per fil. Totalt antal child-sitemaps minskar från **17 till 5** (main, hubs, blog, sthlm, uppsala), vilket kraftigt minskar risken för hämtningsfel.
+
+## Tekniska ändringar
+
+### 1. `vite-plugin-sitemap.ts`
+- Ta bort chunk-logiken (`STHLM_BATCHES`, `UPPSALA_BATCHES`)
+- Generera en enda `sitemap-local-sthlm.xml` med alla tjänster + alla Stockholmsområden
+- Generera en enda `sitemap-local-uppsala.xml` med alla tjänster + alla Uppsalaområden
+- Uppdatera `generateSitemapIndex()` att lista bara dessa 2 istället för 14
+
+### 2. `public/_redirects`
+- Behåll wildcard-regeln `/sitemap-local-*` (fungerar redan)
+- Ingen ändring behövs
+
+### 3. `scripts/validate-sitemaps.mjs`
+- Ingen ändring behövs (validerar alla sitemap-filer dynamiskt)
+
+## Resultat
+
+| Före | Efter |
+|------|-------|
+| 17 child-sitemaps | 5 child-sitemaps |
+| 8 filer med "Hämtning misslyckades" | Färre filer = mindre risk |
+| Google måste hämta 17 filer | Google hämtar 5 filer |
+
