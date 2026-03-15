@@ -251,12 +251,8 @@ export function sitemapPlugin(): Plugin {
     sitemapFiles['/sitemap-main.xml'] = generateMainSitemap();
     sitemapFiles['/sitemap-hubs.xml'] = generateHubsSitemap();
     sitemapFiles['/sitemap-blog.xml'] = generateBlogSitemap();
-    STHLM_BATCHES.forEach((batch, i) => {
-      sitemapFiles[`/sitemap-local-sthlm-${i + 1}.xml`] = generateLocalSitemap(STOCKHOLM_AREA_SLUGS, batch);
-    });
-    UPPSALA_BATCHES.forEach((batch, i) => {
-      sitemapFiles[`/sitemap-local-uppsala-${i + 1}.xml`] = generateLocalSitemap(UPPSALA_AREA_SLUGS, batch);
-    });
+    sitemapFiles['/sitemap-local-sthlm.xml'] = generateLocalSitemap(STOCKHOLM_AREA_SLUGS);
+    sitemapFiles['/sitemap-local-uppsala.xml'] = generateLocalSitemap(UPPSALA_AREA_SLUGS);
   }
 
   return {
