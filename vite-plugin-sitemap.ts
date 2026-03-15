@@ -137,7 +137,7 @@ function generateSitemapIndex(): string {
     ...STHLM_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-sthlm-${i + 1}.xml`),
     ...UPPSALA_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-uppsala-${i + 1}.xml`),
   ];
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const loc of sitemaps) {
     xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>\n`;
