@@ -1,0 +1,255 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://fixco.se/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/tjanster</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/services</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/services"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/tjanster"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/tjanster"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/kontakt</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/contact</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/kontakt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/kontakt"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/om-oss</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/about</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/about"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/om-oss"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/om-oss"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/karriar</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/karriar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/careers"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/karriar"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/careers</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/careers"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/karriar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/karriar"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/referenser</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/references</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/references"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/referenser"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/referenser"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/smart-hem</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/smart-home</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/smart-home"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/smart-hem"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/smart-hem"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/ai</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/ai</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/ai"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/ai"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/ai"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/boka-hembesok</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/book-visit</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/book-visit"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/boka-hembesok"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/boka-hembesok"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/rot-info</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/rot-info</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rot-info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rot-info"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/rut</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/rut</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/rut"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/rut"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/rut"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/faq</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/faq</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/faq"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/terms</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/terms"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/terms</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/terms"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/privacy</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/privacy"/>
+  </url>
+  <url>
+    <loc>https://fixco.se/en/privacy</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fixco.se/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://fixco.se/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fixco.se/privacy"/>
+  </url>
+</urlset>
