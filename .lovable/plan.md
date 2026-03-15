@@ -1,48 +1,32 @@
 
-Ja, skärmdumpen säger mycket: den pekar främst på en **validator-bugg**, inte på att din sitemap är trasig.
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Vad bilden faktiskt visar
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-- Felet `Failed to parse XML resource '/var/www/wspstage.mentorvpn.com/.../custom.xsd'` refererar till **validatorns egen serverfil** (`websiteplanet`), inte din domän.
-- Felet `XML declaration allowed only at the start of the document` uppstår ofta som följdfel när just den validatorn parserar fel (eller läser via en intern wrapper), även när sitemapen i sig är korrekt.
-- I vår kod genereras XML-deklarationen exakt en gång i början (`vite-plugin-sitemap.ts`), så dubbel deklaration i källkoden är osannolik.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-## Plan (robust, så vi eliminerar även “edge cases”)
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-1. **Gör sitemap-output ännu mer tolerant mot tredjepartsverktyg**
-   - Ta bort XML-deklarationen (`<?xml ...?>`) från alla sitemap-filer (den är valfri enligt XML och Google klarar detta).
-   - Säkerställ att dokumentet alltid börjar direkt med `<sitemapindex>` eller `<urlset>`.
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
 
-2. **Inför build-validering av sitemapfiler**
-   - Lägg till ett valideringsscript som körs efter build och kontrollerar:
-     - exakt en rot-tag,
-     - inga ledande tecken/BOM,
-     - korrekt namespace,
-     - inga dubbletter i `<loc>`.
-   - Build ska faila om valideringen failar.
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-3. **Inför “sitemap health check” för drift**
-   - Kontrollera samtliga sitemap-URL:er för:
-     - HTTP 200,
-     - `Content-Type` innehåller `xml`,
-     - rimlig storlek,
-     - parsbar struktur.
-   - Dokumentera detta som standardkontroll före GSC-resubmit.
-
-4. **Verifiera mot rätt källa (Google, inte tredjepartsvalidatorn)**
-   - Resubmit endast `/sitemap.xml` i Search Console.
-   - Följ upp index-/hämtningsstatus på child-sitemaps där, inte i websiteplanet.
-
-## Tekniska detaljer (implementation)
-
-- Filer att ändra:
-  - `vite-plugin-sitemap.ts` (output-normalisering + ev. borttagning av XML-deklaration)
-  - `package.json` (nytt script för sitemap-validering)
-  - ny fil: `scripts/validate-sitemaps.mjs` (build/delivery checks)
-- Befintliga robusta delar (`public/_headers` + `public/_redirects`) behålls som de är.
-
-## Förväntat resultat
-
-- Du slipper falska parserfel från mindre tillförlitliga validatorer.
-- Du får en deterministisk kvalitetskontroll i build.
-- Google får stabil och konsekvent sitemapleverans, vilket är det som påverkar SEO i praktiken.
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)

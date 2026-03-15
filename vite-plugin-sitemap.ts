@@ -110,9 +110,9 @@ const MAIN_PAGES: Array<{ sv: string; en: string; priority: string; changefreq: 
   { sv: '/privacy', en: '/en/privacy', priority: '0.30', changefreq: 'yearly' },
 ];
 
-function xmlHeader(): string {
-  return `<?xml version="1.0" encoding="UTF-8"?>\n`;
-}
+// XML declaration removed intentionally — it's optional per spec and
+// causes false-positive errors in some third-party validators.
+// Google, Bing and all major crawlers parse sitemaps fine without it.
 
 // ─── Blog slugs (imported at build-time) ───
 import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
@@ -137,7 +137,7 @@ function generateSitemapIndex(): string {
     ...STHLM_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-sthlm-${i + 1}.xml`),
     ...UPPSALA_BATCHES.map((_, i) => `${BASE_URL}/sitemap-local-uppsala-${i + 1}.xml`),
   ];
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const loc of sitemaps) {
     xml += `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>\n`;
@@ -147,7 +147,7 @@ function generateSitemapIndex(): string {
 }
 
 function generateMainSitemap(): string {
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const page of MAIN_PAGES) {
@@ -178,7 +178,7 @@ function generateMainSitemap(): string {
 }
 
 function generateHubsSitemap(): string {
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const slug of ALL_SERVICE_SLUGS) {
@@ -203,7 +203,7 @@ function generateHubsSitemap(): string {
 }
 
 function generateLocalSitemap(areaSlugs: string[], serviceSlugs: string[] = ALL_SERVICE_SLUGS): string {
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const slug of serviceSlugs) {
@@ -231,7 +231,7 @@ function generateLocalSitemap(areaSlugs: string[], serviceSlugs: string[] = ALL_
 }
 
 function generateBlogSitemap(): string {
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const post of ALL_BLOG_SLUGS) {
