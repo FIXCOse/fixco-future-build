@@ -203,7 +203,7 @@ function generateHubsSitemap(): string {
 }
 
 function generateLocalSitemap(areaSlugs: string[], serviceSlugs: string[] = ALL_SERVICE_SLUGS): string {
-  let xml = xmlHeader();
+  let xml = '';
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   
   for (const slug of serviceSlugs) {
