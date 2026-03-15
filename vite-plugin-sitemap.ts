@@ -110,9 +110,9 @@ const MAIN_PAGES: Array<{ sv: string; en: string; priority: string; changefreq: 
   { sv: '/privacy', en: '/en/privacy', priority: '0.30', changefreq: 'yearly' },
 ];
 
-function xmlHeader(): string {
-  return `<?xml version="1.0" encoding="UTF-8"?>\n`;
-}
+// XML declaration removed intentionally — it's optional per spec and
+// causes false-positive errors in some third-party validators.
+// Google, Bing and all major crawlers parse sitemaps fine without it.
 
 // ─── Blog slugs (imported at build-time) ───
 import { ALL_BLOG_SLUGS } from './src/data/blogSlugs';
