@@ -580,14 +580,25 @@ export function RequestQuoteCard({
                    )}
                   {/* Follow-up email button for sent/viewed/change_requested */}
                   {['sent', 'viewed', 'change_requested'].includes(quote.status) && (
-                    <Button
-                      onClick={() => setFollowUpDialogOpen(true)}
-                      variant="outline"
-                      size="sm"
-                    >
-                      <Mail className="h-4 w-4 mr-2" />
-                      Uppföljningsmail
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => setFollowUpDialogOpen(true)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Uppföljningsmail
+                      </Button>
+                      <Button
+                        onClick={() => setReminderDialogOpen(true)}
+                        variant="outline"
+                        size="sm"
+                        className="border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400"
+                      >
+                        <Bell className="h-4 w-4 mr-2" />
+                        Påminnelse
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
