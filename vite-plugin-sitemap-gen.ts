@@ -9,18 +9,9 @@ import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
 
-// ─── Lastmod per category ───
-const CATEGORY_LASTMOD: Record<string, string> = {
-  'snickare': '2026-03-15', 'elektriker': '2026-03-15', 'vvs': '2026-03-15',
-  'malare': '2026-03-15', 'badrumsrenovering': '2026-03-15', 'koksrenovering': '2026-03-15',
-  'totalrenovering': '2026-03-15', 'renovering': '2026-03-15', 'hantverkare': '2026-03-15',
-  'byggfirma': '2026-03-15', 'stad': '2026-03-10', 'flytt': '2026-03-10',
-  'tradgard': '2026-03-08', 'markarbeten': '2026-03-08',
-  'montering': '2026-03-06', 'tekniska-installationer': '2026-03-06',
-};
-const DEFAULT_LASTMOD = '2026-03-01';
-function getLastmod(slug: string) {
-  return CATEGORY_LASTMOD[slug] || DEFAULT_LASTMOD;
+// ─── Lastmod — always today ───
+function getLastmod() {
+  return TODAY;
 }
 
 // ─── 151 service slugs ───
