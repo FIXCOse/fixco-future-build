@@ -46,7 +46,7 @@ const NicheServiceLandingPage = () => {
   // Resolve niche service from slug
   const niche = useMemo(() => {
     if (!slug) return undefined;
-    return isEnglish ? getNicheServiceByEnSlug(slug) : getNicheService(slug);
+    return isEnglish ? (getNicheServiceByEnSlug(slug) || getNicheService(slug)) : getNicheService(slug);
   }, [slug, isEnglish]);
 
   // Fetch related services from database

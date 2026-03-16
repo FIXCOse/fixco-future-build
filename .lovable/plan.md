@@ -1,44 +1,32 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Problem: Nischsidor kraschar på engelska
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-### Grundorsak
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-Språkväxlaren använder `convertPath()` som gör en generisk prefix-swap: `/tjanster/montera-tv-pa-vagg` → `/en/services/montera-tv-pa-vagg`. Men den engelska niche-lookupen (`getNicheServiceByEnSlug`) söker på `enSlug`-fältet, som är `wall-mount-tv` — inte `montera-tv-pa-vagg`. Ingen match → sidan kraschar/visar fel.
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-Detta gäller **alla** ~20 hyperspecifika nischsidor som har egna engelska slugs.
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
 
-### Fix (2 delar)
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-**1. Fallback-lookup i SmartServiceRouter och NicheServiceLandingPage**
-
-När engelska lookupen misslyckas, testa även svenska sluggen som fallback. Detta gör att `/en/services/montera-tv-pa-vagg` fortfarande hittar rätt nisch.
-
-```typescript
-// SmartServiceRouter — ändra lookup-logiken
-const found = isEnglish
-  ? (getNicheServiceByEnSlug(slug || '') || getNicheService(slug || ''))
-  : getNicheService(slug || '');
-```
-
-Samma ändring i `NicheServiceLandingPage.tsx` rad 49.
-
-**2. Lägg till nischslugs i routeMapping.ts**
-
-Så att språkväxlaren producerar korrekta engelska URL:er (t.ex. `/en/services/wall-mount-tv`):
-
-```typescript
-// Loopa genom alla nischslugs och deras enSlug
-'/tjanster/montera-tv-pa-vagg': '/en/services/wall-mount-tv',
-'/tjanster/installera-akustikpanel': '/en/services/acoustic-panel-installation',
-// ... alla 20 nischslugs
-```
-
-Mappningarna hämtas från `nicheServiceData.ts` (fälten `slug` och `enSlug`).
-
-### Filer som ändras
-
-- `src/App.tsx` — SmartServiceRouter fallback-lookup (~1 rad)
-- `src/pages/NicheServiceLandingPage.tsx` — samma fallback (~1 rad)  
-- `src/utils/routeMapping.ts` — lägg till ~20 nischslug-mappningar
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
