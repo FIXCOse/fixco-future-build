@@ -2,7 +2,10 @@
  * Single source of truth for route mapping between Swedish and English
  */
 
-export const svToEnRoutes: Record<string, string> = {
+import { ALL_NICHE_SERVICES } from '@/data/nicheServiceData';
+
+// Static page mappings
+const STATIC_ROUTES: Record<string, string> = {
   '/': '/en',
   '/tjanster': '/en/services',
   '/tjanster/el': '/en/services/el',
@@ -29,6 +32,18 @@ export const svToEnRoutes: Record<string, string> = {
   '/ansvar-forsakring': '/en/insurance',
   '/ai': '/en/ai',
   '/tjanster/dorrlas': '/en/services/door-locks',
+};
+
+// Auto-generate niche service slug mappings
+const NICHE_ROUTES: Record<string, string> = Object.fromEntries(
+  ALL_NICHE_SERVICES
+    .filter(s => s.slug !== s.enSlug) // only where slugs differ
+    .map(s => [`/tjanster/${s.slug}`, `/en/services/${s.enSlug}`])
+);
+
+export const svToEnRoutes: Record<string, string> = {
+  ...STATIC_ROUTES,
+  ...NICHE_ROUTES,
 };
 
 export const enToSvRoutes: Record<string, string> = Object.fromEntries(

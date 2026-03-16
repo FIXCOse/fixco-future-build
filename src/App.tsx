@@ -127,7 +127,7 @@ const SmartServiceRouter = () => {
     console.log('[SmartServiceRouter] Loading niche data for slug:', slug, 'isEnglish:', isEnglish);
     import('./data/nicheServiceData')
       .then(({ getNicheService, getNicheServiceByEnSlug }) => {
-        const found = isEnglish ? getNicheServiceByEnSlug(slug || '') : getNicheService(slug || '');
+        const found = isEnglish ? (getNicheServiceByEnSlug(slug || '') || getNicheService(slug || '')) : getNicheService(slug || '');
         console.log('[SmartServiceRouter] Niche match result:', !!found, 'slug:', slug);
         setIsNiche(!!found);
       })
