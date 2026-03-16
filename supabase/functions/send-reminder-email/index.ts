@@ -88,7 +88,7 @@ serve(async (req) => {
         : `Offerten gäller till ${formattedDate}.`;
     }
 
-    // Convert plain text body to HTML paragraphs (minimal styling)
+    // Convert plain text body to HTML paragraphs
     const bodyHtml = body
       .split('\n')
       .filter((line: string) => line.trim() !== '')
@@ -96,18 +96,50 @@ serve(async (req) => {
       .join('');
 
     const isEn = quote.locale === 'en';
-    const linkText = isEn ? 'View your quote here' : 'Se din offert här';
-    const signoff = isEn ? 'Best regards' : 'Med vänliga hälsningar';
+    const headerTitle = isEn ? `Reminder – Quote ${quote.number}` : `Påminnelse – Offert ${quote.number}`;
+    const ctaText = isEn ? 'View and accept quote' : 'Visa och acceptera offert';
+    const signoff = isEn ? 'Kind regards,' : 'Med vänliga hälsningar,';
 
     const emailHtml = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#333333;">
-${bodyHtml}
-${validUntilText ? `<p style="margin:0 0 12px 0;">${validUntilText}</p>` : ''}
-<p style="margin:0 0 12px 0;"><a href="${publicUrl}" style="color:#1a73e8;">${linkText}</a></p>
-<p style="margin:24px 0 0 0;">${signoff},<br>Fixco<br>
-<span style="font-size:13px;color:#666666;">info@fixco.se | 079-335 02 28 | <a href="https://www.fixco.se" style="color:#666666;">www.fixco.se</a></span></p>
-</body></html>`;
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { margin:0; background: #f3f4f6; font-family: Arial, sans-serif; }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
+    .header { background: linear-gradient(135deg, #111827 0%, #4f46e5 100%); padding: 32px 24px; text-align: center; border-radius: 0 0 16px 16px; }
+    .title { color: #ffffff; font-size: 22px; font-weight: 700; margin: 8px 0 0; }
+    .card { background:#ffffff; border-radius: 12px; padding: 24px; margin-top: 16px; }
+    .cta { display:inline-block; background:#4f46e5; color:#ffffff; text-decoration:none; padding: 12px 24px; border-radius:8px; font-weight:700; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title">${headerTitle}</div>
+      <div style="color:#c7d2fe; font-size: 13px; margin-top:4px;">${isEn ? 'Quote number' : 'Offertnummer'}: ${quote.number}</div>
+    </div>
+    
+    <div class="card">
+      ${bodyHtml}
+      
+      ${validUntilText ? `
+      <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin: 16px 0;">
+        <p style="margin: 0; font-weight: 700;">${validUntilText}</p>
+      </div>
+      ` : ''}
+      
+      <div style="text-align: center; margin-top: 24px;">
+        <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#4f46e5;color:#ffffff !important;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;">${ctaText}</a>
+      </div>
+    </div>
+    
+    <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 16px;">
+      <p>${signoff}<br><strong>Fixco Team</strong></p>
+    </div>
+  </div>
+</body>
+</html>`;
 
     console.log(`${isTest ? '🧪 TEST' : '🔔'} Sending reminder to:`, recipientEmail);
 
