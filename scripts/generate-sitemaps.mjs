@@ -15,17 +15,8 @@ const BASE_URL = 'https://fixco.se';
 const TODAY = new Date().toISOString().split('T')[0];
 
 // ─── Lastmod per category ───
-const CATEGORY_LASTMOD = {
-  'snickare': TODAY, 'elektriker': TODAY, 'vvs': TODAY, 'malare': TODAY,
-  'badrumsrenovering': TODAY, 'koksrenovering': TODAY, 'totalrenovering': TODAY,
-  'renovering': TODAY, 'hantverkare': TODAY, 'byggfirma': TODAY,
-  'stad': '2026-03-10', 'flytt': '2026-03-10',
-  'tradgard': '2026-03-08', 'markarbeten': '2026-03-08',
-  'montering': '2026-03-06', 'tekniska-installationer': '2026-03-06',
-};
-const DEFAULT_LASTMOD = '2026-03-01';
-function getLastmod(slug) {
-  return CATEGORY_LASTMOD[slug] || DEFAULT_LASTMOD;
+function getLastmod() {
+  return TODAY;
 }
 
 // ─── 151 service slugs ───
@@ -132,21 +123,21 @@ function hubsSitemap() {
   for (const slug of ALL_SERVICE_SLUGS) {
     const sv = `${BASE_URL}/tjanster/${slug}`;
     const en = `${BASE_URL}/en/services/${slug}`;
-    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
+    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
     xml += `  </url>\n`;
-    xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
+    xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
     xml += `  </url>\n`;
     for (const area of ALL_AREAS) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
       const svLocal = `${BASE_URL}/tjanster/${slug}/${area}`;
       const enLocal = `${BASE_URL}/en/services/${slug}/${area}`;
-      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <priority>${priority}</priority>\n`;
+      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <priority>${priority}</priority>\n`;
       xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
       const enPri = Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2);
-      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <priority>${enPri}</priority>\n`;
+      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <priority>${enPri}</priority>\n`;
       xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
     }
