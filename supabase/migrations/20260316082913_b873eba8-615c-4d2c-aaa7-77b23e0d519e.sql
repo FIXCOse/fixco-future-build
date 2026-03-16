@@ -1,0 +1,1 @@
+UPDATE quotes_new SET reminder_sent_at = now() WHERE id = 'f661e5cf-353a-4e10-a676-0bd58626cdba';
