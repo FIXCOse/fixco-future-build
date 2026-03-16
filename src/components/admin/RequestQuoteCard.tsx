@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock, Bell } from "lucide-react";
 import { ScheduleQuoteSendDialog } from './ScheduleQuoteSendDialog';
 import { QuoteStatusTimeline } from './QuoteStatusTimeline';
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
