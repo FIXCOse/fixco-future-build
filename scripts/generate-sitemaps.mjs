@@ -97,7 +97,7 @@ function parseBlogSlugs() {
 
 // ─── Generators ───
 function sitemapIndex() {
-  const sitemaps = ['sitemap-main.xml','sitemap-hubs.xml','sitemap-blog.xml','sitemap-local-sthlm.xml','sitemap-local-uppsala.xml'];
+  const sitemaps = ['sitemap-main.xml','sitemap-hubs.xml','sitemap-blog.xml'];
   let xml = `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const s of sitemaps) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/${s}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>\n`;
