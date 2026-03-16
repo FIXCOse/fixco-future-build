@@ -1,20 +1,32 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Plan: Lägg till `lastmod` på alla lokala ortssidor i sitemap
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-Just nu saknar de ~16 000 lokala ortssidorna (`/tjanster/{slug}/{area}`) `lastmod`-tagg. Hub-sidorna och bloggen har det redan. Att lägga till `lastmod` överallt ger Google bättre crawl-prioritering.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-### Approach
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-Ortssidorna ärver samma innehåll som sin tjänstekategori, så vi återanvänder `getLastmod(slug)` — samma datum som hub-sidan för den tjänsten.
+### Lösning ✅
+- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
 
-### Ändringar
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-**1. `vite-plugin-sitemap-gen.ts`** — rad 140 och 144
-- Lägg till `<lastmod>${getLastmod(slug)}</lastmod>` i de lokala URL-elementen (både sv och en)
-
-**2. `scripts/generate-sitemaps.mjs`**
-- Samma ändring speglad
-
-Totalt 4 rader ändras (2 per fil). Blogg och main-sidor har redan `lastmod` — inga ändringar behövs där.
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
