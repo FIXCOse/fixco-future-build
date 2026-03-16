@@ -1,32 +1,21 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Plan: Uppdatera påminnelsemailet till samma stil som offertmailet
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+Påminnelsemailet hamnar i "Kampanjer" i Gmail. Offertmailet (`send-quote-email-new`) hamnar i Primär och har en beprövad mall med gradient-header, card-layout och CTA-knapp.
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+## Lösning
+Uppdatera `send-reminder-email/index.ts` till att använda **samma HTML-struktur** som `send-quote-email-new`:
+- Gradient-header (`#111827 → #4f46e5`) med "Påminnelse – Offert [nummer]"
+- Vit card med admin-texten som brödtext
+- Giltighetstid i en grå box (som prisboxen i offertmailet)
+- CTA-knapp "Se din offert" (indigo, samma stil)
+- Enkel footer med "Med vänliga hälsningar, Fixco Team"
+- **Ta bort telefonnumret** (`079-335 02 28`) från signaturen
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+## Fil att ändra
+`supabase/functions/send-reminder-email/index.ts` — byt ut `emailHtml`-mallen till offertmall-stilen. Omdeploy efteråt.
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+Inget annat ändras (dialog, generate-reminder-text, knappen).
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
