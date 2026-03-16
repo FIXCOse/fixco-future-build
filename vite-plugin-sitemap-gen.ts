@@ -8,6 +8,7 @@ import { join } from 'path';
 import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
+const TODAY = new Date().toISOString().split('T')[0];
 
 // ─── Lastmod — always today ───
 function getLastmod() {
