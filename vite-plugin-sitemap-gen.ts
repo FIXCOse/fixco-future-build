@@ -137,7 +137,7 @@ function hubsSitemap() {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
       const svLocal = `${BASE_URL}/tjanster/${slug}/${area}`;
       const enLocal = `${BASE_URL}/en/services/${slug}/${area}`;
-      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <priority>${priority}</priority>\n`;
+      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <priority>${priority}</priority>\n`;
       xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
       const enPri = Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2);
