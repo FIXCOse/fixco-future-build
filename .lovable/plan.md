@@ -1,32 +1,43 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Plan: Påminnelsemail för offerter (admin → kund)
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Vad ska byggas
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+En ny "Skicka påminnelse"-funktion i admin-vyn, separat från uppföljningsmailet. Påminnelsen har en tydlig ton och design som signalerar "påminnelse om din offert" snarare än en generell uppföljning.
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+## Komponenter
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+### 1. `ReminderEmailDialog.tsx` (ny komponent)
+Liknar `FollowUpEmailDialog` men med påminnelse-specifik kontext:
+- AI-generering av ämnesrad och brödtext med påminnelse-prompt (urgency, giltighetstid, "glöm inte")
+- Admin-instruktionsfält (valfritt, som i follow-up)
+- Testmail-knapp + skicka-knapp
+- Anropar en ny edge function `send-reminder-email`
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+### 2. `send-reminder-email` (ny edge function)
+Samma struktur som `send-followup-email` men med:
+- Annorlunda HTML-mall: orange/gul gradient-header istället för lila, tydlig "Påminnelse"-rubrik
+- Ämnesrad som default börjar med "Påminnelse: ..."
+- CTA-knapp "Se din offert"
+- Visar giltighetstid om den finns
+
+### 3. `generate-reminder-text` (ny edge function)
+Samma struktur som `generate-followup-text` men med påminnelse-specifika system-prompts:
+- Tydligt att det är en påminnelse, inte ett uppföljningsmail
+- Nämner att offerten snart går ut (om valid_until finns)
+- Kortare och mer direkt ton
+- Stöd för sv/en
+
+### 4. Knapp i `RequestQuoteCard.tsx`
+- Ny knapp "Påminnelse" bredvid "Uppföljningsmail" för offerter med status `sent`, `viewed`, `change_requested`
+- Bell-ikon istället för Mail-ikon
+
+## Teknisk sammanfattning
+
+- 2 nya edge functions (`send-reminder-email`, `generate-reminder-text`)
+- 1 ny React-komponent (`ReminderEmailDialog.tsx`)
+- 1 redigerad fil (`RequestQuoteCard.tsx` — lägg till knapp + dialog)
+- Inga databasändringar behövs — använder samma `quotes_new` + `customers`-tabeller
+- Samma auth-mönster som befintliga edge functions (admin/owner-check)
+
