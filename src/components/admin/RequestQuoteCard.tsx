@@ -844,6 +844,17 @@ export function RequestQuoteCard({
         onSuccess={handleRefresh}
       />
     )}
+
+    {quote && (
+      <ReminderEmailDialog
+        open={reminderDialogOpen}
+        onOpenChange={setReminderDialogOpen}
+        quoteId={quote.id}
+        customerName={customerName}
+        locale={quote.locale}
+        onSuccess={handleRefresh}
+      />
+    )}
     </>
   );
 }

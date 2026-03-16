@@ -152,6 +152,12 @@ verify_jwt = false  # Auth validated in function code
 [functions.generate-followup-text]
 verify_jwt = false
 
+[functions.send-reminder-email]
+verify_jwt = false  # Auth validated in function code
+
+[functions.generate-reminder-text]
+verify_jwt = false
+
 [functions.send-admin-question-to-customer]
 verify_jwt = true
 
