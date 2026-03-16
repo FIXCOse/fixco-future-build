@@ -1,32 +1,50 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+# Plan: Förhindra att påminnelsemail hamnar i Gmail Kampanjer
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Problem
+Gmail klassificerar mailet som "Kampanj/Promotions" pga den tunga HTML-designen med gradient-header, badges, CTA-knappar och marknadsföringsliknande layout. Mottagaren får ingen notis.
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+## Orsak
+Gmail's filter triggas av:
+- Färgglad gradient-header med badge
+- Stor CTA-knapp med stark färg
+- Hög HTML-till-text-ratio
+- Marknadsföringsliknande struktur (header → card → footer)
+- Emojis i rubrik/badge
 
-### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
+## Lösning
+Skriv om `send-reminder-email` HTML-mallen till en **enkel, personlig stil** — som om någon skickar ett vanligt mail. Inga gradienter, inga badges, ingen fancy layout. Bara ren text i HTML med en diskret länk.
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+### Ny mall-stil:
+- **Ingen header/banner** — börja direkt med hälsning
+- **Inga CTA-knappar** — använd en vanlig textlänk istället
+- **Minimal styling** — bara grundläggande typsnitt, inga bakgrundsfärger
+- **Giltighetstid** som vanlig text, inte i en färgad box
+- **Ingen footer med logga** — bara "Med vänliga hälsningar, Fixco" + kontaktinfo som text
+- **Inga emojis** i HTML (ok i ämnesraden om admin skriver det)
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+### Exempel på ny struktur:
+```
+Hej [Namn],
+
+[Admin-skriven brödtext]
+
+Offerten gäller till [datum].
+
+Du kan se din offert här: [vanlig länk]
+
+Med vänliga hälsningar,
+Fixco
+info@fixco.se | 079-335 02 28
+```
+
+### Fil att ändra:
+- `supabase/functions/send-reminder-email/index.ts` — byt ut emailHtml-mallen
+- Omdeploya edge function efteråt
+
+### Vad som INTE ändras:
+- `ReminderEmailDialog.tsx` — admin-UI:t behöver inga ändringar
+- `generate-reminder-text` — AI-genereringen fungerar redan bra
+- Ämnesraden bestäms fortfarande av admin/AI
+
