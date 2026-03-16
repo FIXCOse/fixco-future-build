@@ -1,53 +1,34 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Problem
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-Idag prerenderas bara ~320 sidor (10 tjänster × 16 områden × 2 språk) via Vite-pluginet `generateBundle`. De övriga ~16,000 sidorna serveras som generisk `index.html` — Googlebot deprioriterar JS-rendering och indexerar dem inte.
+## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
 
-Begränsningen är att Lovable's build har en timeout som inte tillåter att alla 16,000+ filer emitteras i Vite's bundle-fas.
+### Problem
+Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
-## Lösning: Post-build script istället för Vite-plugin
+### Lösning ✅
+- **`scripts/generate-prerender.mjs`** — Post-build script som genererar ~16,400 statiska HTML-filer
+- Körs **efter** `vite build` som separat Node-script (kringgår Vite timeout)
+- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
+- Stödjer alla 152 tjänster × 53 områden × 2 språk (sv/en) + bloggartiklar
+- Netlify serverar statiska filer automatiskt före SPA-fallback
+- React hydraterar som vanligt för interaktivitet
+- **Build pipeline:** `generate-sitemaps.mjs → vite build → generate-prerender.mjs → validate-sitemaps.mjs`
 
-Flytta HTML-genereringen från Vite-pluginet till ett **separat Node-script** som körs *efter* `vite build`. Detta kringgår Vite's bundle-timeout helt.
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-### Hur det fungerar
-
-```text
-Build pipeline (package.json "build"):
-  1. generate-sitemaps.mjs        (redan finns)
-  2. vite build                   (bygger JS/CSS bundle)
-  3. generate-prerender.mjs  ← NY (genererar 16,000+ HTML-filer i dist/)
-  4. validate-sitemaps.mjs        (redan finns)
-```
-
-### Steg
-
-**1. Skapa `scripts/generate-prerender.mjs`**
-- Läser `dist/index.html` för att hitta CSS/JS-filnamn (med hash)
-- Loopar alla 152 tjänster × 54 områden × 2 språk
-- Skriver `dist/tjanster/{slug}/{area}/index.html` och `dist/en/services/{slug}/{area}/index.html`
-- Inkluderar blogg-prerendering (samma som idag)
-- Ren string-templating, ingen browser — ~16,400 filer tar ca 5-15 sekunder
-
-**2. Förenkla Vite-pluginet**
-- Ta bort `prerenderLocalPlugin()` från `vite.config.ts` (eller gör den till en no-op)
-- All prerendering sker nu i post-build-scriptet
-
-**3. Uppdatera `package.json` build-kommandot**
-```json
-"build": "node scripts/generate-sitemaps.mjs && vite build && node scripts/generate-prerender.mjs && node scripts/validate-sitemaps.mjs"
-```
-
-### Resultat
-- **~16,400 unika HTML-filer** genereras vid varje deploy
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, JSON-LD
-- Netlify serverar dem automatiskt som statiska filer (före SPA fallback)
-- Ingen Vite-timeout risk — scriptet körs helt separat
-- Googlebot får unikt innehåll per sida utan att köra JavaScript
-
-### Filer som ändras/skapas
-- **Ny:** `scripts/generate-prerender.mjs` — huvud-logiken (portad från `vite-plugin-prerender-local.ts`)
-- **Ändra:** `package.json` — lägg till scriptet i build-pipeline
-- **Ändra:** `vite.config.ts` — ta bort `prerenderLocalPlugin()`
-- **Behåll:** `vite-plugin-prerender-local.ts` — kan behållas som referens men används inte längre
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
