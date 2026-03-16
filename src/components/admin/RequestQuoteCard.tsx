@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FollowUpEmailDialog } from "./FollowUpEmailDialog";
+import { ReminderEmailDialog } from "./ReminderEmailDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
