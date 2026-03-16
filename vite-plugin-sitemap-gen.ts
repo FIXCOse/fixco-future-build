@@ -92,7 +92,7 @@ function parseBlogSlugs(root: string) {
 
 // ─── XML generators ───
 function sitemapIndex(today: string) {
-  const sitemaps = ['sitemap-main.xml','sitemap-hubs.xml','sitemap-blog.xml','sitemap-local-sthlm.xml','sitemap-local-uppsala.xml'];
+  const sitemaps = ['sitemap-main.xml','sitemap-hubs.xml','sitemap-blog.xml'];
   let xml = `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const s of sitemaps) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/${s}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
@@ -120,8 +120,10 @@ function mainSitemap(today: string) {
 }
 
 function hubsSitemap() {
+  const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS];
   let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
   for (const slug of ALL_SERVICE_SLUGS) {
+    // Hub page (no area)
     const sv = `${BASE_URL}/tjanster/${slug}`;
     const en = `${BASE_URL}/en/services/${slug}`;
     xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
@@ -130,24 +132,17 @@ function hubsSitemap() {
     xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
     xml += `  </url>\n`;
-  }
-  xml += `</urlset>\n`;
-  return xml;
-}
-
-function localSitemap(areas: string[]) {
-  let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
-  for (const slug of ALL_SERVICE_SLUGS) {
-    for (const area of areas) {
+    // Local area pages
+    for (const area of ALL_AREAS) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
-      const sv = `${BASE_URL}/tjanster/${slug}/${area}`;
-      const en = `${BASE_URL}/en/services/${slug}/${area}`;
-      xml += `  <url>\n    <loc>${sv}</loc>\n    <priority>${priority}</priority>\n`;
-      xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
+      const svLocal = `${BASE_URL}/tjanster/${slug}/${area}`;
+      const enLocal = `${BASE_URL}/en/services/${slug}/${area}`;
+      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <priority>${priority}</priority>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
       const enPri = Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2);
-      xml += `  <url>\n    <loc>${en}</loc>\n    <priority>${enPri}</priority>\n`;
-      xml += `    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
+      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <priority>${enPri}</priority>\n`;
+      xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
     }
   }
@@ -186,8 +181,6 @@ export function sitemapGeneratorPlugin(): Plugin {
         'sitemap-main.xml': mainSitemap(today),
         'sitemap-hubs.xml': hubsSitemap(),
         'sitemap-blog.xml': blogSitemap(blogPosts),
-        'sitemap-local-sthlm.xml': localSitemap(STOCKHOLM_AREAS),
-        'sitemap-local-uppsala.xml': localSitemap(UPPSALA_AREAS),
       };
 
       for (const [name, content] of Object.entries(files)) {
