@@ -180,8 +180,6 @@ const files = {
   'sitemap-main.xml': mainSitemap(),
   'sitemap-hubs.xml': hubsSitemap(),
   'sitemap-blog.xml': blogSitemap(blogPosts),
-  'sitemap-local-sthlm.xml': localSitemap(STOCKHOLM_AREAS),
-  'sitemap-local-uppsala.xml': localSitemap(UPPSALA_AREAS),
 };
 
 for (const [name, content] of Object.entries(files)) {
