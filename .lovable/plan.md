@@ -24,6 +24,20 @@ Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexera
 - React hydraterar som vanligt för interaktivitet
 - **Build pipeline:** `generate-sitemaps.mjs → vite build → generate-prerender.mjs → validate-sitemaps.mjs`
 
+## Plan: Inline SEO Script — Googlebot metadata utan extra filer ✅ KLART
+
+### Problem
+Generering av 16,400+ HTML-filer överskred R2-uppladdningens deadline timeout. Även ~320 filer via Vite-plugin var instabilt.
+
+### Lösning ✅
+- **`scripts/generate-seo-inline.mjs`** — Post-build script som genererar en enda `dist/seo-inline.js` (~5KB)
+- Tiny synkron inline-script som körs **före React** i `<head>`
+- Parsar `window.location.pathname`, slår upp tjänst+ort i kompakt mappning
+- Sätter `document.title`, `<meta description>`, `<link canonical>`, hreflang direkt
+- Täcker alla 152 tjänster × 54 områden × 2 språk = **16,400+ unika SEO-signaler**
+- **Noll extra HTML-filer** — en enda JS-fil injiceras i dist/index.html
+- Build-pipeline: `generate-sitemaps.mjs → vite build → generate-seo-inline.mjs → validate-sitemaps.mjs`
+
 ## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
 ### Genomförda åtgärder ✅
