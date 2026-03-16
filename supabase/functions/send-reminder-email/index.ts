@@ -76,72 +76,38 @@ serve(async (req) => {
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://fixco.se';
     const publicUrl = `${frontendUrl}/q/${quote.number}/${quote.public_token}`;
 
-    // Format valid_until if exists
-    let validUntilHtml = '';
+    // Format valid_until as plain text
+    let validUntilText = '';
     if (quote.valid_until) {
       const validDate = new Date(quote.valid_until);
       const formattedDate = validDate.toLocaleDateString(quote.locale === 'en' ? 'en-GB' : 'sv-SE', {
         year: 'numeric', month: 'long', day: 'numeric'
       });
-      const isEn = quote.locale === 'en';
-      validUntilHtml = `
-        <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 12px 16px; margin-top: 16px; text-align: center;">
-          <span style="font-size: 13px; color: #92400e; font-weight: 600;">
-            ⏰ ${isEn ? 'Quote valid until' : 'Offerten giltig till'}: ${formattedDate}
-          </span>
-        </div>
-      `;
+      validUntilText = quote.locale === 'en'
+        ? `The quote is valid until ${formattedDate}.`
+        : `Offerten gäller till ${formattedDate}.`;
     }
 
-    // Convert plain text body to HTML paragraphs
+    // Convert plain text body to HTML paragraphs (minimal styling)
     const bodyHtml = body
       .split('\n')
       .filter((line: string) => line.trim() !== '')
-      .map((line: string) => `<p style="margin: 8px 0; line-height: 1.6;">${line}</p>`)
+      .map((line: string) => `<p style="margin: 0 0 12px 0;">${line}</p>`)
       .join('');
 
     const isEn = quote.locale === 'en';
+    const linkText = isEn ? 'View your quote here' : 'Se din offert här';
+    const signoff = isEn ? 'Best regards' : 'Med vänliga hälsningar';
 
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <style>
-          body { margin:0; background: #fffbeb; font-family: Arial, sans-serif; }
-          .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
-          .header { background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%); padding: 32px 24px; text-align: center; border-radius: 0 0 16px 16px; }
-          .badge { display: inline-block; background: rgba(255,255,255,0.2); color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
-          .title { color: #ffffff; font-size: 22px; font-weight: 700; margin: 8px 0 0; }
-          .card { background:#ffffff; border-top: 3px solid #f59e0b; border-radius: 12px; padding: 24px; margin-top: 16px; }
-          .cta { display:inline-block; background:#b45309; color:#ffffff; text-decoration:none; padding: 14px 28px; border-radius:8px; font-weight:700; margin-top: 16px; font-size: 15px; }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <div class="badge">${isEn ? '⏰ Reminder' : '⏰ Påminnelse'}</div>
-            <div class="title">Fixco</div>
-            <div style="color:#fef3c7; font-size: 13px; margin-top:4px;">${isEn ? 'Quote' : 'Offert'} ${quote.number}</div>
-          </div>
-          
-          <div class="card">
-            ${bodyHtml}
-            ${validUntilHtml}
-            
-            <div style="text-align: center; margin-top: 24px;">
-              <a class="cta" href="${publicUrl}" target="_blank" style="display:inline-block;background:#b45309;color:#ffffff !important;text-decoration:none;padding:14px 28px;border-radius:8px;font-weight:700;font-size:15px;">${isEn ? 'View your quote' : 'Se din offert'}</a>
-            </div>
-          </div>
-          
-          <div style="text-align: center; color: #92400e; font-size: 12px; margin-top: 16px;">
-            <p>Fixco | <a href="https://www.fixco.se" style="color: #92400e;">www.fixco.se</a></p>
-            <p>📧 info@fixco.se</p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
+    const emailHtml = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#333333;">
+${bodyHtml}
+${validUntilText ? `<p style="margin:0 0 12px 0;">${validUntilText}</p>` : ''}
+<p style="margin:0 0 12px 0;"><a href="${publicUrl}" style="color:#1a73e8;">${linkText}</a></p>
+<p style="margin:24px 0 0 0;">${signoff},<br>Fixco<br>
+<span style="font-size:13px;color:#666666;">info@fixco.se | 079-335 02 28 | <a href="https://www.fixco.se" style="color:#666666;">www.fixco.se</a></span></p>
+</body></html>`;
 
     console.log(`${isTest ? '🧪 TEST' : '🔔'} Sending reminder to:`, recipientEmail);
 
