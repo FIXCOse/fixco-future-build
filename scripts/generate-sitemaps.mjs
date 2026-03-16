@@ -137,7 +137,7 @@ function hubsSitemap() {
       xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
       const enPri = Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2);
-      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <priority>${enPri}</priority>\n`;
+      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <priority>${enPri}</priority>\n`;
       xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
       xml += `  </url>\n`;
     }
