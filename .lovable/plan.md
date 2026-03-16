@@ -16,11 +16,13 @@
 Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
 
 ### Lösning ✅
-- **`vite-plugin-prerender-local.ts`** — Genererar ~16,000 statiska HTML-filer vid build
+- **`scripts/generate-prerender.mjs`** — Post-build script som genererar ~16,400 statiska HTML-filer
+- Körs **efter** `vite build` som separat Node-script (kringgår Vite timeout)
 - Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 151 tjänster × 53 områden × 2 språk (sv/en)
+- Stödjer alla 152 tjänster × 53 områden × 2 språk (sv/en) + bloggartiklar
 - Netlify serverar statiska filer automatiskt före SPA-fallback
 - React hydraterar som vanligt för interaktivitet
+- **Build pipeline:** `generate-sitemaps.mjs → vite build → generate-prerender.mjs → validate-sitemaps.mjs`
 
 ## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
