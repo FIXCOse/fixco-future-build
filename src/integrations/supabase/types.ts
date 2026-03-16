@@ -2608,6 +2608,7 @@ export type Database = {
           pdf_url: string | null
           public_token: string
           reaccept_requested_at: string | null
+          reminder_sent_at: string | null
           replaced_by_id: string | null
           replaces_quote_id: string | null
           request_id: string | null
@@ -2646,6 +2647,7 @@ export type Database = {
           pdf_url?: string | null
           public_token: string
           reaccept_requested_at?: string | null
+          reminder_sent_at?: string | null
           replaced_by_id?: string | null
           replaces_quote_id?: string | null
           request_id?: string | null
@@ -2684,6 +2686,7 @@ export type Database = {
           pdf_url?: string | null
           public_token?: string
           reaccept_requested_at?: string | null
+          reminder_sent_at?: string | null
           replaced_by_id?: string | null
           replaces_quote_id?: string | null
           request_id?: string | null

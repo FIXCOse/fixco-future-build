@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Check, Clock, Eye, Send, FileText, XCircle, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Check, Clock, Eye, Send, FileText, XCircle, AlertTriangle, RefreshCw, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -96,6 +96,18 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
       tooltipContent: viewTooltip,
     },
   ];
+
+  // Add reminder step if reminder was sent (insert before final step)
+  if ((quote as any).reminder_sent_at) {
+    steps.push({
+      key: 'reminder',
+      label: 'Påminnelse skickad',
+      icon: <Bell className="h-3.5 w-3.5" />,
+      timestamp: (quote as any).reminder_sent_at,
+      active: true,
+      variant: 'warning',
+    });
+  }
 
   // Add final step based on outcome
   if (quote.declined_at) {
