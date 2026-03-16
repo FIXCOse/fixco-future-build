@@ -123,7 +123,7 @@ function hubsSitemap() {
   for (const slug of ALL_SERVICE_SLUGS) {
     const sv = `${BASE_URL}/tjanster/${slug}`;
     const en = `${BASE_URL}/en/services/${slug}`;
-    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
+    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
     xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
     xml += `  </url>\n`;
     xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${getLastmod(slug)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
