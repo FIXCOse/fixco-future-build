@@ -97,15 +97,46 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
     },
   ];
 
-  // Add reminder step if reminder was sent (insert before final step)
-  if ((quote as any).reminder_sent_at) {
+  // Add reminder step if reminder was sent
+  const reminderSentAt = (quote as any).reminder_sent_at;
+  if (reminderSentAt) {
+    const viewsAfterReminder = views?.filter(v => new Date(v.viewed_at) > new Date(reminderSentAt)) || [];
+    const afterCount = viewsAfterReminder.length;
+
+    const reminderTooltip = (
+      <div className="space-y-1">
+        <p className="font-medium text-xs mb-1">
+          Påminnelse skickad {formatTimestamp(reminderSentAt)}
+        </p>
+        {afterCount > 0 ? (
+          <>
+            <p className="text-xs text-green-600 font-medium">
+              ✅ Kund öppnade offerten {afterCount} {afterCount === 1 ? 'gång' : 'gånger'} efter påminnelsen
+            </p>
+            {viewsAfterReminder.map((v, i) => {
+              const geoLabel = [v.city, v.country].filter(Boolean).join(', ');
+              return (
+                <p key={i} className="text-[11px] text-muted-foreground">
+                  {formatTimestamp(v.viewed_at)}{v.ip_address ? ` — ${v.ip_address}` : ''}{geoLabel ? ` (${geoLabel})` : ''}
+                </p>
+              );
+            })}
+          </>
+        ) : (
+          <p className="text-xs text-muted-foreground">Kunden har inte öppnat offerten efter påminnelsen ännu</p>
+        )}
+      </div>
+    );
+
     steps.push({
       key: 'reminder',
-      label: 'Påminnelse skickad',
-      icon: <Bell className="h-3.5 w-3.5" />,
-      timestamp: (quote as any).reminder_sent_at,
+      label: afterCount > 0 ? 'Påminnelse → Öppnad' : 'Påminnelse skickad',
+      icon: afterCount > 0 ? <Eye className="h-3.5 w-3.5" /> : <Bell className="h-3.5 w-3.5" />,
+      timestamp: afterCount > 0 ? viewsAfterReminder[viewsAfterReminder.length - 1].viewed_at : reminderSentAt,
       active: true,
-      variant: 'warning',
+      variant: afterCount > 0 ? 'success' : 'warning',
+      badge: afterCount > 0 ? `${afterCount}×` : undefined,
+      tooltipContent: reminderTooltip,
     });
   }
 
