@@ -15,17 +15,8 @@ const BASE_URL = 'https://fixco.se';
 const TODAY = new Date().toISOString().split('T')[0];
 
 // ─── Lastmod per category ───
-const CATEGORY_LASTMOD = {
-  'snickare': TODAY, 'elektriker': TODAY, 'vvs': TODAY, 'malare': TODAY,
-  'badrumsrenovering': TODAY, 'koksrenovering': TODAY, 'totalrenovering': TODAY,
-  'renovering': TODAY, 'hantverkare': TODAY, 'byggfirma': TODAY,
-  'stad': '2026-03-10', 'flytt': '2026-03-10',
-  'tradgard': '2026-03-08', 'markarbeten': '2026-03-08',
-  'montering': '2026-03-06', 'tekniska-installationer': '2026-03-06',
-};
-const DEFAULT_LASTMOD = '2026-03-01';
-function getLastmod(slug) {
-  return CATEGORY_LASTMOD[slug] || DEFAULT_LASTMOD;
+function getLastmod() {
+  return TODAY;
 }
 
 // ─── 151 service slugs ───
