@@ -1,34 +1,55 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+## Problem
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+The build fails because uploading 16,400+ HTML files to R2 storage exceeds the deadline timeout. Splitting into multiple builds is not possible in Lovable's environment. The previous working limit was ~320 files.
 
-### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+## Solution: Inline SEO Script (zero extra files)
 
-### Lösning ✅
-- **`scripts/generate-prerender.mjs`** — Post-build script som genererar ~16,400 statiska HTML-filer
-- Körs **efter** `vite build` som separat Node-script (kringgår Vite timeout)
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 152 tjänster × 53 områden × 2 språk (sv/en) + bloggartiklar
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
-- **Build pipeline:** `generate-sitemaps.mjs → vite build → generate-prerender.mjs → validate-sitemaps.mjs`
+Instead of generating thousands of HTML files, inject a small **inline `<script>`** directly into `index.html` that runs **before React loads**. This script:
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+1. Reads `window.location.pathname` (e.g., `/tjanster/snickare/stockholm`)
+2. Looks up the service and area names from a compact mapping (~5KB)
+3. Immediately sets `document.title` and injects `<meta name="description">`, `<link rel="canonical">`, and hreflang tags into `<head>`
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+This executes **synchronously before any framework code** — Googlebot sees unique meta tags without needing to run React. Zero extra HTML files, zero R2 upload issues.
+
+### What changes
+
+**1. Create `scripts/generate-seo-inline.mjs`** (new build script)
+- Reads all 152 service slug→name mappings and 54 area slug→name mappings
+- Generates a single `dist/seo-inline.js` file (~5-8KB) containing:
+  - A slug-to-name lookup object for services and areas
+  - Logic to parse the URL and set `document.title`, meta description, canonical, hreflang
+- Handles both Swedish (`/tjanster/`) and English (`/en/services/`) paths
+- Also handles blog paths (`/blogg/`, `/en/blog/`)
+
+**2. Update `index.html`**
+- Add `<script src="/seo-inline.js"></script>` in `<head>` (before React)
+- Or inline the script directly during build via the generate script
+
+**3. Update `package.json` build command**
+```
+"build": "node scripts/generate-sitemaps.mjs && vite build && node scripts/generate-seo-inline.mjs && node scripts/validate-sitemaps.mjs"
+```
+
+**4. Remove `scripts/generate-prerender.mjs`**
+- No longer needed — zero HTML files generated
+
+### What Googlebot sees
+
+For `/tjanster/snickare/stockholm`:
+- `<title>Snickare i Stockholm | Fixco ★ 5/5</title>`
+- `<meta name="description" content="Professionell snickare i Stockholm. Fixco erbjuder...">`
+- `<link rel="canonical" href="https://fixco.se/tjanster/snickare/stockholm">`
+- Proper hreflang sv/en tags
+
+All set within milliseconds, before React even mounts.
+
+### Why this works
+- Googlebot executes inline `<script>` tags — this is basic JS, not framework rendering
+- The script is tiny (~5KB) and synchronous — no async loading delays
+- Covers all 16,400+ URL combinations with **one file** instead of 16,400
+- Build stays fast (generates 1 file, not 16,400)
+- React's `<Helmet>` tags then take over once the app hydrates (no conflict)
+
