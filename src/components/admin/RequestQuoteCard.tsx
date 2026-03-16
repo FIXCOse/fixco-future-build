@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FollowUpEmailDialog } from "./FollowUpEmailDialog";
+import { ReminderEmailDialog } from "./ReminderEmailDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock } from "lucide-react";
+import { FileText, Mail, Phone, MapPin, Trash2, Edit, Send, ExternalLink, Plus, Copy, Users, AlertTriangle, Briefcase, ChevronDown, Building2, User, Home, CheckCircle, Camera, TestTube, CalendarClock, Bell } from "lucide-react";
 import { ScheduleQuoteSendDialog } from './ScheduleQuoteSendDialog';
 import { QuoteStatusTimeline } from './QuoteStatusTimeline';
 import { RequestWithQuote } from "@/hooks/useRequestsQuotes";
@@ -57,6 +58,7 @@ export function RequestQuoteCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
   const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
+  const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
   const { booking, quote, customer, invoice, job, timeLogs, materialLogs, expenseLogs, totalHours: jobTotalHours, totalMaterialCost, totalExpenses } = item;
   const { workers, totalHours: workerTotalHours, estimatedHours, refresh: refreshWorkers } = useJobWorkers(job?.id);
   
@@ -578,14 +580,25 @@ export function RequestQuoteCard({
                    )}
                   {/* Follow-up email button for sent/viewed/change_requested */}
                   {['sent', 'viewed', 'change_requested'].includes(quote.status) && (
-                    <Button
-                      onClick={() => setFollowUpDialogOpen(true)}
-                      variant="outline"
-                      size="sm"
-                    >
-                      <Mail className="h-4 w-4 mr-2" />
-                      Uppföljningsmail
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => setFollowUpDialogOpen(true)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Uppföljningsmail
+                      </Button>
+                      <Button
+                        onClick={() => setReminderDialogOpen(true)}
+                        variant="outline"
+                        size="sm"
+                        className="border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400"
+                      >
+                        <Bell className="h-4 w-4 mr-2" />
+                        Påminnelse
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
@@ -825,6 +838,17 @@ export function RequestQuoteCard({
       <FollowUpEmailDialog
         open={followUpDialogOpen}
         onOpenChange={setFollowUpDialogOpen}
+        quoteId={quote.id}
+        customerName={customerName}
+        locale={quote.locale}
+        onSuccess={handleRefresh}
+      />
+    )}
+
+    {quote && (
+      <ReminderEmailDialog
+        open={reminderDialogOpen}
+        onOpenChange={setReminderDialogOpen}
         quoteId={quote.id}
         customerName={customerName}
         locale={quote.locale}
