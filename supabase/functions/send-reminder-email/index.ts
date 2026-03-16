@@ -161,6 +161,18 @@ serve(async (req) => {
 
     console.log(`${isTest ? '🧪 TEST' : '✅'} Reminder email sent to:`, recipientEmail);
 
+    // Update reminder_sent_at on the quote (skip for test emails)
+    if (!isTest) {
+      const { error: updateError } = await supabase
+        .from('quotes_new')
+        .update({ reminder_sent_at: new Date().toISOString() })
+        .eq('id', quoteId);
+
+      if (updateError) {
+        console.error('Error updating reminder_sent_at:', updateError);
+      }
+    }
+
     return new Response(JSON.stringify({ success: true, message: "Påminnelsemail skickat!" }), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },

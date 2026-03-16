@@ -97,6 +97,18 @@ export function QuoteStatusTimeline({ quote, onRefresh }: Props) {
     },
   ];
 
+  // Add reminder step if reminder was sent (insert before final step)
+  if ((quote as any).reminder_sent_at) {
+    steps.push({
+      key: 'reminder',
+      label: 'Påminnelse skickad',
+      icon: <Bell className="h-3.5 w-3.5" />,
+      timestamp: (quote as any).reminder_sent_at,
+      active: true,
+      variant: 'warning',
+    });
+  }
+
   // Add final step based on outcome
   if (quote.declined_at) {
     steps.push({
