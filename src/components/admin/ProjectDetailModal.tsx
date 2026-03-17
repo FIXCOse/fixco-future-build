@@ -181,7 +181,7 @@ export default function ProjectDetailModal({
                     key={index}
                     onClick={() => goToImage(index)}
                     className={`
-                      relative w-full h-20 md:h-24 rounded-lg overflow-hidden 
+                      relative w-full h-24 md:h-28 rounded-lg overflow-hidden 
                       border-2 transition-all duration-200 cursor-pointer
                       hover:scale-105 hover:shadow-lg
                       ${index === currentImageIndex 
