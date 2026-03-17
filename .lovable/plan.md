@@ -10,33 +10,20 @@
 - **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
 - **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-## Plan: Statisk HTML-prerendering för Google-indexering ✅ KLART
+## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
 
 ### Problem
-Google hittade 8000+ sidor men indexerade dem inte ("Upptäckt – inte indexerad") pga att alla returnerade samma generiska `index.html` utan unik SEO-data.
+Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
 
 ### Lösning ✅
-- **`scripts/generate-prerender.mjs`** — Post-build script som genererar ~16,400 statiska HTML-filer
-- Körs **efter** `vite build` som separat Node-script (kringgår Vite timeout)
-- Varje fil har unik `<title>`, `<meta description>`, canonical, hreflang, geo-meta och JSON-LD schema
-- Stödjer alla 152 tjänster × 53 områden × 2 språk (sv/en) + bloggartiklar
-- Netlify serverar statiska filer automatiskt före SPA-fallback
-- React hydraterar som vanligt för interaktivitet
-- **Build pipeline:** `generate-sitemaps.mjs → vite build → generate-prerender.mjs → validate-sitemaps.mjs`
-
-## Plan: Inline SEO Script — Googlebot metadata utan extra filer ✅ KLART
-
-### Problem
-Generering av 16,400+ HTML-filer överskred R2-uppladdningens deadline timeout. Även ~320 filer via Vite-plugin var instabilt.
-
-### Lösning ✅
-- **`scripts/generate-seo-inline.mjs`** — Post-build script som genererar en enda `dist/seo-inline.js` (~5KB)
-- Tiny synkron inline-script som körs **före React** i `<head>`
-- Parsar `window.location.pathname`, slår upp tjänst+ort i kompakt mappning
-- Sätter `document.title`, `<meta description>`, `<link canonical>`, hreflang direkt
-- Täcker alla 152 tjänster × 54 områden × 2 språk = **16,400+ unika SEO-signaler**
-- **Noll extra HTML-filer** — en enda JS-fil injiceras i dist/index.html
-- Build-pipeline: `generate-sitemaps.mjs → vite build → generate-seo-inline.mjs → validate-sitemaps.mjs`
+- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
+- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
+- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
+- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
+- `main.tsx` tar bort `#seo-root` när React mountar
+- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
+- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
+- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
 
 ## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
