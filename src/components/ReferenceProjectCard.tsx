@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Star, Edit, Trash2, Eye } from "lucide-react";
+import { MapPin, Star, Edit, Trash2, Eye, ImageOff } from "lucide-react";
 import type { Locale } from "@/i18n/context";
 
 interface ReferenceProject {
