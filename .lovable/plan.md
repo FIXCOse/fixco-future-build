@@ -1,32 +1,35 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Problem
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-1. **Referensprojekt-bilder saknas**: Två av tre referensprojekt pekar på lokala filer (`/reference-projects/...` och `/images/references/...`) som raderades i en tidigare build-optimering. Bilderna finns INTE i Supabase storage heller — de är helt borta.
+## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
 
-2. **SyntaxError kraschar sidan**: `Unexpected token '}'` — behöver hitta och fixa syntaxfelet som hindrar sidan från att laddas.
+### Problem
+Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
 
-## Plan
+### Lösning ✅
+- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
+- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
+- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
+- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
+- `main.tsx` tar bort `#seo-root` när React mountar
+- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
+- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
+- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
 
-### 1. Fixa SyntaxError som kraschar appen
-- Identifiera och åtgärda syntaxfelet (troligen från senaste redigeringen)
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-### 2. Hantera saknade bilder i referensprojekt
-De lokala bildfilerna är **permanent borttagna** från repot. De finns inte heller i Supabase storage. Det finns två alternativ:
-
-**Alternativ A**: Inaktivera de två projekten som saknar bilder (sätt `is_active = false`) tills nya bilder laddas upp via admin-panelen
-
-**Alternativ B**: Sätt en placeholder-bild och uppdatera databasen så att de två projekten visar en generisk bild istället för trasiga länkar
-
-### 3. Förbättra bildvisningen i ReferenceProjectCard
-- Lägg till felhantering (`onError`) i `<img>`-taggar som visar en fallback-bild om en URL inte fungerar
-- Detta förhindrar att trasiga bilder visas i framtiden
-
-### Filer som ändras
-- Den fil som orsakar SyntaxError (behöver identifieras)
-- SQL-migration: Uppdatera `images`/`thumbnail_image` i `reference_projects` för de två berörda projekten
-- `src/components/ReferenceProjectCard.tsx`: Lägg till `onError` fallback på bilder
-
-### Viktigt att veta
-**Originalbilderna går inte att återskapa** — de togs bort från repot och finns inte i Supabase storage. Nya bilder måste laddas upp via admin-panelen för dessa två projekt.
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)

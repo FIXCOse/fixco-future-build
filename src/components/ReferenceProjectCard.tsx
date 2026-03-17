@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Star, Edit, Trash2, Eye } from "lucide-react";
+import { MapPin, Star, Edit, Trash2, Eye, ImageOff } from "lucide-react";
 import type { Locale } from "@/i18n/context";
 
 interface ReferenceProject {
@@ -54,6 +55,7 @@ export const ReferenceProjectCard = ({
     : project.location_sv || project.location;
   const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <Card
@@ -62,11 +64,19 @@ export const ReferenceProjectCard = ({
     >
       {/* Image with gradient overlay */}
       <div className="relative aspect-video overflow-hidden">
-        <img
-          src={thumbnailImage}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+        {imgError ? (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-muted text-muted-foreground gap-2">
+            <ImageOff className="h-10 w-10" />
+            <span className="text-xs">Bild saknas</span>
+          </div>
+        ) : (
+          <img
+            src={thumbnailImage}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={() => setImgError(true)}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
         {/* Category badge */}
