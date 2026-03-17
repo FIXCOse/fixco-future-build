@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { ArrowLeft, FileText, Edit, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, FileText, Edit, Image as ImageIcon, Paperclip } from 'lucide-react';
+import { isImageUrl, getFileName, getFileLabel } from '@/utils/fileHelpers';
 import { toast } from 'sonner';
 import type { BookingRow } from '@/lib/api/bookings';
 
