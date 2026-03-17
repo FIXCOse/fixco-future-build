@@ -1,0 +1,1 @@
+UPDATE reference_projects SET is_active = false WHERE id IN ('4955b801-8880-436c-be96-c3a640ec69d1', '1fc4af76-260f-4d3b-bb51-7b8f123e21ff');
