@@ -467,6 +467,7 @@ const skipAddons = () => {
       
       // Upload files first if any
       const fileUrls: string[] = [];
+      const failedFiles: string[] = [];
       for (const [key, fileList] of Object.entries(files)) {
         for (const file of fileList) {
           const path = `requests/${Date.now()}_${file.name}`;
@@ -479,8 +480,19 @@ const skipAddons = () => {
               .from('booking-attachments')
               .getPublicUrl(path);
             fileUrls.push(publicUrl);
+          } else {
+            console.error(`[ServiceRequestModal] File upload failed for ${file.name}:`, uploadError);
+            failedFiles.push(file.name);
           }
         }
+      }
+
+      // Notify user about failed uploads
+      if (failedFiles.length > 0) {
+        const failedMsg = modalLang === 'sv'
+          ? `Kunde inte ladda upp: ${failedFiles.join(', ')}. Bokningen skickas utan dessa filer.`
+          : `Could not upload: ${failedFiles.join(', ')}. Booking will be sent without these files.`;
+        toast.warning(failedMsg);
       }
 
       // Send simple JSON payload to edge function
