@@ -308,35 +308,49 @@ export default function AdminBookingDetail() {
           </Card>
         )}
 
-        {/* Attached Images */}
+        {/* Attached Files */}
         {booking.images && booking.images.length > 0 && (
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5" />
-                Bifogade bilder
+                <Paperclip className="h-5 w-5" />
+                Bifogade filer
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {booking.images.map((imageUrl: string, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => openLightbox(index)}
-                    className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors cursor-pointer"
-                  >
-                    <img
-                      src={imageUrl}
-                      alt={`Bifogad bild ${index + 1}`}
-                      className="h-full w-full object-cover group-hover:scale-105 transition-transform"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/placeholder.svg';
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <ImageIcon className="h-8 w-8 text-white" />
-                    </div>
-                  </button>
+                {booking.images.map((fileUrl: string, index: number) => (
+                  isImageUrl(fileUrl) ? (
+                    <button
+                      key={index}
+                      onClick={() => openLightbox(index)}
+                      className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors cursor-pointer"
+                    >
+                      <img
+                        src={fileUrl}
+                        alt={`Bifogad bild ${index + 1}`}
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/placeholder.svg';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <ImageIcon className="h-8 w-8 text-white" />
+                      </div>
+                    </button>
+                  ) : (
+                    <a
+                      key={index}
+                      href={fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group relative aspect-square overflow-hidden rounded-lg border bg-muted hover:border-primary transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 p-3"
+                    >
+                      <FileText className="h-10 w-10 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <span className="text-xs font-semibold text-muted-foreground uppercase">{getFileLabel(fileUrl)}</span>
+                      <span className="text-xs text-muted-foreground truncate max-w-full">{getFileName(fileUrl)}</span>
+                    </a>
+                  )
                 ))}
               </div>
             </CardContent>

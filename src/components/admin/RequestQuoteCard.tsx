@@ -280,12 +280,12 @@ export function RequestQuoteCard({
             </div>
           )}
 
-          {/* Attached Images */}
+          {/* Attached Files */}
           {booking.file_urls && booking.file_urls.length > 0 && (
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
-                <Camera className="h-4 w-4" />
-                Bifogade bilder ({booking.file_urls.length})
+                <Paperclip className="h-4 w-4" />
+                Bifogade filer ({booking.file_urls.length})
               </h4>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {booking.file_urls.map((url, i) => (
@@ -296,19 +296,27 @@ export function RequestQuoteCard({
                     rel="noreferrer"
                     className="block overflow-hidden rounded-md border border-border hover:border-primary transition-colors"
                   >
-                    <img
-                      src={url}
-                      alt={`Bifogad bild ${i + 1}`}
-                      className="aspect-square w-full object-cover"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        target.style.display = 'none';
-                        const placeholder = document.createElement('div');
-                        placeholder.className = 'aspect-square w-full flex items-center justify-center bg-muted text-muted-foreground text-xs';
-                        placeholder.textContent = 'Kunde inte ladda bild';
-                        target.parentElement?.appendChild(placeholder);
-                      }}
-                    />
+                    {isImageUrl(url) ? (
+                      <img
+                        src={url}
+                        alt={`Bifogad bild ${i + 1}`}
+                        className="aspect-square w-full object-cover"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                          const placeholder = document.createElement('div');
+                          placeholder.className = 'aspect-square w-full flex items-center justify-center bg-muted text-muted-foreground text-xs';
+                          placeholder.textContent = 'Kunde inte ladda bild';
+                          target.parentElement?.appendChild(placeholder);
+                        }}
+                      />
+                    ) : (
+                      <div className="aspect-square w-full flex flex-col items-center justify-center gap-1.5 bg-muted/50 p-2">
+                        <FileText className="h-8 w-8 text-muted-foreground" />
+                        <span className="text-[10px] font-medium text-muted-foreground uppercase">{getFileLabel(url)}</span>
+                        <span className="text-[10px] text-muted-foreground truncate max-w-full px-1">{getFileName(url)}</span>
+                      </div>
+                    )}
                   </a>
                 ))}
               </div>
