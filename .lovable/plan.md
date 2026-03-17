@@ -1,40 +1,35 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Problem: PDF-filer kan inte laddas upp
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-### Grundorsak
-Storage-bucketen `booking-attachments` har en **vitlista av tillåtna MIME-typer** som BARA tillåter bilder:
-- `image/jpeg`, `image/jpg`, `image/png`, `image/webp`, `image/gif`
+## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
 
-**PDF (`application/pdf`), Word, Excel och textfiler blockeras** av Supabase storage — uppladdningen misslyckas tyst utan felmeddelande till kunden.
+### Problem
+Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
 
-### Varför syns inte felet
-Koden i `ServiceRequestModal.tsx` sväljer uppladdningsfel:
-```javascript
-if (!uploadError) {
-    fileUrls.push(publicUrl);
-}
-// Inget else = inget felmeddelande
-```
+### Lösning ✅
+- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
+- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
+- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
+- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
+- `main.tsx` tar bort `#seo-root` när React mountar
+- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
+- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
+- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
 
-### Plan
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-**1. Uppdatera storage-bucketens tillåtna MIME-typer**
-Lägg till stöd för dokument via SQL-migration:
-- `application/pdf`
-- `application/msword` (doc)
-- `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (docx)
-- `application/vnd.ms-excel` (xls)
-- `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` (xlsx)
-- `text/plain` (txt)
-
-Höj även filstorleksgränsen från 5MB till 20MB för att hantera större PDF:er.
-
-**2. Lägg till felhantering i ServiceRequestModal.tsx**
-- Visa toast-felmeddelande om en fil misslyckas att laddas upp
-- Visa vilka filer som laddades upp framgångsrikt innan inskickning
-
-### Filer som ändras
-- SQL-migration: Uppdatera `storage.buckets` allowed_mime_types
-- `src/features/requests/ServiceRequestModal.tsx`: Felhantering vid uppladdning
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
