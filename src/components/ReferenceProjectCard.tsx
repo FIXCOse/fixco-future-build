@@ -55,6 +55,7 @@ export const ReferenceProjectCard = ({
     : project.location_sv || project.location;
   const thumbnailImage = project.thumbnail_image || project.images[0] || "/placeholder.svg";
   const totalSavings = (project.rot_savings || 0) + (project.rut_savings || 0);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <Card
