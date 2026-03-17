@@ -18,7 +18,8 @@ function BootTheme() {
   return null;
 }
 
-console.log("Main.tsx loaded, about to render App component");
+// Remove SEO placeholder content once React takes over
+document.getElementById('seo-root')?.remove();
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
