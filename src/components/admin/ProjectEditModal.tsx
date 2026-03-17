@@ -425,7 +425,7 @@ export default function ProjectEditModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader className="flex-shrink-0 px-6 pt-6">
           <DialogTitle className="flex items-center gap-2">
             <Star className="w-5 h-5 text-primary" />
