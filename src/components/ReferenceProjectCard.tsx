@@ -63,7 +63,7 @@ export const ReferenceProjectCard = ({
       onClick={onView}
     >
       {/* Image with gradient overlay */}
-      <div className="relative aspect-video overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden">
         {imgError ? (
           <div className="w-full h-full flex flex-col items-center justify-center bg-muted text-muted-foreground gap-2">
             <ImageOff className="h-10 w-10" />
