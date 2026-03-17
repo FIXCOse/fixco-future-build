@@ -92,7 +92,7 @@ const initialGlobalSettings: GlobalSettings = {
   primaryColor: '#3b82f6',
   secondaryColor: '#64748b',
   logoUrl: '/assets/fixco-logo-black.png',
-  faviconUrl: '/favicon.ico',
+  faviconUrl: '/assets/fixco-f-icon-large.png',
   maintenanceMode: false,
   analyticsEnabled: true,
   chatEnabled: true,
