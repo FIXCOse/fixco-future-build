@@ -98,7 +98,10 @@ serve(async (req) => {
     const isEn = quote.locale === 'en';
     const headerTitle = isEn ? `Reminder – Quote ${quote.number}` : `Påminnelse – Offert ${quote.number}`;
     const ctaText = isEn ? 'View and accept quote' : 'Visa och acceptera offert';
-    const signoff = isEn ? 'Kind regards,' : 'Med vänliga hälsningar,';
+    const autoDisclaimer = isEn ? 'This is an automated reminder.' : 'Detta är ett automatiskt påminnelsemail.';
+    const footerNote = isEn
+      ? 'You are receiving this email because you have an open quote with Fixco.'
+      : 'Du får detta mail eftersom du har en öppen offert hos Fixco.';
 
     const emailHtml = `<!DOCTYPE html>
 <html>
@@ -121,6 +124,10 @@ serve(async (req) => {
     </div>
     
     <div class="card">
+      <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; text-align: center;">
+        <p style="margin: 0; font-size: 12px; color: #92400e; font-weight: 600;">⚡ ${autoDisclaimer}</p>
+      </div>
+
       ${bodyHtml}
       
       ${validUntilText ? `
@@ -135,7 +142,8 @@ serve(async (req) => {
     </div>
     
     <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 16px;">
-      <p>${signoff}<br><strong>Fixco Team</strong></p>
+      <p><strong>Fixco</strong></p>
+      <p style="margin-top: 8px; font-size: 11px; color: #9ca3af;">${footerNote}</p>
     </div>
   </div>
 </body>
