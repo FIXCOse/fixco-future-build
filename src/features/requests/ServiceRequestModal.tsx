@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import ReactDOM from 'react-dom';
+import { useNavigate } from "react-router-dom";
 import { getServiceBySlug, ServiceConfig, SERVICE_CONFIG } from "./serviceConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
