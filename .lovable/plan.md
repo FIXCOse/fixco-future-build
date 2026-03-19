@@ -1,35 +1,29 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+## Problem
+`sitemap-local-sthlm.xml` innehåller 151 tjänster × 34 orter = **5 134 URL:er** (~390 KB). Google Search Console rapporterar "Hämtning misslyckades" — troligen timeout eller temporärt fel pga filstorleken. Uppsala-filen är hälften så stor och fungerar.
 
-## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
+## Lösning
+Dela upp Stockholm-sitemapen i **2 filer** för att minska risken för hämtningsfel:
 
-### Problem
-Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
+- `sitemap-local-sthlm-1.xml` — Första halvan av tjänsterna (ca 76 tjänster × 34 orter = ~2 584 URL:er)
+- `sitemap-local-sthlm-2.xml` — Andra halvan (ca 75 tjänster × 34 orter = ~2 550 URL:er)
 
-### Lösning ✅
-- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
-- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
-- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
-- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
-- `main.tsx` tar bort `#seo-root` när React mountar
-- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
-- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
-- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
+## Ändringar
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+### 1. `vite-plugin-sitemap-gen.ts`
+- Dela `ALL_SERVICE_SLUGS` i två halvor vid index 76
+- Generera `sitemap-local-sthlm-1.xml` och `sitemap-local-sthlm-2.xml` istället för en fil
+- Uppdatera sitemap-indexet att peka på de två nya filerna
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+### 2. `scripts/generate-sitemaps.mjs`
+- Samma uppdelning som ovan (hålla skriptet i sync)
+
+### 3. `public/sitemap.xml`
+- Ersätt `sitemap-local-sthlm.xml` med `sitemap-local-sthlm-1.xml` och `sitemap-local-sthlm-2.xml`
+
+## Resultat
+- 6 child-sitemaps istället för 5
+- Varje fil < 200 KB — ingen risk för timeout
+- Google Search Console: skicka om sitemap.xml efter deploy
+
