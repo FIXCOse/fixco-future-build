@@ -1,45 +1,35 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Problem
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-Den statiska `public/sitemap.xml` pekar fortfarande på gamla `sitemap-hubs.xml` (som raderats). De nya sitemap-filerna (`sitemap-services.xml`, `sitemap-local-sthlm.xml`, `sitemap-local-uppsala.xml`) har aldrig genererats — scriptet och Vite-pluginen är uppdaterade men har inte körts. Google ser alltså en trasig sitemap-index.
+## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
 
-## Plan
+### Problem
+Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
 
-### 1. Generera de nya statiska sitemap-filerna direkt i `public/`
+### Lösning ✅
+- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
+- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
+- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
+- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
+- `main.tsx` tar bort `#seo-root` när React mountar
+- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
+- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
+- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
 
-Skriva ut korrekta, färdiga XML-filer:
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-- **`public/sitemap.xml`** — Sitemap-index med XML-deklaration, pekar på de 5 nya filerna
-- **`public/sitemap-main.xml`** — ~14 svenska huvudsidor (priority 1.0–0.30)
-- **`public/sitemap-services.xml`** — 151 tjänste-hubbar (priority 0.90)
-- **`public/sitemap-local-sthlm.xml`** — ~5 100 Stockholm-sidor (priority 0.80–0.85)
-- **`public/sitemap-local-uppsala.xml`** — ~2 870 Uppsala-sidor (priority 0.80–0.85)
-- **`public/sitemap-blog.xml`** — Blogginlägg (priority 0.70)
-
-Alla filer får:
-- `<?xml version="1.0" encoding="UTF-8"?>` överst
-- Korrekt `xmlns:xhtml` namespace
-- Self-closing `<xhtml:link ... />` med `hreflang="sv"` + `hreflang="x-default"`
-- Bara svenska URL:er, inga `/en/`-sidor
-- `<lastmod>` satt till dagens datum
-
-### 2. Behåll `_redirects` som de är
-
-Redan korrekt uppdaterade med de nya filnamnen.
-
-### 3. Rör INTE svenska titlar/meta/descriptions
-
-Inga ändringar i SEO-komponenter eller sidinnehåll.
-
-### Filer som skapas/uppdateras
-- `public/sitemap.xml` — Ny sitemap-index
-- `public/sitemap-main.xml` — Uppdateras med XML-deklaration
-- `public/sitemap-services.xml` — Ny fil
-- `public/sitemap-local-sthlm.xml` — Ny fil
-- `public/sitemap-local-uppsala.xml` — Ny fil
-- `public/sitemap-blog.xml` — Uppdateras med XML-deklaration
-
-### Teknisk detalj
-Eftersom vi inte kan köra Node-scripts i Lovable, skriver vi ut filerna direkt. Vite-pluginen genererar dem vid nästa production build, men vi behöver korrekta statiska filer NU så att Google kan börja crawla direkt efter deploy.
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
