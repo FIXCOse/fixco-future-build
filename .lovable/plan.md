@@ -1,29 +1,23 @@
 
 
 ## Problem
-`sitemap-local-sthlm.xml` innehåller 151 tjänster × 34 orter = **5 134 URL:er** (~390 KB). Google Search Console rapporterar "Hämtning misslyckades" — troligen timeout eller temporärt fel pga filstorleken. Uppsala-filen är hälften så stor och fungerar.
+
+`sitemap-local-sthlm-2.xml` innehåller tjänstesluggen `bygga-utekök` som har ett **ö** (icke-ASCII-tecken) i URL:en. Google kräver att URL:er i sitemaps är korrekt URL-encodade. Det ogiltiga tecknet gör att Google inte kan parsa filen, och rapporterar "Hämtning misslyckades".
+
+Sluggen `bygga-utekök` finns i den andra halvan av `ALL_SERVICE_SLUGS` (efter index 76), vilket förklarar varför sthlm-1 fungerar men inte sthlm-2.
 
 ## Lösning
-Dela upp Stockholm-sitemapen i **2 filer** för att minska risken för hämtningsfel:
 
-- `sitemap-local-sthlm-1.xml` — Första halvan av tjänsterna (ca 76 tjänster × 34 orter = ~2 584 URL:er)
-- `sitemap-local-sthlm-2.xml` — Andra halvan (ca 75 tjänster × 34 orter = ~2 550 URL:er)
+Ändra sluggen `bygga-utekök` till `bygga-utekok` (utan ö) i alla tre filer:
 
-## Ändringar
+### Filer att ändra
 
-### 1. `vite-plugin-sitemap-gen.ts`
-- Dela `ALL_SERVICE_SLUGS` i två halvor vid index 76
-- Generera `sitemap-local-sthlm-1.xml` och `sitemap-local-sthlm-2.xml` istället för en fil
-- Uppdatera sitemap-indexet att peka på de två nya filerna
+1. **`vite-plugin-sitemap-gen.ts`** — rad 51: `'bygga-utekök'` → `'bygga-utekok'`
+2. **`scripts/generate-sitemaps.mjs`** — samma ändring
+3. **Routern/tjänstesidorna** — säkerställa att `bygga-utekok` matchar den faktiska route-sluggen i appen
 
-### 2. `scripts/generate-sitemaps.mjs`
-- Samma uppdelning som ovan (hålla skriptet i sync)
+Alternativt kan vi URL-encoda alla sluggar i sitemap-genereringen (`encodeURI`), men det är bättre att ha konsekventa ASCII-sluggar genomgående.
 
-### 3. `public/sitemap.xml`
-- Ersätt `sitemap-local-sthlm.xml` med `sitemap-local-sthlm-1.xml` och `sitemap-local-sthlm-2.xml`
-
-## Resultat
-- 6 child-sitemaps istället för 5
-- Varje fil < 200 KB — ingen risk för timeout
-- Google Search Console: skicka om sitemap.xml efter deploy
+### Kontroll
+Söka igenom hela kodbasen efter `utekök` för att hitta alla förekomster som behöver uppdateras.
 
