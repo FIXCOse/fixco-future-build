@@ -222,6 +222,8 @@ export default function ServiceRequestModal() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [desiredTime, setDesiredTime] = useState<string>('');
   const [skipAddonsStep, setSkipAddonsStep] = useState(false);
+  const [lastBookingId, setLastBookingId] = useState<string | null>(null);
+  const originalUrlRef = useRef<string | null>(null);
   const [modalLang, setModalLang] = useState<ModalLang>(
     typeof window !== 'undefined' && window.location.pathname.startsWith('/en') ? 'en' : 'sv'
   );
