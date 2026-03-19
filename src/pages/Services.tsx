@@ -179,7 +179,7 @@ const Services = () => {
               { slug: 'renovera-trapp', sv: 'Renovera trapp', en: 'Stair Renovation' },
               { slug: 'bygga-carport', sv: 'Bygga carport', en: 'Build a Carport' },
               { slug: 'montera-takfonster', sv: 'Montera takfönster', en: 'Roof Window' },
-              { slug: 'bygga-utekök', sv: 'Bygga utekök', en: 'Outdoor Kitchen' },
+              { slug: 'bygga-utekok', sv: 'Bygga utekök', en: 'Outdoor Kitchen' },
               { slug: 'bygga-friggebod', sv: 'Bygga friggebod', en: 'Garden Shed' },
               { slug: 'installera-solceller-hem', sv: 'Installera solceller', en: 'Solar Panels' },
               { slug: 'bygga-plank', sv: 'Bygga plank', en: 'Build a Fence' },

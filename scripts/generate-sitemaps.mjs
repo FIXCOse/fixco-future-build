@@ -54,7 +54,7 @@ const ALL_SERVICE_SLUGS = [
   'flytthjalp','packhjalp','kontorsflytt','magasinering','pianoflytt',
   'larm','smarthome','natverksinstallation','kameraovervakning','solceller','porttelefon',
   'rivning-badrum','rivning-kok','bortforsling',
-  'montera-tv-pa-vagg','installera-akustikpanel','platsbyggd-garderob','platsbyggd-bokhylla','montera-spotlights','installera-laddbox-hemma','bygga-altan','montera-koksflakt','installera-golvvarme','bygga-bastu','montera-markis','installera-varmepump','renovera-trapp','bygga-carport','montera-takfonster','bygga-utekök','bygga-friggebod','montera-persienner','installera-solceller-hem','bygga-plank',
+  'montera-tv-pa-vagg','installera-akustikpanel','platsbyggd-garderob','platsbyggd-bokhylla','montera-spotlights','installera-laddbox-hemma','bygga-altan','montera-koksflakt','installera-golvvarme','bygga-bastu','montera-markis','installera-varmepump','renovera-trapp','bygga-carport','montera-takfonster','bygga-utekok','bygga-friggebod','montera-persienner','installera-solceller-hem','bygga-plank',
 ];
 
 // ─── Area slugs ───
