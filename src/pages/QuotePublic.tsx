@@ -18,7 +18,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import confetti from 'canvas-confetti';
+
 
 // ── Bilingual copy ──────────────────────────────────────────────
 const quoteCopy = {
