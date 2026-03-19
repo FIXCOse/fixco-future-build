@@ -521,7 +521,7 @@ export const EXPANDED_SERVICE_PRICING: Record<ExpandedSlug, { base: string; afte
   "renovera-trapp": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "bygga-carport": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "montera-takfonster": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
-  "bygga-utekök": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "bygga-utekok": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "bygga-friggebod": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "montera-persienner": { base: "759 kr/h", afterDeduction: "380 kr/h", isQuoteOnly: false, rotRut: "RUT" },
   "installera-solceller-hem": { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
