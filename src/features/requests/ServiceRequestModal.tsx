@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import ReactDOM from 'react-dom';
 
 import { getServiceBySlug, ServiceConfig, SERVICE_CONFIG } from "./serviceConfig";
@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { useEventTracking } from "@/hooks/useEventTracking";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe, CheckCircle2 } from "lucide-react";
+import { fireConfetti } from "@/lib/confetti";
 
 // ─── Modal translations ────────────────────────────────────────
 const modalTranslations = {
@@ -221,6 +222,8 @@ export default function ServiceRequestModal() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [desiredTime, setDesiredTime] = useState<string>('');
   const [skipAddonsStep, setSkipAddonsStep] = useState(false);
+  const [lastBookingId, setLastBookingId] = useState<string | null>(null);
+  const originalUrlRef = useRef<string | null>(null);
   const [modalLang, setModalLang] = useState<ModalLang>(
     typeof window !== 'undefined' && window.location.pathname.startsWith('/en') ? 'en' : 'sv'
   );
@@ -542,12 +545,16 @@ const skipAddons = () => {
       });
 
       toast.success(ml.thanksToast);
+      setLastBookingId(data.bookingId);
       setDone(true);
-      setTimeout(() => {
-        setOpen(false);
-        // Navigate to thank you page with booking info
-        window.location.href = `/tack?booking_id=${data.bookingId}&service=${encodeURIComponent(service.slug)}`;
-      }, 800);
+
+      // Update URL for Google Ads conversion tracking without navigating
+      originalUrlRef.current = window.location.pathname + window.location.search;
+      const tackUrl = `/tack?booking_id=${data.bookingId}&service=${encodeURIComponent(service.slug)}`;
+      window.history.pushState({ fromBooking: true }, '', tackUrl);
+
+      // Fire confetti
+      setTimeout(() => fireConfetti(), 300);
     } catch (e) {
       console.error("[ServiceRequestModal] Submit error:", e);
       toast.error(ml.errorToast);
@@ -555,6 +562,17 @@ const skipAddons = () => {
       setBusy(false);
     }
   }
+
+  // Close handler that restores URL when closing after done state
+  const handleClose = useCallback(() => {
+    if (done && originalUrlRef.current) {
+      window.history.replaceState(null, '', originalUrlRef.current);
+      originalUrlRef.current = null;
+    }
+    setOpen(false);
+    setDone(false);
+    setLastBookingId(null);
+  }, [done]);
 
   if (!open) {
     return null;
@@ -564,7 +582,7 @@ const skipAddons = () => {
       {/* Backdrop with blur */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
-        onClick={() => setOpen(false)} 
+        onClick={handleClose} 
       />
       
       {/* Modal */}
@@ -615,7 +633,7 @@ const skipAddons = () => {
               <span className="text-xs font-medium text-muted-foreground">{modalLang === 'sv' ? 'EN' : 'SV'}</span>
             </button>
             <button
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
               className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors group"
               aria-label={ml.close}
             >
@@ -629,14 +647,32 @@ const skipAddons = () => {
         {/* Content */}
         <div className="p-4 md:p-6 flex-1 min-h-0 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {done ? (
-            <div className="text-center py-8 animate-scale-in">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+            <div className="text-center py-10 animate-scale-in space-y-6">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                <CheckCircle2 className="h-10 w-10 text-primary" />
               </div>
-              <h4 className="text-xl font-semibold text-foreground mb-2">{ml.thankYou}</h4>
-              <p className="text-muted-foreground">{ml.weWillReturn}</p>
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold text-foreground">{ml.thankYou}</h4>
+                <p className="text-muted-foreground">{ml.weWillReturn}</p>
+                {lastBookingId && (
+                  <p className="text-sm text-muted-foreground">
+                    {modalLang === 'sv' ? 'Referens' : 'Reference'}: <span className="font-mono font-semibold text-foreground">{lastBookingId.slice(0, 8)}</span>
+                  </p>
+                )}
+              </div>
+              <div className="rounded-xl border border-border bg-card p-5 text-left space-y-3 max-w-md mx-auto">
+                <h5 className="font-semibold text-foreground text-sm">
+                  {modalLang === 'sv' ? 'Vad händer nu?' : 'What happens next?'}
+                </h5>
+                <ol className="list-decimal list-inside space-y-1.5 text-muted-foreground text-sm">
+                  <li>{modalLang === 'sv' ? 'Vi granskar din förfrågan och kontaktar dig inom 24 timmar' : 'We review your request and contact you within 24 hours'}</li>
+                  <li>{modalLang === 'sv' ? 'Du får en offert med fast pris — inga dolda kostnader' : 'You get a fixed-price quote — no hidden costs'}</li>
+                  <li>{modalLang === 'sv' ? 'Vi bokar in jobbet när det passar dig' : 'We schedule the job at your convenience'}</li>
+                </ol>
+              </div>
+              <Button onClick={handleClose} className="mt-2">
+                {ml.close}
+              </Button>
             </div>
           ) : currentStep === 0 ? (
             // STEG 0: VÄLJ TJÄNST
