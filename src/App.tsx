@@ -306,6 +306,9 @@ const App = () => {
                           {/* Public Invoice View */}
                           <Route path="/invoice/:token" element={<MaintenanceGate>{lazyElement(InvoicePublic)}</MaintenanceGate>} />
 
+                          {/* Thank You / Conversion page */}
+                          <Route path="/tack" element={<MaintenanceGate>{lazyElement(ThankYou)}</MaintenanceGate>} />
+
                           {/* City pages */}
                           <Route path="/omraden/uppsala" element={<MaintenanceGate>{lazyElement(LocationCityPage, { city: "Uppsala" })}</MaintenanceGate>} />
                           <Route path="/omraden/stockholm" element={<MaintenanceGate>{lazyElement(LocationCityPage, { city: "Stockholm" })}</MaintenanceGate>} />
