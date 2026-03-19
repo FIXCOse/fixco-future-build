@@ -933,7 +933,7 @@ export const EXPANDED_CERT_TEXT_SV: Record<ExpandedSlug, string> = {
   "renovera-trapp": "Snickare med erfarenhet av trapprenovering – steg, räcke och beklädnad.",
   "bygga-carport": "Snickare med erfarenhet av carportbygge i trä och stål.",
   "montera-takfonster": "Hantverkare med erfarenhet av takfönster – Velux, Fakro och alla märken.",
-  "bygga-utekök": "Snickare med erfarenhet av utekök med gas, el och vattenanslutning.",
+  "bygga-utekok": "Snickare med erfarenhet av utekök med gas, el och vattenanslutning.",
   "bygga-friggebod": "Snickare med erfarenhet av friggebod och Attefallshus.",
   "montera-persienner": "Montörer med erfarenhet av persienner, plisségardiner och rullgardiner.",
   "installera-solceller-hem": "Certifierade solcellsinstallatörer för villa och radhus.",
