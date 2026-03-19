@@ -545,12 +545,16 @@ const skipAddons = () => {
       });
 
       toast.success(ml.thanksToast);
+      setLastBookingId(data.bookingId);
       setDone(true);
-      setTimeout(() => {
-        setOpen(false);
-        // Navigate to thank you page with booking info
-        window.location.href = `/tack?booking_id=${data.bookingId}&service=${encodeURIComponent(service.slug)}`;
-      }, 800);
+
+      // Update URL for Google Ads conversion tracking without navigating
+      originalUrlRef.current = window.location.pathname + window.location.search;
+      const tackUrl = `/tack?booking_id=${data.bookingId}&service=${encodeURIComponent(service.slug)}`;
+      window.history.pushState({ fromBooking: true }, '', tackUrl);
+
+      // Fire confetti
+      setTimeout(() => fireConfetti(), 300);
     } catch (e) {
       console.error("[ServiceRequestModal] Submit error:", e);
       toast.error(ml.errorToast);
