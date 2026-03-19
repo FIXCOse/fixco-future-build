@@ -633,7 +633,7 @@ const skipAddons = () => {
               <span className="text-xs font-medium text-muted-foreground">{modalLang === 'sv' ? 'EN' : 'SV'}</span>
             </button>
             <button
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
               className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted/80 transition-colors group"
               aria-label={ml.close}
             >
