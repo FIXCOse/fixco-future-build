@@ -1,27 +1,35 @@
 
+## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-## Lägg till konfetti på tacksidan
+### Vad som är gjort ✅
+- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
+- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
+- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
+- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
+- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
+- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
+- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
 
-### Bakgrund
-Tacksidan (`/tack`) är ännu inte skapad — den ingick i den godkända Google Ads-planen. Konfetti-effekten från offertbekräftelsen i `QuotePublic.tsx` (flerstegs-burst med färger) ska återanvändas.
+## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
 
-### Plan
+### Problem
+Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
 
-#### 1. Extrahera `fireConfetti` till en delad utility
-Skapa `src/lib/confetti.ts` med den befintliga `fireConfetti`-funktionen från `QuotePublic.tsx` (flerstegs-burst, mobilanpassad, canvas-baserad). Uppdatera `QuotePublic.tsx` att importera därifrån istället.
+### Lösning ✅
+- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
+- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
+- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
+- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
+- `main.tsx` tar bort `#seo-root` när React mountar
+- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
+- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
+- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
 
-#### 2. Skapa tacksidan `src/pages/ThankYou.tsx`
-- Visar bekräftelsemeddelande ("Tack för din bokning/förfrågan!")
-- Kör `fireConfetti()` vid mount med kort fördröjning (500ms)
-- Tar emot `booking_id` och `service` som URL-parametrar
-- Knapp tillbaka till startsidan
-- Plats för Google Ads `gtag('event', 'conversion')` (aktiveras när ni har Conversion ID)
+## Plan: SEO-optimering — trafik & ranking ✅ KLART
 
-#### 3. Lägg till route `/tack` i `src/App.tsx`
-
-### Filer
-- `src/lib/confetti.ts` — Ny, delad konfetti-funktion
-- `src/pages/ThankYou.tsx` — Ny tacksida
-- `src/App.tsx` — Ny route
-- `src/pages/QuotePublic.tsx` — Importera från delad utility
-
+### Genomförda åtgärder ✅
+1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
+2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
+3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
+4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
+5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
