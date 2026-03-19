@@ -563,6 +563,17 @@ const skipAddons = () => {
     }
   }
 
+  // Close handler that restores URL when closing after done state
+  const handleClose = useCallback(() => {
+    if (done && originalUrlRef.current) {
+      window.history.replaceState(null, '', originalUrlRef.current);
+      originalUrlRef.current = null;
+    }
+    setOpen(false);
+    setDone(false);
+    setLastBookingId(null);
+  }, [done]);
+
   if (!open) {
     return null;
   }
