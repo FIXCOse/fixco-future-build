@@ -1,35 +1,29 @@
 
-## Plan: Massiv SEO-expansion — 120+ sökvarianter ✅ KLART
 
-### Vad som är gjort ✅
-- **120+ nya slugs** tillagda i `LOCAL_SERVICES` via `src/data/seoSlugsExpansion.ts`
-- Alla stödjande data: pricing, myths, certification text (sv+en), English names, title/description templates
-- Alla `Record<LocalServiceSlug, ...>` typer uppdaterade med `Partial<>` och fallback-logik
-- Lokala sidor fungerar automatiskt via `/tjanster/:serviceSlug/:areaSlug` — **~7 500+ nya sidor genereras**
-- **`nicheServiceData.ts`** + `nicheServiceDataExpanded.ts` — Hub-sidor med FAQs, USPs, beskrivningar (sv+en)
-- **`slugMapping.ts`** — Alla 120+ sv→en mappningar tillagda
-- **`App.tsx`** — SmartServiceRouter hanterar dynamiskt nisch vs. tjänstedetalj-routing
+## Tacksida som modal istället för separat sida
 
-## Plan: Inline SEO Script — body-innehåll + JSON-LD för Google ✅ KLART
+### Idé
+Istället för att navigera bort till `/tack` efter bokning, visar vi bekräftelsen (konfetti + tackmeddelande) direkt i samma modal. URL:en uppdateras med `history.pushState` till `/tack?booking_id=xxx&service=yyy` så att Google Ads fortfarande kan spåra konverteringen — men användaren stannar kvar på samma sida.
 
-### Problem
-Google ser `<div id="root"></div>` som body-innehåll för alla 16 400 URL:er. Inline JS sätter meta-taggar, men body är tomt tills React renderar → "thin content" risk.
+### Plan
 
-### Lösning ✅
-- **`scripts/generate-seo-inline.mjs`** — Genererar `dist/seo-inline.js` som körs synkront i `<body>`
-- Injicerar **synligt HTML-innehåll** (`<div id="seo-root">`) med unik h1, beskrivning, breadcrumb, USP-lista
-- Injicerar **JSON-LD structured data**: `LocalBusiness`, `Service`, `BreadcrumbList`, `HowTo`
-- Behåller befintlig meta-tagg-funktionalitet (title, description, canonical, hreflang)
-- `main.tsx` tar bort `#seo-root` när React mountar
-- **Data refaktorerat** till `scripts/seo-data.mjs` för bättre underhåll
-- Build-optimering: oanvända bilder borttagna (reference-projects/, images/references/)
-- Oanvänd `sitemapGeneratorPlugin`-import borttagen från vite.config.ts
+#### 1. Ändra ServiceRequestModal — visa tack-steg i modalen
+- Behåll `setDone(true)` men **ta bort** `window.location.href`-redirecten
+- Lägg till `history.pushState(null, '', '/tack?booking_id=...&service=...')` för URL-spårning
+- När `done === true`, visa ett tack-steg i modalen med:
+  - Konfetti (`fireConfetti()`)
+  - Grön bock-ikon + "Tack för din förfrågan!"
+  - Bekräftelsetext + referensnummer
+  - "Stäng"-knapp som återställer URL:en med `history.back()`
 
-## Plan: SEO-optimering — trafik & ranking ✅ KLART
+#### 2. Uppdatera stängningslogik
+- När modalen stängs (X eller stäng-knapp) efter done-state → `history.replaceState` tillbaka till ursprunglig URL
+- Rensa done-state
 
-### Genomförda åtgärder ✅
-1. **Blogg i sitemap** — `sitemap-blog.xml` med alla 80+ artiklar (hreflang sv/en, lastmod)
-2. **Intern länkning blogg↔tjänster** — `RelatedBlogPosts` på lokala sidor, `BlogServiceLinks` på blogginlägg
-3. **Relaterade tjänster per ort** — `RelatedServicesSection` visar 3-5 tjänster i samma ort
-4. **Prerendering av blogg** — 80+ artiklar × 2 språk = 160+ statiska HTML-filer
-5. **FAQ per tjänstekategori** — `/faq/:category` med FAQPage-schema (10 kategorier)
+#### 3. Behåll `/tack`-routen
+- Tacksidan (`ThankYou.tsx`) behålls som fallback om någon landar direkt på `/tack` (t.ex. bokmärke, delad länk)
+
+### Filer som ändras
+- `src/features/requests/ServiceRequestModal.tsx` — Tack-steg i modalen + pushState
+- Inga nya filer behövs
+
