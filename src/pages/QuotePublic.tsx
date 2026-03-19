@@ -446,7 +446,9 @@ export default function QuotePublic() {
   const dateLocale = locale === 'en' ? 'en-GB' : 'sv-SE';
 
   // Confetti — shared utility
-  const { fireConfetti } = await import('@/lib/confetti').then(m => ({ fireConfetti: m.fireConfetti })).catch(() => ({ fireConfetti: () => {} }));
+  const fireConfetti = useCallback(() => {
+    import('@/lib/confetti').then(m => m.fireConfetti());
+  }, []);
 
   useEffect(() => {
     document.body.setAttribute('data-page-type', 'quote');

@@ -114,6 +114,7 @@ const lazyWithRetry = (importFn: () => Promise<any>) => {
 };
 
 const NicheServiceLandingPage = lazyWithRetry(() => import("./pages/NicheServiceLandingPage"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
 
 // Smart router: renders NicheServiceLandingPage if slug matches a niche service, otherwise ServiceDetail
 const SmartServiceRouter = () => {
