@@ -545,7 +545,9 @@ const skipAddons = () => {
       setDone(true);
       setTimeout(() => {
         setOpen(false);
-      }, 1500);
+        // Navigate to thank you page with booking info
+        window.location.href = `/tack?booking_id=${data.bookingId}&service=${encodeURIComponent(service.slug)}`;
+      }, 800);
     } catch (e) {
       console.error("[ServiceRequestModal] Submit error:", e);
       toast.error(ml.errorToast);
