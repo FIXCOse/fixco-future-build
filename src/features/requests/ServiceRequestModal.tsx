@@ -582,7 +582,7 @@ const skipAddons = () => {
       {/* Backdrop with blur */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
-        onClick={() => setOpen(false)} 
+        onClick={handleClose} 
       />
       
       {/* Modal */}
