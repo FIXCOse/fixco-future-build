@@ -1,18 +1,33 @@
 /**
- * Vite plugin that generates sitemap XML files into /public/ during buildStart.
- * This ensures sitemaps exist BEFORE Vite copies public/ to dist/.
- * Works in Lovable's build environment which runs `vite build` directly.
+ * Vite plugin that generates Google-optimized sitemap XML files into /public/ during buildStart.
+ * SWEDISH URLS ONLY — no /en/ pages.
+ * Split into multiple files (max ~5000 URLs each).
  */
 import { writeFileSync, readFileSync } from 'fs';
 import { join } from 'path';
 import type { Plugin } from 'vite';
 
 const BASE_URL = 'https://fixco.se';
-const TODAY = new Date().toISOString().split('T')[0];
 
-// ─── Lastmod — always today ───
-function getLastmod() {
-  return TODAY;
+// ─── XML helpers ───
+const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>\n';
+
+function urlEntry(loc: string, opts: { lastmod: string; changefreq?: string; priority: string }) {
+  let xml = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${opts.lastmod}</lastmod>\n`;
+  if (opts.changefreq) xml += `    <changefreq>${opts.changefreq}</changefreq>\n`;
+  xml += `    <priority>${opts.priority}</priority>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${loc}" />\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}" />\n`;
+  xml += `  </url>\n`;
+  return xml;
+}
+
+function wrapUrlset(entries: string) {
+  return XML_HEADER +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n` +
+    `        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
+    entries +
+    `</urlset>\n`;
 }
 
 // ─── 151 service slugs ───
@@ -52,22 +67,22 @@ const UPPSALA_AREAS = [
 ];
 const HIGH_PRIORITY_AREAS = new Set(['stockholm','uppsala','solna','sundbyberg','nacka','danderyd','taby','lidingo']);
 
-// ─── Main pages ───
+// ─── Main pages (Swedish only) ───
 const MAIN_PAGES = [
-  { sv: '/', en: '/en/', priority: '1.00', changefreq: 'daily' },
-  { sv: '/tjanster', en: '/en/services', priority: '0.95', changefreq: 'weekly' },
-  { sv: '/kontakt', en: '/en/contact', priority: '0.85', changefreq: 'monthly' },
-  { sv: '/om-oss', en: '/en/about', priority: '0.80', changefreq: 'monthly' },
-  { sv: '/karriar', en: '/en/careers', priority: '0.75', changefreq: 'monthly' },
-  { sv: '/referenser', en: '/en/references', priority: '0.80', changefreq: 'weekly' },
-  { sv: '/smart-hem', en: '/en/smart-home', priority: '0.80', changefreq: 'monthly' },
-  { sv: '/ai', en: '/en/ai', priority: '0.75', changefreq: 'monthly' },
-  { sv: '/boka-hembesok', en: '/en/book-visit', priority: '0.85', changefreq: 'monthly' },
-  { sv: '/rot-info', en: '/en/rot-info', priority: '0.70', changefreq: 'monthly' },
-  { sv: '/rut', en: '/en/rut', priority: '0.70', changefreq: 'monthly' },
-  { sv: '/faq', en: '/en/faq', priority: '0.70', changefreq: 'monthly' },
-  { sv: '/terms', en: '/en/terms', priority: '0.30', changefreq: 'yearly' },
-  { sv: '/privacy', en: '/en/privacy', priority: '0.30', changefreq: 'yearly' },
+  { path: '/', priority: '1.00', changefreq: 'daily' },
+  { path: '/tjanster', priority: '0.95', changefreq: 'weekly' },
+  { path: '/kontakt', priority: '0.85', changefreq: 'monthly' },
+  { path: '/om-oss', priority: '0.80', changefreq: 'monthly' },
+  { path: '/karriar', priority: '0.75', changefreq: 'monthly' },
+  { path: '/referenser', priority: '0.80', changefreq: 'weekly' },
+  { path: '/smart-hem', priority: '0.80', changefreq: 'monthly' },
+  { path: '/ai', priority: '0.75', changefreq: 'monthly' },
+  { path: '/boka-hembesok', priority: '0.85', changefreq: 'monthly' },
+  { path: '/rot-info', priority: '0.70', changefreq: 'monthly' },
+  { path: '/rut', priority: '0.70', changefreq: 'monthly' },
+  { path: '/faq', priority: '0.70', changefreq: 'monthly' },
+  { path: '/terms', priority: '0.30', changefreq: 'yearly' },
+  { path: '/privacy', priority: '0.30', changefreq: 'yearly' },
 ];
 
 // ─── Parse blog slugs ───
@@ -82,82 +97,6 @@ function parseBlogSlugs(root: string) {
   return entries;
 }
 
-// ─── XML generators ───
-function sitemapIndex(today: string) {
-  const sitemaps = ['sitemap-main.xml','sitemap-hubs.xml','sitemap-blog.xml'];
-  let xml = `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  for (const s of sitemaps) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/${s}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
-  }
-  xml += `</sitemapindex>\n`;
-  return xml;
-}
-
-function mainSitemap(today: string) {
-  let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
-  for (const p of MAIN_PAGES) {
-    xml += `  <url>\n    <loc>${BASE_URL}${p.sv}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${BASE_URL}${p.sv}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}${p.en}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${p.sv}"/>\n`;
-    xml += `  </url>\n`;
-    xml += `  <url>\n    <loc>${BASE_URL}${p.en}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}${p.en}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${BASE_URL}${p.sv}"/>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${p.sv}"/>\n`;
-    xml += `  </url>\n`;
-  }
-  xml += `</urlset>\n`;
-  return xml;
-}
-
-function hubsSitemap() {
-  const ALL_AREAS = [...STOCKHOLM_AREAS, ...UPPSALA_AREAS];
-  let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
-  for (const slug of ALL_SERVICE_SLUGS) {
-    // Hub page (no area)
-    const sv = `${BASE_URL}/tjanster/${slug}`;
-    const en = `${BASE_URL}/en/services/${slug}`;
-    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
-    xml += `  </url>\n`;
-    xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.75</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
-    xml += `  </url>\n`;
-    // Local area pages
-    for (const area of ALL_AREAS) {
-      const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.75' : '0.65';
-      const svLocal = `${BASE_URL}/tjanster/${slug}/${area}`;
-      const enLocal = `${BASE_URL}/en/services/${slug}/${area}`;
-      xml += `  <url>\n    <loc>${svLocal}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <priority>${priority}</priority>\n`;
-      xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
-      xml += `  </url>\n`;
-      const enPri = Math.max(parseFloat(priority) - 0.05, 0.60).toFixed(2);
-      xml += `  <url>\n    <loc>${enLocal}</loc>\n    <lastmod>${getLastmod()}</lastmod>\n    <priority>${enPri}</priority>\n`;
-      xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enLocal}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${svLocal}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${svLocal}"/>\n`;
-      xml += `  </url>\n`;
-    }
-  }
-  xml += `</urlset>\n`;
-  return xml;
-}
-
-function blogSitemap(posts: Array<{ slug: string; updatedAt: string }>) {
-  let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
-  for (const p of posts) {
-    const sv = `${BASE_URL}/blogg/${p.slug}`;
-    const en = `${BASE_URL}/en/blog/${p.slug}`;
-    xml += `  <url>\n    <loc>${sv}</loc>\n    <lastmod>${p.updatedAt}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.65</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
-    xml += `  </url>\n`;
-    xml += `  <url>\n    <loc>${en}</loc>\n    <lastmod>${p.updatedAt}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.60</priority>\n`;
-    xml += `    <xhtml:link rel="alternate" hreflang="en" href="${en}"/>\n    <xhtml:link rel="alternate" hreflang="sv" href="${sv}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${sv}"/>\n`;
-    xml += `  </url>\n`;
-  }
-  xml += `</urlset>\n`;
-  return xml;
-}
-
 // ─── Plugin export ───
 export function sitemapGeneratorPlugin(): Plugin {
   return {
@@ -168,20 +107,67 @@ export function sitemapGeneratorPlugin(): Plugin {
       const today = new Date().toISOString().split('T')[0];
       const blogPosts = parseBlogSlugs(root);
 
+      // Main pages
+      let mainEntries = '';
+      for (const p of MAIN_PAGES) {
+        mainEntries += urlEntry(`${BASE_URL}${p.path}`, { lastmod: today, changefreq: p.changefreq, priority: p.priority });
+      }
+
+      // Services hub pages
+      let servicesEntries = '';
+      for (const slug of ALL_SERVICE_SLUGS) {
+        servicesEntries += urlEntry(`${BASE_URL}/tjanster/${slug}`, { lastmod: today, changefreq: 'weekly', priority: '0.90' });
+      }
+
+      // Local Stockholm pages
+      let sthlmEntries = '';
+      for (const slug of ALL_SERVICE_SLUGS) {
+        for (const area of STOCKHOLM_AREAS) {
+          const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.85' : '0.80';
+          sthlmEntries += urlEntry(`${BASE_URL}/tjanster/${slug}/${area}`, { lastmod: today, changefreq: 'weekly', priority });
+        }
+      }
+
+      // Local Uppsala pages
+      let uppsalaEntries = '';
+      for (const slug of ALL_SERVICE_SLUGS) {
+        for (const area of UPPSALA_AREAS) {
+          const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.85' : '0.80';
+          uppsalaEntries += urlEntry(`${BASE_URL}/tjanster/${slug}/${area}`, { lastmod: today, changefreq: 'weekly', priority });
+        }
+      }
+
+      // Blog
+      let blogEntries = '';
+      for (const p of blogPosts) {
+        blogEntries += urlEntry(`${BASE_URL}/blogg/${p.slug}`, { lastmod: p.updatedAt, changefreq: 'monthly', priority: '0.70' });
+      }
+
+      const sitemapNames = ['sitemap-main.xml', 'sitemap-services.xml', 'sitemap-local-sthlm.xml', 'sitemap-local-uppsala.xml', 'sitemap-blog.xml'];
+
+      // Sitemap index
+      let indexXml = XML_HEADER + `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+      for (const name of sitemapNames) {
+        indexXml += `  <sitemap>\n    <loc>${BASE_URL}/${name}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+      }
+      indexXml += `</sitemapindex>\n`;
+
       const files: Record<string, string> = {
-        'sitemap.xml': sitemapIndex(today),
-        'sitemap-main.xml': mainSitemap(today),
-        'sitemap-hubs.xml': hubsSitemap(),
-        'sitemap-blog.xml': blogSitemap(blogPosts),
+        'sitemap.xml': indexXml,
+        'sitemap-main.xml': wrapUrlset(mainEntries),
+        'sitemap-services.xml': wrapUrlset(servicesEntries),
+        'sitemap-local-sthlm.xml': wrapUrlset(sthlmEntries),
+        'sitemap-local-uppsala.xml': wrapUrlset(uppsalaEntries),
+        'sitemap-blog.xml': wrapUrlset(blogEntries),
       };
 
       for (const [name, content] of Object.entries(files)) {
         const filePath = join(publicDir, name);
         writeFileSync(filePath, content, 'utf-8');
         const urls = (content.match(/<loc>/g) || []).length;
-        console.log(`  ✅ sitemap: ${name} (${urls} URLs, ${(content.length / 1024).toFixed(0)} KB)`);
+        console.log(`  ✅ sitemap: ${name} — ${urls} URLs (${(content.length / 1024).toFixed(1)} KB)`);
       }
-      console.log(`✅ All ${Object.keys(files).length} sitemap files written to public/`);
+      console.log(`✅ All ${Object.keys(files).length} sitemap files written (Swedish only)`);
     },
   };
 }
