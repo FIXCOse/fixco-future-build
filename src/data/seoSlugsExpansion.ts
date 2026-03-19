@@ -351,7 +351,7 @@ export const EXPANDED_SERVICE_NAME_EN: Record<ExpandedSlug, string> = {
   "renovera-trapp": "Stair Renovation",
   "bygga-carport": "Build a Carport",
   "montera-takfonster": "Roof Window Installation",
-  "bygga-utekök": "Build an Outdoor Kitchen",
+  "bygga-utekok": "Build an Outdoor Kitchen",
   "bygga-friggebod": "Build a Garden Shed",
   "montera-persienner": "Blind Installation",
   "installera-solceller-hem": "Home Solar Panel Installation",
