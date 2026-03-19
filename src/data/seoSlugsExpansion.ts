@@ -763,7 +763,7 @@ export const EXPANDED_SERVICE_MYTHS: Record<ExpandedSlug, Array<{ myth: string; 
   "renovera-trapp": RENOVATION_MYTHS,
   "bygga-carport": RENOVATION_MYTHS,
   "montera-takfonster": RENOVATION_MYTHS,
-  "bygga-utekök": RENOVATION_MYTHS,
+  "bygga-utekok": RENOVATION_MYTHS,
   "bygga-friggebod": RENOVATION_MYTHS,
   "montera-persienner": ASSEMBLY_MYTHS,
   "installera-solceller-hem": TECH_MYTHS,
