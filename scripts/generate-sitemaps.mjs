@@ -138,9 +138,9 @@ function generateServicesSitemap() {
   return wrapUrlset(entries);
 }
 
-function generateLocalSitemap(areas) {
+function generateLocalSitemap(areas, slugs = ALL_SERVICE_SLUGS) {
   let entries = '';
-  for (const slug of ALL_SERVICE_SLUGS) {
+  for (const slug of slugs) {
     for (const area of areas) {
       const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.85' : '0.80';
       entries += urlEntry({
@@ -170,10 +170,16 @@ function generateBlogSitemap(posts) {
 console.log('🗺️  Generating Google-optimized sitemaps (Swedish only)...\n');
 const blogPosts = parseBlogSlugs();
 
+// Split Stockholm into two files to avoid Google fetch timeouts
+const STHLM_SPLIT = 76;
+const sthlmSlugs1 = ALL_SERVICE_SLUGS.slice(0, STHLM_SPLIT);
+const sthlmSlugs2 = ALL_SERVICE_SLUGS.slice(STHLM_SPLIT);
+
 const sitemapNames = [
   'sitemap-main.xml',
   'sitemap-services.xml',
-  'sitemap-local-sthlm.xml',
+  'sitemap-local-sthlm-1.xml',
+  'sitemap-local-sthlm-2.xml',
   'sitemap-local-uppsala.xml',
   'sitemap-blog.xml',
 ];
@@ -182,7 +188,8 @@ const files = {
   'sitemap.xml': generateSitemapIndex(sitemapNames),
   'sitemap-main.xml': generateMainSitemap(),
   'sitemap-services.xml': generateServicesSitemap(),
-  'sitemap-local-sthlm.xml': generateLocalSitemap(STOCKHOLM_AREAS),
+  'sitemap-local-sthlm-1.xml': generateLocalSitemap(STOCKHOLM_AREAS, sthlmSlugs1),
+  'sitemap-local-sthlm-2.xml': generateLocalSitemap(STOCKHOLM_AREAS, sthlmSlugs2),
   'sitemap-local-uppsala.xml': generateLocalSitemap(UPPSALA_AREAS),
   'sitemap-blog.xml': generateBlogSitemap(blogPosts),
 };

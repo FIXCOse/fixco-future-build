@@ -119,12 +119,24 @@ export function sitemapGeneratorPlugin(): Plugin {
         servicesEntries += urlEntry(`${BASE_URL}/tjanster/${slug}`, { lastmod: today, changefreq: 'weekly', priority: '0.90' });
       }
 
-      // Local Stockholm pages
-      let sthlmEntries = '';
-      for (const slug of ALL_SERVICE_SLUGS) {
+      // Local Stockholm pages — split into two files to avoid Google fetch timeouts
+      const STHLM_SPLIT = 76;
+      const sthlmSlugs1 = ALL_SERVICE_SLUGS.slice(0, STHLM_SPLIT);
+      const sthlmSlugs2 = ALL_SERVICE_SLUGS.slice(STHLM_SPLIT);
+
+      let sthlmEntries1 = '';
+      for (const slug of sthlmSlugs1) {
         for (const area of STOCKHOLM_AREAS) {
           const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.85' : '0.80';
-          sthlmEntries += urlEntry(`${BASE_URL}/tjanster/${slug}/${area}`, { lastmod: today, changefreq: 'weekly', priority });
+          sthlmEntries1 += urlEntry(`${BASE_URL}/tjanster/${slug}/${area}`, { lastmod: today, changefreq: 'weekly', priority });
+        }
+      }
+
+      let sthlmEntries2 = '';
+      for (const slug of sthlmSlugs2) {
+        for (const area of STOCKHOLM_AREAS) {
+          const priority = HIGH_PRIORITY_AREAS.has(area) ? '0.85' : '0.80';
+          sthlmEntries2 += urlEntry(`${BASE_URL}/tjanster/${slug}/${area}`, { lastmod: today, changefreq: 'weekly', priority });
         }
       }
 
@@ -143,7 +155,7 @@ export function sitemapGeneratorPlugin(): Plugin {
         blogEntries += urlEntry(`${BASE_URL}/blogg/${p.slug}`, { lastmod: p.updatedAt, changefreq: 'monthly', priority: '0.70' });
       }
 
-      const sitemapNames = ['sitemap-main.xml', 'sitemap-services.xml', 'sitemap-local-sthlm.xml', 'sitemap-local-uppsala.xml', 'sitemap-blog.xml'];
+      const sitemapNames = ['sitemap-main.xml', 'sitemap-services.xml', 'sitemap-local-sthlm-1.xml', 'sitemap-local-sthlm-2.xml', 'sitemap-local-uppsala.xml', 'sitemap-blog.xml'];
 
       // Sitemap index
       let indexXml = XML_HEADER + `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -156,7 +168,8 @@ export function sitemapGeneratorPlugin(): Plugin {
         'sitemap.xml': indexXml,
         'sitemap-main.xml': wrapUrlset(mainEntries),
         'sitemap-services.xml': wrapUrlset(servicesEntries),
-        'sitemap-local-sthlm.xml': wrapUrlset(sthlmEntries),
+        'sitemap-local-sthlm-1.xml': wrapUrlset(sthlmEntries1),
+        'sitemap-local-sthlm-2.xml': wrapUrlset(sthlmEntries2),
         'sitemap-local-uppsala.xml': wrapUrlset(uppsalaEntries),
         'sitemap-blog.xml': wrapUrlset(blogEntries),
       };
