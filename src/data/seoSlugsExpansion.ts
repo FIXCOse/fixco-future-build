@@ -179,7 +179,7 @@ export const EXPANDED_SERVICES = [
   { slug: "renovera-trapp", name: "Renovera trapp", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "bygga-carport", name: "Bygga carport", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "montera-takfonster", name: "Montera takfönster", serviceKey: "snickeri", rotRut: "ROT" },
-  { slug: "bygga-utekök", name: "Bygga utekök", serviceKey: "snickeri", rotRut: "ROT" },
+  { slug: "bygga-utekok", name: "Bygga utekök", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "bygga-friggebod", name: "Bygga friggebod", serviceKey: "snickeri", rotRut: "ROT" },
   { slug: "montera-persienner", name: "Montera persienner", serviceKey: "montering", rotRut: "RUT" },
   { slug: "installera-solceller-hem", name: "Installera solceller hemma", serviceKey: "el", rotRut: "ROT" },
