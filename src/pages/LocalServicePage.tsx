@@ -57,12 +57,14 @@ import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSectio
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
 import { RelatedServicesSection } from "@/components/local-service/RelatedServicesSection";
 import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
+import { PriceGuideSection } from "@/components/local/PriceGuideSection";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
   getOrganizationSchema,
   getReviewSchema
 } from "@/components/SEOSchemaEnhanced";
+import { getPriceGuide, hasPriceGuide, getExtraFaqs } from "@/data/carpentryPriceData";
 
 
 
@@ -149,6 +151,8 @@ const LocalServicePage = () => {
   
   const areaActivity = isValid ? getAreaActivity(area) : { avgRating: 0, reviewCount: 0 };
   const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
+  const priceGuide = isValid && serviceSlug ? getPriceGuide(serviceSlug) : null;
+  const extraFaqs = isValid && serviceSlug ? getExtraFaqs(serviceSlug, area, locale) : [];
 
   
 
@@ -227,16 +231,17 @@ const LocalServicePage = () => {
   
   const faqSchema = useMemo(() => {
     if (!content) return null;
+    const allFaqs = [...content.faqs, ...extraFaqs];
     return {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": content.faqs.map(faq => ({
+      "mainEntity": allFaqs.map(faq => ({
         "@type": "Question",
         "name": faq.q,
         "acceptedAnswer": { "@type": "Answer", "text": faq.a }
       }))
     };
-  }, [content]);
+  }, [content, extraFaqs]);
 
   const breadcrumbSchema = useMemo(() => {
     const isEn = locale === 'en';
@@ -277,9 +282,10 @@ const LocalServicePage = () => {
     })));
   }, [area, service]);
 
-  // Combine myths into FAQ for consolidation
+  // Combine myths + extra FAQs into FAQ for consolidation
   const allFaqItems = content ? [
     ...content.faqs,
+    ...extraFaqs,
     ...content.myths.map(m => ({ q: `Myt: "${m.myth}" – stämmer det?`, a: `Nej, det är en myt. Sanningen är: ${m.truth}` }))
   ] : [];
 
@@ -604,7 +610,19 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            4. ROT/RUT — Prisincitament
+            4b. PRISGUIDE — Featured snippet target
+            ============================================ */}
+        {priceGuide && (
+          <PriceGuideSection
+            guide={priceGuide}
+            area={area}
+            locale={locale}
+            rotRut={service?.rotRut || 'ROT'}
+          />
+        )}
+
+        {/* ============================================
+            5. ROT/RUT — Prisincitament
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-background" />
