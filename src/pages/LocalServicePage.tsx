@@ -625,6 +625,17 @@ const LocalServicePage = () => {
         )}
 
         {/* ============================================
+            4c. INLINE GUIDE — Long-form SEO content
+            ============================================ */}
+        {serviceGuide && (
+          <InlineGuideSection
+            guide={serviceGuide}
+            area={area}
+            canonicalUrl={canonicalUrl}
+          />
+        )}
+
+        {/* ============================================
             5. ROT/RUT — Prisincitament
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
