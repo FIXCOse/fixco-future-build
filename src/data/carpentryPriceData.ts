@@ -228,7 +228,7 @@ export const CARPENTRY_EXTRA_FAQS: Record<string, { sv: ExtraFaq[]; en: ExtraFaq
     sv: [
       { q: "Behöver jag bygglov för min renovering i {area}?", a: "Det beror på renoveringens omfattning. Invändiga ändringar som köksrenovering kräver sällan bygglov. Tillbyggnader, altaner över 1,2 meter och fasadändringar kan kräva bygglov. Vi hjälper dig att kontrollera vad som gäller för ditt projekt i {area}." },
       { q: "Vad är skillnaden mellan ROT-avdrag och vanligt avdrag?", a: "ROT-avdrag ger dig 30% rabatt direkt på arbetskostnaden, upp till 50 000 kr per person och år. Du behöver inte göra avdraget i deklarationen — vi ansöker om det hos Skatteverket åt dig. Det gäller för reparation, underhåll, om- och tillbyggnad av bostaden." },
-      { q: "Hur lång tid tar en köksrenovering i {area}?", a: "En komplett köksrenovering tar normalt 3–6 veckor beroende på omfattningen. Byter du bara luckor och bänkskiva kan det gå på 1–2 veckor. Vi ger dig en exakt tidsplan vid offerten." },
+      { q: "Hur lång tid tar en köksrenovering i {area}?", a: "En komplett köksrenovering tar normalt max 1–2 veckor beroende på projektets omfattning. Byter du bara luckor och bänkskiva kan det gå på ett par dagar. Vi ger dig en exakt tidsplan vid offerten." },
       { q: "Kan ni hjälpa med ritningar och planering?", a: "Ja! Vi hjälper med allt från mätning och planering till val av material. För större projekt som tillbyggnader kan vi rekommendera arkitekter vi samarbetar med i {area}." },
       { q: "Vad ingår i ert fasta pris?", a: "Vårt fasta pris inkluderar all arbetskostnad, projektledning och slutstädning. Material specificeras separat så du har full kontroll. Inga dolda kostnader — priset du får i offerten är priset du betalar." },
     ],
