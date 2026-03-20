@@ -50,7 +50,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
     sections: [
       {
         heading: 'Vad ingår i en köksrenovering?',
-        body: 'En komplett köksrenovering i {area} omfattar vanligtvis rivning av befintligt kök, el- och VVS-arbeten, montering av nytt kök, bänkskivor, kakel och stänkskydd samt målning. Många väljer även att passa på att byta golv och belysning i samband med renoveringen. Arbetet tar normalt 2–5 veckor beroende på omfattning.'
+        body: 'En komplett köksrenovering i {area} omfattar vanligtvis rivning av befintligt kök, el- och VVS-arbeten, montering av nytt kök, bänkskivor, kakel och stänkskydd samt målning. Många väljer även att passa på att byta golv och belysning i samband med renoveringen. Arbetet tar normalt max 1–2 veckor beroende på projektets omfattning.'
       },
       {
         heading: 'IKEA-kök eller platsbyggt i {area}?',
@@ -137,7 +137,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
       },
       {
         heading: 'Hur lång tid tar köksmontering?',
-        body: 'Ett standardkök i {area} tar 2–4 dagar att montera beroende på kökets storlek och om el- och VVS-arbeten ingår. Mer komplexa kök med köksö, specialanpassningar eller omfattande rörarbeten kan ta upp till en vecka. Vi planerar alltid arbetet så att du kan använda köket så snart som möjligt.'
+        body: 'Ett standardkök i {area} tar 2–4 dagar att montera beroende på kökets storlek och om el- och VVS-arbeten ingår. Mer komplexa kök med köksö, specialanpassningar eller omfattande rörarbeten kan ta upp till 1–2 veckor. Vi planerar alltid arbetet så att du kan använda köket så snart som möjligt.'
       }
     ],
     cta: 'Ska du montera nytt kök i {area}? Få ett fast pris från Fixco – vi monterar alla märken med ROT-avdrag och garanti.'
@@ -154,7 +154,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
       },
       {
         heading: 'Hur planerar man en totalrenovering?',
-        body: 'Börja med att ta fram en budget och prioriteringslista. I {area} rekommenderar vi att börja med våtrum (badrum/kök) eftersom de är mest komplexa. Anlita en hantverkare som kan samordna alla yrkesgrupper – snickare, elektriker, VVS-montör och målare. En välplanerad totalrenovering tar 6–12 veckor beroende på bostadens storlek.'
+        body: 'Börja med att ta fram en budget och prioriteringslista. I {area} rekommenderar vi att börja med våtrum (badrum/kök) eftersom de är mest komplexa. Anlita en hantverkare som kan samordna alla yrkesgrupper – snickare, elektriker, VVS-montör och målare. En välplanerad totalrenovering tar 3–6 veckor beroende på bostadens storlek.'
       },
       {
         heading: 'Vad kostar totalrenovering i {area}?',

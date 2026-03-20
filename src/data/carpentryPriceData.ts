@@ -228,14 +228,14 @@ export const CARPENTRY_EXTRA_FAQS: Record<string, { sv: ExtraFaq[]; en: ExtraFaq
     sv: [
       { q: "Behöver jag bygglov för min renovering i {area}?", a: "Det beror på renoveringens omfattning. Invändiga ändringar som köksrenovering kräver sällan bygglov. Tillbyggnader, altaner över 1,2 meter och fasadändringar kan kräva bygglov. Vi hjälper dig att kontrollera vad som gäller för ditt projekt i {area}." },
       { q: "Vad är skillnaden mellan ROT-avdrag och vanligt avdrag?", a: "ROT-avdrag ger dig 30% rabatt direkt på arbetskostnaden, upp till 50 000 kr per person och år. Du behöver inte göra avdraget i deklarationen — vi ansöker om det hos Skatteverket åt dig. Det gäller för reparation, underhåll, om- och tillbyggnad av bostaden." },
-      { q: "Hur lång tid tar en köksrenovering i {area}?", a: "En komplett köksrenovering tar normalt 3–6 veckor beroende på omfattningen. Byter du bara luckor och bänkskiva kan det gå på 1–2 veckor. Vi ger dig en exakt tidsplan vid offerten." },
+      { q: "Hur lång tid tar en köksrenovering i {area}?", a: "En komplett köksrenovering tar normalt max 1–2 veckor beroende på projektets omfattning. Byter du bara luckor och bänkskiva kan det gå på ett par dagar. Vi ger dig en exakt tidsplan vid offerten." },
       { q: "Kan ni hjälpa med ritningar och planering?", a: "Ja! Vi hjälper med allt från mätning och planering till val av material. För större projekt som tillbyggnader kan vi rekommendera arkitekter vi samarbetar med i {area}." },
       { q: "Vad ingår i ert fasta pris?", a: "Vårt fasta pris inkluderar all arbetskostnad, projektledning och slutstädning. Material specificeras separat så du har full kontroll. Inga dolda kostnader — priset du får i offerten är priset du betalar." },
     ],
     en: [
       { q: "Do I need a building permit for my renovation in {area}?", a: "It depends on the scope. Interior changes like kitchen renovation rarely need a permit. Extensions, decks over 1.2m, and facade changes may require one. We help you check what applies to your project in {area}." },
       { q: "What's the difference between ROT deduction and regular tax deduction?", a: "ROT gives you 30% off labor costs directly, up to 50,000 SEK per person per year. You don't need to claim it in your tax return — we apply for it with the Swedish Tax Agency on your behalf." },
-      { q: "How long does a kitchen renovation take in {area}?", a: "A complete kitchen renovation typically takes 3–6 weeks. Replacing just doors and countertop can be done in 1–2 weeks. We provide an exact timeline with your quote." },
+      { q: "How long does a kitchen renovation take in {area}?", a: "A complete kitchen renovation typically takes 1–2 weeks depending on scope. Replacing just doors and countertop can be done in a few days. We provide an exact timeline with your quote." },
       { q: "Can you help with drawings and planning?", a: "Yes! We help with everything from measuring and planning to material selection. For larger projects like extensions, we can recommend architects we work with in {area}." },
       { q: "What's included in your fixed price?", a: "Our fixed price includes all labor, project management, and final cleanup. Materials are specified separately so you have full control. No hidden costs." },
     ]
