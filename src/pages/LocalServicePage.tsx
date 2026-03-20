@@ -58,6 +58,8 @@ import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLi
 import { RelatedServicesSection } from "@/components/local-service/RelatedServicesSection";
 import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
 import { PriceGuideSection } from "@/components/local/PriceGuideSection";
+import { InlineGuideSection } from "@/components/local/InlineGuideSection";
+import { getServiceGuide, hasServiceGuide } from "@/data/carpentryGuideData";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
@@ -153,6 +155,7 @@ const LocalServicePage = () => {
   const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
   const priceGuide = isValid && serviceSlug ? getPriceGuide(serviceSlug) : null;
   const extraFaqs = isValid && serviceSlug ? getExtraFaqs(serviceSlug, area, locale) : [];
+  const serviceGuide = isValid && serviceSlug ? getServiceGuide(serviceSlug, area) : null;
 
   
 
@@ -618,6 +621,17 @@ const LocalServicePage = () => {
             area={area}
             locale={locale}
             rotRut={service?.rotRut || 'ROT'}
+          />
+        )}
+
+        {/* ============================================
+            4c. INLINE GUIDE — Long-form SEO content
+            ============================================ */}
+        {serviceGuide && (
+          <InlineGuideSection
+            guide={serviceGuide}
+            area={area}
+            canonicalUrl={canonicalUrl}
           />
         )}
 
