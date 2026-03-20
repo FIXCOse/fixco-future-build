@@ -1,10 +1,14 @@
 # ===== SITEMAP-FILER — SERVERAS ALLTID DIREKT =====
-/sitemap.xml                /sitemap.xml                200!
-/sitemap-main.xml           /sitemap-main.xml           200!
-/sitemap-services.xml       /sitemap-services.xml       200!
-/sitemap-local-sthlm.xml    /sitemap-local-sthlm.xml    200!
-/sitemap-local-uppsala.xml  /sitemap-local-uppsala.xml  200!
-/sitemap-blog.xml           /sitemap-blog.xml           200!
+/sitemap.xml                  /sitemap.xml                  200!
+/sitemap-main.xml             /sitemap-main.xml             200!
+/sitemap-services.xml         /sitemap-services.xml         200!
+/sitemap-local-sthlm-1.xml   /sitemap-local-sthlm-1.xml   200!
+/sitemap-local-sthlm-2.xml   /sitemap-local-sthlm-2.xml   200!
+/sitemap-local-uppsala.xml    /sitemap-local-uppsala.xml    200!
+/sitemap-blog.xml             /sitemap-blog.xml             200!
+
+# Legacy sitemap-namn → sitemap-index
+/sitemap-local-sthlm.xml     /sitemap.xml                  301!
 
 # ===== GAMLA SIDOR SOM INTE LÄNGRE FINNS =====
 /cleaning-organization/         /tjanster/stadning     301!
