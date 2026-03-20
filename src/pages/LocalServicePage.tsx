@@ -231,16 +231,17 @@ const LocalServicePage = () => {
   
   const faqSchema = useMemo(() => {
     if (!content) return null;
+    const allFaqs = [...content.faqs, ...extraFaqs];
     return {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": content.faqs.map(faq => ({
+      "mainEntity": allFaqs.map(faq => ({
         "@type": "Question",
         "name": faq.q,
         "acceptedAnswer": { "@type": "Answer", "text": faq.a }
       }))
     };
-  }, [content]);
+  }, [content, extraFaqs]);
 
   const breadcrumbSchema = useMemo(() => {
     const isEn = locale === 'en';
