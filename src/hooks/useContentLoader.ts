@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useContentStore } from '@/stores/contentStore';
 
 export const useContentLoader = () => {
-  const { loadContent, isLoading, isHydrated } = useContentStore();
+  const store = useContentStore();
+  const { isLoading, isHydrated } = store;
+  const loadContent = useCallback(() => store.loadContent(), [store.loadContent]);
 
   useEffect(() => {
     // Load content from database on app start
