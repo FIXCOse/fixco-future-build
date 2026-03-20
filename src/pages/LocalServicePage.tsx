@@ -281,9 +281,10 @@ const LocalServicePage = () => {
     })));
   }, [area, service]);
 
-  // Combine myths into FAQ for consolidation
+  // Combine myths + extra FAQs into FAQ for consolidation
   const allFaqItems = content ? [
     ...content.faqs,
+    ...extraFaqs,
     ...content.myths.map(m => ({ q: `Myt: "${m.myth}" – stämmer det?`, a: `Nej, det är en myt. Sanningen är: ${m.truth}` }))
   ] : [];
 
