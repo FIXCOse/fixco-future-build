@@ -151,6 +151,8 @@ const LocalServicePage = () => {
   
   const areaActivity = isValid ? getAreaActivity(area) : { avgRating: 0, reviewCount: 0 };
   const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
+  const priceGuide = isValid && serviceSlug ? getPriceGuide(serviceSlug) : null;
+  const extraFaqs = isValid && serviceSlug ? getExtraFaqs(serviceSlug, area, locale) : [];
 
   
 
