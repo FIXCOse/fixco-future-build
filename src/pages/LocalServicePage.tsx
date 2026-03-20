@@ -609,7 +609,19 @@ const LocalServicePage = () => {
         </section>
 
         {/* ============================================
-            4. ROT/RUT — Prisincitament
+            4b. PRISGUIDE — Featured snippet target
+            ============================================ */}
+        {priceGuide && (
+          <PriceGuideSection
+            guide={priceGuide}
+            area={area}
+            locale={locale}
+            rotRut={service?.rotRut || 'ROT'}
+          />
+        )}
+
+        {/* ============================================
+            5. ROT/RUT — Prisincitament
             ============================================ */}
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-background" />
