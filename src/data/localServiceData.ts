@@ -678,164 +678,164 @@ export const generateLocalContent = (serviceSlug: LocalServiceSlug, area: AreaKe
   // ─── Title templates per service (main / large / sub) ───
   const titleTemplatesBase: Partial<Record<LocalServiceSlug, string>> = {
     "snickare": pick3(
-      'Boka Snickare i {area} ★ Hela {area} län · ROT 30% · Fri offert',
+      'Boka Snickare i {area} ★ 5/5 betyg · Start inom 5 dagar · ROT 30%',
       'Boka Snickare i {area} ★ Alla byggtjänster · ROT 30% · Fri offert',
-      'Snickare i {area} · Nära dig i {parent} · ROT 30%',
-      'Book Carpenter in {area} ★ All of {area} county · ROT 30% · Free quote',
+      'Snickare i {area} ★ 5/5 betyg · Fast pris · ROT 30%',
+      'Book Carpenter in {area} ★ 5/5 rating · Start within 5 days · ROT 30%',
       'Book Carpenter in {area} ★ All construction services · ROT 30% · Free quote',
-      'Carpenter in {area} · Near you in {parent} · ROT 30%'
+      'Carpenter in {area} ★ 5/5 rating · Fixed price · ROT 30%'
     ),
     "elektriker": pick3(
-      'Elektriker i {area} ★ Alla eljobb · Certifierade · ROT 30%',
+      'Elektriker i {area} ★ Certifierade · Svar 24h · ROT 30%',
       'Boka Elektriker i {area} ★ Alla eljobb · Certifierade · ROT 30%',
-      'Elektriker i {area} · Nära dig i {parent} · Certifierade · ROT 30%',
-      'Electrician in {area} ★ All electrical work · Certified · ROT 30%',
+      'Elektriker i {area} ★ Certifierade · Garanti · ROT 30%',
+      'Electrician in {area} ★ Certified · Response 24h · ROT 30%',
       'Book Electrician in {area} ★ All electrical work · Certified · ROT 30%',
-      'Electrician in {area} · Near you in {parent} · Certified · ROT 30%'
+      'Electrician in {area} ★ Certified · Guarantee · ROT 30%'
     ),
     "vvs": pick3(
-      'VVS-montör i {area} ★ Allt inom VVS · ROT 30% · Svar 24h',
+      'VVS-montör i {area} ★ Auktoriserad · Svar 24h · ROT 30%',
       'Boka VVS i {area} ★ Allt inom VVS · ROT 30% · Svar 24h',
-      'VVS i {area} · Nära dig i {parent} · ROT 30%',
-      'Plumber in {area} ★ All plumbing services · ROT 30% · Response 24h',
+      'VVS i {area} ★ Auktoriserad · Garanti · ROT 30%',
+      'Plumber in {area} ★ Certified · Response 24h · ROT 30%',
       'Book Plumber in {area} ★ All plumbing services · ROT 30% · Response 24h',
-      'Plumber in {area} · Near you in {parent} · ROT 30%'
+      'Plumber in {area} ★ Certified · Guarantee · ROT 30%'
     ),
     "malare": pick3(
+      'Boka Målare i {area} ★ 5/5 betyg · Fasta priser · ROT 30%',
       'Boka Målare i {area} ★ In- & utvändigt · Fasta priser · ROT 30%',
-      'Boka Målare i {area} ★ In- & utvändigt · Fasta priser · ROT 30%',
-      'Målare i {area} · Nära dig i {parent} · ROT 30%',
+      'Målare i {area} ★ Fasta priser · Garanti · ROT 30%',
+      'Book Painter in {area} ★ 5/5 rating · Fixed prices · ROT 30%',
       'Book Painter in {area} ★ Interior & exterior · Fixed prices · ROT 30%',
-      'Book Painter in {area} ★ Interior & exterior · Fixed prices · ROT 30%',
-      'Painter in {area} · Near you in {parent} · ROT 30%'
+      'Painter in {area} ★ Fixed prices · Guarantee · ROT 30%'
     ),
     "stad": pick3(
-      'Städfirma i {area} ★ Alla typer av städ · RUT 50% · Boka idag',
+      'Städfirma i {area} ★ 5/5 betyg · Kvalitetsgaranti · RUT 50%',
       'Boka Städfirma i {area} ★ Alla typer av städ · RUT 50% · Boka idag',
-      'Städfirma i {area} · Nära dig i {parent} · RUT 50%',
-      'Cleaning in {area} ★ All types of cleaning · RUT 50% · Book today',
+      'Städfirma i {area} ★ Kvalitetsgaranti · RUT 50% · Boka idag',
+      'Cleaning in {area} ★ 5/5 rating · Quality guarantee · RUT 50%',
       'Book Cleaning in {area} ★ All types of cleaning · RUT 50% · Book today',
-      'Cleaning in {area} · Near you in {parent} · RUT 50%'
+      'Cleaning in {area} ★ Quality guarantee · RUT 50% · Book today'
     ),
     "flytt": pick3(
-      'Flytthjälp i {area} ★ Komplett flyttservice · RUT 50% · Fri offert',
+      'Flytthjälp i {area} ★ Försäkrad flytt · Fri offert · RUT 50%',
       'Boka Flytthjälp i {area} ★ Komplett flyttservice · RUT 50% · Fri offert',
-      'Flytthjälp i {area} · Nära dig i {parent} · RUT 50%',
-      'Moving help in {area} ★ Complete moving service · RUT 50% · Free quote',
+      'Flytthjälp i {area} ★ Försäkrad · Garanti · RUT 50%',
+      'Moving help in {area} ★ Insured · Free quote · RUT 50%',
       'Book Moving help in {area} ★ Complete moving service · RUT 50% · Free quote',
-      'Moving help in {area} · Near you in {parent} · RUT 50%'
+      'Moving help in {area} ★ Insured · Guarantee · RUT 50%'
     ),
     "markarbeten": pick3(
-      'Markarbeten i {area} ★ Schakt, dränering & plattor · ROT 30%',
+      'Markarbeten i {area} ★ Fri offert inom 24h · ROT 30%',
       'Boka Markarbeten i {area} ★ Alla markjobb · ROT 30% · Fri offert',
-      'Markarbeten i {area} · Nära dig i {parent} · ROT 30%',
-      'Groundwork in {area} ★ Excavation, drainage & paving · ROT 30%',
+      'Markarbeten i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Groundwork in {area} ★ Free quote within 24h · ROT 30%',
       'Book Groundwork in {area} ★ All ground services · ROT 30% · Free quote',
-      'Groundwork in {area} · Near you in {parent} · ROT 30%'
+      'Groundwork in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "montering": pick3(
-      'Monteringshjälp i {area} ★ IKEA, kök & möbler · ROT 30%',
+      'Monteringshjälp i {area} ★ Ofta start samma dag · ROT 30%',
       'Boka Monteringshjälp i {area} ★ Alla typer av montering · ROT 30%',
-      'Monteringshjälp i {area} · Nära dig i {parent} · ROT 30%',
-      'Assembly in {area} ★ IKEA, kitchen & furniture · ROT 30%',
+      'Monteringshjälp i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Assembly in {area} ★ Often same-day start · ROT 30%',
       'Book Assembly in {area} ★ All types of assembly · ROT 30%',
-      'Assembly in {area} · Near you in {parent} · ROT 30%'
+      'Assembly in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "tradgard": pick3(
-      'Trädgårdshjälp i {area} ★ Träd, häck & anläggning · ROT 30%',
+      'Trädgårdshjälp i {area} ★ 5/5 betyg · Start inom 5 dagar · ROT 30%',
       'Boka Trädgårdshjälp i {area} ★ Alla trädgårdstjänster · ROT 30%',
-      'Trädgårdshjälp i {area} · Nära dig i {parent} · ROT 30%',
-      'Gardening in {area} ★ Trees, hedges & landscaping · ROT 30%',
+      'Trädgårdshjälp i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Gardening in {area} ★ 5/5 rating · Start within 5 days · ROT 30%',
       'Book Gardening in {area} ★ All garden services · ROT 30%',
-      'Gardening in {area} · Near you in {parent} · ROT 30%'
+      'Gardening in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "tekniska-installationer": pick3(
-      'Teknisk installation i {area} ★ Laddbox & smarta hem · ROT 30%',
+      'Teknisk installation i {area} ★ Certifierad · Svar 24h · ROT 30%',
       'Boka Teknisk installation i {area} ★ Alla installationer · ROT 30%',
-      'Teknisk installation i {area} · Nära dig i {parent} · ROT 30%',
-      'Technical installation in {area} ★ EV charger & smart home · ROT 30%',
+      'Teknisk installation i {area} ★ Certifierad · Garanti · ROT 30%',
+      'Technical installation in {area} ★ Certified · Response 24h · ROT 30%',
       'Book Technical installation in {area} ★ All installations · ROT 30%',
-      'Technical installation in {area} · Near you in {parent} · ROT 30%'
+      'Technical installation in {area} ★ Certified · Guarantee · ROT 30%'
     ),
     "koksmontering": pick3(
-      'Köksmontering i {area} ★ IKEA-kök & platsbyggt · ROT 30% · Fri offert',
+      'Köksmontering i {area} ★ 5/5 betyg · Fri offert · ROT 30%',
       'Boka Köksmontering i {area} ★ Alla kök · ROT 30% · Fri offert',
-      'Köksmontering i {area} · Nära dig i {parent} · ROT 30%',
-      'Kitchen Assembly in {area} ★ IKEA kitchen & custom · ROT 30% · Free quote',
+      'Köksmontering i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Kitchen Assembly in {area} ★ 5/5 rating · Free quote · ROT 30%',
       'Book Kitchen Assembly in {area} ★ All kitchens · ROT 30% · Free quote',
-      'Kitchen Assembly in {area} · Near you in {parent} · ROT 30%'
+      'Kitchen Assembly in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "mobelmontering": pick3(
-      'Möbelmontering i {area} ★ IKEA, garderober & hyllsystem · RUT 50%',
+      'Möbelmontering i {area} ★ Ofta start samma dag · RUT 50%',
       'Boka Möbelmontering i {area} ★ Alla möbler · RUT 50%',
-      'Möbelmontering i {area} · Nära dig i {parent} · RUT 50%',
-      'Furniture Assembly in {area} ★ IKEA, wardrobes & shelving · RUT 50%',
+      'Möbelmontering i {area} ★ 5/5 betyg · Garanti · RUT 50%',
+      'Furniture Assembly in {area} ★ Often same-day start · RUT 50%',
       'Book Furniture Assembly in {area} ★ All furniture · RUT 50%',
-      'Furniture Assembly in {area} · Near you in {parent} · RUT 50%'
+      'Furniture Assembly in {area} ★ 5/5 rating · Guarantee · RUT 50%'
     ),
     "badrumsrenovering": pick3(
-      'Badrumsrenovering i {area} ★ Totalrenovering · ROT 30% · Fri offert',
+      'Badrumsrenovering i {area} ★ Totalrenovering · Fri offert · ROT 30%',
       'Boka Badrumsrenovering i {area} ★ Helhetslösning · ROT 30% · Fri offert',
-      'Badrumsrenovering i {area} · Nära dig i {parent} · ROT 30%',
-      'Bathroom Renovation in {area} ★ Full renovation · ROT 30% · Free quote',
+      'Badrumsrenovering i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Bathroom Renovation in {area} ★ Full renovation · Free quote · ROT 30%',
       'Book Bathroom Renovation in {area} ★ Complete solution · ROT 30% · Free quote',
-      'Bathroom Renovation in {area} · Near you in {parent} · ROT 30%'
+      'Bathroom Renovation in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "koksrenovering": pick3(
-      'Köksrenovering i {area} ★ Helhetslösning · ROT 30% · Fri offert',
+      'Köksrenovering i {area} ★ Helhetslösning · Fri offert · ROT 30%',
       'Boka Köksrenovering i {area} ★ Helhetslösning · ROT 30% · Fri offert',
-      'Köksrenovering i {area} · Nära dig i {parent} · ROT 30%',
-      'Kitchen Renovation in {area} ★ Complete solution · ROT 30% · Free quote',
+      'Köksrenovering i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Kitchen Renovation in {area} ★ Complete solution · Free quote · ROT 30%',
       'Book Kitchen Renovation in {area} ★ Complete solution · ROT 30% · Free quote',
-      'Kitchen Renovation in {area} · Near you in {parent} · ROT 30%'
+      'Kitchen Renovation in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "altanbygge": pick3(
-      'Altanbygge i {area} ★ Skräddarsytt · ROT 30% · Fri offert',
+      'Altanbygge i {area} ★ Skräddarsytt · Fri offert · ROT 30%',
       'Boka Altanbygge i {area} ★ Skräddarsytt · ROT 30% · Fri offert',
-      'Altanbygge i {area} · Nära dig i {parent} · ROT 30%',
-      'Deck Building in {area} ★ Custom built · ROT 30% · Free quote',
+      'Altanbygge i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Deck Building in {area} ★ Custom built · Free quote · ROT 30%',
       'Book Deck Building in {area} ★ Custom built · ROT 30% · Free quote',
-      'Deck Building in {area} · Near you in {parent} · ROT 30%'
+      'Deck Building in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "fasadmalning": pick3(
-      'Fasadmålning i {area} ★ Utvändig målning & puts · ROT 30%',
+      'Fasadmålning i {area} ★ 5/5 betyg · Garanti · ROT 30%',
       'Boka Fasadmålning i {area} ★ Alla fasadarbeten · ROT 30%',
-      'Fasadmålning i {area} · Nära dig i {parent} · ROT 30%',
-      'Facade Painting in {area} ★ Exterior painting & plaster · ROT 30%',
+      'Fasadmålning i {area} ★ Fasta priser · Garanti · ROT 30%',
+      'Facade Painting in {area} ★ 5/5 rating · Guarantee · ROT 30%',
       'Book Facade Painting in {area} ★ All facade work · ROT 30%',
-      'Facade Painting in {area} · Near you in {parent} · ROT 30%'
+      'Facade Painting in {area} ★ Fixed prices · Guarantee · ROT 30%'
     ),
     "inomhusmalning": pick3(
-      'Inomhusmålning i {area} ★ Tapetsering & spackling · ROT 30%',
+      'Inomhusmålning i {area} ★ 5/5 betyg · Garanti · ROT 30%',
       'Boka Inomhusmålning i {area} ★ Alla invändiga måleriarbeten · ROT 30%',
-      'Inomhusmålning i {area} · Nära dig i {parent} · ROT 30%',
-      'Interior Painting in {area} ★ Wallpapering & plastering · ROT 30%',
+      'Inomhusmålning i {area} ★ Fasta priser · Garanti · ROT 30%',
+      'Interior Painting in {area} ★ 5/5 rating · Guarantee · ROT 30%',
       'Book Interior Painting in {area} ★ All interior painting · ROT 30%',
-      'Interior Painting in {area} · Near you in {parent} · ROT 30%'
+      'Interior Painting in {area} ★ Fixed prices · Guarantee · ROT 30%'
     ),
     "golvlaggning": pick3(
-      'Golvläggning i {area} ★ Alla golvtyper · ROT 30% · Fri offert',
+      'Golvläggning i {area} ★ Alla golvtyper · Fri offert · ROT 30%',
       'Boka Golvläggning i {area} ★ Alla golvtyper · ROT 30% · Fri offert',
-      'Golvläggning i {area} · Nära dig i {parent} · ROT 30%',
-      'Floor Installation in {area} ★ All floor types · ROT 30% · Free quote',
+      'Golvläggning i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Floor Installation in {area} ★ All floor types · Free quote · ROT 30%',
       'Book Floor Installation in {area} ★ All floor types · ROT 30% · Free quote',
-      'Floor Installation in {area} · Near you in {parent} · ROT 30%'
+      'Floor Installation in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
     "elinstallation": pick3(
-      'Elinstallation i {area} ★ Uttag, belysning & laddbox · ROT 30%',
+      'Elinstallation i {area} ★ Auktoriserad · Svar 24h · ROT 30%',
       'Boka Elinstallation i {area} ★ Alla eljobb · ROT 30%',
-      'Elinstallation i {area} · Nära dig i {parent} · ROT 30%',
-      'Electrical Installation in {area} ★ Outlets, lighting & EV charger · ROT 30%',
+      'Elinstallation i {area} ★ Auktoriserad · Garanti · ROT 30%',
+      'Electrical Installation in {area} ★ Certified · Response 24h · ROT 30%',
       'Book Electrical Installation in {area} ★ All electrical work · ROT 30%',
-      'Electrical Installation in {area} · Near you in {parent} · ROT 30%'
+      'Electrical Installation in {area} ★ Certified · Guarantee · ROT 30%'
     ),
     "rivning": pick3(
-      'Rivning i {area} ★ Snabbt & prisvärt · ROT 30% · Fri offert',
+      'Rivning i {area} ★ Snabbt & prisvärt · Fri offert · ROT 30%',
       'Boka Rivning i {area} ★ Snabbt & prisvärt · ROT 30% · Fri offert',
-      'Rivning i {area} · Nära dig i {parent} · ROT 30%',
-      'Demolition in {area} ★ Fast & affordable · ROT 30% · Free quote',
+      'Rivning i {area} ★ 5/5 betyg · Garanti · ROT 30%',
+      'Demolition in {area} ★ Fast & affordable · Free quote · ROT 30%',
       'Book Demolition in {area} ★ Fast & affordable · ROT 30% · Free quote',
-      'Demolition in {area} · Near you in {parent} · ROT 30%'
+      'Demolition in {area} ★ 5/5 rating · Guarantee · ROT 30%'
     ),
   };
 
