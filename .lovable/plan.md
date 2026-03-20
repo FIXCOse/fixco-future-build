@@ -1,62 +1,26 @@
 
-# Plan: Inline-guider på lokala tjänstesidor (snickeri först)
 
-## Vad vi bygger
-En ny sektion **"Guide: [Tjänst] i [Ort]"** med 200-400 ord sammanhängande text direkt på varje lokal tjänstesida. Texten är template-baserad men dynamiskt anpassad per tjänst och ort.
+# Fix: Guide expand bug + uppdatera tidsuppskattningar
 
-## Varför det hjälper SEO
-- **Unikt long-form innehåll** — Google rankar sidor med djupt innehåll högre
-- **Naturlig sökordsdensitet** — "köksrenovering Stockholm", "snickare Huddinge" etc. vävs in naturligt
-- **Ökad tid-på-sidan** — mer att läsa = bättre engagement-signaler
-- **Featured snippets** — strukturerad guide-text kan plockas upp av Google
+## Problem 1: "Läs hela guiden" visar vitt/tomt
+Nya sektioner som renderas efter expand använder `variants={itemVariants}` (startar med `opacity: 0, y: 16`). Men föräldra-animationen (`whileInView`) har redan triggats och kör inte igen — så de nya barnen fastnar i `hidden`-state och syns aldrig.
 
-## Teknisk approach
+**Fix**: Ge de expanderade sektionerna egna `initial`/`animate`-props istället för att förlita sig på förälderns `variants`.
 
-### 1. Ny datafil: `src/data/carpentryGuideData.ts`
-- En guide-template per snickeritjänst (7 st: snickare, köksrenovering, badrumsrenovering, altanbygge, köksmontering, totalrenovering, husrenovering)
-- Varje template innehåller:
-  - **Intro-stycke** (vad tjänsten innebär i {area})
-  - **3-4 rubriker med brödtext** (t.ex. "Vad kostar köksrenovering i {area}?", "Så väljer du rätt snickare", "Vanliga projekt i {area}")
-  - **Avslutande CTA-stycke**
-- `{area}` och `{service}` ersätts dynamiskt
+## Problem 2: Felaktiga tidsuppskattningar för köksrenovering
+Användaren säger att kök tar max 1–2 veckor, inte 3–6 veckor. Uppdatera på alla ställen:
 
-### 2. Ny komponent: `src/components/local/InlineGuideSection.tsx`
-- Renderar guiden med tydlig typografi (H2, H3, stycken)
-- Visuellt: diskret bakgrund, bra läsbarhet
-- Inkluderar schema.org `Article`-markup i JSON-LD
-- Collapsible/expandable: visar intro + "Läs mer" för att inte göra sidan för lång visuellt
+### Filer som ändras:
 
-### 3. Integration i `LocalServicePage.tsx`
-- Placeras **efter PriceGuideSection**, **före FAQ-sektionen**
-- Renderas bara om guide-data finns för tjänsten (snickeri först)
-- Guiden inkluderas i sidans JSON-LD schema
+1. **`src/components/local/InlineGuideSection.tsx`** — Fixa expand-buggen: expanderade sektioner får `initial={{ opacity: 0, y: 16 }}` och `animate={{ opacity: 1, y: 0 }}` direkt istället för parent-variants.
 
-## Innehållsstruktur (exempel: Köksrenovering)
+2. **`src/data/carpentryGuideData.ts`** — Ändra:
+   - Köksrenovering: "2–5 veckor" → "1–2 veckor"
+   - Totalrenovering: "6–12 veckor" → "3–6 veckor" (proportionellt rimligare)
 
-```text
-## Guide: Köksrenovering i {area}
+3. **`src/data/localServiceData.ts`** (rad 507) — Ändra myten: "3-6 veckor" → "max 1–2 veckor beroende på projektets omfattning"
 
-Att renovera köket är en av de mest värdefulla investeringarna...
-i {area} ser vi ofta projekt i villor och bostadsrätter...
+4. **`src/data/seoSlugsExpansion.ts`** (rad 538) — Samma myt-uppdatering
 
-### Vad ingår i en köksrenovering?
-Stycke om rivning, el, VVS, montering, bänkskivor...
+5. **`src/data/carpentryPriceData.ts`** (rad 231) — FAQ: "3–6 veckor" → "1–2 veckor"
 
-### Vad kostar köksrenovering i {area}?
-Referens till prisguiden ovan + ROT-avdrag 30%...
-
-### Så väljer du rätt hantverkare i {area}
-Tips om att jämföra offerter, kontrollera F-skatt...
-
-### Vanliga misstag att undvika
-Praktiska tips baserade på erfarenhet...
-```
-
-## Omfattning
-- **7 snickeri-tjänster** × 54 områden = **378 sidor** med inline-guider
-- Ingen ny route, inga nya sidor — bara mer innehåll på befintliga sidor
-
-## Filer som ändras/skapas
-1. **Skapa** `src/data/carpentryGuideData.ts` — guide-templates
-2. **Skapa** `src/components/local/InlineGuideSection.tsx` — UI-komponent
-3. **Ändra** `src/pages/LocalServicePage.tsx` — lägg till sektionen
