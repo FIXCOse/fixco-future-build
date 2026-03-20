@@ -1,51 +1,56 @@
 
-Mina fynd just nu:
 
-- Den live-publicerade filen `https://fixco.se/sitemap-local-sthlm-2.xml` går att hämta från min sida.
-- Slug-felet verkar redan vara fixat i generatorerna: `bygga-utekok` används i koden.
-- Det som fortfarande ser fel ut är att sitemap-leveransen är inkonsekvent mellan kodbas, genererade filer och routing:
-  - `public/_redirects` pekar fortfarande bara på gamla `/sitemap-local-sthlm.xml`
-  - de nya `sitemap-local-sthlm-1.xml` och `sitemap-local-sthlm-2.xml` är inte explicit definierade där
-  - repo:t innehåller dessutom stale genererade sitemap-filer, t.ex. `public/sitemap-services.xml` med gamla `bygga-utekök`
+## Analys: Varför fixco.se serverar fel sitemaps
 
-Det gör att Google kan få en annan/stale variant än den som ser rätt ut i koden.
+### Vad jag verifierat just nu (live-hämtning)
 
-Plan:
+| Fil | fixco.se | fixco-future-build.lovable.app | Koden i repot |
+|-----|----------|-------------------------------|---------------|
+| sitemap.xml | **3 sitemaps** (main, hubs, blog) — 2026-03-18 | **6 sitemaps** (korrekt) — 2026-03-19 | **6 sitemaps** — 2026-03-20 |
+| sitemap-main.xml | **Gammal** — innehåller /en/ URLs | Korrekt — bara svenska | Korrekt |
+| sitemap-hubs.xml | **Finns** — gammal fil med /en/ | Finns inte | Finns inte i kod |
+| sitemap-services.xml | Korrekt — 2026-03-19 | Korrekt | Korrekt |
+| sitemap-local-sthlm-2.xml | Korrekt — 2026-03-19 | Korrekt | Korrekt |
 
-1. Rensa upp sitemap-arkitekturen så det finns en enda sann källa
-- Antingen sluta checka in genererade sitemap-filer i `public/`
-- Eller regenerera alla sitemap-filer konsekvent så repo:t alltid matchar build-output
+**Slutsats:** fixco.se serverar EN BLANDNING av gammal och ny deploy. Vissa filer (services, sthlm-2) är från 2026-03-19, men sitemap.xml och sitemap-main.xml är från en äldre deploy (2026-03-18) som fortfarande refererar till den gamla `sitemap-hubs.xml`.
 
-2. Fixa routing för sitemaps explicit
-- Lägg till `200!`-regler i `public/_redirects` för:
-  - `/sitemap-local-sthlm-1.xml`
-  - `/sitemap-local-sthlm-2.xml`
-- Ersätt gamla regeln för `/sitemap-local-sthlm.xml`
-- Lägg gärna en legacy-redirect från gamla stockholm-filen till `sitemap.xml` eller rätt ny struktur
+Google läser `sitemap.xml` som pekar på `sitemap-hubs.xml` istället för de 6 korrekta filerna. Därför hittar Google inte `sitemap-local-sthlm-2.xml`.
 
-3. Regenerera alla sitemap-filer
-- Säkerställ att alla sex child-sitemaps faktiskt skrivs ut
-- Säkerställ att inga genererade filer längre innehåller `å/ä/ö` i URL-slugs
+### Rotorsak
 
-4. Lägg till validering i build
-- Kontrollera att alla filer som refereras i `sitemap.xml` verkligen genereras
-- Kontrollera att sitemap-URL:er är ASCII-säkra
-- Kontrollera att inga gamla sitemap-namn lever kvar i `public/` eller `_redirects`
+Bygget kraschade tidigare (pga non-ASCII slug `router-natverksskåp-guide`). Det fixades, men **den senaste koden (med korrekt sitemap.xml) har aldrig publicerats framgångsrikt till fixco.se**. Subdomänen fick en delpublicering (2026-03-19) men custom domain sitter kvar på en äldre version för vissa filer.
 
-5. Deploy + verifiering
-- Publicera om
-- Begär ny hämtning i Search Console för:
-  - `sitemap-local-sthlm-2.xml`
-  - `sitemap.xml`
+### Plan
 
-Tekniska detaljer:
-- Jag ser inte längre huvudproblemet i själva sluggen.
-- Jag ser i stället en deploy/routing-mismatch:
-  - generatorerna är uppdaterade
-  - men statiska filer och `_redirects` är inte helt synkade
-- Det är den mest sannolika orsaken till att Google fortfarande markerar just den filen som misslyckad.
+**Steg 1 — Ta bort dubbel sitemap-generering (kodhärdning)**
 
-Vad jag skulle bygga nu:
-- en liten “sitemap sanity check” i builden
-- uppdaterade `_redirects`
-- full regenerering av alla sitemap-filer så Search Console alltid möter exakt samma version som koden producerar
+Det finns TVÅ generatorer som skriver samma filer:
+- `scripts/generate-sitemaps.mjs` (körs före `vite build`)
+- `vite-plugin-sitemap-gen.ts` (körs under `vite build`)
+
+Ta bort Vite-pluginet och behåll bara det fristående skriptet. Det eliminerar risken att de skriver olika innehåll.
+
+**Steg 2 — Uppdatera build-skriptet**
+
+`package.json` build-kommandot behåller bara: `generate-sitemaps.mjs → vite build → generate-seo-inline.mjs → validate-sitemaps.mjs`. Inga ändringar här — redan korrekt.
+
+Ta bort `sitemapGeneratorPlugin` från `vite.config.ts`.
+
+**Steg 3 — Publicera**
+
+Efter kodändringen: Klicka "Update" i publish-dialogen. Det triggar en ny build som:
+1. Genererar korrekta sitemaps (6 filer, bara svenska, ASCII-säkra)
+2. Validerar dem
+3. Deployer till BÅDE subdomänen och fixco.se
+
+**Steg 4 — Verifiera**
+
+Efter publicering, besök `https://fixco.se/sitemap.xml` och bekräfta att den listar 6 child sitemaps med dagens datum. Begär sedan ny hämtning i Google Search Console.
+
+### Tekniska detaljer
+
+- `vite-plugin-sitemap-gen.ts` — tas bort som plugin i `vite.config.ts` (filen kan behållas som referens)
+- `vite.config.ts` rad 5 och 16 — ta bort import och användning av `sitemapGeneratorPlugin`
+- Inga andra kodfiler behöver ändras
+- Bygget ska fungera korrekt eftersom non-ASCII-sluggen redan är fixad
+
