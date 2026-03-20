@@ -97,11 +97,21 @@ function parseBlogSlugs(root: string) {
   return entries;
 }
 
+// ─── ASCII safety check ───
+function assertAsciiSlugs(slugs: string[]) {
+  for (const s of slugs) {
+    if (/[^\x20-\x7E]/.test(s)) {
+      throw new Error(`Non-ASCII character in slug: "${s}" — sitemaps must use ASCII-only URLs`);
+    }
+  }
+}
+
 // ─── Plugin export ───
 export function sitemapGeneratorPlugin(): Plugin {
   return {
     name: 'generate-sitemaps',
     buildStart() {
+      assertAsciiSlugs(ALL_SERVICE_SLUGS);
       const root = process.cwd();
       const publicDir = join(root, 'public');
       const today = new Date().toISOString().split('T')[0];
