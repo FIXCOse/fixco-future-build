@@ -50,7 +50,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
     sections: [
       {
         heading: 'Vad ingår i en köksrenovering?',
-        body: 'En komplett köksrenovering i {area} omfattar vanligtvis rivning av befintligt kök, el- och VVS-arbeten, montering av nytt kök, bänkskivor, kakel och stänkskydd samt målning. Många väljer även att passa på att byta golv och belysning i samband med renoveringen. Arbetet tar normalt 2–5 veckor beroende på omfattning.'
+        body: 'En komplett köksrenovering i {area} omfattar vanligtvis rivning av befintligt kök, el- och VVS-arbeten, montering av nytt kök, bänkskivor, kakel och stänkskydd samt målning. Många väljer även att passa på att byta golv och belysning i samband med renoveringen. Arbetet tar normalt max 1–2 veckor beroende på projektets omfattning.'
       },
       {
         heading: 'IKEA-kök eller platsbyggt i {area}?',
