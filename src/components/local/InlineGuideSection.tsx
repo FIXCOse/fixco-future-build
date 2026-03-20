@@ -52,8 +52,8 @@ export const InlineGuideSection = ({ guide, area, canonicalUrl }: InlineGuideSec
     }
   };
 
-  // Show intro + first section always, rest behind "Läs mer"
-  const visibleSections = expanded ? guide.sections : guide.sections.slice(0, 1);
+
+
 
   return (
     <>
