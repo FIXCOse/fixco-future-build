@@ -137,7 +137,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
       },
       {
         heading: 'Hur lång tid tar köksmontering?',
-        body: 'Ett standardkök i {area} tar 2–4 dagar att montera beroende på kökets storlek och om el- och VVS-arbeten ingår. Mer komplexa kök med köksö, specialanpassningar eller omfattande rörarbeten kan ta upp till en vecka. Vi planerar alltid arbetet så att du kan använda köket så snart som möjligt.'
+        body: 'Ett standardkök i {area} tar 2–4 dagar att montera beroende på kökets storlek och om el- och VVS-arbeten ingår. Mer komplexa kök med köksö, specialanpassningar eller omfattande rörarbeten kan ta upp till 1–2 veckor. Vi planerar alltid arbetet så att du kan använda köket så snart som möjligt.'
       }
     ],
     cta: 'Ska du montera nytt kök i {area}? Få ett fast pris från Fixco – vi monterar alla märken med ROT-avdrag och garanti.'
