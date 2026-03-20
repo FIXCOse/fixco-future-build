@@ -535,7 +535,7 @@ const RENOVATION_MYTHS = [
   { myth: "Renoveringar tar alltid längre tid än planerat", truth: "Med rätt planering och en erfaren projektledare håller de flesta renoveringar tidsplanen. Nyckel: bra förarbete och tydlig kommunikation." },
 ];
 const KITCHEN_MYTHS = [
-  { myth: "Köksrenovering tar bara en vecka", truth: "En fullständig köksrenovering tar vanligtvis 3-6 veckor beroende på el, VVS och eventuella väggjobb." },
+  { myth: "Köksrenovering tar flera månader", truth: "En fullständig köksrenovering tar max 1–2 veckor beroende på projektets omfattning. Med bra planering och ett erfaret team går det snabbt." },
   { myth: "IKEA-kök är lika bra som platsbyggda kök", truth: "Platsbyggda kök anpassas exakt efter ditt rum, har högre materialkvalitet och håller ofta 2-3 gånger längre." },
   { myth: "Man kan behålla gamla rör vid köksrenovering", truth: "Gamla koppar- eller blyrör bör bytas vid renovering. Moderna plaströr är säkrare och enklare att underhålla." },
 ];

@@ -91,9 +91,27 @@ export const InlineGuideSection = ({ guide, area, canonicalUrl }: InlineGuideSec
               {guide.intro}
             </motion.p>
 
-            {/* Sections */}
-            {visibleSections.map((section, idx) => (
+            {/* First section - uses parent variants */}
+            {guide.sections.slice(0, 1).map((section, idx) => (
               <motion.div key={idx} variants={itemVariants} className="mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  {section.heading}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {section.body}
+                </p>
+              </motion.div>
+            ))}
+
+            {/* Expanded sections - use own initial/animate */}
+            {expanded && guide.sections.slice(1).map((section, idx) => (
+              <motion.div
+                key={`expanded-${idx}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className="mb-6"
+              >
                 <h3 className="text-lg font-semibold text-foreground mb-2">
                   {section.heading}
                 </h3>

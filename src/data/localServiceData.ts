@@ -504,7 +504,7 @@ const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: s
     { myth: "Golvvärme i badrum är en lyxprodukt", truth: "Golvvärme förhindrar fukt och mögel, torkar golvet snabbare och minskar energikostnaden jämfört med handdukstork." }
   ],
   "koksrenovering": [
-    { myth: "Köksrenovering tar bara en vecka", truth: "En fullständig köksrenovering tar vanligtvis 3-6 veckor beroende på el, VVS och eventuella väggjobb." },
+    { myth: "Köksrenovering tar flera månader", truth: "En fullständig köksrenovering tar max 1–2 veckor beroende på projektets omfattning. Med bra planering och ett erfaret team går det snabbt." },
     { myth: "Man kan behålla gamla rör vid köksrenovering", truth: "Gamla koppar- eller blyrör bör bytas vid renovering. Moderna plaströr är säkrare och enklare att underhålla." },
     { myth: "Bänkskivor i laminat är lika bra som sten", truth: "Stenbänkskivor (granit, kvarts) är mer tåliga mot värme och repor, men laminat är ett utmärkt budgetalternativ." }
   ],

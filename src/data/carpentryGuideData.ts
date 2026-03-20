@@ -154,7 +154,7 @@ const CARPENTRY_GUIDES: Record<string, ServiceGuide> = {
       },
       {
         heading: 'Hur planerar man en totalrenovering?',
-        body: 'Börja med att ta fram en budget och prioriteringslista. I {area} rekommenderar vi att börja med våtrum (badrum/kök) eftersom de är mest komplexa. Anlita en hantverkare som kan samordna alla yrkesgrupper – snickare, elektriker, VVS-montör och målare. En välplanerad totalrenovering tar 6–12 veckor beroende på bostadens storlek.'
+        body: 'Börja med att ta fram en budget och prioriteringslista. I {area} rekommenderar vi att börja med våtrum (badrum/kök) eftersom de är mest komplexa. Anlita en hantverkare som kan samordna alla yrkesgrupper – snickare, elektriker, VVS-montör och målare. En välplanerad totalrenovering tar 3–6 veckor beroende på bostadens storlek.'
       },
       {
         heading: 'Vad kostar totalrenovering i {area}?',

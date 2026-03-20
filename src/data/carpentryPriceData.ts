@@ -235,7 +235,7 @@ export const CARPENTRY_EXTRA_FAQS: Record<string, { sv: ExtraFaq[]; en: ExtraFaq
     en: [
       { q: "Do I need a building permit for my renovation in {area}?", a: "It depends on the scope. Interior changes like kitchen renovation rarely need a permit. Extensions, decks over 1.2m, and facade changes may require one. We help you check what applies to your project in {area}." },
       { q: "What's the difference between ROT deduction and regular tax deduction?", a: "ROT gives you 30% off labor costs directly, up to 50,000 SEK per person per year. You don't need to claim it in your tax return — we apply for it with the Swedish Tax Agency on your behalf." },
-      { q: "How long does a kitchen renovation take in {area}?", a: "A complete kitchen renovation typically takes 3–6 weeks. Replacing just doors and countertop can be done in 1–2 weeks. We provide an exact timeline with your quote." },
+      { q: "How long does a kitchen renovation take in {area}?", a: "A complete kitchen renovation typically takes 1–2 weeks depending on scope. Replacing just doors and countertop can be done in a few days. We provide an exact timeline with your quote." },
       { q: "Can you help with drawings and planning?", a: "Yes! We help with everything from measuring and planning to material selection. For larger projects like extensions, we can recommend architects we work with in {area}." },
       { q: "What's included in your fixed price?", a: "Our fixed price includes all labor, project management, and final cleanup. Materials are specified separately so you have full control. No hidden costs." },
     ]
