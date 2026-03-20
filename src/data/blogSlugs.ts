@@ -79,7 +79,7 @@ export const ALL_BLOG_SLUGS: Array<{ slug: string; title: string; updatedAt: str
   { slug: 'kok-oppen-planlosning-guide', title: 'Kök öppen planlösning guide', updatedAt: '2026-02-09', category: 'renovering' },
   { slug: 'vattenskadar-forsakring-guide', title: 'Vattenskador försäkring guide', updatedAt: '2026-02-08', category: 'tips' },
   { slug: 'stenlaggning-uteplats-guide', title: 'Stenläggning uteplats guide', updatedAt: '2026-02-07', category: 'guider' },
-  { slug: 'router-natverksskåp-guide', title: 'Router nätverksskåp guide', updatedAt: '2026-02-06', category: 'tips' },
+  { slug: 'router-natverksskaap-guide', title: 'Router nätverksskåp guide', updatedAt: '2026-02-06', category: 'tips' },
   { slug: 'takfonsterbyte-guide', title: 'Takfönsterbyte guide', updatedAt: '2026-02-05', category: 'renovering' },
   { slug: 'hemlarmsystem-2026', title: 'Hemlarmsystem 2026', updatedAt: '2026-02-04', category: 'tips' },
   { slug: 'elbilsladdning-hemma-2026', title: 'Elbilsladdning hemma 2026', updatedAt: '2026-02-03', category: 'energi' },
