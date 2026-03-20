@@ -57,12 +57,14 @@ import { NearbyAreasSection } from "@/components/local-service/NearbyAreasSectio
 import { ExpandableAreaLinks } from "@/components/local-service/ExpandableAreaLinks";
 import { RelatedServicesSection } from "@/components/local-service/RelatedServicesSection";
 import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
+import { PriceGuideSection } from "@/components/local/PriceGuideSection";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
   getOrganizationSchema,
   getReviewSchema
 } from "@/components/SEOSchemaEnhanced";
+import { getPriceGuide, hasPriceGuide, getExtraFaqs } from "@/data/carpentryPriceData";
 
 
 
