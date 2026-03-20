@@ -62,6 +62,12 @@ for (const file of files) {
     fail(file, `${dupes.length} duplicate <loc> entries (first: ${dupes[0]})`);
   }
 
+  // 4b. Check for non-ASCII characters in URLs (å, ä, ö etc.)
+  const nonAscii = locs.filter(l => /[^\x20-\x7E]/.test(l));
+  if (nonAscii.length > 0) {
+    fail(file, `${nonAscii.length} URLs contain non-ASCII characters (first: ${nonAscii[0]})`);
+  }
+
   // 5. Reasonable size check (warn if > 50MB or < 50 bytes)
   if (content.length < 50) {
     fail(file, `Suspiciously small (${content.length} bytes)`);
