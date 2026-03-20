@@ -155,6 +155,7 @@ const LocalServicePage = () => {
   const howToSteps = isValid ? getHowToSteps(service?.name || '', area, locale) : [];
   const priceGuide = isValid && serviceSlug ? getPriceGuide(serviceSlug) : null;
   const extraFaqs = isValid && serviceSlug ? getExtraFaqs(serviceSlug, area, locale) : [];
+  const serviceGuide = isValid && serviceSlug ? getServiceGuide(serviceSlug, area) : null;
 
   
 
