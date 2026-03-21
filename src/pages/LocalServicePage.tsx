@@ -162,13 +162,9 @@ const LocalServicePage = () => {
     if (!isValid || !serviceSlug || !area) return [];
     const links: { label: string; href: string }[] = [];
     
-    // 1. Other carpentry services in the same area
-    const carpentryServices = ['snickare', 'koksrenovering', 'badrumsrenovering', 'altanbygge', 'koksmontering', 'totalrenovering', 'husrenovering'];
-    const otherServices = carpentryServices.filter(s => s !== serviceSlug && hasServiceGuide(s));
-    const serviceNames: Record<string, string> = {
-      snickare: 'Snickare', koksrenovering: 'Köksrenovering', badrumsrenovering: 'Badrumsrenovering',
-      altanbygge: 'Altanbygge', koksmontering: 'Köksmontering', totalrenovering: 'Totalrenovering', husrenovering: 'Husrenovering'
-    };
+    // 1. Other services with guides in the same area
+    const allGuideSlugs = getAllGuideSlugs();
+    const otherServices = allGuideSlugs.filter(s => s !== serviceSlug);
     // Pick 2-3 related services
     for (const s of otherServices.slice(0, 3)) {
       links.push({
