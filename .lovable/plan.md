@@ -1,35 +1,53 @@
 
 
-# Nästa SEO-steg för byggtjänster — 3 konkreta förbättringar
+# Nya köksartiklar — utöka blogginnehållet
 
 ## Nuläge
-Ni har redan: inline-guider (35+ tjänster), prisguider (7 tjänster), extra FAQs (5 tjänster), AggregateRating, HowTo-schema, FAQPage-schema, intern länkning, och seo-inline.js med synligt HTML-innehåll.
+Befintliga köksrelaterade artiklar (5 st):
+- `koksrenovering-guide-2026` — generell guide
+- `ikea-koksmontage-guide` — IKEA-montage
+- `koksbelysning-design-guide` — belysning
+- `grovkok-planering-guide` — grovkök
+- `kok-oppen-planlosning-guide` — öppen planlösning
 
-## De tre största luckorna jag ser nu
+## Nya artiklar (5 st) — fångar högvolym-sökningar
 
-### 1. Prisguider för alla 28+ nya byggtjänster
-Prisguiden (`carpentryPriceData.ts`) täcker bara de 7 ursprungliga snickeritjänsterna. De ~28 nya tjänsterna (golvläggning, golvslipning, parkettläggning, målning, staket, rivning, bastu, carport, etc.) saknar prisdata. Google älskar prissidor — de rankar högt för sökningar som "vad kostar golvslipning i Stockholm" och triggar **rich results** med prisinformation.
+1. **`vad-kostar-nytt-kok-2026`** — "Vad kostar ett nytt kök 2026? Prisguide från budget till premium"
+   - Fångar: "vad kostar nytt kök", "nytt kök pris", "köksrenovering kostnad"
+   - Innehåll: prisjämförelse IKEA vs Ballingslöv vs Marbodal, materialkostnader, ROT-avdrag beräkning
 
-**Ändring**: Utöka `carpentryPriceData.ts` med prisintervall och extra FAQs för alla bygg-tjänster som har guider.
+2. **`koksrenovering-steg-for-steg-guide`** — "Köksrenovering steg för steg — Komplett planering 2026"
+   - Fångar: "köksrenovering steg för steg", "planera köksrenovering", "renovera kök själv"
+   - Innehåll: tidsplan (1–2 veckor), ordningen el→VVS→golv→montering, vanliga misstag
 
-### 2. Guide-innehåll i seo-inline.js (pre-render för Googlebot)
-Guiderna renderas bara via React — Googlebot ser dem inte i det initiala HTML-svaret. `seo-inline.js` injicerar redan synligt innehåll (H1, beskrivning, breadcrumbs, USPs), men guide-texten saknas. Genom att lägga till ett utdrag av guiden (intro + första rubriken) i seo-inline.js får Googlebot 200+ ord extra unikt innehåll direkt i HTML:en.
+3. **`byta-koksluckor-bankskiva-guide`** — "Byta köksluckor och bänkskiva — Spara 50% på köksrenoveringen"
+   - Fångar: "byta köksluckor", "byta bänkskiva", "billig köksrenovering"
+   - Innehåll: material (laminat vs trä vs sten), ROT-avdrag, DIY vs hantverkare
 
-**Ändring**: Importera guide-data i `scripts/seo-data.mjs` och injicera guide-utdrag i `generate-seo-inline.mjs`.
+4. **`koksinspiration-trender-2026`** — "Kökstrender 2026 — Färger, material och smarta lösningar"
+   - Fångar: "köksinspiration 2026", "köks trender", "modernt kök"
+   - Innehåll: färgpaletter, materialval, smarta förvaring, hållbara material
 
-### 3. Extra FAQs för alla byggtjänster
-Extra FAQs finns bara för 5 tjänster (snickare, köksrenovering, badrumsrenovering, altanbygge, köksmontering). De övriga 30+ tjänsterna saknar extra FAQ-innehåll, vilket betyder färre FAQ-snippets i Google och tunnare FAQPage-schema.
+5. **`installera-nytt-kok-rot-avdrag`** — "Installera nytt kök med ROT-avdrag — Så sparar du tiotusentals kronor"
+   - Fångar: "installera nytt kök", "köksmontering rot-avdrag", "montera kök"
+   - Innehåll: vad som ger ROT (arbete), beräkningsexempel, checklista innan montering
 
-**Ändring**: Utöka `CARPENTRY_EXTRA_FAQS` i `carpentryPriceData.ts` med 3-5 FAQs per tjänst för alla byggtjänster.
+## Teknisk plan
 
-## Prioriterad plan
+### Filer som ändras
 
-### Steg 1: Prisguider + FAQs för alla byggtjänster
-- **Fil**: `src/data/carpentryPriceData.ts`
-- Lägg till `ServicePriceGuide` + `ExtraFaq` för ~28 tjänster
-- Varje tjänst får 3-5 prisintervall och 3-5 unika FAQs (sv + en)
-- Allt med `{area}`-platshållare
+1. **`src/data/blogDataNew2026Part2.ts`** — Lägg till 5 nya BlogPost-objekt (id 81–85) med fullständigt innehåll (aiSummary, keyFacts, faqs, sources, statistics, quotableStatements, entityMentions, expertise). Varje artikel 800–1200 ord med info-boxes, warning-boxes, stats, tabeller och CTA.
 
-### Steg 2: Guide-utdrag i seo-inline.js
-- **Fil**: `scripts/seo-data.mjs` — exportera kompakt guide-data (intro + första rubrik per slug)
-- **Fil**: `scripts/generate-seo-inline.mjs` — injicera guide-utdrag i `#
+2. **`src/data/blogSlugs.ts`** — Lägg till 5 nya slugs med updatedAt mars 2026, category 'renovering'.
+
+3. **`public/llms-blog.txt`** — Lägg till AI-optimerade sammanfattningar för de 5 nya artiklarna (AI Summary, Key Facts, FAQ).
+
+4. **`src/data/blogSlugs.ts`** (BLOG_CATEGORY_TO_SERVICES) — Verifiera att 'renovering' redan mappar till köksrelaterade tjänster (den gör det).
+
+## Innehållsriktlinjer
+- Alla priser och regler verifierade mot Skatteverket, Konsumentverket
+- Tidsuppskattningar: köksrenovering max 1–2 veckor
+- ROT-avdrag 30%, max 50 000 kr/person/år
+- Inga uppskattningar — bara verifierbara fakta
+- Intern länkning till lokala kökstjänster + relaterade artiklar
+
