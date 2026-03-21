@@ -201,6 +201,30 @@ const LocalServicePage = () => {
   const enUrl = `${baseUrl}/en/services/${serviceSlug}/${areaSlug}`;
 
   // Schema.org markup
+  // AggregateOffer schema from price guide data
+  const aggregateOfferSchema = useMemo(() => {
+    const guide = getPriceGuide(serviceSlug || '');
+    if (!guide || !guide.prices.length) return null;
+    const allPricesFrom = guide.prices.map(p => p.priceFrom);
+    const allPricesTo = guide.prices.map(p => p.priceTo);
+    const lowPrice = Math.min(...allPricesFrom);
+    const highPrice = Math.max(...allPricesTo);
+    return {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": `${service?.name} ${area}`,
+      "provider": { "@type": "LocalBusiness", "@id": "https://fixco.se#organization", "name": "Fixco" },
+      "areaServed": { "@type": "City", "name": area },
+      "offers": {
+        "@type": "AggregateOffer",
+        "lowPrice": lowPrice.toString(),
+        "highPrice": highPrice.toString(),
+        "priceCurrency": "SEK",
+        "offerCount": guide.prices.length.toString()
+      }
+    };
+  }, [serviceSlug, service, area]);
+
   const localBusinessSchema = useMemo(() => {
     if (!content || !metadata) return null;
     return {
