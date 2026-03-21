@@ -1780,9 +1780,11 @@ Få en kostnadsfri offert för ditt nya kök – vi hjälper dig från planering
 :::
 `,
     category: 'renovering',
-    date: '2026-03-20',
+    publishedAt: '2026-03-20',
+    updatedAt: '2026-03-20',
     author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
-    readTime: 8,
+    readingTime: 8,
+    featured: false,
     image: '/images/blog/kok-kostnad.jpg',
     tags: ['kök', 'nytt kök', 'priser 2026', 'ROT-avdrag', 'köksrenovering', 'IKEA', 'Ballingslöv', 'Marbodal'],
     relatedSlugs: ['koksrenovering-guide-2026', 'ikea-koksmontage-guide', 'installera-nytt-kok-rot-avdrag', 'koksrenovering-steg-for-steg-guide'],
