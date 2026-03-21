@@ -2153,9 +2153,11 @@ Vill du förverkliga ditt drömkök? Boka ett kostnadsfritt hembesök för inspi
 :::
 `,
     category: 'renovering',
-    date: '2026-03-17',
+    publishedAt: '2026-03-17',
+    updatedAt: '2026-03-17',
     author: { name: 'Lisa Andersson', role: 'Inredningsrådgivare på Fixco', avatar: '' },
-    readTime: 6,
+    readingTime: 6,
+    featured: false,
     image: '/images/blog/kokstrender.jpg',
     tags: ['köksinspiration', 'kökstrender 2026', 'köksdesign', 'köksfärger', 'hållbart kök', 'shaker-kök'],
     relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'koksbelysning-design-guide'],
