@@ -666,6 +666,7 @@ const LocalServicePage = () => {
             guide={serviceGuide}
             area={area}
             canonicalUrl={canonicalUrl}
+            relatedLinks={relatedGuideLinks}
           />
         )}
 
