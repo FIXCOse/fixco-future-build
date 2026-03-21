@@ -2160,7 +2160,7 @@ Vill du förverkliga ditt drömkök? Boka ett kostnadsfritt hembesök för inspi
     featured: false,
     image: '/images/blog/kokstrender.jpg',
     tags: ['köksinspiration', 'kökstrender 2026', 'köksdesign', 'köksfärger', 'hållbart kök', 'shaker-kök'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'koksbelysning-design-guide'],
+    
     aiSummary: 'Kökstrender 2026 domineras av varma jordtoner (grönt, terrakotta), naturliga material (ek, valnöt) och hållbara val. Populära bänkskivematerial: keramik, kvartskomposit och massiv ek. Shaker-luckor förblir tidlösa. Smarta förvaringslösningar: utdragslådor i hörnskåp, inbyggd avfallssortering och gömda laddstationer.',
     keyFacts: [
       'Grönt och terrakotta populäraste färgerna 2026',
