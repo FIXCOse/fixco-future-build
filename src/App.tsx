@@ -515,6 +515,7 @@ const App = () => {
                             <Route path="terms" element={lazyElement(Terms)} />
                             <Route path="privacy" element={lazyElement(Privacy)} />
                             <Route path="cookies" element={lazyElement(Cookies)} />
+                            <Route path="sitemap" element={lazyElement(HtmlSitemap)} />
                             <Route path="rot" element={lazyElement(ROTInfo)} />
                             <Route path="rut" element={lazyElement(RUT)} />
                             <Route path="book-visit" element={lazyElement(BookVisit)} />
