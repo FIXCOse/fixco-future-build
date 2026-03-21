@@ -2035,9 +2035,11 @@ Boka ett kostnadsfritt hembesök – vi mäter upp och ger dig en exakt offert f
 :::
 `,
     category: 'renovering',
-    date: '2026-03-18',
+    publishedAt: '2026-03-18',
+    updatedAt: '2026-03-18',
     author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
-    readTime: 6,
+    readingTime: 6,
+    featured: false,
     image: '/images/blog/koksluckor.jpg',
     tags: ['köksluckor', 'bänkskiva', 'billig köksrenovering', 'ROT-avdrag', 'kök'],
     relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'koksinspiration-trender-2026', 'bankskiva-material-guide-2026'],
