@@ -1047,7 +1047,6 @@ export const CARPENTRY_PRICE_GUIDES: Record<string, ServicePriceGuide> = {
     afterRotNote: "Priserna avser arbetskostnad inkl. projektledning, före ROT-avdrag (30%).",
     afterRotNoteEn: "Prices include labor and project management, before ROT deduction (30%).",
   },
-},
 
   // ─── EL-TJÄNSTER ───
   "elektriker": {
