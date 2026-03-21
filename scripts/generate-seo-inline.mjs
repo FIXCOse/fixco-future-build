@@ -170,6 +170,7 @@ if(area){
     html+='<p>Fixco är ditt pålitliga val för '+svc.toLowerCase()+' i '+area+'. Vi erbjuder professionella tjänster med erfarna hantverkare som garanterar kvalitet i varje projekt. Kontakta oss idag för en kostnadsfri offert!</p>';
     html+='<h2>Varför välja Fixco för '+svc.toLowerCase()+' i '+area+'?</h2>';
     html+='<p>Med Fixco får du en trygg och professionell partner för alla typer av '+svc.toLowerCase()+'. Vi har lång erfarenhet av projekt i '+area+' och omgivande områden. Alla våra hantverkare är certifierade och försäkrade.</p>';
+    var ge=G[svSlug];if(ge&&ge.sv){html+='<p>'+ge.sv.replace(/\\{area\\}/g,area)+'</p>';}
   } else {
     html='<h1>'+svc+' in '+area+'</h1>';
     html+='<p>'+desc+'</p>';
