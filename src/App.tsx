@@ -480,6 +480,7 @@ const App = () => {
                             } />
                             <Route path="terms" element={lazyElement(Terms)} />
                             <Route path="privacy" element={lazyElement(Privacy)} />
+                            <Route path="webbkarta" element={lazyElement(HtmlSitemap)} />
                           </Route>
                           
                           {/* English Routes */}
