@@ -21,6 +21,7 @@ const ROTInfo = lazy(() => import("./pages/ROTInfo"));
 const RUT = lazy(() => import("./pages/RUT"));
 const Referenser = lazy(() => import("./pages/Referenser"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const HtmlSitemap = lazy(() => import("./pages/HtmlSitemap"));
 const AI = lazy(() => import("./pages/AI"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
@@ -479,6 +480,7 @@ const App = () => {
                             } />
                             <Route path="terms" element={lazyElement(Terms)} />
                             <Route path="privacy" element={lazyElement(Privacy)} />
+                            <Route path="webbkarta" element={lazyElement(HtmlSitemap)} />
                           </Route>
                           
                           {/* English Routes */}
@@ -513,6 +515,7 @@ const App = () => {
                             <Route path="terms" element={lazyElement(Terms)} />
                             <Route path="privacy" element={lazyElement(Privacy)} />
                             <Route path="cookies" element={lazyElement(Cookies)} />
+                            <Route path="sitemap" element={lazyElement(HtmlSitemap)} />
                             <Route path="rot" element={lazyElement(ROTInfo)} />
                             <Route path="rut" element={lazyElement(RUT)} />
                             <Route path="book-visit" element={lazyElement(BookVisit)} />
