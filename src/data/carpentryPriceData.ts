@@ -1141,6 +1141,198 @@ export const CARPENTRY_EXTRA_FAQS: Record<string, { sv: ExtraFaq[]; en: ExtraFaq
       { q: "Does appliance installation come included?", a: "Yes, we install dishwasher, oven, hob, and fridge/freezer. Stove and water connections require certified electrician/plumber — we coordinate that for you." },
     ]
   },
+  "golvlaggning": {
+    sv: [
+      { q: "Vilken golvtyp passar bäst i {area}?", a: "Det beror på rummet. Parkett och laminat passar vardagsrum och sovrum. Vinyl/klinker passar kök och hall. I våtutrymmen krävs klinker eller våtrumsvinyl. Vi hjälper dig välja rätt golv för ditt hem i {area}." },
+      { q: "Behöver man avjämna golvet innan läggning?", a: "Ofta ja. Ett ojämnt underlag ger sprickor och golvgnissel. Avjämning kostar 120–250 kr/kvm men är värt varje krona för ett perfekt resultat." },
+      { q: "Hur lång tid tar golvläggning i {area}?", a: "Ett rum (15–20 kvm) tar normalt 1 dag. En hel lägenhet tar 2–4 dagar beroende på golvtyp och förberedelser." },
+    ],
+    en: [
+      { q: "Which floor type suits best in {area}?", a: "It depends on the room. Parquet and laminate suit living rooms. Vinyl/tile suits kitchens and hallways. Wet rooms need tile or wet room vinyl." },
+      { q: "Do I need to level the floor before installation?", a: "Often yes. An uneven subfloor leads to cracks and creaking. Leveling costs 120–250 SEK/sqm but is worth it." },
+      { q: "How long does flooring installation take in {area}?", a: "One room (15–20 sqm) typically takes 1 day. A full apartment takes 2–4 days." },
+    ]
+  },
+  "golvslipning": {
+    sv: [
+      { q: "Hur ofta behöver man slipa om trägolvet?", a: "Normalt vart 10–15 år beroende på slitage. Har du husdjur eller mycket trafik kan det behövas oftare. Mellanslipning vart 5–7 år förlänger golvets livslängd." },
+      { q: "Kan man slipa alla trägolv?", a: "De flesta massiva trägolv kan slipas 3–5 gånger. Flerskiktsparkett kan ofta slipas 1–2 gånger. Vi bedömer ditt golv kostnadsfritt i {area}." },
+      { q: "Lacka eller olja efter slipning?", a: "Lack ger en tålig yta — bäst för barnfamiljer. Olja ger naturlig, matt känsla och är lättare att underhålla lokalt." },
+    ],
+    en: [
+      { q: "How often do you need to sand wooden floors?", a: "Normally every 10–15 years depending on wear. With pets or heavy traffic it may be needed more often." },
+      { q: "Can all wooden floors be sanded?", a: "Most solid wood floors can be sanded 3–5 times. Engineered parquet can typically be sanded 1–2 times." },
+      { q: "Lacquer or oil after sanding?", a: "Lacquer gives a durable surface — best for families. Oil gives a natural matte feel and is easier to maintain locally." },
+    ]
+  },
+  "malare": {
+    sv: [
+      { q: "Hur många strykningar behövs?", a: "Normalt 2 strykningar på grundade ytor, 3 om du byter från mörk till ljus färg." },
+      { q: "Vilken färg är bäst för invändig målning?", a: "Helmatt (glans 7) är vanligast för väggar. Halvmatt (glans 20–40) fungerar bra i kök och badrum." },
+      { q: "Behöver man flytta ut möblerna?", a: "Vi täcker golv och möbler noggrant. Flyttbara möbler bör ställas i mitten av rummet. Stora möbler behöver inte flyttas." },
+    ],
+    en: [
+      { q: "How many coats are needed?", a: "Normally 2 coats on primed surfaces, 3 if changing from dark to light." },
+      { q: "Which paint is best for interior?", a: "Matte (gloss 7) is most common for walls. Semi-matte (gloss 20–40) works well in kitchens and bathrooms." },
+      { q: "Do I need to move furniture out?", a: "We carefully cover floors and furniture. Movable items should be placed in room center." },
+    ]
+  },
+  "fasadmalning": {
+    sv: [
+      { q: "Hur ofta behöver man måla om fasaden?", a: "Trähus bör målas om vart 8–12 år. Hus i skuggigt läge kan behöva det oftare. Vi inspekterar din fasad i {area} kostnadsfritt." },
+      { q: "Vilken årstid är bäst för fasadmålning?", a: "Maj–september. Temperaturen bör vara över 10°C och torrt i minst 24 timmar efter målning." },
+      { q: "Behövs ställning?", a: "För 2+ våningar behövs ställning (ca 15 000–30 000 kr). Envåningshus kan ofta målas med stege." },
+    ],
+    en: [
+      { q: "How often does the facade need repainting?", a: "Wood houses should be repainted every 8–12 years." },
+      { q: "Which season is best?", a: "May–September. Temperature above 10°C and dry for 24 hours after painting." },
+      { q: "Is scaffolding needed?", a: "For 2+ stories yes (approx. 15,000–30,000 SEK). Single story can often use ladder." },
+    ]
+  },
+  "tapetsering": {
+    sv: [
+      { q: "Kan man tapetsera på gammal tapet?", a: "Vi rekommenderar alltid att ta bort gammal tapet först. Borttagning kostar 80–150 kr/kvm." },
+      { q: "Hur väljer man rätt tapet?", a: "Vlies-tapet är enklast att sätta upp och ta ner. Papperstapet ger traditionellt resultat men kräver mer erfarenhet." },
+      { q: "Hur lång tid tar tapetsering?", a: "Ett rum (15–20 kvm väggar) tar normalt 1 dag. Mönstermatchning tar längre." },
+    ],
+    en: [
+      { q: "Can you wallpaper over old wallpaper?", a: "We always recommend removing old wallpaper first. Removal costs 80–150 SEK/sqm." },
+      { q: "How do I choose the right wallpaper?", a: "Non-woven is easiest to install and remove. Paper gives a traditional look but needs more skill." },
+      { q: "How long does wallpapering take?", a: "One room typically takes 1 day. Pattern matching takes longer." },
+    ]
+  },
+  "markarbeten": {
+    sv: [
+      { q: "Behöver jag marklov i {area}?", a: "Marklov kan krävas om du höjer/sänker marknivån mer än 50 cm i detaljplanerat område." },
+      { q: "När är det bäst att göra markarbeten?", a: "Vår och höst är bäst — marken är varken frusen eller för blöt. Undvik december–februari i {area}." },
+      { q: "Vad ingår i dränering runt hus?", a: "Schaktning, ny dräneringsslang, makadam, ev. isolering och återfyllning. Normalt 2 000–5 000 kr/lm." },
+    ],
+    en: [
+      { q: "Do I need a land permit in {area}?", a: "May be required if ground level changes by more than 50 cm in a detailed plan area." },
+      { q: "Best time of year for groundwork?", a: "Spring and autumn — ground neither frozen nor too wet. Avoid Dec–Feb in {area}." },
+      { q: "What's included in house drainage?", a: "Excavation, drainage pipe, gravel, possible insulation and backfilling. Typically 2,000–5,000 SEK/lm." },
+    ]
+  },
+  "rivning": {
+    sv: [
+      { q: "Ingår bortforsling i priset?", a: "Normalt tillkommer container och deponiavgifter. En 10-kubiks container kostar ca 3 000–6 000 kr i {area}." },
+      { q: "Kan man riva bärande väggar?", a: "Ja, men det kräver konstruktör som beräknar vilken balk som behövs. Räkna med 10 000–30 000 kr extra." },
+      { q: "Hur lång tid tar rivning?", a: "Badrumsrivning: 1–2 dagar. Köksrivning: 1 dag. Vi borttransporterar allt rivningsmaterial." },
+    ],
+    en: [
+      { q: "Is waste removal included?", a: "Container and disposal are typically additional. A 10-cubic container costs approx. 3,000–6,000 SEK in {area}." },
+      { q: "Can you demolish load-bearing walls?", a: "Yes, but requires a structural engineer. Expect 10,000–30,000 SEK extra for steel beam." },
+      { q: "How long does demolition take?", a: "Bathroom: 1–2 days. Kitchen: 1 day. We remove all debris." },
+    ]
+  },
+  "tillbyggnad": {
+    sv: [
+      { q: "Behöver jag bygglov för tillbyggnad?", a: "Ja, tillbyggnader kräver bygglov. Undantag: Attefallstillbyggnad (max 15 kvm) kräver bara anmälan." },
+      { q: "Hur lång tid tar tillbyggnad?", a: "Liten (10–15 kvm): 4–8 veckor. Större (20–30 kvm): 8–12 veckor. Bygglovsprocessen tar normalt 10 veckor." },
+      { q: "Vad påverkar priset mest?", a: "Grundläggning, tak-anslutning och om VVS/el behövs i tillbyggnaden." },
+    ],
+    en: [
+      { q: "Do I need a building permit?", a: "Yes. Exception: Attefalls extensions (max 15 sqm) only need notification." },
+      { q: "How long does an extension take?", a: "Small (10–15 sqm): 4–8 weeks. Larger (20–30 sqm): 8–12 weeks." },
+      { q: "What affects price most?", a: "Foundation, roof connection and whether plumbing/electrical is needed." },
+    ]
+  },
+  "bygga-plank": {
+    sv: [
+      { q: "Behöver jag bygglov för plank?", a: "Plank över 1,8 m kan kräva bygglov. Staket under 1,1 m kräver aldrig bygglov." },
+      { q: "Trä eller komposit?", a: "Trä: 800–1 800 kr/lm, kräver underhåll. Komposit: 2 000–4 500 kr/lm, underhållsfritt 25+ år." },
+      { q: "Hur lång tid tar det?", a: "10–20 löpmeter tar 2–3 dagar inkl. stolpsättning och gjutning." },
+    ],
+    en: [
+      { q: "Do I need a permit for fencing?", a: "Fences over 1.8m may require a permit. Under 1.1m never needs one." },
+      { q: "Wood or composite?", a: "Wood: 800–1,800 SEK/lm, needs maintenance. Composite: 2,000–4,500 SEK/lm, maintenance-free 25+ years." },
+      { q: "How long does it take?", a: "10–20 linear meters takes 2–3 days including post setting." },
+    ]
+  },
+  "bygga-bastu": {
+    sv: [
+      { q: "Krävs bygglov för bastu?", a: "Inomhusbastu: nej. Utomhusbastu under 15 kvm (friggebod): normalt nej." },
+      { q: "Vilken typ av bastuaggregat?", a: "Vedeldad ger klassisk upplevelse men kräver skorsten. Elbastu är enklast — men kräver 3-fas för aggregat över 6 kW." },
+      { q: "Hur lång tid tar det?", a: "Inomhusbastu: 3–5 dagar. Utomhusbastu: 1–2 veckor inkl. grund och el." },
+    ],
+    en: [
+      { q: "Is a permit needed?", a: "Indoor sauna: no. Outdoor under 15 sqm: typically no." },
+      { q: "Which heater type?", a: "Wood-burning gives classic experience but needs chimney. Electric is easiest — needs 3-phase for over 6 kW." },
+      { q: "How long does it take?", a: "Indoor: 3–5 days. Outdoor: 1–2 weeks including foundation and electrical." },
+    ]
+  },
+  "bygga-carport": {
+    sv: [
+      { q: "Krävs bygglov?", a: "Under Attefallsreglerna (max 30 kvm, 4 m höjd, 4,5 m från tomtgräns) krävs bara anmälan." },
+      { q: "Vilken grund behövs?", a: "Plintar är billigast och enklast. Gjuten platta ger jämnare yta." },
+      { q: "Hur lång tid?", a: "Enkel carport: 3–5 dagar. Dubbel med förråd: 5–8 dagar." },
+    ],
+    en: [
+      { q: "Is a permit needed?", a: "Under Attefalls rules (max 30 sqm, 4m high, 4.5m from boundary) only notification needed." },
+      { q: "What foundation?", a: "Concrete piers are cheapest. Poured slab gives a more even surface." },
+      { q: "How long?", a: "Simple: 3–5 days. Double with storage: 5–8 days." },
+    ]
+  },
+  "bygga-friggebod": {
+    sv: [
+      { q: "Skillnad friggebod vs Attefallshus?", a: "Friggebod (max 15 kvm, 3 m hög): inget bygglov/anmälan. Attefallshus (max 30 kvm): anmälan krävs." },
+      { q: "Kan man bo i friggebod?", a: "Ja, med el, vatten och uppvärmning. Populärt som gäststuga i {area}." },
+      { q: "Hur lång tid?", a: "Enkel: 1–2 veckor. Isolerad gäststuga med VA: 2–4 veckor." },
+    ],
+    en: [
+      { q: "Friggebod vs Attefallshus?", a: "Friggebod (max 15 sqm): no permit. Attefallshus (max 30 sqm): notification required." },
+      { q: "Can you live in one?", a: "Yes, with electricity, water and heating. Popular as guest house in {area}." },
+      { q: "How long?", a: "Simple: 1–2 weeks. Insulated with utilities: 2–4 weeks." },
+    ]
+  },
+  "platsbyggd-garderob": {
+    sv: [
+      { q: "Varför platsbyggt istället för IKEA PAX?", a: "Platsbyggt utnyttjar varje millimeter — perfekt för snedtak, nischer och udda mått." },
+      { q: "Vilka material används?", a: "MDF (lackad/folierad) eller plywood. MDF ger slät yta, plywood ger naturkänsla." },
+      { q: "Hur lång tid?", a: "Standardgarderob (2 m): 2–3 dagar. Walk-in closet: 3–5 dagar." },
+    ],
+    en: [
+      { q: "Why custom over IKEA PAX?", a: "Custom uses every millimeter — perfect for sloped ceilings, niches and odd sizes." },
+      { q: "What materials?", a: "MDF (painted/foil-wrapped) or plywood. MDF gives smooth surface, plywood natural feel." },
+      { q: "How long?", a: "Standard (2m): 2–3 days. Walk-in: 3–5 days." },
+    ]
+  },
+  "taklaggning": {
+    sv: [
+      { q: "Hur vet jag om taket behöver bytas?", a: "Vanliga tecken: läckage, trasiga pannor, mossa. Tak äldre än 30 år bör inspekteras. Vi gör fri inspektion i {area}." },
+      { q: "Vilket takmaterial är bäst?", a: "Betong: billigast, 30–50 år. Plåt: lättast, 40–60 år. Tegel: dyrast, 50–100 år." },
+      { q: "Behövs bygglov?", a: "Byte med samma material: normalt nej. Ändrad materialtyp kan kräva bygglov." },
+    ],
+    en: [
+      { q: "How do I know if the roof needs replacing?", a: "Signs: leaks, broken tiles, moss. Roofs over 30 years should be inspected." },
+      { q: "Best roofing material?", a: "Concrete: cheapest, 30–50 years. Metal: lightest, 40–60 years. Clay: most expensive, 50–100 years." },
+      { q: "Is a permit needed?", a: "Same material: typically no. Changed type may require one." },
+    ]
+  },
+  "fonsterbyte": {
+    sv: [
+      { q: "Hur mycket sparar jag på energin?", a: "Moderna 3-glasfönster kan sänka uppvärmningen med 15–25%. Även bättre ljudisolering." },
+      { q: "Trä- eller aluminiumfönster?", a: "Trä: klassisk look, kräver underhåll. Trä/alu: minimalt underhåll. PVC: billigast men kortare livslängd." },
+      { q: "Hur lång tid?", a: "1–2 fönster/dag. Hel villa (10–15 fönster): 3–5 dagar." },
+    ],
+    en: [
+      { q: "How much energy will I save?", a: "Modern triple-glazed can reduce heating by 15–25%. Also better sound insulation." },
+      { q: "Wood or aluminum?", a: "Wood: classic look, needs maintenance. Wood/alu: minimal maintenance. PVC: cheapest, shorter lifespan." },
+      { q: "How long?", a: "1–2 windows/day. Full villa (10–15 windows): 3–5 days." },
+    ]
+  },
+  "hantverkare": {
+    sv: [
+      { q: "Hur hittar jag pålitlig hantverkare i {area}?", a: "Kontrollera F-skattsedel, försäkring och referensprojekt. Genom Fixco får du verifierade hantverkare med garanti." },
+      { q: "Skillnad ROT och RUT?", a: "ROT (30%): reparation, ombyggnad, tillbyggnad. RUT (50%): hushållsarbete. Max 75 000 kr totalt/person/år." },
+      { q: "Fast pris eller timpris?", a: "Fast pris rekommenderas för definierade projekt. Timpris passar löpande underhåll." },
+    ],
+    en: [
+      { q: "How to find a reliable craftsman?", a: "Check F-tax certificate, insurance and references. Through Fixco you get verified craftsmen with guarantee." },
+      { q: "ROT vs RUT?", a: "ROT (30%): repair, renovation, extension. RUT (50%): household services. Max 75,000 SEK total/person/year." },
+      { q: "Fixed or hourly price?", a: "Fixed recommended for defined projects. Hourly suits ongoing maintenance." },
+    ]
+  },
 };
 
 // ─── Hämta extra FAQs med area-replacement ───
