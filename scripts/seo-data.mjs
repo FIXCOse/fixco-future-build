@@ -160,3 +160,31 @@ export const GUIDE_EXCERPTS = {
   'hantverkare': { sv: 'Vad kostar hantverkare? Jämför timpriser.', en: 'What does a craftsman cost? Compare rates.' },
   'byggfirma': { sv: 'Att anlita byggfirma ger projektledning och garanti.', en: 'Hiring a construction company provides project management.' },
 };
+
+// ─── Review templates for pre-rendering ───
+// Compact review data: names + templates for generating unique reviews per area/service
+export const REVIEW_NAMES = [
+  'Emma A.','Erik B.','Anna G.','Johan H.','Sofia K.','Lars M.','Maria N.','Anders P.',
+  'Ali R.','Fatima S.','Chen T.','Pawel V.','Gustav W.','Lena Z.','Oscar C.','Elin D.',
+  'Viktor E.','Klara F.','David J.','Sara L.'
+];
+export const REVIEW_TEMPLATES_SV = [
+  'Fantastisk {service} i {area}! Professionella och punktliga. Rekommenderas starkt.',
+  'Bästa hantverkarna vi anlitat i {area}. Snyggt jobb och bra kommunikation!',
+  'Mycket nöjd med arbetet i vårt hem i {area}. Kommer definitivt anlita igen!',
+  'ROT-avdraget ordnades smidigt. Supernöjd kund i {area}!',
+  'Överträffade våra förväntningar. Prisvärt och kvalitativt arbete i {area}.',
+  'Allt gick smidigt från offert till färdigt resultat. Toppen!',
+  'Proffsigt team som levererade i tid i {area}. Stort tack!',
+  'Snabba, effektiva och städade efter sig. Perfekt {service}!',
+];
+export const REVIEW_TEMPLATES_EN = [
+  'Amazing {service} in {area}! Professional and punctual. Highly recommended.',
+  'Best contractors we have hired in {area}. Great work and communication!',
+  'Very satisfied with the work in our home in {area}. Will definitely hire again!',
+  'ROT deduction handled smoothly. Super happy customer in {area}!',
+  'Exceeded our expectations. Great value and quality work in {area}.',
+  'Everything went smoothly from quote to finished result. Excellent!',
+  'Professional team that delivered on time in {area}. Thank you!',
+  'Fast, efficient and cleaned up afterwards. Perfect {service}!',
+];
