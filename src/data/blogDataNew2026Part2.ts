@@ -1779,10 +1779,9 @@ Monteringskostnaden ligger mellan 25 000–60 000 kr beroende på kökets storle
 Få en kostnadsfri offert för ditt nya kök – vi hjälper dig från planering till montering.
 :::
 `,
-    category: 'Renovering',
+    category: 'renovering',
     date: '2026-03-20',
-    author: 'Maria Svensson',
-    authorTitle: 'Ekonomiexpert på Fixco',
+    author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
     readTime: 8,
     image: '/images/blog/kok-kostnad.jpg',
     tags: ['kök', 'nytt kök', 'priser 2026', 'ROT-avdrag', 'köksrenovering', 'IKEA', 'Ballingslöv', 'Marbodal'],
@@ -1806,15 +1805,14 @@ Få en kostnadsfri offert för ditt nya kök – vi hjälper dig från planering
       { name: 'Konsumentverket – Köksrenovering', url: 'https://www.konsumentverket.se' }
     ],
     statistics: [
-      { value: '30%', label: 'ROT-avdrag på arbetskostnad', source: 'Skatteverket' },
-      { value: '50 000 kr', label: 'Max ROT per person och år', source: 'Skatteverket' }
+      { stat: 'ROT-avdrag 30% på arbetskostnad', source: 'Skatteverket' },
+      { stat: 'Max ROT 50 000 kr per person och år', source: 'Skatteverket' }
     ],
     quotableStatements: [
       'Ett nytt kök i Sverige kostar mellan 40 000 och 350 000 kr beroende på standard och tillverkare.',
       'ROT-avdraget kan spara upp till 18 000 kr på arbetskostnaden vid köksrenovering.'
     ],
     entityMentions: ['Skatteverket', 'IKEA', 'Ballingslöv', 'Marbodal', 'HTH', 'Kvänum'],
-    expertise: { authorCredentials: 'Ekonomiexpert med fokus på ROT/RUT', methodology: 'Prisdata baserad på marknadsöversikt 2026 och tillverkarlistor', verificationDate: '2026-03-20' }
   },
 
   // ============================================================
@@ -1920,10 +1918,9 @@ Elektriker drar nya kablar och sätter uttag **innan** väggar stängs:
 Boka ett kostnadsfritt hembesök – vi planerar hela din köksrenovering från start till mål.
 :::
 `,
-    category: 'Renovering',
+    category: 'renovering',
     date: '2026-03-19',
-    author: 'Erik Lindberg',
-    authorTitle: 'Projektledare på Fixco',
+    author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
     readTime: 7,
     image: '/images/blog/kok-steg.jpg',
     tags: ['köksrenovering', 'steg för steg', 'planering', 'tidsplan', 'hantverkare', 'ROT-avdrag'],
@@ -1951,7 +1948,6 @@ Boka ett kostnadsfritt hembesök – vi planerar hela din köksrenovering från 
       'En köksrenovering tar 7–10 arbetsdagar med rätt planering och koordinering av hantverkare.'
     ],
     entityMentions: ['Elsäkerhetsverket', 'Skatteverket'],
-    expertise: { authorCredentials: 'Projektledare med 10+ års erfarenhet av köksrenoveringar', methodology: 'Baserat på 200+ genomförda köksprojekt', verificationDate: '2026-03-19' }
   },
 
   // ============================================================
@@ -2034,10 +2030,9 @@ Om kökets stommar är i gott skick kan du få ett helt nytt kök genom att bara
 Boka ett kostnadsfritt hembesök – vi mäter upp och ger dig en exakt offert för luckbyte.
 :::
 `,
-    category: 'Renovering',
+    category: 'renovering',
     date: '2026-03-18',
-    author: 'Erik Lindberg',
-    authorTitle: 'Köksexpert på Fixco',
+    author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
     readTime: 6,
     image: '/images/blog/koksluckor.jpg',
     tags: ['köksluckor', 'bänkskiva', 'billig köksrenovering', 'ROT-avdrag', 'kök'],
@@ -2064,7 +2059,6 @@ Boka ett kostnadsfritt hembesök – vi mäter upp och ger dig en exakt offert f
       'Att byta köksluckor och bänkskiva sparar 50–70% jämfört med att köpa helt nytt kök.'
     ],
     entityMentions: ['Skatteverket', 'Silestone'],
-    expertise: { authorCredentials: 'Köksexpert med 8+ års erfarenhet', methodology: 'Prisdata från leverantörer och marknadsöversikt 2026', verificationDate: '2026-03-18' }
   },
 
   // ============================================================
@@ -2152,10 +2146,9 @@ Obehandlad ek och valnöt ger värme och textur. Träluckor och träbänkskivor 
 Vill du förverkliga ditt drömkök? Boka ett kostnadsfritt hembesök för inspiration och offert.
 :::
 `,
-    category: 'Renovering',
+    category: 'renovering',
     date: '2026-03-17',
-    author: 'Lisa Andersson',
-    authorTitle: 'Inredningsrådgivare på Fixco',
+    author: { name: 'Lisa Andersson', role: 'Inredningsrådgivare på Fixco', avatar: '' },
     readTime: 6,
     image: '/images/blog/kokstrender.jpg',
     tags: ['köksinspiration', 'kökstrender 2026', 'köksdesign', 'köksfärger', 'hållbart kök', 'shaker-kök'],
@@ -2184,7 +2177,6 @@ Vill du förverkliga ditt drömkök? Boka ett kostnadsfritt hembesök för inspi
       '67% av svenska konsumenter väljer naturliga material i köket 2026.'
     ],
     entityMentions: ['IKEA', 'Sköna Hem'],
-    expertise: { authorCredentials: 'Inredningsrådgivare med fokus på kök', methodology: 'Trendanalys baserad på svenska inredningsmagasin och kökstillverkare', verificationDate: '2026-03-17' }
   },
 
   // ============================================================
@@ -2299,10 +2291,9 @@ Om två personer äger bostaden kan ni dela på ROT-avdraget:
 Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallation.
 :::
 `,
-    category: 'Renovering',
+    category: 'renovering',
     date: '2026-03-16',
-    author: 'Maria Svensson',
-    authorTitle: 'Ekonomiexpert på Fixco',
+    author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
     readTime: 8,
     image: '/images/blog/kok-rot.jpg',
     tags: ['köksinstallation', 'ROT-avdrag', 'montera kök', 'spara pengar', 'skatteavdrag', 'kök 2026'],
@@ -2326,15 +2317,14 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
       { name: 'Skatteverket – F-skattsedel', url: 'https://www.skatteverket.se' }
     ],
     statistics: [
-      { value: '30%', label: 'ROT-avdrag på arbetskostnad', source: 'Skatteverket' },
+      { stat: 'ROT-avdrag 30% på arbetskostnad', source: 'Skatteverket' },
       { value: '50 000 kr', label: 'Max ROT per person/år', source: 'Skatteverket' },
-      { value: '16 170 kr', label: 'Typisk ROT-besparing kök', source: 'Beräkningsexempel' }
+      { stat: 'Typisk ROT-besparing kök: 16 170 kr', source: 'Beräkningsexempel' }
     ],
     quotableStatements: [
       'Vid en komplett köksinstallation kan ROT-avdraget spara över 16 000 kr på arbetskostnaden.',
       'Två ägare kan tillsammans få upp till 100 000 kr i ROT-avdrag per år.'
     ],
     entityMentions: ['Skatteverket', 'IKEA'],
-    expertise: { authorCredentials: 'Ekonomiexpert specialiserad på ROT/RUT', methodology: 'Beräkningar baserade på Skatteverkets regler 2026', verificationDate: '2026-03-16' }
   }
 ];
