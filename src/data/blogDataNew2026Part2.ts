@@ -1780,12 +1780,14 @@ Få en kostnadsfri offert för ditt nya kök – vi hjälper dig från planering
 :::
 `,
     category: 'renovering',
-    date: '2026-03-20',
+    publishedAt: '2026-03-20',
+    updatedAt: '2026-03-20',
     author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
-    readTime: 8,
+    readingTime: 8,
+    featured: false,
     image: '/images/blog/kok-kostnad.jpg',
     tags: ['kök', 'nytt kök', 'priser 2026', 'ROT-avdrag', 'köksrenovering', 'IKEA', 'Ballingslöv', 'Marbodal'],
-    relatedSlugs: ['koksrenovering-guide-2026', 'ikea-koksmontage-guide', 'installera-nytt-kok-rot-avdrag', 'koksrenovering-steg-for-steg-guide'],
+    
     aiSummary: 'Ett nytt kök kostar mellan 40 000 och 350 000 kr beroende på tillverkare och material. IKEA METOD (budget) 41 000–78 000 kr, Marbodal (mellanklass) 78 000–155 000 kr, Ballingslöv (premium) 135 000–270 000 kr. Arbetskostnad 25 000–60 000 kr tillkommer. ROT-avdrag 30% på arbetskostnaden, max 50 000 kr/person/år. Dolda kostnader: rivning (5 000–15 000 kr), el (8 000–20 000 kr), VVS (5 000–25 000 kr).',
     keyFacts: [
       'Budget-kök (IKEA): 41 000–78 000 kr material',
@@ -1919,12 +1921,14 @@ Boka ett kostnadsfritt hembesök – vi planerar hela din köksrenovering från 
 :::
 `,
     category: 'renovering',
-    date: '2026-03-19',
+    publishedAt: '2026-03-19',
+    updatedAt: '2026-03-19',
     author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
-    readTime: 7,
+    readingTime: 7,
+    featured: false,
     image: '/images/blog/kok-steg.jpg',
     tags: ['köksrenovering', 'steg för steg', 'planering', 'tidsplan', 'hantverkare', 'ROT-avdrag'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'installera-nytt-kok-rot-avdrag'],
+    
     aiSummary: 'En köksrenovering tar 7–10 arbetsdagar med rätt planering. Ordningen är: rivning (dag 1), el och VVS (dag 2–3), golv och väggar (dag 4–5), montering (dag 6–8) och slutfinish (dag 9–10). Allt elarbete måste utföras av behörig elektriker. ROT-avdrag 30% gäller på arbetskostnaden. Vanligaste misstaget är att beställa kök innan mätning är klar.',
     keyFacts: [
       'Köksrenovering tar 7–10 arbetsdagar',
@@ -2031,12 +2035,14 @@ Boka ett kostnadsfritt hembesök – vi mäter upp och ger dig en exakt offert f
 :::
 `,
     category: 'renovering',
-    date: '2026-03-18',
+    publishedAt: '2026-03-18',
+    updatedAt: '2026-03-18',
     author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
-    readTime: 6,
+    readingTime: 6,
+    featured: false,
     image: '/images/blog/koksluckor.jpg',
     tags: ['köksluckor', 'bänkskiva', 'billig köksrenovering', 'ROT-avdrag', 'kök'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'koksinspiration-trender-2026', 'bankskiva-material-guide-2026'],
+    
     aiSummary: 'Att byta köksluckor och bänkskiva kostar 50–70% mindre än ett helt nytt kök. Nya luckor: 6 000–30 000 kr beroende på material (folierade, lackerade, massivt trä). Bänkskiva: 2 400–24 000 kr (laminat till natursten). ROT-avdrag 30% gäller på monteringsarbetet. Stommarna behålls om de är i gott skick.',
     keyFacts: [
       'Luckbyte sparar 50–70% vs nytt kök',
@@ -2147,12 +2153,14 @@ Vill du förverkliga ditt drömkök? Boka ett kostnadsfritt hembesök för inspi
 :::
 `,
     category: 'renovering',
-    date: '2026-03-17',
+    publishedAt: '2026-03-17',
+    updatedAt: '2026-03-17',
     author: { name: 'Lisa Andersson', role: 'Inredningsrådgivare på Fixco', avatar: '' },
-    readTime: 6,
+    readingTime: 6,
+    featured: false,
     image: '/images/blog/kokstrender.jpg',
     tags: ['köksinspiration', 'kökstrender 2026', 'köksdesign', 'köksfärger', 'hållbart kök', 'shaker-kök'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'koksbelysning-design-guide'],
+    
     aiSummary: 'Kökstrender 2026 domineras av varma jordtoner (grönt, terrakotta), naturliga material (ek, valnöt) och hållbara val. Populära bänkskivematerial: keramik, kvartskomposit och massiv ek. Shaker-luckor förblir tidlösa. Smarta förvaringslösningar: utdragslådor i hörnskåp, inbyggd avfallssortering och gömda laddstationer.',
     keyFacts: [
       'Grönt och terrakotta populäraste färgerna 2026',
@@ -2292,12 +2300,14 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
 :::
 `,
     category: 'renovering',
-    date: '2026-03-16',
+    publishedAt: '2026-03-16',
+    updatedAt: '2026-03-16',
     author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
-    readTime: 8,
+    readingTime: 8,
+    featured: false,
     image: '/images/blog/kok-rot.jpg',
     tags: ['köksinstallation', 'ROT-avdrag', 'montera kök', 'spara pengar', 'skatteavdrag', 'kök 2026'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-steg-for-steg-guide', 'rot-avdrag-guide-2026', 'ikea-koksmontage-guide'],
+    
     aiSummary: 'ROT-avdrag vid köksinstallation ger 30% skattereduktion på arbetskostnaden. I ett typiskt köksprojekt med 53 900 kr i arbetskostnad sparar du 16 170 kr. Avdraget gäller montering, rivning, el, VVS, golvläggning, målning – men INTE material eller vitvaror. Krav: F-skattsedel hos företaget, bostaden 5+ år gammal, uppdelad faktura. Max 50 000 kr/person/år, två ägare kan få 100 000 kr totalt.',
     keyFacts: [
       'ROT-avdrag 30% på arbetskostnad vid köksinstallation',
@@ -2318,7 +2328,7 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
     ],
     statistics: [
       { stat: 'ROT-avdrag 30% på arbetskostnad', source: 'Skatteverket' },
-      { value: '50 000 kr', label: 'Max ROT per person/år', source: 'Skatteverket' },
+      { stat: 'Max ROT 50 000 kr per person/år', source: 'Skatteverket' },
       { stat: 'Typisk ROT-besparing kök: 16 170 kr', source: 'Beräkningsexempel' }
     ],
     quotableStatements: [
