@@ -1787,7 +1787,7 @@ Få en kostnadsfri offert för ditt nya kök – vi hjälper dig från planering
     featured: false,
     image: '/images/blog/kok-kostnad.jpg',
     tags: ['kök', 'nytt kök', 'priser 2026', 'ROT-avdrag', 'köksrenovering', 'IKEA', 'Ballingslöv', 'Marbodal'],
-    relatedSlugs: ['koksrenovering-guide-2026', 'ikea-koksmontage-guide', 'installera-nytt-kok-rot-avdrag', 'koksrenovering-steg-for-steg-guide'],
+    
     aiSummary: 'Ett nytt kök kostar mellan 40 000 och 350 000 kr beroende på tillverkare och material. IKEA METOD (budget) 41 000–78 000 kr, Marbodal (mellanklass) 78 000–155 000 kr, Ballingslöv (premium) 135 000–270 000 kr. Arbetskostnad 25 000–60 000 kr tillkommer. ROT-avdrag 30% på arbetskostnaden, max 50 000 kr/person/år. Dolda kostnader: rivning (5 000–15 000 kr), el (8 000–20 000 kr), VVS (5 000–25 000 kr).',
     keyFacts: [
       'Budget-kök (IKEA): 41 000–78 000 kr material',
