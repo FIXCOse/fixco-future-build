@@ -2042,7 +2042,7 @@ Boka ett kostnadsfritt hembesök – vi mäter upp och ger dig en exakt offert f
     featured: false,
     image: '/images/blog/koksluckor.jpg',
     tags: ['köksluckor', 'bänkskiva', 'billig köksrenovering', 'ROT-avdrag', 'kök'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'koksinspiration-trender-2026', 'bankskiva-material-guide-2026'],
+    
     aiSummary: 'Att byta köksluckor och bänkskiva kostar 50–70% mindre än ett helt nytt kök. Nya luckor: 6 000–30 000 kr beroende på material (folierade, lackerade, massivt trä). Bänkskiva: 2 400–24 000 kr (laminat till natursten). ROT-avdrag 30% gäller på monteringsarbetet. Stommarna behålls om de är i gott skick.',
     keyFacts: [
       'Luckbyte sparar 50–70% vs nytt kök',
