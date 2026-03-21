@@ -363,7 +363,14 @@ const BlogPost = () => {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        <Breadcrumbs />
+        <div className="container mx-auto px-4 pt-4">
+          <Breadcrumbs items={[
+            { name: 'Hem', url: '/' },
+            { name: 'Blogg', url: '/blogg' },
+            { name: categoryName, url: `/blogg?kategori=${post.category}` },
+            { name: post.title, url: `/blogg/${post.slug}` }
+          ]} />
+        </div>
 
         {/* Hero Thumbnail */}
         <div className="container mx-auto px-4 pt-6">

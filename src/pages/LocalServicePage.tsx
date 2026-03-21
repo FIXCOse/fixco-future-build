@@ -388,6 +388,8 @@ const LocalServicePage = () => {
         <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(authorSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(speakableSchema)}</script>
+        {/* AggregateOffer schema for price rich snippets */}
+        {aggregateOfferSchema && <script type="application/ld+json">{JSON.stringify(aggregateOfferSchema)}</script>}
         {/* Individual Review schemas for AggregateRating validation */}
         {reviewSchemas.map((review, idx) => (
           <script key={`review-${idx}`} type="application/ld+json">{JSON.stringify(review)}</script>
