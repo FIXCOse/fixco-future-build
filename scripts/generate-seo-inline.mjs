@@ -17,13 +17,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 
 // ─── Data imports (kept compact for inline script size) ───
-import { SERVICES, AREAS, SV_TO_EN_SERVICE } from './seo-data.mjs';
+import { SERVICES, AREAS, SV_TO_EN_SERVICE, GUIDE_EXCERPTS } from './seo-data.mjs';
 
 // Build the inline script content
 const inlineScript = `(function(){
 var S=${JSON.stringify(SERVICES)};
 var A=${JSON.stringify(AREAS)};
 var E=${JSON.stringify(SV_TO_EN_SERVICE)};
+var G=${JSON.stringify(GUIDE_EXCERPTS)};
 var p=location.pathname.replace(/\\/$/,'');
 var m,svc,area,lang='sv',enSvc,svSlug,areaSlug;
 
@@ -169,6 +170,7 @@ if(area){
     html+='<p>Fixco är ditt pålitliga val för '+svc.toLowerCase()+' i '+area+'. Vi erbjuder professionella tjänster med erfarna hantverkare som garanterar kvalitet i varje projekt. Kontakta oss idag för en kostnadsfri offert!</p>';
     html+='<h2>Varför välja Fixco för '+svc.toLowerCase()+' i '+area+'?</h2>';
     html+='<p>Med Fixco får du en trygg och professionell partner för alla typer av '+svc.toLowerCase()+'. Vi har lång erfarenhet av projekt i '+area+' och omgivande områden. Alla våra hantverkare är certifierade och försäkrade.</p>';
+    var ge=G[svSlug];if(ge&&ge.sv){html+='<p>'+ge.sv.replace(/\\{area\\}/g,area)+'</p>';}
   } else {
     html='<h1>'+svc+' in '+area+'</h1>';
     html+='<p>'+desc+'</p>';
@@ -177,6 +179,7 @@ if(area){
     html+='<p>Fixco is your reliable choice for '+svc.toLowerCase()+' in '+area+'. We offer professional services with experienced craftsmen who guarantee quality in every project. Contact us today for a free quote!</p>';
     html+='<h2>Why choose Fixco for '+svc.toLowerCase()+' in '+area+'?</h2>';
     html+='<p>With Fixco you get a safe and professional partner for all types of '+svc.toLowerCase()+'. We have extensive experience with projects in '+area+' and surrounding areas. All our craftsmen are certified and insured.</p>';
+    var ge2=G[svSlug];if(ge2&&ge2.en){html+='<p>'+ge2.en.replace(/\\{area\\}/g,area)+'</p>';}
   }
 } else {
   if(lang==='sv'){
