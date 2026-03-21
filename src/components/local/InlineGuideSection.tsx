@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BookOpen, ChevronDown } from "lucide-react";
+import { BookOpen, ChevronDown, ArrowRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import type { ServiceGuide } from "@/data/carpentryGuideData";
 
@@ -13,13 +14,19 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
 };
 
+interface RelatedLink {
+  label: string;
+  href: string;
+}
+
 interface InlineGuideSectionProps {
   guide: ServiceGuide;
   area: string;
   canonicalUrl: string;
+  relatedLinks?: RelatedLink[];
 }
 
-export const InlineGuideSection = ({ guide, area, canonicalUrl }: InlineGuideSectionProps) => {
+export const InlineGuideSection = ({ guide, area, canonicalUrl, relatedLinks = [] }: InlineGuideSectionProps) => {
   const [expanded, setExpanded] = useState(false);
 
   // Article schema for the guide
@@ -51,9 +58,6 @@ export const InlineGuideSection = ({ guide, area, canonicalUrl }: InlineGuideSec
       "areaServed": { "@type": "City", "name": area }
     }
   };
-
-
-
 
   return (
     <>
@@ -144,6 +148,30 @@ export const InlineGuideSection = ({ guide, area, canonicalUrl }: InlineGuideSec
                 <p className="text-sm font-medium text-foreground">
                   {guide.cta}
                 </p>
+              </motion.div>
+            )}
+
+            {/* Related guides - internal linking for SEO */}
+            {relatedLinks.length > 0 && (
+              <motion.div
+                variants={itemVariants}
+                className="mt-10 pt-8 border-t border-border"
+              >
+                <h3 className="text-base font-semibold text-foreground mb-4">
+                  Relaterade guider
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {relatedLinks.map((link, idx) => (
+                    <Link
+                      key={idx}
+                      to={link.href}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted hover:bg-accent text-sm text-muted-foreground hover:text-accent-foreground transition-colors"
+                    >
+                      {link.label}
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  ))}
+                </div>
               </motion.div>
             )}
           </motion.div>
