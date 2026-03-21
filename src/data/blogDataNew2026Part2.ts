@@ -1921,9 +1921,11 @@ Boka ett kostnadsfritt hembesök – vi planerar hela din köksrenovering från 
 :::
 `,
     category: 'renovering',
-    date: '2026-03-19',
+    publishedAt: '2026-03-19',
+    updatedAt: '2026-03-19',
     author: { name: 'Erik Lindberg', role: 'Projektledare på Fixco', avatar: '' },
-    readTime: 7,
+    readingTime: 7,
+    featured: false,
     image: '/images/blog/kok-steg.jpg',
     tags: ['köksrenovering', 'steg för steg', 'planering', 'tidsplan', 'hantverkare', 'ROT-avdrag'],
     relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'installera-nytt-kok-rot-avdrag'],
