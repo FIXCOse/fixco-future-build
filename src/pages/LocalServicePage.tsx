@@ -59,7 +59,7 @@ import { RelatedServicesSection } from "@/components/local-service/RelatedServic
 import { RelatedBlogPosts } from "@/components/local-service/RelatedBlogPosts";
 import { PriceGuideSection } from "@/components/local/PriceGuideSection";
 import { InlineGuideSection } from "@/components/local/InlineGuideSection";
-import { getServiceGuide, hasServiceGuide } from "@/data/carpentryGuideData";
+import { getServiceGuide, hasServiceGuide, getAllGuideSlugs, getGuideDisplayName } from "@/data/carpentryGuideData";
 import { 
   getAuthorSchema, 
   getSpeakableSchema, 
