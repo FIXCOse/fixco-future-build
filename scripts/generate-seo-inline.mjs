@@ -17,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 
 // ─── Data imports (kept compact for inline script size) ───
-import { SERVICES, AREAS, SV_TO_EN_SERVICE } from './seo-data.mjs';
+import { SERVICES, AREAS, SV_TO_EN_SERVICE, GUIDE_EXCERPTS } from './seo-data.mjs';
 
 // Build the inline script content
 const inlineScript = `(function(){
