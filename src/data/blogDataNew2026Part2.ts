@@ -2307,7 +2307,7 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
     featured: false,
     image: '/images/blog/kok-rot.jpg',
     tags: ['köksinstallation', 'ROT-avdrag', 'montera kök', 'spara pengar', 'skatteavdrag', 'kök 2026'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-steg-for-steg-guide', 'rot-avdrag-guide-2026', 'ikea-koksmontage-guide'],
+    
     aiSummary: 'ROT-avdrag vid köksinstallation ger 30% skattereduktion på arbetskostnaden. I ett typiskt köksprojekt med 53 900 kr i arbetskostnad sparar du 16 170 kr. Avdraget gäller montering, rivning, el, VVS, golvläggning, målning – men INTE material eller vitvaror. Krav: F-skattsedel hos företaget, bostaden 5+ år gammal, uppdelad faktura. Max 50 000 kr/person/år, två ägare kan få 100 000 kr totalt.',
     keyFacts: [
       'ROT-avdrag 30% på arbetskostnad vid köksinstallation',
