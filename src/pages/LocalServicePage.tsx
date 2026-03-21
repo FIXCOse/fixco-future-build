@@ -165,20 +165,23 @@ const LocalServicePage = () => {
     // 1. Other services with guides in the same area
     const allGuideSlugs = getAllGuideSlugs();
     const otherServices = allGuideSlugs.filter(s => s !== serviceSlug);
-    // Pick 2-3 related services
-    for (const s of otherServices.slice(0, 3)) {
+    // Pick 2-3 related services (shuffled for variety)
+    const shuffled = otherServices.sort(() => 0.5 - Math.random());
+    for (const s of shuffled.slice(0, 3)) {
+      const name = getGuideDisplayName(s) || s;
       links.push({
-        label: `${serviceNames[s]} i ${area}`,
+        label: `${name} i ${area}`,
         href: `${servicePrefix}/${s}/${areaSlug}`
       });
     }
     
     // 2. Same service in nearby areas (2-3)
+    const currentName = getGuideDisplayName(serviceSlug) || service?.name;
     const nearby: string[] = getNearbyAreas(area);
     for (const nearbyArea of nearby.slice(0, 2)) {
       const nearbySlug = generateAreaSlug(nearbyArea);
       links.push({
-        label: `${serviceNames[serviceSlug] || service?.name} i ${nearbyArea}`,
+        label: `${currentName} i ${nearbyArea}`,
         href: `${servicePrefix}/${serviceSlug}/${nearbySlug}`
       });
     }
