@@ -179,6 +179,7 @@ if(area){
     html+='<p>Fixco is your reliable choice for '+svc.toLowerCase()+' in '+area+'. We offer professional services with experienced craftsmen who guarantee quality in every project. Contact us today for a free quote!</p>';
     html+='<h2>Why choose Fixco for '+svc.toLowerCase()+' in '+area+'?</h2>';
     html+='<p>With Fixco you get a safe and professional partner for all types of '+svc.toLowerCase()+'. We have extensive experience with projects in '+area+' and surrounding areas. All our craftsmen are certified and insured.</p>';
+    var ge2=G[svSlug];if(ge2&&ge2.en){html+='<p>'+ge2.en.replace(/\\{area\\}/g,area)+'</p>';}
   }
 } else {
   if(lang==='sv'){
