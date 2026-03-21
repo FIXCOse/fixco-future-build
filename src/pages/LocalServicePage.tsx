@@ -178,7 +178,6 @@ const LocalServicePage = () => {
     }
     
     // 2. Same service in nearby areas (2-3)
-    const { getNearbyAreas } = require('@/data/localSeoData');
     const nearby: string[] = getNearbyAreas(area);
     for (const nearbyArea of nearby.slice(0, 2)) {
       const nearbySlug = generateAreaSlug(nearbyArea);
