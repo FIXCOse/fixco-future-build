@@ -157,6 +157,40 @@ const LocalServicePage = () => {
   const extraFaqs = isValid && serviceSlug ? getExtraFaqs(serviceSlug, area, locale) : [];
   const serviceGuide = isValid && serviceSlug ? getServiceGuide(serviceSlug, area) : null;
 
+  // Generate related guide links for internal linking SEO
+  const relatedGuideLinks = useMemo(() => {
+    if (!isValid || !serviceSlug || !area) return [];
+    const links: { label: string; href: string }[] = [];
+    
+    // 1. Other carpentry services in the same area
+    const carpentryServices = ['snickare', 'koksrenovering', 'badrumsrenovering', 'altanbygge', 'koksmontering', 'totalrenovering', 'husrenovering'];
+    const otherServices = carpentryServices.filter(s => s !== serviceSlug && hasServiceGuide(s));
+    const serviceNames: Record<string, string> = {
+      snickare: 'Snickare', koksrenovering: 'Köksrenovering', badrumsrenovering: 'Badrumsrenovering',
+      altanbygge: 'Altanbygge', koksmontering: 'Köksmontering', totalrenovering: 'Totalrenovering', husrenovering: 'Husrenovering'
+    };
+    // Pick 2-3 related services
+    for (const s of otherServices.slice(0, 3)) {
+      links.push({
+        label: `${serviceNames[s]} i ${area}`,
+        href: `${servicePrefix}/${s}/${areaSlug}`
+      });
+    }
+    
+    // 2. Same service in nearby areas (2-3)
+    const { getNearbyAreas } = require('@/data/localSeoData');
+    const nearby: string[] = getNearbyAreas(area);
+    for (const nearbyArea of nearby.slice(0, 2)) {
+      const nearbySlug = generateAreaSlug(nearbyArea);
+      links.push({
+        label: `${serviceNames[serviceSlug] || service?.name} i ${nearbyArea}`,
+        href: `${servicePrefix}/${serviceSlug}/${nearbySlug}`
+      });
+    }
+    
+    return links;
+  }, [isValid, serviceSlug, area, areaSlug, servicePrefix, service]);
+
   
 
   // Locale-aware URLs
