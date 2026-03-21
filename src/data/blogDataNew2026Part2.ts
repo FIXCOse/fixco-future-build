@@ -2300,9 +2300,11 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
 :::
 `,
     category: 'renovering',
-    date: '2026-03-16',
+    publishedAt: '2026-03-16',
+    updatedAt: '2026-03-16',
     author: { name: 'Maria Svensson', role: 'Ekonomiexpert på Fixco', avatar: '' },
-    readTime: 8,
+    readingTime: 8,
+    featured: false,
     image: '/images/blog/kok-rot.jpg',
     tags: ['köksinstallation', 'ROT-avdrag', 'montera kök', 'spara pengar', 'skatteavdrag', 'kök 2026'],
     relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-steg-for-steg-guide', 'rot-avdrag-guide-2026', 'ikea-koksmontage-guide'],
