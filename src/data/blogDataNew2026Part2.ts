@@ -2328,7 +2328,7 @@ Boka kostnadsfritt hembesök – vi maximerar ditt ROT-avdrag vid köksinstallat
     ],
     statistics: [
       { stat: 'ROT-avdrag 30% på arbetskostnad', source: 'Skatteverket' },
-      { value: '50 000 kr', label: 'Max ROT per person/år', source: 'Skatteverket' },
+      { stat: 'Max ROT 50 000 kr per person/år', source: 'Skatteverket' },
       { stat: 'Typisk ROT-besparing kök: 16 170 kr', source: 'Beräkningsexempel' }
     ],
     quotableStatements: [
