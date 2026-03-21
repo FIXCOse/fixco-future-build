@@ -21,6 +21,7 @@ const ROTInfo = lazy(() => import("./pages/ROTInfo"));
 const RUT = lazy(() => import("./pages/RUT"));
 const Referenser = lazy(() => import("./pages/Referenser"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const HtmlSitemap = lazy(() => import("./pages/HtmlSitemap"));
 const AI = lazy(() => import("./pages/AI"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
