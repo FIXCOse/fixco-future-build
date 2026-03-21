@@ -1539,6 +1539,142 @@ export const CARPENTRY_EXTRA_FAQS: Record<string, { sv: ExtraFaq[]; en: ExtraFaq
       { q: "Fixed or hourly price?", a: "Fixed recommended for defined projects. Hourly suits ongoing maintenance." },
     ]
   },
+  "elektriker": {
+    sv: [
+      { q: "Behöver jag anlita behörig elektriker i {area}?", a: "Ja, alla elarbeten som går bortom att byta glödlampa eller plugga in en apparat kräver behörig elektriker enligt Elsäkerhetsverket. Det gäller installation av uttag, säkringsbyten, laddboxar och ny eldragning." },
+      { q: "Vad kostar det att installera laddbox i {area}?", a: "En laddbox kostar normalt 10 000–25 000 kr inklusive installation. Med ROT-avdrag (30% på arbete) sparar du 3 000–7 500 kr. Priset beror på avstånd till elcentralen och om kapaciteten behöver uppgraderas." },
+      { q: "Hur snabbt kan ni komma för akut elfelsökning?", a: "Vi erbjuder normalt besök inom 1–3 arbetsdagar i {area}. Vid akuta situationer (helt strömlöst, brandlukt) — ring 112 och kontakta sedan oss." },
+      { q: "Vad ingår i en elbesiktning?", a: "En elbesiktning omfattar kontroll av jordning, säkringar, kablar, uttag och fast installation. Vi dokumenterar allt och ger dig ett protokoll med rekommendationer." },
+    ],
+    en: [
+      { q: "Do I need a certified electrician in {area}?", a: "Yes, all electrical work beyond changing bulbs or plugging in appliances requires a certified electrician per Swedish regulations." },
+      { q: "What does an EV charger installation cost in {area}?", a: "An EV charger typically costs 10,000–25,000 SEK including installation. With ROT deduction (30% on labor) you save 3,000–7,500 SEK." },
+      { q: "How quickly can you come for emergency electrical issues?", a: "We typically offer visits within 1–3 working days in {area}. For emergencies (total power loss, burning smell) — call 112 first." },
+      { q: "What's included in an electrical inspection?", a: "An inspection covers grounding, fuses, cables, outlets and fixed installations. We document everything and provide a report." },
+    ]
+  },
+  "vvs": {
+    sv: [
+      { q: "Vad kostar rörmokare i {area}?", a: "Timpriset för VVS-arbete ligger normalt på 595–895 kr/timme före ROT-avdrag. Med ROT (30%) betalar du effektivt 298–448 kr/timme. Fast pris rekommenderas för definierade projekt." },
+      { q: "Kan ni hjälpa med akut vattenläcka i {area}?", a: "Ja, vi hanterar akuta läckor. Stäng av huvudkranen, torka upp det värsta och kontakta oss omedelbart. Vi prioriterar akuta ärenden i {area}." },
+      { q: "Behöver jag Säker Vatten-certifierad rörmokare?", a: "Vi rekommenderar alltid Säker Vatten-certifierade hantverkare. Certifieringen säkerställer att arbetet utförs enligt branschstandard och att din hemförsäkring gäller vid eventuella vattenskador." },
+      { q: "Vad kostar byte av blandare?", a: "Ett blandarebyte kostar normalt 1 500–4 000 kr inklusive arbete (exkl. blandaren). Priset beror på åtkomlighet och om rör behöver justeras." },
+    ],
+    en: [
+      { q: "What does a plumber cost in {area}?", a: "Hourly rate for plumbing is typically 595–895 SEK before ROT deduction. With ROT (30%) you effectively pay 298–448 SEK/hour." },
+      { q: "Can you help with an emergency water leak in {area}?", a: "Yes. Turn off the main valve, mop up, and contact us immediately. We prioritize emergencies in {area}." },
+      { q: "Do I need a Säker Vatten-certified plumber?", a: "We always recommend certified plumbers. Certification ensures work meets industry standards and your insurance covers potential water damage." },
+      { q: "What does replacing a faucet cost?", a: "A faucet replacement typically costs 1,500–4,000 SEK including labor (excluding the faucet)." },
+    ]
+  },
+  "tradgard": {
+    sv: [
+      { q: "Vilka trädgårdstjänster ger RUT-avdrag?", a: "Gräsklippning, häckklippning, ogräsrensning, lövräfsning och enklare plantering ger RUT-avdrag (50%). Anläggning av ny trädgård, stenläggning och trädfällning ger inte RUT." },
+      { q: "Hur ofta behöver gräsmattan klippas?", a: "Under växtsäsongen (maj–september) rekommenderas klippning var 7–10 dag. I {area} kan det variera beroende på väder och gödning." },
+      { q: "Kan ni hjälpa med trädgårdsdesign?", a: "Ja, vi hjälper med planering och design av trädgårdar i {area}. Vi kan rekommendera växter som trivs i ditt läge och skapa en skötselplan." },
+      { q: "Vad kostar häckklippning i {area}?", a: "Häckklippning kostar normalt 395–595 kr/timme. En normalstora häck (10–20 m) tar 1–3 timmar. Med RUT-avdrag (50%) halveras arbetskostnaden." },
+    ],
+    en: [
+      { q: "Which garden services qualify for RUT deduction?", a: "Lawn mowing, hedge trimming, weeding, leaf raking and simple planting qualify for RUT (50%). New garden installations and tree felling do not." },
+      { q: "How often should the lawn be mowed?", a: "During growing season (May–September), every 7–10 days is recommended." },
+      { q: "Can you help with garden design?", a: "Yes, we help with planning and design in {area}, recommending plants suited to your conditions." },
+      { q: "What does hedge trimming cost in {area}?", a: "Hedge trimming typically costs 395–595 SEK/hour. A standard hedge (10–20m) takes 1–3 hours. RUT deduction (50%) halves the labor cost." },
+    ]
+  },
+  "stad": {
+    sv: [
+      { q: "Vilka städtjänster ger RUT-avdrag i {area}?", a: "Hemstädning, fönsterputsning, strykning och enklare trädgårdsarbete ger RUT-avdrag (50%, max 75 000 kr/person/år). Flyttstäd och byggstäd ger också RUT om det utförs i din bostad." },
+      { q: "Hur ofta bör man ha hemstädning?", a: "De flesta kunder i {area} bokar varannan vecka. Familjer med barn och husdjur kan ha nytta av varje vecka. Vi anpassar upplägg efter dina behov." },
+      { q: "Vad ingår i en flyttstädning?", a: "En flyttstädning omfattar hela bostaden: golv, väggar, fönster (insida), kök med ugn/kyl, badrum och alla skåp/garderober. Vi följer mäklarstandard." },
+      { q: "Behöver jag tillhandahålla städmaterial?", a: "Nej, vi har med oss allt — städprodukter, moppar, dammsugare och övrig utrustning. Vi använder miljövänliga produkter." },
+    ],
+    en: [
+      { q: "Which cleaning services qualify for RUT deduction?", a: "Home cleaning, window washing, ironing qualify for RUT (50%, max 75,000 SEK/person/year). Move-out cleaning also qualifies." },
+      { q: "How often should I book home cleaning?", a: "Most clients in {area} book biweekly. Families with children or pets may benefit from weekly." },
+      { q: "What's included in a move-out cleaning?", a: "Full cleaning including floors, walls, windows (inside), kitchen with oven/fridge, bathroom and all cabinets. We follow real estate standard." },
+      { q: "Do I need to provide cleaning supplies?", a: "No, we bring everything — products, mops, vacuum and equipment. We use eco-friendly products." },
+    ]
+  },
+  "montering": {
+    sv: [
+      { q: "Vilken typ av montering erbjuder ni i {area}?", a: "Vi monterar allt från IKEA-möbler och TV-fästen till vitvaror, hyllsystem och garderobsinredning. Både RUT (hushållsmöbler) och ROT (fast inredning) kan vara tillämpligt." },
+      { q: "Hur lång tid tar montering av IKEA-kök?", a: "Ett rakt kök (3–4 m): 1–2 dagar. L-format med köksö: 2–4 dagar. Vi hämtar och transporterar köket åt dig om du vill." },
+      { q: "Kan ni montera TV på vägg med dold kabeldragning?", a: "Ja, vi monterar TV-fästen och drar kablar i väggen för en snygg installation. Priset ligger normalt på 1 500–3 500 kr." },
+      { q: "Behöver jag vara hemma under monteringen?", a: "Idealt vid start och avslut. Många kunder i {area} lämnar nyckel och vi kontaktar dig när vi är klara." },
+    ],
+    en: [
+      { q: "What type of assembly do you offer in {area}?", a: "We assemble everything from IKEA furniture and TV mounts to appliances, shelving systems and wardrobe interiors." },
+      { q: "How long does IKEA kitchen assembly take?", a: "A straight kitchen (3–4m): 1–2 days. L-shaped with island: 2–4 days." },
+      { q: "Can you mount a TV with hidden cables?", a: "Yes, we mount TV brackets and run cables inside walls. Typically 1,500–3,500 SEK." },
+      { q: "Do I need to be home during assembly?", a: "Ideally at start and finish. Many clients in {area} leave a key and we contact you when done." },
+    ]
+  },
+  "flytt": {
+    sv: [
+      { q: "Vad kostar flytthjälp i {area}?", a: "Flytthjälp kostar normalt 395–595 kr/timme och person. En lägenhetsflytt (2 rum) tar 3–5 timmar med 2 personer. Med RUT-avdrag (50%) halveras arbetskostnaden." },
+      { q: "Ingår lastbil i priset?", a: "Vi erbjuder flytt med och utan fordon. Flytt med lastbil inkluderar normalt fordonet i timpriset. Ange din flytt-sträcka så ger vi dig ett fast pris." },
+      { q: "Kan ni hjälpa med packning?", a: "Ja, vi erbjuder packhjälp som en tilläggstjänst. Vi tar med oss flyttkartonger, bubbelplast och tejp. Packning ger också RUT-avdrag." },
+      { q: "Hur långt i förväg ska jag boka?", a: "Boka minst 2–3 veckor i förväg, speciellt vid månadsskiften (högsäsong). Sommar och nyår är extra populära perioder i {area}." },
+    ],
+    en: [
+      { q: "What does moving help cost in {area}?", a: "Moving help typically costs 395–595 SEK/hour per person. A 2-room apartment takes 3–5 hours with 2 people. RUT deduction (50%) halves labor cost." },
+      { q: "Is a truck included?", a: "We offer moves with and without vehicle. Moves with truck typically include the vehicle in the hourly rate." },
+      { q: "Can you help with packing?", a: "Yes, we offer packing as an add-on. We bring boxes, bubble wrap and tape. Packing also qualifies for RUT." },
+      { q: "How far in advance should I book?", a: "Book at least 2–3 weeks ahead, especially around month-ends (peak season)." },
+    ]
+  },
+  "tekniska-installationer": {
+    sv: [
+      { q: "Vilka tekniska installationer erbjuder ni i {area}?", a: "Vi installerar nätverk (LAN/WiFi), larmsystem, smarta hem-system, kameraövervakning och AV-utrustning. Allt från enklare WiFi-förstärkning till komplett nätverksdragning." },
+      { q: "Behöver jag förbereda något innan installation?", a: "Ha klart var du vill ha uttag/accesspunkter och vilken utrustning du har. Vi gör en kostnadsfri behovsanalys i {area} innan vi börjar." },
+      { q: "Kan ni installera smarta hem-system?", a: "Ja — vi installerar system som Apple HomeKit, Google Home och Samsung SmartThings. Vi hjälper med allt från smarta lampor till avancerad hemautomation." },
+      { q: "Ger tekniska installationer ROT-avdrag?", a: "Fast nätverksdragning och larminstallation kan ge ROT-avdrag (30%). Lösa produkter och enbart konfigurering ger normalt inte avdrag." },
+    ],
+    en: [
+      { q: "What technical installations do you offer in {area}?", a: "We install networks (LAN/WiFi), alarm systems, smart home systems, camera surveillance and AV equipment." },
+      { q: "Do I need to prepare anything?", a: "Know where you want outlets/access points and what equipment you have. We do a free needs analysis in {area}." },
+      { q: "Can you install smart home systems?", a: "Yes — Apple HomeKit, Google Home, Samsung SmartThings and more. From smart lights to full home automation." },
+      { q: "Do technical installations qualify for ROT?", a: "Fixed network wiring and alarm installation can qualify for ROT (30%). Loose products and configuration only typically do not." },
+    ]
+  },
+  "mobelmontering": {
+    sv: [
+      { q: "Vilka möbler monterar ni?", a: "Vi monterar alla typer — IKEA, Jysk, Mio, EM och andra. Garderober, sängar, bokhyllor, skrivbord, TV-möbler och barnmöbler." },
+      { q: "Hur lång tid tar montering av en PAX-garderob?", a: "En enkel PAX (100 cm): 1–2 timmar. Dubbel PAX med skjutdörrar: 2–4 timmar. Vi monterar alltid fast i väggen för säkerhet." },
+      { q: "Tar ni med oss emballaget?", a: "Ja, vi tar med oss alla kartonger och emballage efter montering. Det ingår i priset." },
+    ],
+    en: [
+      { q: "What furniture do you assemble?", a: "All types — IKEA, Jysk, Mio, EM and others. Wardrobes, beds, bookshelves, desks and children's furniture." },
+      { q: "How long does a PAX wardrobe take?", a: "Single PAX (100cm): 1–2 hours. Double with sliding doors: 2–4 hours. Always wall-mounted for safety." },
+      { q: "Do you take the packaging?", a: "Yes, we remove all boxes and packaging after assembly. It's included in the price." },
+    ]
+  },
+  "inomhusmalning": {
+    sv: [
+      { q: "Hur lång tid tar målning av ett rum?", a: "Ett normalstort rum (12–15 kvm) tar 1 dag inklusive spackling och 2 strykningar. En hel lägenhet (3 rum) tar 3–5 dagar." },
+      { q: "Vilken färg rekommenderar ni?", a: "Vi använder kvalitetsfärger från Alcro, Beckers eller Flügger. Helmatt (glans 7) är standard för väggar, halvmatt för kök/bad." },
+      { q: "Behöver vi flytta ut möblerna?", a: "Vi täcker golv och möbler noggrant. Flytta möbler till rummets mitt om möjligt. Tyngre möbler kan stå kvar." },
+      { q: "Kan man bo kvar under målningen?", a: "Ja, vi målar rum för rum. Modern inomhusfärg har låg lukt och torkar snabbt. Vädra gärna efter varje strykning." },
+    ],
+    en: [
+      { q: "How long does it take to paint a room?", a: "A standard room (12–15 sqm) takes 1 day including filling and 2 coats. A full apartment (3 rooms) takes 3–5 days." },
+      { q: "Which paint do you recommend?", a: "We use quality paints from Alcro, Beckers or Flügger. Matte (gloss 7) standard for walls, semi-matte for kitchen/bathroom." },
+      { q: "Do we need to move furniture?", a: "We cover floors and furniture carefully. Move furniture to room center if possible." },
+      { q: "Can we stay during painting?", a: "Yes, we paint room by room. Modern paint has low odor and dries quickly." },
+    ]
+  },
+  "elinstallation": {
+    sv: [
+      { q: "Vad räknas som elinstallation?", a: "Alla fasta elarbeten: nya uttag, belysning, jordfelsbrytare, säkringsbyte, laddbox och elcentral. Allt utförs av behöriga elektriker." },
+      { q: "Hur mycket kan jag spara med ROT-avdrag på elarbete?", a: "Du sparar 30% på arbetskostnaden, max 50 000 kr/person/år. En laddboxinstallation på 15 000 kr (arbete) ger 4 500 kr i ROT." },
+      { q: "Behöver man uppgradera elsäkringen i äldre hus?", a: "Hus byggda före 1970 saknar ofta jordfelsbrytare och har underdimensionerade säkringar. Vi rekommenderar en elbesiktning om huset är äldre än 30 år." },
+    ],
+    en: [
+      { q: "What counts as electrical installation?", a: "All fixed electrical work: new outlets, lighting, RCD breakers, fuse changes, EV chargers and consumer units." },
+      { q: "How much can I save with ROT on electrical work?", a: "You save 30% on labor, max 50,000 SEK/person/year. A charger installation of 15,000 SEK (labor) gives 4,500 SEK ROT." },
+      { q: "Do older houses need electrical upgrades?", a: "Houses built before 1970 often lack RCDs and have undersized fuses. We recommend an inspection if your house is over 30 years old." },
+    ]
+  },
 };
 
 // ─── Hämta extra FAQs med area-replacement ───
