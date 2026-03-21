@@ -17,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 
 // ─── Data imports (kept compact for inline script size) ───
-import { SERVICES, AREAS, SV_TO_EN_SERVICE, GUIDE_EXCERPTS } from './seo-data.mjs';
+import { SERVICES, AREAS, SV_TO_EN_SERVICE, GUIDE_EXCERPTS, REVIEW_NAMES, REVIEW_TEMPLATES_SV, REVIEW_TEMPLATES_EN } from './seo-data.mjs';
 
 // Build the inline script content
 const inlineScript = `(function(){
@@ -25,6 +25,9 @@ var S=${JSON.stringify(SERVICES)};
 var A=${JSON.stringify(AREAS)};
 var E=${JSON.stringify(SV_TO_EN_SERVICE)};
 var G=${JSON.stringify(GUIDE_EXCERPTS)};
+var RN=${JSON.stringify(REVIEW_NAMES)};
+var RT=${JSON.stringify(REVIEW_TEMPLATES_SV)};
+var RE=${JSON.stringify(REVIEW_TEMPLATES_EN)};
 var p=location.pathname.replace(/\\/$/,'');
 var m,svc,area,lang='sv',enSvc,svSlug,areaSlug;
 
