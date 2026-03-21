@@ -24,6 +24,7 @@ const inlineScript = `(function(){
 var S=${JSON.stringify(SERVICES)};
 var A=${JSON.stringify(AREAS)};
 var E=${JSON.stringify(SV_TO_EN_SERVICE)};
+var G=${JSON.stringify(GUIDE_EXCERPTS)};
 var p=location.pathname.replace(/\\/$/,'');
 var m,svc,area,lang='sv',enSvc,svSlug,areaSlug;
 
