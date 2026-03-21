@@ -1928,7 +1928,7 @@ Boka ett kostnadsfritt hembesök – vi planerar hela din köksrenovering från 
     featured: false,
     image: '/images/blog/kok-steg.jpg',
     tags: ['köksrenovering', 'steg för steg', 'planering', 'tidsplan', 'hantverkare', 'ROT-avdrag'],
-    relatedSlugs: ['vad-kostar-nytt-kok-2026', 'koksrenovering-guide-2026', 'byta-koksluckor-bankskiva-guide', 'installera-nytt-kok-rot-avdrag'],
+    
     aiSummary: 'En köksrenovering tar 7–10 arbetsdagar med rätt planering. Ordningen är: rivning (dag 1), el och VVS (dag 2–3), golv och väggar (dag 4–5), montering (dag 6–8) och slutfinish (dag 9–10). Allt elarbete måste utföras av behörig elektriker. ROT-avdrag 30% gäller på arbetskostnaden. Vanligaste misstaget är att beställa kök innan mätning är klar.',
     keyFacts: [
       'Köksrenovering tar 7–10 arbetsdagar',
