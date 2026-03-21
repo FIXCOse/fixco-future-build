@@ -86,6 +86,12 @@ export const ALL_BLOG_SLUGS: Array<{ slug: string; title: string; updatedAt: str
   { slug: 'renovera-entrehall-guide', title: 'Renovera entréhall guide', updatedAt: '2026-02-02', category: 'renovering' },
   { slug: 'markis-installation-guide', title: 'Markis installation guide', updatedAt: '2026-02-01', category: 'guider' },
   { slug: 'sotare-brandvarnare-guide', title: 'Sotare brandvarnare guide', updatedAt: '2026-01-31', category: 'tips' },
+  // 2026 Part 2 – Kitchen articles (81–85)
+  { slug: 'vad-kostar-nytt-kok-2026', title: 'Vad kostar nytt kök 2026', updatedAt: '2026-03-20', category: 'renovering' },
+  { slug: 'koksrenovering-steg-for-steg-guide', title: 'Köksrenovering steg för steg', updatedAt: '2026-03-19', category: 'renovering' },
+  { slug: 'byta-koksluckor-bankskiva-guide', title: 'Byta köksluckor bänkskiva guide', updatedAt: '2026-03-18', category: 'renovering' },
+  { slug: 'koksinspiration-trender-2026', title: 'Köksinspiration trender 2026', updatedAt: '2026-03-17', category: 'renovering' },
+  { slug: 'installera-nytt-kok-rot-avdrag', title: 'Installera nytt kök ROT-avdrag', updatedAt: '2026-03-16', category: 'renovering' },
 ];
 
 /**
