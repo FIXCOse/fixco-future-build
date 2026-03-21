@@ -1702,7 +1702,7 @@ Akuttjänster (vattenläcka, stopp) kostar ofta dubbelt:
       { name: 'Skatteverket – ROT', url: 'https://www.skatteverket.se/rot' }
     ],
     statistics: []
-  }
+  },
   // ============================================================
   // ARTIKEL 81: VAD KOSTAR NYTT KÖK 2026
   // ============================================================
