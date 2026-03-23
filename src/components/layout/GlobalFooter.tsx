@@ -178,6 +178,6 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
           </div>
         </div>
       </footer>
-    </>
+    )
   );
 }
