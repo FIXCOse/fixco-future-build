@@ -1,30 +1,41 @@
 
 
-# Plan: Admin drag-and-drop sortering av referensprojekt
+# Plan: Fixa dörrlås-sidan + lokala SEO-sidor
 
-## Vad byggs
-En sorteringsfunktion i admin/edit-läge på `/referenser`-sidan där admin kan dra och släppa projektkort för att ändra ordningen. Ordningen sparas direkt till databasen (`sort_order`-kolumnen).
+## Problem
+1. **Design**: Dörrlås-landningssidan (`/tjanster/dorrlas`) saknar den konverteringsfokuserade layouten som övriga tjänstesidor har (gradient-hero med vit logotyp, trust badges etc.)
+2. **Inga lokala sidor**: Det finns inga `/tjanster/dorrlas/stockholm`, `/tjanster/dorrlas/bromma` etc. — dörrlås är markerat som "global" och saknas i `LOCAL_SERVICES`
 
-## Teknisk approach
+## Åtgärder
 
-### 1. Skapa `SortableProjectGrid`-komponent
-Ny komponent `src/components/admin/SortableProjectGrid.tsx` som:
-- Använder `@dnd-kit/core` och `@dnd-kit/sortable` (redan installerat, används i `EditableReferenceGrid`)
-- Wrappar `ReferenceProjectCard` i sortable containers med drag-handtag
-- Visar ett informationsfält "Dra för att ändra ordning" i edit-läge
+### 1. Lägg till "dorrlas" i LOCAL_SERVICES
+**Fil:** `src/data/localServiceData.ts`
+- Lägg till `{ slug: "dorrlas", name: "Dörrlås", serviceKey: "montering", rotRut: "ROT" }` i `BASE_SERVICES`
+- Detta genererar automatiskt ~54 lokala sidor (`/tjanster/dorrlas/stockholm`, `/tjanster/dorrlas/bromma`, `/tjanster/dorrlas/uppsala` etc.)
+- Alla befintliga system (prerendering, sitemaps, intern länkning) plockar upp den automatiskt
 
-### 2. Uppdatera `Referenser.tsx`
-- I edit-läge: rendera `SortableProjectGrid` istället för det vanliga gridet
-- Vid drag-end: anropa `useUpdateReferenceProject` för att spara nya `sort_order`-värden till Supabase
+### 2. Ta bort `isGlobal` för dörrlås i CityServicesGrid
+**Fil:** `src/components/city/CityServicesGrid.tsx`
+- Ändra dörrlås-posten så att den INTE har `isGlobal: true` — då länkas stadssidorna korrekt till `/tjanster/dorrlas/{citySlug}` istället för `/tjanster/dorrlas`
 
-### 3. Sparlogik
-- Vid omordning: tilldela `sort_order = index` för varje projekt i den nya ordningen
-- Batch-uppdatera alla ändrade projekts `sort_order` via separata mutationer
-- Visa toast vid lyckad/misslyckad sparning
+### 3. Uppgradera DoorLockLandingPage-designen
+**Fil:** `src/pages/DoorLockLandingPage.tsx`
+- Byt hero-sektionen till gradient-hero med vit Fixco-logotyp (samma mönster som `LocalServicePage`/`NicheServiceLandingPage`)
+- Lägg till breadcrumbs
+- Lägg till en sektion "Dörrlås i din stad" med länkar till alla lokala sidor (Stockholm, Uppsala, Bromma etc.) — ger kraftig intern länkning
 
-## Filer som ändras
-| Fil | Ändring |
-|---|---|
-| `src/components/admin/SortableProjectGrid.tsx` | **Ny** — drag-and-drop grid med sortable kort |
-| `src/pages/Referenser.tsx` | Importera och använd `SortableProjectGrid` i edit-läge |
+### 4. Uppdatera interna länkar på dörrlås-sidan
+**Fil:** `src/pages/DoorLockLandingPage.tsx` (botten-sektionen)
+- Ersätt de felaktiga interna länkarna (t.ex. `/tjanster/montering/uppsala` med text "Dörrlås Uppsala") med korrekta länkar till `/tjanster/dorrlas/uppsala` och `/tjanster/dorrlas/stockholm`
+
+### 5. Lägg till söktermer/SEO-data för dörrlås
+**Fil:** `src/data/localSeoData.ts`
+- Lägg till `SEARCH_ACTION_PATTERNS` för "dorrlas" med relevanta sökfraser: "installera dörrlås", "byta lås", "yale doorman installation", "smart dörrlås", "kodlås montering"
+- Lägg till `SERVICE_MYTHS` och `AREA_FUN_FACTS`-kopplingar för dörrlås om de saknas
+
+## Resultat
+- ~54 nya indexerbara lokala sidor (t.ex. "Dörrlås Stockholm", "Dörrlås Bromma")
+- Korrekt intern länkning från hub-sida → lokala sidor
+- Uppfräschad design i linje med övriga tjänstesidor
+- Automatisk inkludering i sitemaps och prerendering vid nästa build
 
