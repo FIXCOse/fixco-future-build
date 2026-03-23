@@ -12,7 +12,7 @@ import ServiceCardV3 from '@/components/ServiceCardV3';
 import SegmentedPriceToggle from '@/components/SegmentedPriceToggle';
 import { Badge } from '@/components/ui/badge';
 import { useCopy } from "@/copy/CopyProvider";
-import { Seo } from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { ArrowRight, CheckCircle, Lock, MapPin } from "lucide-react";
 import GradientButton from '@/components/GradientButton';
 import logoFixco from "@/assets/fixco-logo-white.png";
