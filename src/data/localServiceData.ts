@@ -51,6 +51,7 @@ export const BASE_SERVICES = [
   { slug: "golvlaggning", name: "Golvläggning", serviceKey: "golv", rotRut: "ROT" },
   { slug: "elinstallation", name: "Elinstallation", serviceKey: "el", rotRut: "ROT" },
   { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
+  { slug: "dorrlas", name: "Dörrlås", serviceKey: "montering", rotRut: "ROT" },
 ] as const;
 
 // Merge base + expanded services into a single array

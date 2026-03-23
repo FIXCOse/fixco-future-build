@@ -25,7 +25,7 @@ const services: ServiceItem[] = [
   { slug: "markarbeten", name: "Markarbeten", icon: Home, description: "Mark & grund" },
   { slug: "flytt", name: "Flytt", icon: Truck, description: "Flytt & transport" },
   { slug: "tekniska-installationer", name: "Tekniska installationer", icon: Settings, description: "Tech & automation" },
-  { slug: "dorrlas", name: "Dörrlås", icon: Lock, description: "Smarta lås & säkerhet", isGlobal: true },
+  { slug: "dorrlas", name: "Dörrlås", icon: Lock, description: "Smarta lås & säkerhet" },
 ];
 
 const containerVariants = {
