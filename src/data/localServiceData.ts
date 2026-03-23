@@ -643,6 +643,7 @@ const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
   "golvlaggning": "Floor Installation",
   "elinstallation": "Electrical Installation",
   "rivning": "Demolition",
+  "dorrlas": "Door Lock",
 };
 
 // Unified lookup functions for both base and expanded slugs
