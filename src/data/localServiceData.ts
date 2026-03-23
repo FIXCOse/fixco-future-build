@@ -538,6 +538,11 @@ const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: s
     { myth: "Man kan riva bärande väggar själv utan risk", truth: "Rivning av bärande väggar utan konstruktörsgodkännande kan leda till rasrisk. Bygganmälan krävs alltid." },
     { myth: "Rivning är bara att slå med släggan", truth: "Professionell rivning kräver kontroll av asbest, bly, el och VVS innan arbetet påbörjas. Felaktig rivning kan orsaka skador för hundratusentals kronor." },
     { myth: "Rivningsavfall kan slängas var som helst", truth: "Rivningsavfall måste sorteras och transporteras till godkänd mottagningsstation. Farligt avfall som asbest har särskilda regler." }
+  ],
+  "dorrlas": [
+    { myth: "Smarta lås är lätta att hacka", truth: "Moderna smarta lås som Yale Doorman har SSF-certifiering och krypterad Bluetooth – de är minst lika säkra som traditionella lås." },
+    { myth: "Man kan installera Yale Doorman själv på 30 minuter", truth: "Felaktig installation kan göra att låset inte låser ordentligt, påverka försäkringen och ogiltigförklara garantin. Professionell montering rekommenderas." },
+    { myth: "Smarta lås slutar fungera om WiFi går ner", truth: "Alla smarta lås fungerar med Bluetooth och batteri – WiFi behövs bara för fjärrstyrning. Du blir aldrig utelåst." }
   ]
 };
 
