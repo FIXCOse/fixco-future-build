@@ -41,26 +41,7 @@ export default function GlobalFooter({ locale = 'sv' }: GlobalFooterProps) {
   ];
 
   return (
-    <>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Fixco AB",
-            "url": "https://fixco.se",
-            "email": "info@fixco.se",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "Storgatan 1",
-              "addressLocality": "Stockholm",
-              "postalCode": "111 22",
-              "addressCountry": "SE"
-            }
-          })}
-        </script>
-      </Helmet>
-      
+    (
       <footer className="bg-background border-t border-border text-foreground">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
