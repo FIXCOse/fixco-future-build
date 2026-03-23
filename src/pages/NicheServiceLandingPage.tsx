@@ -22,7 +22,7 @@ import { getNicheService, getNicheServiceByEnSlug } from "@/data/nicheServiceDat
 import { getHeroGradientStyle } from "@/utils/serviceGradients";
 import { STOCKHOLM_AREAS, UPPSALA_AREAS, generateAreaSlug } from "@/data/localServiceData";
 import logoFixco from "@/assets/fixco-logo-white.png";
-import { Seo } from "@/components/SEO";
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
