@@ -1,41 +1,29 @@
 
 
-# Plan: Fixa dörrlås-sidan + lokala SEO-sidor
+# Plan: Ta bort seo-inline.js — eliminera metadata-konflikter
 
-## Problem
-1. **Design**: Dörrlås-landningssidan (`/tjanster/dorrlas`) saknar den konverteringsfokuserade layouten som övriga tjänstesidor har (gradient-hero med vit logotyp, trust badges etc.)
-2. **Inga lokala sidor**: Det finns inga `/tjanster/dorrlas/stockholm`, `/tjanster/dorrlas/bromma` etc. — dörrlås är markerat som "global" och saknas i `LOCAL_SERVICES`
+## Bakgrund
+`seo-inline.js` sätter generiska titlar och dubbla JSON-LD-scheman som konfliktar med React Helmets rikare, mer CTR-vänliga metadata. Google renderar redan JS på sajten (bevisat av befintliga rankings), så pre-rendering-systemet är redundant och skapar instabilitet på alla 8 200+ lokala sidor.
 
 ## Åtgärder
 
-### 1. Lägg till "dorrlas" i LOCAL_SERVICES
-**Fil:** `src/data/localServiceData.ts`
-- Lägg till `{ slug: "dorrlas", name: "Dörrlås", serviceKey: "montering", rotRut: "ROT" }` i `BASE_SERVICES`
-- Detta genererar automatiskt ~54 lokala sidor (`/tjanster/dorrlas/stockholm`, `/tjanster/dorrlas/bromma`, `/tjanster/dorrlas/uppsala` etc.)
-- Alla befintliga system (prerendering, sitemaps, intern länkning) plockar upp den automatiskt
+### 1. Ta bort från build-processen
+**Fil:** `package.json`
+- Ta bort `&& node scripts/generate-seo-inline.mjs` från build-scriptet
 
-### 2. Ta bort `isGlobal` för dörrlås i CityServicesGrid
-**Fil:** `src/components/city/CityServicesGrid.tsx`
-- Ändra dörrlås-posten så att den INTE har `isGlobal: true` — då länkas stadssidorna korrekt till `/tjanster/dorrlas/{citySlug}` istället för `/tjanster/dorrlas`
+### 2. Ta bort script-taggen
+**Fil:** `index.html`
+- Ta bort `<script src="/seo-inline.js"></script>` från `<body>`
 
-### 3. Uppgradera DoorLockLandingPage-designen
-**Fil:** `src/pages/DoorLockLandingPage.tsx`
-- Byt hero-sektionen till gradient-hero med vit Fixco-logotyp (samma mönster som `LocalServicePage`/`NicheServiceLandingPage`)
-- Lägg till breadcrumbs
-- Lägg till en sektion "Dörrlås i din stad" med länkar till alla lokala sidor (Stockholm, Uppsala, Bromma etc.) — ger kraftig intern länkning
+### 3. Ta bort cleanup-koden
+**Fil:** `src/main.tsx`
+- Ta bort raden `document.getElementById('seo-root')?.remove();`
 
-### 4. Uppdatera interna länkar på dörrlås-sidan
-**Fil:** `src/pages/DoorLockLandingPage.tsx` (botten-sektionen)
-- Ersätt de felaktiga interna länkarna (t.ex. `/tjanster/montering/uppsala` med text "Dörrlås Uppsala") med korrekta länkar till `/tjanster/dorrlas/uppsala` och `/tjanster/dorrlas/stockholm`
-
-### 5. Lägg till söktermer/SEO-data för dörrlås
-**Fil:** `src/data/localSeoData.ts`
-- Lägg till `SEARCH_ACTION_PATTERNS` för "dorrlas" med relevanta sökfraser: "installera dörrlås", "byta lås", "yale doorman installation", "smart dörrlås", "kodlås montering"
-- Lägg till `SERVICE_MYTHS` och `AREA_FUN_FACTS`-kopplingar för dörrlås om de saknas
+Skriptfilerna (`scripts/generate-seo-inline.mjs`, `scripts/seo-data.mjs`) behålls i repot men körs inte längre.
 
 ## Resultat
-- ~54 nya indexerbara lokala sidor (t.ex. "Dörrlås Stockholm", "Dörrlås Bromma")
-- Korrekt intern länkning från hub-sida → lokala sidor
-- Uppfräschad design i linje med övriga tjänstesidor
-- Automatisk inkludering i sitemaps och prerendering vid nästa build
+- Google ser EN konsekvent titel per sida (den rika pick3-versionen)
+- Inga dubbla JSON-LD-scheman
+- Ingen risk för title-flipping eller cloaking-signaler
+- Alla lokala tjänstesidor behåller sin fulla SEO via React Helmet
 
