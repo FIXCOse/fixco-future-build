@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Seo } from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
@@ -64,12 +64,18 @@ export const ServiceCityPage: React.FC<ServiceCityPageProps> = ({ service, city,
 
   return (
     <>
-      <Seo
-        title={item.title}
-        description={item.description}
-        canonicalPath={`/tjanster/${item.slug}`}
-        schemas={[breadcrumb, localSchema, faqSchema]}
-      />
+      <Helmet>
+        <title>{item.title}</title>
+        <meta name="description" content={item.description} />
+        <link rel="canonical" href={`https://fixco.se/tjanster/${item.slug}`} />
+        <meta property="og:title" content={item.title} />
+        <meta property="og:description" content={item.description} />
+        <meta property="og:url" content={`https://fixco.se/tjanster/${item.slug}`} />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(localSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
       
       <section className="py-14 min-h-screen">
         <div className="container mx-auto px-4">

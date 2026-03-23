@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { Seo } from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { Home, Phone, ArrowRight, Wrench, Zap, Droplets, Paintbrush, TreePine, SprayCan } from "lucide-react";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
@@ -32,11 +32,11 @@ const NotFound = () => {
 
   return (
     <>
-      <Seo
-        title="Sidan hittades inte | Fixco"
-        description="Sidan du söker finns inte. Utforska våra tjänster eller kontakta oss för hjälp."
-        noindex={true}
-      />
+      <Helmet>
+        <title>Sidan hittades inte | Fixco</title>
+        <meta name="description" content="Sidan du söker finns inte. Utforska våra tjänster eller kontakta oss för hjälp." />
+        <meta name="robots" content="noindex,nofollow" />
+      </Helmet>
       <div className="min-h-screen bg-background">
         {/* Hero section with gradient */}
         <div
