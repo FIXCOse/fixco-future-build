@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Seo } from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { getBreadcrumbSchema } from "@/components/SEOSchemaEnhanced";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { serviceCityData, ServiceKey } from "@/data/serviceCityData";
