@@ -156,13 +156,19 @@ export const LocationCityPage: React.FC<LocationCityPageProps> = ({ city }) => {
 
   return (
     <>
-      <Seo
-        title={`Byggfirma ${city} – Fixco | ROT 30% & Start inom 24h`}
-        description={data.description}
-        canonicalPath={`/omraden/${citySlug}`}
-        schemas={[breadcrumb, localSchema, faqSchema]}
-        image={data.heroImage}
-      />
+      <Helmet>
+        <title>{`Byggfirma ${city} – Fixco | ROT 30% & Start inom 24h`}</title>
+        <meta name="description" content={data.description} />
+        <link rel="canonical" href={`https://fixco.se/omraden/${citySlug}`} />
+        <meta property="og:title" content={`Byggfirma ${city} – Fixco | ROT 30% & Start inom 24h`} />
+        <meta property="og:description" content={data.description} />
+        <meta property="og:url" content={`https://fixco.se/omraden/${citySlug}`} />
+        <meta property="og:image" content={data.heroImage} />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(localSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
       
       <div className="min-h-screen">
         <Breadcrumbs />

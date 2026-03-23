@@ -187,11 +187,15 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo 
-        title={seoTitle}
-        description={seoDescription}
-        canonicalPath={`/tjanster/${slug}`}
-      />
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <link rel="canonical" href={`https://fixco.se/tjanster/${slug}`} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:url" content={`https://fixco.se/tjanster/${slug}`} />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Breadcrumbs />
       
       {/* Hero Section — gradient style matching LocalServicePage */}

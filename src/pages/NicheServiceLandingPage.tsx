@@ -124,8 +124,14 @@ const NicheServiceLandingPage = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo title={seoTitle} description={seoDescription} canonicalPath={canonicalPath} />
       <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <link rel="canonical" href={`https://fixco.se${canonicalPath}`} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:url" content={`https://fixco.se${canonicalPath}`} />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
       <Breadcrumbs />

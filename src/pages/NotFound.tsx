@@ -32,11 +32,11 @@ const NotFound = () => {
 
   return (
     <>
-      <Seo
-        title="Sidan hittades inte | Fixco"
-        description="Sidan du söker finns inte. Utforska våra tjänster eller kontakta oss för hjälp."
-        noindex={true}
-      />
+      <Helmet>
+        <title>Sidan hittades inte | Fixco</title>
+        <meta name="description" content="Sidan du söker finns inte. Utforska våra tjänster eller kontakta oss för hjälp." />
+        <meta name="robots" content="noindex,nofollow" />
+      </Helmet>
       <div className="min-h-screen bg-background">
         {/* Hero section with gradient */}
         <div
