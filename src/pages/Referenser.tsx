@@ -23,6 +23,7 @@ import { ReferenceProjectCard } from '@/components/ReferenceProjectCard';
 import { AnimatedFixcoFIcon } from '@/components/icons/AnimatedFixcoFIcon';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { SortableProjectGrid } from '@/components/admin/SortableProjectGrid';
 
 // Helper function to get localized field
 const getLocalizedField = (
