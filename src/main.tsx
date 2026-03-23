@@ -18,9 +18,6 @@ function BootTheme() {
   return null;
 }
 
-// Remove SEO placeholder content once React takes over
-document.getElementById('seo-root')?.remove();
-
 const root = createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
