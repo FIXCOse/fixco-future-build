@@ -1,73 +1,75 @@
-
-
 # Plan: Enhetlig SEO — eliminera alla dubbla metadata-system
 
-## Kvarvarande konflikt efter seo-inline.js
+## Nuläge (bekräftat via kodgranskning)
 
-Det finns fortfarande **två parallella SEO-system** i React-koden:
+**5 sidor använder `<Seo>` (DOM-manipulation):**
 
-```text
-System A: src/components/SEO.tsx (<Seo>)
-  → Sätter document.title = ... manuellt
-  → Skapar meta-taggar via document.createElement()
-  → Injicerar JSON-LD via document.head.appendChild()
-  → Används av: NicheServiceLandingPage, ServiceCityPage, LocationCityPage,
-    ServiceDetail, NotFound
+- `NicheServiceLandingPage.tsx` — använder BÅDA `<Seo>` OCH `<Helmet>` (dubbla signaler)
+- `ServiceCityPage.tsx` — `<Seo>` med schemas
+- `LocationCityPage.tsx` — `<Seo>` med schemas
+- `ServiceDetail.tsx` — `<Seo>` utan schemas
+- `NotFound.tsx` — `<Seo>` utan schemas
 
-System B: react-helmet-async (<Helmet>)
-  → Deklarativt, korrekt React-mönster
-  → Används av: LocalServicePage (alla 8200+ sidor), Home, Services,
-    BlogPost, FAQ, Contact, Careers, Referenser, ROT/RUT-info, m.fl.
-```
+**GlobalFooter.tsx** injicerar Organization-schema via `<Helmet>` på ALLA sidor.
 
-**Problemet:** `NicheServiceLandingPage` använder BÅDA — `<Seo>` sätter title/meta via DOM, sedan `<Helmet>` lägger till JSON-LD. Dessutom injicerar `GlobalFooter.tsx` ett Organization-schema på VARJE sida via Helmet — detta dupliceras med Organization-schemat som redan finns på specifika sidor.
+`**useSEO.tsx**` använder redan `<Helmet>` korrekt — behålls.
 
 ## Åtgärder
 
-### 1. Migrera alla `<Seo>`-sidor till `<Helmet>`
-Ersätt `<Seo>` med `<Helmet>` på dessa 5 sidor:
+### 1. Migrera NicheServiceLandingPage till enbart `<Helmet>`
 
-| Sida | Fil |
-|---|---|
-| NicheServiceLandingPage | `src/pages/NicheServiceLandingPage.tsx` |
-| ServiceCityPage | `src/pages/locations/ServiceCityPage.tsx` |
-| LocationCityPage | `src/pages/locations/LocationCityPage.tsx` |
-| ServiceDetail | `src/pages/ServiceDetail.tsx` |
-| NotFound | `src/pages/NotFound.tsx` |
+Ta bort `<Seo>` + separata `<Helmet>` och ersätt med ETT `<Helmet>`-block med title, meta description, canonical, OG-tags, och JSON-LD (FAQ-schema).
 
-Varje sida får en ren `<Helmet>`-block med title, meta description, canonical, og-tags, och JSON-LD — samma mönster som `LocalServicePage.tsx` redan använder.
+### 2. Migrera ServiceCityPage till `<Helmet>`
 
-### 2. Ta bort Organization-schema från GlobalFooter
-**Fil:** `src/components/layout/GlobalFooter.tsx`
-- Ta bort `<Helmet>`-blocket med Organization-schemat (rad 46-62)
-- Organization-schema sätts redan korrekt av startsidan och `SEOSchemaEnhanced`
+Ersätt `<Seo schemas={[breadcrumb, localSchema, faqSchema]}>` med `<Helmet>` som innehåller title, description, canonical, OG-tags och alla tre JSON-LD-scheman.
 
-### 3. Ta bort oanvända SEO-filer
-- **`src/components/SEO.tsx`** — tas bort helt (alla sidor migrerade)
-- **`src/components/SEOSchema.tsx`** — tas bort (aldrig använd som komponent, `<SEOSchema>` förekommer ingenstans)
-- **`src/hooks/useSEO.tsx`** — behålls (används av Home, AboutUs, DoorLockLandingPage, AdminLayout)
+### 3. Migrera LocationCityPage till `<Helmet>`
 
-### 4. Verifiera att LocalServicePage inte har dubbla scheman
-**Fil:** `src/pages/LocalServicePage.tsx`
-- Kontrollera att alla JSON-LD-scheman (BreadcrumbList, ProfessionalService, FAQPage, HowTo, Review, AggregateOffer) är i ETT `<Helmet>`-block
-- Inga duplicerade scheman från andra komponenter (InlineGuideSection har sitt eget Article-schema — detta är OK, det är en annan @type)
+Ersätt `<Seo schemas={[breadcrumb, localSchema, faqSchema]}>` med `<Helmet>` med title, description, canonical, OG-tags och alla tre JSON-LD-scheman.
 
-## Resultat
-- **En enda SEO-källa**: Alla sidor använder enbart `<Helmet>` från react-helmet-async
-- **Inga dubbla title/meta**: `document.title =` försvinner helt
-- **Inga dubbla JSON-LD**: Organization-schema visas bara på relevant sida, inte globalt
-- **Renare kodbas**: 2 filer raderade, 5 filer migrerade
+### 4. Migrera ServiceDetail till `<Helmet>`
+
+Ersätt `<Seo>` med `<Helmet>` med title, description, canonical och OG-tags.
+
+### 5. Migrera NotFound till `<Helmet>`
+
+Ersätt `<Seo noindex={true}>` med `<Helmet>` med noindex robots-tag, title och description.
+
+### 6. Ta bort Organization-schema från GlobalFooter
+
+Radera `<Helmet>`-blocket (rad 46–63) som injicerar Organization JSON-LD på varje sida. Organization-schema finns redan på startsidan och relevanta sidor via `SEOSchemaEnhanced`.
+
+### 7. Radera oanvända SEO-filer
+
+- `**src/components/SEO.tsx**` — raderas (alla imports borta efter migration)
+- `**src/components/SEOSchema.tsx**` — raderas (ingen komponent importerar den)
+
+### 8. Behåll
+
+- `**src/hooks/useSEO.tsx**` — använder redan `<Helmet>` korrekt, används av Home, AboutUs, DoorLockLandingPage, AdminLayout
+- `**src/components/SEOSchemaEnhanced.tsx**` — helper-funktioner för schema-generering, används av många sidor
 
 ## Filer som ändras
 
-| Fil | Ändring |
-|---|---|
-| `src/pages/NicheServiceLandingPage.tsx` | Ersätt `<Seo>` + `<Helmet>` med ett enda `<Helmet>`-block |
-| `src/pages/locations/ServiceCityPage.tsx` | Ersätt `<Seo>` med `<Helmet>` |
-| `src/pages/locations/LocationCityPage.tsx` | Ersätt `<Seo>` med `<Helmet>` |
-| `src/pages/ServiceDetail.tsx` | Ersätt `<Seo>` med `<Helmet>` |
-| `src/pages/NotFound.tsx` | Ersätt `<Seo>` med `<Helmet>` |
-| `src/components/layout/GlobalFooter.tsx` | Ta bort Organization-schema |
-| `src/components/SEO.tsx` | **Radera** |
-| `src/components/SEOSchema.tsx` | **Radera** |
 
+| Fil                                        | Ändring                                            |
+| ------------------------------------------ | -------------------------------------------------- |
+| `src/pages/NicheServiceLandingPage.tsx`    | Ersätt `<Seo>` + `<Helmet>` → ett `<Helmet>`-block |
+| `src/pages/locations/ServiceCityPage.tsx`  | Ersätt `<Seo>` → `<Helmet>`                        |
+| `src/pages/locations/LocationCityPage.tsx` | Ersätt `<Seo>` → `<Helmet>`                        |
+| `src/pages/ServiceDetail.tsx`              | Ersätt `<Seo>` → `<Helmet>`                        |
+| `src/pages/NotFound.tsx`                   | Ersätt `<Seo>` → `<Helmet>`                        |
+| `src/components/layout/GlobalFooter.tsx`   | Ta bort Organization-schema `<Helmet>`             |
+| `src/components/SEO.tsx`                   | **Radera**                                         |
+| `src/components/SEOSchema.tsx`             | **Radera**                                         |
+
+
+## Resultat
+
+- EN enda SEO-källa: alla sidor använder `<Helmet>` från react-helmet-async
+- Inga `document.title =` eller manuella DOM-meta-tags kvar
+- Inga dubbla JSON-LD (Organization-schema inte längre globalt)
+- Inga title-konflikter mellan system
+- Befintliga CTR-optimerade titlar på LocalServicePage (8200+ sidor) påverkas INTE  
+Säkerställ att ALLA titlar följer samma CTR-optimerade format (System 2)  
