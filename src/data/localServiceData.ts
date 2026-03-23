@@ -578,6 +578,7 @@ const SERVICE_PRICING_BASE: Record<BaseServiceSlug, {
   "golvlaggning":       { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elinstallation":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "rivning":            { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "dorrlas":            { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
 };
 
 // Funktion för att hämta rolig fakta
