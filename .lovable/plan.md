@@ -1,22 +1,30 @@
 
 
-# Plan: Rensa bort engelska från HTML-sitemap
+# Plan: Admin drag-and-drop sortering av referensprojekt
 
-## Problem
-HTML-sitemapen (`/webbkarta`) stödjer idag engelska via `/en/sitemap`. Även om sidan har `noindex`, vill vi inte att Googlebot följer engelska länkar därifrån.
+## Vad byggs
+En sorteringsfunktion i admin/edit-läge på `/referenser`-sidan där admin kan dra och släppa projektkort för att ändra ordningen. Ordningen sparas direkt till databasen (`sort_order`-kolumnen).
 
-## Åtgärd
+## Teknisk approach
 
-### 1. Ta bort engelska routen
-- I `App.tsx`: ta bort `<Route path="sitemap" element={lazyElement(HtmlSitemap)} />` under `/en/`-gruppen
+### 1. Skapa `SortableProjectGrid`-komponent
+Ny komponent `src/components/admin/SortableProjectGrid.tsx` som:
+- Använder `@dnd-kit/core` och `@dnd-kit/sortable` (redan installerat, används i `EditableReferenceGrid`)
+- Wrappar `ReferenceProjectCard` i sortable containers med drag-handtag
+- Visar ett informationsfält "Dra för att ändra ordning" i edit-läge
 
-### 2. Förenkla HtmlSitemap.tsx — bara svenska
-- Ta bort all `isEn`-logik, `locale`-check, `prefix`-variabel
-- Hårdkoda alla länkar som svenska (`/tjanster/...`, `/kontakt`, `/om-oss` etc.)
-- Hårdkoda titlar och rubriker på svenska
-- Behåll `noindex,follow` (Google följer länkarna men indexerar inte sidan)
+### 2. Uppdatera `Referenser.tsx`
+- I edit-läge: rendera `SortableProjectGrid` istället för det vanliga gridet
+- Vid drag-end: anropa `useUpdateReferenceProject` för att spara nya `sort_order`-värden till Supabase
 
-### Resultat
-- `/webbkarta` renderar enbart svenska länkar → Googlebot hittar alla 8000+ svenska tjänste-URL:er
-- Ingen engelsk version av sitemapen existerar
+### 3. Sparlogik
+- Vid omordning: tilldela `sort_order = index` för varje projekt i den nya ordningen
+- Batch-uppdatera alla ändrade projekts `sort_order` via separata mutationer
+- Visa toast vid lyckad/misslyckad sparning
+
+## Filer som ändras
+| Fil | Ändring |
+|---|---|
+| `src/components/admin/SortableProjectGrid.tsx` | **Ny** — drag-and-drop grid med sortable kort |
+| `src/pages/Referenser.tsx` | Importera och använd `SortableProjectGrid` i edit-läge |
 
