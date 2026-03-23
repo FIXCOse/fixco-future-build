@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { Seo } from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { Home, Phone, ArrowRight, Wrench, Zap, Droplets, Paintbrush, TreePine, SprayCan } from "lucide-react";
 import GradientButton from "@/components/GradientButton";
 import { openServiceRequestModal } from "@/features/requests/ServiceRequestModal";
