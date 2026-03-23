@@ -257,6 +257,16 @@ const Referenser = () => {
               </div>
             ) : projects.length === 0 ? (
               <ProjectsComingSoon />
+            ) : isAdmin && isEditMode ? (
+              <SortableProjectGrid
+                projects={projects}
+                locale={locale}
+                isAdmin={isAdmin}
+                isEditMode={isEditMode}
+                onEdit={(project) => setEditingProject(project)}
+                onDelete={(id) => handleDeleteProject(id)}
+                onView={(project) => setSelectedProject(project)}
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project) => (
