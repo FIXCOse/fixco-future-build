@@ -439,7 +439,6 @@ const DoorLockLandingPage: React.FC = () => {
 
             <div className="text-center mt-12">
               <GradientButton
-                size="lg"
                 className="text-lg px-8 py-6"
                 onClick={() => handleBooking()}
               >
