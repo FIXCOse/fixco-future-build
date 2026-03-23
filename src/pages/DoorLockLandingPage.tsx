@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Calendar, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent } from 'lucide-react';
+import { Lock, Star, Shield, Clock, CheckCircle2, ArrowRight, Percent, MapPin } from 'lucide-react';
 import { GradientText } from '@/components/v2/GradientText';
 import { GlassCard } from '@/components/v2/GlassCard';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useSEO } from '@/hooks/useSEO';
 import { openServiceRequestModal } from '@/features/requests/ServiceRequestModal';
 import { Link } from 'react-router-dom';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import GradientButton from '@/components/GradientButton';
+import { getHeroGradientStyle } from '@/utils/serviceGradients';
+import logoFixco from '@/assets/fixco-logo-white.png';
 import {
   doorLockBrands,
   comparisonData,
@@ -16,6 +20,11 @@ import {
   seoContent,
   getDoorLockSchema
 } from '@/data/doorLockData';
+import {
+  STOCKHOLM_AREAS,
+  UPPSALA_AREAS,
+  generateAreaSlug
+} from '@/data/localServiceData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -25,6 +34,12 @@ const fadeUp = {
     transition: { delay: i * 0.1, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }
   })
 };
+
+const breadcrumbItems = [
+  { name: 'Hem', url: '/' },
+  { name: 'Tjänster', url: '/tjanster' },
+  { name: 'Dörrlås', url: '/tjanster/dorrlas' },
+];
 
 const DoorLockLandingPage: React.FC = () => {
   const seoElement = useSEO({
@@ -44,17 +59,28 @@ const DoorLockLandingPage: React.FC = () => {
     });
   };
 
+  const heroGradient = getHeroGradientStyle('dorrlas');
+
   return (
     <>
       {seoElement}
       <div className="min-h-screen bg-background">
-        {/* HERO SECTION */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/20" />
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-          
+        {/* GRADIENT HERO — matching LocalServicePage pattern */}
+        <section
+          className="relative py-20 md:py-32 overflow-hidden"
+          style={{ background: heroGradient }}
+        >
+          {/* Subtle overlay for depth */}
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+
           <div className="container mx-auto px-4 relative z-10">
+            <Breadcrumbs
+              items={breadcrumbItems}
+              className="mb-8 [&_*]:text-white/70 [&_span]:!text-white [&_a:hover]:text-white"
+            />
+
             <motion.div
               initial="hidden"
               animate="visible"
@@ -62,39 +88,34 @@ const DoorLockLandingPage: React.FC = () => {
               custom={0}
               className="max-w-4xl mx-auto text-center"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border mb-8">
-                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                <span className="text-sm text-muted-foreground">5/5 betyg</span>
+              {/* White logo */}
+              <img
+                src={logoFixco}
+                alt="Fixco"
+                className="mx-auto max-h-20 md:max-h-28 mb-8 drop-shadow-lg"
+              />
+
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-8 backdrop-blur-sm">
+                <Star className="w-4 h-4 text-yellow-300 fill-yellow-300" />
+                <span className="text-sm text-white/90">5/5 betyg</span>
               </div>
 
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-                Installation av{' '}
-                <GradientText gradient="rainbow">Dörrlås & Smarta Lås</GradientText>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-white">
+                Installation av Dörrlås & Smarta Lås
               </h1>
 
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8">
                 Yale Doorman, Linus, Nuki, ASSA ABLOY och fler. Certifierad installation med{' '}
-                <strong className="text-foreground">30% ROT-avdrag</strong>. Fast pris, inga dolda kostnader.
+                <strong className="text-white">30% ROT-avdrag</strong>. Fast pris, inga dolda kostnader.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+                <GradientButton
+                  className="text-lg px-8 py-6"
                   onClick={() => handleBooking()}
                 >
-                  <Lock className="w-5 h-5 mr-2" />
                   Begär gratis offert
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-lg px-8 py-6 border-border hover:bg-muted/50"
-                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
-                >
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Boka hembesök
-                </Button>
+                </GradientButton>
               </div>
 
               {/* Trust badges */}
@@ -105,8 +126,8 @@ const DoorLockLandingPage: React.FC = () => {
                   { icon: Clock, text: 'Installation 1–2h' },
                   { icon: CheckCircle2, text: 'Garanti & försäkring' }
                 ].map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Icon className="w-4 h-4 text-primary" />
+                  <div key={text} className="flex items-center gap-2 text-sm text-white/80">
+                    <Icon className="w-4 h-4 text-white" />
                     <span>{text}</span>
                   </div>
                 ))}
@@ -177,9 +198,70 @@ const DoorLockLandingPage: React.FC = () => {
           </div>
         </section>
 
-        {/* SEO CONTENT SECTION */}
+        {/* DÖRRLÅS I DIN STAD — Internal linking section */}
         <section className="py-20 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                <GradientText gradient="default">Dörrlås</GradientText> i din stad
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Vi installerar smarta dörrlås i hela Stockholm och Uppsala län
+              </p>
+            </motion.div>
+
+            <div className="max-w-5xl mx-auto space-y-8">
+              {/* Stockholm */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-primary" />
+                  Stockholm
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {STOCKHOLM_AREAS.map(area => (
+                    <Link
+                      key={area}
+                      to={`/tjanster/dorrlas/${generateAreaSlug(area)}`}
+                      className="text-sm px-3 py-1.5 rounded-full border border-border bg-card hover:bg-primary/10 hover:border-primary/30 text-muted-foreground hover:text-foreground transition-all"
+                    >
+                      Dörrlås {area}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Uppsala */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-primary" />
+                  Uppsala
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {UPPSALA_AREAS.map(area => (
+                    <Link
+                      key={area}
+                      to={`/tjanster/dorrlas/${generateAreaSlug(area)}`}
+                      className="text-sm px-3 py-1.5 rounded-full border border-border bg-card hover:bg-primary/10 hover:border-primary/30 text-muted-foreground hover:text-foreground transition-all"
+                    >
+                      Dörrlås {area}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SEO CONTENT SECTION */}
+        <section className="py-20 relative">
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -356,14 +438,12 @@ const DoorLockLandingPage: React.FC = () => {
             </div>
 
             <div className="text-center mt-12">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
-                  onClick={() => handleBooking()}
-                >
-                  <Lock className="w-5 h-5 mr-2" />
-                  Begär gratis offert
-                </Button>
+              <GradientButton
+                className="text-lg px-8 py-6"
+                onClick={() => handleBooking()}
+              >
+                Begär gratis offert
+              </GradientButton>
             </div>
           </div>
         </section>
@@ -413,7 +493,7 @@ const DoorLockLandingPage: React.FC = () => {
           </div>
         </section>
 
-        {/* INTERNAL LINKS */}
+        {/* INTERNAL LINKS — corrected URLs */}
         <section className="py-20 relative">
           <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
           <div className="container mx-auto px-4 relative z-10">
@@ -435,8 +515,8 @@ const DoorLockLandingPage: React.FC = () => {
                 { to: '/tjanster/montering', label: 'Montering', desc: 'Alla monteringstjänster' },
                 { to: '/tjanster/tekniska-installationer', label: 'Tekniska installationer', desc: 'Nätverk, larm & IT' },
                 { to: '/smart-hem', label: 'Smart Hem', desc: 'Smarta hemlösningar' },
-                { to: '/tjanster/montering/uppsala', label: 'Dörrlås Uppsala', desc: 'Installation i Uppsala' },
-                { to: '/tjanster/montering/stockholm', label: 'Dörrlås Stockholm', desc: 'Installation i Stockholm' },
+                { to: '/tjanster/dorrlas/uppsala', label: 'Dörrlås Uppsala', desc: 'Installation i Uppsala' },
+                { to: '/tjanster/dorrlas/stockholm', label: 'Dörrlås Stockholm', desc: 'Installation i Stockholm' },
                 { to: '/rot-info', label: 'ROT-avdrag', desc: 'Så fungerar ROT-avdrag' }
               ].map((link, i) => (
                 <motion.div
@@ -472,23 +552,13 @@ const DoorLockLandingPage: React.FC = () => {
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
                 Begär en gratis offert idag. Vi återkommer inom 24 timmar med pris och rekommendation.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+              <div className="flex justify-center">
+                <GradientButton
+                  className="text-lg px-8 py-6"
                   onClick={() => handleBooking()}
                 >
                   Begär gratis offert
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-lg px-8 py-6 border-border hover:bg-muted/50"
-                  onClick={() => openServiceRequestModal({ mode: 'home_visit', showCategories: true })}
-                >
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Boka hembesök
-                </Button>
+                </GradientButton>
               </div>
             </GlassCard>
           </div>

@@ -51,6 +51,7 @@ export const BASE_SERVICES = [
   { slug: "golvlaggning", name: "Golvläggning", serviceKey: "golv", rotRut: "ROT" },
   { slug: "elinstallation", name: "Elinstallation", serviceKey: "el", rotRut: "ROT" },
   { slug: "rivning", name: "Rivning", serviceKey: "rivning", rotRut: "ROT" },
+  { slug: "dorrlas", name: "Dörrlås", serviceKey: "montering", rotRut: "ROT" },
 ] as const;
 
 // Merge base + expanded services into a single array
@@ -537,6 +538,11 @@ const SERVICE_MYTHS_BASE: Record<BaseServiceSlug, Array<{ myth: string; truth: s
     { myth: "Man kan riva bärande väggar själv utan risk", truth: "Rivning av bärande väggar utan konstruktörsgodkännande kan leda till rasrisk. Bygganmälan krävs alltid." },
     { myth: "Rivning är bara att slå med släggan", truth: "Professionell rivning kräver kontroll av asbest, bly, el och VVS innan arbetet påbörjas. Felaktig rivning kan orsaka skador för hundratusentals kronor." },
     { myth: "Rivningsavfall kan slängas var som helst", truth: "Rivningsavfall måste sorteras och transporteras till godkänd mottagningsstation. Farligt avfall som asbest har särskilda regler." }
+  ],
+  "dorrlas": [
+    { myth: "Smarta lås är lätta att hacka", truth: "Moderna smarta lås som Yale Doorman har SSF-certifiering och krypterad Bluetooth – de är minst lika säkra som traditionella lås." },
+    { myth: "Man kan installera Yale Doorman själv på 30 minuter", truth: "Felaktig installation kan göra att låset inte låser ordentligt, påverka försäkringen och ogiltigförklara garantin. Professionell montering rekommenderas." },
+    { myth: "Smarta lås slutar fungera om WiFi går ner", truth: "Alla smarta lås fungerar med Bluetooth och batteri – WiFi behövs bara för fjärrstyrning. Du blir aldrig utelåst." }
   ]
 };
 
@@ -572,6 +578,7 @@ const SERVICE_PRICING_BASE: Record<BaseServiceSlug, {
   "golvlaggning":       { base: "958 kr/h",  afterDeduction: "671 kr/h", isQuoteOnly: false, rotRut: "ROT" },
   "elinstallation":     { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
   "rivning":            { base: "Begär offert", afterDeduction: "Begär offert", isQuoteOnly: true, rotRut: "ROT" },
+  "dorrlas":            { base: "759 kr/h",  afterDeduction: "531 kr/h", isQuoteOnly: false, rotRut: "ROT" },
 };
 
 // Funktion för att hämta rolig fakta
@@ -636,6 +643,7 @@ const SERVICE_NAME_EN_BASE: Record<BaseServiceSlug, string> = {
   "golvlaggning": "Floor Installation",
   "elinstallation": "Electrical Installation",
   "rivning": "Demolition",
+  "dorrlas": "Door Lock",
 };
 
 // Unified lookup functions for both base and expanded slugs

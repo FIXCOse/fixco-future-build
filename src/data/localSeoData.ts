@@ -155,6 +155,13 @@ export const SEARCH_ACTION_PATTERNS: Partial<Record<LocalServiceSlug, {
     urgentTerms: ["akut rivning", "snabb rivning", "rivning idag"],
     projectTypes: ["badrumsrivning", "köksrivning", "totalrivning", "stomrent", "håltagning", "rivning av väggar"],
     synonyms: ["rivare", "rivningsfirma", "rivningsföretag", "demolering", "rivningstjänst"]
+  },
+  "dorrlas": {
+    actions: ["installera", "montera", "byta", "sätta upp", "boka"],
+    objects: ["dörrlås", "yale doorman", "yale linus", "nuki", "kodlås", "cylinderlås", "smart lås", "assa abloy"],
+    urgentTerms: ["akut låsbyte", "byta lås snabbt", "låssmed"],
+    projectTypes: ["yale doorman installation", "smart dörrlås montering", "kodlås installation", "cylinderlås byte", "yale linus montering", "byta lås ytterdörr"],
+    synonyms: ["låsinstallation", "låsmontör", "smart lås montör", "dörrlås installatör", "låsbyte"]
   }
 };
 
