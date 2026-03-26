@@ -26,7 +26,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Material, höjd, räcke, belysning…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -39,7 +39,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal", label: "Antal uttag", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskrivning", placeholder: "Placering, höjd, särskilda önskemål…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -52,7 +52,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal", label: "Antal spotlights", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskrivning", placeholder: "Rumsstorlek, dimmer, håldiameter…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -62,7 +62,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Mått, båge, lister, finish…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -72,7 +72,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Mått, dörrar, inredning, finish…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -83,7 +83,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Material, färg, placering…" },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -95,7 +95,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
       { kind: "number", key: "antal_rum", label: "Antal rum att måla", min: 1 },
       { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Väggar/tak, färg, spackling, tapet..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -108,7 +108,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal_rum", label: "Antal rum", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskrivning", placeholder: "Takhöjd, färgval, spackling behövs..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -119,7 +119,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "yta_m2", label: "Ungefärlig fasadyta (m²)", min: 1 },
       { kind: "textarea", key: "onskemal", label: "Kort beskrivning", placeholder: "Antal våningar, färg, kondition..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   // Dörrlås-tjänster
@@ -130,7 +130,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Märke/modell, dörrtyp, önskemål..." },
-      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -140,7 +140,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Modell (L3S Flex/Classic/V2N), dörrtyp, önskemål..." },
-      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -150,7 +150,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp, befintligt lås, önskemål..." },
-      { kind: "file", key: "bilder", label: "Bilder på dörren (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -161,7 +161,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal", label: "Antal dörrar", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp (ytterdörr/innerdörr), märke om valt..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -172,7 +172,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal", label: "Antal lås", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Dörrtyp, befintligt lås, säkerhetsklass..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -182,7 +182,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Typ av larm, antal dörrlås, befintliga system..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   // Rivning
@@ -194,7 +194,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal_rum", label: "Antal badrum", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Kakel, klinker, inredning, vattenlås..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -204,7 +204,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     rotEligible: true,
     fields: [
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Skåp, bänk, vitvaror, golv..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -215,7 +215,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "antal_vaggar", label: "Antal väggar", min: 1, required: true },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Bärande/ej bärande, material, längd..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -226,7 +226,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Golvtyp (parkett, klinker, vinyl), underlag..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   },
   {
@@ -237,7 +237,7 @@ export const SERVICE_CONFIG: ServiceConfig[] = [
     fields: [
       { kind: "number", key: "yta_m2", label: "Ungefärlig yta (m²)", min: 1 },
       { kind: "textarea", key: "beskrivning", label: "Beskriv ditt projekt", placeholder: "Vad ska rivas? Badrum, kök, väggar, golv, allt..." },
-      { kind: "file", key: "bilder", label: "Bilder (valfritt)", accept: "image/*", multiple: true }
+      { kind: "file", key: "bilder", label: "Bilder & filer (valfritt)", accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
     ]
   }
 ];
