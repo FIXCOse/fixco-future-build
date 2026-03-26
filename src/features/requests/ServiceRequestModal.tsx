@@ -316,7 +316,7 @@ const skipAddons = () => {
           kind: "file" as const,
           key: "bilder",
           label: ml.uploadImages,
-          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt",
+          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic",
           multiple: true
         });
       }
