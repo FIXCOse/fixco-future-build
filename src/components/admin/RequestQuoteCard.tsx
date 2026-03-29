@@ -322,6 +322,11 @@ export function RequestQuoteCard({
                 ))}
               </div>
             </div>
+          ) : (
+            <p className="text-xs text-muted-foreground italic flex items-center gap-1.5">
+              <Paperclip className="h-3.5 w-3.5" />
+              Inga filer bifogades vid bokningen
+            </p>
           )}
 
           {/* Desired Time */}
