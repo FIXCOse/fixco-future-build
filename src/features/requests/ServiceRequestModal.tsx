@@ -1417,8 +1417,8 @@ const skipAddons = () => {
                         { 
                           kind: "file", 
                           key: "bilder", 
-                           label: ml.imagesOptional, 
-                           accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", 
+                          label: ml.imagesOptional, 
+                          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", 
                           multiple: true 
                         }
                       ]
