@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useEventTracking } from "@/hooks/useEventTracking";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe, CheckCircle2 } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe, CheckCircle2, Paperclip } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
 // ─── Modal translations ────────────────────────────────────────
