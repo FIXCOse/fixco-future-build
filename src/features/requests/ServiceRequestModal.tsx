@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useEventTracking } from "@/hooks/useEventTracking";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe, CheckCircle2 } from "lucide-react";
+import { User, Building2, Home, Sparkles, ArrowLeft, ArrowRight, Wrench, AlertCircle, CalendarClock, CalendarDays, CalendarRange, Globe, CheckCircle2, Paperclip } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
 // ─── Modal translations ────────────────────────────────────────
@@ -213,6 +213,7 @@ export default function ServiceRequestModal() {
   const [values, setValues] = useState<Record<string, any>>({});
   const [files, setFiles] = useState<Record<string, File[]>>({});
   const [busy, setBusy] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
@@ -305,7 +306,7 @@ const skipAddons = () => {
           rotEligible: true,
           fields: [
             { kind: "textarea" as const, key: "beskrivning", label: ml.describeProject, placeholder: ml.tellUsMore },
-            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", multiple: true }
+            { kind: "file" as const, key: "bilder", label: ml.imagesOptional, accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", multiple: true }
           ]
         };
       }
@@ -466,14 +467,28 @@ const skipAddons = () => {
     }
 
     setBusy(true);
+    setUploadStatus(null);
     try {
       const mode = isQuote ? "quote" : "book";
       
+      // Count total files
+      const totalFiles = Object.values(files).reduce((sum, list) => sum + list.length, 0);
+      console.log(`[ServiceRequestModal] Files in state before upload: ${totalFiles}`, 
+        Object.entries(files).map(([k, v]) => `${k}: ${v.map(f => f.name).join(', ')}`));
+
       // Upload files first if any
       const fileUrls: string[] = [];
       const failedFiles: string[] = [];
+      let uploadedCount = 0;
+      
       for (const [key, fileList] of Object.entries(files)) {
         for (const file of fileList) {
+          uploadedCount++;
+          const statusMsg = modalLang === 'sv'
+            ? `Laddar upp fil ${uploadedCount} av ${totalFiles}…`
+            : `Uploading file ${uploadedCount} of ${totalFiles}…`;
+          setUploadStatus(statusMsg);
+          
           const path = `requests/${Date.now()}_${file.name}`;
           const { error: uploadError } = await supabase.storage
             .from('booking-attachments')
@@ -484,6 +499,7 @@ const skipAddons = () => {
               .from('booking-attachments')
               .getPublicUrl(path);
             fileUrls.push(publicUrl);
+            console.log(`[ServiceRequestModal] Uploaded ${file.name} → ${publicUrl}`);
           } else {
             console.error(`[ServiceRequestModal] File upload failed for ${file.name}:`, uploadError);
             failedFiles.push(file.name);
@@ -491,13 +507,19 @@ const skipAddons = () => {
         }
       }
 
-      // Notify user about failed uploads
+      setUploadStatus(null);
+
+      // BLOCK submission if any uploads failed
       if (failedFiles.length > 0) {
         const failedMsg = modalLang === 'sv'
-          ? `Kunde inte ladda upp: ${failedFiles.join(', ')}. Bokningen skickas utan dessa filer.`
-          : `Could not upload: ${failedFiles.join(', ')}. Booking will be sent without these files.`;
-        toast.warning(failedMsg);
+          ? `Kunde inte ladda upp: ${failedFiles.join(', ')}. Försök igen.`
+          : `Could not upload: ${failedFiles.join(', ')}. Please try again.`;
+        toast.error(failedMsg);
+        setBusy(false);
+        return;
       }
+      
+      console.log(`[ServiceRequestModal] All uploads done. fileUrls.length = ${fileUrls.length}`);
 
       // Send simple JSON payload to edge function
       const jsonPayload = {
@@ -1252,6 +1274,7 @@ const skipAddons = () => {
                            </div>
                         );
                       } else if (field.kind === "file") {
+                        const selectedFiles = files[field.key] || [];
                         return (
                           <div key={field.key}>
                             <label className="block">
@@ -1264,6 +1287,46 @@ const skipAddons = () => {
                                 onChange={e => onFiles(field.key, e.target.files)}
                               />
                             </label>
+                            {/* File preview list */}
+                            {selectedFiles.length > 0 && (
+                              <div className="mt-2 space-y-1.5">
+                                <p className="text-xs font-medium text-muted-foreground">
+                                  {selectedFiles.length} {modalLang === 'sv' ? 'fil(er) valda' : 'file(s) selected'}
+                                </p>
+                                {selectedFiles.map((file, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border/30">
+                                    {file.type.startsWith('image/') ? (
+                                      <img 
+                                        src={URL.createObjectURL(file)} 
+                                        alt={file.name}
+                                        className="w-10 h-10 rounded object-cover flex-shrink-0"
+                                      />
+                                    ) : (
+                                      <div className="w-10 h-10 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                                        <Paperclip className="w-4 h-4 text-muted-foreground" />
+                                      </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-xs font-medium truncate">{file.name}</p>
+                                      <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(0)} KB</p>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setFiles(f => ({
+                                          ...f,
+                                          [field.key]: f[field.key].filter((_, i) => i !== idx)
+                                        }));
+                                      }}
+                                      className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                                      aria-label="Ta bort fil"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         );
                       }
@@ -1354,8 +1417,8 @@ const skipAddons = () => {
                         { 
                           kind: "file", 
                           key: "bilder", 
-                           label: ml.imagesOptional, 
-                           accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt", 
+                          label: ml.imagesOptional, 
+                          accept: "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic", 
                           multiple: true 
                         }
                       ]
@@ -1431,7 +1494,7 @@ const skipAddons = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      {ml.sending}
+                      {uploadStatus || ml.sending}
                     </>
                   ) : (
                     <>
