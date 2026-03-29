@@ -282,7 +282,7 @@ export function RequestQuoteCard({
           )}
 
           {/* Attached Files */}
-          {booking.file_urls && booking.file_urls.length > 0 && (
+          {booking.file_urls && booking.file_urls.length > 0 ? (
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
                 <Paperclip className="h-4 w-4" />
