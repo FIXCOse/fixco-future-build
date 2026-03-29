@@ -467,14 +467,28 @@ const skipAddons = () => {
     }
 
     setBusy(true);
+    setUploadStatus(null);
     try {
       const mode = isQuote ? "quote" : "book";
       
+      // Count total files
+      const totalFiles = Object.values(files).reduce((sum, list) => sum + list.length, 0);
+      console.log(`[ServiceRequestModal] Files in state before upload: ${totalFiles}`, 
+        Object.entries(files).map(([k, v]) => `${k}: ${v.map(f => f.name).join(', ')}`));
+
       // Upload files first if any
       const fileUrls: string[] = [];
       const failedFiles: string[] = [];
+      let uploadedCount = 0;
+      
       for (const [key, fileList] of Object.entries(files)) {
         for (const file of fileList) {
+          uploadedCount++;
+          const statusMsg = modalLang === 'sv'
+            ? `Laddar upp fil ${uploadedCount} av ${totalFiles}…`
+            : `Uploading file ${uploadedCount} of ${totalFiles}…`;
+          setUploadStatus(statusMsg);
+          
           const path = `requests/${Date.now()}_${file.name}`;
           const { error: uploadError } = await supabase.storage
             .from('booking-attachments')
@@ -485,6 +499,7 @@ const skipAddons = () => {
               .from('booking-attachments')
               .getPublicUrl(path);
             fileUrls.push(publicUrl);
+            console.log(`[ServiceRequestModal] Uploaded ${file.name} → ${publicUrl}`);
           } else {
             console.error(`[ServiceRequestModal] File upload failed for ${file.name}:`, uploadError);
             failedFiles.push(file.name);
@@ -492,13 +507,19 @@ const skipAddons = () => {
         }
       }
 
-      // Notify user about failed uploads
+      setUploadStatus(null);
+
+      // BLOCK submission if any uploads failed
       if (failedFiles.length > 0) {
         const failedMsg = modalLang === 'sv'
-          ? `Kunde inte ladda upp: ${failedFiles.join(', ')}. Bokningen skickas utan dessa filer.`
-          : `Could not upload: ${failedFiles.join(', ')}. Booking will be sent without these files.`;
-        toast.warning(failedMsg);
+          ? `Kunde inte ladda upp: ${failedFiles.join(', ')}. Försök igen.`
+          : `Could not upload: ${failedFiles.join(', ')}. Please try again.`;
+        toast.error(failedMsg);
+        setBusy(false);
+        return;
       }
+      
+      console.log(`[ServiceRequestModal] All uploads done. fileUrls.length = ${fileUrls.length}`);
 
       // Send simple JSON payload to edge function
       const jsonPayload = {
