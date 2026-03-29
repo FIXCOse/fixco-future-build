@@ -1274,6 +1274,7 @@ const skipAddons = () => {
                            </div>
                         );
                       } else if (field.kind === "file") {
+                        const selectedFiles = files[field.key] || [];
                         return (
                           <div key={field.key}>
                             <label className="block">
@@ -1286,6 +1287,46 @@ const skipAddons = () => {
                                 onChange={e => onFiles(field.key, e.target.files)}
                               />
                             </label>
+                            {/* File preview list */}
+                            {selectedFiles.length > 0 && (
+                              <div className="mt-2 space-y-1.5">
+                                <p className="text-xs font-medium text-muted-foreground">
+                                  {selectedFiles.length} {modalLang === 'sv' ? 'fil(er) valda' : 'file(s) selected'}
+                                </p>
+                                {selectedFiles.map((file, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border/30">
+                                    {file.type.startsWith('image/') ? (
+                                      <img 
+                                        src={URL.createObjectURL(file)} 
+                                        alt={file.name}
+                                        className="w-10 h-10 rounded object-cover flex-shrink-0"
+                                      />
+                                    ) : (
+                                      <div className="w-10 h-10 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                                        <Paperclip className="w-4 h-4 text-muted-foreground" />
+                                      </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-xs font-medium truncate">{file.name}</p>
+                                      <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(0)} KB</p>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setFiles(f => ({
+                                          ...f,
+                                          [field.key]: f[field.key].filter((_, i) => i !== idx)
+                                        }));
+                                      }}
+                                      className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                                      aria-label="Ta bort fil"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         );
                       }
