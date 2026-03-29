@@ -213,6 +213,7 @@ export default function ServiceRequestModal() {
   const [values, setValues] = useState<Record<string, any>>({});
   const [files, setFiles] = useState<Record<string, File[]>>({});
   const [busy, setBusy] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedAddons, setSelectedAddons] = useState<SelectedAddon[]>([]);
