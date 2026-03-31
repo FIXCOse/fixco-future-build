@@ -12,6 +12,7 @@ import logoByggmax from "@/assets/byggmax-logo-red.png";
 import logoKRauta from "@/assets/rauta-logo-white.png";
 import logoLimont from "@/assets/limont-logo-white.png";
 import logoNordgren from "@/assets/nordgren-logo-white.png";
+import logoKulor from "@/assets/kulor-logo.png";
 import logoFixco from "@/assets/fixco-logo-white.png";
 
 const HeroV3 = () => {
