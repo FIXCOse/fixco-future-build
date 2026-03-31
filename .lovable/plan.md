@@ -1,14 +1,16 @@
 
 
-# Plan: Lägg till Kulör Bygg & Badrum AB i partnerkarusellen
+# Plan: Lägg till Asfaltslandslaget-logo + ta bort prisuppgifter från referenser
 
-## Åtgärd
+## 1. Lägg till Asfaltslandslaget i partnerkarusellen
 
-### 1. Kopiera logotypen
-Kopiera `user-uploads://image-468.png` → `src/assets/kulor-logo.png`
+**Fil:** `src/assets/asfaltslandslaget-logo.png` — kopiera uploadad bild hit
 
-### 2. Uppdatera `src/components/v3/HeroV3.tsx`
-- Importera: `import logoKulor from "@/assets/kulor-logo.png";`
-- Lägg till en `<div>` med Kulör-loggan i **båda** logo-seten (original + duplicate för seamless loop), efter Nordgren & Partners
-- Använd samma mönster: `className="h-5 md:h-8 flex items-center shrink-0"` med `brightness-0 invert` (loggan är mörk text, bakgrunden är mörk → behöver inverteras till vit)
+**Fil:** `src/components/v3/HeroV3.tsx`
+- Importera `logoAsfaltslandslaget`
+- Lägg till i båda logo-seten (original + duplicate) efter Kulör
+- Använd `brightness-0 invert` (mörk logo mot mörk bakgrund)
 
+## 2. Ta bort prisuppgifter från referensprojekt
+
+Priset ska inte visas publ
