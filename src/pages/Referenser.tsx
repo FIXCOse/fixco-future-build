@@ -210,12 +210,10 @@ const Referenser = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold gradient-text mb-2">
-                    {projects.reduce((sum, p) => sum + (p.rot_saving_amount + p.rut_saving_amount), 0).toLocaleString('sv-SE')} kr
-                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
                   <EditableText 
                     id="stat-savings-label"
-                    initialContent={t('pages.references.stats.savings')}
+                    initialContent="Genomförda projekt"
                     className="text-muted-foreground"
                   />
                 </div>
