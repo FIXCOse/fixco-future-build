@@ -200,20 +200,12 @@ const Referenser = () => {
         <EditableSection id="references-stats" title="Statistik sektion">
           <section className="py-12 bg-muted/10">
             <div className="container mx-auto px-4">
-              <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div className="grid md:grid-cols-2 gap-8 text-center">
                 <div>
                   <div className="text-3xl font-bold gradient-text mb-2">4.9★</div>
                   <EditableText 
                     id="stat-rating-label"
                     initialContent={t('pages.references.stats.avgRating')}
-                    className="text-muted-foreground"
-                  />
-                </div>
-                <div>
-                  <div className="text-3xl font-bold gradient-text mb-2">{projects.length}+</div>
-                  <EditableText 
-                    id="stat-savings-label"
-                    initialContent="Genomförda projekt"
                     className="text-muted-foreground"
                   />
                 </div>
