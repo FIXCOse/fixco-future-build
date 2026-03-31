@@ -86,12 +86,6 @@ export const ReferenceProjectCard = ({
           </Badge>
         )}
 
-        {/* ROT/RUT savings badge */}
-        {totalSavings > 0 && (
-          <Badge className="absolute top-3 right-3 bg-green-500/90 backdrop-blur-sm text-white">
-            {totalSavings.toLocaleString("sv-SE")} kr besparingar
-          </Badge>
-        )}
 
         {/* Title overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
