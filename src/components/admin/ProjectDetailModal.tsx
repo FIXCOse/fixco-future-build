@@ -220,12 +220,6 @@ export default function ProjectDetailModal({
                 </div>
               </div>
               
-              <div className="text-right">
-                <div className="text-3xl font-bold text-primary mb-1">
-                  {project.price_amount.toLocaleString('sv-SE')} kr
-                </div>
-                <div className="text-sm text-muted-foreground">Totalpris</div>
-              </div>
             </div>
 
             {/* Project Info Grid */}
