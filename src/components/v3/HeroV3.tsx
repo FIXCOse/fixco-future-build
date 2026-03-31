@@ -230,6 +230,9 @@ const HeroV3 = () => {
                 <div className="h-5 md:h-8 flex items-center shrink-0">
                   <img loading="lazy" src={logoKulor} alt="Kulör Bygg & Badrum AB" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-110" />
                 </div>
+                <div className="h-5 md:h-8 flex items-center shrink-0">
+                  <img loading="lazy" src={logoAsfaltslandslaget} alt="Asfaltslandslaget" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity brightness-0 invert scale-110" />
+                </div>
               </div>
             </div>
           </div>
