@@ -137,12 +137,6 @@ export const ReferenceProjectCard = ({
           </div>
         </div>
 
-        {/* Price */}
-        {project.price && (
-          <div className="text-sm font-medium">
-            {project.price.toLocaleString("sv-SE")} kr
-          </div>
-        )}
 
         {/* Admin buttons */}
         {isAdmin && isEditMode && (
